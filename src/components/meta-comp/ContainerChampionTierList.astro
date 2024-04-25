@@ -1,0 +1,17 @@
+---
+const { championsTier } = Astro.props;
+---
+
+<div class="containerChampionTierList">
+  {
+    championsTier.map((champTier) => {
+      return (
+        <img
+          src={champTier.imgTitular}
+          alt={champTier.titulo}
+          class="imgChampionTierList"
+        />
+      );
+    })
+  }
+</div>

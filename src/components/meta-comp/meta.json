@@ -1,0 +1,407 @@
+{
+  "S": [
+    {
+      "titulo": "Celestial Wukong",
+      "imgTitular": "https://guiadeparche.com/tftdata/Set11/metaComps/campeones_bordes/wukong-celestial.png",
+      "composicion": "https://guiadeparche.com/tftdata/Set11/metaComps/composiciones/wukong-celestial.png",
+      "sinergias": "Celestial(7) Domadragón(3) Altruista(2) Duelista(2) Erudito(2) Great(1) Amantes(1)",
+      "pestañas": {
+        "Aumentos": [
+          "TFT10_Augment_LittleBuddies",
+          "TFT11_Augment_Heavenly",
+          "TFT6_Augment_ForceOfNature",
+          "TFT9_Augment_Harmacist1",
+          "TFT10_Augment_InspiringEpitaph",
+          "TFT10_Augment_SilverVeil",
+          "TFT9_Augment_YouHaveMySword",
+          "TFT11_Augment_HeavenlyCrest"
+        ],
+        "Consejos": [
+          "Usa a Darius como sostenedor de objetos en el juego temprano"
+        ],
+        "Tips": ["Use Darius as an item holder in the early game"],
+        "Composiciones_Kayn": "https://guiadeparche.com/tftdata/Set11/metaComps/composiciones/kayn-celestial.png"
+      }
+    },
+    {
+      "titulo": "Dryad Gnar & Kindred",
+      "composicion": "https://guiadeparche.com/tftdata/Set11/metaComps/composiciones/gnar-dryad-3.png",
+      "imgTitular": "https://guiadeparche.com/tftdata/Set11/metaComps/campeones_bordes/gnar-dryad-3.png",
+      "pestañas": {
+        "Aumentos": [
+          "TFT6_Augment_TheGoldenEgg",
+          "TFT11_Augment_Accomplice",
+          "TFT11_Augment_BaBoom",
+          "TFT10_Augment_HeavyHitters",
+          "TFT11_Augment_Dryad",
+          "TFT7_Augment_BandOfThieves1",
+          "TFT9_Augment_LongDistanceRelationship2",
+          "TFT9_Augment_CombatCaster"
+        ],
+        "Tips": [
+          "Play 2 Dryads early to scale their maximum life",
+          "Role at level 6 by Gnar and Kindred 3 stars"
+        ],
+        "Consejos": [
+          "Juega desde temprano 2 Driadas para ir escalando su vida máxima",
+          "Rolea en nivel 6 por Gnar y Kindred 3 estrellas"
+        ]
+      },
+      "sinergias": "Dríade(6) Fantasmal(2) Segador(2) Tanque(2) Titán(2)"
+    },
+    {
+      "titulo": "Damas de Porcelana",
+      "composicion": "https://guiadeparche.com/tftdata/Set11/metaComps/composiciones/ashe-conjurador.png",
+      "imgTitular": "https://guiadeparche.com/tftdata/Set11/metaComps/campeones_bordes/ashe-conjurador.png",
+      "pestañas": {
+        "Aumentos": [
+          "TFT9_Augment_BardPlaybook2",
+          "TFT11_Augment_OverEncumbered",
+          "TFT9_Augment_WhatDoesntKillYou",
+          "TFT11_Augment_Slammin_Plus",
+          "TFT9_Augment_HedgeFundPlus",
+          "TFT9_Augment_BuildingACollection",
+          "TFT9_Augment_CombatCaster",
+          "TFT6_Augment_SalvageBin"
+        ],
+        "Consejos": [
+          "Juega tempo con Fantasmales y Caitlyn o Senna carry hasta nivel 8",
+          "Enfócate en tener buenos objetos para Annie y para Ashe",
+          "Debes rolear al nivel 8 para estabilizar y luego irte al 9 para completar con legendarias"
+        ],
+        "Tips": [
+          "Play tempo with Ghosts and Caitlyn or Senna carry up to level 8",
+          "Focus on having good items for Annie and Ashe",
+          "You should role at level 8 to stabilize and then go to level 9 to complete with legendaries"
+        ],
+        "Composiciones_Arcanista": "https://guiadeparche.com/tftdata/Set11/metaComps/composiciones/amumu-porcelana-3.png",
+        "Composiciones_+1_Porcelana": "https://guiadeparche.com/tftdata/Set11/metaComps/composiciones/ashe-conjurador-porcelana.png"
+      },
+      "sinergias": "de Porcelana(4) Conjurador(4) Tanque(2) Mistico(3) Francotirador(2) Arcanista(2)"
+    },
+    {
+      "titulo": "Legendarias Xayah + Kai'sa",
+      "imgTitular": "https://guiadeparche.com/tftdata/Set11/metaComps/campeones_bordes/xayah-dragonlord.jpg",
+      "composicion": "https://guiadeparche.com//tftdata/Set11/metaComps/composiciones/Xayah-y-Kaisa-Dragonlord.png",
+      "pestañas": {
+        "Aumentos": [
+          "TFT10_Augment_InspiringEpitaph",
+          "TFT11_Augment_FortuneCrest",
+          "TFT11_Augment_Slammin_Plus",
+          "TFT9_Augment_StationarySupport2",
+          "TFT9_Augment_Martyr",
+          "TFT11_Augment_TinyButDeadly",
+          "TFT11_Augment_RainingGoldPlus",
+          "TFT9_Augment_RedBuff"
+        ],
+        "Consejos": [
+          "Para llegar a esta compo se recomienda siempre jugar fortunas en finales de la fase 2 y toda la fase 3.",
+          "Vas a necesitar mucho oro para llegar a la versión final en nivel 9"
+        ],
+        "Tips": [
+          "To reach this compo it is always recommended to play fortunes at the end of phase 2 and all of phase 3.",
+          "You will need a lot of gold to reach the final version at level 9"
+        ]
+      },
+      "sinergias": "Dragonlord(4) Tinta Sombria(3) Behemoth(2) Dryad(2) Duelista(2) Invoker(2) Trickshot(2) Lovers(1) Spirit Walker(1)"
+    },
+    {
+      "titulo": "Fast 9 Irelia",
+      "imgTitular": "https://guiadeparche.com/tftdata/Set11/metaComps/campeones_bordes/irelia-dragonlord.jpg",
+      "composicion": "https://guiadeparche.com/tftdata/Set11/metaComps/composiciones/irelia-fast-9.png",
+      "pestañas": {
+        "Aumentos": [
+          "TFT6_Augment_TheGoldenEgg",
+          "TFT6_Augment_JeweledLotus",
+          "TFT9_Augment_BigGrabBag",
+          "TFT9_Augment_OldMansWalkingStick",
+          "TFT11_Augment_Epoch",
+          "TFT6_Augment_Legend_TinyTitans",
+          "TFT7_Augment_LategameSpecialist"
+        ],
+        "Tips": [
+          "AD: The best items in Irelia are: Red Buff, Runnan’s Hurancan, Giant Slayer and Hextech Gunblade. Irelia already has resistance reduction (in her ability) so don’t give her last breath.",
+          "AP:",
+          "- Prioritize first augment in economy if it is not very difficult to reach level 9.",
+          "- Prioritize having Spear of Shojin and Morello on Teemo in the early game and they will be for Hwei when you reach level 9."
+        ],
+        "Consejos": [
+          "AD: Los mejores objetos en Irelia son: Bufo Rojo, Hurancan de Runnan’s, Verdugo de Gigantes y Sable Pistla Hextech Irelia ya tiene reducción de resistencias (para ella en su habilidad) asi que no le das último suspiro",
+          "AP:",
+          "– Prioriza primer aumento de economía sino es muy dificil llega a nivel 9.",
+          "– Prioriza tener Lanza de Shojin y Morello en Teemo en juego temprano y serán para Hwei al llegar a nivel 9"
+        ],
+        "Gameplay": "https://www.youtube.com/watch?v=0wxRqoHL0XA"
+      },
+      "sinergias": "Dragonlord(3) Storyweaver(3) Sage(2) Bruiser(2) Duelista(2) Celestiales(2) Great(1) Lovers(1) Artist(1)"
+    }
+  ],
+  "A": [
+    {
+      "titulo": "Tirotruco Kai'Sa",
+      "imgTitular": "https://guiadeparche.com/tftdata/Set11/metaComps/campeones_bordes/kaisa-tirotruco.jpg",
+      "composicion": "https://guiadeparche.com/tftdata/Set11/metaComps/composiciones/kaisa-tirotruco.png",
+      "pestañas": {
+        "Aumentos": [
+          "TFT11_Augment_Trickshot",
+          "TFT6_Augment_ForceOfNature",
+          "TFT10_Augment_LittleBuddies",
+          "TFT10_Augment_InspiringEpitaph",
+          "TFT6_Augment_JeweledLotus",
+          "TFT9_Augment_YouHaveMySword",
+          "TFT9_Augment_GreaterJeweledLotus"
+        ],
+        "Tips": [
+          "Kai'Sa's items are held by Sivir; Galio's items are held by Garen.",
+          "After Kai'sa and Galio have items, prioritize a second carry, it can be Sylas or Udyr.",
+          "Check the base statistics of the tattoos, damage tattoos give them to Kai'Sa and defensive tattoos ideally go on Udyr or Galio."
+        ],
+        "Consejos": [
+          "Los objetos de Kai'Sa los sostiene Sivir; Los objetos de Galio los sostiene Garen.",
+          "Despues de que Kai'sa y Galio tenga objetos prioriza un segundo carry puede ser Sylas o Udyr",
+          "Revisa las estadística base de los tatuajes, lo que dan daño dáselos a Kai'Sa y lo defensivos van idealmente en Udyr o Galio."
+        ],
+        "Gameplay": "https://www.youtube.com/watch?v=Le9qoevFEZA"
+      },
+      "sinergias": "Tirotruco(4) Matones(4) Inkshadow(4) Storyweaver(3) Lovers(1) Spirit Walker(1)"
+    },
+    {
+      "id": "Predestinado_Aphelios",
+      "titulo": "Predestinado Aphelios",
+      "imgTitular": "https://guiadeparche.com/tftdata/Set11/metaComps/campeones_bordes/aphelios-predestinado-3.jpg",
+      "composicion": "https://guiadeparche.com/wp-content/uploads/2024/03/Aphelios-Predestinados-3.png",
+      "pestañas": {
+        "Aumentos": [
+          "TFT11_Augment_Calltochaos",
+          "TFT11_Augment_FatedCrown",
+          "TFT11_Augment_FatedCrest",
+          "TFT9_Augment_BigGrabBag",
+          "TFT9_Augment_GreaterJeweledLotus",
+          "TFT9_Augment_RedBuff"
+        ],
+        "Tips": [
+          "When you have 5 Fated, join Thresh with Yasuo to give resistances to your entire team.",
+          "In the late game, pair Thresh with Sett to have resistance and onmivampirism in all your predestined"
+        ],
+        "Consejos": [
+          "Cuando tengas 5 Fated une a Thresh con Yasuo para dar resistencias a todo tu equipo.",
+          "En juego tardío une a Thresh con Sett para tener resistencia y onmivampirismo en todos tus predestinado"
+        ],
+        "Gameplay": "https://www.youtube.com/watch?v=ycMM6nd12ss",
+        "Composiciones_Tempo_Syndra": "https://guiadeparche.com/wp-content/uploads/2024/03/Syndra-Fated-Set-11-TFT-Meta-Comp.png",
+        "Composiciones_Early": "https://guiadeparche.com/wp-content/uploads/2024/04/Aphelios-Juego-Temprano.png",
+        "Composiciones_Mid": "https://guiadeparche.com/wp-content/uploads/2024/04/Aphelios-Juego-Medio-Ornn.png"
+      },
+      "sinergias": "Predestinado(7) Arcanista(2) Behemoth(2) Dryad(2) Sniper(2)"
+    },
+    {
+      "titulo": "Miticos Lilia",
+      "composicion": "https://guiadeparche.com/tftdata/Set11/metaComps/composiciones/lillia-mitico.png",
+      "imgTitular": "https://guiadeparche.com/tftdata/Set11/metaComps/campeones_bordes/lillia-mitico.png",
+      "pestañas": {
+        "Aumentos": [
+          "TFT6_Augment_ForceOfNature",
+          "TFT9_Augment_OldMansWalkingStick",
+          "TFT9_Augment_JeweledLotus",
+          "TFT11_Augment_Invoker",
+          "TFT11_Augment_Mythic",
+          "TFT11_Augment_MythicCrest",
+          "TFT11_Augment_MythicCrown"
+        ],
+        "Consejos": [
+          "Enfocate en los objetos defensaivos de Annie primero, luego en los objetos de Lilia.",
+          "Si tienes buena linea frontal tu daño en área tendra el tiempo suficiente para ganarte la ronda"
+        ],
+        "Tips": [
+          "Focus on Annie's defensive items first, then Lilia's items.",
+          "If you have a good front line, your area damage will have enough time to win the round."
+        ],
+        "Gameplay": "https://www.youtube.com/watch?v=9NQxlQeCjZM"
+      },
+      "sinergias": "Mitico(7) Invocador(4) Titán(2) Dryad(2) Artista(1)"
+    },
+    {
+      "titulo": "Hecho Diferente",
+      "composicion": "https://guiadeparche.com/tftdata/Set11/metaComps/composiciones/hecho-diferente-set-11.png",
+      "imgTitular": "https://guiadeparche.com/tftdata/Set11/metaComps/campeones_bordes/hecho-diferente-oro.png",
+      "pestañas": {
+        "Consejos": [
+          "El juego temprano es flexible pero busca siempre subir rápido a nivel 8 por las épicas importantes: Ashe/Kaisa, Annie, Nautilus"
+        ],
+        "Tips": [
+          "The early game is flexible but always seeks to rise quickly to level 8 for the important epics: Ashe/Kaisa, Annie, Nautilus"
+        ]
+      },
+      "sinergias": "15 Sinergias Inactivas"
+    }
+  ],
+  "B": [
+    {
+      "titulo": "Fantasmales Senna 3",
+      "composicion": "https://guiadeparche.com/wp-content/uploads/2024/04/Senna-Final.png",
+      "imgTitular": "https://guiadeparche.com/tftdata/Set11/metaComps/campeones_bordes/senna-fantasmal-3.jpg",
+      "pestañas": {
+        "Aumentos": [
+          "TFT11_Augment_TinyButDeadly",
+          "TFT11_Augment_Accomplice",
+          "TFT7_Augment_LuckyGlovesPlus",
+          "TFT10_Augment_LittleBuddies",
+          "TFT9_Augment_Sleightofhand",
+          "TFT9_Augment_RedBuff",
+          "TFT7_Augment_BandOfThieves1"
+        ],
+        "Tips": [
+          "Stabilize at level 6 with: Jax, Caitlyn, Senna, Aatrox, Shen and Illaoi; Then go up to level 8 to add Morgana and Kayn; If you get Udyr you change it for Jax.",
+          "The most important items are Ionic Spark and Guinsoo to apply more instances of ghostly damage."
+        ],
+        "Consejos": [
+          "Estabiliza en nivel 6 con: Jax, Caitlyn, Senna, Aatrox, Shen e Illaoi; Luego subes a nivel 8 para agregar a Morgana y Kayn; Si te sale Udyr lo cambias por Jax.",
+          "Los objetos más importantes son Chispa Iónica y Guinsoo para aplicar más instancias de daño de fantasmales"
+        ],
+        "Composiciones_Kaisa": "https://guiadeparche.com/wp-content/uploads/2024/03/6-Ghostly-Kaisa.png",
+        "Composiciones_Early": "https://guiadeparche.com/wp-content/uploads/2024/04/Senna-Juego-Temprano.png",
+        "Composiciones_Mid": "https://guiadeparche.com/wp-content/uploads/2024/04/Senna-Juego-Medio.png",
+        "Gameplay": "https://www.youtube.com/watch?v=_xe_OB5QQQ8"
+      },
+      "sinergias": "Fantasmales(6) Inkshadow(3) Behemoth(2) Sniper(2) Spirit Walker(1)"
+    },
+    {
+      "titulo": "Domadragón Diana",
+      "composicion": "https://guiadeparche.com/tftdata/Set11/metaComps/composiciones/diana-domadragon-3.png",
+      "imgTitular": "https://guiadeparche.com/tftdata/Set11/metaComps/campeones_bordes/diana-domadragon-3.png",
+      "pestañas": {
+        "Aumentos": [
+          "TFT9_Augment_BardPlaybook1",
+          "TFT11_Augment_OverEncumbered",
+          "TFT7_Augment_BandOfThieves1",
+          "TFT9_Augment_TwoHealthy",
+          "TFT9_Augment_CombatCaster",
+          "TFT11_Augment_Dragonlord",
+          "TFT6_Augment_SlowAndSteady",
+          "TFT9_Augment_Legend_HighEndSector"
+        ],
+        "Tips": [
+          "You have the base of the composition at level 7.",
+          "Diana will be your main tank but Neeko can also be if you get her 3 stars",
+          "Your carries are 3-cost Soraka and Zoe. You can also use Janna with buffs that benefit the Dragonlords"
+        ],
+        "Consejos": [
+          "La base de la composición la tienes en nivel 7.",
+          "Diana será tu tanque principal pero puede serlo Neeko tambien si la logras 3 estrellas",
+          "Tus carries son Soraka y Zoe de coste 3. También puedes usar a Janna con aumento que beneficien a los Dragonlords"
+        ],
+        "Gameplay": "https://www.youtube.com/watch?v=8qIEMAXlNUM"
+      },
+      "sinergias": "Domadragón(4) Altruista(3) Tejehistorias(3) Arcanista(3) Celestial(2) Erudito(2) Amantes(1)"
+    },
+    {
+      "titulo": "Matones Kobuko 3",
+      "composicion": "https://guiadeparche.com/wp-content/uploads/2024/03/Bruiser-Comp-PBE.png",
+      "imgTitular": "https://guiadeparche.com/tftdata/Set11/metaComps/campeones_bordes/kobuko-maton-3.jpg",
+      "pestañas": {
+        "Consejos": [
+          "Juega esta compo siempre que tengas el aumento de 'Lucky Paws' de Kobuko y prioriza jugar los 8 Matones"
+        ],
+        "Tips": [
+          "Play this comp whenever you have Kobuko's 'Lucky Paws' boost and prioritize playing the 8 Bruisers"
+        ]
+      },
+      "sinergias": "Bruiser(6) Storyweaver(3) Ghostly(2) Umbral(2)"
+    },
+    {
+      "titulo": "Super Shen",
+      "composicion": "https://guiadeparche.com/wp-content/uploads/2024/04/Super-Shen-Meme.png",
+      "imgTitular": "https://guiadeparche.com/tftdata/Set11/metaComps/campeones_bordes/shen-3.jpg",
+      "pestañas": {
+        "Consejos": [
+          "Dale a Shen guinsoo y sanguinara/Sablepistola Hextech Además como él escala su daño por armadura le puedes dar Vesta Espinosa o Valor del Titán"
+        ],
+        "Tips": [
+          "Give Shen Guinsoo and BT/Hextech-Gunblade; Also, since he scales his damage by armor you can give him Bramble Vest or Titan's Resolve."
+        ]
+      },
+      "sinergias": "Behemoth(6) Celestiales(2) Fantasmales(2) Sage(2) Spirit Walker(1)"
+    }
+  ],
+  "C": [
+    {
+      "titulo": "Titan Yorick 3",
+      "composicion": "https://guiadeparche.com/tftdata/Set11/metaComps/composiciones/yorick-titan-3.png",
+      "imgTitular": "https://guiadeparche.com/tftdata/Set11/metaComps/campeones_bordes/yorick-titan-3.png",
+      "pestañas": {
+        "Aumentos": [
+          "TFT11_Augment_Behemoth",
+          "TFT11_Augment_YorickCarry",
+          "TFT9_Augment_Martyr",
+          "TFT6_Augment_Ascension",
+          "TFT9_Augment_LongDistanceRelationship1",
+          "TFT9_Augment_Formation1",
+          "TFT9_Augment_Commander_FinalAscension"
+        ],
+        "Consejos": [
+          "Rolean en Nivel 6 hasta conseguir a Yorick 3 estrellas y juega la mayor cantidad de titanes siempre",
+          "Solo debes jugar está compo cuando te salga el aumento de Sifón de Medianoche",
+          "Sifón de Medianoche: tu Yorick más fuerte obtiene un % de vida máxima y además, inflige un % de su vida máxima con su habilidad. Además te dan un Yorick"
+        ],
+        "Tips": [
+          "Role at Level 6 until you get 3-star Yorick and play as many titans as possible",
+          "You should only play this comp when you get the augment Midnight Siphon",
+          "Midnight Siphon: Your strongest Yorick gains % maximum health and also deals % of his maximum health with his ability. Plus they give you a Yorick"
+        ]
+      },
+      "sinergias": "Titan(6) Arcanista(2) Dríade(2) Umbrío(2) Conjurador(2) de Porcelana(2) Cambiapieles(1)"
+    },
+    {
+      "titulo": "Duelista Volibear",
+      "composicion": "https://guiadeparche.com/tftdata/Set11/metaComps/composiciones/volibear-duelista-3-trash.png",
+      "imgTitular": "https://guiadeparche.com/tftdata/Set11/metaComps/campeones_bordes/trash-to-treasure.png",
+      "pestañas": {
+        "Aumentos": [
+          "TFT11_Augment_TrashToTreasure",
+          "TFT11_Augment_TwoforOne",
+          "TFT11_Augment_Accomplice",
+          "TFT9_Augment_GargantuanResolve",
+          "TFT9_Augment_CombatCaster",
+          "TFT9_Augment_Formation1",
+          "TFT9_Augment_StationarySupport1"
+        ],
+        "Tips": [
+          "Role at Level 7 to have 6 duelists, you must find 1 Lee Sin (if you do not have a duelist spatula) it is your greatest power peak since you gain resistances for all duelists in addition to greater speed"
+        ],
+        "Consejos": [
+          "Rolea en Nivel 7 para tener 6 duelistas, deberás encontrar 1 Lee Sin (sino tienes espátula de duelista) es tu mayor pico de poder ya que ganas resistencias para todos los duelistas ademas de mayor velocidad"
+        ],
+        "Composiciones_Early": "https://guiadeparche.com/wp-content/uploads/2024/04/Tristana-Juego-Temprano.png",
+        "Composiciones_Mid": "https://guiadeparche.com/wp-content/uploads/2024/04/Tristana-Juego-Medio.png",
+        "Gameplay": "https://www.youtube.com/watch?v=TasYvByUMRw"
+      },
+      "sinergias": "Duelista(6) Domadragón(2) Celestial(2) Erudito(2) Excelente(1)"
+    },
+    {
+      "titulo": "Miticos Kog'Maw 3",
+      "composicion": "https://guiadeparche.com/wp-content/uploads/2024/03/Kogmaw-3-estrellas-miticos.png",
+      "imgTitular": "https://guiadeparche.com/tftdata/Set11/metaComps/campeones_bordes/kogmaw-mitico-3.jpg",
+      "pestañas": {
+        "Aumentos": [
+          "TFT9_Augment_UnleashedArcana",
+          "TFT7_Augment_LuckyGloves",
+          "TFT9_Augment_GreaterJeweledLotus",
+          "TFT9_Augment_CombatCaster",
+          "TFT9_Augment_OldMansWalkingStick",
+          "TFT11_Augment_Epoch",
+          "TFT10_Augment_Stimpack",
+          "TFT7_Augment_BandOfThieves1"
+        ],
+        "Tips": [
+          "Roll on Lv5 above 50 gold with prio on Kog'Maw a Cho'Gath 3 star"
+        ],
+        "Consejos": [
+          "Rolea en nivel 5 por encima de 50 de oro con prioridad en Kog'Maw y Cho'Gath 3 estrellas"
+        ],
+        "Composiciones_Early": "https://guiadeparche.com/wp-content/uploads/2024/04/Kogmaw-Juego-Temprano.png",
+        "Composiciones_Mid": "https://guiadeparche.com/wp-content/uploads/2024/04/Kogmaw-Juego-Medio.png"
+      },
+      "sinergias": "Mítico(5) Arcanista(2) Behemoth(2) Ghostly(2) Heavenly(2) Invoker(2) Sniper(2) Warden(2)"
+    }
+  ]
+}

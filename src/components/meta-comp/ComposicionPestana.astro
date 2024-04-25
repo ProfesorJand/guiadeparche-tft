@@ -1,0 +1,51 @@
+---
+import datosSet11Latino from './datosSet11Latino.json';
+const { pestanas } = Astro.props;
+const aumentos = datosSet11Latino.objetos;
+function encontrarAumento(id) {
+  const aumentoInfo = aumentos.find((aumento) => {
+    return aumento.apiName === id;
+  });
+  return {
+    icon: aumentoInfo.icon,
+    desc: aumentoInfo.desc,
+    name: aumentoInfo.name,
+  };
+}
+---
+
+<div class="containerPestanas">
+  {
+    Object.keys(pestanas).map(function (key: any) {
+      let newKey = key;
+      if (key.includes('Composiciones')) {
+        [, ...newKey] = key.split('_');
+        newKey = newKey.join(' ');
+      }
+      return <div class="pestanas">{newKey}</div>;
+    })
+  }
+</div>
+<div class="pestanaContainer">
+  {
+    Object.keys(pestanas).map(function (key: any) {
+      return (
+        <div class="pestanaContainerContenido">
+          {key === 'Aumentos' &&
+            pestanas[key].map((id) => {
+              const aumento = encontrarAumento(id);
+              return (
+                <div class="tooltip">
+                  <img
+                    src={aumento.icon}
+                    alt={'Aumento ' + aumento.name}
+                    class="aumentoImg"
+                  />
+                </div>
+              );
+            })}
+        </div>
+      );
+    })
+  }
+</div>

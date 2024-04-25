@@ -1,0 +1,26 @@
+---
+const { championsTier } = Astro.props;
+import ComposicionPestana from './ComposicionPestana.astro';
+---
+
+{
+  championsTier.map((champTier) => {
+    return (
+      <div class="infoComp" id={champTier.titulo.replace(' ', '-')}>
+        <button class="btnClose">X</button>
+        <h3 class="titulo">{champTier.titulo}</h3>
+        <p class="sinergiasText">
+          <span>{champTier.sinergias}</span>
+        </p>
+        <div class="composicionDiv">
+          <img
+            src={champTier.composicion}
+            alt={'Composicion Meta ' + champTier.titulo}
+            class="composicionImg"
+          />
+        </div>
+        <ComposicionPestana pestanas={champTier.pestañas} />
+      </div>
+    );
+  })
+}

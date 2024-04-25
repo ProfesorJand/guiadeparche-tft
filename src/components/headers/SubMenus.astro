@@ -1,0 +1,19 @@
+---
+interface Props {
+  subMenus: any[];
+}
+
+const { subMenus } = Astro.props;
+---
+
+<div class="containerSubMenus">
+  {
+    subMenus.map((subMenu) => {
+      return (
+        <a href={subMenu.link} target="_self">
+          {subMenu.nombre}
+        </a>
+      );
+    })
+  }
+</div>

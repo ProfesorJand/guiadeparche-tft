@@ -1,0 +1,30 @@
+---
+import SubMenus from './SubMenus.astro';
+
+interface Props {
+  nombre: string;
+  link: string;
+}
+
+const { link, nombre } = Astro.props;
+---
+
+<a class="menuItem" href={link} target="_self">
+  {nombre}
+</a>
+
+<style>
+  .menuItem {
+    display: flex;
+    position: relative;
+    background-color: aqua;
+    color: black;
+    box-sizing: border-box;
+    padding: 5px;
+    text-decoration: none;
+  }
+  .menuItem:hover {
+    background-color: black;
+    color: white;
+  }
+</style>

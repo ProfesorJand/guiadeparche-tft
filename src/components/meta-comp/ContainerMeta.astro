@@ -1,0 +1,22 @@
+---
+import meta from './meta.json';
+import ImgTier from './ImgTier.astro';
+import ContainerChampionTierList from './ContainerChampionTierList.astro';
+import InfoComp from './InfoComp.astro';
+---
+
+<div class="containerMeta">
+  {
+    Object.keys(meta).map(function (key) {
+      return (
+        <>
+          <div class="containerTier">
+            <ImgTier key={key} />
+            <ContainerChampionTierList championsTier={meta[key]} />
+          </div>
+          <InfoComp championsTier={meta[key]} />
+        </>
+      );
+    })
+  }
+</div>
