@@ -17,14 +17,19 @@ const { link, nombre } = Astro.props;
   .menuItem {
     display: flex;
     position: relative;
-    background-color: aqua;
-    color: black;
+    background-color: var(--bg-secondary);
+    color: var(--color-primary);
     box-sizing: border-box;
     padding: 5px;
     text-decoration: none;
+    border: 2px solid white;
   }
   .menuItem:hover {
-    background-color: black;
-    color: white;
+    background-color: var(--bg-hover);
+    border-bottom-color: transparent;
+  }
+
+  .menuItem .active {
+    border-bottom-color: transparent;
   }
 </style>
