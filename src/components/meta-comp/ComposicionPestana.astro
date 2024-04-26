@@ -41,11 +41,179 @@ function encontrarAumento(id) {
                     alt={'Aumento ' + aumento.name}
                     class="aumentoImg"
                   />
+                  <div class="containerTooltip">
+                    <h1>{aumento.name}</h1>
+                    <p>{aumento.desc}</p>
+                  </div>
                 </div>
               );
+            })}
+          {(key === 'Consejos' || key === 'Tips') &&
+            pestanas[key].map((parrafo) => {
+              return <p>{parrafo}</p>;
             })}
         </div>
       );
     })
   }
 </div>
+
+<script>
+  const infoComp = Array.from(
+    document.getElementsByClassName('infoComp') as HTMLCollectionOf<HTMLElement>
+  );
+
+  Array.prototype.forEach.call(infoComp, (element, index) => {
+    if (index !== 0) {
+      console.log(index, element);
+      element.style.display = 'none';
+    }
+  });
+
+  /* OK */
+  const containerPestanas =
+    document.getElementsByClassName('containerPestanas');
+
+  Array.prototype.forEach.call(containerPestanas, (element) => {
+    element.getElementsByClassName('pestanas')[0].classList.add('active');
+  });
+
+  function clickPestaña(e, pestañaConteinerContenido) {
+    const allLi = document.getElementsByClassName(`pestanas active`);
+    const allContenidoPestaña = Array.from(
+      document.getElementsByClassName(
+        'pestanaContainerContenido'
+      ) as HTMLCollectionOf<HTMLElement>
+    );
+    for (let i = 0; i < allLi.length; i++) {
+      allLi[i].classList.remove('active');
+    }
+    for (let j = 0; j < allContenidoPestaña.length; j++) {
+      allContenidoPestaña[j].style.display = 'none';
+    }
+    e.target.classList.add('active');
+    pestañaConteinerContenido.style.display = 'flex';
+  }
+</script>
+
+<style>
+  .containerPestanas {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    color: white;
+    align-items: center;
+    justify-content: center;
+    list-style-type: none;
+    width: 100%;
+    margin: 0;
+    padding: 0 15px;
+    box-sizing: border-box;
+    gap: 5px;
+  }
+
+  .pestanas {
+    list-style: none;
+    background-color: #1e197f;
+    width: max-content;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    border: 2px solid grey;
+  }
+
+  .pestanas:hover {
+    cursor: pointer;
+    background-color: #120d69;
+  }
+
+  .active {
+    background-color: #120d69;
+    border-bottom-color: #120d69;
+  }
+
+  .pestanaContainer {
+    display: flex;
+    position: relative;
+    width: 100%;
+    margin-top: -5px;
+  }
+
+  .pestanaContainerContenido {
+    color: white;
+    background-color: #120d69;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 20px;
+    display: flex;
+    width: 100%;
+    gap: 5px;
+  }
+
+  .tooltip {
+    display: flex;
+    position: relative;
+    width: 10%;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .tooltip:hover .containerTooltip {
+    visibility: visible;
+  }
+
+  .aumentoImg {
+    width: 100%;
+    height: auto;
+  }
+
+  .containerTooltip {
+    margin-left: -150px;
+    bottom: 100%;
+    left: 50%;
+    visibility: hidden;
+    width: 300px;
+    background-color: black;
+    color: white;
+    text-align: center;
+    border-radius: 3px;
+    padding: 6px 6px;
+    position: absolute;
+    z-index: 50;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+  }
+
+  @media only screen and (max-width: 900px) {
+    .containerPestanas {
+      width: 100%;
+      gap: 5px;
+      flex-wrap: nowrap;
+      overflow: scroll;
+      justify-content: flex-start;
+    }
+
+    .pestanas {
+      padding: 5px;
+      font-size: small;
+    }
+
+    .pestanaContainerContenido {
+      font-size: small;
+    }
+
+    .tooltip {
+      position: initial;
+      width: 12.5%;
+    }
+
+    .containerTooltip {
+      width: 100%;
+      left: 0;
+      margin-left: 0;
+    }
+  }
+</style>

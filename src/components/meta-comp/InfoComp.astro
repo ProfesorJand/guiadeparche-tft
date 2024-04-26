@@ -10,7 +10,7 @@ import ComposicionPestana from './ComposicionPestana.astro';
         <button class="btnClose">X</button>
         <h3 class="titulo">{champTier.titulo}</h3>
         <p class="sinergiasText">
-          <span>{champTier.sinergias}</span>
+          <span class="sinergiasSpan">{champTier.sinergias}</span>
         </p>
         <div class="composicionDiv">
           <img
@@ -24,3 +24,89 @@ import ComposicionPestana from './ComposicionPestana.astro';
     );
   })
 }
+
+<style>
+  .infoComp {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    gap: 5px;
+  }
+
+  .btnClose {
+    display: flex;
+    position: relative;
+    width: 20px;
+    height: auto;
+    text-align: center;
+    margin: 0;
+    top: 0;
+    left: 0;
+    background-color: aliceblue;
+    border: 1px solid black;
+    padding: 0px 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .btnClose:hover {
+    background-color: #120d69;
+    color: white;
+    border-color: white;
+  }
+
+  .titulo {
+    color: white;
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    font-size: xx-large;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+  }
+
+  .sinergiasText {
+    color: white;
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    padding: 0 20px;
+    text-align: center;
+  }
+
+  .sinergiasSpan {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .composicionDiv {
+    display: flex;
+    position: relative;
+    width: 80%;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+  }
+
+  .composicionImg {
+    display: flex;
+    position: relative;
+    width: 100%;
+  }
+
+  @media only screen and (max-width: 900px) {
+    .titulo {
+      font-size: larger;
+    }
+    .composicionDiv {
+      width: 100%;
+    }
+  }
+</style>

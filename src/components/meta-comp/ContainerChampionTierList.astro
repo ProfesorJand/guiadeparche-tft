@@ -15,3 +15,33 @@ const { championsTier } = Astro.props;
     })
   }
 </div>
+
+<style>
+  .containerChampionTierList{
+    display: flex;
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+    align-items: center;
+}
+
+.imgChampionTierList:hover{
+  cursor:pointer;
+  transform: scale(1);
+}
+
+.imgChampionTierList{
+  /* padding: 0px; */
+  width: 20%;
+  height: auto;
+  box-sizing: border-box;
+  /* height: calc(100% / 6); */
+  /* max-width: 95px; */
+  /* max-height: 200px; */
+  /* min-width: 55px; */
+  /* min-height: 55px; */
+  transition: .5s;
+  transform: scale(0.9);
+
+}
+</style>
