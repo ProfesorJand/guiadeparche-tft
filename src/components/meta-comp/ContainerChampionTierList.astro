@@ -1,47 +1,73 @@
 ---
-const { championsTier } = Astro.props;
+const { championsTier, index } = Astro.props;
 ---
 
 <div class="containerChampionTierList">
   {
-    championsTier.map((champTier) => {
+    championsTier.map((champTier, i) => {
       return (
         <img
           src={champTier.imgTitular}
           alt={champTier.titulo}
-          class="imgChampionTierList"
+          class={
+            'imgChampionTierList' +
+            (index === 0 && i === 0 ? ' imgSelected' : '')
+          }
         />
       );
     })
   }
 </div>
 
+<script>
+  const imgChampionTierList = document.querySelectorAll('.imgChampionTierList');
+  imgChampionTierList.forEach((img) => {
+    img.addEventListener('click', () => {
+      if (document.querySelectorAll('.imgSelected').length) {
+        document
+          .querySelectorAll('.imgSelected')[0]
+          .classList.remove('imgSelected');
+      }
+      img.classList.add('imgSelected');
+      const id = img.getAttribute('alt').replaceAll(' ', '-');
+      document.querySelectorAll('.infoComp.show')[0]?.classList.remove('show'); // (".infoComp .show").classlist.remove("show")
+      document.getElementById(id).classList.add('show');
+    });
+  });
+</script>
+
 <style>
-  .containerChampionTierList{
+  .containerChampionTierList {
     display: flex;
     position: relative;
     width: 100%;
     box-sizing: border-box;
     align-items: center;
-}
+  }
 
-.imgChampionTierList:hover{
-  cursor:pointer;
-  transform: scale(1);
-}
+  .imgChampionTierList:hover {
+    cursor: pointer;
+    transform: scale(1);
+  }
 
-.imgChampionTierList{
-  /* padding: 0px; */
-  width: 20%;
-  height: auto;
-  box-sizing: border-box;
-  /* height: calc(100% / 6); */
-  /* max-width: 95px; */
-  /* max-height: 200px; */
-  /* min-width: 55px; */
-  /* min-height: 55px; */
-  transition: .5s;
-  transform: scale(0.9);
+  .imgChampionTierList {
+    /* padding: 0px; */
+    width: 20%;
+    height: auto;
+    box-sizing: border-box;
+    /* height: calc(100% / 6); */
+    /* max-width: 95px; */
+    /* max-height: 200px; */
+    /* min-width: 55px; */
+    /* min-height: 55px; */
+    transition: 0.5s;
+    transform: scale(0.9);
+  }
 
-}
+  .imgSelected {
+    filter: grayscale(0%);
+    -webkit-filter: grayscale(0%);
+    transform: scale(1);
+    transition: 0.5s;
+  }
 </style>

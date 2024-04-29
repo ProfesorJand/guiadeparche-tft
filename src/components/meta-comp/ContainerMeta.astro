@@ -7,14 +7,14 @@ import InfoComp from './InfoComp.astro';
 
 <div class="containerMeta">
   {
-    Object.keys(meta).map(function (key) {
+    Object.keys(meta).map(function (key, index) {
       return (
         <>
           <div class="containerTier">
-            <ImgTier key={key} />
-            <ContainerChampionTierList championsTier={meta[key]} />
+            <ImgTier key={key} index={index}/>
+            <ContainerChampionTierList championsTier={meta[key]} index={index}/>
           </div>
-          <InfoComp championsTier={meta[key]} />
+          <InfoComp championsTier={meta[key]}  index={index} />
         </>
       );
     })

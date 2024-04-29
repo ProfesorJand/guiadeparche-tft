@@ -15,11 +15,17 @@ const title = 'TFT - Meta Comp';
   main {
     margin: auto;
     padding: 1rem;
-    width: 50%;
+    width: 70%;
     max-width: calc(100% - 2rem);
     color: white;
     font-size: 20px;
     line-height: 1.6;
     background-color: var(--bg-tertiary);
+  }
+
+  @media only screen and (max-width: 900px) {
+    main {
+      width: 100%;
+    }
   }
 </style>

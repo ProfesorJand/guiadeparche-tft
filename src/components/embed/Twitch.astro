@@ -1,0 +1,70 @@
+---
+interface Props {
+  channel: string;
+}
+const { channel } = Astro.props;
+---
+
+<div id="twitch-embed" data-channel={channel}></div>
+
+<!-- Load the Twitch embed script -->
+<script src="https://embed.twitch.tv/embed/v1.js"></script>
+
+<!-- Create a Twitch.Embed object that will render within the "twitch-embed" element. -->
+<script type="text/javascript">
+  const divTwitch = document.getElementById('twitch-embed');
+  const channel = divTwitch.dataset.channel;
+
+  var options = {
+    width: '100%',
+    channel: channel,
+    layout: 'video',
+    autoplay: true,
+    parent: ['tft.guiadeparche.com'],
+  };
+  var embed = new Twitch.Embed('twitch-embed', options);
+
+  embed.addEventListener(Twitch.Embed.READY, initiate);
+
+  function initiate() {
+    embed.addEventListener(Twitch.Embed.ONLINE, handleOnline);
+    embed.addEventListener(Twitch.Embed.OFFLINE, handleOffline);
+    embed.removeEventListener(Twitch.Embed.READY, initiate);
+  }
+
+  function handleOnline() {
+    document.getElementById('twitch-embed').classList.remove('hide');
+    document.getElementById('twitch-embed').classList.add('show');
+    embed.removeEventListener(Twitch.Embed.ONLINE, handleOnline);
+    embed.addEventListener(Twitch.Embed.OFFLINE, handleOffline);
+    embed.setMuted(false);
+  }
+
+  function handleOffline() {
+    document.getElementById('twitch-embed').classList.add('hide');
+    document.getElementById('twitch-embed').classList.remove('show');
+    embed.removeEventListener(Twitch.Embed.OFFLINE, handleOffline);
+    embed.addEventListener(Twitch.Embed.ONLINE, handleOnline);
+    embed.setMuted(true);
+  }
+</script>
+
+<style>
+  #twitch-embed {
+    position: fixed;
+    top: 0;
+    aspect-ratio: 16 / 9;
+  }
+  .hide {
+    display: none;
+  }
+  .show {
+    display: flex;
+  }
+
+  @media only screen and (max-width: 900px) {
+    #twitch-embed {
+      position: relative;
+    }
+  }
+</style>

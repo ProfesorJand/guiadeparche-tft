@@ -16,26 +16,28 @@ function encontrarAumento(id) {
 
 <div class="containerPestanas">
   {
-    Object.keys(pestanas).map(function (key: any) {
+    Object.keys(pestanas).map(function (key: any, index: any) {
       let newKey = key;
       if (key.includes('Composiciones')) {
         [, ...newKey] = key.split('_');
         newKey = newKey.join(' ');
       }
-      return <div class="pestanas">{newKey}</div>;
+      return (
+        <div class={'pestanas' + (index === 0 ? ' active' : '')}>{newKey}</div>
+      );
     })
   }
 </div>
 <div class="pestanaContainer">
   {
-    Object.keys(pestanas).map(function (key: any) {
+    Object.keys(pestanas).map(function (key: any, index: any) {
       return (
-        <div class="pestanaContainerContenido">
+        <div class={'pestanaContainerContenido' + (index === 0 ? ' show' : '')}>
           {key === 'Aumentos' &&
-            pestanas[key].map((id) => {
+            pestanas[key].map((id, index) => {
               const aumento = encontrarAumento(id);
               return (
-                <div class="tooltip">
+                <div class={'tooltip'}>
                   <img
                     src={aumento.icon}
                     alt={'Aumento ' + aumento.name}
@@ -59,23 +61,44 @@ function encontrarAumento(id) {
 </div>
 
 <script>
-  const infoComp = Array.from(
-    document.getElementsByClassName('infoComp') as HTMLCollectionOf<HTMLElement>
-  );
-
-  Array.prototype.forEach.call(infoComp, (element, index) => {
-    if (index !== 0) {
-      console.log(index, element);
-      element.style.display = 'none';
-    }
-  });
+  // const infoComp = document.getElementsByClassName('infoComp');
+  // Array.from(infoComp as HTMLCollectionOf<HTMLElement>).forEach((el, index) => {
+  //   if (index !== 0) {
+  //     el.style.display = 'none';
+  //   }
+  // });
 
   /* OK */
   const containerPestanas =
     document.getElementsByClassName('containerPestanas');
 
-  Array.prototype.forEach.call(containerPestanas, (element) => {
+  Array.prototype.forEach.call(containerPestanas, (element, index) => {
     element.getElementsByClassName('pestanas')[0].classList.add('active');
+  });
+
+  const pestanaContainer = document.getElementsByClassName('pestanaContainer');
+
+  Array.from(pestanaContainer as HTMLCollectionOf<HTMLElement>).forEach(
+    (el, index) => {
+      const elemento = el.getElementsByClassName('pestanaContainerContenido');
+      Array.from(elemento as HTMLCollectionOf<HTMLElement>).forEach(
+        (contenido, j) => {
+          if (j !== 0) {
+            contenido.style.display = 'none';
+          }
+        }
+      );
+    }
+  );
+
+  const pestanas = document.querySelectorAll('.pestanas');
+  pestanas.forEach((pestana) => {
+    pestana.addEventListener('click', () => {
+      const pestanaActive =
+        pestana.parentElement.querySelector(`.pestanas.active`);
+      pestanaActive.classList.remove('active');
+      pestana.classList.add('active');
+    });
   });
 
   function clickPestaña(e, pestañaConteinerContenido) {
@@ -122,6 +145,7 @@ function encontrarAumento(id) {
     justify-content: center;
     box-sizing: border-box;
     border: 2px solid grey;
+    font-size: 1rem;
   }
 
   .pestanas:hover {
@@ -148,9 +172,9 @@ function encontrarAumento(id) {
     align-items: center;
     justify-content: center;
     padding: 20px 20px;
-    display: flex;
     width: 100%;
     gap: 5px;
+    display: flex;
   }
 
   .tooltip {
@@ -185,6 +209,10 @@ function encontrarAumento(id) {
     z-index: 50;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
     box-sizing: border-box;
+  }
+
+  .show {
+    display: flex;
   }
 
   @media only screen and (max-width: 900px) {

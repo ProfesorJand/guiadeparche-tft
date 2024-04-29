@@ -1,12 +1,15 @@
 ---
-const { championsTier } = Astro.props;
+const { championsTier, index } = Astro.props;
 import ComposicionPestana from './ComposicionPestana.astro';
 ---
 
 {
-  championsTier.map((champTier) => {
+  championsTier.map((champTier, i) => {
     return (
-      <div class="infoComp" id={champTier.titulo.replace(' ', '-')}>
+      <div
+        class={'infoComp' + (index === 0 && i === 0 ? ' show' : '')}
+        id={champTier.titulo.replaceAll(' ', '-')}
+      >
         <button class="btnClose">X</button>
         <h3 class="titulo">{champTier.titulo}</h3>
         <p class="sinergiasText">
@@ -25,9 +28,21 @@ import ComposicionPestana from './ComposicionPestana.astro';
   })
 }
 
+<script>
+  const btnClose = document.querySelectorAll('.btnClose');
+  btnClose.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      btn.parentElement.classList.remove('show');
+      const alt = btn.parentElement.id.replaceAll('-', ' ');
+      const imgSelected = document.querySelector(`img[alt="${alt}"]`);
+      imgSelected.classList.remove('imgSelected');
+    });
+  });
+</script>
+
 <style>
   .infoComp {
-    display: flex;
+    display: none;
     flex-direction: column;
     position: relative;
     gap: 5px;
@@ -99,6 +114,10 @@ import ComposicionPestana from './ComposicionPestana.astro';
     display: flex;
     position: relative;
     width: 100%;
+  }
+
+  .show {
+    display: flex;
   }
 
   @media only screen and (max-width: 900px) {
