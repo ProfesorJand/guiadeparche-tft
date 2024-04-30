@@ -33,27 +33,50 @@ function encontrarAumento(id) {
     Object.keys(pestanas).map(function (key: any, index: any) {
       return (
         <div class={'pestanaContainerContenido' + (index === 0 ? ' show' : '')}>
-          {key === 'Aumentos' &&
-            pestanas[key].map((id, index) => {
-              const aumento = encontrarAumento(id);
-              return (
-                <div class={'tooltip'}>
-                  <img
-                    src={aumento.icon}
-                    alt={'Aumento ' + aumento.name}
-                    class="aumentoImg"
-                  />
-                  <div class="containerTooltip">
-                    <h1>{aumento.name}</h1>
-                    <p>{aumento.desc}</p>
+          {key === 'Aumentos' && (
+            <div class="containerAumentos">
+              {pestanas[key].map((id, index) => {
+                const aumento = encontrarAumento(id);
+                return (
+                  <div class={'tooltip'}>
+                    <img
+                      src={aumento.icon}
+                      alt={'Aumento ' + aumento.name}
+                      class="aumentoImg"
+                    />
+                    <div class="containerTooltip">
+                      <h1>{aumento.name}</h1>
+                      <p>{aumento.desc}</p>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
-          {(key === 'Consejos' || key === 'Tips') &&
-            pestanas[key].map((parrafo) => {
-              return <p>{parrafo}</p>;
-            })}
+                );
+              })}
+            </div>
+          )}
+          {(key === 'Consejos' || key === 'Tips') && (
+            <div class="consejos">
+              {pestanas[key].map((parrafo) => {
+                return <p>{parrafo}</p>;
+              })}
+            </div>
+          )}
+          {key.includes('Composiciones') && (
+            <img
+              src={pestanas[key]}
+              alt={key.split('/')[key.split('/').length - 1]}
+              class="imgCompPestana"
+            />
+          )}
+          {key === 'Gameplay' && (
+            <div class="divIframe">
+              <iframe
+                width="100%"
+                src={
+                  pestanas[key].replace('watch?v=', 'embed/') + '?enablejsapi=1'
+                }
+              />
+            </div>
+          )}
         </div>
       );
     })
@@ -61,14 +84,6 @@ function encontrarAumento(id) {
 </div>
 
 <script>
-  // const infoComp = document.getElementsByClassName('infoComp');
-  // Array.from(infoComp as HTMLCollectionOf<HTMLElement>).forEach((el, index) => {
-  //   if (index !== 0) {
-  //     el.style.display = 'none';
-  //   }
-  // });
-
-  /* OK */
   const containerPestanas =
     document.getElementsByClassName('containerPestanas');
 
@@ -76,47 +91,29 @@ function encontrarAumento(id) {
     element.getElementsByClassName('pestanas')[0].classList.add('active');
   });
 
-  const pestanaContainer = document.getElementsByClassName('pestanaContainer');
-
-  Array.from(pestanaContainer as HTMLCollectionOf<HTMLElement>).forEach(
-    (el, index) => {
-      const elemento = el.getElementsByClassName('pestanaContainerContenido');
-      Array.from(elemento as HTMLCollectionOf<HTMLElement>).forEach(
-        (contenido, j) => {
-          if (j !== 0) {
-            contenido.style.display = 'none';
-          }
-        }
-      );
-    }
-  );
-
   const pestanas = document.querySelectorAll('.pestanas');
   pestanas.forEach((pestana) => {
     pestana.addEventListener('click', () => {
       const pestanaActive =
         pestana.parentElement.querySelector(`.pestanas.active`);
       pestanaActive.classList.remove('active');
+      const pestanaContainer = pestanaActive.parentElement.nextElementSibling;
+
+      const indexPestanaDeactivate = Array.from(
+        pestanaActive.parentNode.children
+      ).indexOf(pestanaActive);
+      pestanaContainer.children[indexPestanaDeactivate].classList.remove(
+        'show'
+      );
+
+      const indexPestanaActive = Array.from(
+        pestanaActive.parentNode.children
+      ).indexOf(pestana);
+      pestanaContainer.children[indexPestanaActive].classList.add('show');
+
       pestana.classList.add('active');
     });
   });
-
-  function clickPestaña(e, pestañaConteinerContenido) {
-    const allLi = document.getElementsByClassName(`pestanas active`);
-    const allContenidoPestaña = Array.from(
-      document.getElementsByClassName(
-        'pestanaContainerContenido'
-      ) as HTMLCollectionOf<HTMLElement>
-    );
-    for (let i = 0; i < allLi.length; i++) {
-      allLi[i].classList.remove('active');
-    }
-    for (let j = 0; j < allContenidoPestaña.length; j++) {
-      allContenidoPestaña[j].style.display = 'none';
-    }
-    e.target.classList.add('active');
-    pestañaConteinerContenido.style.display = 'flex';
-  }
 </script>
 
 <style>
@@ -144,18 +141,26 @@ function encontrarAumento(id) {
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
-    border: 2px solid grey;
+    /*border: 2px solid grey;*/
     font-size: 1rem;
   }
 
   .pestanas:hover {
     cursor: pointer;
-    background-color: var(--bg-tertiary);
+    background-color: var(--bg-primary);
   }
 
   .active {
-    background-color: var(--bg-tertiary);
-    border-bottom-color: var(--bg-tertiary);
+    background-color: var(--bg-primary);
+    border-bottom-color: var(--bg-primary);
+  }
+
+  .containerAumentos {
+    display: flex;
+    position: relative;
+    align-items: center;
+    margin: 20px;
+    justify-content: center;
   }
 
   .pestanaContainer {
@@ -166,15 +171,14 @@ function encontrarAumento(id) {
   }
 
   .pestanaContainerContenido {
-    color: white;
-    background-color: #120d69;
+    background-color: var(--bg-primary);
     position: relative;
     align-items: center;
     justify-content: center;
-    padding: 20px 20px;
+    /* padding: 20px 20px; */
     width: 100%;
     gap: 5px;
-    display: flex;
+    display: none;
   }
 
   .tooltip {
@@ -187,6 +191,11 @@ function encontrarAumento(id) {
 
   .tooltip:hover .containerTooltip {
     visibility: visible;
+  }
+
+  .consejos {
+    display: flex;
+    flex-direction: column;
   }
 
   .aumentoImg {
@@ -211,8 +220,24 @@ function encontrarAumento(id) {
     box-sizing: border-box;
   }
 
+  .imgCompPestana {
+    width: 100%;
+  }
+
+  .divIframe {
+    display: flex;
+    position: relative;
+    aspect-ratio: 16 / 9;
+    width: 100%;
+  }
+
   .show {
     display: flex;
+  }
+
+  p {
+    font-size: 1rem;
+    margin: 5px;
   }
 
   @media only screen and (max-width: 900px) {
@@ -242,6 +267,10 @@ function encontrarAumento(id) {
       width: 100%;
       left: 0;
       margin-left: 0;
+    }
+
+    .containerAumentos {
+      margin: 5px;
     }
   }
 </style>
