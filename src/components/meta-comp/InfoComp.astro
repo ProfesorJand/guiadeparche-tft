@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 const { championsTier, index } = Astro.props;
 import ComposicionPestana from './ComposicionPestana.astro';
 ---
@@ -6,24 +7,28 @@ import ComposicionPestana from './ComposicionPestana.astro';
 {
   championsTier.map((champTier, i) => {
     return (
-      <div
+      <section
         class={'infoComp' + (index === 0 && i === 0 ? ' show' : '')}
         id={champTier.titulo.replaceAll(' ', '-')}
       >
         <button class="btnClose">X</button>
-        <h3 class="titulo">{champTier.titulo}</h3>
-        <p class="sinergiasText">
-          <span class="sinergiasSpan">{champTier.sinergias}</span>
-        </p>
-        <div class="composicionDiv">
-          <img
+        <header>
+          <h1 class="titulo">{champTier.titulo}</h1>
+        </header>
+        <figure class="composicionDiv">
+          <figcaption class="sinergiasText">
+            <span class="sinergiasSpan">{champTier.sinergias}</span>
+          </figcaption>
+          <Image
             src={champTier.composicion}
             alt={'Composicion Meta ' + champTier.titulo}
             class="composicionImg"
+            loading="lazy"
+            inferSize={true}
           />
-        </div>
+        </figure>
         <ComposicionPestana pestanas={champTier.pestañas} />
-      </div>
+      </section>
     );
   })
 }
@@ -46,30 +51,33 @@ import ComposicionPestana from './ComposicionPestana.astro';
     flex-direction: column;
     position: relative;
     gap: 5px;
+    border: 2px solid var(--border-color);
+    box-sizing: border-box;
+    margin: 5px 0px;
   }
 
   .btnClose {
     display: flex;
-    position: relative;
+    position: static;
     width: 20px;
     height: auto;
     text-align: center;
     margin: 0;
     top: 0;
     left: 0;
-    background-color: aliceblue;
-    border: 1px solid black;
+    background-color: var(--border-color);
+    border: 1px solid var(--border-color);
     padding: 0px 5px;
-    border-radius: 5px;
+    border-radius: 0px;
     cursor: pointer;
     justify-content: center;
     align-items: center;
+    font-weight: bold;
   }
 
   .btnClose:hover {
-    background-color: #120d69;
+    background-color: var(--bg-secondary);
     color: white;
-    border-color: white;
   }
 
   .titulo {
@@ -78,7 +86,7 @@ import ComposicionPestana from './ComposicionPestana.astro';
     position: relative;
     align-items: center;
     justify-content: center;
-    font-size: xx-large;
+    font-size: 2rem;
     margin: 0;
     padding: 0;
     text-align: center;
@@ -91,19 +99,23 @@ import ComposicionPestana from './ComposicionPestana.astro';
     align-items: center;
     justify-content: center;
     margin: 0;
+    width: 100%;
     padding: 0 20px;
     text-align: center;
+    box-sizing: border-box;
   }
 
   .sinergiasSpan {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+    font-size: 1rem;
   }
 
   .composicionDiv {
     display: flex;
     position: relative;
+    flex-direction: column;
     width: 100%;
     align-items: center;
     justify-content: center;
@@ -114,6 +126,7 @@ import ComposicionPestana from './ComposicionPestana.astro';
     display: flex;
     position: relative;
     width: 100%;
+    height: auto;
   }
 
   .show {

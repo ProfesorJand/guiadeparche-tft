@@ -1,6 +1,9 @@
 ---
 import Header from '../components/headers/Header.astro';
+import Footer from '../components/footer/Footer.astro';
 import Twitch from '../components/embed/Twitch.astro';
+import Logo from '../components/logo/Logo.astro';
+import Adsense from '../components/adsense/Adsense.astro';
 import { ViewTransitions } from 'astro:transitions';
 interface Props {
   title: string;
@@ -27,13 +30,17 @@ const { title } = Astro.props;
   <body>
     <Header />
     <slot />
+    <Footer />
     <Twitch channel="jupeson" />
+    <Logo />
+    <Adsense />
     <style is:global>
       :root {
         --bg-primary: #130359;
         --bg-secondary: #1e197f;
         --bg-tertiary: #120d69;
         --color-primary: #ffffff;
+        --border-color: #ffd700;
         --accent: 136, 58, 234;
         --accent-light: 224, 204, 250;
         --accent-dark: 49, 10, 101;
@@ -47,8 +54,26 @@ const { title } = Astro.props;
       }
       html {
         font-family: 'Roboto', Sans-serif;
-        background: var(--bg-primary);
+        background-color: var(--bg-primary);
         color: var(--color-primary);
+        overflow-y: scroll;
+      }
+
+      body::-webkit-scrollbar {
+        width: 12px; /* width of the entire scrollbar */
+      }
+
+      body::-webkit-scrollbar-track {
+        background: var(--bg-primary); /* color of the tracking area */
+      }
+
+      body::-webkit-scrollbar-thumb {
+        background-color: blue; /* color of the scroll thumb */
+        border-radius: 20px; /* roundness of the scroll thumb */
+        border: 2px solid var(--border-color); /* creates padding around scroll thumb */
+      }
+      body {
+        margin: 0;
       }
       code {
         font-family:
@@ -60,6 +85,12 @@ const { title } = Astro.props;
           Bitstream Vera Sans Mono,
           Courier New,
           monospace;
+      }
+
+      @media only screen and (max-width: 900px) {
+        html {
+          background-size: 50px 50px;
+        }
       }
     </style>
   </body>

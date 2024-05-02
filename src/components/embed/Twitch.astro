@@ -11,7 +11,7 @@ const { channel } = Astro.props;
 <script src="https://embed.twitch.tv/embed/v1.js"></script>
 
 <!-- Create a Twitch.Embed object that will render within the "twitch-embed" element. -->
-<script type="text/javascript">
+<script type="text/javascript" defer>
   const divTwitch = document.getElementById('twitch-embed');
   const channel = divTwitch.dataset.channel;
 
@@ -52,7 +52,10 @@ const { channel } = Astro.props;
 <style>
   #twitch-embed {
     position: fixed;
-    top: 0;
+    padding: 20px;
+    bottom: 0px;
+    left: 0px;
+    width: 20%;
     aspect-ratio: 16 / 9;
   }
   .hide {
@@ -64,7 +67,12 @@ const { channel } = Astro.props;
 
   @media only screen and (max-width: 900px) {
     #twitch-embed {
+      display: flex;
       position: relative;
+      /* align-items: center; */
+      /* justify-content: center; */
+      box-sizing: border-box;
+      width: 100%;
     }
   }
 </style>

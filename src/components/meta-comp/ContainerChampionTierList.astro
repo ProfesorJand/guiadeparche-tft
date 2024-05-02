@@ -1,18 +1,21 @@
 ---
 const { championsTier, index } = Astro.props;
+import { Image } from 'astro:assets';
 ---
 
 <div class="containerChampionTierList">
   {
     championsTier.map((champTier, i) => {
       return (
-        <img
+        <Image
           src={champTier.imgTitular}
           alt={champTier.titulo}
           class={
             'imgChampionTierList' +
             (index === 0 && i === 0 ? ' imgSelected' : '')
           }
+          loading="lazy"
+          inferSize={true}
         />
       );
     })

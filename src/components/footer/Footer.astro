@@ -1,0 +1,40 @@
+<footer>
+  <div class="footer">izquierda</div>
+  <div class="footer">derecha</div>
+</footer>
+
+<style>
+  footer {
+    display: flex;
+    position: relative;
+    width: 50%;
+    margin: 0 auto;
+    padding: 1rem;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    box-sizing: border-box;
+    background-color: var(--bg-primary);
+    background-image: url('/GP_logo.png');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: bottom 0px right 0px;
+  }
+
+  .footer {
+    width: 50%;
+    height: max-content;
+    display: flex;
+    position: relative;
+    min-height: inherit;
+    border: 1px solid white;
+  }
+  @media only screen and (max-width: 900px) {
+    .footer {
+      background-color: transparent;
+      padding: 5px;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+</style>

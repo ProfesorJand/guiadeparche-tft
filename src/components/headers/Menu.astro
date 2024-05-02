@@ -9,9 +9,23 @@ interface Props {
 const { link, nombre } = Astro.props;
 ---
 
-<a class="menuItem" href={link} target="_self">
+<a class="menuItem" href={link} target="_self" data-astro-history="auto">
   {nombre}
 </a>
+
+<script>
+  const anchor = document.querySelectorAll('.menuItem');
+  const menuActive = document.querySelector('.menuItem.active');
+  anchor.forEach((menu) => {
+    menu.addEventListener('click', () => {
+      menu.classList.add('active');
+
+      // if (menuActive) {
+      //   menuActive.classList.remove('active');
+      // }
+    });
+  });
+</script>
 
 <style>
   .menuItem {
@@ -29,7 +43,8 @@ const { link, nombre } = Astro.props;
     border-bottom-color: transparent;
   }
 
-  .menuItem .active {
+  .active {
     border-bottom-color: transparent;
+    background-color: var(--bg-tertiary);
   }
 </style>

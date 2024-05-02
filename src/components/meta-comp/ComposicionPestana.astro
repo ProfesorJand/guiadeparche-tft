@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import datosSet11Latino from './datosSet11Latino.json';
 const { pestanas } = Astro.props;
 const aumentos = datosSet11Latino.objetos;
@@ -7,9 +8,11 @@ function encontrarAumento(id) {
     return aumento.apiName === id;
   });
   return {
-    icon: aumentoInfo.icon,
-    desc: aumentoInfo.desc,
-    name: aumentoInfo.name,
+    icon:
+      aumentoInfo?.icon ||
+      'https://raw.communitydragon.org/latest/game/assets/maps/tft/icons/augments/hexcore/pandoras-bench-i.png',
+    desc: aumentoInfo?.desc || 'actualizando...',
+    name: aumentoInfo?.name || 'Upss',
   };
 }
 ---
@@ -39,14 +42,16 @@ function encontrarAumento(id) {
                 const aumento = encontrarAumento(id);
                 return (
                   <div class={'tooltip'}>
-                    <img
+                    <Image
                       src={aumento.icon}
                       alt={'Aumento ' + aumento.name}
                       class="aumentoImg"
+                      loading="lazy"
+                      inferSize={true}
                     />
                     <div class="containerTooltip">
                       <h1>{aumento.name}</h1>
-                      <p>{aumento.desc}</p>
+                      <p>{aumento.desc.replaceAll('<br>', '\n')}</p>
                     </div>
                   </div>
                 );
@@ -61,10 +66,12 @@ function encontrarAumento(id) {
             </div>
           )}
           {key.includes('Composiciones') && (
-            <img
+            <Image
               src={pestanas[key]}
               alt={key.split('/')[key.split('/').length - 1]}
               class="imgCompPestana"
+              loading="lazy"
+              inferSize={true}
             />
           )}
           {key === 'Gameplay' && (
@@ -74,6 +81,7 @@ function encontrarAumento(id) {
                 src={
                   pestanas[key].replace('watch?v=', 'embed/') + '?enablejsapi=1'
                 }
+                loading="lazy"
               />
             </div>
           )}
@@ -156,6 +164,8 @@ function encontrarAumento(id) {
   }
 
   .containerAumentos {
+    width: 100%;
+    box-sizing: border-box;
     display: flex;
     position: relative;
     align-items: center;
@@ -222,6 +232,11 @@ function encontrarAumento(id) {
 
   .imgCompPestana {
     width: 100%;
+    height: auto;
+    padding: 20px;
+    display: flex;
+    position: relative;
+    box-sizing: border-box;
   }
 
   .divIframe {
@@ -229,6 +244,8 @@ function encontrarAumento(id) {
     position: relative;
     aspect-ratio: 16 / 9;
     width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
   }
 
   .show {
@@ -271,6 +288,14 @@ function encontrarAumento(id) {
 
     .containerAumentos {
       margin: 5px;
+    }
+
+    .imgCompPestana {
+      padding: 5px;
+    }
+
+    .divIframe {
+      padding: 5px;
     }
   }
 </style>
