@@ -20,6 +20,7 @@ const { channel } = Astro.props;
     channel: channel,
     layout: 'video',
     autoplay: true,
+    allowfullscreen: true,
     parent: ['tft.guiadeparche.com'],
   };
   var embed = new Twitch.Embed('twitch-embed', options);
