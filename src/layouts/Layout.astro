@@ -22,8 +22,10 @@ const { title } = Astro.props;
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <script src="https://player.twitch.tv/js/embed/v1.js" type="text/javascript"
-    ></script>
+    <script
+      src="https://player.twitch.tv/js/embed/v1.js"
+      type="text/javascript"
+      is:inline></script>
     <title>{title}</title>
     <ViewTransitions />
   </head>
@@ -33,7 +35,6 @@ const { title } = Astro.props;
     <Footer />
     <Twitch channel="jupeson" />
     <Logo />
-    <Adsense />
     <style is:global>
       :root {
         --bg-primary: #130359;
