@@ -15,7 +15,6 @@ const { link, nombre } = Astro.props;
 
 <script>
   const anchor = document.querySelectorAll('.menuItem');
-  const menuActive = document.querySelector('.menuItem.active');
   anchor.forEach((menu) => {
     menu.addEventListener('click', () => {
       menu.classList.add('active');

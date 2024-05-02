@@ -88,6 +88,36 @@
       }
     },
     {
+      "titulo": "Tirotruco Kai'Sa",
+      "imgTitular": "https://guiadeparche.com/tftdata/Set11/metaComps/campeones_bordes/kaisa-tirotruco.jpg",
+      "composicion": "https://guiadeparche.com/tftdata/Set11/metaComps/composiciones/kaisa-tirotruco.png",
+      "pestañas": {
+        "Aumentos": [
+          "TFT11_Augment_Trickshot",
+          "TFT6_Augment_ForceOfNature",
+          "TFT10_Augment_LittleBuddies",
+          "TFT10_Augment_InspiringEpitaph",
+          "TFT6_Augment_JeweledLotus",
+          "TFT9_Augment_YouHaveMySword",
+          "TFT9_Augment_GreaterJeweledLotus"
+        ],
+        "Tips": [
+          "Kai'Sa's items are held by Sivir; Galio's items are held by Garen.",
+          "After Kai'sa and Galio have items, prioritize a second carry, it can be Sylas or Udyr.",
+          "Check the base statistics of the tattoos, damage tattoos give them to Kai'Sa and defensive tattoos ideally go on Udyr or Galio."
+        ],
+        "Consejos": [
+          "Los objetos de Kai'Sa los sostiene Sivir; Los objetos de Galio los sostiene Garen.",
+          "Despues de que Kai'sa y Galio tenga objetos prioriza un segundo carry puede ser Sylas o Udyr",
+          "Revisa las estadística base de los tatuajes, lo que dan daño dáselos a Kai'Sa y lo defensivos van idealmente en Udyr o Galio."
+        ],
+        "Gameplay": "https://www.youtube.com/watch?v=Le9qoevFEZA"
+      },
+      "sinergias": "Tirotruco(4) Matones(4) Inkshadow(4) Storyweaver(3) Lovers(1) Spirit Walker(1)"
+    }
+  ],
+  "A": [
+    {
       "titulo": "Fast 9 Irelia",
       "imgTitular": "https://guiadeparche.com/tftdata/Set11/metaComps/campeones_bordes/irelia-dragonlord.jpg",
       "composicion": "https://guiadeparche.com/tftdata/Set11/metaComps/composiciones/irelia-fast-9.png",
@@ -116,59 +146,32 @@
         "Gameplay": "https://www.youtube.com/watch?v=0wxRqoHL0XA"
       },
       "sinergias": "Dragonlord(3) Storyweaver(3) Sage(2) Bruiser(2) Duelista(2) Celestiales(2) Great(1) Lovers(1) Artist(1)"
-    }
-  ],
-  "A": [
-    {
-      "titulo": "Tirotruco Kai'Sa",
-      "imgTitular": "https://guiadeparche.com/tftdata/Set11/metaComps/campeones_bordes/kaisa-tirotruco.jpg",
-      "composicion": "https://guiadeparche.com/tftdata/Set11/metaComps/composiciones/kaisa-tirotruco.png",
-      "pestañas": {
-        "Aumentos": [
-          "TFT11_Augment_Trickshot",
-          "TFT6_Augment_ForceOfNature",
-          "TFT10_Augment_LittleBuddies",
-          "TFT10_Augment_InspiringEpitaph",
-          "TFT6_Augment_JeweledLotus",
-          "TFT9_Augment_YouHaveMySword",
-          "TFT9_Augment_GreaterJeweledLotus"
-        ],
-        "Tips": [
-          "Kai'Sa's items are held by Sivir; Galio's items are held by Garen.",
-          "After Kai'sa and Galio have items, prioritize a second carry, it can be Sylas or Udyr.",
-          "Check the base statistics of the tattoos, damage tattoos give them to Kai'Sa and defensive tattoos ideally go on Udyr or Galio."
-        ],
-        "Consejos": [
-          "Los objetos de Kai'Sa los sostiene Sivir; Los objetos de Galio los sostiene Garen.",
-          "Despues de que Kai'sa y Galio tenga objetos prioriza un segundo carry puede ser Sylas o Udyr",
-          "Revisa las estadística base de los tatuajes, lo que dan daño dáselos a Kai'Sa y lo defensivos van idealmente en Udyr o Galio."
-        ],
-        "Gameplay": "https://www.youtube.com/watch?v=Le9qoevFEZA"
-      },
-      "sinergias": "Tirotruco(4) Matones(4) Inkshadow(4) Storyweaver(3) Lovers(1) Spirit Walker(1)"
     },
     {
-      "titulo": "Miticos Bardo 3",
-      "composicion": "https://guiadeparche.com/tftdata/Set11/metaComps/composiciones/bardo-mitico-3.png",
-      "imgTitular": "https://guiadeparche.com/tftdata/Set11/metaComps/campeones_bordes/bardo-mitico-3.jpg",
+      "titulo": "Duelista 3 estrellas",
+      "composicion": "https://guiadeparche.com/tftdata/Set11/metaComps/composiciones/volibear-tristana-duelista-3.png",
+      "imgTitular": "https://guiadeparche.com/tftdata/Set11/metaComps/campeones_bordes/volibear-duelista-3.jpg",
       "pestañas": {
         "Aumentos": [
-          "TFT9_Augment_Legend_PumpingUp3",
+          "TFT11_Augment_TwoforOne",
+          "TFT11_Augment_Accomplice",
+          "TFT9_Augment_GargantuanResolve",
+          "TFT9_Augment_CombatCaster",
+          "TFT9_Augment_Formation1",
           "TFT9_Augment_StationarySupport1",
-          "TFT9_Augment_YouHaveMyBow",
-          "TFT9_Augment_OldMansWalkingStick"
+          "TFT7_Augment_BandOfThieves1"
         ],
         "Tips": [
-          "Play this comp when you get Bard or Tahm Kench early on neutral orbs Priority is tank items on Tahm Kench and Guinsoo's on Bard"
+          "Role at Level 7 to have 6 duelists, you must find 1 Lee Sin (if you do not have a duelist spatula) it is your greatest power peak since you gain resistances for all duelists in addition to greater speed"
         ],
         "Consejos": [
-          "Juega esta comp cuando te dan Bardo o Tahm Kench temprano en orbes de neutrales La prioridad es objetos de tanque en Tahm Kench y Guinsoo's en Bardo"
+          "Rolea en Nivel 7 para tener 6 duelistas, deberás encontrar 1 Lee Sin (sino tienes espátula de duelista) es tu mayor pico de poder ya que ganas resistencias para todos los duelistas ademas de mayor velocidad"
         ],
-        "Composiciones_Early": "https://guiadeparche.com/wp-content/uploads/2024/04/Bardo-Juego-Temprano.png",
-        "Composiciones_Mid": "https://guiadeparche.com/wp-content/uploads/2024/04/Bardo-Juego-Medio.png",
-        "Gameplay": "https://www.youtube.com/watch?v=OMNKY15GXBs"
+        "Composiciones_Early": "https://guiadeparche.com/wp-content/uploads/2024/04/Tristana-Juego-Temprano.png",
+        "Composiciones_Mid": "https://guiadeparche.com/wp-content/uploads/2024/04/Tristana-Juego-Medio.png",
+        "Gameplay": "https://www.youtube.com/watch?v=wjZY2TTP58U"
       },
-      "sinergias": "Altruista (3) Mítico(3) Storyweaver(3) Arcanista(2) Bruiser(2) Heavenly(2) Trickshot(2) Lovers(1)"
+      "sinergias": "Duelista(8) Domadragón(2) Celestial(2) Erudito(2) Excelente(1)"
     },
     {
       "titulo": "Celestial Wukong",
@@ -222,30 +225,27 @@
   ],
   "B": [
     {
-      "titulo": "Duelista 3 estrellas",
-      "composicion": "https://guiadeparche.com/tftdata/Set11/metaComps/composiciones/volibear-tristana-duelista-3.png",
-      "imgTitular": "https://guiadeparche.com/tftdata/Set11/metaComps/campeones_bordes/volibear-duelista-3.jpg",
+      "titulo": "Miticos Bardo 3",
+      "composicion": "https://guiadeparche.com/tftdata/Set11/metaComps/composiciones/bardo-mitico-3.png",
+      "imgTitular": "https://guiadeparche.com/tftdata/Set11/metaComps/campeones_bordes/bardo-mitico-3.jpg",
       "pestañas": {
         "Aumentos": [
-          "TFT11_Augment_TwoforOne",
-          "TFT11_Augment_Accomplice",
-          "TFT9_Augment_GargantuanResolve",
-          "TFT9_Augment_CombatCaster",
-          "TFT9_Augment_Formation1",
+          "TFT9_Augment_Legend_PumpingUp3",
           "TFT9_Augment_StationarySupport1",
-          "TFT7_Augment_BandOfThieves1"
+          "TFT9_Augment_YouHaveMyBow",
+          "TFT9_Augment_OldMansWalkingStick"
         ],
         "Tips": [
-          "Role at Level 7 to have 6 duelists, you must find 1 Lee Sin (if you do not have a duelist spatula) it is your greatest power peak since you gain resistances for all duelists in addition to greater speed"
+          "Play this comp when you get Bard or Tahm Kench early on neutral orbs Priority is tank items on Tahm Kench and Guinsoo's on Bard"
         ],
         "Consejos": [
-          "Rolea en Nivel 7 para tener 6 duelistas, deberás encontrar 1 Lee Sin (sino tienes espátula de duelista) es tu mayor pico de poder ya que ganas resistencias para todos los duelistas ademas de mayor velocidad"
+          "Juega esta comp cuando te dan Bardo o Tahm Kench temprano en orbes de neutrales La prioridad es objetos de tanque en Tahm Kench y Guinsoo's en Bardo"
         ],
-        "Composiciones_Early": "https://guiadeparche.com/wp-content/uploads/2024/04/Tristana-Juego-Temprano.png",
-        "Composiciones_Mid": "https://guiadeparche.com/wp-content/uploads/2024/04/Tristana-Juego-Medio.png",
-        "Gameplay": "https://www.youtube.com/watch?v=wjZY2TTP58U"
+        "Composiciones_Early": "https://guiadeparche.com/wp-content/uploads/2024/04/Bardo-Juego-Temprano.png",
+        "Composiciones_Mid": "https://guiadeparche.com/wp-content/uploads/2024/04/Bardo-Juego-Medio.png",
+        "Gameplay": "https://www.youtube.com/watch?v=OMNKY15GXBs"
       },
-      "sinergias": "Duelista(8) Domadragón(2) Celestial(2) Erudito(2) Excelente(1)"
+      "sinergias": "Altruista (3) Mítico(3) Storyweaver(3) Arcanista(2) Bruiser(2) Heavenly(2) Trickshot(2) Lovers(1)"
     },
     {
       "titulo": "Super Shen",
