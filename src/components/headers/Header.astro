@@ -24,9 +24,9 @@ const menus = [
 ];
 ---
 
-<header>
+<header transition:persist>
   <nav>
-    <div class="menuContainer" transition:persist>
+    <div class="menuContainer">
       {
         menus.map((menu) => {
           return <Menu link={menu.link} nombre={menu.nombre} />;

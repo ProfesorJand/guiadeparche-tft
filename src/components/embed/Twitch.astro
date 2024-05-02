@@ -5,13 +5,13 @@ interface Props {
 const { channel } = Astro.props;
 ---
 
-<div id="twitch-embed" data-channel={channel}></div>
+<div id="twitch-embed" data-channel={channel} transition:persist></div>
 
 <!-- Load the Twitch embed script -->
-<script src="https://embed.twitch.tv/embed/v1.js" defer></script>
+<script src="https://embed.twitch.tv/embed/v1.js" is:inline></script>
 
 <!-- Create a Twitch.Embed object that will render within the "twitch-embed" element. -->
-<script type="text/javascript" defer>
+<script type="text/javascript" defer is:inline>
   const divTwitch = document.getElementById('twitch-embed');
   const channel = divTwitch.dataset.channel;
 
@@ -24,7 +24,6 @@ const { channel } = Astro.props;
     parent: ['tft.guiadeparche.com'],
   };
   var embed = new Twitch.Embed('twitch-embed', options);
-
   embed.addEventListener(Twitch.Embed.READY, initiate);
 
   function initiate() {
