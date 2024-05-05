@@ -1,11 +1,21 @@
 ---
-import { Image } from 'astro:assets';
-const { championsTier, index } = Astro.props;
+import { getImage } from 'astro:assets';
 import ComposicionPestana from './ComposicionPestana.astro';
+const { championsTier, index } = Astro.props;
 ---
 
 {
-  championsTier.map((champTier, i) => {
+  championsTier.map(async (champTier, i) => {
+    const src = champTier.composicion;
+    const format = 'png';
+    const width = 100;
+    const height = 100;
+    const optimizedBackground = await getImage({
+      src,
+      format,
+      width,
+      height,
+    });
     return (
       <section
         class={'infoComp' + (index === 0 && i === 0 ? ' show' : '')}
@@ -19,12 +29,13 @@ import ComposicionPestana from './ComposicionPestana.astro';
           <figcaption class="sinergiasText">
             <span class="sinergiasSpan">{champTier.sinergias}</span>
           </figcaption>
-          <Image
-            src={champTier.composicion}
+          <img
+            src={optimizedBackground.src}
             alt={'Composicion Meta ' + champTier.titulo}
             class="composicionImg"
             loading="lazy"
-            inferSize={true}
+            width={optimizedBackground.options.width}
+            height={optimizedBackground.options.height}
           />
         </figure>
         <ComposicionPestana pestanas={champTier.pestañas} />
@@ -33,14 +44,16 @@ import ComposicionPestana from './ComposicionPestana.astro';
   })
 }
 
-<script>
-  const btnClose = document.querySelectorAll('.btnClose');
-  btnClose.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      btn.parentElement.classList.remove('show');
-      const alt = btn.parentElement.id.replaceAll('-', ' ');
-      const imgSelected = document.querySelector(`img[alt="${alt}"]`);
-      imgSelected.classList.remove('imgSelected');
+<script is:inline>
+  document.addEventListener('astro:page-load', () => {
+    const btnClose = document.querySelectorAll('.btnClose');
+    btnClose.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        btn.parentElement.classList.remove('show');
+        const alt = btn.parentElement.id.replaceAll('-', ' ');
+        const imgSelected = document.querySelector(`img[alt="${alt}"]`);
+        imgSelected.classList.remove('imgSelected');
+      });
     });
   });
 </script>

@@ -91,35 +91,37 @@ function encontrarAumento(id) {
   }
 </div>
 
-<script>
-  const containerPestanas =
-    document.getElementsByClassName('containerPestanas');
+<script is:inline>
+  document.addEventListener('astro:page-load', () => {
+    const containerPestanas =
+      document.getElementsByClassName('containerPestanas');
 
-  Array.prototype.forEach.call(containerPestanas, (element, index) => {
-    element.getElementsByClassName('pestanas')[0].classList.add('active');
-  });
+    Array.prototype.forEach.call(containerPestanas, (element, index) => {
+      element.getElementsByClassName('pestanas')[0].classList.add('active');
+    });
 
-  const pestanas = document.querySelectorAll('.pestanas');
-  pestanas.forEach((pestana) => {
-    pestana.addEventListener('click', () => {
-      const pestanaActive =
-        pestana.parentElement.querySelector(`.pestanas.active`);
-      pestanaActive.classList.remove('active');
-      const pestanaContainer = pestanaActive.parentElement.nextElementSibling;
+    const pestanas = document.querySelectorAll('.pestanas');
+    pestanas.forEach((pestana) => {
+      pestana.addEventListener('click', () => {
+        const pestanaActive =
+          pestana.parentElement.querySelector(`.pestanas.active`);
+        pestanaActive.classList.remove('active');
+        const pestanaContainer = pestanaActive.parentElement.nextElementSibling;
 
-      const indexPestanaDeactivate = Array.from(
-        pestanaActive.parentNode.children
-      ).indexOf(pestanaActive);
-      pestanaContainer.children[indexPestanaDeactivate].classList.remove(
-        'show'
-      );
+        const indexPestanaDeactivate = Array.from(
+          pestanaActive.parentNode.children
+        ).indexOf(pestanaActive);
+        pestanaContainer.children[indexPestanaDeactivate].classList.remove(
+          'show'
+        );
 
-      const indexPestanaActive = Array.from(
-        pestanaActive.parentNode.children
-      ).indexOf(pestana);
-      pestanaContainer.children[indexPestanaActive].classList.add('show');
+        const indexPestanaActive = Array.from(
+          pestanaActive.parentNode.children
+        ).indexOf(pestana);
+        pestanaContainer.children[indexPestanaActive].classList.add('show');
 
-      pestana.classList.add('active');
+        pestana.classList.add('active');
+      });
     });
   });
 </script>

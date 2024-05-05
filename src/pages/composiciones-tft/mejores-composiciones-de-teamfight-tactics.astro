@@ -1,10 +1,12 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import ContainerMeta from '../../components/meta-comp/ContainerMeta.astro';
+import Spinner from '../../components/spinner/Spinner.astro';
 const title = 'TFT - Meta Comp';
 ---
 
 <Layout title={title}>
+  <!-- <Spinner /> -->
   <main>
     <h1 class="titulo">Meta Comp</h1>
     <ContainerMeta />
@@ -30,6 +32,9 @@ const title = 'TFT - Meta Comp';
     align-items: center;
     margin: 0;
   }
+  .hide {
+    display: none;
+  }
 
   @media only screen and (max-width: 900px) {
     main {
@@ -37,3 +42,12 @@ const title = 'TFT - Meta Comp';
     }
   }
 </style>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    console.log('loader', document.querySelector('#loader'));
+    document.querySelector('#loader')?.classList.remove('showLoader');
+    document.querySelector('main').classList.remove('hide');
+    console.log('termino de cargarse la pagina');
+  });
+</script>

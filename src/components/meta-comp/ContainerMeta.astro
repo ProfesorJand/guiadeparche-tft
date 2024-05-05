@@ -5,7 +5,8 @@ import ContainerChampionTierList from './ContainerChampionTierList.astro';
 import InfoComp from './InfoComp.astro';
 ---
 
-<div class="containerMeta">
+
+<div id="meta" class="containerMeta" transition:persist>
   {
     Object.keys(meta).map(function (key, index) {
       return (
@@ -22,6 +23,9 @@ import InfoComp from './InfoComp.astro';
 </div>
 
 <style>
+  .hide{
+    display: none;
+  }
   .containerTier{
     display: flex;
     position: relative;

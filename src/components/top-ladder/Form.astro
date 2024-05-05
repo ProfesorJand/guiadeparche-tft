@@ -1,0 +1,49 @@
+---
+
+---
+
+<input id="invocador" type="text" value="" placeholder="Nombre de Invocador" />
+<br />
+<input id="etiqueta" type="text" placeholder="etiqueta # ej: las" />
+<br />
+<input id="registrar" type="button" value="registrar" />
+
+<script>
+  const btnRegistrar = document.getElementById('registrar');
+
+  btnRegistrar.addEventListener('click', async () => {
+    const inputInvocador = (document.getElementById('invocador') as HTMLInputElement);
+    const invocador = inputInvocador.value;
+    const inputEtiqueta = (document.getElementById('etiqueta') as HTMLInputElement);
+    const etiqueta = inputEtiqueta.value;
+    const link = `https://americas.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${invocador}/${etiqueta}?api_key=RGAPI-bc40f6f3-1e85-4c00-bed8-557d83ced5c1`;
+    // let headers = new Headers();
+    // headers.append(
+    //   'User-Agent',
+    //   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'
+    // );
+    // headers.append('Access-Control-Allow-Origin', 'http://localhost:4321');
+    // headers.append('Accept-Language', 'es-419,es;q=0.9');
+    // headers.append(
+    //   'Accept-Charset',
+    //   'application/x-www-form-urlencoded; charset=UTF-8'
+    // );
+    // headers.append('GET', 'POST', 'OPTIONS');
+    // const response = await fetch(link, {
+    //   headers: headers,
+    // });
+    // const results = await response.json();
+    // console.log(results);
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        // Typical action to be performed when the document is ready:
+        var myArr = JSON.parse(this.responseText);
+        console.log(myArr);
+      }
+    };
+    xhttp.open('GET', link, true);
+    xhttp.send();
+  });
+</script>
