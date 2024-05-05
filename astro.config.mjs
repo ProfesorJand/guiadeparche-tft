@@ -6,14 +6,14 @@ import node from '@astrojs/node';
 export default defineConfig({
   site: 'https://tft.guiadeparche.com',
   // site: 'https://profesorjand.github.io'
-  image: {
-    domains: ['astro.build'],
-  },
+  // image: {
+  //   domains: ['astro.build'],
+  // },
   redirects: {
     '/': '/composiciones-tft/mejores-composiciones-de-teamfight-tactics/',
   },
-  output: 'server',
-  adapter: node({
-    mode: 'standalone',
-  }),
+  // output: 'server',
+  // adapter: node({
+  //   mode: 'standalone',
+  // }),
 });
