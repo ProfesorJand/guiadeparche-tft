@@ -45,7 +45,8 @@ export default async function seed() {
     // console.log("creado")
     await db.update(Usuario)
     .set({ invocador: "INF HR Jupeson", plataforma: "la1", etiqueta:"lan", puuid: "vUvf2p8icyGAkBigkVh8oh-CTcGnn-0521Dj66vP-hS7YXr9md2IaaoboawAIUKgmqZVsGSWToR_Bw", id:"CkOkraupZ7cDU_RSY8dUbxbN5yCYHrsKy3764dIf9a6hQ-A" })
-    .where(eq(Usuario.invocador, 'jupeson')).returning();
+    .where(eq(Usuario.invocador, 'jupeson'));
+    console.log("seed")
     await db.update(Usuario)
     .set({ tier:"gold"})
     .where(eq(Usuario.invocador, 'rapperboy'));
