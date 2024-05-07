@@ -1,9 +1,43 @@
 ---
 import { db, Usuario, asc, desc } from 'astro:db';
+import { updateUsersScores } from '../../db/index.js';
 const filtro = Astro.url.searchParams.get('filter');
 const orden = Astro.url.searchParams.get('order');
+let update = Astro.url.searchParams.get('update');
 
-const opcionesOrder = ({ filtro = 'puntaje', orden = 'desc' }) => {
+const d = new Date();
+let time = d.getTime();
+
+const usuarios = await db
+  .select()
+  .from(Usuario)
+  .orderBy(opcionesOrder({ filtro, orden }));
+
+console.log('update', update);
+console.log('time', time);
+if (update && Number(update) < time) {
+  console.log(Number(update) < time);
+  try {
+    usuarios.forEach((usuario) => {
+      updateUsersScores({
+        summonerId: usuario.id,
+        plataforma: usuario.plataforma,
+      });
+    });
+  } catch (error) {
+    console.log(error);
+  }
+  console.log('actualizo');
+}
+
+function opcionesOrder({ filtro = 'puntaje', orden = 'desc' }) {
+  const variables = ['asc', 'desc', 'puntaje', 'region', 'invocador'];
+  if (
+    !variables.includes(filtro?.toLowerCase()) &&
+    !variables.includes(orden?.toLowerCase())
+  ) {
+    return desc(Usuario.puntaje);
+  }
   const order = {
     asc: {
       puntaje: asc(Usuario.puntaje),
@@ -16,18 +50,8 @@ const opcionesOrder = ({ filtro = 'puntaje', orden = 'desc' }) => {
       invocador: desc(Usuario.invocador),
     },
   };
-  if (filtro === null) {
-    return desc(Usuario.puntaje);
-  }
-  return order[orden][filtro];
-};
-
-const usuarios = await db
-  .select()
-  .from(Usuario)
-  .orderBy(opcionesOrder({ filtro, orden }));
-
-console.log(usuarios);
+  return order[orden?.toLowerCase()][filtro];
+}
 
 const URL = {
   profileIcon:
@@ -44,6 +68,8 @@ const PLATAFORMAS = {
   la2: 'LAS',
 };
 ---
+
+<button id="btnActualizar" class="actualizar"> update </button>
 
 <table>
   <thead>
@@ -127,3 +153,17 @@ const PLATAFORMAS = {
     width: 40%;
   }
 </style>
+
+<script>
+  import { navigate } from 'astro:transitions/client';
+  const isDev = import.meta.env.DEV;
+  const btnActualizar = document.querySelector('#btnActualizar');
+  btnActualizar.addEventListener('click', () => {
+    alert('click');
+    const d = new Date();
+    let time = d.getTime();
+    navigate(
+      `${isDev ? 'http' : 'https'}://${isDev ? 'localhost:4321' : 'tft.guiadeparche.com'}/top-ladder/?filter=puntaje&order=desc&update=${time}`
+    );
+  });
+</script>

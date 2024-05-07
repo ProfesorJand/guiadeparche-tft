@@ -46,8 +46,3 @@ export const getRank = async ({ summonerId, plataforma }) => {
   console.log(result);
   return result;
 };
-
-/*
-
-
-*/

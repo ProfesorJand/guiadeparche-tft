@@ -18,6 +18,7 @@ const Usuario = defineTable({
     plataforma: column.text(),
     profileIconId: column.number(),
     tier: column.text(),
+    rank: column.text(),
     leaguePoints: column.number(),
     puntaje: column.number(),
     eventoId: column.number({optional:true}),
@@ -26,7 +27,7 @@ const Usuario = defineTable({
   },
   indexes: [
     { on: ["invocador", "etiqueta"], unique: true },
-  ]
+  ],
   // foreignKeys: [
   //   {
   //     columns: ["eventoId", "eventoNombre"],
