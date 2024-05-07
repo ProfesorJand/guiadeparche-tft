@@ -1,6 +1,7 @@
 ---
 import SubMenus from './SubMenus.astro';
-
+const currentPath = Astro.url.pathname;
+console.log(currentPath);
 interface Props {
   nombre: string;
   link: string;
@@ -9,22 +10,13 @@ interface Props {
 const { link, nombre } = Astro.props;
 ---
 
-<a class="menuItem" href={link} target="_self" data-astro-history="auto">
+<a
+  class:list={['menuItem', currentPath === link ? 'active' : '']}
+  href={link}
+  target="_self"
+>
   {nombre}
 </a>
-
-<script>
-  const anchor = document.querySelectorAll('.menuItem');
-  anchor.forEach((menu) => {
-    menu.addEventListener('click', () => {
-      menu.classList.add('active');
-
-      // if (menuActive) {
-      //   menuActive.classList.remove('active');
-      // }
-    });
-  });
-</script>
 
 <style>
   .menuItem {
@@ -43,6 +35,7 @@ const { link, nombre } = Astro.props;
   }
 
   .active {
+    border-color: var(--border-color);
     border-bottom-color: transparent;
     background-color: var(--bg-tertiary);
   }

@@ -26,10 +26,10 @@ const { title } = Astro.props;
     <ViewTransitions />
   </head>
   <body>
-    <Header />
+    <Header transition:persist />
     <slot />
     <Footer />
-    <Twitch channel="xqc" />
+    <Twitch channel="jupeson" />
     <Logo />
     <Adsense />
     <style is:global>
@@ -87,6 +87,33 @@ const { title } = Astro.props;
           Bitstream Vera Sans Mono,
           Courier New,
           monospace;
+      }
+      main {
+        margin: auto;
+        padding: 1rem;
+        width: 50%;
+        max-width: calc(100% - 2rem);
+        color: white;
+        font-size: 20px;
+        line-height: 1.6;
+        background-color: var(--bg-tertiary);
+        box-sizing: border-box;
+      }
+
+      .titulo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+      }
+      .hide {
+        display: none;
+      }
+
+      @media only screen and (max-width: 900px) {
+        main {
+          width: 100%;
+        }
       }
 
       @media only screen and (max-width: 900px) {

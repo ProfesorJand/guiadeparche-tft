@@ -1,6 +1,7 @@
 import { defineConfig } from 'astro/config';
-
 import node from '@astrojs/node';
+
+import db from "@astrojs/db";
 
 // https://astro.build/config
 export default defineConfig({
@@ -10,10 +11,12 @@ export default defineConfig({
   //   domains: ['astro.build'],
   // },
   redirects: {
-    '/': '/composiciones-tft/mejores-composiciones-de-teamfight-tactics/',
+    '/': '/composiciones-tft/mejores-composiciones-de-teamfight-tactics/'
   },
-  // output: 'server',
+  output: 'server'
   // adapter: node({
   //   mode: 'standalone',
   // }),
+  ,
+  integrations: [db()]
 });
