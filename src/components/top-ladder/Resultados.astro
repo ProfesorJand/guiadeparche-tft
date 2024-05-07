@@ -1,0 +1,129 @@
+---
+import { db, Usuario, asc, desc } from 'astro:db';
+const filtro = Astro.url.searchParams.get('filter');
+const orden = Astro.url.searchParams.get('order');
+
+const opcionesOrder = ({ filtro = 'puntaje', orden = 'desc' }) => {
+  const order = {
+    asc: {
+      puntaje: asc(Usuario.puntaje),
+      region: asc(Usuario.region),
+      invocador: asc(Usuario.invocador),
+    },
+    desc: {
+      puntaje: desc(Usuario.puntaje),
+      region: desc(Usuario.region),
+      invocador: desc(Usuario.invocador),
+    },
+  };
+  if (filtro === null) {
+    return desc(Usuario.puntaje);
+  }
+  return order[orden][filtro];
+};
+
+const usuarios = await db
+  .select()
+  .from(Usuario)
+  .orderBy(opcionesOrder({ filtro, orden }));
+
+console.log(usuarios);
+
+const URL = {
+  profileIcon:
+    'https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/',
+  tierIcon:
+    'https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-shared-components/global/default/',
+  miniTierIcon:
+    'https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/images/ranked-mini-crests/',
+};
+
+/* Añadir todas las plataformas*/
+const PLATAFORMAS = {
+  la1: 'LAN',
+  la2: 'LAS',
+};
+---
+
+<table>
+  <thead>
+    <tr>
+      <th>#LADDER</th>
+      <th>ICONO</th>
+      <th class="tablaInvocador">INVOCADOR</th>
+      <th>REGION</th>
+      <th>TIER</th>
+      <th>PUNTOS</th>
+    </tr>
+  </thead>
+  <tbody>
+    {
+      usuarios.map(
+        ({
+          tier,
+          etiqueta,
+          eventoNombre,
+          invocador,
+          eliminado,
+          leaguePoints,
+          profileIconId,
+          plataforma,
+          puntaje,
+        }) => {
+          return (
+            <tr>
+              <td>{puntaje} </td>
+              <td>
+                <img
+                  src={URL.profileIcon + profileIconId + '.jpg'}
+                  alt={'RIOT profile icon'}
+                  height="50"
+                  width="50"
+                />
+              </td>
+              <td>{invocador + '#' + etiqueta}</td>
+              <td>{PLATAFORMAS[plataforma]}</td>
+              <td>
+                <img
+                  src={URL.tierIcon + tier.toLowerCase() + '.png'}
+                  alt={'RIOT tier icon'}
+                  height="50"
+                  width="50"
+                />
+              </td>
+              <td>{leaguePoints}</td>
+            </tr>
+          );
+        }
+      )
+    }
+  </tbody>
+</table>
+
+<style>
+  table {
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  th {
+    text-align: center;
+  }
+  td {
+    text-align: center;
+  }
+
+  tr:hover {
+    background-color: var(--bg-secondary);
+  }
+
+  table,
+  th,
+  td {
+    border: 1px solid;
+  }
+
+  .tablaInvocador {
+    width: 40%;
+  }
+</style>

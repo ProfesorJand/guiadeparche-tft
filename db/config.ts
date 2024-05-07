@@ -19,10 +19,14 @@ const Usuario = defineTable({
     profileIconId: column.number(),
     tier: column.text(),
     leaguePoints: column.number(),
+    puntaje: column.number(),
     eventoId: column.number({optional:true}),
     eventoNombre: column.text({optional:true}),
-    eliminado: column.boolean({optional:true}),
+    eliminado: column.boolean({optional:true})
   },
+  indexes: [
+    { on: ["invocador", "etiqueta"], unique: true },
+  ]
   // foreignKeys: [
   //   {
   //     columns: ["eventoId", "eventoNombre"],
@@ -33,5 +37,5 @@ const Usuario = defineTable({
 
 // https://astro.build/db/config
 export default defineDb({
-  tables: {Usuario}
+  tables: {Usuario, Evento}
 });
