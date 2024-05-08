@@ -4,9 +4,19 @@ import { db, Usuario, eq, isDbError} from 'astro:db';
 // https://astro.build/db/seed
 export default async function seed() {
 	// TODO
+  // const all = await db.select().from(Usuario);
+  // const jupe = await db.update(Usuario)
+  // .set({ tier:"gold"})
+  // .where(eq(Usuario.puuid, "vUvf2p8icyGAkBigkVh8oh-CTcGnn-0521Dj66vP-hS7YXr9md2IaaoboawAIUKgmqZVsGSWToR_Bw" )).returning({ invocador: Usuario.invocador });
+  // console.log("jupe", jupe)
+  // const rapper = await db.update(Usuario)
+  // .set({ tier:"gold"})
+  // .where(eq(Usuario.invocador, 'rapperboy')).returning({ invocador: Usuario.invocador });
+  // console.log("rapper", rapper)
+  // console.log("All", all)
   try {
-    // await db.delete(Usuario);
-    // console.log("delete", await db.select().from(Usuario))
+    await db.delete(Usuario);
+    console.log("delete", await db.select().from(Usuario))
 
     // const crear = await db.insert(Usuario).values([
     //   {
@@ -26,12 +36,12 @@ export default async function seed() {
     //     eliminado: false
     //   },
     //   {
-    //     puuid: "wG4u8l56ElSkeKMdxK0Xk1eYiX9bFRaYmVytfVfr_RazwpBDh59w0zfJ5qd5SbPZ2v6Avzbi26o4oQ",
-    //     invocador: "jupeson",
-    //     etiqueta: "las",
-    //     id: "3SFBkhu-jC8o5oyRgBkYrBsiScWU5sihdglhnCvtO6WR5w",
+    //     puuid: "vUvf2p8icyGAkBigkVh8oh-CTcGnn-0521Dj66vP-hS7YXr9md2IaaoboawAIUKgmqZVsGSWToR_Bw",
+    //     invocador: "inf hr jupeson",
+    //     etiqueta: "lan",
+    //     id: "CkOkraupZ7cDU_RSY8dUbxbN5yCYHrsKy3764dIf9a6hQ-A",
     //     region: "americas",
-    //     plataforma: "la2",
+    //     plataforma: "la1",
     //     profileIconId: 6092,
     //     tier: "silver",
     //     rank: "I",
@@ -42,14 +52,8 @@ export default async function seed() {
     //     eliminado: false,
     // }
     // ])
-    // console.log("creado")
-    await db.update(Usuario)
-    .set({ invocador: "INF HR Jupeson", plataforma: "la1", etiqueta:"lan", puuid: "vUvf2p8icyGAkBigkVh8oh-CTcGnn-0521Dj66vP-hS7YXr9md2IaaoboawAIUKgmqZVsGSWToR_Bw", id:"CkOkraupZ7cDU_RSY8dUbxbN5yCYHrsKy3764dIf9a6hQ-A" })
-    .where(eq(Usuario.invocador, 'jupeson'));
-    console.log("seed")
-    await db.update(Usuario)
-    .set({ tier:"gold"})
-    .where(eq(Usuario.invocador, 'rapperboy'));
+    // console.log("creado", crear)
+    
   
   } catch (e) {
     if (isDbError(e)) {

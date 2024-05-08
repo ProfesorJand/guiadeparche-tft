@@ -20,7 +20,7 @@ const Usuario = defineTable({
     tier: column.text(),
     rank: column.text(),
     leaguePoints: column.number(),
-    puntaje: column.number(),
+    puntaje: column.number({optional:true}),
     eventoId: column.number({optional:true}),
     eventoNombre: column.text({optional:true}),
     eliminado: column.boolean({optional:true})
