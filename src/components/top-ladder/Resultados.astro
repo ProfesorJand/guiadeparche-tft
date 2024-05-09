@@ -15,7 +15,7 @@ const usuarios = await db
              FROM Usuario AS u 
              WHERE 
                 CASE
-                    WHEN u.puntaje = Usuario.puntaje THEN u.leaguePoints < Usuario.leaguePoints
+                    WHEN u.puntaje > Usuario.puntaje THEN u.leaguePoints < Usuario.leaguePoints
                 END
             ) AS ladder`,
     tier: Usuario.tier,
