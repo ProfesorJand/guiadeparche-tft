@@ -12,16 +12,10 @@ let time = d.getTime();
 const usuarios = await db
   .select({
     ladder: sql`(SELECT COUNT(*) + 1 
-             FROM usuarios AS u 
+             FROM Usuario AS u 
              WHERE 
                 CASE
-                    WHEN u.rango = usuarios.rango THEN u.nivel < usuarios.nivel
-                    ELSE 
-                        CASE
-                            WHEN u.rango = 'capitan' THEN usuarios.rango IN ('teniente', 'cabo')
-                            WHEN u.rango = 'teniente' THEN usuarios.rango = 'cabo'
-                            ELSE FALSE
-                        END
+                    WHEN u.puntaje = Usuario.puntaje THEN u.leaguePoints < Usuario.leaguePoints
                 END
             ) AS ladder`,
     tier: Usuario.tier,
