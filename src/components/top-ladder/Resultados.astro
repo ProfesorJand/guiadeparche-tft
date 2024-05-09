@@ -1,6 +1,7 @@
 ---
 import { db, Usuario, asc, desc } from 'astro:db';
 import { updateUsersScores } from '../../db/index.js';
+import { sql } from 'astro:db';
 const filtro = Astro.url.searchParams.get('filter');
 const orden = Astro.url.searchParams.get('order');
 let update = Astro.url.searchParams.get('update');
@@ -9,7 +10,31 @@ const d = new Date();
 let time = d.getTime();
 
 const usuarios = await db
-  .select()
+  .select({
+    ladder: sql`(SELECT COUNT(*) + 1 
+             FROM usuarios AS u 
+             WHERE 
+                CASE
+                    WHEN u.rango = usuarios.rango THEN u.nivel < usuarios.nivel
+                    ELSE 
+                        CASE
+                            WHEN u.rango = 'capitan' THEN usuarios.rango IN ('teniente', 'cabo')
+                            WHEN u.rango = 'teniente' THEN usuarios.rango = 'cabo'
+                            ELSE FALSE
+                        END
+                END
+            ) AS ladder`,
+    tier: Usuario.tier,
+    etiqueta: Usuario.etiqueta,
+    invocador: Usuario.invocador,
+    eliminado: Usuario.eliminado,
+    eventoNombre: Usuario.eventoNombre,
+    leaguePoints: Usuario.leaguePoints,
+    profileIconId: Usuario.profileIconId,
+    plataforma: Usuario.plataforma,
+    puntaje: Usuario.puntaje,
+    id: Usuario.id,
+  })
   .from(Usuario)
   .orderBy(opcionesOrder({ filtro, orden }));
 
@@ -36,11 +61,11 @@ function opcionesOrder({ filtro = 'puntaje', orden = 'desc' }) {
     !variables.includes(filtro?.toLowerCase()) &&
     !variables.includes(orden?.toLowerCase())
   ) {
-    return desc(Usuario.puntaje);
+    return desc(Usuario.puntaje), asc(Usuario.leaguePoints);
   }
   const order = {
     asc: {
-      puntaje: asc(Usuario.puntaje),
+      puntaje: (asc(Usuario.puntaje), desc(Usuario.leaguePoints)),
       region: asc(Usuario.region),
       invocador: asc(Usuario.invocador),
     },
@@ -66,6 +91,20 @@ const URL = {
 const PLATAFORMAS = {
   la1: 'LAN',
   la2: 'LAS',
+  euw1: 'EUW',
+  br1: 'BR',
+  eun1: 'EUN',
+  jp1: 'JP',
+  kr: 'KR',
+  na1: 'NA',
+  oc1: 'OC',
+  tr1: 'TR',
+  ru: 'RU',
+  ph2: 'PH',
+  sg2: 'SG',
+  th2: 'TH',
+  tw2: 'TW',
+  vn2: 'VN',
 };
 ---
 
@@ -95,10 +134,11 @@ const PLATAFORMAS = {
           profileIconId,
           plataforma,
           puntaje,
+          ladder,
         }) => {
           return (
             <tr>
-              <td>{puntaje} </td>
+              <td>{ladder} </td>
               <td>
                 <img
                   src={URL.profileIcon + profileIconId + '.jpg'}

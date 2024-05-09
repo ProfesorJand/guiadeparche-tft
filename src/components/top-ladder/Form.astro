@@ -1,67 +1,147 @@
 ---
+import { db, Usuario } from 'astro:db';
+import {
+  getPUUID,
+  getAccountInfo,
+  getRank,
+  getPuntaje,
+} from '../../riotApi/account.ts';
 
+if (Astro.request.method === 'POST') {
+  // parse form data
+  const formData = await Astro.request.formData();
+
+  var invocador = formData.get('invocador').toString();
+  var etiqueta = formData.get('etiqueta').toString();
+  const region = formData.get('region').toString();
+  const plataforma = formData.get('plataforma').toString();
+
+  const { puuid, gameName, tagLine } = await getPUUID({
+    region,
+    invocador,
+    etiqueta,
+  });
+
+  if (puuid) {
+    try {
+      const { id, profileIconId } = await getAccountInfo({ plataforma, puuid });
+
+      const rangos = await getRank({
+        summonerId: id,
+        plataforma,
+      });
+      const { tier, rank, leaguePoints } = rangos.find((r) => {
+        return r.queueType === 'RANKED_TFT';
+      }) || {
+        tier: 'UNRANKED',
+        rank: 'UNRANKED',
+        leaguePoints: 0,
+      };
+      invocador = gameName;
+      etiqueta = tagLine;
+      console.log([tier.toUpperCase()], [rank.toUpperCase()]);
+      const puntaje = getPuntaje[tier.toUpperCase()][rank.toUpperCase()];
+      await db.insert(Usuario).values({
+        puuid,
+        invocador,
+        etiqueta,
+        id,
+        region,
+        plataforma,
+        tier,
+        rank,
+        leaguePoints,
+        profileIconId,
+        puntaje,
+      });
+    } catch (error) {
+      console.log('error en Form.astro al insertar nuevo valor', error.message);
+    }
+  }
+}
+
+// render the new list of comments on each request
+// const comments = await db.select().from(Usuario);
 ---
-<label>Nombre de Invocador:
-  <br />
-<input id="invocador" type="text" value="" placeholder="Nombre de Invocador" />
-</label>
-<br />
-<label >Etiqueta:
-  <br />
-<input id="etiqueta" type="text" placeholder="etiqueta # ej: las" />
-</label>
-<br />
 
-<label >Seleccionar Region:
+<form method="POST" style="display:grid">
+  <label
+    >Nombre de Invocador:
+    <br />
+    <input
+      id="invocador"
+      name="invocador"
+      type="text"
+      value=""
+      placeholder="Nombre de Invocador"
+    />
+  </label>
   <br />
-<select id="region" >
-    <option value="americas">AMERICAS</option>
-    <option value="europe">EUROPE</option>
-    <option value="asia">ASIA</option>
-    <option value="sea">SEA</option>
-    <option value="esports">ESPORTS</option>
-  </select>
-</label>
-<br />
-<label >Seleccionar Plataforma:
+  <label
+    >Etiqueta:
+    <br />
+    <input
+      id="etiqueta"
+      name="etiqueta"
+      type="text"
+      placeholder="etiqueta # ej: las"
+    />
+  </label>
   <br />
-<select id="plataforma" >
-    <option value="la1">LAN</option>
-    <option value="la2">LAS</option>
-    <option value="br1">BR</option>
-    <option value="na1">NA</option>
-    <option value="euw1">EUW</option>
-    <option value="eun1">EUN</option>
-    <option value="jp1">JP</option>
-    <option value="kr">KR</option>
-    <option value="oc1">OC</option>
-    <option value="tr1">TR</option>
-    <option value="ru">RU</option>
-    <option value="ph2">PH</option>
-    <option value="sg2">SG</option>
-    <option value="tw2">TW</option>
-    <option value="vn2">VN</option>
-  </select>
-</label>
-<input id="registrar" type="button" value="registrar" />
-<br />
+
+  <label
+    >Seleccionar Region:
+    <br />
+    <select id="region" name="region">
+      <option value="americas">AMERICAS</option>
+      <option value="europe">EUROPE</option>
+      <option value="asia">ASIA</option>
+      <option value="sea">SEA</option>
+      <option value="esports">ESPORTS</option>
+    </select>
+  </label>
+  <br />
+  <label
+    >Seleccionar Plataforma:
+    <br />
+    <select id="plataforma" name="plataforma">
+      <option value="la1">LAN</option>
+      <option value="la2">LAS</option>
+      <option value="br1">BR</option>
+      <option value="na1">NA</option>
+      <option value="euw1">EUW</option>
+      <option value="eun1">EUN</option>
+      <option value="jp1">JP</option>
+      <option value="kr">KR</option>
+      <option value="oc1">OC</option>
+      <option value="tr1">TR</option>
+      <option value="ru">RU</option>
+      <option value="ph2">PH</option>
+      <option value="sg2">SG</option>
+      <option value="tw2">TW</option>
+      <option value="vn2">VN</option>
+    </select>
+  </label>
+  <input id="registrar" type="submit" value="registrar" />
+  <br />
+</form>
 
 <script>
-import { navigate } from "astro:transitions/client";
+  // import { navigate } from "astro:transitions/client";
 
-  const btnRegistrar = document.getElementById('registrar');
+  //   const btnRegistrar = document.getElementById('registrar');
 
-  btnRegistrar.addEventListener('click', async () => {
-    const inputInvocador = (document.getElementById('invocador') as HTMLInputElement);
-    const invocador = inputInvocador.value;
-    const inputEtiqueta = (document.getElementById('etiqueta') as HTMLInputElement);
-    const etiqueta = inputEtiqueta.value;
-    const inputRegion = (document.getElementById("region") as HTMLInputElement);
-    const region= inputRegion.value;
-    const inputPlataforma = (document.getElementById("plataforma") as HTMLInputElement);
-    const plataforma = inputPlataforma.value
-  
-    navigate(`https://tft.guiadeparche.com/top-ladder/${invocador}?region=${region}&plataforma=${plataforma}&etiqueta=${etiqueta}`)
+  //   btnRegistrar.addEventListener('click', async () => {
+  //     const inputInvocador = (document.getElementById('invocador') as HTMLInputElement);
+  //     const invocador = inputInvocador.value;
+  //     const inputEtiqueta = (document.getElementById('etiqueta') as HTMLInputElement);
+  //     const etiqueta = inputEtiqueta.value;
+  //     const inputRegion = (document.getElementById("region") as HTMLInputElement);
+  //     const region= inputRegion.value;
+  //     const inputPlataforma = (document.getElementById("plataforma") as HTMLInputElement);
+  //     const plataforma = inputPlataforma.value
 
-  });
+  //     navigate(`https://tft.guiadeparche.com/top-ladder/${invocador}?region=${region}&plataforma=${plataforma}&etiqueta=${etiqueta}`)
+
+  //   });
 </script>
