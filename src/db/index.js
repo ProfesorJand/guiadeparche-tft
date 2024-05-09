@@ -1,17 +1,28 @@
-import { db, Usuario, eq } from 'astro:db';
-import { getRank } from '../riotApi/account';
+import { db, Usuario, eq, or } from 'astro:db';
+import { getRank, getPuntaje } from '../riotApi/account.ts';
 
 export const updateUsersScores = async ({ summonerId, plataforma }) => {
   try {
-    const [{ tier, rank, leaguePoints, puuid }] = await getRank({
+    const rangos = await getRank({
       summonerId,
       plataforma,
     });
+
+    const { tier, rank, leaguePoints, puuid } = rangos.find((r) => {
+      return r.queueType === 'RANKED_TFT';
+    }) || {
+      tier: 'UNRANKED',
+      rank: 'UNRANKED',
+      leaguePoints: 0,
+    };
+    console.log(tier, rank);
+    const puntaje = getPuntaje[tier.toUpperCase()][rank.toUpperCase()];
+    console.log(puntaje);
     const userUpdate = await db
       .update(Usuario)
-      .set({ tier, rank, leaguePoints })
-      .where(eq(Usuario.puuid, puuid))
-      .returning({ updatedId: Usuario.puuid });
+      .set({ tier, rank, leaguePoints, puntaje })
+      .where(or(eq(Usuario.puuid, puuid), eq(Usuario.id, summonerId)))
+      .returning({ invocador: Usuario.invocador, puntaje: Usuario.puntaje });
     console.log(userUpdate);
   } catch (error) {
     console.log(error);

@@ -15,8 +15,8 @@ export default async function seed() {
   // console.log("rapper", rapper)
   // console.log("All", all)
   try {
-    await db.delete(Usuario);
-    console.log("delete", await db.select().from(Usuario))
+    // await db.delete(Usuario);
+    // console.log("delete", await db.select().from(Usuario))
 
     // const crear = await db.insert(Usuario).values([
     //   {
