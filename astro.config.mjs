@@ -1,4 +1,4 @@
-import { defineConfig } from 'astro/config';
+import { defineConfig, squooshImageService } from 'astro/config';
 import node from '@astrojs/node';
 import db from "@astrojs/db";
 
@@ -18,6 +18,7 @@ export default defineConfig({
   }),
   image: {
     // remotePatterns: [{ protocol: "https" }],
+    service: squooshImageService(),
     domains: ['astro.build'],
   },
 
