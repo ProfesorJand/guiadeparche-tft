@@ -8,9 +8,6 @@ import react from "@astrojs/react";
 export default defineConfig({
   site: 'https://tft.guiadeparche.com',
   //site: 'https://profesorjand.github.io',
-  // image: {
-  //   domains: ['astro.build'],
-  // },
   redirects: {
     '/': '/composiciones-tft/mejores-composiciones-de-teamfight-tactics/'
   },
@@ -20,6 +17,7 @@ export default defineConfig({
   }),
   image: {
     remotePatterns: [{ protocol: "https" }],
+    domains: ['astro.build'],
   },
 
   integrations: [db(), react()]
