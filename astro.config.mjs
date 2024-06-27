@@ -11,14 +11,14 @@ export default defineConfig({
   redirects: {
     '/': '/composiciones-tft/mejores-composiciones-de-teamfight-tactics/'
   },
-  output: 'server',
-  adapter: node({
-    mode: 'standalone',
-  }),
+  // output: 'server',
+  // adapter: node({
+  //   mode: 'standalone',
+  // }),
   image: {
-    remotePatterns: [{ protocol: "https" }],
+    // remotePatterns: [{ protocol: "https" }],
     domains: ['astro.build'],
   },
 
-  integrations: [db(), react()]
+  // integrations: [db(), react()]
 });
