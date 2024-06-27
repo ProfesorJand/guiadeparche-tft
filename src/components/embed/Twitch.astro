@@ -13,7 +13,7 @@
 <!-- Create a Twitch.Embed object that will render within the "twitch-embed" element. -->
 <script type="text/javascript" >
    document.addEventListener('astro:page-load', () => {
-    var divTwitch = document.getElementById('twitch-embed');
+    const divTwitch = document.getElementById('twitch-embed');
     //var channel = divTwitch.dataset.channel;
     var embed;
     var options = {
@@ -37,8 +37,8 @@
     }
 
     function handleOnline() {
-      document.getElementById('twitch-embed').classList.remove('hide');
-      document.getElementById('twitch-embed').classList.add('show');
+      divTwitch.classList.remove('hide');
+      divTwitch.classList.add('show');
       embed.removeEventListener(Twitch.Embed.ONLINE, handleOnline);
       embed.addEventListener(Twitch.Embed.OFFLINE, handleOffline);
       embed.setMuted(false);
@@ -46,8 +46,8 @@
 
     function handleOffline() {
       checkAnotherStreamer();
-      document.getElementById('twitch-embed').classList.add('hide');
-      document.getElementById('twitch-embed').classList.remove('show');
+      divTwitch.classList.add('hide');
+      divTwitch.classList.remove('show');
       embed.removeEventListener(Twitch.Embed.OFFLINE, handleOffline);
       embed.addEventListener(Twitch.Embed.ONLINE, handleOnline);
       embed.setMuted(true);
