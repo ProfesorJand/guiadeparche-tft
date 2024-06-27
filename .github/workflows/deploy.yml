@@ -1,6 +1,7 @@
 name: Deploy to GitHub Pages
 
 env:
+  ASTRO_STUDIO_APP_TOKEN: ${{secrets.ASTRO_STUDIO_APP_TOKEN }}
   API_KEY: ${{secrets.API_KEY }}
   API_KEY_GOOGLE: ${{secrets.API_KEY_GOOGLE }}
   ID_CLIENTE_GOOGLE_API: ${{secrets.ID_CLIENTE_GOOGLE_API }}
