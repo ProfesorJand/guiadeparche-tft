@@ -1,24 +1,24 @@
 ---
-interface Props {
-  channel: string;
-}
-const { channel } = Astro.props;
+// interface Props {
+//   channel: string;
+// }
+// const { channel } = Astro.props;
 ---
 
 <div id="twitch-embed" data-channel={channel} ></div>
 
 <!-- Load the Twitch embed script -->
-<script src="https://embed.twitch.tv/embed/v1.js" is:inline data-astro-rerun></script>
+<script src="https://embed.twitch.tv/embed/v1.js" data-astro-rerun></script>
 
 <!-- Create a Twitch.Embed object that will render within the "twitch-embed" element. -->
-<script type="text/javascript" is:inline data-astro-rerun>
-  // document.addEventListener('astro:page-load', () => {
+<script type="text/javascript" >
+   document.addEventListener('astro:page-load', () => {
     var divTwitch = document.getElementById('twitch-embed');
-    var channel = divTwitch.dataset.channel;
+    //var channel = divTwitch.dataset.channel;
     var embed;
     var options = {
       width: '100%',
-      channel: "jupeson", // cambiar el string a la variable -> channel
+      channel: "revenant", // cambiar el string a la variable -> channel
       layout: 'video',
       autoplay: true,
       allowfullscreen: true,
@@ -62,20 +62,7 @@ const { channel } = Astro.props;
       embed.addEventListener(Twitch.Embed.ONLINE, handleOnline);
       embed.setMuted(true);
     }
-
-    /*
-    
-  var options = {
-    width: 300,
-    height: 196,
-    channel: "relic_lol",
-};
-  var player = new Twitch.Player("SamplePlayerDivID", options);
-  player.setVolume(0.02);
-  player.setQuality("360p30");
-    */
-
-  // });
+  })
 </script>
 
 <style>
