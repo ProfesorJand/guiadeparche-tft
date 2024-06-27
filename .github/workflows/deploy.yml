@@ -1,8 +1,5 @@
 name: Deploy to GitHub Pages
 
-env:
-  ASTRO_STUDIO_APP_TOKEN: ${{secrets.ASTRO_STUDIO_APP_TOKEN }}
-
 on:
   push:
     branches: [ main ]
@@ -27,6 +24,9 @@ jobs:
         uses: withastro/action@v2
         env:
           ASTRO_STUDIO_APP_TOKEN: ${{ secrets.ASTRO_STUDIO_APP_TOKEN }}
+        with:
+          node-version: 20
+          package-manager: npm
 
   deploy:
     needs: build
