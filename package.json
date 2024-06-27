@@ -1,8 +1,9 @@
 {
-  "name": "",
+  "name": "tft-guiadeparche",
   "type": "module",
   "version": "0.0.1",
   "proxy": "https://localhost:4321",
+  "author": "Jorge Andrade profesorjand@gmail.com",
   "scripts": {
     "dev": "astro dev --remote",
     "start": "astro dev",
