@@ -20,5 +20,5 @@ export default defineConfig({
     domains: ['astro.build'],
   },
 
-  // integrations: [db(), react()]
+  integrations: [db(), react()]
 });
