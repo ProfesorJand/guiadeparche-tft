@@ -1,17 +1,20 @@
 name: Deploy to GitHub Pages
 
-on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
-
 env:
   ASTRO_STUDIO_APP_TOKEN: ${{ secrets.ASTRO_STUDIO_APP_TOKEN }}
   API_KEY: ${{ secrets.API_KEY }}
   API_KEY_GOOGLE: ${{ secrets.API_KEY_GOOGLE }}
   ID_CLIENTE_GOOGLE_API: ${{ secrets.ID_CLIENTE_GOOGLE_API }}
 
+on:
+  # Activa el flujo de trabajo cada vez que hagas push a la rama `main`
+  # Usando un nombre de rama diferente? Reemplaza `main` con el nombre de tu rama
+  push:
+    branches: [ main ]
+  # Te permite ejecutar este flujo de trabajo manualmente desde la pestaña Acciones en GitHub.
+  workflow_dispatch:
+
+# Permite que este trabajo clone el repositorio y cree un despliegue de página
 permissions:
   contents: read
   pages: write
@@ -21,18 +24,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout your repository using git
         uses: actions/checkout@v4
-
-      - name: Install Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '20'
-
-      - name: Install dependencies and build site
-        run: |
-          npm install
-          npm run build  # Ajusta según el comando de construcción de Astro
+      - name: Install, build, and upload your site
+        uses: withastro/action@v2
+        # with:
+          # path: . # La ubicación raíz de tu proyecto de Astro dentro del repositorio. (opcional)
+          # node-version: 20 # La versión específica de Node que debería usarse para construir tu sitio. Por defecto es 20. (opcional)
+          # package-manager: pnpm@latest # El gestor de paquetes de Node que debería usarse para instalar dependencias y construir tu sitio. Detectado automáticamente basado en tu lockfile. (opcional)
 
   deploy:
     needs: build
@@ -41,28 +40,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: List files in root directory
-        run: ls -la
-
-      - name: Copy Astro build artifacts to deployment directory
-        run: |
-          mkdir -p ./dist
-          cp -r ./client/* ./dist/
-          cp -r ./server/* ./dist/
-
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
-          publish_branch: gh-pages
-          allow_empty_commit: false
-          keep_files: false
-          force_orphan: false
-          enable_jekyll: false
-          disable_nojekyll: false
-          exclude_assets: .github
+        uses: actions/deploy-pages@v4
