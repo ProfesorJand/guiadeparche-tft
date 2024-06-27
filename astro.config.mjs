@@ -11,7 +11,8 @@ export default defineConfig({
   redirects: {
     '/': '/composiciones-tft/mejores-composiciones-de-teamfight-tactics/'
   },
-  output: 'server',
+  output: 'static', // Cambiado a 'static' para asegurarse de que se genera contenido estático para deploy
+  //output: 'server',
   adapter: node({
     mode: 'standalone',
   }),
