@@ -1,5 +1,4 @@
 ---
-import { Image } from 'astro:assets';
 import datosSet11Latino from './datosSet11Latino.json';
 import InfoPestanaStage from "./InfoPestanaStage.astro";
 import InfoPestanaTips from "./InfoPestanaTips.astro";
@@ -14,18 +13,6 @@ const aumentos = datosSet11Latino.objetos;
   {(Late) && <div class={'pestanas' + (!Early && !Mid ? " active" : "")}>Late 4-2</div> }
   {(Tips) && <div class={'pestanas' + (!Early && !Mid && !Late ? " active" : "")}>Tips</div> }
   {(Gamep) && <div class={'pestanas' + (!Early && !Mid && !Late && !Tips ? " active":"")}>VOD</div> }
-  <!-- {
-    Object.keys(pestanas).map(function (key: any, index: any) {
-      let newKey = key;
-      if (key.includes('Composiciones')) {
-        [, ...newKey] = key.split('_');
-        newKey = newKey.join(' ');
-      }
-      return (
-        <div class={'pestanas' + (index === 0 ? ' active' : '')}>{newKey}</div>
-      );
-    })
-  } -->
 </div>
 
 <div class="pestanasContainer">
