@@ -1,10 +1,10 @@
 name: Deploy to GitHub Pages
 
 env:
-  ASTRO_STUDIO_APP_TOKEN: ${{secrets.ASTRO_STUDIO_APP_TOKEN }}
-  API_KEY: ${{secrets.API_KEY }}
-  API_KEY_GOOGLE: ${{secrets.API_KEY_GOOGLE }}
-  ID_CLIENTE_GOOGLE_API: ${{secrets.ID_CLIENTE_GOOGLE_API }}
+  ASTRO_STUDIO_APP_TOKEN: ${{ secrets.ASTRO_STUDIO_APP_TOKEN }}
+  API_KEY: ${{ secrets.API_KEY }}
+  API_KEY_GOOGLE: ${{ secrets.API_KEY_GOOGLE }}
+  ID_CLIENTE_GOOGLE_API: ${{ secrets.ID_CLIENTE_GOOGLE_API }}
 
 on:
   # Activa el flujo de trabajo cada vez que hagas push a la rama `main`
@@ -44,6 +44,8 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - name: List build directory
+        run: ls -la ./dist
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
