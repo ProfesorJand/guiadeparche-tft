@@ -6,8 +6,8 @@ import react from "@astrojs/react";
 
 // https://astro.build/config
 export default defineConfig({
-  //site: 'https://tft.guiadeparche.com',
-  site: 'https://profesorjand.github.io',
+  site: 'https://tft.guiadeparche.com',
+  //site: 'https://profesorjand.github.io',
   redirects: {
     '/': '/composiciones-tft/mejores-composiciones-de-teamfight-tactics/'
   },
