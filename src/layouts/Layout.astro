@@ -48,16 +48,14 @@ const { title } = Astro.props;
           rgb(var(--accent-light)) 30%,
           white 60%
         );
-        width: 100%;
+        font-family: 'Roboto', Sans-serif;
+        
+        color: var(--color-primary);
+
+        /* width: 100%;
         display: flex;
         position: relative;
-        box-sizing: border-box;
-      }
-      html {
-        font-family: 'Roboto', Sans-serif;
-        background-color: var(--bg-primary);
-        color: var(--color-primary);
-        overflow-y: scroll;
+        box-sizing: border-box; */
       }
 
       body::-webkit-scrollbar {
@@ -74,6 +72,8 @@ const { title } = Astro.props;
         border: 2px solid var(--border-color); /* creates padding around scroll thumb */
       }
       body {
+        background-color: var(--bg-primary);
+        overflow-y: scroll;
         margin: 0;
         width: 100%;
         display: flex;
@@ -92,18 +92,6 @@ const { title } = Astro.props;
           Courier New,
           monospace;
       }
-      main {
-        margin: auto;
-        padding: 1rem;
-        width: 50%;
-        max-width: calc(100% - 2rem);
-        color: white;
-        font-size: 20px;
-        line-height: 1.6;
-        background-color: var(--bg-tertiary);
-        box-sizing: border-box;
-      }
-
       .titulo {
         display: flex;
         justify-content: center;
@@ -112,12 +100,6 @@ const { title } = Astro.props;
       }
       .hide {
         display: none;
-      }
-
-      @media only screen and (max-width: 900px) {
-        main {
-          width: 100%;
-        }
       }
 
       @media only screen and (max-width: 900px) {

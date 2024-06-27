@@ -84,7 +84,7 @@ function encontrarAumento(id) {
     margin-left: -150px;
     bottom: 100%;
     left: 50%;
-    visibility: hidden;
+    display: none;
     width: 300px;
     background-color: black;
     color: white;
@@ -150,7 +150,8 @@ function encontrarAumento(id) {
   }
 
   .tooltip:hover .containerTooltip {
-    visibility: visible;
+    display: flex;
+    flex-direction: column;
   }
 
   .containerPestanaInfoComp{
@@ -178,6 +179,15 @@ function encontrarAumento(id) {
 .nivelCompH2{
     font-size: 16px;
     text-align: center;
+}
+
+@media only screen and (max-width: 900px) {
+  .tooltip{
+    position:initial
+  }
+  .pestanasContainer{
+    position: relative;
+  }
 }
 
 </style>
