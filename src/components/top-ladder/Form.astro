@@ -11,51 +11,57 @@ if (Astro.request.method === 'POST') {
   // parse form data
   const formData = await Astro.request.formData();
 
-  var invocador = formData.get('invocador').toString();
-  var etiqueta = formData.get('etiqueta').toString();
-  const region = formData.get('region').toString();
-  const plataforma = formData.get('plataforma').toString();
+  var invocador = formData.get('invocador')?.toString();
+  var etiqueta = formData.get('etiqueta')?.toString();
+  const region = formData.get('region')?.toString();
+  const plataforma = formData.get('plataforma')?.toString();
+  console.log({ invocador, etiqueta, region, plataforma });
+  if (region && invocador && etiqueta) {
+    let { puuid, gameName, tagLine } = await getPUUID({
+      region,
+      invocador,
+      etiqueta,
+    });
+    if (puuid) {
+      try {
+        const { id, profileIconId } = await getAccountInfo({
+          plataforma,
+          puuid,
+        });
 
-  const { puuid, gameName, tagLine } = await getPUUID({
-    region,
-    invocador,
-    etiqueta,
-  });
-
-  if (puuid) {
-    try {
-      const { id, profileIconId } = await getAccountInfo({ plataforma, puuid });
-
-      const rangos = await getRank({
-        summonerId: id,
-        plataforma,
-      });
-      const { tier, rank, leaguePoints } = rangos.find((r) => {
-        return r.queueType === 'RANKED_TFT';
-      }) || {
-        tier: 'UNRANKED',
-        rank: 'UNRANKED',
-        leaguePoints: 0,
-      };
-      invocador = gameName;
-      etiqueta = tagLine;
-      console.log([tier.toUpperCase()], [rank.toUpperCase()]);
-      const puntaje = getPuntaje[tier.toUpperCase()][rank.toUpperCase()];
-      await db.insert(Usuario).values({
-        puuid,
-        invocador,
-        etiqueta,
-        id,
-        region,
-        plataforma,
-        tier,
-        rank,
-        leaguePoints,
-        profileIconId,
-        puntaje,
-      });
-    } catch (error) {
-      console.log('error en Form.astro al insertar nuevo valor', error.message);
+        const rangos = await getRank({
+          summonerId: id,
+          plataforma,
+        });
+        const { tier, rank, leaguePoints } = rangos.find((r) => {
+          return r.queueType === 'RANKED_TFT';
+        }) || {
+          tier: 'UNRANKED',
+          rank: 'UNRANKED',
+          leaguePoints: 0,
+        };
+        invocador = gameName;
+        etiqueta = tagLine;
+        const puntaje = getPuntaje[tier.toUpperCase()][rank.toUpperCase()];
+        await db.insert(Usuario).values({
+          puuid,
+          invocador,
+          etiqueta,
+          id,
+          region,
+          plataforma,
+          tier,
+          rank,
+          leaguePoints,
+          profileIconId,
+          puntaje,
+        });
+      } catch (error) {
+        console.log(
+          'error en Form.astro al insertar nuevo valor',
+          error.message
+        );
+      }
     }
   }
 }
@@ -125,23 +131,3 @@ if (Astro.request.method === 'POST') {
   <input id="registrar" type="submit" value="registrar" />
   <br />
 </form>
-
-<script>
-  // import { navigate } from "astro:transitions/client";
-
-  //   const btnRegistrar = document.getElementById('registrar');
-
-  //   btnRegistrar.addEventListener('click', async () => {
-  //     const inputInvocador = (document.getElementById('invocador') as HTMLInputElement);
-  //     const invocador = inputInvocador.value;
-  //     const inputEtiqueta = (document.getElementById('etiqueta') as HTMLInputElement);
-  //     const etiqueta = inputEtiqueta.value;
-  //     const inputRegion = (document.getElementById("region") as HTMLInputElement);
-  //     const region= inputRegion.value;
-  //     const inputPlataforma = (document.getElementById("plataforma") as HTMLInputElement);
-  //     const plataforma = inputPlataforma.value
-
-  //     navigate(`https://tft.guiadeparche.com/top-ladder/${invocador}?region=${region}&plataforma=${plataforma}&etiqueta=${etiqueta}`)
-
-  //   });
-</script>

@@ -15,9 +15,7 @@ export const updateUsersScores = async ({ summonerId, plataforma }) => {
       rank: 'UNRANKED',
       leaguePoints: 0,
     };
-    console.log(tier, rank);
     const puntaje = getPuntaje[tier.toUpperCase()][rank.toUpperCase()];
-    console.log(puntaje);
     const userUpdate = await db
       .update(Usuario)
       .set({ tier, rank, leaguePoints, puntaje })

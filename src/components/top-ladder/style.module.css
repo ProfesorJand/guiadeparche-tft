@@ -1,0 +1,39 @@
+
+  table {
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  th {
+    text-align: center;
+  }
+  td {
+    text-align: center;
+  }
+
+  tr:hover {
+    background-color: var(--bg-secondary);
+  }
+
+  table,
+  th,
+  td {
+    border: 1px solid;
+  }
+
+  .tablaInvocador {
+    width: 40%;
+  }
+
+  .hide {
+    display: none;
+  }
+  .filtroPlataforma{
+    display: none;
+  }
+
+  @media only screen and (max-width: 900px) {
+    .icono{
+        display:none
+    }
+  }

@@ -1,5 +1,5 @@
 ---
-import meta from './meta.json';
+import meta from './metaTFTComposiciones.json';
 import ImgTier from './ImgTier.astro';
 import ContainerChampionTierList from './ContainerChampionTierList.astro';
 import InfoComp from './InfoComp.astro';
@@ -13,9 +13,9 @@ import InfoComp from './InfoComp.astro';
         <>
           <div class="containerTier">
             <ImgTier key={key} index={index}/>
-            {/* <ContainerChampionTierList championsTier={meta[key]} index={index}/> */}
+            <ContainerChampionTierList championsTier={meta[key]} index={index}/>
           </div>
-          {/* <InfoComp championsTier={meta[key]}  index={index} /> */}
+          <InfoComp championsTier={meta[key]}  index={index} />
         </>
       );
     })
@@ -23,17 +23,9 @@ import InfoComp from './InfoComp.astro';
 </div>
 
 <style>
-  .hide{
-    display: none;
-  }
-  .containerTier{
-    display: flex;
-    position: relative;
-    flex-direction: row;
-    align-items: center;
-    justify-content: start;
-    width: 100%;
-    min-height: 60px;
-  }
-
+.containerTier{
+  display: flex;
+  flex-direction: row;
+}
 </style>
+

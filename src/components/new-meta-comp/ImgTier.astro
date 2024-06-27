@@ -1,0 +1,44 @@
+---
+import { getImage } from 'astro:assets';
+import { Image } from "astro:assets"
+const { key } = Astro.props;
+const src =
+  'https://guiadeparche.com/tftdata/Set11/metaComps/tier/Tier-' + key + '.jpg';
+const format = 'jpg';
+const width = 100;
+const height = 100;
+const optimizedBackground = await getImage({
+  src,
+  format,
+  width,
+  height,
+});
+---
+
+<div class="Tier">
+  <Image 
+    src={src}
+    alt={'TFT Tier-' + key}
+    class="imgTier"
+    height={height || 50}
+    width={width || 50}
+    loading="lazy"
+  />
+</div>
+
+<style>
+  .Tier {
+    margin: 0;
+    font-weight: 600;
+    font-size: xx-large;
+    width: 20%;
+    display: block;
+  }
+  .imgTier {
+    display: flex;
+    position: relative;
+    width: 100%;
+    height: auto;
+    box-sizing: border-box;
+  }
+</style>

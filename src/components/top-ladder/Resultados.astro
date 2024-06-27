@@ -1,23 +1,32 @@
 ---
-import { db, Usuario, asc, desc } from 'astro:db';
-import { updateUsersScores } from '../../db/index.js';
-import { sql } from 'astro:db';
-const filtro = Astro.url.searchParams.get('filter');
-const orden = Astro.url.searchParams.get('order');
+const {} = Astro.props;
+import { Usuario, asc, desc, db, sql, eq } from 'astro:db';
+const region = Astro.url.searchParams.get('region') || 'todos'; //todos la1,etc
+const filtro = Astro.url.searchParams.get('filter') || 'puntaje'; // invocador, region, puntaje
+const orden = Astro.url.searchParams.get('order') || 'asc';
 let update = Astro.url.searchParams.get('update');
+import { updateUsersScores } from '../../db';
 
-const d = new Date();
-let time = d.getTime();
+const URL = {
+  profileIcon:
+    'https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/',
+  tierIcon:
+    'https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-shared-components/global/default/',
+  miniTierIcon:
+    'https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/images/ranked-mini-crests/',
+};
 
-const usuarios = await db
+const arrayPlataforma = ['la1', 'la2', 'euw1', 'na1'];
+
+let usuarios = await db
   .select({
     ladder: sql`(SELECT COUNT(*) + 1 
-             FROM Usuario AS u 
-             WHERE 
-                CASE
-                    WHEN u.puntaje > Usuario.puntaje THEN u.leaguePoints < Usuario.leaguePoints
-                END
-            ) AS ladder`,
+               FROM Usuario AS u 
+               WHERE 
+                  CASE
+                      WHEN u.puntaje < Usuario.puntaje THEN u.leaguePoints > Usuario.leaguePoints
+                  END
+              ) AS ladder`,
     tier: Usuario.tier,
     etiqueta: Usuario.etiqueta,
     invocador: Usuario.invocador,
@@ -30,24 +39,8 @@ const usuarios = await db
     id: Usuario.id,
   })
   .from(Usuario)
-  .orderBy(opcionesOrder({ filtro, orden }));
-
-console.log('update', update);
-console.log('time', time);
-if (update && Number(update) < time) {
-  console.log(Number(update) < time);
-  try {
-    usuarios.forEach((usuario) => {
-      updateUsersScores({
-        summonerId: usuario.id,
-        plataforma: usuario.plataforma,
-      });
-    });
-  } catch (error) {
-    console.log(error);
-  }
-  console.log('actualizo');
-}
+  .orderBy(opcionesOrder({ filtro, orden }))
+  .where(arrayPlataforma.includes(region) && eq(Usuario.plataforma, region));
 
 function opcionesOrder({ filtro = 'puntaje', orden = 'desc' }) {
   const variables = ['asc', 'desc', 'puntaje', 'region', 'invocador'];
@@ -55,33 +48,23 @@ function opcionesOrder({ filtro = 'puntaje', orden = 'desc' }) {
     !variables.includes(filtro?.toLowerCase()) &&
     !variables.includes(orden?.toLowerCase())
   ) {
-    return desc(Usuario.puntaje), asc(Usuario.leaguePoints);
+    return asc(Usuario.puntaje), desc(Usuario.leaguePoints);
   }
   const order = {
     asc: {
       puntaje: (asc(Usuario.puntaje), desc(Usuario.leaguePoints)),
-      region: asc(Usuario.region),
+      region: asc(Usuario.plataforma),
       invocador: asc(Usuario.invocador),
     },
     desc: {
       puntaje: desc(Usuario.puntaje),
-      region: desc(Usuario.region),
+      region: desc(Usuario.plataforma),
       invocador: desc(Usuario.invocador),
     },
   };
   return order[orden?.toLowerCase()][filtro];
 }
 
-const URL = {
-  profileIcon:
-    'https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/',
-  tierIcon:
-    'https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-shared-components/global/default/',
-  miniTierIcon:
-    'https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/images/ranked-mini-crests/',
-};
-
-/* Añadir todas las plataformas*/
 const PLATAFORMAS = {
   la1: 'LAN',
   la2: 'LAS',
@@ -100,11 +83,47 @@ const PLATAFORMAS = {
   tw2: 'TW',
   vn2: 'VN',
 };
+
+let hora = new Date().getHours();
+console.log('Se actualiza?', Number(update) > hora);
+if (Number(update) > hora) {
+  hora = Number(update);
+  usuarios.forEach(async (user) => {
+    await updateUsersScores({
+      summonerId: user.id,
+      plataforma: user.plataforma,
+    });
+  });
+  usuarios = await db
+    .select({
+      // ladder: sql`(SELECT COUNT(*) + 1
+      //          FROM Usuario AS u
+      //          WHERE
+      //             CASE
+      //                 WHEN u.puntaje >= Usuario.puntaje THEN u.leaguePoints >= Usuario.leaguePoints
+      //             END
+      //         ) AS ladder`,
+      tier: Usuario.tier,
+      etiqueta: Usuario.etiqueta,
+      invocador: Usuario.invocador,
+      eliminado: Usuario.eliminado,
+      eventoNombre: Usuario.eventoNombre,
+      leaguePoints: Usuario.leaguePoints,
+      profileIconId: Usuario.profileIconId,
+      plataforma: Usuario.plataforma,
+      puntaje: Usuario.puntaje,
+      id: Usuario.id,
+      ladder: sql`(SELECT COUNT(*) OVER (ORDER BY puntaje ASC, leaguePoints DESC)
+                  FROM Usuario) AS ladder`,
+    })
+    .from(Usuario)
+    .orderBy(opcionesOrder({ filtro, orden }))
+    .where(arrayPlataforma.includes(region) && eq(Usuario.plataforma, region));
+}
+console.log(usuarios);
 ---
 
-<button id="btnActualizar" class="actualizar"> update </button>
-
-<table>
+<table id="tablaResultados">
   <thead>
     <tr>
       <th>#LADDER</th>
@@ -186,18 +205,8 @@ const PLATAFORMAS = {
   .tablaInvocador {
     width: 40%;
   }
-</style>
 
-<script>
-  import { navigate } from 'astro:transitions/client';
-  const isDev = import.meta.env.DEV;
-  const btnActualizar = document.querySelector('#btnActualizar');
-  btnActualizar.addEventListener('click', () => {
-    alert('click');
-    const d = new Date();
-    let time = d.getTime();
-    navigate(
-      `${isDev ? 'http' : 'https'}://${isDev ? 'localhost:4321' : 'tft.guiadeparche.com'}/top-ladder/?filter=puntaje&order=desc&update=${time}`
-    );
-  });
-</script>
+  .hide {
+    display: none;
+  }
+</style>

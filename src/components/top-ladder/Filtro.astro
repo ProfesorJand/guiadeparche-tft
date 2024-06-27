@@ -1,0 +1,213 @@
+---
+import Resultados from './Resultados.astro';
+import ResultadosCopy from './Resultados_copy.astro';
+const region = Astro.url.searchParams.get('region') || 'todos'; //todos la1,etc
+const filtro = Astro.url.searchParams.get('filter') || 'puntaje'; // invocador, region, puntaje
+const orden = Astro.url.searchParams.get('order') || 'asc'; //asc desc
+let update = Astro.url.searchParams.get('update');
+
+const REGION = [
+  {
+    value: 'todos',
+    name: 'TODOS',
+  },
+  {
+    value: 'la1',
+    name: 'LAN',
+  },
+  {
+    value: 'la2',
+    name: 'LAS',
+  },
+  {
+    value: 'euw1',
+    name: 'EUW',
+  },
+  {
+    value: 'na1',
+    name: 'NA',
+  },
+];
+
+const FILTRO = [
+  {
+    value: 'puntaje',
+    name: 'PUNTAJE',
+  },
+  {
+    value: 'invocador',
+    name: 'INVOCADOR',
+  },
+  {
+    value: 'region',
+    name: 'REGION',
+  },
+];
+
+const ORDEN = [
+  {
+    value: 'asc',
+    name: 'ASC',
+  },
+  {
+    value: 'desc',
+    name: 'DESC',
+  },
+];
+---
+
+<div id="fResultados" class="containerFilter" transition:persist="fResultados">
+  <div class="custom-select">
+    <select name="regionFiltrado" id="regionFiltrado">
+      {
+        REGION.map((r) => {
+          return (
+            <option value={r.value} selected={region === r.value && 'selected'}>
+              {r.name}
+            </option>
+          );
+        })
+      }
+    </select>
+  </div>
+  <div class="custom-select">
+    <select name="filtro" id="filtro">
+      {
+        FILTRO.map((f) => {
+          return (
+            <option value={f.value} selected={filtro === f.value && 'selected'}>
+              {f.name}
+            </option>
+          );
+        })
+      }
+    </select>
+  </div>
+  <div class="custom-select">
+    <select name="orden" id="orden">
+      {
+        ORDEN.map((o) => {
+          return (
+            <option value={o.value} selected={orden === o.value && 'selected'}>
+              {o.name}
+            </option>
+          );
+        })
+      }
+    </select>
+  </div>
+  <input
+    type="image"
+    id="btnFiltrar"
+    src="/GP_logo.png"
+    height="50px"
+    width="50px"
+    class="spin"
+  />
+  <div id="timer" transition:persist="timer"></div>
+</div>
+
+<!-- <Resultados /> -->
+<ResultadosCopy />
+
+<script>
+  import { sequence } from 'astro:middleware';
+
+  const regionFiltrado = document.querySelector(
+    '#regionFiltrado'
+  ) as HTMLSelectElement;
+  const filtro = document.querySelector('#filtro') as HTMLSelectElement;
+  const orden = document.querySelector('#orden') as HTMLSelectElement;
+  const btnFiltrar = document.querySelector('#btnFiltrar') as HTMLInputElement;
+  var url = new URL(window.location.href);
+  var int;
+  var seconds = 60;
+  function checkSeconds() {
+    if (seconds < 60) {
+      seconds--;
+      console.log(seconds);
+      const timer = document.querySelector('#timer') as HTMLDivElement;
+      timer.innerHTML = seconds.toString();
+    } else {
+      clearInterval(int);
+    }
+  }
+  document.addEventListener('astro:page-load', () => {
+    setTimeout(function () {
+      btnFiltrar.classList.remove('spin');
+    }, 4000);
+    regionFiltrado.addEventListener('input', () => {
+      url.searchParams.set('region', regionFiltrado.value);
+      window.location.href = url.href;
+    });
+    filtro.addEventListener('input', () => {
+      url.searchParams.set('filter', filtro.value);
+      window.location.href = url.href;
+    });
+    orden.addEventListener('input', () => {
+      url.searchParams.set('order', orden.value);
+      window.location.href = url.href;
+    });
+    btnFiltrar.addEventListener('click', () => {
+      const d = new Date();
+      const hour = d.getHours();
+      url.searchParams.set('update', hour.toString());
+      window.location.href = url.href;
+      int = window.setInterval(function () {
+        checkSeconds();
+      }, 1000);
+    });
+  });
+
+  document.addEventListener('astro:before-preparation', () => {
+    btnFiltrar.classList.add('spin');
+  });
+</script>
+
+<style>
+  input:hover {
+    cursor: pointer;
+    /* animation: spin 4s linear; */
+  }
+  .spin {
+    -webkit-animation: changeColor 5s infinite; /* Safari 4+ */
+    -moz-animation: changeColor 5s infinite; /* Fx 5+ */
+    -o-animation: changeColor 5s infinite; /* Opera 12+ */
+    animation: spin 4s linear;
+  }
+  .containerFilter {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    margin-bottom: 1rem;
+  }
+  .custom-select {
+  }
+  select {
+    appearance: none;
+    /* safari */
+    -webkit-appearance: none;
+    /* other styles for aesthetics */
+    width: 100%;
+    font-size: 1.15rem;
+    padding: 0.675em 6em 0.675em 1em;
+    background-color: #fff;
+    border: 1px solid #caced1;
+    border-radius: 0.25rem;
+    color: #000;
+    cursor: pointer;
+  }
+  @keyframes spin {
+    0% {
+      transform: rotate(360deg);
+    }
+    100% {
+      transform: rotate(0deg);
+    }
+  }
+</style>

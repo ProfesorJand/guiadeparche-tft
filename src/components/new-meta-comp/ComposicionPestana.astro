@@ -1,0 +1,236 @@
+---
+import { Image } from 'astro:assets';
+import datosSet11Latino from './datosSet11Latino.json';
+import InfoPestanaStage from "./InfoPestanaStage.astro";
+import InfoPestanaTips from "./InfoPestanaTips.astro";
+import InfoPestanaGameplay from "./InfoPestanaGameplay.astro";
+const {Titulo, Gamep, Tips, Early, Mid, Late } = Astro.props;
+const aumentos = datosSet11Latino.objetos;
+---
+
+<div class="containerPestanas">
+  {(Early) && <div class={'pestanas active'}>Early 2-1</div> }
+  {(Mid) && <div class={'pestanas' + (!Early ? " active" : "")}>Mid 3-2</div> }
+  {(Late) && <div class={'pestanas' + (!Early && !Mid ? " active" : "")}>Late 4-2</div> }
+  {(Tips) && <div class={'pestanas' + (!Early && !Mid && !Late ? " active" : "")}>Tips</div> }
+  {(Gamep) && <div class={'pestanas' + (!Early && !Mid && !Late && !Tips ? " active":"")}>VOD</div> }
+  <!-- {
+    Object.keys(pestanas).map(function (key: any, index: any) {
+      let newKey = key;
+      if (key.includes('Composiciones')) {
+        [, ...newKey] = key.split('_');
+        newKey = newKey.join(' ');
+      }
+      return (
+        <div class={'pestanas' + (index === 0 ? ' active' : '')}>{newKey}</div>
+      );
+    })
+  } -->
+</div>
+
+<div class="pestanasContainer">
+  {(Early) &&
+    <div class={"containerInfoPestanas show"}>
+      <InfoPestanaStage info={Early} Titulo={Titulo}/>
+    </div>
+  }
+  {(Mid) &&
+    <div class={"containerInfoPestanas" + (!Early?" show":"")}>
+      <InfoPestanaStage info={Mid} Titulo={Titulo} check={!Early}/>
+    </div>
+  }
+  {(Late) &&
+    <div class={"containerInfoPestanas" + (!Early && !Mid?" show":"")}>
+      <InfoPestanaStage info={Late} Titulo={Titulo}/>
+    </div>
+  }
+  {(Tips) &&
+    <div class={"containerInfoPestanas" + (!Early && !Mid && !Late?" show":"")}>
+      <InfoPestanaTips Tips={Tips}/>
+    </div>
+  }
+  {(Gamep) &&
+    <div class={"containerInfoPestanas" + (!Early && !Mid && !Late && !Tips?" show":"")}>
+      <InfoPestanaGameplay Gameplay={Gamep}/>
+    </div>
+  }
+</div>
+
+<script is:inline>
+  document.addEventListener('astro:page-load', () => {
+    const containerPestanas =
+      document.getElementsByClassName('containerPestanas');
+
+    Array.prototype.forEach.call(containerPestanas, (element, index) => {
+      element.getElementsByClassName('pestanas')[0].classList.add('active');
+    });
+
+    const pestanas = document.querySelectorAll('.pestanas');
+    pestanas.forEach((pestana) => {
+      pestana.addEventListener('click', () => {
+        const pestanaActive =
+          pestana.parentElement.querySelector(`.pestanas.active`);
+        pestanaActive.classList.remove('active');
+        const pestanaContainer = pestanaActive.parentElement.nextElementSibling;
+
+        const indexPestanaDeactivate = Array.from(
+          pestanaActive.parentNode.children
+        ).indexOf(pestanaActive);
+        pestanaContainer.children[indexPestanaDeactivate].classList.remove(
+          'show'
+        );
+
+        const indexPestanaActive = Array.from(
+          pestanaActive.parentNode.children
+        ).indexOf(pestana);
+        pestanaContainer.children[indexPestanaActive].classList.add('show');
+
+        pestana.classList.add('active');
+      });
+    });
+  });
+</script>
+
+<style>
+  .containerPestanas {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    color: white;
+    align-items: center;
+    justify-content: center;
+    list-style-type: none;
+    width: 100%;
+    margin: 0;
+    padding: 0 15px;
+    box-sizing: border-box;
+    gap: 5px;
+  }
+
+  .pestanas {
+    list-style: none;
+    background-color: var(--bg-secondary);
+    width: max-content;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    /*border: 2px solid grey;*/
+    font-size: 1rem;
+  }
+
+  .pestanas:hover {
+    cursor: pointer;
+    background-color: var(--bg-primary);
+  }
+
+  .active {
+    background-color: var(--bg-primary);
+    border-bottom-color: var(--bg-primary);
+  }
+
+  
+  .consejos {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .aumentoImg {
+    width: 100%;
+    height: auto;
+  }
+
+  .containerTooltip {
+    margin-left: -150px;
+    bottom: 100%;
+    left: 50%;
+    visibility: hidden;
+    width: 300px;
+    background-color: black;
+    color: white;
+    text-align: center;
+    border-radius: 3px;
+    padding: 6px 6px;
+    position: absolute;
+    z-index: 50;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+  }
+
+  .imgCompPestana {
+    width: 100%;
+    height: auto;
+    padding: 20px;
+    display: flex;
+    position: relative;
+    box-sizing: border-box;
+  }
+
+  .divIframe {
+    display: flex;
+    position: relative;
+    aspect-ratio: 16 / 9;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  .containerInfoPestanas{
+    display: none;
+    padding: 1rem;
+    flex-direction: column;
+    box-sizing: border-box;
+  }
+
+  .show {
+    display: flex;
+  }
+
+  p {
+    font-size: 1rem;
+    margin: 5px;
+  }
+
+  @media only screen and (max-width: 900px) {
+    .containerPestanas {
+      width: 100%;
+      gap: 5px;
+      flex-wrap: nowrap;
+      overflow: scroll;
+      justify-content: flex-start;
+    }
+
+    .pestanas {
+      padding: 5px;
+      font-size: small;
+    }
+
+    .pestanaContainerContenido {
+      font-size: small;
+    }
+
+    .tooltip {
+      position: initial;
+      width: 12.5%;
+    }
+
+    .containerTooltip {
+      width: 100%;
+      left: 0;
+      margin-left: 0;
+    }
+
+    .containerAumentos {
+      margin: 5px;
+    }
+
+    .imgCompPestana {
+      padding: 5px;
+    }
+
+    .divIframe {
+      padding: 5px;
+    }
+  }
+</style>

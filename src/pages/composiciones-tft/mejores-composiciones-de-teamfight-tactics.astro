@@ -1,8 +1,10 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import ContainerMeta from '../../components/meta-comp/ContainerMeta.astro';
+import ContainerMeta from '../../components/new-meta-comp/CcontainerMeta.astro';
 import Spinner from '../../components/spinner/Spinner.astro';
 const title = 'TFT - Meta Comp';
+// Inicializa la API de Google Sheets
+
 ---
 
 <Layout title={title}>
@@ -45,9 +47,11 @@ const title = 'TFT - Meta Comp';
 
 <script>
   document.addEventListener('astro:page-load', () => {
-    console.log('loader', document.querySelector('#loader'));
     document.querySelector('#loader')?.classList.remove('showLoader');
     document.querySelector('main').classList.remove('hide');
-    console.log('termino de cargarse la pagina');
   });
+</script>
+
+  
+
 </script>

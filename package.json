@@ -14,7 +14,14 @@
     "@astrojs/check": "^0.6.0",
     "@astrojs/db": "^0.11.0",
     "@astrojs/node": "^8.2.5",
+    "@astrojs/react": "^3.4.0",
+    "@nanostores/react": "^0.7.2",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
     "astro": "^4.6.4",
+    "nanostores": "^0.10.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "typescript": "^5.4.5"
   },
   "devDependencies": {

@@ -1,17 +1,19 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Form from '../../components/top-ladder/Form.astro';
-import { db, Usuario } from 'astro:db';
-import Resultados from '../../components/top-ladder/Resultados.astro';
+// import Filtro from '../../components/top-ladder/Filtro.astro';
+import Filtro from '../../components/top-ladder/Filtro.jsx';
+import Resultados from '../../components/top-ladder/Resultados.jsx';
 const title = 'TFT - Top Ladder';
-
-const usuarios = await db.select().from(Usuario);
-console.log(usuarios);
 ---
 
 <Layout title={title}>
   <main>
-    <Form />
-    <Resultados />
+    <!-- <Form /> -->
+    <Filtro />
+    <Resultados ></Resultados>
+    <!-- <Filtro transition:persist="filtros-top-ladder" />
+    <Resultados transition:persist="resultados-top-ladder" /> -->
+      
   </main>
 </Layout>

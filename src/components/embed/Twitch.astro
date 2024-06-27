@@ -5,48 +5,77 @@ interface Props {
 const { channel } = Astro.props;
 ---
 
-<div id="twitch-embed" data-channel={channel} transition:persist></div>
+<div id="twitch-embed" data-channel={channel} ></div>
 
 <!-- Load the Twitch embed script -->
-<script src="https://embed.twitch.tv/embed/v1.js" is:inline></script>
+<script src="https://embed.twitch.tv/embed/v1.js" is:inline data-astro-rerun></script>
 
 <!-- Create a Twitch.Embed object that will render within the "twitch-embed" element. -->
-<script type="text/javascript" defer is:inline>
-  const divTwitch = document.getElementById('twitch-embed');
-  const channel = divTwitch.dataset.channel;
+<script type="text/javascript" is:inline data-astro-rerun>
+  // document.addEventListener('astro:page-load', () => {
+    var divTwitch = document.getElementById('twitch-embed');
+    var channel = divTwitch.dataset.channel;
+    var embed;
+    var options = {
+      width: '100%',
+      channel: "jupeson", // cambiar el string a la variable -> channel
+      layout: 'video',
+      autoplay: true,
+      allowfullscreen: true,
+      parent: ['tft.guiadeparche.com'],
+    };
+    if(!embed){
+      embed = new Twitch.Embed('twitch-embed', options);
+      embed.addEventListener(Twitch.Embed.READY, initiate);
+    }
 
+
+    function initiate() {
+      embed.addEventListener(Twitch.Embed.ONLINE, handleOnline);
+      embed.addEventListener(Twitch.Embed.OFFLINE, handleOffline);
+      embed.removeEventListener(Twitch.Embed.READY, initiate);
+    }
+
+    function handleOnline() {
+      document.getElementById('twitch-embed').classList.remove('hide');
+      document.getElementById('twitch-embed').classList.add('show');
+      embed.removeEventListener(Twitch.Embed.ONLINE, handleOnline);
+      embed.addEventListener(Twitch.Embed.OFFLINE, handleOffline);
+      embed.setMuted(false);
+    }
+
+    function handleOffline() {
+      checkAnotherStreamer();
+      document.getElementById('twitch-embed').classList.add('hide');
+      document.getElementById('twitch-embed').classList.remove('show');
+      embed.removeEventListener(Twitch.Embed.OFFLINE, handleOffline);
+      embed.addEventListener(Twitch.Embed.ONLINE, handleOnline);
+      embed.setMuted(true);
+    }
+    function checkAnotherStreamer(){
+      embed.setChannel("relic_lol");
+      embed.addEventListener(Twitch.Embed.OFFLINE, volverJupeson);
+    }
+    function volverJupeson(){
+      embed.setChannel("jupeson");
+      embed.removeEventListener(Twitch.Embed.OFFLINE, handleOffline);
+      embed.addEventListener(Twitch.Embed.ONLINE, handleOnline);
+      embed.setMuted(true);
+    }
+
+    /*
+    
   var options = {
-    width: '100%',
-    channel: channel,
-    layout: 'video',
-    autoplay: true,
-    allowfullscreen: true,
-    parent: ['tft.guiadeparche.com'],
-  };
-  var embed = new Twitch.Embed('twitch-embed', options);
-  embed.addEventListener(Twitch.Embed.READY, initiate);
+    width: 300,
+    height: 196,
+    channel: "relic_lol",
+};
+  var player = new Twitch.Player("SamplePlayerDivID", options);
+  player.setVolume(0.02);
+  player.setQuality("360p30");
+    */
 
-  function initiate() {
-    embed.addEventListener(Twitch.Embed.ONLINE, handleOnline);
-    embed.addEventListener(Twitch.Embed.OFFLINE, handleOffline);
-    embed.removeEventListener(Twitch.Embed.READY, initiate);
-  }
-
-  function handleOnline() {
-    document.getElementById('twitch-embed').classList.remove('hide');
-    document.getElementById('twitch-embed').classList.add('show');
-    embed.removeEventListener(Twitch.Embed.ONLINE, handleOnline);
-    embed.addEventListener(Twitch.Embed.OFFLINE, handleOffline);
-    embed.setMuted(false);
-  }
-
-  function handleOffline() {
-    document.getElementById('twitch-embed').classList.add('hide');
-    document.getElementById('twitch-embed').classList.remove('show');
-    embed.removeEventListener(Twitch.Embed.OFFLINE, handleOffline);
-    embed.addEventListener(Twitch.Embed.ONLINE, handleOnline);
-    embed.setMuted(true);
-  }
+  // });
 </script>
 
 <style>

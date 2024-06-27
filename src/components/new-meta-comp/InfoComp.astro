@@ -1,0 +1,235 @@
+---
+import {  Image } from 'astro:assets';
+import ComposicionPestana from './ComposicionPestana.astro';
+const { championsTier, index } = Astro.props;
+---
+
+{
+  championsTier.map(async (champTier, i) => {
+    const src = champTier.ImgCompo;
+    const srcCampeon = champTier.ImgCampeon;
+    const espatula = champTier.Espatula;
+    return (
+      <section
+        class={'infoComp' + (index === 0 && i === 0 ? ' show' : '')}
+        id={champTier.Titulo.replaceAll(' ', '-')}
+      >
+        <button class="btnClose">X</button>
+        <header>
+          <h1 class="titulo">{champTier.Titulo}</h1>
+        </header>
+        <div class="containerCompo"> 
+          <figure class="composicionDiv">
+            <figcaption class="sinergiasText">
+              <span class="sinergiasSpan">{champTier.sinergias}</span>
+            </figcaption>
+            <Image
+              src={src}
+              alt={'Composicion Meta ' + champTier.Titulo}
+              class="composicionImg show"
+              loading="lazy"
+              width={100}
+              height={100}
+              inferSize={false}
+              />
+              {espatula && Object.keys(espatula).map((key, index)=>{
+                if(key === "Comp1" || key === "Comp2"){
+                  return (
+                      <Image 
+                        src={espatula[key]}
+                        alt={`Composicion Meta Espatula ` + champTier.Titulo}
+                        class="composicionImg"
+                        loading='lazy'
+                        width={100}
+                        height={100}
+                        inferSize={false}
+                      />
+                    )
+                  }
+                }
+              )}
+          </figure>
+          <div class="containerChampEspatula">
+            <Image
+              src={srcCampeon}
+              alt={'Composicion Meta ' + champTier.Titulo}
+              class="campeonEspatula selected"
+              loading="lazy"
+              width={100}
+              height={100}
+              inferSize={false}
+              />
+              {espatula && Object.keys(espatula).map((key, index)=>{
+                if(key === "Item1" || key === "Item2"){
+                  return (
+                      <Image 
+                        src={espatula[key]}
+                        alt={`Composicion Meta Espatula ` + champTier.Titulo}
+                        class="campeonEspatula"
+                        loading='lazy'
+                        width={100}
+                        height={100}
+                        inferSize={false}
+                      />
+                    )
+                }
+              })}
+          </div>
+        </div>
+        <ComposicionPestana Titulo={champTier.Titulo} Gamep={champTier.Gamep} Tips={champTier.Tips} Early={champTier.Early} Mid={champTier.Mid} Late={champTier.Late}/>
+      </section>
+    );
+  })
+}
+
+<script >
+  document.addEventListener('astro:page-load', () => {
+    const btnClose = document.querySelectorAll('.btnClose');
+    const champEspatula = document.querySelectorAll(".campeonEspatula");
+    const compoEstaputa = document.querySelectorAll(".composicionImg");
+    btnClose.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        btn.parentElement.classList.remove('show');
+        const alt = btn.parentElement.id.replaceAll('-', ' ');
+        const imgSelected = document.querySelector(`img[alt="${alt}"]`);
+        imgSelected.classList.remove('imgSelected');
+      });
+    });
+    champEspatula.forEach((champ, i) =>{
+      champ.addEventListener("click",()=>{
+        if(!champ.classList.contains("selected")){
+          const champEspatulaSelected = champ.parentElement.querySelector(".campeonEspatula.selected")
+          const padreChampEspatulaSelected= champEspatulaSelected?.parentElement.parentElement;
+          const compEspatulaSelected = padreChampEspatulaSelected.querySelector(".composicionImg.show")
+          champEspatulaSelected?.classList.toggle("selected");
+          compEspatulaSelected?.classList.toggle("show");
+          compoEstaputa[i].classList.toggle("show");
+          champ.classList.toggle("selected");
+        }
+       
+      }, true)
+    })
+  });
+</script>
+
+<style>
+  .infoComp {
+    display: none;
+    flex-direction: column;
+    position: relative;
+    gap: 5px;
+    border: 2px solid var(--border-color);
+    box-sizing: border-box;
+    margin: 5px 0px;
+  }
+
+  .btnClose {
+    display: flex;
+    position: static;
+    width: 20px;
+    height: auto;
+    text-align: center;
+    margin: 0;
+    top: 0;
+    left: 0;
+    background-color: var(--border-color);
+    border: 1px solid var(--border-color);
+    padding: 0px 5px;
+    border-radius: 0px;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+  }
+
+  .btnClose:hover {
+    background-color: var(--bg-secondary);
+    color: white;
+  }
+
+  .titulo {
+    color: white;
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+  }
+
+  .sinergiasText {
+    color: white;
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    width: 100%;
+    padding: 0 20px;
+    text-align: center;
+    box-sizing: border-box;
+  }
+
+  .sinergiasSpan {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 1rem;
+  }
+
+  .composicionDiv {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    margin: 0 auto;
+  }
+
+  .composicionImg {
+    display: none;
+    position: relative;
+    width: 100%;
+    height: auto;
+
+  }
+
+  .containerCompo{
+    display: flex;
+    flex-direction: row;
+  }
+
+  .containerChampEspatula{
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+  }
+
+  .campeonEspatula{
+    transform: scale(0.9);
+    transition: 0.5s;
+  }
+
+  .campeonEspatula:hover{
+    transform: scale(1);
+  }
+
+  .show {
+    display: flex;
+  }
+
+  .selected{
+    transform: scale(1);
+  }
+
+  @media only screen and (max-width: 900px) {
+    .titulo {
+      font-size: larger;
+    }
+    .composicionDiv {
+      width: 100%;
+    }
+  }
+</style>

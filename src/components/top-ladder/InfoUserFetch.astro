@@ -4,5 +4,4 @@ const ACCOUNT_LINK = `https://${region}.api.riotgames.com//tft/summoner/v1/summo
 const resAccount = await fetch(ACCOUNT_LINK);
 const { id, accountId, profileIconId, revisionDate, summonerLevel } =
   await resAccount.json();
-console.log(id, accountId, profileIconId, revisionDate, summonerLevel);
 ---

@@ -1,0 +1,208 @@
+---
+const {} = Astro.props;
+import { Usuario, asc, desc, db, sql, eq } from 'astro:db';
+const region = Astro.url.searchParams.get('region') || 'todos'; //todos la1,etc
+const filtro = Astro.url.searchParams.get('filter') || 'puntaje'; // invocador, region, puntaje
+const orden = Astro.url.searchParams.get('order') || 'asc';
+let update = Astro.url.searchParams.get('update');
+import { updateUsersScores } from '../../db';
+
+
+
+const URL = {
+  profileIcon:
+    'https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/',
+  tierIcon:
+    'https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-shared-components/global/default/',
+  miniTierIcon:
+    'https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/images/ranked-mini-crests/',
+};
+
+const arrayPlataforma = ['la1', 'la2', 'euw1', 'na1'];
+
+const PLATAFORMAS = {
+  la1: 'LAN',
+  la2: 'LAS',
+  euw1: 'EUW',
+  br1: 'BR',
+  eun1: 'EUN',
+  jp1: 'JP',
+  kr: 'KR',
+  na1: 'NA',
+  oc1: 'OC',
+  tr1: 'TR',
+  ru: 'RU',
+  ph2: 'PH',
+  sg2: 'SG',
+  th2: 'TH',
+  tw2: 'TW',
+  vn2: 'VN',
+};
+
+var usuarios = await db
+  .select({
+    ladder: sql`(SELECT ROW_NUMBER() OVER (ORDER BY puntaje ASC, leaguePoints DESC) FROM Usuario AS u2 WHERE u2.id = Usuario.id) AS ladder`,
+    tier: Usuario.tier,
+    etiqueta: Usuario.etiqueta,
+    invocador: Usuario.invocador,
+    eliminado: Usuario.eliminado,
+    eventoNombre: Usuario.eventoNombre,
+    leaguePoints: Usuario.leaguePoints,
+    profileIconId: Usuario.profileIconId,
+    plataforma: Usuario.plataforma,
+    puntaje: Usuario.puntaje,
+    id: Usuario.id,
+  })
+  .from(Usuario);
+
+function sortByPuntaje(a, b) {
+  if (a.puntaje <= b.puntaje && a.leaguePoints >= b.leaguePoints) {
+    console.log('1', a, b);
+    return orden === 'asc' ? -1 : 1;
+  }
+  if (b.puntaje <= a.puntaje && b.leaguePoints >= a.leaguePoints) {
+    console.log('-1', a, b);
+    return orden === 'asc' ? 1 : -1;
+  }
+  console.log('0', a, b);
+  return 0;
+}
+
+function sortByPlataforma(a, b) {
+  if (a.plataforma <= b.plataforma && a.leaguePoints >= b.leaguePoints) {
+    console.log('1', a, b);
+    return orden === 'asc' ? -1 : 1;
+  }
+  if (b.plataforma <= a.plataforma && b.leaguePoints >= a.leaguePoints) {
+    console.log('-1', a, b);
+    return orden === 'asc' ? 1 : -1;
+  }
+  console.log('0', a, b);
+  return 0;
+}
+
+if (filtro === 'puntaje') {
+  usuarios.sort(sortByPuntaje);
+}
+
+var resultados;
+
+if (region !== 'todos') {
+  resultados = usuarios.filter((u) => u.plataforma === region);
+} else {
+  resultados = usuarios;
+}
+---
+
+<table id="tablaResultados">
+  <thead>
+    <tr>
+      <th>#LADDER</th>
+      <th>ICONO</th>
+      <th class="tablaInvocador">INVOCADOR</th>
+      <th>REGION</th>
+      <th>TIER</th>
+      <th>PUNTOS</th>
+    </tr>
+  </thead>
+  <tbody>
+    {
+      resultados.map(
+        (
+          {
+            tier,
+            etiqueta,
+            eventoNombre,
+            invocador,
+            eliminado,
+            leaguePoints,
+            profileIconId,
+            plataforma,
+            puntaje,
+            ladder,
+          },
+          index
+        ) => {
+          return (
+            <tr>
+              <td>
+                {region !== 'todos'
+                  ? orden === 'asc'
+                    ? index + 1
+                    : usuarios.filter((k) => k.plataforma === region).length -
+                      index
+                  : orden === 'asc'
+                    ? index + 1
+                    : usuarios.length - index}
+              </td>
+              <td>
+                <img
+                  src={URL.profileIcon + profileIconId + '.jpg'}
+                  alt={'RIOT profile icon'}
+                  height="50"
+                  width="50"
+                />
+              </td>
+              <td>{invocador + '#' + etiqueta}</td>
+              <td>{PLATAFORMAS[plataforma]}</td>
+              <td>
+                <img
+                  src={URL.tierIcon + tier.toLowerCase() + '.png'}
+                  alt={'RIOT tier icon'}
+                  height="50"
+                  width="50"
+                />
+              </td>
+              <td>{leaguePoints}</td>
+            </tr>
+          );
+        }
+      )
+    }
+  </tbody>
+</table>
+
+<script>
+  import { plataforma } from '../../store';
+  alert("todos")
+plataforma.subscribe((valor) => {
+    if (valor) {
+      
+      document.getElementById('tablaResultados').style.backgroundColor = 'black';
+    } else {
+      document.getElementById('tablaResultados').style.backgroundColor = 'white';
+    }
+  })
+</script>
+
+<style>
+  table {
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  th {
+    text-align: center;
+  }
+  td {
+    text-align: center;
+  }
+
+  tr:hover {
+    background-color: var(--bg-secondary);
+  }
+
+  table,
+  th,
+  td {
+    border: 1px solid;
+  }
+
+  .tablaInvocador {
+    width: 40%;
+  }
+
+  .hide {
+    display: none;
+  }
+</style>
