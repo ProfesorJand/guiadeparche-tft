@@ -1,23 +1,26 @@
 name: Deploy to GitHub Pages
 
 env:
-  ASTRO_STUDIO_APP_TOKEN: ${{secrets.ASTRO_STUDIO_APP_TOKEN }}
+  API_KEY: ${{secrets.API_KEY }}
+  API_KEY_GOOGLE: ${{secrets.API_KEY_GOOGLE }}
+  ID_CLIENTE_GOOGLE_API: ${{secrets.ID_CLIENTE_GOOGLE_API }}
 
 on:
-  # Trigger the workflow every time you push to the `main` branch
-  # Using a different branch name? Replace `main` with your branch’s name
+  # Activa el flujo de trabajo cada vez que hagas push a la rama `main`
+  # Usando un nombre de rama diferente? Reemplaza `main` con el nombre de tu rama
   push:
-    branches:
-      - main
-  pull_request:
-    types: [opened, reopened, synchronize]
+    branches: [ main ]
+  # Te permite ejecutar este flujo de trabajo manualmente desde la pestaña Acciones en GitHub.
+  workflow_dispatch:
+
+# Permite que este trabajo clone el repositorio y cree un despliegue de página
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
-  DB:
-    permissions:
-      contents: read
-      actions: read
-      pull-requests: write
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout your repository using git
@@ -25,9 +28,9 @@ jobs:
       - name: Install, build, and upload your site
         uses: withastro/action@v2
         # with:
-          # path: . # The root location of your Astro project inside the repository. (optional)
-          # node-version: 20 # The specific version of Node that should be used to build your site. Defaults to 20. (optional)
-          # package-manager: pnpm@latest # The Node package manager that should be used to install dependencies and build your site. Automatically detected based on your lockfile. (optional)
+          # path: . # La ubicación raíz de tu proyecto de Astro dentro del repositorio. (opcional)
+          # node-version: 20 # La versión específica de Node que debería usarse para construir tu sitio. Por defecto es 20. (opcional)
+          # package-manager: pnpm@latest # El gestor de paquetes de Node que debería usarse para instalar dependencias y construir tu sitio. Detectado automáticamente basado en tu lockfile. (opcional)
 
   deploy:
     needs: build
