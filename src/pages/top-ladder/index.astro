@@ -1,7 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import Form from '../../components/top-ladder/Form.astro';
-// import Filtro from '../../components/top-ladder/Filtro.astro';
+
 import Filtro from '../../components/top-ladder/Filtro.jsx';
 import Resultados from '../../components/top-ladder/Resultados.jsx';
 const title = 'TFT - Top Ladder';
@@ -9,11 +8,7 @@ const title = 'TFT - Top Ladder';
 
 <Layout title={title}>
   <main>
-    <!-- <Form /> -->
     <Filtro />
-    <Resultados ></Resultados>
-    <!-- <Filtro transition:persist="filtros-top-ladder" />
-    <Resultados transition:persist="resultados-top-ladder" /> -->
-      
+    <Resultados ></Resultados>    
   </main>
 </Layout>
