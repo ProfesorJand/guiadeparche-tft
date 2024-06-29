@@ -8,10 +8,10 @@
 <div id="twitch-embed" ></div>
 
 <!-- Load the Twitch embed script -->
-<script src="https://embed.twitch.tv/embed/v1.js" data-astro-rerun></script>
+<script src="https://embed.twitch.tv/embed/v1.js" data-astro-rerun is:inline></script>
 
 <!-- Create a Twitch.Embed object that will render within the "twitch-embed" element. -->
-<script type="text/javascript" defer async is:inline>
+<script type="text/javascript" is:inline>
    document.addEventListener('astro:page-load', () => {
     const divTwitch = document.getElementById('twitch-embed');
     //var channel = divTwitch.dataset.channel;
