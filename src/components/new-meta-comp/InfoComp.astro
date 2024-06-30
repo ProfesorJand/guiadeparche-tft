@@ -28,9 +28,9 @@ const { championsTier, index } = Astro.props;
               alt={'Composicion Meta ' + champTier.Titulo}
               class="composicionImg show"
               loading="lazy"
-              width={100}
-              height={100}
-              inferSize={false}
+              inferSize={true}
+              width={50}
+              height={50}
               />
               {espatula && Object.keys(espatula).map((key, index)=>{
                 if(key === "Comp1" || key === "Comp2"){
@@ -40,9 +40,9 @@ const { championsTier, index } = Astro.props;
                         alt={`Composicion Meta Espatula ` + champTier.Titulo}
                         class="composicionImg"
                         loading='lazy'
-                        width={100}
-                        height={100}
-                        inferSize={false}
+                        width={50}
+                        height={50}
+                        inferSize={true}
                       />
                     )
                   }
@@ -55,9 +55,9 @@ const { championsTier, index } = Astro.props;
               alt={'Composicion Meta ' + champTier.Titulo}
               class="campeonEspatula selected"
               loading="lazy"
-              width={100}
-              height={100}
-              inferSize={false}
+              width={50}
+              height={50}
+              inferSize={true}
               />
               {espatula && Object.keys(espatula).map((key, index)=>{
                 if(key === "Item1" || key === "Item2"){
@@ -67,9 +67,9 @@ const { championsTier, index } = Astro.props;
                         alt={`Composicion Meta Espatula ` + champTier.Titulo}
                         class="campeonEspatula"
                         loading='lazy'
-                        width={100}
-                        height={100}
-                        inferSize={false}
+                        width={50}
+                        height={50}
+                        inferSize={true}
                       />
                     )
                 }
@@ -184,9 +184,9 @@ const { championsTier, index } = Astro.props;
     display: flex;
     position: relative;
     flex-direction: column;
-    width: 100%;
     align-items: center;
-    margin: 0 auto;
+    margin: 0;
+    width: 90%;
   }
 
   .composicionImg {
@@ -206,9 +206,12 @@ const { championsTier, index } = Astro.props;
     display: flex;
     flex-direction: column;
     cursor: pointer;
+    width: 10%;
   }
 
   .campeonEspatula{
+    width: 100%;
+    height: auto;
     transform: scale(0.9);
     transition: 0.5s;
   }

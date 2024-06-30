@@ -6,21 +6,15 @@ const { championsTier, index } = Astro.props;
 <div class="containerChampionTierList">
   {
     championsTier.map(async (champTier, i) => {
-      const src = champTier.ImgCampeon;
-      const format = 'png' || 'jpg';
-      const width = 100;
-      const height = 100;
       return (
         <Image
-          src={src}
+          src={champTier.ImgCampeon}
           alt={champTier.Titulo}
           class={
             'imgChampionTierList' +
             (index === 0 && i === 0 ? ' imgSelected' : '')
           }
-          width={width}
-          height={height}
-          loading="lazy"
+          inferSize={true}
         />
       );
     })

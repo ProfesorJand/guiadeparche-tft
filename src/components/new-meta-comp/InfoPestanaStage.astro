@@ -30,9 +30,9 @@ function encontrarAumento(id) {
                         alt={'Aumento ' + aumento.name}
                         class="aumentoImg"
                         loading="lazy"
-                        width={100}
-                        height={100}
-                        inferSize={false}
+                        width={50}
+                        height={50}
+                        inferSize={true}
                       />
                       <div class="containerTooltip">
                         <h1>{aumento.name}</h1>
@@ -56,8 +56,7 @@ function encontrarAumento(id) {
             loading="lazy"
             src={info.Comp1}
             alt={`Early Comp ${Titulo}`}
-            width={100}
-            height={100}
+            inferSize={true}
             />
             </div>
         }
@@ -70,8 +69,7 @@ function encontrarAumento(id) {
             loading="lazy"
             src={info.Comp2}
             alt={`Early Comp ${info}`}
-            width={100}
-            height={100}
+            inferSize={true}
             />
             </div>
         }
@@ -164,11 +162,12 @@ function encontrarAumento(id) {
     display: flex;
     flex-direction: column;
     width: 100%;
+    align-items: center;
   }
 
   .InfoCompImg{
     display: flex;
-    width: 100%;
+    width: 80%;
     height: auto;
   }
 
