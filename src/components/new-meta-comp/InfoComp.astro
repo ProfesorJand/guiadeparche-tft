@@ -29,8 +29,6 @@ const { championsTier, index } = Astro.props;
               class="composicionImg show"
               loading="lazy"
               inferSize={true}
-              width={50}
-              height={50}
               />
               {espatula && Object.keys(espatula).map((key, index)=>{
                 if(key === "Comp1" || key === "Comp2"){
@@ -40,8 +38,6 @@ const { championsTier, index } = Astro.props;
                         alt={`Composicion Meta Espatula ` + champTier.Titulo}
                         class="composicionImg"
                         loading='lazy'
-                        width={50}
-                        height={50}
                         inferSize={true}
                       />
                     )
