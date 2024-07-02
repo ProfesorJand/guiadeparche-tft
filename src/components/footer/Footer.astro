@@ -7,38 +7,34 @@
   footer {
     display: flex;
     position: relative;
-    width: 50%;
+    width: 100%;
     margin: 0 auto;
-    padding: 1rem;
     justify-content: center;
     align-items: center;
-    min-height: 200px;
+    aspect-ratio: 16/9;
     box-sizing: border-box;
-    background-color: var(--bg-primary);
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: bottom 0px right 0px;
+    flex-direction: column;
   }
 
   .footer {
-    width: 50%;
+    width: 100%;
     height: max-content;
     display: flex;
     position: relative;
     min-height: inherit;
     border: 1px solid white;
+    box-sizing: border-box;
+    flex: 1;
   }
-  @media only screen and (max-width: 900px) {
-    footer{
-      width: 100%;
-      flex-direction: column;
+
+  @media only screen and (min-width: 900px) {
+    footer {
+      width: 50%;
+      flex-direction: row;
     }
     .footer {
-      background-color: transparent;
-      padding: 5px;
-      justify-content: center;
-      align-items: center;
-      width: 100%;
+    width: 50%;
     }
   }
+
 </style>

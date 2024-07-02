@@ -154,7 +154,7 @@ const { championsTier, index } = Astro.props;
     position: relative;
     align-items: center;
     justify-content: center;
-    font-size: 2rem;
+    font-size: larger;
     margin: 0;
     padding: 0;
     text-align: center;
@@ -186,7 +186,7 @@ const { championsTier, index } = Astro.props;
     flex-direction: column;
     align-items: center;
     margin: 0;
-    width: 90%;
+    width: 100%;
   }
 
   .composicionImg {
@@ -228,12 +228,12 @@ const { championsTier, index } = Astro.props;
     transform: scale(1);
   }
 
-  @media only screen and (max-width: 900px) {
+  @media only screen and (min-width: 900px) {
     .titulo {
-      font-size: larger;
+      font-size: 2rem;
     }
     .composicionDiv {
-      width: 100%;
+      width: 90%;
     }
   }
 </style>

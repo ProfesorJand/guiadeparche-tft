@@ -121,18 +121,11 @@ function encontrarAumento(id) {
     margin-top: -5px;
   }
 
-  .containerInfoPestanas{
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-  }
-
   .pestanaContainerContenido {
     background-color: var(--bg-primary);
     position: relative;
     align-items: center;
     justify-content: center;
-    /* padding: 20px 20px; */
     width: 100%;
     gap: 5px;
     display: none;
@@ -140,7 +133,7 @@ function encontrarAumento(id) {
 
   .tooltip {
     display: flex;
-    position: relative;
+    position:initial;
     width: 10%;
     align-items: center;
     justify-content: center;
@@ -179,11 +172,8 @@ function encontrarAumento(id) {
     text-align: center;
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (min-width: 900px) {
   .tooltip{
-    position:initial
-  }
-  .pestanasContainer{
     position: relative;
   }
 }

@@ -76,13 +76,13 @@
 
 <style>
   #twitch-embed {
-    position: fixed;
-    padding: 20px;
-    bottom: 0px;
-    left: 0px;
-    width: 20%;
-    aspect-ratio: 16 / 9;
-  }
+      display: flex;
+      position: relative;
+      box-sizing: border-box;
+      width: 100%;
+      aspect-ratio: 16/9;
+      padding: calc(9rem / 16) 1rem;
+    }
   .hide {
     display: none;
   }
@@ -90,14 +90,12 @@
     display: flex;
   }
 
-  @media only screen and (max-width: 900px) {
-    #twitch-embed {
-      display: flex;
-      position: relative;
-      /* align-items: center; */
-      /* justify-content: center; */
-      box-sizing: border-box;
-      width: 100%;
-    }
+  @media only screen and (min-width: 900px) {
+      #twitch-embed {
+        position: fixed;
+        bottom: 0px;
+        left: 0px;
+        width: 25%;
+      }
   }
 </style>
