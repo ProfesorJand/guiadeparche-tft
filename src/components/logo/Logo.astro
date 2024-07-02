@@ -1,16 +1,18 @@
 ---
 import { Image } from 'astro:assets';
 import logo from '../../assets/GP_logo.png';
+interface ImageMetadata {
+  src: string;
+  width: number;
+  height: number;
+  format: string;
+}
 ---
 
 <Image
   class="logo"
-  src={logo.src}
+  src={logo}
   alt="Logo Guiadeparche"
-  loading="lazy"
-  width={50}
-  height={50}
-  inferSize={false}
 />
 
 <style>
