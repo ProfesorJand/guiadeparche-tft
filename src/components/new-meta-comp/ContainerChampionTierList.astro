@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, Picture } from 'astro:assets';
 const { championsTier, index } = Astro.props;
 ---
 
@@ -22,6 +22,7 @@ const { championsTier, index } = Astro.props;
     })
   }
 </div>
+
 
 <script is:inline>
   document.addEventListener('astro:page-load', () => {

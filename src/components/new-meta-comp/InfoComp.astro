@@ -27,7 +27,7 @@ const { championsTier, index } = Astro.props;
               src={src}
               alt={'Composicion Meta ' + champTier.Titulo}
               class="composicionImg show"
-              loading="lazy"
+              loading={(index === 0 && i === 0 ? 'eager' : 'lazy')}
               inferSize={true}
               />
               {espatula && Object.keys(espatula).map((key, index)=>{
@@ -50,7 +50,7 @@ const { championsTier, index } = Astro.props;
               src={srcCampeon}
               alt={'Composicion Meta ' + champTier.Titulo}
               class="campeonEspatula selected"
-              loading="lazy"
+              loading={(index === 0 && i === 0 ? 'eager' : 'lazy')}
               width={50}
               height={50}
               inferSize={true}
@@ -62,7 +62,7 @@ const { championsTier, index } = Astro.props;
                         src={espatula[key]}
                         alt={`Composicion Meta Espatula ` + champTier.Titulo}
                         class="campeonEspatula"
-                        loading='lazy'
+                        loading={(index === 0 && i === 0 ? 'eager' : 'lazy')}
                         width={50}
                         height={50}
                         inferSize={true}
