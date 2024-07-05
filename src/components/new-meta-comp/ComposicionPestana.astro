@@ -4,7 +4,7 @@ import InfoPestanaStage from "./InfoPestanaStage.astro";
 import InfoPestanaTips from "./InfoPestanaTips.astro";
 import Youtube from "../youtube/Youtube.astro"
 import InfoPestanaGameplay from "./InfoPestanaGameplay.astro";
-const {Titulo, Gamep, Tips, Early, Mid, Late } = Astro.props;
+const {Titulo, Gamep, Tips, Early, Mid, Late, index } = Astro.props;
 const aumentos = datosSet11Latino.objetos;
 ---
 
@@ -42,7 +42,7 @@ const aumentos = datosSet11Latino.objetos;
       {Object.values(Gamep).map((url)=>{
         return (
           // <InfoPestanaGameplay Gameplay={url}/>
-          <Youtube src={url}></Youtube>
+          <Youtube src={url} loading={index === 0 ? "eager" : "lazy"}></Youtube>
         )
       })}
     </div>

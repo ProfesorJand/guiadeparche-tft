@@ -1,5 +1,5 @@
 ---
-const {src} = Astro.props;
+const {src,loading="lazy"} = Astro.props;
 import { Image } from 'astro:assets';
 const video = await getId(src);
 //const url = `//www.youtube.com/embed/${videoId}?autoplay=1`;
@@ -27,18 +27,21 @@ async function fetchPlaylist(playlistId){
     const {thumbnail_url, html} = await jsonUrl.json();
     const srcMatch = html.match(/src="([^"]+)"/);
     console.log(srcMatch ? srcMatch[1] : null)
-    return {thumbnail_url: thumbnail_url.replace("hqdefault.jpg","maxresdefault.jpg"), url: srcMatch ? srcMatch[1] : null}
+    return {thumbnail_url: thumbnail_url.replace("hqdefault.jpg","default.jpg"), url: srcMatch ? srcMatch[1] : null}
 }
 ---
 
 
-<div class="divIframe" data-url={video.url}>
+<div class="divIframe" data-url={video.url} data-loading={loading}>
     <Image
         src={video.thumbnail}
         width={25*16}
         height={25*9}
         class="youtubeThumbnail"
         alt="video de youtube"
+        decoding={loading === "lazy" ? "async": "sync"}
+        loading={loading}
+        
     />
     <!-- <iframe
         allow={allow}
@@ -72,13 +75,15 @@ async function fetchPlaylist(playlistId){
         const youtubeThumbnail = document.querySelectorAll(".youtubeThumbnail");
         youtubeThumbnail.forEach((img)=>{
             const getDataURL = img.parentElement.dataset.url;
+            const getDataLoading = img.parentElement.dataset.loading;
             const divIframe = img.parentElement;
             img.classList.add("hide");
             const iframe = document.createElement("iframe")
             iframe.setAttribute("width","100%")
             iframe.setAttribute("height","100%")
-            iframe.setAttribute("loading","lazy")
+            iframe.setAttribute("loading",getDataLoading)
             iframe.setAttribute("src",getDataURL)
+            iframe.setAttribute("title","Videos de Youtube Guiadeparche.com")
             iframe.setAttribute("referrerpolicy","strict-origin-when-cross-origin")
             iframe.setAttribute("allow","accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share")
             divIframe.appendChild(iframe)
