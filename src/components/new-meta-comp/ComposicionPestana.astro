@@ -38,7 +38,11 @@ const aumentos = datosSet11Latino.objetos;
   }
   {(Gamep) &&
     <div class={"containerInfoPestanas" + (!Early && !Mid && !Late && !Tips?" show":"")}>
-      <InfoPestanaGameplay Gameplay={Gamep}/>
+      {Object.values(Gamep).map((url)=>{
+        return (
+          <InfoPestanaGameplay Gameplay={url}/>
+        )
+      })}
     </div>
   }
 </div>

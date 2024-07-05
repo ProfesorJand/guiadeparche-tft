@@ -1,8 +1,11 @@
 ---
-import meta from './metaTFTComposiciones.json';
+//import meta from './metaTFTComposiciones.json';
 import ImgTier from './ImgTier.astro';
 import ContainerChampionTierList from './ContainerChampionTierList.astro';
 import InfoComp from './InfoComp.astro';
+const fetchMeta = await fetch('https://guiadeparche.com/tftdata/Set11/metaComps/metaTFTComposiciones.json');
+const meta = await fetchMeta.json();
+
 ---
 
 
