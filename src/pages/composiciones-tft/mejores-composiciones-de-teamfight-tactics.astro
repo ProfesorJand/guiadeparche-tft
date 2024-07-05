@@ -2,17 +2,12 @@
 import Layout from '../../layouts/Layout.astro';
 import ContainerMeta from '../../components/new-meta-comp/ContainerMeta.astro';
 import Youtube from '../../components/youtube/Youtube.astro';
-const embedPlaylistMetaComp = {
-  src:"https://www.youtube.com/embed/videoseries?si=bgSCFvRODu7hH8uv&amp;list=PLxRnNvReiLMEriFDu0UxXScDabCIX-PWy",
-  title:"YouTube video player",
-  allow:"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen;"
-}
 const title = 'TFT - Meta Comp';
 ---
 
 <Layout title={title}>
   <main>
-    <Youtube src={embedPlaylistMetaComp.src} title={embedPlaylistMetaComp.title} allow={embedPlaylistMetaComp.allow} playlist={true}></Youtube>
+    <Youtube src={"https://youtube.com/playlist?list=PLxRnNvReiLMEriFDu0UxXScDabCIX-PWy&si=YW7NdSvPfu9dQhx9"}></Youtube>
     <h1 class="titulo">Meta Comp</h1>
     <ContainerMeta />
   </main>

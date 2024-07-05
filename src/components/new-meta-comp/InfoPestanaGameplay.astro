@@ -1,7 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 const {Gameplay} = Astro.props;
-const videoId = getId(Gameplay)
+const videoId = getId(Gameplay);
 const thumbail = `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`;
 function getId(url) {
     const regExp =

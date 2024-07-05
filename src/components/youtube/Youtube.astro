@@ -1,19 +1,46 @@
 ---
-const {src, title, allow,width, heigth, playlist} = Astro.props
+const {src} = Astro.props;
+import { Image } from 'astro:assets';
+const video = await getId(src);
+//const url = `//www.youtube.com/embed/${videoId}?autoplay=1`;
 
-function getId(url) {
-            const regExp =
-              /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-            const match = url.match(regExp);
-    
-            return match && match[2].length === 11 ? `${match[2]}` : null;
+async function getId(url) {
+    const videoRegExp = /(?:youtube\.com\/(?:[^/]+\/[^/]+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/ ]{11})/;
+    const playlistRegExp = /(?:youtube\.com\/(?:playlist|embed\/videoseries)\?list=)([^"&?/ ]+)/;
+
+    const videoMatch = url.match(videoRegExp);
+    const playlistMatch = url.match(playlistRegExp);
+    if (playlistMatch) {
+        const data = await fetchPlaylist(playlistMatch[1])
+        return { type: 'playlist', id: playlistMatch[1], thumbnail: data.thumbnail_url, url: data.url};
+    }
+    else if (videoMatch) {
+        return { type: 'video', id: videoMatch[1], thumbnail: `https://i.ytimg.com/vi/${videoMatch[1]}/maxresdefault.jpg`, url: `https://www.youtube.com/embed/${videoMatch[1]}` };
+    } 
+    else {
+        return null;
+    }
+}
+
+async function fetchPlaylist(playlistId){
+    const jsonUrl = await fetch(`https://youtube.com/oembed?url=https%3A//www.youtube.com/playlist%3Flist%3D${playlistId}&format=json`);
+    const {thumbnail_url, html} = await jsonUrl.json();
+    const srcMatch = html.match(/src="([^"]+)"/);
+    console.log(srcMatch ? srcMatch[1] : null)
+    return {thumbnail_url: thumbnail_url.replace("hqdefault.jpg","maxresdefault.jpg"), url: srcMatch ? srcMatch[1] : null}
 }
 ---
 
 
-<div class="divIframe" style={{width, heigth}}>
-    
-    <iframe
+<div class="divIframe" data-url={video.url}>
+    <Image
+        src={video.thumbnail}
+        width={25*16}
+        height={25*9}
+        class="youtubeThumbnail"
+        alt="video de youtube"
+    />
+    <!-- <iframe
         allow={allow}
         src={!playlist ? `//www.youtube.com/embed/ + ${getId(src)}` : src}
         loading="lazy"
@@ -21,13 +48,17 @@ function getId(url) {
         height="100%"
         title={title}
     >
-    </iframe>
+    </iframe> -->
 </div>
 
 <style>
     .divIframe{
         display: flex;
-        position: relative;
+        width: 100%;
+        position:relative;
+        flex-direction:row;
+        align-items: center;
+        justify-content: center;
         aspect-ratio: 16/9;
     }
     .iframe{
@@ -35,3 +66,22 @@ function getId(url) {
         height: 100%;
     }
 </style>
+
+<script>
+    document.addEventListener('astro:page-load', () => {
+        const youtubeThumbnail = document.querySelectorAll(".youtubeThumbnail");
+        youtubeThumbnail.forEach((img)=>{
+            const getDataURL = img.parentElement.dataset.url;
+            const divIframe = img.parentElement;
+            img.classList.add("hide");
+            const iframe = document.createElement("iframe")
+            iframe.setAttribute("width","100%")
+            iframe.setAttribute("height","100%")
+            iframe.setAttribute("loading","lazy")
+            iframe.setAttribute("src",getDataURL)
+            iframe.setAttribute("referrerpolicy","strict-origin-when-cross-origin")
+            iframe.setAttribute("allow","accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share")
+            divIframe.appendChild(iframe)
+        })
+    })
+</script>
