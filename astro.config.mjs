@@ -6,10 +6,12 @@ import react from "@astrojs/react";
 
 // https://astro.build/config
 export default defineConfig({
-  //site: 'https://tft.guiadeparche.com',
-  site: 'https://profesorjand.github.io',
+  //site: 'https://tft.guiadeparche.com', // para guiadeparche
+  site: 'https://profesorjand.github.io', // para github page
+  base: '/guiadeparche-tft', // para github page
+  trailingSlash: "always", //para github page
   redirects: {
-    '/': '/composiciones-tft/mejores-composiciones-de-teamfight-tactics/'
+    '/': '/guiadeparche-tft/composiciones-tft/mejores-composiciones-de-teamfight-tactics/'
   },
   output: 'static', // Cambiado a 'static' para asegurarse de que se genera contenido estático para deploy
   //output: 'server',
