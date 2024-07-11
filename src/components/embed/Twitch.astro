@@ -11,7 +11,7 @@
 <!-- <script src="https://embed.twitch.tv/embed/v1.js" data-astro-rerun is:inline></script> -->
 
 <!-- Create a Twitch.Embed object that will render within the "twitch-embed" element. -->
-<script type="text/javascript" is:inline>
+<script>
     document.addEventListener('astro:page-load', () => {
       var script = document.createElement('script');
       script.type = 'text/javascript';
@@ -19,6 +19,7 @@
       script.id = "scriptTwitch"
       script.async = true;
       script.defer = true;
+      script.setAttribute("type","text/javascript")
       document.getElementsByTagName('head')[0].appendChild(script);
 
       script.onload = function() { 
