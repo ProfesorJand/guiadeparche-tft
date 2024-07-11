@@ -1,16 +1,13 @@
 ---
 import  Youtube from "../youtube/Youtube.astro"
 const {Gameplay} = Astro.props;
-const videoId = getId(Gameplay);
 
-const thumbail = `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`;
-function getId(url) {
-    const regExp =
-        /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-    const match = url.match(regExp);
-    return match && match[2].length === 11 ? match[2] : null;
-}
-const url = `//www.youtube.com/embed/${videoId}?autoplay=1`;
+// function getId(url) {
+//     const regExp =
+//         /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+//     const match = url.match(regExp);
+//     return match && match[2].length === 11 ? match[2] : null;
+// }
 ---
 
 
@@ -18,41 +15,6 @@ const url = `//www.youtube.com/embed/${videoId}?autoplay=1`;
 <Youtube src={Gameplay} />
 
 
-<style>
-    .divIframe{
-        display: flex;
-        width: 100%;
-        position:relative;
-        flex-direction:row;
-        align-items: center;
-        justify-content: center;
-        aspect-ratio: 16/9;
-    }
-    .youtubeThumbnail{
-        cursor: pointer;
-    }
-    .hide{
-        display:none;
-    }
-</style>
-<!-- 
-<script>
-    document.addEventListener('astro:page-load', () => {
-        //const youtubeThumbnail = document.querySelectorAll(".youtubeThumbnail");
-        const youtubeThumbnail = document.getElementsByClassName("divIframe");
-        Array.prototype.forEach.call(youtubeThumbnail, (div)=>{
-            const getDataURL = div.dataset.url;
-            const iframe = document.createElement("iframe")
-            iframe.setAttribute("width","100%")
-            iframe.setAttribute("height","100%")
-            iframe.setAttribute("loading","lazy")
-            iframe.setAttribute("src",getDataURL)
-            iframe.setAttribute("referrerpolicy","strict-origin-when-cross-origin")
-            iframe.setAttribute("allow","accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share")
-            div.appendChild(iframe)
-        })
-    })
-</script> -->
 
 
 

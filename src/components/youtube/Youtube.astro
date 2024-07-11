@@ -1,6 +1,8 @@
 ---
 const {src,loading="lazy"} = Astro.props;
-//import { Image } from 'astro:assets';
+import { Image } from 'astro:assets';
+import spinner180v2 from '../../assets/loading-180-v2.svg';
+import spinner180 from '../../assets/loading-180.svg';
 const video = await getId(src);
 //const url = `//www.youtube.com/embed/${videoId}?autoplay=1`;
 
@@ -16,7 +18,6 @@ async function getId(url) {
         const newurl = new URL(url);
         const playlistId = newurl.searchParams.get('list');
         const siParam = newurl.searchParams.get('si') || '';
-        console.log(newurl);
         return {type:"playlist", url: `https://www.youtube.com/embed/videoseries?list=${playlistId}&si=${siParam}}`}
     }
     else if (videoMatch) {
@@ -39,14 +40,14 @@ async function getId(url) {
 
 
 <div class="divIframe" data-url={video.url} data-loading={loading}>
-    <!-- <Image
-        src={video.thumbnail}
+    <Image
+        src={spinner180v2}
         width={25*16}
         height={25*9}
-        class="youtubeThumbnail"
-        alt="video de youtube"
+        class="spinner"
+        alt="spinner-loading"
         
-    /> -->
+    />
     <!-- <iframe
         allow={allow}
         src={!playlist ? `//www.youtube.com/embed/ + ${getId(src)}` : src}
@@ -68,17 +69,30 @@ async function getId(url) {
         justify-content: center;
         aspect-ratio: 16/9;
     }
-    .iframe{
+    .iframeYoutube{
+        display: flex;
         width: 100%;
         height: 100%;
+    }
+    .spinner{
+        display: flex;
+        position: absolute;
+        
+    }
+    .hideIframe{
+        visibility: hidden;
+    }
+    .hide{
+        display: none;
     }
 </style>
 
 <script>
     document.addEventListener('astro:page-load', () => {
         const youtubeThumbnail = document.getElementsByClassName("divIframe");
-        Array.prototype.forEach.call(youtubeThumbnail,(div)=>{
+        Array.prototype.forEach.call(youtubeThumbnail,(div:HTMLDivElement)=>{
             const getDataURL = div.dataset.url;
+            const spinner = div.children;
             const iframe = document.createElement("iframe")
             iframe.setAttribute("width","100%")
             iframe.setAttribute("height","100%")
@@ -87,7 +101,14 @@ async function getId(url) {
             iframe.setAttribute("title","Videos de Youtube Guiadeparche.com")
             iframe.setAttribute("referrerpolicy","strict-origin-when-cross-origin")
             iframe.setAttribute("allow","accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share")
+            iframe.classList.add("iframeYoutube")
+            iframe.classList.add("hideIframe")
             div.appendChild(iframe)
+            iframe.addEventListener("load",()=>{
+                iframe.classList.toggle("hideIframe")
+                spinner[0].classList.add("hide")
+                
+            })
         })
     })
 </script>
