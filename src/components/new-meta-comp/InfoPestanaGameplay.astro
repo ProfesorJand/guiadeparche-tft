@@ -1,7 +1,8 @@
 ---
-import { Image } from 'astro:assets';
+import  Youtube from "../youtube/Youtube.astro"
 const {Gameplay} = Astro.props;
 const videoId = getId(Gameplay);
+
 const thumbail = `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`;
 function getId(url) {
     const regExp =
@@ -14,17 +15,7 @@ const url = `//www.youtube.com/embed/${videoId}?autoplay=1`;
 
 
 
-<div class="divIframe" data-url={url}>
-    <Image
-        class="youtubeThumbnail"
-        src={thumbail}
-        alt="Logo Guiadeparche"
-        width={50*16}
-        height={50*9}
-        inferSize={true}
-        
-    />
-</div>
+<Youtube src={Gameplay} />
 
 
 <style>
@@ -44,14 +35,13 @@ const url = `//www.youtube.com/embed/${videoId}?autoplay=1`;
         display:none;
     }
 </style>
-
+<!-- 
 <script>
     document.addEventListener('astro:page-load', () => {
-        const youtubeThumbnail = document.querySelectorAll(".youtubeThumbnail");
-        youtubeThumbnail.forEach((img)=>{
-            const getDataURL = img.parentElement.dataset.url;
-            const divIframe = img.parentElement;
-            img.classList.add("hide");
+        //const youtubeThumbnail = document.querySelectorAll(".youtubeThumbnail");
+        const youtubeThumbnail = document.getElementsByClassName("divIframe");
+        Array.prototype.forEach.call(youtubeThumbnail, (div)=>{
+            const getDataURL = div.dataset.url;
             const iframe = document.createElement("iframe")
             iframe.setAttribute("width","100%")
             iframe.setAttribute("height","100%")
@@ -59,10 +49,10 @@ const url = `//www.youtube.com/embed/${videoId}?autoplay=1`;
             iframe.setAttribute("src",getDataURL)
             iframe.setAttribute("referrerpolicy","strict-origin-when-cross-origin")
             iframe.setAttribute("allow","accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share")
-            divIframe.appendChild(iframe)
+            div.appendChild(iframe)
         })
     })
-</script>
+</script> -->
 
 
 
