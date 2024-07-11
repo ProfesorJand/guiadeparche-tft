@@ -47,20 +47,14 @@
     }
 
     function handleOnline() {
-      divTwitch.classList.remove('hide');
-      divTwitch.classList.add('show');
       embed.removeEventListener(Twitch.Embed.ONLINE, handleOnline);
       embed.addEventListener(Twitch.Embed.OFFLINE, handleOffline);
+      divTwitch.classList.remove('hide');
+      divTwitch.classList.add('show');
       embed.setMuted(false);
     }
-
     function handleOffline() {
       checkAnotherStreamer();
-      divTwitch.classList.add('hide');
-      divTwitch.classList.remove('show');
-      embed.removeEventListener(Twitch.Embed.OFFLINE, handleOffline);
-      embed.addEventListener(Twitch.Embed.ONLINE, handleOnline);
-      embed.setMuted(true);
     }
     function checkAnotherStreamer(){
       embed.setChannel("relic_lol");
