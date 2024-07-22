@@ -2,7 +2,7 @@
 const {src,loading="lazy"} = Astro.props;
 import { Image } from 'astro:assets';
 import spinner180v2 from '../../assets/loading-180-v2.svg';
-import spinner180 from '../../assets/loading-180.svg';
+//import spinner180 from '../../assets/loading-180.svg';
 const video = await getId(src);
 //const url = `//www.youtube.com/embed/${videoId}?autoplay=1`;
 
@@ -48,15 +48,6 @@ async function getId(url) {
         alt="spinner-loading"
         
     />
-    <!-- <iframe
-        allow={allow}
-        src={!playlist ? `//www.youtube.com/embed/ + ${getId(src)}` : src}
-        loading="lazy"
-        width="100%"
-        height="100%"
-        title={title}
-    >
-    </iframe> -->
 </div>
 
 <style>

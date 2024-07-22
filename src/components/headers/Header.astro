@@ -26,6 +26,10 @@ const menus = [
     nombre: 'Guias',
     link: '/guias/',
   },
+  {
+    nombre: 'Guias',
+    link: '/guias/',
+  },
 ];
 ---
 
@@ -42,12 +46,40 @@ const menus = [
 </header>
 
 <style>
+  header{
+    display: flex;
+    width:100%;
+    box-sizing: border-box;
+    height: 5rem;
+    overflow: auto;
+    white-space: nowrap;
+    flex:1
+  }
+  nav{
+    display: flex;
+    width:100%;
+    box-sizing: border-box;
+    justify-content: center;
+    background-color: var(--bg-primary)
+  }
   .menuContainer {
     display: flex;
     flex-direction: row;
     position: relative;
     gap: 10px;
     align-items: center;
-    justify-content: center;
+    /* justify-content: center; */
+    /* width:50%; */
+   
+    box-sizing: border-box;
+  }
+
+  @media only screen and (min-width: 900px) {
+    header {
+      width: 100%;
+      white-space: break-spaces;
+      scrollbar-width: thin;
+      overflow-x: none;
+    }
   }
 </style>
