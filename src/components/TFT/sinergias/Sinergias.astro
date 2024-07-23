@@ -1,0 +1,12 @@
+---
+const {nombre} = Astro.props;
+
+---
+
+<img class="img-sinergia-svg" src=`../../../src/assets/sinergiasSet12/Trait_Icon_12_${nombre.replace("tft_trait_displayname_Set12_","").replace("tft_trait_displayname_TFT12_","").replace("Explorer","Best_friends")}.svg` alt={nombre} height="20" width="20"/>
+
+<style>
+    .img-sinergia-svg{
+        filter: invert(1);
+    }
+</style>

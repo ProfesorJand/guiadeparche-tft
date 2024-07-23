@@ -1,6 +1,7 @@
 import { defineConfig, squooshImageService } from 'astro/config';
 import node from '@astrojs/node';
 import db from "@astrojs/db";
+import sitemap from '@astrojs/sitemap';
 
 import react from "@astrojs/react";
 
@@ -23,6 +24,5 @@ export default defineConfig({
     service: squooshImageService(),
     domains: ['astro.build'],
   },
-
-  integrations: [db(), react()]
+  integrations: [db(), react(), sitemap()]
 });

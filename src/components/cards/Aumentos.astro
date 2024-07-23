@@ -4,7 +4,40 @@ const {img, titulo, texto} = Astro.props;
 ---
 
 <div class="card-aumentos">
-    <img src={img} alt={"Aumento-"+titulo}>
-    <h2>{titulo}</h2>
-    <p>{texto}</p>
+    <div class="container-img-aumentos">
+        <img src={img} alt={"Aumento-"+titulo} class="img-aumentos">
+    </div>
+    <div class="descripcion-aumentos">
+        <h2 class="titulo-aumentos">{titulo}</h2>
+        <p class="texto-aumentos">{texto}</p>
+    </div>
 </div>
+
+<style>
+    .card-aumentos{
+        display:flex;
+        flex-direction: row;
+        gap:5px;
+    }
+    .container-img-aumentos{
+        flex:1
+    }
+    .img-aumentos{
+        width: 100%;
+    }
+    .descripcion-aumentos{
+        display: flex;
+        flex-direction: column;
+        flex:8;
+        gap:10px;
+    }
+    .titulo-aumentos{
+        margin:0;
+        font-size: 1.2rem;
+    }
+    .texto-aumentos{
+        font-size: 1rem;
+        margin:0;
+        color:grey;
+    }
+</style>

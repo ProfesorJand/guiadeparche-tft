@@ -1,0 +1,105 @@
+---
+import Sinergias from "../../components/TFT/sinergias/Sinergias.astro";
+const mode = import.meta.env.MODE;
+const origen = mode === "production" ? Astro.site.origin : "http://localhost:4321";
+const {campeon, set }= Astro.props;
+const nombreCampeon = campeon.characterName.replace(`TFT${set}_`,"").toLowerCase();
+
+---
+
+
+<tr class="card-campeonTFT">
+    <td>
+        <div class="containerCampeon">
+            <img class="img-campeonTFT" src={`${origen}/src/assets/campeonesSet${set}/${nombreCampeon}.webp`} alt={nombreCampeon}>
+            <p class="nombre-campeonTFT">{nombreCampeon}</p>
+        </div>
+    </td>
+    <td>
+        {campeon.cost}
+    </td>
+    <td>
+        <div class="containerSinergias">
+            {campeon.traits.map((sinergia)=>{
+                return(
+                    <Sinergias nombre={sinergia}/>
+                )
+            })}
+        </div>
+    </td>
+    <td>
+        {campeon.stats.damage}
+    </td>
+    <td>
+        {campeon.stats.attackSpeed.toFixed(2)}
+    </td>
+    <td>
+        {campeon.stats.hp}
+    </td>
+    <td>
+        {campeon.stats.armor}
+    </td>
+    <td>
+        {campeon.stats.magicResist}
+    </td>
+    <td>
+        {campeon.stats.initialMana}
+    </td>
+    <td>
+        {campeon.stats.mana}
+    </td>
+    <td>
+        {campeon.stats.range}
+    </td>
+    <td>
+        <img class="img-habilidadTFT" src={`https://raw.communitydragon.org/pbe/game/${campeon.ability.icon.toLowerCase().replace(".tex",".png")}`} alt={campeon.ability.icon}>{}
+    </td>
+</tr>
+
+<style>
+    .containerCampeon{
+        display: flex;
+        position:relative;
+        flex-direction: column;
+        align-items: center;
+        justify-items: center;
+    }
+    .nombre-campeonTFT{
+        display: flex;
+        position: absolute;
+        font-size: small;
+        padding: 0;
+        margin:0;
+        text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+        left: 50%;
+        top: 80%;
+        transform: translate(-50%, -25%);
+    }
+    .img-campeonTFT{
+        width: 50px;
+    }
+    .img-sinergia{
+        width:25px;
+        height:35px;
+        color:white;
+    }
+    .img-habilidadTFT{
+        width:50px;
+        height:50px;
+    }
+    .containerSinergias{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    td{
+        text-align: center;
+        vertical-align: middle;
+        font-size: small;
+        border: 1px solid white;
+    }
+    tr:nth-child(even) {
+  background-color: #0b0d5c;
+}
+</style>

@@ -1,5 +1,5 @@
 import { db, Usuario, eq, or } from 'astro:db';
-import { getRank, getPuntaje } from '../riotApi/account.ts';
+import { getRank, getPuntaje } from '../api/riotApi/account.ts';
 
 export const updateUsersScores = async ({ summonerId, plataforma }) => {
   try {

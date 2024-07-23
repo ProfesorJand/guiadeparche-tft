@@ -1,0 +1,71 @@
+---
+import Main from "@components/main/Main.astro";
+import Layout from "src/layouts/Layout.astro";
+import {championsTFT, version, set} from "../json/updates/constantesPBE.js";
+import CampeonesTFT from "@components/cards/CampeonesTFT.astro";
+const title="Campeones Set 12 TFT";
+
+championsTFT.sort(compare)
+function compare( a, b ) {
+    if(a.cost < b.cost){
+      return -1
+    }
+    if(a.cost > b.cost){
+      return 1
+    }
+  if ( a.characterName < b.characterName){
+    return -1;
+  }
+  if ( a.characterName > b.characterName ){
+    return 1;
+  }
+  return 0;
+}
+
+---
+
+<Layout title={title}>
+    <Main>
+        <table>
+            <tbody>
+            <tr>
+                <th>Campeon</th>
+                <th>Coste</th>
+                <th>Sinergia</th>
+                <th>Daño</th>
+                <th>Vel.</th>
+                <th>Vida</th>
+                <th>Arm.</th>
+                <th>Res-Mag.</th>
+                <th>Mana Inic.</th>
+                <th>Mana</th>
+                <th>Rango</th>
+                <th>Habilidad</th>
+            </tr>
+            {
+                championsTFT.map((campeon)=>{
+                    if(campeon.cost >=1 && campeon.cost < 6 && campeon.traits.length >0){
+                        return (
+                            <CampeonesTFT campeon={campeon} set={set}/>
+                        )
+                    }
+                    
+                })
+            }
+            </tbody>
+        </table>
+    </Main>
+</Layout>
+
+<style>
+    table{
+        display: inline-table;
+        table-layout: auto;
+        width:100%;
+        position: relative;
+    }
+    th{
+        font-weight: 100;
+        font-size: small;
+    }
+</style>

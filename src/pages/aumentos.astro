@@ -2,14 +2,14 @@
 import Layout from "../layouts/Layout.astro"
 import CardAumentos from "../components/cards/Aumentos.astro";
 import Main from "@components/main/Main.astro";
+import {aumentos} from "../json/updates/constantesPBE.js"
 //import datos from "../components/new-meta-comp/datosSet11Latino.json";
-const fetchingData = await fetch("https://raw.communitydragon.org/pbe/cdragon/tft/en_us.json")
-const datos = await fetchingData.json();
-const aumentos = datos.items.filter((e)=>{
-    return e.icon.indexOf("/Augments/")>=0 && e?.apiName?.indexOf("TFT12")>=0
-});
-console.log(aumentos)
-const title = "Aumentos TFT"
+// const fetchingData = await fetch("https://raw.communitydragon.org/pbe/cdragon/tft/en_us.json")
+// const datos = await fetchingData.json();
+// const aumentos = datos.items.filter((e)=>{
+//     return e.icon.indexOf("/Augments/")>=0 && e?.apiName?.indexOf("TFT12")>=0
+// });
+const title = "Aumentos Set 12 TFT"
 ---
 <Layout title={title}>
     <Main>
