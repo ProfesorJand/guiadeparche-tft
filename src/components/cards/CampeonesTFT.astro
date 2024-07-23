@@ -4,14 +4,13 @@ const mode = import.meta.env.MODE;
 const origen = mode === "production" ? Astro.site.origin : "http://localhost:4321";
 const {campeon, set }= Astro.props;
 const nombreCampeon = campeon.characterName.replace(`TFT${set}_`,"").toLowerCase();
-
 ---
 
 
 <tr class="card-campeonTFT">
     <td>
         <div class="containerCampeon">
-            <img class="img-campeonTFT" src={`${origen}/src/assets/campeonesSet${set}/${nombreCampeon}.webp`} alt={nombreCampeon}>
+            <img class="img-campeonTFT" src={(await import(`../../assets/campeonesSet12/${nombreCampeon}.webp`)).default.src} alt={nombreCampeon}>
             <p class="nombre-campeonTFT">{nombreCampeon}</p>
         </div>
     </td>
@@ -43,10 +42,7 @@ const nombreCampeon = campeon.characterName.replace(`TFT${set}_`,"").toLowerCase
         {campeon.stats.magicResist}
     </td>
     <td>
-        {campeon.stats.initialMana}
-    </td>
-    <td>
-        {campeon.stats.mana}
+        {campeon.stats.initialMana +"/"+campeon.stats.mana}
     </td>
     <td>
         {campeon.stats.range}
