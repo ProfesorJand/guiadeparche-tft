@@ -1,0 +1,10 @@
+---
+
+const {img, titulo, texto} = Astro.props;
+---
+
+<div class="card-aumentos">
+    <img src={img} alt={"Aumento-"+titulo}>
+    <h2>{titulo}</h2>
+    <p>{texto}</p>
+</div>

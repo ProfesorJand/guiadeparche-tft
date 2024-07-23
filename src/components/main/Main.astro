@@ -1,0 +1,22 @@
+<main>
+    <slot/>
+</main>
+
+<style>
+    main {
+        margin: auto;
+        padding: 1rem;
+        width: 100%;
+        max-width: calc(100% - 2rem);
+        color: white;
+        font-size: 20px;
+        line-height: 1.6;
+        background-color: var(--bg-tertiary);
+        box-sizing: border-box;
+      }
+    @media only screen and (min-width: 900px) {
+        main {
+            width: 50%;
+        }
+   }
+</style>

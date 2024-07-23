@@ -2,30 +2,19 @@
 import Layout from '../../layouts/Layout.astro';
 import ContainerMeta from '../../components/new-meta-comp/ContainerMeta.astro';
 import Youtube from '../../components/youtube/Youtube.astro';
+import Main from '@components/main/Main.astro';
 const title = 'TFT - Meta Comp';
 ---
 
 <Layout title={title}>
-  <main>
+  <Main>
     <Youtube src={"https://youtube.com/playlist?list=PLxRnNvReiLMEriFDu0UxXScDabCIX-PWy&si=YW7NdSvPfu9dQhx9"} loading={"lazy"}></Youtube>
     <h1 class="titulo">Meta Comp</h1>
     <ContainerMeta />
-  </main>
+  </Main>
 </Layout>
 
 <style>
-  main {
-    margin: auto;
-    padding: 1rem;
-    width: 50%;
-    max-width: calc(100% - 2rem);
-    color: white;
-    font-size: 20px;
-    line-height: 1.6;
-    background-color: var(--bg-tertiary);
-    box-sizing: border-box;
-  }
-
   .titulo {
     display: flex;
     justify-content: center;
@@ -35,9 +24,4 @@ const title = 'TFT - Meta Comp';
   .hide {
     display: none;
   }
-
-  @media only screen and (max-width: 900px) {
-    main {
-      width: 100%;
-    }
-  }
+</style>
