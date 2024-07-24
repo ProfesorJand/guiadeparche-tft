@@ -14,55 +14,56 @@
 
 <script>
     document.addEventListener('astro:page-load', () => {
-      let embed;
-      var script = document.createElement('script');
-      script.type = 'text/javascript';
-      script.src = 'https://embed.twitch.tv/embed/v1.js';
-      script.id = "scriptTwitch"
-      script.async = true;
-      script.setAttribute("type","text/javascript")
-      document.getElementsByTagName('head')[0].appendChild(script);
+      setTimeout(() => {
+        let embed;
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = 'https://embed.twitch.tv/embed/v1.js';
+        script.id = "scriptTwitch"
+        script.async = true;
+        script.setAttribute("type","text/javascript")
+        document.getElementsByTagName('head')[0].appendChild(script);
 
-      script.onload = function() { 
-        const divTwitch = document.getElementById('twitch-embed');
-        //var channel = divTwitch.dataset.channel;
-        var options = {
-          width: '100%',
-          channel: "midudev", // cambiar el string a la variable -> channel
-          layout: 'video',
-          autoplay: true,
-          allowfullscreen: true,
-          parent: ['tft.guiadeparche.com'],
-        };
-        if(!embed){
-          embed = new Twitch.Embed('twitch-embed', options);
-          embed.addEventListener(Twitch.Embed.READY, initiate);
-        }
-        function initiate() {
-          embed.addEventListener(Twitch.Embed.ONLINE, handleOnline);
-          embed.addEventListener(Twitch.Embed.OFFLINE, checkAnotherStreamer);
-          embed.removeEventListener(Twitch.Embed.READY, initiate);
-        }
+        script.onload = function() { 
+          const divTwitch = document.getElementById('twitch-embed');
+          //var channel = divTwitch.dataset.channel;
+          var options = {
+            width: '100%',
+            channel: "midudev", // cambiar el string a la variable -> channel
+            layout: 'video',
+            autoplay: true,
+            allowfullscreen: true,
+            parent: ['tft.guiadeparche.com'],
+          };
+          if(!embed){
+            embed = new Twitch.Embed('twitch-embed', options);
+            embed.addEventListener(Twitch.Embed.READY, initiate);
+          }
+          function initiate() {
+            embed.addEventListener(Twitch.Embed.ONLINE, handleOnline);
+            embed.addEventListener(Twitch.Embed.OFFLINE, checkAnotherStreamer);
+            embed.removeEventListener(Twitch.Embed.READY, initiate);
+          }
 
-        function handleOnline() {
-          embed.removeEventListener(Twitch.Embed.ONLINE, handleOnline);
-          embed.addEventListener(Twitch.Embed.OFFLINE, checkAnotherStreamer);
-          divTwitch.classList.remove('hide');
-          divTwitch.classList.add('show');
-          embed.setMuted(false);
+          function handleOnline() {
+            embed.removeEventListener(Twitch.Embed.ONLINE, handleOnline);
+            embed.addEventListener(Twitch.Embed.OFFLINE, checkAnotherStreamer);
+            divTwitch.classList.remove('hide');
+            divTwitch.classList.add('show');
+            embed.setMuted(false);
+          }
+          function checkAnotherStreamer(){
+            embed.setChannel("relic_lol");
+            embed.addEventListener(Twitch.Embed.OFFLINE, volverJupeson);
+          }
+          function volverJupeson(){
+            embed.setChannel("jupeson");
+            embed.removeEventListener(Twitch.Embed.OFFLINE, checkAnotherStreamer);
+            embed.addEventListener(Twitch.Embed.ONLINE, handleOnline);
+            embed.setMuted(true);
+          }
         }
-        function checkAnotherStreamer(){
-          embed.setChannel("relic_lol");
-          embed.addEventListener(Twitch.Embed.OFFLINE, volverJupeson);
-        }
-        function volverJupeson(){
-          embed.setChannel("jupeson");
-          embed.removeEventListener(Twitch.Embed.OFFLINE, checkAnotherStreamer);
-          embed.addEventListener(Twitch.Embed.ONLINE, handleOnline);
-          embed.setMuted(true);
-        }
-      }
-    
+      }, 10000)
   })
 </script>
 
