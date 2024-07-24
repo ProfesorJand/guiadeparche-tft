@@ -14,8 +14,10 @@
 
 <script>
   let EMBEDTWITCH;
-    document.addEventListener('astro:page-load', () => {
-        EMBEDTWITCH = setTimeout(() => {
+  document.addEventListener('astro:page-load', () => {
+      EMBEDTWITCH = setTimeout(() => {
+        const divTwitch = document.getElementById('twitch-embed');
+        divTwitch.innerHTML = '';
         let embed;
         var script = document.createElement('script');
         script.type = 'text/javascript';
@@ -26,10 +28,7 @@
         document.getElementsByTagName('head')[0].appendChild(script);
 
         script.onload = function() { 
-          const divTwitch = document.getElementById('twitch-embed');
-          if (divTwitch.querySelector('iframe')) {
-            return; // Salir si ya existe un iframe
-          }
+          
           //var channel = divTwitch.dataset.channel;
           var options = {
             width: '100%',
