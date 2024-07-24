@@ -14,7 +14,7 @@
 
 <script>
     document.addEventListener('astro:page-load', () => {
-      setTimeout(() => {
+      const EMBEDTWITCH = setTimeout(() => {
         let embed;
         var script = document.createElement('script');
         script.type = 'text/javascript';
@@ -63,7 +63,7 @@
             embed.setMuted(true);
           }
         }
-      }, 10000)
+      }, 1)
   })
 </script>
 
