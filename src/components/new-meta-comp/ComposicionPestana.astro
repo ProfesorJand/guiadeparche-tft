@@ -42,7 +42,7 @@ const aumentos = datosSet11Latino.objetos;
       {Object.values(Gamep).map((url)=>{
         return (
           // <InfoPestanaGameplay Gameplay={url}/>
-          <Youtube src={url} loading={"lazy"}></Youtube>
+          <Youtube src={url} loading={"lazy"} titulo={Titulo}></Youtube>
         )
       })}
     </div>
