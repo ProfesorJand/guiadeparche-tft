@@ -27,6 +27,9 @@
 
         script.onload = function() { 
           const divTwitch = document.getElementById('twitch-embed');
+          if (divTwitch.querySelector('iframe')) {
+            return; // Salir si ya existe un iframe
+          }
           //var channel = divTwitch.dataset.channel;
           var options = {
             width: '100%',
@@ -68,6 +71,8 @@
   })
   document.addEventListener("astro:before-preparation",()=>{
     clearTimeout(EMBEDTWITCH);
+    const divTwitch = document.getElementById('twitch-embed');
+    divTwitch.innerHTML = '';
   })
 </script>
 
