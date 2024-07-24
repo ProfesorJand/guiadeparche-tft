@@ -1,16 +1,26 @@
 export async function fetchingDataTFT({version, idioma, pais}){
     const urlDragon = `https://raw.communitydragon.org/${version}/cdragon/tft/${idioma}_${pais}.json`
     const fetching = await fetch(urlDragon);
-    const {items, sets} = fetching.json();
+    const {items, sets} = await fetching.json();
     return {items, sets}
 }
 
-const version = "latest";
-const idioma = "es"; //en
-const pais = "ar"; //mx /es /gb /us
-const set = "11"
+export const version = "latest";
+export const idioma = "es"; //en
+export const pais = "ar"; //mx /es /gb /us
+export const set = "11";
+const latestVersionLog = (await fetchingLatestVersionTFT()).version.split(".");
+export const latestVersion = latestVersionLog[0]+"."+latestVersionLog[1]
 
-export const datosTFT = fetchingDataTFT({version,idioma,pais})
+export async function fetchingLatestVersionTFT(){
+    const urlDragon = "https://raw.communitydragon.org/latest/content-metadata.json"
+    const fetching = await fetch(urlDragon);
+    return await fetching.json();
+}
 
-export const championsTFT = datosTFT.sets[set].champions;
 
+export const datosTFT = await fetchingDataTFT({version,idioma,pais});
+export const championsTFT = await datosTFT.sets[set].champions;
+
+export const fetchMeta = await fetch('https://guiadeparche.com/tftdata/Set11/metaComps/metaTFTComposiciones.json');
+export const meta = await fetchMeta.json();
