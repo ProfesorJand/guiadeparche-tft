@@ -1,6 +1,6 @@
 export function crearJSONSchema({title}){
     //const dateModified = new Date().toISOString();
-    return {
+    return JSON.stringify({
         "@context": "http://schema.org",
         "@type": "BlogPosting",
         "headline": title,
@@ -10,5 +10,5 @@ export function crearJSONSchema({title}){
           "@type": "Person",
           "name": "Jupeson, Profesorjand"
         }
-      };
+      });
 }
