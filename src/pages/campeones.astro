@@ -1,7 +1,7 @@
 ---
 import Main from "@components/main/Main.astro";
 import Layout from "src/layouts/Layout.astro";
-import {championsTFT, version, set} from "../json/updates/constantesPBE.js";
+import {championsTFT, version, setPBE} from "../json/updates/constantesPBE.js";
 import CampeonesTFT from "@components/cards/CampeonesTFT.astro";
 const title="Campeones Set 12 TFT";
 
@@ -26,7 +26,7 @@ function compare( a, b ) {
 
 <Layout title={title}>
     <Main>
-        <h1 class="titulo">Campeones del Set {set} de TFT</h1>
+        <h1 class="titulo">Campeones del Set {setPBE} de TFT</h1>
         <table>
             <tbody>
             <tr>
@@ -46,7 +46,7 @@ function compare( a, b ) {
                 championsTFT.map((campeon)=>{
                     if(campeon.cost >=1 && campeon.cost < 6 && campeon.traits.length >0){
                         return (
-                            <CampeonesTFT campeon={campeon} set={set}/>
+                            <CampeonesTFT campeon={campeon} set={setPBE}/>
                         )
                     }
                     

@@ -1,0 +1,30 @@
+---
+import logo from '../../assets/GP_logo.png';
+const { fechaRenovada } = Astro.props;
+
+const schema = {
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "headline": "Guía Avanzada de Teamfight Tactics",
+  "description": "Conviértete en un experto de Teamfight Tactics con nuestra guía avanzada.",
+  "author": {
+    "@type": "Person",
+    "name": "Jupeson, Profesorjand"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "GuiadeParche",
+    "logo": {
+      "@type": "ImageObject",
+      "url": logo
+    }
+  },
+  "datePublished": "2024-07-05",
+  "dateModified": fechaRenovada,
+  "url": "https://tft.guiadeparche.com/guias/avanzada-tft/"
+};
+---
+<!-- 
+<script type="application/ld+json" is:inline>
+  {JSON.stringify(schema)}
+</script> -->

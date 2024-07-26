@@ -10,7 +10,7 @@ export const idioma = "es"; //en
 export const pais = "ar"; //mx /es /gb /us
 export const set = "11";
 const latestVersionLog = (await fetchingLatestVersionTFT()).version.split(".");
-export const latestVersion = latestVersionLog[0]+"."+latestVersionLog[1]
+export const latestVersion = latestVersionLog[0]+"."+latestVersionLog[1];
 
 export async function fetchingLatestVersionTFT(){
     const urlDragon = "https://raw.communitydragon.org/latest/content-metadata.json"

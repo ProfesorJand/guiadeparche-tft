@@ -4,28 +4,160 @@ import ContainerMeta from '../../components/new-meta-comp/ContainerMeta.astro';
 import Youtube from '../../components/youtube/Youtube.astro';
 import Main from '@components/main/Main.astro';
 import { set, latestVersion } from 'src/json/updates/constantesLatest';
+import { setPBE, pbeVersion } from 'src/json/updates/constantesPBE';
+import ContainerMetaPBE from '@components/new-meta-comp/ContainerMetaPBE.astro';
+import {crearJSONSchema} from "src/json/schema/crearJSONSchema";
 const title = 'TFT - Meta Comp';
 // Example: Construct a canonical URL using your production domain
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 // Example: Construct a URL for SEO meta tags using your current domain
 const socialImageURL = new URL('/images/preview.png', Astro.url);
-const description = `Best TFT Comps & Meta Builds Tier List "Composiciones Meta" Parche ${latestVersion} TFT "Free ELO" Set ${set} Teamfight Tactics.`;
-const keywords = `Meta, TFT, Teamfight Tactics, guiadeparche, ${latestVersion}, ${set}`;
+const description = `Best TFT Comps & Meta Builds Tier List "Composiciones Meta Live/PBE" TFT "Free ELO" Set ${set} Teamfight Tactics.`;
+const keywords = `Meta, TFT, Teamfight Tactics, guiadeparche, ${latestVersion}, Set ${set}, Set ${setPBE} PBE`;
+const JSONSchema = crearJSONSchema({title})
 ---
 <link rel="canonical" href={canonicalURL} />
-<meta property="og:image" content={socialImageURL} />
+<!-- <meta property="og:image" content={socialImageURL} /> -->
 <meta name="description" content={description}>
 <meta name="keywords" content={keywords}>
 <Layout title={title}>
   <Main>
-    <h1 class="titulo">Mejores Composiciones Meta Parche {latestVersion}<br>TFT Set 11 | Teamfight Tactics</h1>
     <Youtube src={"https://youtube.com/playlist?list=PLxRnNvReiLMEriFDu0UxXScDabCIX-PWy&si=YW7NdSvPfu9dQhx9"} loading={"lazy"}></Youtube>
-    <ContainerMeta />
+    <div id="containerPestanas">
+      <button id="btnTFTLive" class="activeBtn">{latestVersion} (Live)</button>
+      <button id="btnTFTPBE">{pbeVersion} (PBE)</button>
+    </div>
+    <div id="containerSwitch">
+      {latestVersion} (<span class="spanText goldText">Live</span>)
+      <label class="switch">
+        <input id="switchCheckbox" type="checkbox">
+        <span class="slider"></span>
+      </label>
+      {pbeVersion} (<span class="spanText">PBE</span>)
+    </div>
+    <div id="ContainerMeta">
+      <ContainerMeta version={latestVersion} set={set}/>
+    </div>
+    <div id="ContainerMetaPBE" class="hide">
+      <ContainerMetaPBE version={pbeVersion} set={setPBE}/>
+    </div>
   </Main>
 </Layout>
 
 <style>
+  #containerSwitch{
+    display: flex;
+    width: 100%;
+    position: relative;
+    justify-content: center;
+    gap: 5px;
+    font-size: small;
+    align-items: center
+  }
+  .switch {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 100px;
+  height: 34px;
+  }
+  .switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--bg-secondary);
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 46px;
+    left: 4px;
+    bottom: 4px;
+    background-color: var(--bg-primary);
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  input:checked + .slider {
+    background-color: var(--bg-secondary);
+  }
+  input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+  }
+  input:checked + .slider:before {
+    -webkit-transform: translateX(46px);
+    -ms-transform: translateX(46px);
+    transform: translateX(46px);
+  }
+
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 34px;
+  }
+
+  .slider.round:before {
+    border-radius: 50%;
+  }
   .hide {
     display: none;
   }
+  button{
+    background-color: var(--bg-secondary);
+    color:var(--white);
+    display:flex;
+    flex: 1;
+    justify-content: center;
+    padding: 1rem 0;
+  }
+  button:hover{
+    cursor:pointer;
+    background-color: var(--bg-tertiary);
+  }
+  button.activeBtn{
+    background-color: var(--bg-primary);
+  }
+  #containerPestanas{
+    display: flex;
+    flex-direction: row;
+    gap:5px;
+
+  }
+  .goldText{
+    color:gold
+  }
 </style>
+
+<script>
+  document.addEventListener("astro:page-load",()=>{
+    const $switchCheckbox = document?.getElementById("switchCheckbox") as HTMLInputElement;
+    if ($switchCheckbox) {
+      $switchCheckbox.addEventListener("click",()=>{
+        const $spanText = document.getElementsByClassName("spanText");
+          $spanText[0].classList.toggle("goldText");
+          $spanText[1].classList.toggle("goldText")
+      })
+    }
+    const $btnTFTLive = document?.getElementById("btnTFTLive");
+    const $btnTFTPBE = document?.getElementById("btnTFTPBE");
+    const $ContainerMeta = document?.getElementById("ContainerMeta");
+    const $ContainerMetaPBE = document?.getElementById("ContainerMetaPBE");
+    function activeBtn(){
+      $btnTFTLive?.classList.toggle("activeBtn");
+      $btnTFTPBE?.classList.toggle("activeBtn");
+      $ContainerMeta?.classList.toggle("hide");
+      $ContainerMetaPBE?.classList.toggle("hide");
+    }
+    $btnTFTLive?.addEventListener("click",()=>activeBtn())
+    $btnTFTPBE?.addEventListener("click",()=>activeBtn())
+  })
+</script>
