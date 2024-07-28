@@ -66,7 +66,7 @@ export const CosteCampeon = {
 }
 
 export const BorderColorCampeon = {
-    1:"#022838",
+    1:"#59666b",
     2:"#24cb98",
     3:"#0152fc",
     4:"#f806ed",

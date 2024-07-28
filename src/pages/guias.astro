@@ -1,0 +1,89 @@
+---
+import Layout from "../layouts/Layout.astro"
+import CardAumentos from "../components/cards/Aumentos.astro";
+import Main from "@components/main/Main.astro";
+import {aumentos, setPBE} from "../json/updates/constantesPBE.js"
+import Youtube from "@components/youtube/Youtube.astro";
+const title = "Aumentos Set 12 TFT"
+---
+<Layout title={title}>
+    <Main>
+        <h1 class="titulo">Guias de Teamfight Tactics Set {setPBE}</h1>
+        <div class="contenedorGuias">
+            <Youtube titulo="Habilidades de Campeones TFT Set 12" src="https://youtu.be/epJgUL5f8LE" />
+        </div>
+        <div class="contenedorGuias">
+            <div class="contenedorImgGuias">
+                <img src="https://pbs.twimg.com/media/GSzeHmLXsAAdxCX?format=jpg&name=large" alt="Unidades de Utilidad TFT (Teamfight Tactics) Set 12" width="100%"/>
+            </div>
+            <div class="contenedorTexto">
+                <p>La sinergia Dragón otorga a los Dragones quemadura, lo que provoca daño en el tiempo de un % de vida maxima del oponente.</p>
+                <p>Diana y Nunu tienenreduccion de velocidad de ataque a los enemigos que son afectados por su habilidad.</p>
+                <p>Syndra y Zoe tienen en su habilidad reducción de resistencia mágica, Synda de forma % y Zoe en forma plana. Nota: se puede sumar el % con el plano</p>
+                <p>Twitch reduce armadura con su habilidad</p>
+                <p>La sinergia Escarcha tiene un efecto que al eliminar a un enemigo este se transforma en un soldado de hielo que roba agro "provoca" a los enemigos cercanos.</p>
+                <p>Taric en su habilidad puede atraer los proyectiles que pasen en su area</p>
+                <p>La sinergia Dragon, Katarina y Rumble tienen hiere que es reducción de curación</p>
+            </div>
+        </div>
+        <div class="contenedorGuias">
+            <div class="contenedorImgGuias">
+                <img src="https://pbs.twimg.com/media/GSo-atHWcAE3NqA?format=jpg&name=large" alt="Unidades de Utilidad TFT (Teamfight Tactics) Set 12" width="100%"/>
+            </div>
+            <div class="contenedorTexto">
+                <p>La Carroza: Esta ronda los rerolls cuestan 1 de oro y la experiancia 3 de oro.</p>
+                <p>La Estrella: la proxima ronda los campeones 1 estrellas pasan a 2 estrellas. Los aliados ganan 200 de escudo y 20 de AP.</p>
+                <p>El Emperador: Proximo compate: Xerath gana 20 de amplificación de daño. Los aliados 10.</p>
+                <p>El Sol: Gana un yunque de soporte y un yunque de artefactos.</p>
+                <p>Los Amantes: Gana un campeón coste 5 y un coste 2 2 esrellas que compartes rasgos.</p>
+                <p>La Torre: el proximo combate: gana un muñeco de rayo que azota a los enemigos cercanos.</p>
+                <p>La Luna: Incrementa tus chandes de hitear un coste 5 un 4%.</p>
+                <p>El Mundo: gana una copia de cada campeón coste 4.</p>
+                <p>Juicio: proximo combate: si ganas recibe 8 de oro, si pierdes 12 de oro</p>
+            </div>
+        </div>
+        <div class="contenedorGuias">
+            <div class="contenedorImgGuias">
+                <img src="https://pbs.twimg.com/media/GSjk4gyXgAAcYNy?format=jpg&name=4096x4096" alt="Unidades de Utilidad TFT (Teamfight Tactics) Set 12" width="100%"/>
+            </div>
+            <div class="contenedorTexto">
+                <p>Para las personas nuevas el Pool de campeones se refieren cuantas copias hay de un campeon, es decir solo hay 30 Nomsy (coste 1) y todos los demas campeones de coste 1 existen 30 copias de cada una, esto quiere decir que si hay 14 campeones de coste 1, hay en total 14*30 = 420 campeones de Coste 1 en la tienda al inicio de la partida, y cada campeon en el campo de batalla, banca y tienda de campeones forman parte de ese pozo "pool".</p>
+                <p>Otro ejemplo simple es que solo puede haber maximo un Campeon Coste 4, 3 estrellas y 1 de 1 estrella.1</p>
+                <p>Ejemplo: </p>
+                <p>Fiora 3 estrellas + 1 Fiora 1 estrella.</p>
+                <p>O también 3 Fiora 2 estrellas y 1 Fiora 1 estrella</p>
+            </div>
+        </div>
+
+    </Main>
+</Layout>
+
+<style>
+    .contenedorGuias{
+        display: flex;
+        position:relative;
+        width:100%;
+    }
+    .contenedorImgGuias{
+        width: 100%;
+    }
+    .contenedorTexto{
+        width: 100%;
+        padding: 1rem;
+        box-sizing: border-box;
+    }
+    .contenedorTexto p{
+        font-size: 1rem;
+    }
+    @media only screen and (min-width:900px) {
+        .contenedorGuias{
+            flex-direction:row;
+        }
+        .contenedorImgGuias{
+            width:40%;
+        }
+        .contenedorTexto{
+            width: 60%;
+        }
+    }
+</style>
