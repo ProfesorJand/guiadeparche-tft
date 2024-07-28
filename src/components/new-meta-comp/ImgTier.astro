@@ -2,8 +2,12 @@
 import { getImage } from 'astro:assets';
 import { Image } from "astro:assets"
 const { key } = Astro.props;
-const src =
+var src =
   'https://guiadeparche.com/tftdata/Set11/metaComps/tier/Tier-' + key + '.jpg';
+
+if(key === "Alternativa"){
+  src = 'https://guiadeparche.com/tftdata/Set11/metaComps/tier/Tier-' + "S" + '.jpg';
+}
 ---
 
 <div class="Tier">

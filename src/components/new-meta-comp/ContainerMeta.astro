@@ -17,7 +17,7 @@ const {set, version} = Astro.props;
         return (
             <div class="containerTier">
               <ImgTier key={key} index={index}/>
-              <ContainerChampionTierList championsTier={meta[key]} index={index}/>
+              <ContainerChampionTierList championsTier={meta[key]} index={index} pbe={false}/>
             </div>
             <InfoComp championsTier={meta[key]}  index={index} />
         );

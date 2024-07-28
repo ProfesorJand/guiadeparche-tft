@@ -8,7 +8,7 @@ export function crearJSONSchema({title, imgPost}){
         "headline": title,
         "datePublished": "2024-07-26T12:00-00Z",
         "dateModified": "2024-07-26T12:30-00Z",
-        "image":imgPost ? imgPost : logo,
+        "image":imgPost ? [imgPost] : [logo],
         "author": [
             {
                 "@type": "Person",

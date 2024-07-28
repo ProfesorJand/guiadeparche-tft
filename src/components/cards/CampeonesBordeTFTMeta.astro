@@ -1,0 +1,137 @@
+---
+import { Image } from "astro:assets";
+import {BorderColorCampeon} from "../../json/updates/constantesCampeones";
+const {nombreCampeon, titulo, tresEstrellas, IconoSuperior, index, i, imgCampeon, meta, coste} = Astro.props;
+const borderColor = BorderColorCampeon[coste];
+---
+
+
+<div class:list={['imgChampionTierList',(index === 0 && i === 0 ? ' imgSelected' : '')]} data-alt={titulo} >
+    <div class="borderChampion">
+
+      <Image
+      src={imgCampeon}
+      alt={titulo}
+      class="imgChampionBorderTierList"
+      width={100}
+      height={100}
+      inferSize={true}
+      
+      />
+      {tresEstrellas && <Image
+      src={"https://guiadeparche.com/tftdata/assets/3-estrellas.webp"}
+      alt={"3-estrella"}
+      class="tresEstrellas"
+      width={100}
+      height={100}
+      inferSize={true}
+      />
+    }
+    {IconoSuperior &&
+    <div class="containerUpperIcon">
+      <Image
+      src={IconoSuperior}
+      alt={"Icono de identificacion"}
+      class="iconoSuperior"
+      width={100}
+      height={100}
+      inferSize={true}
+      />
+      </div>}
+    </div>
+</div>
+    
+<!-- <script is:inline>
+    document.addEventListener('astro:page-load', () => {
+      const imgChampionTierList = document.querySelectorAll(
+        '.imgChampionTierList'
+      );
+      imgChampionTierList.forEach((img) => {
+        img.addEventListener('click', () => {
+          if (document.querySelectorAll('.imgSelected').length) {
+            document
+              .querySelectorAll('.imgSelected')[0]
+              .classList.remove('imgSelected');
+          }
+          img.classList.add('imgSelected');
+          const id = img.getAttribute('alt').replaceAll(' ', '-');
+          document
+            .querySelectorAll('.infoComp.show')[0]
+            ?.classList.remove('show'); // (".infoComp .show").classlist.remove("show")
+          const containerInfo = document.getElementById(id)
+          containerInfo.classList.add("show");
+          const containerCompo = containerInfo.querySelector(".containerCompo");
+          const compSelected = containerCompo.querySelector("img.show");
+          compSelected?.classList.remove("show");
+          const firstComp = containerCompo.querySelector("img");
+          firstComp.classList.add("show");
+          const champSelected = containerCompo.querySelector(".campeonEspatula.selected");
+          champSelected.classList.remove("selected")
+          const firtsChamp = containerCompo.querySelector(".campeonEspatula");
+          firtsChamp.classList.add("selected")
+        });
+      });
+    });
+  </script> -->
+  
+  <style define:vars={{borderColor}}>
+    .containerChampionTierList {
+      display: flex;
+      position: relative;
+      width: 100%;
+      box-sizing: border-box;
+      align-items: center;
+      justify-content: center;
+
+    }
+    .borderChampion{
+      display: flex;
+      width: 100%;
+      height: 100%;
+      position: relative;
+      border: 8px solid var(--borderColor);
+      box-sizing: border-box;
+
+    }
+    .imgChampionBorderTierList{
+      width: 100%;
+      height: 100%;
+    }
+    .imgChampionTierList:hover {
+      cursor: pointer;
+      transform: scale(1);
+    }
+  
+    .imgChampionTierList {
+      width: 20%;
+      height: auto;
+      box-sizing: border-box;
+      transition: 0.5s;
+      transform: scale(0.9);
+    }
+
+    .iconoSuperior{
+      display: flex;
+      position: absolute;
+      top:-1px;
+      right: -1px;
+      background-color: var(--borderColor);
+      width: 25%;
+      height: 25%;
+    }
+  
+    .imgSelected {
+      filter: grayscale(0%);
+      -webkit-filter: grayscale(0%);
+      transform: scale(1);
+      transition: 0.5s;
+    }
+    .tresEstrellas{
+      display: flex;
+      position: absolute;
+      top:0;
+      left:0;
+      filter: contrast(160%);
+    }
+  </style>
+  

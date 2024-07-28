@@ -5,6 +5,7 @@ import ContainerChampionTierList from './ContainerChampionTierList.astro';
 import InfoComp from './InfoComp.astro';
 import Youtube from '@components/youtube/Youtube.astro';
 import { metaPBE } from 'src/json/updates/constantesPBE.js';
+console.log(metaPBE);
 const {version, set} = Astro.props;
 ---
 
@@ -13,11 +14,25 @@ const {version, set} = Astro.props;
   <h1 class="titulo">Mejores Composiciones Meta (PBE) Parche {version}<br>TFT Set {set} | Teamfight Tactics</h1>
   {
     Object.keys(metaPBE).map(function (key, index) {
-      if(key!=="Oculto"){
+      if(key!=="Oculto" && key!=="Alternativa"){
         return (
             <div class="containerTier">
               <ImgTier key={key} index={index}/>
-              <ContainerChampionTierList championsTier={metaPBE[key]} index={index}/>
+              <ContainerChampionTierList championsTier={metaPBE[key]} index={index} pbe={true}/>
+            </div>
+            <InfoComp championsTier={metaPBE[key]}  index={index} />
+        );
+      }
+    })
+  }
+  <h2 class="titulo">Mejores Composiciones Alternativas/Aumentos Meta TFT</h2>
+  {
+    Object.keys(metaPBE).map(function (key, index) {
+      if(key==="Alternativa"){
+        return (
+            <div class="containerTier">
+              <ImgTier key={key} index={index}/>
+              <ContainerChampionTierList championsTier={metaPBE[key]} index={index} pbe={true}/>
             </div>
             <InfoComp championsTier={metaPBE[key]}  index={index} />
         );

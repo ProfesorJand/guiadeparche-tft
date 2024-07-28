@@ -1,10 +1,11 @@
 ---
 import { Image, Picture } from 'astro:assets';
-const { championsTier, index } = Astro.props;
+const { championsTier, index, pbe } = Astro.props;
+import CampeonesBordeTFTMeta from '@components/cards/CampeonesBordeTFTMeta.astro';
 ---
 
 <div class="containerChampionTierList">
-  {
+  { !pbe && 
     championsTier.map(async (champTier, i) => {
       return (
         <Image
@@ -18,13 +19,21 @@ const { championsTier, index } = Astro.props;
           height={100}
           inferSize={true}
         />
+        
+      );
+    })
+  }
+  { pbe && 
+    championsTier.map(async (champTier, i) => {
+      return (
+      <CampeonesBordeTFTMeta meta={champTier} nombreCampeon={champTier.Campeon} imgCampeon={champTier.ImgCampeon} tresEstrellas={champTier.imgEstrellas} titulo={champTier.Titulo} IconoSuperior={champTier.imgRecuadro} coste={champTier.CosteCampeon}/>
+     
       );
     })
   }
 </div>
 
-
-<script is:inline>
+<script>
   document.addEventListener('astro:page-load', () => {
     const imgChampionTierList = document.querySelectorAll(
       '.imgChampionTierList'
@@ -37,7 +46,7 @@ const { championsTier, index } = Astro.props;
             .classList.remove('imgSelected');
         }
         img.classList.add('imgSelected');
-        const id = img.getAttribute('alt').replaceAll(' ', '-');
+        const id = img.dataset.alt.replaceAll(' ', '-');
         document
           .querySelectorAll('.infoComp.show')[0]
           ?.classList.remove('show'); // (".infoComp .show").classlist.remove("show")
