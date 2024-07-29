@@ -29,7 +29,7 @@ export const aumentos = datosTFT.items.filter((e)=>{
 
 export async function fetchingMetaTFTPBE(){
     const url = "https://guiadeparche.com/tftdata/Set12/metaTFTComposiciones.json";
-    const fetching = await fetch(url, {mode: 'no-cors', headers: {'Content-Type':'application/json', 'Access-Control-Allow-Origin': '*'},});
+    const fetching = await fetch(url);
     const datos = await fetching.json();
     return datos;
 }
