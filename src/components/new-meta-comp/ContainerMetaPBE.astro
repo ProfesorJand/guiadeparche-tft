@@ -31,9 +31,11 @@ const {version, set} = Astro.props;
   data-ad-layout-key="-f9+4w+7x-eg+3a"
   data-ad-client="ca-pub-6116944495372863"
   data-ad-slot="8326664156"></ins>
-<script>
-  (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
+  <script>
+    document.addEventListener("astro:page-load", () => {
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    });
+  </script>
   <h2 class="titulo paddingTop">Aumentos de Heroes Meta TFT</h2>
   {
     Object.keys(metaPBE).map(function (key, index) {

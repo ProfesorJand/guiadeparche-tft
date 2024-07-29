@@ -20,8 +20,10 @@ if(direction === "left"){
         data-ad-format="auto"
         data-full-width-responsive="true"></ins>
  </div>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
+ <script>
+  document.addEventListener("astro:page-load", () => {
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  });
 </script>
 
 <style define:vars={{right, left}}>
