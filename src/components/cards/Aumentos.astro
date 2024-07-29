@@ -18,22 +18,33 @@ const {img, titulo, texto} = Astro.props;
         display:flex;
         flex-direction: row;
         gap:5px;
+        width: 100%;
+        position: relative;
+        border: 1px solid white;
+        flex-wrap: wrap;
     }
     .container-img-aumentos{
-        flex:1
+        display: flex;
+        position: relative;
+        flex:1;
+        align-items: flex-start;
     }
     .img-aumentos{
-        width: 100%;
+        width: 50px;
+        height: 50px;
     }
     .descripcion-aumentos{
         display: flex;
         flex-direction: column;
         flex:8;
         gap:10px;
+        position:relative;
+        overflow-wrap: anywhere;
     }
     .titulo-aumentos{
         margin:0;
         font-size: 1.2rem;
+
     }
     .texto-aumentos{
         font-size: 1rem;

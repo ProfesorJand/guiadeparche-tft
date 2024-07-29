@@ -3,9 +3,7 @@
 import ImgTier from './ImgTier.astro';
 import ContainerChampionTierList from './ContainerChampionTierList.astro';
 import InfoComp from './InfoComp.astro';
-import Youtube from '@components/youtube/Youtube.astro';
 import { metaPBE } from 'src/json/updates/constantesPBE.js';
-console.log(metaPBE);
 const {version, set} = Astro.props;
 ---
 
@@ -25,7 +23,7 @@ const {version, set} = Astro.props;
       }
     })
   }
-  <h2 class="titulo">Mejores Composiciones Alternativas/Aumentos Meta TFT</h2>
+  <h2 class="titulo">Alternativas/Aumentos Meta TFT</h2>
   {
     Object.keys(metaPBE).map(function (key, index) {
       if(key==="Alternativa"){

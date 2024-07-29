@@ -33,13 +33,13 @@ function compare( a, b ) {
                 <th>Campeon</th>
                 <th>Coste</th>
                 <th>Sinergia</th>
-                <th>Daño</th>
-                <th>Vel.</th>
-                <th>Vida</th>
-                <th>Arm.</th>
-                <th>Res-Mag.</th>
-                <th>Mana</th>
-                <th>Rango</th>
+                <th class="hideMobile">Daño</th>
+                <th class="hideMobile">Vel.</th>
+                <th class="hideMobile">Vida</th>
+                <th class="hideMobile">Arm.</th>
+                <th class="hideMobile">Res-Mag.</th>
+                <th class="hideMobile">Mana</th>
+                <th class="hideMobile">Rango</th>
                 <th>Habilidad</th>
             </tr>
             {
@@ -67,5 +67,19 @@ function compare( a, b ) {
     th{
         font-weight: 100;
         font-size: small;
+    }
+    .titulo{
+        font-size: smaller;
+    }
+    .hideMobile{
+        display:none;
+    }
+    @media only screen and (min-width:900px){
+        .hideMobile{
+            display:table-cell;
+        }
+        .titulo{
+        font-size: larger;
+    }
     }
 </style>

@@ -11,7 +11,7 @@ const nombreCampeon = campeon.characterName.replace(`TFT${set}_`,"").toLowerCase
     <td>
         <div class="containerCampeon">
             <img class="img-campeonTFT" src={(await import(`../../assets/campeonesSet12/${nombreCampeon}.webp`)).default.src} alt={nombreCampeon}>
-            <p class="nombre-campeonTFT">{nombreCampeon}</p>
+            <p class="nombre-campeonTFT">{nombreCampeon.charAt(0).toUpperCase()+nombreCampeon.slice(1)}</p>
         </div>
     </td>
     <td>
@@ -26,25 +26,25 @@ const nombreCampeon = campeon.characterName.replace(`TFT${set}_`,"").toLowerCase
             })}
         </div>
     </td>
-    <td>
+    <td class="hideMobile">
         {campeon.stats.damage}
     </td>
-    <td>
+    <td class="hideMobile">
         {campeon.stats.attackSpeed.toFixed(2)}
     </td>
-    <td>
+    <td class="hideMobile">
         {campeon.stats.hp}
     </td>
-    <td>
+    <td class="hideMobile">
         {campeon.stats.armor}
     </td>
-    <td>
+    <td class="hideMobile">
         {campeon.stats.magicResist}
     </td>
-    <td>
+    <td class="hideMobile">
         {campeon.stats.initialMana +"/"+campeon.stats.mana}
     </td>
-    <td>
+    <td class="hideMobile">
         {campeon.stats.range}
     </td>
     <td>
@@ -96,6 +96,14 @@ const nombreCampeon = campeon.characterName.replace(`TFT${set}_`,"").toLowerCase
         border: 1px solid white;
     }
     tr:nth-child(even) {
-  background-color: #0b0d5c;
-}
+        background-color: #0b0d5c;
+    }
+    .hideMobile{
+        display:none;
+    }
+    @media only screen and (min-width:900px){
+        .hideMobile{
+            display:table-cell;
+        }
+    }
 </style>

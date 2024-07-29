@@ -2,7 +2,6 @@ import { atom } from 'nanostores';
 import { db, Usuario, asc, desc, sql} from 'astro:db';
 
 export const plataforma = atom("todos");
-console.log(plataforma)
 
 export const filtro = atom('puntaje');
 

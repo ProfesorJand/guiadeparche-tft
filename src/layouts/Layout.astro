@@ -27,8 +27,10 @@ const { title, JSONSchema } = Astro.props;
   </head>
   <body>
     <Header transition:persist/>
-    <slot />
-    <Adsense />
+    <Adsense direction={"left"} transition:persist/>
+      <slot />
+    <Adsense direction={"right"} transition:persist/>
+
     <Footer />
     <Twitch   transition:persist/>
     <Logo />
@@ -98,6 +100,12 @@ const { title, JSONSchema } = Astro.props;
         font-size: 2rem;
         text-align: center;
       }
+      .midSection{
+        display:flex;
+        position: relative;
+        flex-direction: row;
+        width: 100%;
+      }
       .hide {
         display: none;
       }
@@ -108,6 +116,11 @@ const { title, JSONSchema } = Astro.props;
         }
         main{
           width: 100%;
+        }
+        .midSection{
+          display:flex;
+          position: relative;
+          flex-direction: column;
         }
       }
     </style>

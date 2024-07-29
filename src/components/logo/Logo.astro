@@ -17,10 +17,17 @@ interface ImageMetadata {
 
 <style>
   .logo {
+    display: none;
+  }
+
+  @media only screen and (min-width:900px){
+    .logo {
+      display: flex;
     position: fixed;
     right: 0;
     bottom: 0;
     width: 100px;
     height: 100px;
+  }
   }
 </style>
