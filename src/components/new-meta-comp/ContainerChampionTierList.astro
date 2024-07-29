@@ -1,6 +1,6 @@
 ---
-import { Image, Picture } from 'astro:assets';
-const { championsTier, index, pbe } = Astro.props;
+import { Image } from 'astro:assets';
+const { championsTier, index, pbe, alternativa } = Astro.props;
 import CampeonesBordeTFTMeta from '@components/cards/CampeonesBordeTFTMeta.astro';
 ---
 
@@ -11,10 +11,11 @@ import CampeonesBordeTFTMeta from '@components/cards/CampeonesBordeTFTMeta.astro
         <Image
           src={champTier.ImgCampeon}
           alt={champTier.Titulo}
-          class={
-            'imgChampionTierList' +
-            (index === 0 && i === 0 ? ' imgSelected' : '')
-          }
+          class:list={[
+            'imgChampionTierList',
+            (index === 0 && i === 0 ? ' imgSelected' : ''),
+            alternativa ? "alternativa" : ""
+          ]}
           width={100}
           height={100}
           inferSize={true}
@@ -26,7 +27,7 @@ import CampeonesBordeTFTMeta from '@components/cards/CampeonesBordeTFTMeta.astro
   { pbe && 
     championsTier.map(async (champTier, i) => {
       return (
-      <CampeonesBordeTFTMeta meta={champTier} nombreCampeon={champTier.Campeon} imgCampeon={champTier.ImgCampeon} tresEstrellas={champTier.imgEstrellas} titulo={champTier.Titulo} IconoSuperior={champTier.imgRecuadro} coste={champTier.CosteCampeon}/>
+      <CampeonesBordeTFTMeta meta={champTier} nombreCampeon={champTier.Campeon} imgCampeon={champTier.ImgCampeon} tresEstrellas={champTier.imgEstrellas} titulo={champTier.Titulo} IconoSuperior={champTier.imgRecuadro} coste={champTier.CosteCampeon} alternativa={alternativa}/>
      
       );
     })
@@ -36,29 +37,55 @@ import CampeonesBordeTFTMeta from '@components/cards/CampeonesBordeTFTMeta.astro
 <script>
   document.addEventListener('astro:page-load', () => {
     const imgChampionTierList = document.querySelectorAll(
-      '.imgChampionTierList'
+      '.imgChampionTierList:not(.alternativa)'
     );
+    const imgChampionTierListAlternativa = document.querySelectorAll(
+      '.imgChampionTierList.alternativa'
+    );
+    imgChampionTierListAlternativa[0].classList.toggle("imgSelected")
     imgChampionTierList[0].classList.toggle("imgSelected")
     imgChampionTierList.forEach((img) => {
       img.addEventListener('click', () => {
         const id = img.dataset.alt.replaceAll(' ', '-');
         const containerInfo = document.getElementById(id);
-        if(img.classList.contains("imgSelected")){
-          img.classList.toggle("imgSelected");
+        if(img?.classList.contains("imgSelected") && !img?.classList.contains("alternativa")){
+          img?.classList.toggle("imgSelected");
           containerInfo.classList.toggle("show");
-        }else{
-          const imgSelected = document.querySelector(".imgSelected");
+        }else if(!img?.classList.contains("alternativa")){
+          const imgSelected = document.querySelector(".imgSelected:not(.alternativa)");
           if(imgSelected){
             const id = imgSelected.dataset.alt.replaceAll(" ","-");
             const lastContainerInfo = document.getElementById(id);
-            lastContainerInfo.classList.toggle("show");
-            imgSelected.classList.toggle("imgSelected");
+            lastContainerInfo?.classList.toggle("show");
+            imgSelected?.classList.toggle("imgSelected");
           }
-          img.classList.toggle("imgSelected");
-          containerInfo.classList.toggle("show");
+          img?.classList.toggle("imgSelected");
+          containerInfo?.classList.toggle("show");
         }
       });
     });
+
+    imgChampionTierListAlternativa.forEach((img) => {
+      img.addEventListener('click', () => {
+        const id = img.dataset.alt.replaceAll(' ', '-');
+        const containerInfo = document.getElementById(id);
+        if(img?.classList.contains("imgSelected") && img?.classList.contains("alternativa")){
+          img?.classList.toggle("imgSelected");
+          containerInfo.classList.toggle("show");
+        }else if(img?.classList.contains("alternativa")){
+          const imgSelected = document.querySelector(".imgSelected.alternativa");
+          if(imgSelected){
+            const id = imgSelected.dataset.alt.replaceAll(" ","-");
+            const lastContainerInfo = document.getElementById(id);
+            lastContainerInfo?.classList.toggle("show");
+            imgSelected?.classList.toggle("imgSelected");
+          }
+          img?.classList.toggle("imgSelected");
+          containerInfo?.classList.toggle("show");
+        }
+      });
+    });
+
   });
 </script>
 

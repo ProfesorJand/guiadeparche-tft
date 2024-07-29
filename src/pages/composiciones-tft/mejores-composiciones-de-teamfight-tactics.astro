@@ -23,21 +23,6 @@ const JSONSchema = crearJSONSchema({title})
 <Layout title={title} JSONSchema={JSONSchema}>
   <Main>
     <Youtube src={"https://youtube.com/playlist?list=PLxRnNvReiLMEriFDu0UxXScDabCIX-PWy&si=YW7NdSvPfu9dQhx9"} loading={"lazy"}></Youtube>
-    <!-- <div id="containerPestanas">
-      <button id="btnTFTLive" class="activeBtn">{latestVersion} (Live)</button> 
-      <button id="btnTFTPBE" class="activeBtn">{pbeVersion} (PBE)</button>
-    </div>
-    <div id="containerSwitch">
-      {latestVersion} (<span class="spanText goldText">Live</span>)
-      <label class="switch">
-        <input id="switchCheckbox" type="checkbox">
-        <span class="slider"></span>
-      </label>
-      {pbeVersion} (<span class="spanText">PBE</span>)
-    </div> -->
-    <!-- <div id="ContainerMeta">
-      <ContainerMeta version={latestVersion} set={set}/>
-    </div> -->
     <div id="ContainerMetaPBE">
       <ContainerMetaPBE version={pbeVersion} set={setPBE}/>
     </div>

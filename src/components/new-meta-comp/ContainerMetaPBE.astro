@@ -12,27 +12,38 @@ const {version, set} = Astro.props;
   <h1 class="titulo">Mejores Composiciones Meta (PBE) Parche {version}<br>TFT Set {set} | Teamfight Tactics</h1>
   {
     Object.keys(metaPBE).map(function (key, index) {
-      if(key!=="Oculto" && key!=="Alternativa"){
+      if(key!=="Oculto" && !key.includes("Alternativa")){
         return (
             <div class="containerTier">
               <ImgTier key={key} index={index}/>
-              <ContainerChampionTierList championsTier={metaPBE[key]} index={index} pbe={true}/>
+              <ContainerChampionTierList championsTier={metaPBE[key]} index={index} pbe={true} alternativa={false}/>
             </div>
-            <InfoComp championsTier={metaPBE[key]}  index={index} />
+            <InfoComp championsTier={metaPBE[key]}  index={index} alternativa={false} />
         );
       }
     })
   }
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6116944495372863"
+  crossorigin="anonymous"></script>
+<ins class="adsbygoogle"
+  style="display:block"
+  data-ad-format="fluid"
+  data-ad-layout-key="-f9+4w+7x-eg+3a"
+  data-ad-client="ca-pub-6116944495372863"
+  data-ad-slot="8326664156"></ins>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
   <h2 class="titulo">Aumentos de Heroes Meta TFT</h2>
   {
     Object.keys(metaPBE).map(function (key, index) {
-      if(key==="Alternativa"){
+      if(key.includes("Alternativa")){
         return (
             <div class="containerTier">
               <ImgTier key={key} index={index}/>
-              <ContainerChampionTierList championsTier={metaPBE[key]} index={index} pbe={true}/>
+              <ContainerChampionTierList championsTier={metaPBE[key]} index={index} pbe={true} alternativa={true}/>
             </div>
-            <InfoComp championsTier={metaPBE[key]}  index={index} />
+            <InfoComp championsTier={metaPBE[key]}  index={index} alternativa={true}/>
         );
       }
     })

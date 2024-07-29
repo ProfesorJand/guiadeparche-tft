@@ -1,12 +1,12 @@
 ---
 import { Image } from "astro:assets";
 import {BorderColorCampeon} from "../../json/updates/constantesCampeones";
-const {nombreCampeon, titulo, tresEstrellas, IconoSuperior, index, i, imgCampeon, meta, coste} = Astro.props;
+const {nombreCampeon, titulo, tresEstrellas, IconoSuperior, index, i, imgCampeon, meta, coste, alternativa} = Astro.props;
 const borderColor = BorderColorCampeon[coste];
 ---
 
 
-<div class:list={['imgChampionTierList',(index === 0 && i === 0 ? ' imgSelected' : '')]} data-alt={titulo} >
+<div class:list={['imgChampionTierList',(index === 0 && i === 0 ? ' imgSelected' : ''), alternativa ? "alternativa" : ""]} data-alt={titulo} >
     <div class="borderChampion">
 
       <Image
@@ -41,40 +41,7 @@ const borderColor = BorderColorCampeon[coste];
     </div>
 </div>
     
-<!-- <script is:inline>
-    document.addEventListener('astro:page-load', () => {
-      const imgChampionTierList = document.querySelectorAll(
-        '.imgChampionTierList'
-      );
-      imgChampionTierList.forEach((img) => {
-        img.addEventListener('click', () => {
-          if (document.querySelectorAll('.imgSelected').length) {
-            document
-              .querySelectorAll('.imgSelected')[0]
-              .classList.remove('imgSelected');
-          }
-          img.classList.add('imgSelected');
-          const id = img.getAttribute('alt').replaceAll(' ', '-');
-          document
-            .querySelectorAll('.infoComp.show')[0]
-            ?.classList.remove('show'); // (".infoComp .show").classlist.remove("show")
-          const containerInfo = document.getElementById(id)
-          containerInfo.classList.add("show");
-          const containerCompo = containerInfo.querySelector(".containerCompo");
-          const compSelected = containerCompo.querySelector("img.show");
-          compSelected?.classList.remove("show");
-          const firstComp = containerCompo.querySelector("img");
-          firstComp.classList.add("show");
-          const champSelected = containerCompo.querySelector(".campeonEspatula.selected");
-          champSelected.classList.remove("selected")
-          const firtsChamp = containerCompo.querySelector(".campeonEspatula");
-          firtsChamp.classList.add("selected")
-        });
-      });
-    });
-  </script> -->
-  
-  <style define:vars={{borderColor}}>
+<style define:vars={{borderColor}}>
     .containerChampionTierList {
       display: flex;
       position: relative;

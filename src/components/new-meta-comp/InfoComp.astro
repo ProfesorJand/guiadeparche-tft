@@ -1,7 +1,7 @@
 ---
 import {  Image } from 'astro:assets';
 import ComposicionPestana from './ComposicionPestana.astro';
-const { championsTier, index } = Astro.props;
+const { championsTier, index, alternativa } = Astro.props;
 ---
 
 {
@@ -9,9 +9,11 @@ const { championsTier, index } = Astro.props;
     const src = champTier.ImgCompo;
     const srcCampeon = champTier.ImgCampeon;
     const espatula = champTier.Espatula;
+    const tier = champTier.Tier; // tier S o Alternativa-S
+
     return (
       <section
-        class={'infoComp' + (index === 0 && i === 0 ? ' show' : '')}
+        class:list={['infoComp',((tier === "S"  || tier === "Alternativa-S") && i === 0 ? 'show' : ''),alternativa ? "alternativa" : ""]}
         id={champTier.Titulo.replaceAll(' ', '-')}
       >
         <button class="btnClose">X</button>
@@ -27,7 +29,7 @@ const { championsTier, index } = Astro.props;
               src={src}
               alt={'Composicion Meta ' + champTier.Titulo}
               class="composicionImg show"
-              loading={(index === 0 && i === 0 ? 'eager' : 'lazy')}
+              loading={((tier === "S"  || tier === "Alternativa-S") && i === 0 ? 'eager' : 'lazy')}
               inferSize={true}
               />
               {espatula && Object.keys(espatula).map((key, index)=>{

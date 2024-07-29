@@ -5,8 +5,9 @@ const { key } = Astro.props;
 var src =
   'https://guiadeparche.com/tftdata/Set11/metaComps/tier/Tier-' + key + '.jpg';
 
-if(key === "Alternativa"){
-  src = 'https://guiadeparche.com/tftdata/Set11/metaComps/tier/Tier-' + "S" + '.jpg';
+if(key.includes("Alternativa")){
+  const valor = key.split("-")[1]
+  src = 'https://guiadeparche.com/tftdata/Set11/metaComps/tier/Tier-' +  valor + '.jpg';
 }
 ---
 
