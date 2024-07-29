@@ -14,11 +14,14 @@ export default defineConfig({
   redirects: {
     '/': '/composiciones-tft/mejores-composiciones-de-teamfight-tactics/' // github page '/guiadeparche-tft/composiciones-tft/mejores-composiciones-de-teamfight-tactics/'
   },
-  output: 'static', // Cambiado a 'static' para asegurarse de que se genera contenido estático para deploy
+  output: 'server', // Cambiado a 'static' para asegurarse de que se genera contenido estático para deploy
   //output: 'server',
   adapter: node({
-    mode: 'standalone',
+    mode: '@astrojs/node',
   }),
+  // adapter: node({
+  //   mode: 'standalone',
+  // }),
   image: {
     // remotePatterns: [{ protocol: "https" }],
     service: squooshImageService(),

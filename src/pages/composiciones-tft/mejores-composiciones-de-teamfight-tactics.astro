@@ -142,9 +142,9 @@ const JSONSchema = crearJSONSchema({title})
     const $switchCheckbox = document?.getElementById("switchCheckbox") as HTMLInputElement;
     if ($switchCheckbox) {
       $switchCheckbox.addEventListener("click",()=>{
-        const $spanText = document.getElementsByClassName("spanText");
-          $spanText[0].classList.toggle("goldText");
-          $spanText[1].classList.toggle("goldText")
+        const $spanText = document?.getElementsByClassName("spanText");
+          $spanText[0]?.classList.toggle("goldText");
+          $spanText[1]?.classList.toggle("goldText")
       })
     }
     const $btnTFTLive = document?.getElementById("btnTFTLive");
