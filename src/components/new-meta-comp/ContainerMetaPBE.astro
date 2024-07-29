@@ -34,7 +34,7 @@ const {version, set} = Astro.props;
 <script>
   (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
-  <h2 class="titulo">Aumentos de Heroes Meta TFT</h2>
+  <h2 class="titulo paddingTop">Aumentos de Heroes Meta TFT</h2>
   {
     Object.keys(metaPBE).map(function (key, index) {
       if(key.includes("Alternativa")){
@@ -55,7 +55,10 @@ const {version, set} = Astro.props;
   display: flex;
   flex-direction: row;
 }
-
+.paddingTop{
+  margin-top:1.5rem;
+  border-top: 2px solid var(--border-color);
+}
 .titulo{
   font-size: smaller;
 }

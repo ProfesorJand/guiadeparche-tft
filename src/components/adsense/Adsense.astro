@@ -27,7 +27,7 @@ if(direction === "left"){
 <style define:vars={{right, left}}>
   .publicidad{
     display: flex;
-    position: absolute;
+    position: relative;
     width: 100%;
     top:5rem;
     right:var(--right);
@@ -36,6 +36,7 @@ if(direction === "left"){
   @media only screen and (min-width:900px){
     .publicidad{
       width:25%;
+      position: absolute;
     }
   }
 </style>
