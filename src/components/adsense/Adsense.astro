@@ -1,5 +1,5 @@
 ---
-const {direction} = Astro.props;
+const {direction, dimension} = Astro.props;
 let right;
 let left;
 if(direction === "left"){
@@ -7,23 +7,54 @@ if(direction === "left"){
 }else{
   right = 0;
 }
+let aspectRatio;
+if(dimension === "cuadrado"){
+  aspectRatio = 1/1;
+}
+if(dimension === "rectangular"){
+  aspectRatio = 1.91/1;
+}
+if(dimension === "vertical"){
+  aspectRatio = 1/1.91;
+}
 ---
-<!-- Adaptable Cuadrado -->
- <div class="publicidad">
-   <ins class="adsbygoogle"
-        style="display:block;width:100%"
+
+<!-- Responsivo Vertical -->
+ {
+  dimension === "vertical" &&
+    <div class="publicidad">
+      <ins class="adsbygoogle"
+        style="display:block"
         data-ad-client="ca-pub-6116944495372863"
-        data-ad-slot="4837474033"
+        data-ad-slot="7127054478"
         data-ad-format="auto"
-        data-full-width-responsive="true"></ins>
- </div>
+        data-full-width-responsive="true">
+      </ins>
+    </div>
+}
+
+
+<!-- Adaptable Cuadrado -->
+ {
+  dimension === "cuadrado" &&
+    <div class="publicidad">
+      <ins class="adsbygoogle"
+            style="display:block"
+            data-ad-client="ca-pub-6116944495372863"
+            data-ad-slot="4837474033"
+            data-ad-format="auto"
+            data-full-width-responsive="true">
+      </ins>
+  </div>
+ }
+ 
  <script>
   document.addEventListener("astro:page-load", () => {
     (adsbygoogle = window.adsbygoogle || []).push({});
   });
 </script>
 
-<style define:vars={{right, left}}>
+<style define:vars={{right, left, aspectRatio}}>
   .publicidad{
     display: flex;
     position: relative;
@@ -37,8 +68,7 @@ if(direction === "left"){
       width:25%;
       position: fixed;
       display: flex;
-      aspect-ratio: inherit;
-
+      aspect-ratio: var(--aspectRatio);
     }
   }
 </style>
