@@ -5,6 +5,7 @@ import Main from "@components/main/Main.astro";
 import {aumentos, setPBE, pbeVersion} from "../json/updates/constantesPBE.js"
 import Youtube from "@components/youtube/Youtube.astro";
 const title = 'TFT - Guias del Set 12';
+import {crearJSONSchema} from "src/json/schema/crearJSONSchema";
 // Example: Construct a canonical URL using your production domain
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 // Example: Construct a URL for SEO meta tags using your current domain
