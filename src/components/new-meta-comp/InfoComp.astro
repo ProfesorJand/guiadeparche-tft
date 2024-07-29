@@ -87,7 +87,7 @@ const { championsTier, index } = Astro.props;
       btn.addEventListener('click', () => {
         btn.parentElement.classList.remove('show');
         const alt = btn.parentElement.id.replaceAll('-', ' ');
-        const imgSelected = document.querySelector(`img[alt="${alt}"]`);
+        const imgSelected = document.querySelector(`div[data-alt="${alt}"]`);
         imgSelected.classList.remove('imgSelected');
       });
     });

@@ -38,29 +38,25 @@ import CampeonesBordeTFTMeta from '@components/cards/CampeonesBordeTFTMeta.astro
     const imgChampionTierList = document.querySelectorAll(
       '.imgChampionTierList'
     );
+    imgChampionTierList[0].classList.toggle("imgSelected")
     imgChampionTierList.forEach((img) => {
       img.addEventListener('click', () => {
-        if (document.querySelectorAll('.imgSelected').length) {
-          document
-            .querySelectorAll('.imgSelected')[0]
-            .classList.remove('imgSelected');
-        }
-        img.classList.add('imgSelected');
         const id = img.dataset.alt.replaceAll(' ', '-');
-        document
-          .querySelectorAll('.infoComp.show')[0]
-          ?.classList.remove('show'); // (".infoComp .show").classlist.remove("show")
-        const containerInfo = document.getElementById(id)
-        containerInfo.classList.add("show");
-        const containerCompo = containerInfo.querySelector(".containerCompo");
-        const compSelected = containerCompo.querySelector("img.show");
-        compSelected?.classList.remove("show");
-        const firstComp = containerCompo.querySelector("img");
-        firstComp.classList.add("show");
-        const champSelected = containerCompo.querySelector(".campeonEspatula.selected");
-        champSelected.classList.remove("selected")
-        const firtsChamp = containerCompo.querySelector(".campeonEspatula");
-        firtsChamp.classList.add("selected")
+        const containerInfo = document.getElementById(id);
+        if(img.classList.contains("imgSelected")){
+          img.classList.toggle("imgSelected");
+          containerInfo.classList.toggle("show");
+        }else{
+          const imgSelected = document.querySelector(".imgSelected");
+          if(imgSelected){
+            const id = imgSelected.dataset.alt.replaceAll(" ","-");
+            const lastContainerInfo = document.getElementById(id);
+            lastContainerInfo.classList.toggle("show");
+            imgSelected.classList.toggle("imgSelected");
+          }
+          img.classList.toggle("imgSelected");
+          containerInfo.classList.toggle("show");
+        }
       });
     });
   });
