@@ -8,9 +8,6 @@ if(direction === "left"){
   right = 0;
 }
 ---
-
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6116944495372863"
-     crossorigin="anonymous"></script>
 <!-- Adaptable Cuadrado -->
  <div class="publicidad">
    <ins class="adsbygoogle"
@@ -31,14 +28,17 @@ if(direction === "left"){
     display: flex;
     position: relative;
     width: 100%;
-    top:5rem;
+    aspect-ratio: 16/9;
     right:var(--right);
     left:var(--left);
   }
   @media only screen and (min-width:900px){
     .publicidad{
       width:25%;
-      position: absolute;
+      position: fixed;
+      display: flex;
+      aspect-ratio: inherit;
+
     }
   }
 </style>

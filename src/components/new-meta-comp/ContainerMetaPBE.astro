@@ -4,6 +4,7 @@ import ImgTier from './ImgTier.astro';
 import ContainerChampionTierList from './ContainerChampionTierList.astro';
 import InfoComp from './InfoComp.astro';
 import { metaPBE } from 'src/json/updates/constantesPBE.js';
+import Adsense from '@components/adsense/Adsense.astro';
 const {version, set} = Astro.props;
 ---
 
@@ -23,19 +24,7 @@ const {version, set} = Astro.props;
       }
     })
   }
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6116944495372863"
-  crossorigin="anonymous"></script>
-<ins class="adsbygoogle"
-  style="display:block"
-  data-ad-format="fluid"
-  data-ad-layout-key="-f9+4w+7x-eg+3a"
-  data-ad-client="ca-pub-6116944495372863"
-  data-ad-slot="8326664156"></ins>
-  <script>
-    document.addEventListener("astro:page-load", () => {
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    });
-  </script>
+  <Adsense/>
   <h2 class="titulo paddingTop">Aumentos de Heroes Meta TFT</h2>
   {
     Object.keys(metaPBE).map(function (key, index) {
