@@ -4,14 +4,14 @@ import CardAumentos from "../components/cards/Aumentos.astro";
 import Main from "@components/main/Main.astro";
 import {aumentos, setPBE, pbeVersion} from "../json/updates/constantesPBE.js"
 import Youtube from "@components/youtube/Youtube.astro";
-const title = 'TFT - Guias del Set 12';
+const title = '▷ TFT Tips & Tricks | Teamfight Tactics';
 import {crearJSONSchema} from "src/json/schema/crearJSONSchema";
 // Example: Construct a canonical URL using your production domain
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 // Example: Construct a URL for SEO meta tags using your current domain
 const socialImageURL = new URL('/images/preview.png', Astro.url);
-const description = `Guias para el Set ${setPBE} Teamfight Tactics.`;
-const keywords = `TFT, Teamfight Tactics, guiadeparche guias, version ${pbeVersion}, Set ${setPBE}, Set ${setPBE} PBE, Guias TFT, Guias Set 12 TFT`;
+const description = `✅ Tips/ Consejos; How to Play/ Cómo jugar TFT`;
+const keywords = `TFT Tips, TFT Tricks, TFT Guides, TFT Guias, TFT Consejos`;
 const JSONSchema = crearJSONSchema({title})
 ---
 
