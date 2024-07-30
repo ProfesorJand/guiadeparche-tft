@@ -14,8 +14,8 @@
 
 <script>
   let EMBEDTWITCH;
-  
-  document.addEventListener('astro:page-load', () => {
+  if(!EMBEDTWITCH){
+    document.addEventListener('astro:page-load', () => {
     clearTimeout(EMBEDTWITCH);
     EMBEDTWITCH = setTimeout(() => {
       const divTwitch = document.getElementById('twitch-embed');
@@ -86,6 +86,8 @@
       divTwitch.innerHTML = '';
     }
   });
+  }
+  
 </script>
 
 
