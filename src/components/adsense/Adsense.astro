@@ -11,20 +11,40 @@ let aspectRatio;
 if(dimension === "cuadrado"){
   aspectRatio = 1/1;
 }
-if(dimension === "rectangular"){
+if(dimension === "horizontal"){
   aspectRatio = 1.91/1;
 }
 if(dimension === "vertical"){
   aspectRatio = 1/1.91;
+}
+
+let style = "display:block; width:100%;";
+
+let adsenseID;
+
+switch (dimension) {
+  case 'vertical':
+    adsenseID = 7127054478;
+    style += "height: 600px;";
+    break;
+  case 'horizontal':
+    adsenseID = 8326664156;
+    style += "height: 90px;";
+    break;
+  case 'cuadrado':
+  default:
+    adsenseID = 4837474033;
+    style += "height: 300px;";
+    break;
 }
 ---
 
 <!-- Responsivo Vertical -->
  {
   dimension === "vertical" &&
-    <div class="publicidad">
+    <div class="adsense-container">
       <ins class="adsbygoogle"
-        style="display:block"
+        style={style}
         data-ad-client="ca-pub-6116944495372863"
         data-ad-slot="7127054478"
         data-ad-format="auto"
@@ -33,13 +53,25 @@ if(dimension === "vertical"){
     </div>
 }
 
+<!-- Adaptable horizontal -->
+{
+ dimension === "horizontal" &&
+   <div class="adsense-container">
+     <ins class="adsbygoogle"
+       style={style}
+       data-ad-format="fluid"
+       data-ad-layout-key="-f9+4w+7x-eg+3a"
+       data-ad-client="ca-pub-6116944495372863"
+       data-ad-slot="8326664156"></ins>
+ </div>
+}
 
 <!-- Adaptable Cuadrado -->
  {
   dimension === "cuadrado" &&
-    <div class="publicidad">
+    <div class="adsense-container">
       <ins class="adsbygoogle"
-            style="display:block"
+            style={style}
             data-ad-client="ca-pub-6116944495372863"
             data-ad-slot="4837474033"
             data-ad-format="auto"
@@ -48,27 +80,32 @@ if(dimension === "vertical"){
   </div>
  }
 
+
 <script>
   document.addEventListener("astro:page-load", () => {
-    (adsbygoogle = window.adsbygoogle || []).push({});
+    interface Window {
+      adsbygoogle: any[];
+    }
+    (window.adsbygoogle = window.adsbygoogle || []).push({});
   });
 </script>
  
 <style define:vars={{right, left, aspectRatio}}>
-  .publicidad{
-    display: flex;
-    position: relative;
-    width: 100%;
-    aspect-ratio: 16/9;
-    right:var(--right);
-    left:var(--left);
-  }
+  .adsense-container {
+  display: flex;
+  position:relative;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 1rem 0;
+}
   @media only screen and (min-width:900px){
-    .publicidad{
-      width:25%;
-      position: fixed;
+    .adsense-container {
       display: flex;
-      aspect-ratio: var(--aspectRatio);
+      position: fixed;
+      width:25%;
+      right:var(--right);
+      left:var(--left);
     }
   }
 </style>

@@ -7,33 +7,44 @@ import Adsense from '../components/adsense/Adsense.astro';
 import { ViewTransitions } from 'astro:transitions';
 interface Props {
   title: string;
+  JSONSchema?: string;
 }
 const { title, JSONSchema } = Astro.props;
+
 
 ---
 
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
     <!-- google search console -->
     <meta name="google-site-verification" content="VXzuc6CSTiTOeduk03n_uh0IUkgaBHkJAhQdtam2md0" />
     <!-- google analitics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-69PWGWV8LZ"></script>
     <script>
+      declare global {
+        interface Window {
+          dataLayer: any[];
+        }
+        function gtag(...args: any[]): void;
+      }
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
+      function gtag(){window.dataLayer.push(arguments);}
       gtag('js', new Date());
 
       gtag('config', 'G-69PWGWV8LZ');
     </script>
-    <meta name="viewport" content="width=device-width" />
+    <!-- google ads mobile -->
+   <script async custom-element="amp-ad" src="https://cdn.ampproject.org/v0/amp-ad-0.1.js" is:inline></script>
+    <!-- google ads -->
+   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6116944495372863"
+    crossorigin="anonymous" is:inline></script>
     <link rel="icon" type="image/png" href={(await import("/src/assets/GP_logo.png")).default.src} />
     <meta name="generator" content={Astro.generator} />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta name="author" content="Jupeson, Profesorjand">
-    <script async custom-element="amp-ad" src="https://cdn.ampproject.org/v0/amp-ad-0.1.js" is:inline></script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6116944495372863"
-     crossorigin="anonymous" is:inline></script>
+     <!-- Schema Script -->
     {JSONSchema && <script type="application/ld+json" set:html={JSONSchema}></script>}
 
     <title>{title}</title>
