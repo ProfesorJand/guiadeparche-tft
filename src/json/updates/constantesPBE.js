@@ -5,7 +5,7 @@ export async function fetchingDataTFT({version, idioma, pais}){
     return {items, sets};
 }
 
-export const version = "pbe";
+export const version = "latest";
 export const idioma = "es";
 export const pais = "ar";
 export const setPBE = "12";
@@ -14,7 +14,7 @@ export const pbeVersionLog = (await fetchingPBEVersionTFT()).version.split(".");
 export const pbeVersion = pbeVersionLog[0]+"."+pbeVersionLog[1];
 
 export async function fetchingPBEVersionTFT(){
-    const urlDragon = "https://raw.communitydragon.org/pbe/content-metadata.json"
+    const urlDragon = `https://raw.communitydragon.org/${version}/content-metadata.json`
     const fetching = await fetch(urlDragon);
     return await fetching.json();
 }
