@@ -28,7 +28,7 @@ const getId = async (url, titulo) => {
   }
 };
 
-const VideoComponent = ({ src, loading = "lazy", titulo }) => {
+const VideoComponent = ({ src, loading = "lazy", titulo="video de Jupeson" }) => {
   const [video, setVideo] = useState(null);
 
   useEffect(() => {
