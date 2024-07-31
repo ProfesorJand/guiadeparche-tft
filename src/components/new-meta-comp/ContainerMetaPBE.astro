@@ -3,14 +3,16 @@
 import ImgTier from './ImgTier.astro';
 import ContainerChampionTierList from './ContainerChampionTierList.astro';
 import InfoComp from './InfoComp.astro';
-import { metaPBE } from 'src/json/updates/constantesPBE.js';
+import { fetchingMetaTFTPBE } from 'src/json/updates/constantesPBE.js';
 import Adsense from '@components/adsense/Adsense.astro';
 const {version, set} = Astro.props;
+
+const metaPBE = await fetchingMetaTFTPBE();
 ---
 
 
 <div id="meta" class="containerMeta">
-  <h1 class="titulo">Mejores Composiciones Meta (PBE) Parche {version}<br>TFT Set {set} | Teamfight Tactics</h1>
+  <h1 class="titulo">Mejores Composiciones Meta Parche {version}<br>TFT Set {set} | Teamfight Tactics</h1>
   {
     Object.keys(metaPBE).map(function (key, index) {
       if(key!=="Oculto" && !key.includes("Alternativa")){

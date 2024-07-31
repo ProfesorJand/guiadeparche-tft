@@ -8,7 +8,7 @@ export async function fetchingDataTFT({version, idioma, pais}){
 export const version = "latest";
 export const idioma = "es"; //en
 export const pais = "ar"; //mx /es /gb /us
-export const set = "11";
+export const set = "12";
 const latestVersionLog = (await fetchingLatestVersionTFT()).version.split(".");
 export const latestVersion = latestVersionLog[0]+"."+latestVersionLog[1];
 
@@ -22,5 +22,5 @@ export async function fetchingLatestVersionTFT(){
 export const datosTFT = await fetchingDataTFT({version,idioma,pais});
 export const championsTFT = await datosTFT.sets[set].champions;
 
-export const fetchMeta = await fetch(`https://guiadeparche.com/tftdata/Set${set}/metaComps/metaTFTComposiciones.json`);
+export const fetchMeta = await fetch(`https://guiadeparche.com/tftdata/Set${set}/metaTFTComposiciones.json`);
 export const meta = await fetchMeta.json();

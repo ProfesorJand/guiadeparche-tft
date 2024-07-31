@@ -42,9 +42,9 @@ import CampeonesBordeTFTMeta from '@components/cards/CampeonesBordeTFTMeta.astro
     const imgChampionTierListAlternativa = document.querySelectorAll(
       '.imgChampionTierList.alternativa'
     );
-    imgChampionTierListAlternativa[0].classList.toggle("imgSelected")
-    imgChampionTierList[0].classList.toggle("imgSelected")
-    imgChampionTierList.forEach((img) => {
+    imgChampionTierListAlternativa[0]?.classList.toggle("imgSelected")
+    imgChampionTierList[0]?.classList.toggle("imgSelected")
+    imgChampionTierList?.forEach((img) => {
       img.addEventListener('click', () => {
         const id = img.dataset.alt.replaceAll(' ', '-');
         const containerInfo = document.getElementById(id);
