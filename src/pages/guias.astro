@@ -2,7 +2,7 @@
 import Layout from "../layouts/Layout.astro"
 import Main from "@components/main/Main.astro";
 import {setPBE} from "../json/updates/constantesPBE.js"
-import Youtube from "@components/youtube/Youtube.astro";
+import Youtube from "@components/youtube/Youtube.jsx";
 const title = '▷ TFT Tips & Tricks | Teamfight Tactics';
 import {crearJSONSchema} from "src/json/schema/crearJSONSchema";
 // Example: Construct a canonical URL using your production domain
@@ -24,8 +24,8 @@ const JSONSchema = crearJSONSchema({title})
         <div class="contenedor">
 
             <div class="contenedorGuias separador">
-                <Youtube titulo="Habilidades de Campeones TFT Set 12" src="https://youtu.be/epJgUL5f8LE" />
-                <Youtube titulo="Notas del Set 12 de TFT Mágico y Caótico" src="https://youtu.be/oDNok6aFe4w" />
+                <Youtube titulo="Habilidades de Campeones TFT Set 12" src="https://youtu.be/epJgUL5f8LE" client:load/>
+                <Youtube titulo="Notas del Set 12 de TFT Mágico y Caótico" src="https://www.youtube.com/playlist?list=PLxRnNvReiLMHHtPFxG2tCBzNCrIz_-rnq" client:load/>
             </div>
             <h2 class="titulo">Unidades de Utilidad</h2>
             <div class="contenedorGuias">
