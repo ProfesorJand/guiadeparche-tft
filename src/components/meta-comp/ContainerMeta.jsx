@@ -101,7 +101,7 @@ const ContainerMeta = ({ version, set }) => {
         }
         return null;
       })}
-      <style jsx>{`
+      <style>{`
             .containerTier{
                 display: flex;
                 flex-direction: row;

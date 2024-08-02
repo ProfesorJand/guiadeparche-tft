@@ -136,7 +136,7 @@ const ComposicionPestana = ({ Titulo, Gamep, Tips, Early, Mid, Late, index }) =>
 
         }
       </div>
-      <style jsx>{`
+      <style>{`
             .contenido{
               display:flex;
               flex-direction:column;

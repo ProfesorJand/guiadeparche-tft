@@ -78,7 +78,7 @@ const VideoComponent = ({ src, loading = "lazy", titulo="video de Jupeson" }) =>
         width={25 * 16}
         height={25 * 9}
         alt={video.title}
-        loading="lazy"
+        loading="eager"
         className="youtube-thumbnail"
       />
       <div className="youtube-play-button"></div>

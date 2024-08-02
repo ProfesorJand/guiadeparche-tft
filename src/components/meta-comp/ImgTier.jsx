@@ -17,7 +17,7 @@ const ImgTier = ({ llave, index }) => {
         className="imgTier"
         loading="lazy"
       />
-      <style jsx>{`
+      <style>{`
         .Tier {
           margin: 0;
           font-weight: 600;

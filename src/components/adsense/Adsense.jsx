@@ -44,7 +44,7 @@ const AdComponent = ({ direction, dimension }) => {
   }, []);
 
   return (
-    <div style={{ '--right': right, '--left': left, '--aspect-ratio': aspectRatio }}>
+    <div>
       {dimension === 'vertical' && (
         <div className="adsense-container adsense-vertical">
           <ins
@@ -83,7 +83,7 @@ const AdComponent = ({ direction, dimension }) => {
           ></ins>
         </div>
       )}
-      <style jsx>{`
+      <style>{`
         .adsense-container {
           display: flex;
           position: relative;

@@ -53,7 +53,7 @@ const CampeonesBordeTFTMeta = ({ nombreCampeon, titulo, tresEstrellas, IconoSupe
           </div>
         )}
       </div>
-      <style jsx>{`
+      <style>{`
         .containerChampionTierList {
             display: flex;
             position: relative;

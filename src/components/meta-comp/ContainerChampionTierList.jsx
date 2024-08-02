@@ -22,7 +22,7 @@ const ContainerChampionTierList = ({ championsTier, index, pbe, alternativa, han
           selectedAlternativa={selectedAlternativa}
         />
       ))}
-      <style jsx>{`
+      <style>{`
         .containerChampionTierList {
               display: flex;
               position: relative;

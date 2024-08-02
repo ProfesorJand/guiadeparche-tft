@@ -92,7 +92,7 @@ return (
       Late={champTier?.Late}
       index={index}
     />
-    <style jsx>{`
+    <style>{`
       .infoComp {
         display:none;
         flex-direction: column;
