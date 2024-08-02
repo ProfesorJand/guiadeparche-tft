@@ -67,7 +67,8 @@ const VideoComponent = ({ src, loading = "lazy", titulo="video de Jupeson" }) =>
   }, []);
 
   if (!video) {
-    return <div>Cargando...</div>;
+    return <div className="divIframe"></div>;
+    // return <img src={spinner180v2.src} alt="loading"></img>;
   }
 
   return (

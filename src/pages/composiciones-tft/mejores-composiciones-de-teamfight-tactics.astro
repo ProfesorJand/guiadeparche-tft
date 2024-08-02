@@ -28,8 +28,8 @@ const JSONSchema = crearJSONSchema({title})
       <Youtube src={"https://www.youtube.com/watch?v=2BXIZoAma-s"} loading={"lazy"} client:load></Youtube>
     </div>
     <div id="ContainerMetaPBE">
-      <ContainerMetaPBE version={latestVersion} set={setPBE}/>
-      <!-- <ContainerMeta version={latestVersion} set={setPBE} client:load/> -->
+      <!-- <ContainerMetaPBE version={latestVersion} set={setPBE}/> -->
+      <ContainerMeta version={latestVersion} set={setPBE} client:load/>
     </div>
   </Main>
 </Layout>
