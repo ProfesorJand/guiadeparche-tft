@@ -249,7 +249,7 @@ const ComposicionPestana = ({ Titulo, Gamep, Tips, Early, Mid, Late, index }) =>
               cursor: pointer;
               background-color: var(--bg-primary);
             }
-            .active {
+            .selected {
               background-color: var(--bg-primary);
               border-bottom-color: var(--bg-primary);
             }
