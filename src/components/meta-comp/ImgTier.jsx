@@ -1,7 +1,6 @@
 import React from 'react';
 
 const ImgTier = ({ llave, index }) => {
-    console.log(llave)
   let src = `https://guiadeparche.com/tftdata/Set11/metaComps/tier/Tier-${llave}.jpg`;
 
   if (llave.includes("Alternativa")) {

@@ -108,9 +108,12 @@ const Aumentos = ({ info }) => {
 )};
 
 const ComposicionPestana = ({ Titulo, Gamep, Tips, Early, Mid, Late, index }) => {
-  const pestanaAbierta = Early ? 0 : Mid ? 1 : Late ? 2 : Tips ? 3 : Gamep ? 4 : null
-  const [selectedTab, setSelectedTab] = useState(pestanaAbierta);
-
+  const [selectedTab, setSelectedTab] = useState(null);
+  useEffect(()=>{
+    const pestanaAbierta = Early && Object.keys(Early).length > 0 ? 0 : Mid && Object.keys(Mid).length > 0 ? 1 : Late && Object.keys(Late).length > 0 ? 2 : Tips ? 3 : Gamep ? 4 : null;
+    console.log(pestanaAbierta, Tips);
+    setSelectedTab(pestanaAbierta)
+  },[])
   const handleTabClick = (tabIndex) => {
     setSelectedTab(tabIndex);
   };
@@ -118,18 +121,18 @@ const ComposicionPestana = ({ Titulo, Gamep, Tips, Early, Mid, Late, index }) =>
   return (
     <div className="composicionPestanas">
       <div className="containerPestanas">
-        {Early && <button onClick={() => handleTabClick(0)} className={[selectedTab === 0 ? 'selected' : '',"pestanas"].join(" ")}>Early</button>}
-        {Mid && <button onClick={() => handleTabClick(1)} className={[selectedTab === 1 ? 'selected' : '',"pestanas"].join(" ")}>Mid</button>}
-        {Late && <button onClick={() => handleTabClick(2)} className={[selectedTab === 2 ? 'selected' : '',"pestanas"].join(" ")}>Late</button>}
+        {Early && Object.keys(Early).length > 0 && <button onClick={() => handleTabClick(0)} className={[selectedTab === 0 ? 'selected' : '',"pestanas"].join(" ")}>Early</button>}
+        {Mid && Object.keys(Mid).length > 0 && <button onClick={() => handleTabClick(1)} className={[selectedTab === 1 ? 'selected' : '',"pestanas"].join(" ")}>Mid</button>}
+        {Late && Object.keys(Late).length > 0 && <button onClick={() => handleTabClick(2)} className={[selectedTab === 2 ? 'selected' : '',"pestanas"].join(" ")}>Late</button>}
         {Tips && <button onClick={() => handleTabClick(3)} className={[selectedTab === 3 ? 'selected' : '',"pestanas"].join(" ")}>Tips</button>}
-        {Gamep && <button onClick={() => handleTabClick(4)} className={[selectedTab === 4 ? 'selected' : '',"pestanas"].join(" ")}>Gameplay</button>}
+        {Gamep && Object.keys(Gamep).length > 0 && <button onClick={() => handleTabClick(4)} className={[selectedTab === 4 ? 'selected' : '',"pestanas"].join(" ")}>Gameplay</button>}
       </div>
       <div className="contenido">
-        {Early && selectedTab === 0 && <Aumentos info={Early} />}
-        {Mid && selectedTab === 1 && <Aumentos info={Mid} />}
-        {Late && selectedTab === 2 && <Aumentos info={Late} />}
+        {Early && Object.keys(Early).length > 0 && selectedTab === 0 && <Aumentos info={Early} client:load/>}
+        {Mid && Object.keys(Mid).length > 0 && selectedTab === 1 && <Aumentos info={Mid} client:load/>}
+        {Late && Object.keys(Late).length > 0 && selectedTab === 2 && <Aumentos info={Late} client:load/>}
         {Tips && selectedTab === 3 && <p className='textoTips'>{Tips}</p>}
-        {Gamep && selectedTab === 4 && 
+        {Gamep && Object.keys(Gamep).length > 0 && selectedTab === 4 && 
           Object.keys(Gamep).map((key, index)=>{
             return <Youtube src={Gamep[key]} loading={"eager"} client:load key={key}/>
           })
