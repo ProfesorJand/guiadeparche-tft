@@ -111,7 +111,6 @@ const ComposicionPestana = ({ Titulo, Gamep, Tips, Early, Mid, Late, index }) =>
   const [selectedTab, setSelectedTab] = useState(null);
   useEffect(()=>{
     const pestanaAbierta = Early && Object.keys(Early).length > 0 ? 0 : Mid && Object.keys(Mid).length > 0 ? 1 : Late && Object.keys(Late).length > 0 ? 2 : Tips ? 3 : Gamep ? 4 : null;
-    console.log(pestanaAbierta, Tips);
     setSelectedTab(pestanaAbierta)
   },[])
   const handleTabClick = (tabIndex) => {
