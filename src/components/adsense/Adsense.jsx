@@ -60,7 +60,7 @@ const AdComponent = ({ direction, dimension }) => {
   return (
     <div>
       {(dimension === 'vertical-izquierda' || dimension === "vertical-derecha") && (
-        <div className="adsense-container adsense-vertical">
+        <div className={`adsense-container adsense-vertical ${right ? right : left}`}>
           <ins
               className="adsbygoogle"
               style={style}
@@ -117,8 +117,13 @@ const AdComponent = ({ direction, dimension }) => {
             position: fixed;
             width: 25%;
             right: ${right};
-            left: ${left};
           }
+          .right{
+            right: ${right};
+          }
+          .left{
+           left: ${left};
+           }
           .adsense-vertical {
             display: flex;
             height: calc(100% - 10rem);
