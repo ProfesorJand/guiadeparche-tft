@@ -38,7 +38,7 @@ const ContainerChampionTierList = ({ championsTier, index, pbe, alternativa, han
         }
 
         .imgChampionTierList {
-            width: 20%;
+            width: var(--number-champ-meta);
             height: auto;
             box-sizing: border-box;
             transition: 0.5s;

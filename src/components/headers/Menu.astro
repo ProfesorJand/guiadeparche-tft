@@ -8,12 +8,10 @@ interface Props {
 
 const { link, nombre } = Astro.props;
 ---
-<!-- atributo para que cargue el twitch data-astro-reload -->
 <a
   class:list={['menuItem', currentPath === link ? 'active' : '']}
-  href={link}
+  href={currentPath === link ? null: link}
   target="_self"
-  
 >
   {nombre}
 </a>

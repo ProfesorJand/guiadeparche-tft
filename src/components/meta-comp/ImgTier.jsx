@@ -21,7 +21,7 @@ const ImgTier = ({ llave, index }) => {
           margin: 0;
           font-weight: 600;
           font-size: xx-large;
-          width: 20%;
+          width: var(--number-champ-meta);
           display: block;
         }
         .imgTier {

@@ -2,8 +2,13 @@ import React, { useEffect, useState } from 'react';
 import spinner180v2 from '../../assets/loading-180-v2.svg';
 // import spinner180 from '../../assets/loading-180.svg';
 
-const fetchPlaylist = async (playlistId) => {
-  const jsonUrl = await fetch(`https://youtube.com/oembed?url=https%3A//www.youtube.com/playlist%3Flist%3D${playlistId}&format=json`);
+const fetchPlaylist = async (url, playlist = true) => {
+  let jsonUrl;
+  if(playlist){
+    jsonUrl = await fetch(`https://youtube.com/oembed?url=https%3A//www.youtube.com/playlist%3Flist%3D${url}&format=json`);
+  }else{
+    jsonUrl = await fetch(`https://youtube.com/oembed?url=${url}&format=json`)
+  }
   const { thumbnail_url, html, title } = await jsonUrl.json();
   const srcMatch = html.match(/src="([^"]+)"/);
   return { thumbnail: thumbnail_url.replace("hqdefault.jpg", "maxresdefault.jpg"), url: srcMatch ? srcMatch[1] : null, title };
@@ -22,7 +27,8 @@ const getId = async (url, titulo) => {
     const siParam = newurl.searchParams.get('si') || '';
     return { type: "playlist", url: `https://www.youtube.com/embed/videoseries?list=${playlistId}&si=${siParam}}`, thumbnail, title };
   } else if (videoMatch) {
-    return { type: 'video', id: videoMatch[1], thumbnail: `https://i.ytimg.com/vi/${videoMatch[1]}/maxresdefault.jpg`, url: `https://www.youtube.com/embed/${videoMatch[1]}`, title: titulo };
+    const { thumbnail, title } = await fetchPlaylist(url, false);
+    return { type: 'video', id: videoMatch[1], thumbnail: `https://i.ytimg.com/vi/${videoMatch[1]}/maxresdefault.jpg`, url: `https://www.youtube.com/embed/${videoMatch[1]}`, title};
   } else {
     return null;
   }
@@ -81,6 +87,7 @@ const VideoComponent = ({ src, loading = "lazy", titulo="video de Jupeson" }) =>
         loading="eager"
         className="youtube-thumbnail"
       />
+      <h2 className='tituloYoutube'>{video.title}</h2>
       <div className="youtube-play-button"></div>
       <style>
         {`
@@ -92,6 +99,19 @@ const VideoComponent = ({ src, loading = "lazy", titulo="video de Jupeson" }) =>
             align-items: center;
             justify-content: center;
             aspect-ratio: 16/9;
+            cursor:pointer;
+          }
+          .tituloYoutube{
+            display: flex;
+            position: absolute;
+            font-size: small;
+            background: linear-gradient(rgba(0, 0, 0, 0), 70%, #000000);
+            width: 100%;
+            height: 100%;
+            align-items: flex-end;
+            margin: 0;
+            padding: 1rem;
+            box-sizing: border-box;
           }
           .youtube-thumbnail{
             width: 100%;

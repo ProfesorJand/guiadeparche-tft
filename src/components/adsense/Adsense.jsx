@@ -90,7 +90,6 @@ const AdComponent = ({ direction, dimension }) => {
           justify-content: center;
           align-items: center;
           width: 100%;
-          height: 45px;
           margin: 1rem 0;
         }
         .adsense-vertical {
@@ -101,7 +100,6 @@ const AdComponent = ({ direction, dimension }) => {
         }
         @media only screen and (min-width: 900px) {
           .adsense-container {
-            display: flex;
             position: fixed;
             width: 25%;
             right: var(--right);

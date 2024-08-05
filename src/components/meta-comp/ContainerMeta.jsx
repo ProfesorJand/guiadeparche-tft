@@ -13,10 +13,11 @@ const ContainerMeta = ({ version, set }) => {
 
   useEffect(() => {
     if(!loaded){
-      console.log(loaded);
       const fetchMeta = async () => {
         const data = await fetchingMetaTFTPBE();
         setMetaPBE(data);
+        setSelected({titulo:data["S"][0]["Titulo"], open:true})
+        setSelectedAlternativa({titulo:data["Alternativa-S"][0]["Titulo"], open:true})
       };
       fetchMeta();
      
