@@ -133,7 +133,7 @@ const ComposicionPestana = ({ Titulo, Gamep, Tips, Early, Mid, Late, index }) =>
         {Tips && selectedTab === 3 && <p className='textoTips'>{Tips}</p>}
         {Gamep && Object.keys(Gamep).length > 0 && selectedTab === 4 && 
           Object.keys(Gamep).map((key, index)=>{
-            return <Youtube src={Gamep[key]} loading={"eager"} client:load key={key}/>
+            return <Youtube src={Gamep[key]} loading={"lazy"} client:load key={key}/>
           })
 
         }
