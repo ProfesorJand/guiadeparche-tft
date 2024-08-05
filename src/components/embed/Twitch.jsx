@@ -1,11 +1,16 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const Twitch = () => {
   const divTwitchRef = useRef(null);
-
+  const [pass, setPass] = useState(false);
+  useEffect(()=>{
+    setTimeout(()=>{
+      setPass(true)
+    },5000)
+  },[])
   useEffect(() => {
     let embed;
-    if(!embed){
+    if(pass){
         const script = document.createElement('script');
         script.src = 'https://embed.twitch.tv/embed/v1.js';
         script.async = true;
@@ -55,7 +60,7 @@ const Twitch = () => {
             };
         };
     }
-  }, []);
+  }, [pass]);
 
   return (<div id="twitch-embed" ref={divTwitchRef}>
     <style>{`

@@ -39,9 +39,17 @@ const AdComponent = ({ direction, dimension }) => {
       break;
   }
 
+  const [pass, setPass] = useState(false);
+
+  useEffect(()=>{
+    setTimeout(() => {
+      setPass(true)
+    }, 5000);
+  },[])
+
   useEffect(() => {
     (window.adsbygoogle = window.adsbygoogle || []).push({});
-  }, []);
+  }, [pass]);
 
   return (
     <div>
