@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 const AdComponent = ({ direction, dimension }) => {
 
   const [pass, setPass] = useState(false);
-
   useEffect(()=>{
     setTimeout(() => {
       setPass(true)
@@ -117,8 +116,8 @@ const AdComponent = ({ direction, dimension }) => {
           .adsense-container {
             position: fixed;
             width: 25%;
-            right: var(--right);
-            left: var(--left);
+            right: ${right};
+            left: ${left};
           }
           .adsense-vertical {
             display: flex;
