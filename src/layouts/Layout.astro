@@ -60,7 +60,7 @@ const { title, JSONSchema } = Astro.props;
       <slot />
     </div>
     <div style={"display:flex"} transition:persist>
-      <Twitch client:only="react"/>
+      <Twitch transition:persist client:load/>
     </div>
 
   </body>
