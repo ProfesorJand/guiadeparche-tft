@@ -2,65 +2,85 @@ import { useEffect, useRef, useState } from "react";
 
 const Twitch = () => {
   const divTwitchRef = useRef(null);
-  const [pass, setPass] = useState(false);
-  useEffect(()=>{
-    setTimeout(()=>{
-      setPass(true)
-    },5000)
-  },[])
+  const [loadTwitch, setLoadTwitch] = useState(false);
+
   useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setLoadTwitch(true);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    if (divTwitchRef.current) {
+      observer.observe(divTwitchRef.current);
+    }
+
+    return () => {
+      if (divTwitchRef.current) {
+        observer.unobserve(divTwitchRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if(!loadTwitch){
+      return;
+    }
     let embed;
-    if(pass){
         const script = document.createElement('script');
         script.src = 'https://embed.twitch.tv/embed/v1.js';
         script.async = true;
-        script.defer = true;
         document.head.appendChild(script);
 
         script.onload = () => {
-            const divTwitch = divTwitchRef.current;
-            const options = {
-                width: '100%',
-                channel: "jupeson", // cambiar el string a la variable -> channel
-                layout: 'video',
-                autoplay: true,
-                allowfullscreen: true,
-                parent: ['tft.guiadeparche.com'],
-            };
+          const divTwitch = divTwitchRef.current;
+          const options = {
+              width: '100%',
+              channel: "jupeson", // cambiar el string a la variable -> channel
+              layout: 'video',
+              autoplay: true,
+              allowfullscreen: true,
+              parent: ['tft.guiadeparche.com'],
+          };
 
-            embed = new window.Twitch.Embed('twitch-embed', options);
+          embed = new window.Twitch.Embed('twitch-embed', options);
 
-            embed.addEventListener(window.Twitch.Embed.READY, () => {
-                embed.addEventListener(window.Twitch.Embed.ONLINE, handleOnline);
-                embed.addEventListener(window.Twitch.Embed.OFFLINE, handleOffline);
-            });
+          embed.addEventListener(window.Twitch.Embed.READY, () => {
+              embed.addEventListener(window.Twitch.Embed.ONLINE, handleOnline);
+              embed.addEventListener(window.Twitch.Embed.OFFLINE, handleOffline);
+          });
 
-            const handleOnline = () => {
-                embed.removeEventListener(window.Twitch.Embed.ONLINE, handleOnline);
-                embed.addEventListener(window.Twitch.Embed.OFFLINE, handleOffline);
-                divTwitch.classList.remove('hide');
-                divTwitch.classList.add('show');
-                embed.setMuted(false);
-            };
+          const handleOnline = () => {
+              embed.removeEventListener(window.Twitch.Embed.ONLINE, handleOnline);
+              embed.addEventListener(window.Twitch.Embed.OFFLINE, handleOffline);
+              divTwitch.classList.remove('hide');
+              divTwitch.classList.add('show');
+              embed.setMuted(false);
+          };
 
-            const handleOffline = () => {
-                checkAnotherStreamer();
-            };
+          const handleOffline = () => {
+              checkAnotherStreamer();
+          };
 
-            const checkAnotherStreamer = () => {
-                embed.setChannel("relic_lol");
-                embed.addEventListener(window.Twitch.Embed.OFFLINE, volverJupeson);
-            };
+          const checkAnotherStreamer = () => {
+              embed.setChannel("relic_lol");
+              embed.addEventListener(window.Twitch.Embed.OFFLINE, volverJupeson);
+          };
 
-            const volverJupeson = () => {
-                embed.setChannel("jupeson");
-                embed.removeEventListener(window.Twitch.Embed.OFFLINE, handleOffline);
-                embed.addEventListener(window.Twitch.Embed.ONLINE, handleOnline);
-                embed.setMuted(true);
-            };
-        };
-    }
-  }, [pass]);
+          const volverJupeson = () => {
+              embed.setChannel("jupeson");
+              embed.removeEventListener(window.Twitch.Embed.OFFLINE, handleOffline);
+              embed.addEventListener(window.Twitch.Embed.ONLINE, handleOnline);
+              embed.setMuted(true);
+          };
+      };
+  }, [loadTwitch]);
 
   return (<div id="twitch-embed" ref={divTwitchRef}>
     <style>{`
