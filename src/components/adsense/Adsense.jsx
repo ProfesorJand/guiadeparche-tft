@@ -1,6 +1,19 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const AdComponent = ({ direction, dimension }) => {
+
+  const [pass, setPass] = useState(false);
+
+  useEffect(()=>{
+    setTimeout(() => {
+      setPass(true)
+    }, 5000);
+  },[])
+
+  useEffect(() => {
+    if(pass) (window.adsbygoogle = window.adsbygoogle || []).push({});
+  }, [pass]);
+
   let right;
   let left;
   if (direction === 'left') {
@@ -16,7 +29,7 @@ const AdComponent = ({ direction, dimension }) => {
   if (dimension === 'horizontal') {
     aspectRatio = 1.91 / 1;
   }
-  if (dimension === 'vertical') {
+  if (dimension === 'vertical-izquierda' || dimension === "vertical-derecha") {
     aspectRatio = 1 / 1.91;
   }
 
@@ -24,10 +37,14 @@ const AdComponent = ({ direction, dimension }) => {
   let adsenseID;
 
   switch (dimension) {
-    case 'vertical':
+    case 'vertical-derecha':
       adsenseID = 7127054478;
       style.height = '600px';
       break;
+    case 'vertical-izquierda':
+    adsenseID = 7127054478;
+    style.height = '600px';
+    break;
     case 'horizontal':
       adsenseID = 8326664156;
       style.height = '90px';
@@ -39,30 +56,20 @@ const AdComponent = ({ direction, dimension }) => {
       break;
   }
 
-  const [pass, setPass] = useState(false);
-
-  useEffect(()=>{
-    setTimeout(() => {
-      setPass(true)
-    }, 5000);
-  },[])
-
-  useEffect(() => {
-    (window.adsbygoogle = window.adsbygoogle || []).push({});
-  }, [pass]);
+  
 
   return (
     <div>
-      {dimension === 'vertical' && (
+      {(dimension === 'vertical-izquierda' || dimension === "vertical-derecha") && (
         <div className="adsense-container adsense-vertical">
           <ins
-            className="adsbygoogle"
-            style={style}
-            data-ad-client="ca-pub-6116944495372863"
-            data-ad-slot="7127054478"
-            data-ad-format="auto"
-            data-full-width-responsive="true"
-          ></ins>
+              className="adsbygoogle"
+              style={style}
+              data-ad-client="ca-pub-6116944495372863"
+              data-ad-slot={adsenseID}
+              data-ad-format="auto"
+              data-full-width-responsive="true"
+            ></ins> 
         </div>
       )}
 

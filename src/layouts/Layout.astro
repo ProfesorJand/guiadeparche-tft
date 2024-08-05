@@ -3,7 +3,7 @@ import Header from '../components/headers/Header.astro';
 import Footer from '../components/footer/Footer.astro';
 import Twitch from '../components/embed/Twitch.jsx';
 import Logo from '../components/logo/Logo.astro';
-import Adsense from '../components/adsense/Adsense.astro';
+import Adsense from '../components/adsense/Adsense.jsx';
 import { ViewTransitions } from 'astro:transitions';
 interface Props {
   title: string;
@@ -52,8 +52,8 @@ const { title, JSONSchema } = Astro.props;
   </head>
   <body>
     <Header transition:persist/>
-    <Adsense direction={"left"} dimension={"vertical"} transition:persist/>
-    <Adsense direction={"right"} dimension={"vertical"} transition:persist/>
+    <Adsense direction={"left"} dimension={"vertical-izquierda"} transition:persist client:load/>
+    <Adsense direction={"right"} dimension={"vertical-derecha"} transition:persist client:load/>
     <Footer />
     <Logo />
     <div transition:animate="fade">
