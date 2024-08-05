@@ -116,7 +116,6 @@ const AdComponent = ({ direction, dimension }) => {
           .adsense-container {
             position: fixed;
             width: 25%;
-            right: ${right};
           }
           .right{
             right: ${right};
