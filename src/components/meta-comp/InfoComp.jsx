@@ -51,7 +51,8 @@ return (
           src={srcCompo}
           alt={`Composicion Meta ${champTier?.Titulo}`}
           className={`composicionImg`}
-          loading={(champTier?.Tier === "S" || champTier?.Tier === "Alternativa-S") ? 'eager' : 'lazy'}
+          // loading={(champTier?.Tier === "S" || champTier?.Tier === "Alternativa-S") ? 'eager' : 'lazy'}
+          loading={"lazy"}
         />
       </div>
       <div className="containerChampEspatula">
@@ -59,7 +60,8 @@ return (
           src={champTier?.ImgCampeon}
           alt={`Composicion Meta ${champTier?.Titulo}`}
           className={`campeonEspatula`}
-          loading={index === 0 ? 'eager' : 'lazy'}
+          //loading={index === 0 ? 'eager' : 'lazy'}
+          loading={"lazy"}
           width={50}
           height={50}
           onClick={() => handleImageClick(champTier?.ImgCompo)}
@@ -72,7 +74,8 @@ return (
                 src={espatula[key]}
                 alt={`Composicion Meta Espatula ${champTier?.Titulo}`}
                 className="campeonEspatula"
-                loading={index === 0 ? 'eager' : 'lazy'}
+                // loading={index === 0 ? 'eager' : 'lazy'}
+                loading={"lazy"}
                 width={50}
                 height={50}
                 onClick={() => handleImageClick(key === "Item1" ? espatula["Comp1"] : espatula["Comp2"])}

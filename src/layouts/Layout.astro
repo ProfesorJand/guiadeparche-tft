@@ -53,14 +53,14 @@ const { title, JSONSchema } = Astro.props;
   <body>
     <Header transition:persist/>
     <Adsense direction={"left"} dimension={"vertical"} transition:persist/>
-    <div transition:persist>
-      <Twitch client:only="react"/>
-    </div>
     <Adsense direction={"right"} dimension={"vertical"} transition:persist/>
     <Footer />
     <Logo />
     <div transition:animate="fade">
       <slot />
+    </div>
+    <div style={"display:flex"} transition:persist>
+      <Twitch client:only="react"/>
     </div>
 
   </body>
