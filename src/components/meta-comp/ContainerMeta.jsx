@@ -75,7 +75,7 @@ const ContainerMeta = ({ version, set }) => {
         }
         return null;
       })}
-      <Adsense dimension={"horizontal"} ></Adsense>
+      {/* <Adsense dimension={"horizontal"} ></Adsense> */}
       <h2 className="titulo paddingTop">Aumentos de Heroes Meta TFT</h2>
       {Object.keys(metaPBE).map((key, index) => {
         if (key.includes("Alternativa")) {
