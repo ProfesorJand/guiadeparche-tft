@@ -4,6 +4,7 @@ import ContainerChampionTierList from './ContainerChampionTierList';
 import InfoComp from './InfoComp';
 import { fetchingMetaTFTPBE } from 'src/json/updates/constantesPBE.js';
 import gifSpinning from "@assets/gif-spining.gif"
+import Adsense from '@components/adsense/Adsense.jsx';
 
 const ContainerMeta = ({ version, set }) => {
   const [loaded, setLoaded] = useState(false);
@@ -74,6 +75,7 @@ const ContainerMeta = ({ version, set }) => {
         }
         return null;
       })}
+      <Adsense dimension={"horizontal"} ></Adsense>
       <h2 className="titulo paddingTop">Aumentos de Heroes Meta TFT</h2>
       {Object.keys(metaPBE).map((key, index) => {
         if (key.includes("Alternativa")) {
