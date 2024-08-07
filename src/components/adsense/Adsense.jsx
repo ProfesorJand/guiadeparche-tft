@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import style from "./Adsense.module.css"
 
 const AdComponent = ({ direction, dimension }) => {
 
@@ -17,10 +18,10 @@ const AdComponent = ({ direction, dimension }) => {
   let left;
   if (direction === 'left') {
     left = 0;
-  } else {
+  } else if(direction === 'right') {
     right = 0;
   }
-  
+
   let aspectRatio;
   if (dimension === 'cuadrado') {
     aspectRatio = 1 / 1;
@@ -32,26 +33,26 @@ const AdComponent = ({ direction, dimension }) => {
     aspectRatio = 1 / 1.91;
   }
 
-  let style = { display: 'block', width: '100%' };
+  let styleINS = { display: 'block', width: '100%' };
   let adsenseID;
 
   switch (dimension) {
     case 'vertical-derecha':
       adsenseID = 7127054478;
-      style.height = '600px';
+      styleINS.height = '600px';
       break;
     case 'vertical-izquierda':
     adsenseID = 7127054478;
-    style.height = '600px';
+    styleINS.height = '600px';
     break;
     case 'horizontal':
       adsenseID = 8326664156;
-      style.height = '90px';
+      styleINS.height = '150px';
       break;
     case 'cuadrado':
     default:
       adsenseID = 4837474033;
-      style.height = '300px';
+      styleINS.height = '300px';
       break;
   }
 
@@ -60,10 +61,10 @@ const AdComponent = ({ direction, dimension }) => {
   return (
     <div>
       {(dimension === 'vertical-izquierda' || dimension === "vertical-derecha") && (
-        <div className={`adsense-container adsense-vertical ${direction === "right" ? "right" : "left"}`}>
+        <div className={[style.adsense_container, style.adsense_vertical].join(" ")} style={direction === "right" ? {right:0}: {left:0}}>
           <ins
               className="adsbygoogle"
-              style={style}
+              style={styleINS}
               data-ad-client="ca-pub-6116944495372863"
               data-ad-slot={adsenseID}
               data-ad-format="auto"
@@ -73,10 +74,10 @@ const AdComponent = ({ direction, dimension }) => {
       )}
 
       {dimension === 'horizontal' && (
-        <div className="adsense-container adsense-horizontal">
+        <div className={[style.adsense_container, style.adsense_horizontal].join(" ")}>
           <ins
             className="adsbygoogle"
-            style={style}
+            style={styleINS}
             data-ad-format="fluid"
             data-ad-layout-key="-f9+4w+7x-eg+3a"
             data-ad-client="ca-pub-6116944495372863"
@@ -86,10 +87,10 @@ const AdComponent = ({ direction, dimension }) => {
       )}
 
       {dimension === 'cuadrado' && (
-        <div className="adsense-container adsense-cuadrado">
+        <div className={[style.adsense_container, style.adsense_cuadrado].join(" ")}>
           <ins
             className="adsbygoogle"
-            style={style}
+            style={styleINS}
             data-ad-client="ca-pub-6116944495372863"
             data-ad-slot="4837474033"
             data-ad-format="auto"
@@ -97,41 +98,6 @@ const AdComponent = ({ direction, dimension }) => {
           ></ins>
         </div>
       )}
-      <style>{`
-        .adsense-container {
-          display: flex;
-          position: relative;
-          justify-content: center;
-          align-items: center;
-          width: 100%;
-          margin: 1rem 0;
-        }
-        .adsense-vertical {
-          display: none;
-        }
-        .adsense-horizontal {
-          display: flex;
-        }
-        @media only screen and (min-width: 900px) {
-          .adsense-container {
-            position: fixed;
-            width: 25%;
-          }
-          .right{
-            right: ${right};
-          }
-          .left{
-           left: ${left};
-           }
-          .adsense-vertical {
-            display: flex;
-            height: calc(100% - 10rem);
-          }
-          .adsense-horizontal {
-            display: none;
-          }
-        }
-      `}</style>
     </div>
   );
 };
