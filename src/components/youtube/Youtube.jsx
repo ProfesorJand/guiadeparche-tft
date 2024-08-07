@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import spinner180v2 from '../../assets/loading-180-v2.svg';
 // import spinner180 from '../../assets/loading-180.svg';
+import style from "./Youtube.module.css";
 
 const fetchPlaylist = async (url, playlist = true) => {
   let jsonUrl;
@@ -73,86 +74,22 @@ const VideoComponent = ({ src, loading = "lazy", titulo="video de Jupeson" }) =>
   }, []);
 
   if (!video) {
-    return <div className="divIframe"></div>;
+    return <div className={style.divIframe}></div>;
     // return <img src={spinner180v2.src} alt="loading"></img>;
   }
 
   return (
-    <div className="divIframe" data-url={video.url} data-loading={loading}>
+    <div className={style.divIframe} data-url={video.url} data-loading={loading}>
       <img
         src={video.thumbnail}
         width={25 * 16}
         height={25 * 9}
         alt={video.title}
         loading="lazy"
-        className="youtube-thumbnail"
+        className={style.youtube_thumbnail}
       />
-      <h2 className='tituloYoutube'>{video.title}</h2>
-      <div className="youtube-play-button"></div>
-      <style>
-        {`
-          .divIframe{
-            display: flex;
-            width: 100%;
-            position:relative;
-            flex-direction:row;
-            align-items: center;
-            justify-content: center;
-            aspect-ratio: 16/9;
-            cursor:pointer;
-          }
-          .tituloYoutube{
-            display: flex;
-            position: absolute;
-            font-size: small;
-            background: linear-gradient(rgba(0, 0, 0, 0), 70%, #000000);
-            width: 100%;
-            height: 100%;
-            align-items: flex-end;
-            margin: 0;
-            padding: 1rem;
-            box-sizing: border-box;
-          }
-          .youtube-thumbnail{
-            width: 100%;
-            height: 100%;
-            cursor: pointer;
-          }
-          .youtube-play-button {
-            width: 68px;
-            height: 68px;
-            background-image: url('https://img.icons8.com/ios-glyphs/90/F00000/play-button-circled.png');
-            background-size: cover;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            transition: .3s;
-            cursor: pointer;
-          }
-          .youtube-container:hover img {
-            filter: brightness(0.7);
-          }
-          .iframeYoutube{
-            display: flex;
-            width: 100%;
-            height: 100%;
-          }
-          .spinner{
-            display: flex;
-            position: absolute;
-          }
-          .hideIframe{
-            visibility: hidden;
-          }
-          .hide{
-            display: none;
-          }
-          .divIframe:hover .youtube-play-button {
-            transform: translate(-50%, -50%) scale(1.3);
-          }
-        `}
-      </style>
+      <h2 className={style.tituloYoutube}>{video.title}</h2>
+      <div className={style.youtube_play_button}></div>
     </div>
   );
 };
