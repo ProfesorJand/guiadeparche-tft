@@ -89,7 +89,6 @@ const ContainerMeta = ({ version, set }) => {
         }
         return null;
       })}
-      {/* <Adsense dimension={"cuadrado"}></Adsense> */}
       <h2 className={[styles.titulo, styles.paddingTop].join(" ")}>Aumentos de Heroes Meta TFT</h2>
       {Object.keys(metaPBE).map((key, index) => {
         if (key.includes("Alternativa")) {
