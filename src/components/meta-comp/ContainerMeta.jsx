@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import ImgTier from './ImgTier';
 import ContainerChampionTierList from './ContainerChampionTierList';
+import CampeonesBordeTFTMeta from "./CampeonesBordeTFTMeta";
 import InfoComp from './InfoComp';
 import { fetchingMetaTFTPBE } from 'src/json/updates/constantesPBE.js';
 import gifSpinning from "@assets/gif-spining.gif"
 import Adsense from '@components/adsense/Adsense.jsx';
+import styles from "./css/ContainerMeta.module.css";
 
 const ContainerMeta = ({ version, set }) => {
   const [loaded, setLoaded] = useState(false);
@@ -45,23 +47,35 @@ const ContainerMeta = ({ version, set }) => {
   // }
 
   return (
-    <div id="meta" className="containerMeta">
-      <h1 className="titulo paddingTop">
+    <div id="meta" className={styles.containerMeta}>
+      <h1 className={[styles.titulo, styles.paddingTop].join(" ")}>
         Mejores Composiciones Meta Parche {version}<br />TFT Set {set} | Teamfight Tactics
       </h1>
       {Object.keys(metaPBE).map((key, index) => {
         if (!key.includes("Alternativa")) {
           return (
             <div key={key}>
-              <div className="containerTier" key={index}>
+              <div className={styles.containerTier} key={index}>
                 <ImgTier llave={key} index={index} />
-                <ContainerChampionTierList
-                  championsTier={metaPBE[key]}
-                  index={index}
-                  alternativa={false}
-                  handleSelect={handleSelect}
-                  selected={selected}
-                />
+                <div className={styles.containerChampionTierList}>
+                  {metaPBE[key].map((champTier, i) => (
+                    <CampeonesBordeTFTMeta
+                      key={i}
+                      meta={champTier}
+                      nombreCampeon={champTier.Campeon}
+                      imgCampeon={champTier.ImgCampeon}
+                      tresEstrellas={champTier.imgEstrellas}
+                      titulo={champTier.Titulo}
+                      IconoSuperior={champTier.imgRecuadro}
+                      coste={champTier.CosteCampeon}
+                      index={index}
+                      i={i}
+                      handleSelect={handleSelect}
+                      selected={selected}
+                      selectedAlternativa={selectedAlternativa}
+                    />
+                  ))}
+                </div>
               </div>
               <InfoComp
                   championsTier={metaPBE[key]}
@@ -75,22 +89,34 @@ const ContainerMeta = ({ version, set }) => {
         }
         return null;
       })}
-      {/* <Adsense dimension={"horizontal"} ></Adsense> */}
-      <h2 className="titulo paddingTop">Aumentos de Heroes Meta TFT</h2>
+      <Adsense dimension={"cuadrado"} ></Adsense>
+      <h2 className={[styles.titulo, styles.paddingTop].join(" ")}>Aumentos de Heroes Meta TFT</h2>
       {Object.keys(metaPBE).map((key, index) => {
         if (key.includes("Alternativa")) {
           return (
             <div key={key}>
-              <div className="containerTier">
+              <div className={styles.containerTier}>
                 <ImgTier llave={key} index={index} />
-                <ContainerChampionTierList
-                  championsTier={metaPBE[key]}
-                  index={index}
-                  pbe={true}
-                  alternativa={true}
-                  handleSelect={handleSelect}
-                  selectedAlternativa={selectedAlternativa}
-                />
+                <div className={styles.containerChampionTierList}>
+                  {metaPBE[key].map((champTier, i) => (
+                    <CampeonesBordeTFTMeta
+                      key={i}
+                      meta={champTier}
+                      nombreCampeon={champTier.Campeon}
+                      imgCampeon={champTier.ImgCampeon}
+                      tresEstrellas={champTier.imgEstrellas}
+                      titulo={champTier.Titulo}
+                      IconoSuperior={champTier.imgRecuadro}
+                      coste={champTier.CosteCampeon}
+                      index={index}
+                      i={i}
+                      alternativa={true}
+                      handleSelect={handleSelect}
+                      selected={selected}
+                      selectedAlternativa={selectedAlternativa}
+                    />
+                  ))}
+                </div>
               </div>
                 <InfoComp
                   championsTier={metaPBE[key]}
@@ -104,24 +130,6 @@ const ContainerMeta = ({ version, set }) => {
         }
         return null;
       })}
-      <style>{`
-            .containerTier{
-                display: flex;
-                flex-direction: row;
-            }
-            .paddingTop{
-                margin-top:1.5rem;
-                border-top: 2px solid var(--border-color);
-            }
-            .titulo{
-                font-size: smaller;
-            }
-            @media only screen and (min-width:900px){
-                .titulo{
-                    font-size: larger;
-                }
-            }
-        `}</style>
     </div>
   );
 };

@@ -1,0 +1,14 @@
+.Tier {
+    margin: 0;
+    font-weight: 600;
+    font-size: xx-large;
+    width: var(--number-champ-meta);
+    display: block;
+  }
+  .imgTier {
+      display: flex;
+      position: relative;
+      width: 100%;
+      height: auto;
+      box-sizing: border-box;
+  }

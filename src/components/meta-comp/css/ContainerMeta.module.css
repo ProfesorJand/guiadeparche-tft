@@ -1,0 +1,29 @@
+.containerTier{
+    display: flex;
+    flex-direction: row;
+}
+.paddingTop{
+    margin-top:1.5rem;
+    border-top: 2px solid var(--border-color);
+}
+.titulo{
+    font-size: smaller;
+    text-align: center;
+}
+
+.containerChampionTierList {
+    display: flex;
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+
+@media only screen and (min-width:900px){
+    .titulo{
+        font-size: larger;
+    }
+}
+

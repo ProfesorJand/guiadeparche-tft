@@ -1,9 +1,10 @@
 import React from 'react';
 import CampeonesBordeTFTMeta from './CampeonesBordeTFTMeta.jsx';
+import styles from "./css/ContainerChampionTierList.module.css";
 
 const ContainerChampionTierList = ({ championsTier, index, pbe, alternativa, handleSelect, selected, selectedAlternativa }) => {
   return (
-    <div className="containerChampionTierList">
+    <div className={styles.containerChampionTierList}>
       {championsTier.map((champTier, i) => (
         <CampeonesBordeTFTMeta
           key={i}

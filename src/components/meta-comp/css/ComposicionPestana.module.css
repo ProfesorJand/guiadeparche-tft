@@ -1,0 +1,135 @@
+.contenido{
+    display:flex;
+    flex-direction:column;
+    width:100%;
+    position:relative;
+    gap:5px;
+    margin-top:1rem;
+  }
+  .containerTooltip {
+    margin-left: -150px;
+    bottom: 120%;
+    left: 50%;
+    display: none;
+    width: 300px;
+    background-color: var(--bg-primary);
+    color: white;
+    text-align: center;
+    border-radius: 3px;
+    padding: 6px 6px;
+    position: absolute;
+    z-index: 50;
+    box-shadow: 0 5px 10px rgba(221, 241, 39, 0.534);
+    box-sizing: border-box;
+  }
+  .tituloTooltip{
+    font-size:larger;
+  }
+  .containerAumentos {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+  .aumentoImg {
+    width: 100%;
+    height: auto;
+  }
+  .containerPestanaInfoComp{
+    display:flex;
+    flex-direction:row;
+    position:relative;
+    width:100%;
+    gap:5px;
+  }
+  .containerCompsNivel{
+    display:flex;
+    position:relative;
+    gap:5px;
+    flex-direction:column;
+    justify-content: center;
+    align-items:center;
+    flex:1;
+  }
+  .tooltip {
+    display: flex;
+    position:initial;
+    width: 10%;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .tooltip:hover .containerTooltip {
+    display: flex;
+    flex-direction: column;
+  }
+  .nivelCompH2{
+    font-size:larger;
+    text-align:center;
+    margin:0;
+  }
+  .InfoCompImg{
+    display:flex;
+    position:relative;
+    width:100%;
+    height:auto;
+  }
+  .containerPestanas {
+    display: flex;
+    width: 100%;
+    gap: 5px;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    flex-direction: row;
+    position: relative;
+    color: white;
+    align-items: center;
+    list-style-type: none;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  .pestanas {
+    list-style: none;
+    background-color: var(--bg-secondary);
+    width: max-content;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    font-size: 1rem;
+    flex-grow: 1;
+    color: white;
+  }
+  .pestanas:hover {
+    cursor: pointer;
+    background-color: var(--bg-primary);
+  }
+  .selected {
+    background-color: var(--bg-primary);
+    border-bottom-color: var(--bg-primary);
+  }
+  .containerInfoPestanas{
+    display: none;
+    padding: 1rem;
+    flex-direction: column;
+    box-sizing: border-box;
+  }
+  .show {
+    display: flex;
+  }
+  p {
+    font-size: 1rem;
+    margin: 5px;
+  } 
+  @media only screen and (min-width: 900px) {
+    .containerPestanas {
+      justify-content: center;
+    }
+    .tooltip{
+      position: relative;
+    }
+  }

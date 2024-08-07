@@ -1,0 +1,28 @@
+.containerChampionTierList {
+    display: flex;
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.imgChampionTierList:hover {
+  cursor: pointer;
+  transform: scale(1);
+}
+
+.imgChampionTierList {
+  width: var(--number-champ-meta);
+  height: auto;
+  box-sizing: border-box;
+  transition: 0.5s;
+  transform: scale(0.9);
+}
+
+.imgSelected {
+  filter: grayscale(0%);
+  -webkit-filter: grayscale(0%);
+  transform: scale(1);
+  transition: 0.5s;
+}
