@@ -28,6 +28,7 @@ const CampeonesBordeTFTMeta = ({ nombreCampeon, titulo, tresEstrellas, IconoSupe
           className={styles.imgChampionBorderTierList}
           width={100}
           height={100}
+          loading={"lazy"}
         />
         {tresEstrellas && (
           <img
@@ -36,6 +37,7 @@ const CampeonesBordeTFTMeta = ({ nombreCampeon, titulo, tresEstrellas, IconoSupe
             className={styles.tresEstrellas}
             width={100}
             height={100}
+            loading={"lazy"}
           />
         )}
         {IconoSuperior && (
@@ -46,6 +48,7 @@ const CampeonesBordeTFTMeta = ({ nombreCampeon, titulo, tresEstrellas, IconoSupe
               className={styles.iconoSuperior}
               width={100}
               height={100}
+              loading={"lazy"}
               style={{ backgroundColor: borderColor }}
             />
           </div>

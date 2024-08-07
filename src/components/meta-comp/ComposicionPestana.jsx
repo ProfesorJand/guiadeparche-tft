@@ -23,7 +23,7 @@ const Aumentos = ({ info }) => {
   function encontrarAumento(id) {
     const aumentoInfo = aumentos?.find((aumento) => aumento.apiName === id);
     return {
-      icon: aumentoInfo?.icon || 'https://raw.communitydragon.org/latest/game/assets/maps/tft/icons/augments/hexcore/pandoras-bench-i.png',
+      icon: aumentoInfo?.icon || 'assets/maps/tft/icons/augments/hexcore/pandoras-bench-i.png',
       desc: replaceVariables({desc: aumentoInfo?.desc  || 'actualizando...', effects: aumentoInfo?.effects, id:aumentoInfo?.apiName}),
       name: aumentoInfo?.name || 'Upss',
     };

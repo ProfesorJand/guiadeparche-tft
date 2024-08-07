@@ -56,11 +56,11 @@ return (
           loading={"lazy"}
         />
       </div>
-      <div className="containerChampEspatula">
+      <div className={style.containerChampEspatula}>
         <img
           src={champTier?.ImgCampeon}
           alt={`Composicion Meta ${champTier?.Titulo}`}
-          className={style.campeonEspatula}
+          className={[style.campeonEspatula , srcCompo === champTier?.ImgCompo ? style.selected : ""].join(" ")}
           //loading={index === 0 ? 'eager' : 'lazy'}
           loading={"lazy"}
           width={50}
@@ -74,7 +74,7 @@ return (
                 key={espatulaIndex}
                 src={espatula[key]}
                 alt={`Composicion Meta Espatula ${champTier?.Titulo}`}
-                className={style.campeonEspatula}
+                className={[style.campeonEspatula, (key === "Item1" && srcCompo === espatula["Comp1"]) ? style.selected : (key === "Item2" && srcCompo === espatula["Comp2"]) ? style.selected :""].join(" ")}
                 // loading={index === 0 ? 'eager' : 'lazy'}
                 loading={"lazy"}
                 width={50}

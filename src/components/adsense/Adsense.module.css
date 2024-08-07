@@ -18,6 +18,9 @@
   ins.adsbygoogle[data-ad-status="unfilled"] {
     display: none !important;
   }
+  ins#google-anno-sa{
+    display: none !important;
+  }
   @media only screen and (min-width: 900px) {
     .adsense_container {
       position: fixed;

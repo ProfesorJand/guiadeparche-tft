@@ -90,7 +90,6 @@
   .containerChampEspatula {
     display: flex;
     flex-direction: column;
-    cursor: pointer;
     width: 10%;
   }
 
@@ -99,6 +98,7 @@
     height: auto;
     transform: scale(0.9);
     transition: 0.5s;
+    cursor: pointer;
   }
 
   .campeonEspatula:hover {
@@ -112,6 +112,8 @@
   .selected {
     transform: scale(1);
   }
+
+  
 
   @media only screen and (min-width: 900px) {
     .titulo {
