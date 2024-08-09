@@ -1,0 +1,31 @@
+.containerTablaCampeones{
+    display:flex;
+    flex-direction: column;
+    width: 100%;
+
+}
+
+.headerTabla{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    border: 2px solid var(--border-color);
+    box-sizing: border-box;
+}
+
+.headerTabla > div{
+    flex:1;
+    font-size: small;
+    align-items: center;
+    justify-content: center;
+}
+
+.headerTabla > div.hideMobile{
+    display:none
+}
+
+@media only screen and (min-width:900px){
+    .headerTabla > div.hideMobile{
+        display:flex
+    }
+}

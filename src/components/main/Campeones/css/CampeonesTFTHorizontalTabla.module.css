@@ -1,0 +1,51 @@
+.containerCard{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    border: 1px solid var(--border-color);
+    box-sizing: border-box;
+}
+
+.containerCard:hover{
+    cursor: pointer;
+    background-color: var(--bg-primary);
+}
+
+.containerCard > div{
+    display: flex;
+    flex: 1;
+    font-size: small;
+    align-items: center;
+    justify-content: center;
+}
+
+.containerImgCampeon{
+    display: flex;
+    position: relative;
+}
+
+.tooltip{
+    display: flex;
+    position: absolute;
+    bottom:0;
+    text-shadow:
+    1px 1px 0 #000,
+    -1px 1px 0 #000,
+    -1px -1px 0 #000,
+    1px -1px 0 #000;
+
+}   
+
+.imgCampeon{
+    width: 100%;
+}
+
+.containerCard > .hideMobile{
+    display: none;
+}
+
+@media only screen and (min-width:900px) {
+    .containerCard > .hideMobile{
+        display: flex;
+    }
+}

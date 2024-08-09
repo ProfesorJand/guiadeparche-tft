@@ -1,0 +1,54 @@
+.containerTooltip{
+    display: flex;
+    width: 100%;
+    position: relative;
+}
+
+
+.imgHabilidad{
+    width: 100%;
+}
+
+.tooltip{
+    display:none;
+    position: absolute;
+    right:100%;
+    width: 200px;
+    background-color: var(--bg-primary);
+    flex-direction: column;
+    padding:1rem;
+    text-wrap:pretty;
+    z-index: 50;
+    box-shadow: 0 5px 10px rgba(221, 241, 39, 0.534);
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+
+.containerTooltip:hover > .tooltip{
+    display: flex;
+    
+}
+
+.tooltip > .titulo{
+    margin: 0;
+}
+
+.tooltip > .variables{
+    margin: 0;
+}
+
+.tooltip > magicdamage{
+    color:purple;
+}
+
+.tooltip > scalehealth{
+    color:green;
+}
+
+
+
+@media only screen and (min-width:900px) {
+    .containerTooltip:hover > .tooltip{
+        width: 500px
+    }
+}

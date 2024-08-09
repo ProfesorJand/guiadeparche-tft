@@ -4,13 +4,14 @@ const mode = import.meta.env.MODE;
 const origen = mode === "production" ? Astro.site.origin : "http://localhost:4321";
 const {campeon, set }= Astro.props;
 const nombreCampeon = campeon.characterName.replace(`TFT${set}_`,"").toLowerCase();
+const src = (await import(`../../assets/campeonesSet12/${nombreCampeon}.webp`)).default.src;
 ---
 
 
 <tr class="card-campeonTFT">
     <td>
         <div class="containerCampeon">
-            <img class="img-campeonTFT" src={(await import(`../../assets/campeonesSet12/${nombreCampeon}.webp`)).default.src} alt={nombreCampeon}>
+            <img class="img-campeonTFT" src={src} alt={nombreCampeon}>
             <p class="nombre-campeonTFT">{nombreCampeon.charAt(0).toUpperCase()+nombreCampeon.slice(1)}</p>
         </div>
     </td>
@@ -48,7 +49,7 @@ const nombreCampeon = campeon.characterName.replace(`TFT${set}_`,"").toLowerCase
         {campeon.stats.range}
     </td>
     <td>
-        <img class="img-habilidadTFT" src={`https://raw.communitydragon.org/pbe/game/${campeon.ability.icon.toLowerCase().replace(".tex",".png")}`} alt={campeon.ability.icon}>{}
+        <img class="img-habilidadTFT" src={`https://raw.communitydragon.org/pbe/game/${campeon.ability.icon.toLowerCase().replace(".tex",".png")}`} alt={campeon.ability.icon}>
     </td>
 </tr>
 

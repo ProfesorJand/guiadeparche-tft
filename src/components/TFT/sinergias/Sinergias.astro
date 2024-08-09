@@ -1,10 +1,40 @@
 ---
 const {nombre} = Astro.props;
+const SinergiasEspanol = {
+    Arcana:"Arcana",
+    Ascendente:"Ascendant",
+    Bastión:"Bastion",
+    Reina_Murciélago:"BatQueen",
+    Mejores_Amigos:"Best_Friends",
+    Pistolero:"Blaster",
+    Crono:"Chrono",
+    Dragón:"Dragon",
+    Druida:"Druid",
+    Sobrenatural:"Eldritch",
+    Feérico:"Faerie",
+    Escarcha:"Frost",
+    Melimancia:"Honeymancy",
 
+    Cazador:"Hunter",
+    Incantum:"Incantor",
+    Mago:"Mage",
+    Multiatacante:"Multistriker",
+    Portal:"Portal",
+    Preservador:"Preserver",
+    Piromancia:"Pyro",
+    Voraz:"Ravenous",
+    Erudito:"Scholar",
+    Cambiaformas:"Shapeshifter",
+    Glucomancia:"Sugarcraft",
+    Vanguardia:"Vanguard",
+    Guerrero:"Warrior",
+    Brujería:"Witchcraft"
+}
 
+const src = (await import(`../../../assets/sinergiasSet12/Trait_Icon_12_${SinergiasEspanol[nombre.replace(" ","_")]}.svg`)).default.src || nombre;
 ---
 
-<img class="img-sinergia-svg" src={(await import(`../../../assets/sinergiasSet12/Trait_Icon_12_${nombre.replace("tft_trait_displayname_Set12_","").replace("tft_trait_displayname_TFT12_","").replace("Explorer","Best_Friends")}.svg`)).default.src} alt={nombre} height="20" width="20"/>
+<img class="img-sinergia-svg" src={src} alt={nombre} height="20" width="20"/>
 
 <style>
     .img-sinergia-svg{

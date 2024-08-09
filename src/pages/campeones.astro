@@ -3,37 +3,49 @@ import Main from "@components/main/Main.astro";
 import Layout from "src/layouts/Layout.astro";
 import {championsTFT, version, setPBE} from "../json/updates/constantesPBE.js";
 import CampeonesTFT from "@components/cards/CampeonesTFT.astro";
-const title="Campeones Set 12 TFT";
+import {crearJSONSchema} from "src/json/schema/crearJSONSchema";
+import TablaCampeonesTFT from "@components/main/Campeones/TablaCampeonesTFT.jsx";
 
 championsTFT.sort(compare)
 function compare( a, b ) {
     if(a.cost < b.cost){
-      return -1
+        return -1
     }
     if(a.cost > b.cost){
-      return 1
+        return 1
     }
-  if ( a.characterName < b.characterName){
-    return -1;
-  }
-  if ( a.characterName > b.characterName ){
-    return 1;
-  }
-  return 0;
+    if ( a.characterName < b.characterName){
+        return -1;
+    }
+    if ( a.characterName > b.characterName ){
+        return 1;
+    }
+    return 0;
 }
+const title="Campeones Set 12 TFT";
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const socialImageURL = new URL('/images/preview.png', Astro.url);
+const description = `✅ Información de campeones del Set 12 de Teamfight Tactics (TFT)`;
+const keywords = `Campeones TFT, Campeones Teamfight Tactics, Campeones Set 12 TFT, Campeones Mágico y Caotico, TFT, Teamfight Tactics, Habilidades de Campeones TFT`;
+const JSONSchema = crearJSONSchema({title})
 
 ---
 
-<!-- <Layout title={title}>
+<link rel="canonical" href={canonicalURL} />
+<!-- <meta property="og:image" content={socialImageURL} /> -->
+<meta name="description" content={description}>
+<meta name="keywords" content={keywords}>
+
+<Layout title={title} JSONSchema={JSONSchema}>
     <Main>
         <h1 class="titulo">Campeones del Set {setPBE} de TFT</h1>
-        <table>
+        <!-- <table>
             <tbody>
             <tr>
                 <th>Campeon</th>
                 <th>Coste</th>
                 <th>Sinergia</th>
-                <th class="hideMobile">Daño</th>
+                <th id="dano" class="hideMobile">Daño</th>
                 <th class="hideMobile">Vel.</th>
                 <th class="hideMobile">Vida</th>
                 <th class="hideMobile">Arm.</th>
@@ -53,9 +65,10 @@ function compare( a, b ) {
                 })
             }
             </tbody>
-        </table>
+        </table> -->
+        <TablaCampeonesTFT client:load></TablaCampeonesTFT>
     </Main>
-</Layout> -->
+</Layout>
 
 <style>
     table{
