@@ -1,7 +1,9 @@
-import React,{useState, useEffect} from "react";
+import React,{useState, useEffect, lazy, Suspense} from "react";
 import {championsTFT, version, setPBE} from "../../../json/updates/constantesPBE";
-import CampeonesTFTHorizontalTabla from "./CampeonesTFTHorizontalTabla";
 import styles from "./css/TablaCampeonesTFT.module.css"
+import FantasmaCampeonesTFTHorizontalTabla from "./FantasmaCampeonesTFTHorizontalTabla";
+const CampeonesTFTHorizontalTabla= lazy(()=> import("./CampeonesTFTHorizontalTabla"))
+
 const TablaCampeonesTFT = () =>{
     const [champions , setChampionsTFT] = useState(null);
     useEffect(()=>{
@@ -44,25 +46,28 @@ const TablaCampeonesTFT = () =>{
                 <div>Habilidad</div>
             </div>
 
-            {champions && champions.map((campeon, index)=>{
+            {champions && 
+            champions.map((campeon, index)=>{
                 return (
-                    <CampeonesTFTHorizontalTabla
-                        key={index}
-                        nombreCampeon={campeon.characterName.replace(`TFT12_`,"").toLowerCase()}
-                        coste={campeon.cost}
-                        sinergia={campeon.traits}
-                        dano={campeon.stats.damage}
-                        velocidad={campeon.stats.attackSpeed}
-                        armadura={campeon.stats.armor}
-                        resistenciaMagica={campeon.stats.magicResist}
-                        manaInicial={campeon.stats.initialMana}
-                        manaFinal={campeon.stats.mana}
-                        rango={campeon.stats.range}
-                        habilidad={campeon.ability}
-                        vida={campeon.stats.hp}
-                    ></CampeonesTFTHorizontalTabla>
+                    <Suspense key={index} fallback={<FantasmaCampeonesTFTHorizontalTabla/>}>
+                        <CampeonesTFTHorizontalTabla
+                            nombreCampeon={campeon.characterName.replace(`TFT12_`,"").toLowerCase()}
+                            coste={campeon.cost}
+                            sinergia={campeon.traits}
+                            dano={campeon.stats.damage}
+                            velocidad={campeon.stats.attackSpeed}
+                            armadura={campeon.stats.armor}
+                            resistenciaMagica={campeon.stats.magicResist}
+                            manaInicial={campeon.stats.initialMana}
+                            manaFinal={campeon.stats.mana}
+                            rango={campeon.stats.range}
+                            habilidad={campeon.ability}
+                            vida={campeon.stats.hp}
+                            ></CampeonesTFTHorizontalTabla>
+                    </Suspense>
                 )
-            })}
+            })
+            }
 
         </div>
     )

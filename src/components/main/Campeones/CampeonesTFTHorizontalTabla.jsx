@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import SinergiasTFTTabla from "./SinergiasTFTTabla.jsx";
 import style from "./css/CampeonesTFTHorizontalTabla.module.css"
 import HabilidadTFT from "./HabilidadTFT.jsx";
-
+import loading from "../../../assets/loading-180-v2.svg";
 const CampeonesTFTHorizontalTabla = ({imgCampeon, nombreCampeon, coste, sinergia, dano, velocidad, vida, armadura, resistenciaMagica, manaInicial, manaFinal, rango, habilidad}) =>{
   const [urlCampeon, setUrlCampeon] = useState(null)
   useEffect(()=>{
@@ -14,12 +14,14 @@ const CampeonesTFTHorizontalTabla = ({imgCampeon, nombreCampeon, coste, sinergia
   },[])
   return(
     <div className={style.containerCard}>
-      {urlCampeon &&
       <div className={style.containerImgCampeon}>
-        <img src={urlCampeon} alt={nombreCampeon} className={style.imgCampeon} />
-        <span className={style.tooltip}>{nombreCampeon}</span>
+      {urlCampeon ?
+        <img src={urlCampeon} alt={`${nombreCampeon} TFT`} className={style.imgCampeon} loading="lazy"/>
+        :
+        <img src={loading} alt="spining" loading="lazy"></img>
+      }
+      <span className={style.tooltip}>{nombreCampeon.charAt(0).toUpperCase() + nombreCampeon.slice(1)}</span>
       </div>
-     }
       
       <div className="containerCoste">
         {coste}

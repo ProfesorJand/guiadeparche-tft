@@ -46,7 +46,7 @@ const SinergiasTFTTabla = ({sinergia}) =>{
     <>
       {urlSinergia && 
       <div className={style.containerTooltip}>
-        <img src={urlSinergia} alt={`sinergia TFT ${sinergia}`} className={style.imgSinergia}/>
+        <img src={urlSinergia} alt={`sinergia TFT ${sinergia}`} className={style.imgSinergia} loading="lazy"/>
           <span className={style.tooltip}>{sinergia}</span>
       </div>
       }
