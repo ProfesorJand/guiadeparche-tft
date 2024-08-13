@@ -73,6 +73,7 @@ const filtroResultados = $UsuarioDB.sort((a,b)=>b.leaguePoints - a.leaguePoints)
                         alt={'RIOT profile icon'}
                         height="50"
                         width="50"
+                        loading="lazy"
                         />
                     </td>
                     <td>{invocador + '#' + etiqueta}</td>
@@ -83,6 +84,7 @@ const filtroResultados = $UsuarioDB.sort((a,b)=>b.leaguePoints - a.leaguePoints)
                         alt={'RIOT tier icon'}
                         height="50"
                         width="50"
+                        loading="lazy"
                         />
                     </td>
                     <td>{leaguePoints}</td>

@@ -35,7 +35,6 @@ const SinergiasTFTTabla = ({sinergia}) =>{
 
   useEffect(()=>{
     const imgSinergia = async () => {
-      console.log(sinergia)
       const url = (await import(`../../../assets/sinergiasSet12/Trait_Icon_12_${SinergiasEspanol[sinergia.replace(" ","_")]}.svg`)).default.src  
       setUrlSinergia(url);
     }  

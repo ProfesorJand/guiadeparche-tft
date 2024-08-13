@@ -6,37 +6,37 @@ const FantasmaCampeonesTFTHorizontalTabla = ()=>{
     return (
         <div className={style.containerCard}>
             <div>
-                <img src={loading.src} alt={"loading"} />
+                <img src={loading.src} alt={"loading"} loading="lazy"/>
             </div>
             <div>
-                <img src={loading.src} alt={"loading"} />
+                <img src={loading.src} alt={"loading"} loading="lazy"/>
             </div>
             <div>
-                <img src={loading.src} alt={"loading"} />
+                <img src={loading.src} alt={"loading"} loading="lazy"/>
             </div>
             <div>
-                <img src={loading.src} alt={"loading"} />
+                <img src={loading.src} alt={"loading"} loading="lazy"/>
             </div>
             <div>
-                <img src={loading.src} alt={"loading"} />
+                <img src={loading.src} alt={"loading"} loading="lazy"/>
             </div>
             <div>
-            <img src={loading.src} alt={"loading"} />
+                <img src={loading.src} alt={"loading"} loading="lazy" />
             </div>
             <div>
-            <img src={loading.src} alt={"loading"} />
+                <img src={loading.src} alt={"loading"} loading="lazy"/>
             </div>
             <div>
-            <img src={loading.src} alt={"loading"} />
+                <img src={loading.src} alt={"loading"} loading="lazy"/>
             </div>
             <div>
-            <img src={loading.src} alt={"loading"} />
+                <img src={loading.src} alt={"loading"} loading="lazy"/>
             </div>
             <div>
-            <img src={loading.src} alt={"loading"} />
+                <img src={loading.src} alt={"loading"} loading="lazy"/>
             </div>
             <div>
-            <img src={loading.src} alt={"loading"} />
+                <img src={loading.src} alt={"loading"} loading="lazy"/>
             </div>
         </div>
     )
