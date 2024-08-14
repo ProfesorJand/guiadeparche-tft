@@ -52,7 +52,7 @@ const ContainerMeta = ({ version, set }) => {
         Mejores Composiciones Meta Parche {version}<br />TFT Set {set} | Teamfight Tactics
       </h1>
       {Object.keys(metaPBE).map((key, index) => {
-        if (!key.includes("Alternativa")) {
+        if (!key.includes("Alternativa") && !key.includes("Oculto")) {
           return (
             <div key={key}>
               <div className={styles.containerTier} key={index}>
