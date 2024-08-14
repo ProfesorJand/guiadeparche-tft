@@ -13,7 +13,7 @@ const Aumentos = ({ info }) => {
   useEffect(()=>{
     const fecthingDataAumentos = async ()=>{
       const urlData = "https://raw.communitydragon.org/latest/cdragon/tft/es_ar.json"
-      const data = await fetch(urlData)
+      const data = await fetch(urlData,{cache: "reload"})
       const {items} = await data.json();
       setAumentos(items);
     }
