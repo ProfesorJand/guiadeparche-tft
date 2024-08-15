@@ -1,7 +1,7 @@
 import React from 'react';
 import style from "./css/ImgTier.module.css";
 
-const ImgTier = ({ llave, index }) => {
+const ImgTier = ({ llave, index, alternativa }) => {
   let src = `/Tier-${llave}.png`;
 
   if (llave.includes("Alternativa")) {
@@ -15,7 +15,7 @@ const ImgTier = ({ llave, index }) => {
         src={src}
         alt={`TFT Tier-${llave}`}
         className={style.imgTier}
-        loading="lazy"
+        loading={alternativa ? "lazy" : "eager"}
       />
     </div>
   );

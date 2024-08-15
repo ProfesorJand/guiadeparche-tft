@@ -52,13 +52,13 @@ const ContainerMeta = ({ version, set }) => {
       <h1 className={[styles.titulo, styles.paddingTop].join(" ")}>
         Mejores Composiciones Meta Parche {version}<br />TFT Set {set} | Teamfight Tactics
       </h1>
-      {!Object.keys(metaPBE).length > 0 && <LoadingMetaTFT/>}
+      {!Object.keys(metaPBE).length > 0 && <LoadingMetaTFT alternativa={false}/>}
       {Object.keys(metaPBE).map((key, index) => {
         if (!key.includes("Alternativa") && !key.includes("Oculto")) {
           return (
             <div key={key}>
               <div className={styles.containerTier} key={index}>
-                <ImgTier llave={key} index={index} />
+                <ImgTier llave={key} index={index} alternativa={false}/>
                 <div className={styles.containerChampionTierList}>
                   {metaPBE[key].map((champTier, i) => (
                     <CampeonesBordeTFTMeta
@@ -92,13 +92,13 @@ const ContainerMeta = ({ version, set }) => {
         return null;
       })}
       <h2 className={[styles.titulo, styles.paddingTop].join(" ")}>Aumentos de Heroes Meta TFT</h2>
-      {!Object.keys(metaPBE).length > 0 && <LoadingMetaTFT/>}
+      {!Object.keys(metaPBE).length > 0 && <LoadingMetaTFT alternativa={true}/>}
       {Object.keys(metaPBE).map((key, index) => {
         if (key.includes("Alternativa")) {
           return (
             <div key={key}>
               <div className={styles.containerTier}>
-                <ImgTier llave={key} index={index} />
+                <ImgTier llave={key} index={index} alternativa={true}/>
                 <div className={styles.containerChampionTierList}>
                   {metaPBE[key].map((champTier, i) => (
                     <CampeonesBordeTFTMeta

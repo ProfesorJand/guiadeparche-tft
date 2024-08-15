@@ -8,7 +8,7 @@ import styleLoading from "./css/StyleLoading.module.css";
 import loading from "../../assets/loading-180-v2.svg";
 
 
-const LoadingMetaTFT = ()=>{
+const LoadingMetaTFT = ({alternativa})=>{
   return (
     <>
     <div className={stylesContainerMeta.containerTier}>
@@ -21,31 +21,31 @@ const LoadingMetaTFT = ()=>{
             src={loading.src}
             alt={`loading`}
             className={[stylesImgTier.imgTier, styleLoading.skeleton].join(" ")}
-            loading="lazy"
+            loading={alternativa ? "lazy": "eager"}
             />
           <img 
             src={loading.src}
             alt={`loading`}
             className={[stylesImgTier.imgTier, styleLoading.skeleton].join(" ")}
-            loading="lazy"
+            loading={alternativa ? "lazy": "eager"}
             />
           <img 
             src={loading.src}
             alt={`loading`}
             className={[stylesImgTier.imgTier, styleLoading.skeleton].join(" ")}
-            loading="lazy"
+            loading={alternativa ? "lazy": "eager"}
             />
           <img 
             src={loading.src}
             alt={`loading`}
             className={[stylesImgTier.imgTier, styleLoading.skeleton].join(" ")}
-            loading="lazy"
+            loading={alternativa ? "lazy": "eager"}
             />
           <img 
             src={loading.src}
             alt={`loading`}
             className={[stylesImgTier.imgTier, styleLoading.skeleton].join(" ")}
-            loading="lazy"
+            loading={alternativa ? "lazy": "eager"}
             />
         {/* </div> */}
       </div>
@@ -61,7 +61,7 @@ const LoadingMetaTFT = ()=>{
               src={loading.src}
               alt={"loading"}
               className={stylesInfoComp.composicionImg}
-              loading={"lazy"}
+              loading={alternativa ? "lazy": "eager"}
             />
         </div>
         <div className={stylesInfoComp.containerChampEspatula}>
@@ -69,7 +69,7 @@ const LoadingMetaTFT = ()=>{
             src={loading.src}
             alt={`loading`}
             className={[stylesInfoComp.campeonEspatula , stylesInfoComp.selected].join(" ")}
-            loading={"lazy"}
+            loading={alternativa ? "lazy": "eager"}
             width={50}
             height={50}
           />
@@ -98,31 +98,31 @@ const LoadingMetaTFT = ()=>{
           src={loading.src}
           alt={`loading`}
           className={stylesImgTier.imgTier}
-          loading="lazy"
+          loading={alternativa ? "lazy": "eager"}
           />
         <img 
           src={loading.src}
           alt={`loading`}
           className={stylesImgTier.imgTier}
-          loading="lazy"
+          loading={alternativa ? "lazy": "eager"}
           />
         <img 
           src={loading.src}
           alt={`loading`}
           className={stylesImgTier.imgTier}
-          loading="lazy"
+          loading={alternativa ? "lazy": "eager"}
           />
         <img 
           src={loading.src}
           alt={`loading`}
           className={stylesImgTier.imgTier}
-          loading="lazy"
+          loading={alternativa ? "lazy": "eager"}
           />
         <img 
           src={loading.src}
           alt={`loading`}
           className={stylesImgTier.imgTier}
-          loading="lazy"
+          loading={alternativa ? "lazy": "eager"}
           />
       </div>
     </div>
@@ -135,31 +135,31 @@ const LoadingMetaTFT = ()=>{
           src={loading.src}
           alt={`loading`}
           className={stylesImgTier.imgTier}
-          loading="lazy"
+          loading={alternativa ? "lazy": "eager"}
           />
         <img 
           src={loading.src}
           alt={`loading`}
           className={stylesImgTier.imgTier}
-          loading="lazy"
+          loading={alternativa ? "lazy": "eager"}
           />
         <img 
           src={loading.src}
           alt={`loading`}
           className={stylesImgTier.imgTier}
-          loading="lazy"
+          loading={alternativa ? "lazy": "eager"}
           />
         <img 
           src={loading.src}
           alt={`loading`}
           className={stylesImgTier.imgTier}
-          loading="lazy"
+          loading={alternativa ? "lazy": "eager"}
           />
         <img 
           src={loading.src}
           alt={`loading`}
           className={stylesImgTier.imgTier}
-          loading="lazy"
+          loading={alternativa ? "lazy": "eager"}
           />
       </div>
     </div>

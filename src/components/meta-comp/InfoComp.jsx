@@ -54,7 +54,7 @@ return (
           alt={`Composicion Meta ${champTier?.Titulo}`}
           className={style.composicionImg}
           // loading={(champTier?.Tier === "S" || champTier?.Tier === "Alternativa-S") ? 'eager' : 'lazy'}
-          loading={"lazy"}
+          loading={alternativa ? "lazy": "eager"}
         />
       </div>
       <div className={style.containerChampEspatula}>
@@ -63,7 +63,7 @@ return (
           alt={`Composicion Meta ${champTier?.Titulo}`}
           className={[style.campeonEspatula , srcCompo === champTier?.ImgCompo ? style.selected : ""].join(" ")}
           //loading={index === 0 ? 'eager' : 'lazy'}
-          loading={"lazy"}
+          loading={alternativa ? "lazy": "eager"}
           width={50}
           height={50}
           onClick={() => handleImageClick(champTier?.ImgCompo)}
@@ -77,7 +77,7 @@ return (
                 alt={`Composicion Meta Espatula ${champTier?.Titulo}`}
                 className={[style.campeonEspatula, (key === "Item1" && srcCompo === espatula["Comp1"]) ? style.selected : (key === "Item2" && srcCompo === espatula["Comp2"]) ? style.selected :""].join(" ")}
                 // loading={index === 0 ? 'eager' : 'lazy'}
-                loading={"lazy"}
+                loading={alternativa ? "lazy": "eager"}
                 width={50}
                 height={50}
                 onClick={() => handleImageClick(key === "Item1" ? espatula["Comp1"] : espatula["Comp2"])}
@@ -97,6 +97,7 @@ return (
       Late={champTier?.Late}
       index={index}
       champTier={champTier}
+      alternativa={alternativa}
 
     />
   </section>
