@@ -1,7 +1,7 @@
 ---
 const { puuid, gameName, tagLine, region } = Astro.props;
 const ACCOUNT_LINK = `https://${region}.api.riotgames.com//tft/summoner/v1/summoners/by-puuid/${puuid}`;
-const resAccount = await fetch(ACCOUNT_LINK,{cache: "reload"});
+const resAccount = await fetch(ACCOUNT_LINK);
 const { id, accountId, profileIconId, revisionDate, summonerLevel } =
   await resAccount.json();
 ---

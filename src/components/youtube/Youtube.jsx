@@ -6,9 +6,9 @@ import style from "./Youtube.module.css";
 const fetchPlaylist = async (url, playlist = true) => {
   let jsonUrl;
   if(playlist){
-    jsonUrl = await fetch(`https://youtube.com/oembed?url=https%3A//www.youtube.com/playlist%3Flist%3D${url}&format=json`,{cache: "reload"});
+    jsonUrl = await fetch(`https://youtube.com/oembed?url=https%3A//www.youtube.com/playlist%3Flist%3D${url}&format=json`);
   }else{
-    jsonUrl = await fetch(`https://youtube.com/oembed?url=${url}&format=json`,{cache: "reload"})
+    jsonUrl = await fetch(`https://youtube.com/oembed?url=${url}&format=json`)
   }
   const { thumbnail_url, html, title } = await jsonUrl.json();
   const srcMatch = html.match(/src="([^"]+)"/);

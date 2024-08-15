@@ -30,7 +30,7 @@ async function getId(url) {
 
 
 async function fetchPlaylist(playlistId){
-    const jsonUrl = await fetch(`https://youtube.com/oembed?url=https%3A//www.youtube.com/playlist%3Flist%3D${playlistId}&format=json`,{cache: "reload"});
+    const jsonUrl = await fetch(`https://youtube.com/oembed?url=https%3A//www.youtube.com/playlist%3Flist%3D${playlistId}&format=json`);
     const {thumbnail_url, html, title} = await jsonUrl.json();
     const srcMatch = html.match(/src="([^"]+)"/);
     return {thumbnail: thumbnail_url.replace("hqdefault.jpg","maxresdefault.jpg"), url: srcMatch ? srcMatch[1] : null, title}
