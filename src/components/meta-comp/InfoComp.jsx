@@ -2,7 +2,7 @@ import React,{useEffect, useState} from 'react';
 import ComposicionPestana from './ComposicionPestana';
 import style from "./css/InfoComp.module.css"
 
-const InfoComp = ({ championsTier, index, alternativa, handleSelect, selectedAlternativa, selected }) => {
+const InfoComp = ({ championsTier, index, alternativa, handleSelect, selectedAlternativa = null, selected = null }) => {
   
   const [champTier, setChampTier] = useState(null)
   const [srcCompo, setSrcCompo] = useState();
@@ -19,6 +19,7 @@ const InfoComp = ({ championsTier, index, alternativa, handleSelect, selectedAlt
   useEffect(()=>{
     setSrcCompo(champTier?.ImgCompo)
   },[champTier])
+
   const espatula = champTier?.Espatula;
 
   const handleImageClick = (url) => {
@@ -95,6 +96,8 @@ return (
       Mid={champTier?.Mid}
       Late={champTier?.Late}
       index={index}
+      champTier={champTier}
+
     />
   </section>
   );

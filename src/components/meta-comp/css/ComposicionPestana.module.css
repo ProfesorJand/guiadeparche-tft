@@ -125,6 +125,11 @@
     font-size: 1rem;
     margin: 5px;
   } 
+
+  .textoTips{
+    white-space: pre-wrap;
+  }
+
   @media only screen and (min-width: 900px) {
     .containerPestanas {
       justify-content: center;

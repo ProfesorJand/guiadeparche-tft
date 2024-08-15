@@ -108,12 +108,14 @@ const Aumentos = ({ info }) => {
   </>
 )};
 
-const ComposicionPestana = ({ Titulo, Gamep, Tips, Early, Mid, Late, index }) => {
-  const [selectedTab, setSelectedTab] = useState(null);
+const ComposicionPestana = ({ Titulo, Gamep, Tips, Early, Mid, Late, index, champTier }) => {
+  
+  const pestanaAbierta = Early && Object.keys(Early).length > 0 ? 0 : Mid && Object.keys(Mid).length > 0 ? 1 : Late && Object.keys(Late).length > 0 ? 2 : Tips && Tips.length > 0 ? 3 : Gamep && Object.keys(Gamep).length > 0 ? 4 : null;
+  const [selectedTab, setSelectedTab] = useState(pestanaAbierta);
   useEffect(()=>{
-    const pestanaAbierta = Early && Object.keys(Early).length > 0 ? 0 : Mid && Object.keys(Mid).length > 0 ? 1 : Late && Object.keys(Late).length > 0 ? 2 : Tips ? 3 : Gamep ? 4 : null;
     setSelectedTab(pestanaAbierta)
-  },[])
+  },[champTier])
+  
   const handleTabClick = (tabIndex) => {
     setSelectedTab(tabIndex);
   };
