@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import datosSet11Latino from './datosSet11Latino.json';
 import Youtube from '@components/youtube/Youtube.jsx';
-import style from "./css/ComposicionPestana.module.css"
+import style from "./css/ComposicionPestana.module.css";
+import loading from "../../assets/loading-180-v2.svg";
 
 //const aumentos = datosSet11Latino.objetos;
 
@@ -23,7 +24,7 @@ const Aumentos = ({ info }) => {
   function encontrarAumento(id) {
     const aumentoInfo = aumentos?.find((aumento) => aumento.apiName === id);
     return {
-      icon: aumentoInfo?.icon || 'assets/maps/tft/icons/augments/hexcore/pandoras-bench-i.png',
+      icon: aumentoInfo?.icon ? url + aumentoInfo.icon.replace(".tft_set12", "").replace(".tex",".png").toLowerCase() : loading.src,
       desc: replaceVariables({desc: aumentoInfo?.desc  || 'actualizando...', effects: aumentoInfo?.effects, id:aumentoInfo?.apiName}),
       name: aumentoInfo?.name || 'Upss',
     };
@@ -56,22 +57,24 @@ const Aumentos = ({ info }) => {
       <div className={style.containerAumentos} key={key}>
         {info.Aum[key].map((aum, index) => {
           const aumento = encontrarAumento(aum);
-          return (
-            <div className={style.tooltip} key={index}>
+          if(aumento){
+            return (
+              <div className={style.tooltip} key={index}>
               <img
-                src={url + aumento.icon.replace(".tft_set12", "").replace(".tex",".png").toLowerCase()}
+                src={aumento.icon}
                 alt={`Aumento ${aumento.name}`}
                 className={style.aumentoImg}
                 loading="lazy"
                 width={50}
                 height={50}
-              />
+                />
               <div className={style.containerTooltip}>
                 <h1 className={style.tituloTooltip}>{aumento.name}</h1>
                 <p>{aumento.desc}</p>
               </div>
             </div>
           );
+        }
         })}
       </div>
     ))}

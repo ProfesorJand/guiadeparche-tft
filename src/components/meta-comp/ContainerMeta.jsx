@@ -7,6 +7,7 @@ import { fetchingMetaTFTPBE } from 'src/json/updates/constantesPBE.js';
 import gifSpinning from "@assets/gif-spining.gif"
 import Adsense from '@components/adsense/Adsense.jsx';
 import styles from "./css/ContainerMeta.module.css";
+import LoadingMetaTFT from "./LoadingMetaTFT.jsx";
 
 const ContainerMeta = ({ version, set }) => {
   const [loaded, setLoaded] = useState(false);
@@ -19,8 +20,8 @@ const ContainerMeta = ({ version, set }) => {
       const fetchMeta = async () => {
         const data = await fetchingMetaTFTPBE();
         setMetaPBE(data);
-        setSelected({titulo:data["S"][0]["Titulo"], open:true})
-        setSelectedAlternativa({titulo:data["Alternativa-S"][0]["Titulo"], open:true})
+        setSelected({titulo:data["S"][0]["Titulo"], open:true});
+        setSelectedAlternativa({titulo:data["Alternativa-S"][0]["Titulo"], open:true});
       };
       fetchMeta();
      
@@ -29,7 +30,7 @@ const ContainerMeta = ({ version, set }) => {
 
   useEffect(()=>{
     setLoaded(true);
-  },[metaPBE])
+  },[metaPBE]);
 
   const handleSelect = ({titulo, alternativa = false, open = false}) => {
     if(alternativa){
@@ -51,6 +52,7 @@ const ContainerMeta = ({ version, set }) => {
       <h1 className={[styles.titulo, styles.paddingTop].join(" ")}>
         Mejores Composiciones Meta Parche {version}<br />TFT Set {set} | Teamfight Tactics
       </h1>
+      {!Object.keys(metaPBE).length > 0 && <LoadingMetaTFT/>}
       {Object.keys(metaPBE).map((key, index) => {
         if (!key.includes("Alternativa") && !key.includes("Oculto")) {
           return (
@@ -90,6 +92,7 @@ const ContainerMeta = ({ version, set }) => {
         return null;
       })}
       <h2 className={[styles.titulo, styles.paddingTop].join(" ")}>Aumentos de Heroes Meta TFT</h2>
+      {!Object.keys(metaPBE).length > 0 && <LoadingMetaTFT/>}
       {Object.keys(metaPBE).map((key, index) => {
         if (key.includes("Alternativa")) {
           return (

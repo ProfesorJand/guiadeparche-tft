@@ -2,11 +2,11 @@ import React from 'react';
 import style from "./css/ImgTier.module.css";
 
 const ImgTier = ({ llave, index }) => {
-  let src = `https://guiadeparche.com/tftdata/Set11/metaComps/tier/Tier-${llave}.jpg`;
+  let src = `/Tier-${llave}.png`;
 
   if (llave.includes("Alternativa")) {
     const valor = llave.split("-")[1];
-    src = `https://guiadeparche.com/tftdata/Set11/metaComps/tier/Tier-${valor}.jpg`;
+    src = `/Tier-${valor}.png`;
   }
 
   return (
