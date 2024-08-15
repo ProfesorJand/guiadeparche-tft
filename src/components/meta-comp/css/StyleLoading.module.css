@@ -1,0 +1,32 @@
+.skeleton{
+    opacity: .7;
+    animation: text_loading 0.5s linear infinite alternate;
+}
+
+.skeleton_text{
+    width: 50%;
+    height: 3rem;
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    border-radius: .125rem;
+}
+
+.skeleton_champmeta{
+    width: var(--number-champ-meta);
+    background-color: aqua;
+    aspect-ratio: 1/1;
+}
+
+.skeleton_height{
+    height: 20rem;
+}
+
+@keyframes text_loading {
+    0%{
+        background-color: var(--bg-secondary);
+    }
+    100%{
+        background-color: var(--bg-primary);
+    }
+}
