@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import datosSet11Latino from './datosSet11Latino.json';
 import Youtube from '@components/youtube/Youtube.jsx';
 import style from "./css/ComposicionPestana.module.css";
 import loading from "../../assets/loading-180-v2.svg";
-
-//const aumentos = datosSet11Latino.objetos;
-
-
 
 const Aumentos = ({ info }) => {
   const [aumentos, setAumentos] = useState();
@@ -14,7 +9,7 @@ const Aumentos = ({ info }) => {
   useEffect(()=>{
     const fecthingDataAumentos = async ()=>{
       const urlData = "https://raw.communitydragon.org/latest/cdragon/tft/es_ar.json"
-      const data = await fetch(urlData, {cache:"reload"})
+      const data = await fetch(urlData)
       const {items} = await data.json();
       setAumentos(items);
     }

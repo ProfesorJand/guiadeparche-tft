@@ -3,9 +3,9 @@ import Layout from '../../layouts/Layout.astro';
 //import ContainerMeta from '../../components/new-meta-comp/ContainerMeta.astro';
 import Youtube from '../../components/youtube/Youtube.jsx';
 import Main from '@components/main/Main.astro';
-import { set, latestVersion } from 'src/json/updates/constantesLatest';
-import { setPBE, pbeVersion } from 'src/json/updates/constantesPBE';
-import ContainerMetaPBE from '@components/new-meta-comp/ContainerMetaPBE.astro';
+import { latestVersion, set } from 'src/json/updates/constantesLatest';
+import { setPBE } from 'src/json/updates/constantesPBE';
+//import ContainerMetaPBE from '@components/new-meta-comp/ContainerMetaPBE.astro';
 import ContainerMeta from '@components/meta-comp/ContainerMeta.jsx';
 import {crearJSONSchema} from "src/json/schema/crearJSONSchema";
 const title = "▷ Mejores Composiciones | TFT Set 12 META COMPS | Teamfight Tactics";
@@ -16,6 +16,7 @@ const socialImageURL = new URL('/images/preview.png', Astro.url);
 const description = `✅ Best TFT Meta Comps and Tierlist Set 12, composiciones meta "FREE ELO" Set 12 Teamfight Tactics`;
 const keywords = `TFT Meta, Meta comps, comps TFT, comp TFT, Meta TFT, composiciones TFT, build TFT`;
 const JSONSchema = crearJSONSchema({title})
+
 ---
 <link rel="canonical" href={canonicalURL} />
 <!-- <meta property="og:image" content={socialImageURL} /> -->
@@ -29,7 +30,7 @@ const JSONSchema = crearJSONSchema({title})
     </div>
     <div id="ContainerMetaPBE">
       <!-- <ContainerMetaPBE version={latestVersion} set={setPBE}/> -->
-      <ContainerMeta version={latestVersion} set={setPBE} client:load/>
+      <ContainerMeta version={latestVersion} set={set} client:load/>
     </div>
   </Main>
 </Layout>

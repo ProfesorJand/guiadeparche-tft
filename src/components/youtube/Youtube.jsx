@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import spinner180v2 from '../../assets/loading-180-v2.svg';
-// import spinner180 from '../../assets/loading-180.svg';
+import spinner180 from '../../assets/loading-180-v2.svg';
 import style from "./Youtube.module.css";
+import styleLoading from "../meta-comp/css/StyleLoading.module.css"
 
 const fetchPlaylist = async (url, playlist = true) => {
   let jsonUrl;
@@ -74,21 +74,31 @@ const VideoComponent = ({ src, loading = "lazy", titulo="video de Jupeson" }) =>
   }, []);
 
   if (!video) {
-    return <div className={style.divIframe}></div>;
+    return <div className={[style.divIframe, styleLoading.skeleton].join(" ")}>
+          <img
+      src={spinner180.src}
+      width={25 * 16}
+      height={25 * 9}
+      alt={"loading"}
+      loading="eager"
+      className={style.youtube_thumbnail}
+    />
+    </div>;
     // return <img src={spinner180v2.src} alt="loading"></img>;
   }
 
+
   return (
-    <div className={style.divIframe} data-url={video.url} data-loading={loading}>
+    <div className={style.divIframe} data-url={video.url}>
       <img
-        src={video.thumbnail}
+        src={video?.thumbnail}
         width={25 * 16}
         height={25 * 9}
-        alt={video.title}
+        alt={video?.title}
         loading="lazy"
         className={style.youtube_thumbnail}
       />
-      <h2 className={style.tituloYoutube}>{video.title}</h2>
+      <h2 className={style.tituloYoutube}>{video?.title}</h2>
       <div className={style.youtube_play_button}></div>
     </div>
   );

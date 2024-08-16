@@ -4,7 +4,7 @@ import ContainerChampionTierList from './ContainerChampionTierList';
 import CampeonesBordeTFTMeta from "./CampeonesBordeTFTMeta";
 import InfoComp from './InfoComp';
 import { fetchingMetaTFTPBE } from 'src/json/updates/constantesPBE.js';
-import gifSpinning from "@assets/gif-spining.gif"
+import gifSpinning from "@assets/gif-spining.gif";
 import Adsense from '@components/adsense/Adsense.jsx';
 import styles from "./css/ContainerMeta.module.css";
 import LoadingMetaTFT from "./LoadingMetaTFT.jsx";
@@ -13,7 +13,7 @@ const ContainerMeta = ({ version, set }) => {
   const [loaded, setLoaded] = useState(false);
   const [metaPBE, setMetaPBE] = useState({});
   const [selected, setSelected] = useState({});
-  const [selectedAlternativa, setSelectedAlternativa] = useState({})
+  const [selectedAlternativa, setSelectedAlternativa] = useState({});
 
   useEffect(() => {
     if(!loaded){
@@ -40,12 +40,6 @@ const ContainerMeta = ({ version, set }) => {
     }
   };
 
-  // if(!loaded){
-  //   return (
-  //     <img src={gifSpinning.src} alt="loading" width={64} height={64}/>
-  //   )
-
-  // }
 
   return (
     <div id="meta" className={styles.containerMeta}>

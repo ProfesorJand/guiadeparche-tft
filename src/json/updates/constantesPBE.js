@@ -1,6 +1,6 @@
 export async function fetchingDataTFT({version, idioma, pais}){
     const urlDragon = `https://raw.communitydragon.org/${version}/cdragon/tft/${idioma}_${pais}.json`
-    const fetching = await fetch(urlDragon, {cache:"reload"});
+    const fetching = await fetch(urlDragon);
     const {items, sets} = await fetching.json();
     return {items, sets};
 }
