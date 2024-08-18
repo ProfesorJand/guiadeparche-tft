@@ -1,8 +1,7 @@
 ---
 import Main from "@components/main/Main.astro";
 import Layout from "src/layouts/Layout.astro";
-import {championsTFT, version, setPBE} from "../json/updates/constantesPBE.js";
-import CampeonesTFT from "@components/cards/CampeonesTFT.astro";
+import {championsTFT, setPBE} from "../json/updates/constantesPBE.js";
 import {crearJSONSchema} from "src/json/schema/crearJSONSchema";
 import TablaCampeonesTFT from "@components/main/Campeones/TablaCampeonesTFT.jsx";
 
@@ -24,7 +23,7 @@ function compare( a, b ) {
 }
 const title="Campeones Set 12 TFT";
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const socialImageURL = new URL('/images/preview.png', Astro.url);
+//const socialImageURL = new URL('/images/preview.png', Astro.url);
 const description = `✅ Información de campeones del Set 12 de Teamfight Tactics (TFT)`;
 const keywords = `Campeones TFT, Campeones Teamfight Tactics, Campeones Set 12 TFT, Campeones Mágico y Caotico, TFT, Teamfight Tactics, Habilidades de Campeones TFT`;
 const JSONSchema = crearJSONSchema({title})
@@ -39,33 +38,6 @@ const JSONSchema = crearJSONSchema({title})
 <Layout title={title} JSONSchema={JSONSchema}>
     <Main>
         <h1 class="titulo">Campeones del Set {setPBE} de TFT</h1>
-        <!-- <table>
-            <tbody>
-            <tr>
-                <th>Campeon</th>
-                <th>Coste</th>
-                <th>Sinergia</th>
-                <th id="dano" class="hideMobile">Daño</th>
-                <th class="hideMobile">Vel.</th>
-                <th class="hideMobile">Vida</th>
-                <th class="hideMobile">Arm.</th>
-                <th class="hideMobile">Res-Mag.</th>
-                <th class="hideMobile">Mana</th>
-                <th class="hideMobile">Rango</th>
-                <th>Habilidad</th>
-            </tr>
-            {
-                championsTFT.map((campeon)=>{
-                    if(campeon.cost >=1 && campeon.cost < 6 && campeon.traits.length >0){
-                        return (
-                            <CampeonesTFT campeon={campeon} set={setPBE}/>
-                        )
-                    }
-                    
-                })
-            }
-            </tbody>
-        </table> -->
         <TablaCampeonesTFT client:load></TablaCampeonesTFT>
     </Main>
 </Layout>

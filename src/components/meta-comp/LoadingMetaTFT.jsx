@@ -7,7 +7,6 @@ import stylesContainerChampeonTierList from "./css/ContainerChampionTierList.mod
 import styleLoading from "./css/StyleLoading.module.css";
 import loading from "../../assets/loading-180-v2.svg";
 
-
 const LoadingMetaTFT = ({alternativa})=>{
   return (
     <>
@@ -16,7 +15,6 @@ const LoadingMetaTFT = ({alternativa})=>{
         <img src="/Tier-S.png" alt="S" className={stylesImgTier.imgTier}/>
       </div>  
       <div className={stylesContainerMeta.containerChampionTierList}>
-        {/* <div className={stylesContainerChampeonTierList.imgChampionTierList}> */}
           <img 
             src={loading.src}
             alt={`loading`}
@@ -47,7 +45,6 @@ const LoadingMetaTFT = ({alternativa})=>{
             className={[stylesImgTier.imgTier, styleLoading.skeleton].join(" ")}
             loading={alternativa ? "lazy": "eager"}
             />
-        {/* </div> */}
       </div>
     </div>
     <div className={[stylesInfoComp.infoComp , stylesInfoComp.show, styleLoading.skeleton].join(" ")}>
@@ -166,5 +163,4 @@ const LoadingMetaTFT = ({alternativa})=>{
   </>
   )
 }
-
 export default LoadingMetaTFT;

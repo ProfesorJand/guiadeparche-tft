@@ -125,12 +125,8 @@ const { title, JSONSchema } = Astro.props;
       monospace;
   }
   .titulo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0;
+    /* margin: 0; */
     font-size: 2rem;
-    text-align: center;
   }
   .midSection{
     display:flex;
@@ -140,6 +136,15 @@ const { title, JSONSchema } = Astro.props;
   }
   .hide {
     display: none;
+  }
+  h1{
+    text-align: center;
+  }
+  h2{
+    text-align: center;
+  }
+  h3{
+    text-align: left;
   }
 
   @media only screen and (max-width: 900px) {

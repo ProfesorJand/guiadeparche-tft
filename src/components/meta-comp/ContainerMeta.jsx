@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import ImgTier from './ImgTier';
-import ContainerChampionTierList from './ContainerChampionTierList';
 import CampeonesBordeTFTMeta from "./CampeonesBordeTFTMeta";
 import InfoComp from './InfoComp';
 import { fetchingMetaTFTPBE } from 'src/json/updates/constantesPBE.js';
-import gifSpinning from "@assets/gif-spining.gif";
-import Adsense from '@components/adsense/Adsense.jsx';
 import styles from "./css/ContainerMeta.module.css";
 import LoadingMetaTFT from "./LoadingMetaTFT.jsx";
 
@@ -16,6 +13,7 @@ const ContainerMeta = ({ version, set }) => {
   const [selectedAlternativa, setSelectedAlternativa] = useState({});
 
   useEffect(() => {
+    console.time("fetchingMetaTFTPBE")
     if(!loaded){
       const fetchMeta = async () => {
         const data = await fetchingMetaTFTPBE();
@@ -26,6 +24,7 @@ const ContainerMeta = ({ version, set }) => {
       fetchMeta();
      
     }
+    console.timeEnd("fetchingMetaTFTPBE")
   },[]);
 
   useEffect(()=>{
@@ -57,15 +56,11 @@ const ContainerMeta = ({ version, set }) => {
                   {metaPBE[key].map((champTier, i) => (
                     <CampeonesBordeTFTMeta
                       key={i}
-                      meta={champTier}
-                      nombreCampeon={champTier.Campeon}
                       imgCampeon={champTier.ImgCampeon}
                       tresEstrellas={champTier.imgEstrellas}
                       titulo={champTier.Titulo}
                       IconoSuperior={champTier.imgRecuadro}
                       coste={champTier.CosteCampeon}
-                      index={index}
-                      i={i}
                       handleSelect={handleSelect}
                       selected={selected}
                       selectedAlternativa={selectedAlternativa}
@@ -97,15 +92,11 @@ const ContainerMeta = ({ version, set }) => {
                   {metaPBE[key].map((champTier, i) => (
                     <CampeonesBordeTFTMeta
                       key={i}
-                      meta={champTier}
-                      nombreCampeon={champTier.Campeon}
                       imgCampeon={champTier.ImgCampeon}
                       tresEstrellas={champTier.imgEstrellas}
                       titulo={champTier.Titulo}
                       IconoSuperior={champTier.imgRecuadro}
                       coste={champTier.CosteCampeon}
-                      index={index}
-                      i={i}
                       alternativa={true}
                       handleSelect={handleSelect}
                       selected={selected}

@@ -28,7 +28,7 @@ const getId = async (url, titulo) => {
     const siParam = newurl.searchParams.get('si') || '';
     return { type: "playlist", url: `https://www.youtube.com/embed/videoseries?list=${playlistId}&si=${siParam}}`, thumbnail, title };
   } else if (videoMatch) {
-    const { thumbnail, title } = await fetchPlaylist(url, false);
+    const { title } = await fetchPlaylist(url, false);
     return { type: 'video', id: videoMatch[1], thumbnail: `https://i.ytimg.com/vi/${videoMatch[1]}/maxresdefault.jpg`, url: `https://www.youtube.com/embed/${videoMatch[1]}`, title};
   } else {
     return null;

@@ -1,6 +1,8 @@
 import React,{useEffect, useState} from 'react';
 import ComposicionPestana from './ComposicionPestana';
-import style from "./css/InfoComp.module.css"
+import style from "./css/InfoComp.module.css";
+import styleLoading from "./css/StyleLoading.module.css";
+import spinner from "../../assets/loading-180-v2.svg"
 
 const InfoComp = ({ championsTier, index, alternativa, handleSelect, selectedAlternativa = null, selected = null }) => {
   
@@ -48,12 +50,11 @@ return (
       <h1 className={style.titulo}>{champTier?.Titulo}</h1>
     </header>
     <div className={style.containerCompo}>
-      <div className={style.composicionDiv}>
+      <div className={[style.composicionDiv, styleLoading.skeleton].join(" ")}>
         <img
-          src={srcCompo}
+          src={srcCompo ? srcCompo : spinner.src}
           alt={`Composicion Meta ${champTier?.Titulo}`}
           className={style.composicionImg}
-          // loading={(champTier?.Tier === "S" || champTier?.Tier === "Alternativa-S") ? 'eager' : 'lazy'}
           loading={alternativa ? "lazy": "eager"}
         />
       </div>
@@ -62,7 +63,6 @@ return (
           src={champTier?.ImgCampeon}
           alt={`Composicion Meta ${champTier?.Titulo}`}
           className={[style.campeonEspatula , srcCompo === champTier?.ImgCompo ? style.selected : ""].join(" ")}
-          //loading={index === 0 ? 'eager' : 'lazy'}
           loading={alternativa ? "lazy": "eager"}
           width={50}
           height={50}
@@ -76,7 +76,6 @@ return (
                 src={espatula[key]}
                 alt={`Composicion Meta Espatula ${champTier?.Titulo}`}
                 className={[style.campeonEspatula, (key === "Item1" && srcCompo === espatula["Comp1"]) ? style.selected : (key === "Item2" && srcCompo === espatula["Comp2"]) ? style.selected :""].join(" ")}
-                // loading={index === 0 ? 'eager' : 'lazy'}
                 loading={alternativa ? "lazy": "eager"}
                 width={50}
                 height={50}

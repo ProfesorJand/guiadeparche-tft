@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { BorderColorCampeon } from '../../json/updates/constantesCampeones';
 import styles from "./css/CampeonesBordeTFTMeta.module.css";
 
-const CampeonesBordeTFTMeta = ({ nombreCampeon, titulo, tresEstrellas, IconoSuperior, index, i, imgCampeon, meta, coste, alternativa, handleSelect, selected, selectedAlternativa }) => {
+const CampeonesBordeTFTMeta = ({ titulo, tresEstrellas, IconoSuperior, imgCampeon, coste, alternativa, handleSelect, selected, selectedAlternativa }) => {
   const borderColor = BorderColorCampeon[coste];
 
   return (

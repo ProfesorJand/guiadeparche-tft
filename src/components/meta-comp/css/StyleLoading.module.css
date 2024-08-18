@@ -1,5 +1,4 @@
 .skeleton{
-    opacity: .7;
     animation: text_loading 0.5s linear infinite alternate;
 }
 
