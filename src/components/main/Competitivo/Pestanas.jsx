@@ -21,13 +21,13 @@ const Pestana = () =>{
 				<div className={stylePestana.contenidoInfo}>
 				<img className={stylePestana.image} src="/competitivo/open-image-TFT-set12.webp" alt="Open Latam TFT"/>
 				<p>Hosteado por ESL / Faceit Full detalles en: <a href="https://play.eslgaming.com/latin-america/news/284275/" target="_blank" rel="noreferrer noopener">ELSGAMING</a></p>
-				<p>
-				Premios:
-				15.000USD (son 3 de 5.000USD c/u)
-				Top 4 avanza a Tactician’s Trials
-				Top 5-8 avanza a Tactician’s Cup
-				</p>
-				
+				<p>Premios:</p>
+				<ul>
+					<li>15.000USD (son 3 de 5.000USD c/u)</li>
+					<li>Top 4 avanza a Tactician’s Trials</li>
+					<li>Top 5-8 avanza a Tactician’s Cup</li>
+				</ul>
+				<img src="/competitivo/premios-open-TFT-Set-12.webp" alt=""/>
 				
 				<p>Open 1 - <strike>REGISTRO CERRADO</strike></p>
 				<ul>
