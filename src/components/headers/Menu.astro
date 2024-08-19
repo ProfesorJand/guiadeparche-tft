@@ -27,11 +27,12 @@ const { link, nombre } = Astro.props;
     padding: 1rem;
 
   }
-  .menuItem:hover {
-    background-color: var(--bg-primary);
+  .menuItem:hover:not(.active){
+    background-color: var(--bg-tertiary);
   }
 
   .active {
-    background-color: var(--bg-tertiary);
+    background-color: var(--bg-main);
+    cursor:pointer;
   }
 </style>
