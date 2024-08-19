@@ -1,0 +1,34 @@
+.image{
+    display: flex;
+    width: 100%;
+}
+
+.contenido{
+    display: flex;
+    width: 100%;
+    margin-bottom:10px;
+    padding: 20px;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.contenidoInfo{
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 100%;
+    border: 2px solid var(--border-color)
+}
+
+a{
+    color:brown
+}
+
+ul > li {
+    font-size: smaller;
+}
+
+ul{
+    margin-top: 5px;
+}
