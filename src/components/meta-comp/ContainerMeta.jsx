@@ -42,9 +42,9 @@ const ContainerMeta = ({ version, set }) => {
 
   return (
     <div id="meta" className={styles.containerMeta}>
-      <h1 className={[styles.titulo, styles.paddingTop].join(" ")}>
-        Mejores Composiciones Meta Parche {version}<br />TFT Set {set} | Teamfight Tactics
-      </h1>
+      <h2 className={[styles.titulo, styles.paddingTop].join(" ")}>
+        Meta Comps TFT
+      </h2>
       {!Object.keys(metaPBE).length > 0 && <LoadingMetaTFT alternativa={false}/>}
       {Object.keys(metaPBE).map((key, index) => {
         if (!key.includes("Alternativa") && !key.includes("Oculto")) {

@@ -47,7 +47,7 @@ return (
     ].join(" ")}>
     <button className={style.btnClose} onClick={handleCloseClick}>X</button>
     <header>
-      <h1 className={style.titulo}>{champTier?.Titulo}</h1>
+      <h3 className={style.titulo}>{champTier?.Titulo}</h3>
     </header>
     <div className={style.containerCompo}>
       <div className={[style.composicionDiv, styleLoading.skeleton].join(" ")}>

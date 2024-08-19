@@ -41,30 +41,3 @@ const JSONSchema = crearJSONSchema({title})
         <TablaCampeonesTFT client:load></TablaCampeonesTFT>
     </Main>
 </Layout>
-
-<style>
-    table{
-        display: inline-table;
-        table-layout: auto;
-        width:100%;
-        position: relative;
-    }
-    th{
-        font-weight: 100;
-        font-size: small;
-    }
-    .titulo{
-        font-size: smaller;
-    }
-    .hideMobile{
-        display:none;
-    }
-    @media only screen and (min-width:960px){
-        .hideMobile{
-            display:table-cell;
-        }
-        .titulo{
-        font-size: larger;
-    }
-    }
-</style>
