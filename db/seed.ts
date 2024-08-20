@@ -1,4 +1,4 @@
-import { db, Usuario, eq, isDbError} from 'astro:db';
+import { db, Usuario, eq, isDbError, Admin} from 'astro:db';
 
 
 // https://astro.build/db/seed
@@ -15,6 +15,18 @@ export default async function seed() {
   // console.log("rapper", rapper)
   // console.log("All", all)
   try {
+    // const admins = await db.select().from(Admin);
+
+    // console.log({admins})
+    // const crearAdmin = await db.insert(Admin).values([
+    //   {
+    //     user:"jupeson",
+    //     password:"12345",
+    //     email:"guiadeparche@gmail.com",
+    //     superAdmin:true,
+    //   }
+    // ])
+    // console.log({crearAdmin})
     // await db.delete(Usuario);
     // console.log("delete", await db.select().from(Usuario))
 
@@ -65,3 +77,5 @@ export default async function seed() {
   }
 	
 }
+
+await seed();

@@ -1,0 +1,25 @@
+.containerLogin{
+    display: flex;
+    flex-direction: column;
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--bg-secondary);
+    padding: 1rem;
+    gap:10px
+}
+
+label{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+input[type=password], input[type=text]{
+    width: 200px;
+}
+
+input[type=submit]{
+    width: 100%;
+}

@@ -1,0 +1,70 @@
+
+:root {
+    /* Change this to change the appearance of the hexaons */
+    --hex-width: 5em; 
+    --hex-between: 10px;
+    --hex-height: calc((var(--hex-width) *1.15));
+    
+    /* Other hexagon dimentions */
+    --hex-height-grid: calc(var(--hex-width) / 1.73 /* sqrt(3) */);
+    --hex-margin: calc(var(--hex-width) / 2);
+    --hex-border: 4px;
+    --hex-transition: all .2s ease;
+
+    --color-hex-default: #122331;
+
+    --color-cost-1: grey;
+    --color-cost-2: green;
+    --color-cost-3: aqua;
+    --color-cost-4: purple;
+    --color-cost-5: gold;
+}
+
+/* Hexagons */
+.containerBuilder {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    width: 100%;
+    margin: 10px;
+    }
+
+
+.poligon {
+    display: flex;
+    position: relative;
+    width: var(--hex-width);
+    height: var(--hex-height);
+    background: var(--color-hex-default);
+    box-sizing: border-box;
+    -webkit-clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+  }
+
+  .poligon img {
+    position: absolute;
+    top: var(--hex-border); /* equal to border thickness */
+    left: var(--hex-border); /* equal to border thickness */
+    width: calc(100% - var(--hex-border)*2) ; /* container height - (border thickness * 2) */
+    height: calc(100% - var(--hex-border)*2); /* container height - (border thickness * 2) */
+    -webkit-clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+}
+
+.hexRow{
+    display: flex;
+    position: relative;
+    flex-direction: row;
+    width: 100%;
+    gap:var(--hex-between)
+}
+
+.hexRow:nth-child(2),
+.hexRow:nth-child(4) {
+    margin-left: calc((var(--hex-width) + var(--hex-border)*2)/2);
+    margin-top: calc(var(--hex-border)*-2);
+}
+
+.hexRow:nth-child(3){
+    margin-top: calc(var(--hex-border)*-2);
+}

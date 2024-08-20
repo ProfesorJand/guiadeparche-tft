@@ -1,0 +1,15 @@
+---
+import Main from '@components/main/Main.astro';
+import Layout from 'src/layouts/Layout.astro';
+import AdminPanel from "../components/main/Admin/Admin.jsx";
+import {db, Admin as Admins} from "astro:db";
+
+const allAdmins = await db.select().from(Admins);
+
+---
+
+<Layout title='admin'>
+    <Main>
+        <AdminPanel allAdmins={allAdmins} client:only="react"/>
+    </Main>
+</Layout>
