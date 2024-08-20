@@ -24,7 +24,6 @@
 .pestanas{
     list-style: none;
     background-color: var(--bg-secondary);
-
     display: flex;
     align-items: center;
     justify-content: center;

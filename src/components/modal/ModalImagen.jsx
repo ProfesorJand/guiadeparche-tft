@@ -15,14 +15,14 @@ const ModalImage = ({children}) =>{
        }
     }
 
-    function closeModal(event){
+    function closeModal(){
         setShowModal(false);
         setImgUrl(null)
     }
     return (
         <div className={style.imgCursor} onClick={(e)=>{openModal(e)}}>
             {children}
-            {showModal && <div className={style.modal} onClick={(e)=>{closeModal(e)}}>
+            {showModal && <div className={style.modal} onClick={()=>{closeModal()}}>
                 <button className={style.btnClose}>X</button>
                 <img src={imgUrl.src} alt={imgUrl.alt}></img>
             </div>}
