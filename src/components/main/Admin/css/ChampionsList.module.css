@@ -1,0 +1,11 @@
+.containerChampionsList{
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.containerChampionsList > img{
+    display:flex;
+    width: 20%;
+}

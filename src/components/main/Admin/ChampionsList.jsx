@@ -1,5 +1,5 @@
-import React from "react";
-import style from "./css/Champions.module.css"
+import React, { Fragment } from "react";
+import style from "./css/ChampionsList.module.css"
 const Champions = ()=>{
     const listaCampeones = [
         {
@@ -34,14 +34,28 @@ const Champions = ()=>{
         },
     ]
 
-    function dragStartCampeon(){
-        console.log("hol")
+
+    function handleDragStart(e){
+        const campeon = e.dataTransfer.setData("campeon", e.target.id);
+    }
+
+    function handleDragEnd(e){
+        console.log("dragEnd", e.target)
     }
     return(
         <div className={style.containerChampionsList}>
             {listaCampeones.map((campeon)=>{
                 return (
-                    <img src={campeon.img} alt={campeon.nombre} onDragStart={()=>{dragStartCampeon}}/>
+                    <img
+                        key={campeon.nombre}
+                        id={`campeon-${campeon.nombre}`}
+                        src={campeon.img}
+                        alt={campeon.nombre}
+                        onDragEnd={(e)=>{handleDragEnd(e)}}
+                        onDragStart={(e)=>{handleDragStart(e)}}
+                        draggable="true"
+                    />
+
                 )
             })}
 

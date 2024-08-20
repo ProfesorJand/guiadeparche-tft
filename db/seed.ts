@@ -18,14 +18,20 @@ export default async function seed() {
     // const admins = await db.select().from(Admin);
 
     // console.log({admins})
-    // const crearAdmin = await db.insert(Admin).values([
-    //   {
-    //     user:"jupeson",
-    //     password:"12345",
-    //     email:"guiadeparche@gmail.com",
-    //     superAdmin:true,
-    //   }
-    // ])
+    const crearAdmin = await db.insert(Admin).values([
+      {
+        user:"jupeson",
+        password:"12345",
+        email:"guiadeparche@gmail.com",
+        superAdmin:true,
+      },
+      {
+        user:"profesorjand",
+        password:"12345",
+        email:"profesorjand@gmail.com",
+        superAdmin:true,
+      }
+    ])
     // console.log({crearAdmin})
     // await db.delete(Usuario);
     // console.log("delete", await db.select().from(Usuario))

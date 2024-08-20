@@ -2,6 +2,7 @@ import React, {useState} from "react"
 import style from "./css/CrearCompoTFT.module.css"
 import Builder from "./Builder.jsx"
 import Champions from "./ChampionsList.jsx"
+import Campeones from "src/pages/campeones.astro"
 const CrearCompoTFT = () =>{
     const [tier, setTier] = useState("Oculto")
     const [posicion, setPosicion] = useState(1)
@@ -15,9 +16,12 @@ const CrearCompoTFT = () =>{
     const [aumentos, setAumentos] = useState([]) //[{},{}]
     const [gameplay, setGameplay] = useState([])
     const [composiciones, setComposiciones] = useState([]) //[{},{}]
-    const [tips, setTips] = useState("")
+    const [tips, setTips] = useState("");
+    function holis(){
+        console.log("form")
+    }
     return (
-        <form className={style.containerCrearCompo} onSubmit={()=>{}}>
+        <form className={style.containerCrearCompo} onSubmit={()=>{holis()}}>
             <label htmlFor="tiers">Tier:
             <select name="tiers" id="tiers">
                 <option value="S">S</option>
@@ -28,8 +32,9 @@ const CrearCompoTFT = () =>{
             </select>
             </label>
             <label htmlFor="tiers">Position:
-            <input type="number" defaultValue={1}></input>
+            <input type="number" defaultValue={posicion}></input>
             </label>
+
             <label htmlFor="tiers">Dificulty:
             <select name="tiers" id="tiers">
                 <option value="Easy">Easy</option>
@@ -38,7 +43,7 @@ const CrearCompoTFT = () =>{
             </select>
             </label>
             <label htmlFor="tiers">Title:
-            <input type="text" value={titulo}></input>
+            <input type="text" defaultValue={titulo}></input>
             </label>
             <label htmlFor="tiers">Category:
             <select name="tiers" id="tiers">
@@ -67,17 +72,18 @@ const CrearCompoTFT = () =>{
                     <option value="Nasus"/>
                 </datalist>
             </label>
-            <Builder/>
-            <Champions />
             <label htmlFor="gameplay">Gameplay:
-                <input type="text" value={gameplay.toString()}></input>
+                <input type="text" defaultValue={gameplay}></input>
             </label>
             <label htmlFor="tips">Tips:
-                <input type="text" value={tips}></input>
+                <input type="text" defaultValue={tips}></input>
             </label>
-
+            <Builder/>
+            <Champions/>
             <input type="submit" value="Crear Compo"/>
         </form>
+
+
 
     )
 }

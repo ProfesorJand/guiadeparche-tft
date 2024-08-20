@@ -1,7 +1,7 @@
 
 :root {
     /* Change this to change the appearance of the hexaons */
-    --hex-width: 5em; 
+    --hex-width: calc(((1 / 7) * 100%) - (var(--hex-between) * 6)); 
     --hex-between: 10px;
     --hex-height: calc((var(--hex-width) *1.15));
     
@@ -25,20 +25,36 @@
     display: flex;
     position: relative;
     flex-direction: column;
-    width: 100%;
     margin: 10px;
-    }
+    aspect-ratio: 1920/1080;
+    justify-content: center;
+    align-items: center;
+}
 
+.hexContainer{
+    display: flex;
+
+}
+
+.halfPoligon{
+    display: flex;
+    position:relative;
+    visibility:hidden;
+    aspect-ratio: 1.15/1;
+    width: calc(50% - ((var(--hex-between)*4)));
+
+}
 
 .poligon {
     display: flex;
     position: relative;
-    width: var(--hex-width);
-    height: var(--hex-height);
     background: var(--color-hex-default);
     box-sizing: border-box;
     -webkit-clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
     clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    aspect-ratio: 1.15/1.2;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .poligon img {
@@ -56,15 +72,7 @@
     position: relative;
     flex-direction: row;
     width: 100%;
-    gap:var(--hex-between)
+    gap:var(--hex-between);
+    box-sizing: border-box;
 }
 
-.hexRow:nth-child(2),
-.hexRow:nth-child(4) {
-    margin-left: calc((var(--hex-width) + var(--hex-border)*2)/2);
-    margin-top: calc(var(--hex-border)*-2);
-}
-
-.hexRow:nth-child(3){
-    margin-top: calc(var(--hex-border)*-2);
-}
