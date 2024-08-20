@@ -35,6 +35,7 @@
     flex: 1;
     align-self: stretch;
     text-wrap: balance;
+    cursor:pointer;
 }
 
 a{
