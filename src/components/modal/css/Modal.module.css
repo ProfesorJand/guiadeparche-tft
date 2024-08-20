@@ -5,13 +5,15 @@
     left:0;
     width: 100vw;
     height: 100vh;
-    z-index: 99999999999;
+    z-index: 999;
     cursor: pointer;
     background-color: rgba(0, 0, 0, 0.315);
     justify-content: center;
     align-items: center;
 }
 .imgCursor{
+    display: flex;
+    width: 100%;
     cursor:pointer;
 }
 

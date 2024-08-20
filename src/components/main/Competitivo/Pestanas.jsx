@@ -13,10 +13,10 @@ const Pestana = () =>{
 	return (
 		<>
 			<div className={style.containerPestanas}>
-				<button onClick={() => handleTabClick(0)} className={[selectedTab === 0 ? style.selected : '',style.pestanas].join(" ")}>Open</button>
-				<button onClick={() => handleTabClick(1)} className={[selectedTab === 1 ? style.selected : '',style.pestanas].join(" ")}>Tactician's Trials & Cup</button>
-				<button onClick={() => handleTabClick(2)} className={[selectedTab === 2 ? style.selected : '',style.pestanas].join(" ")}>Golden Spatula Americas</button>
-				<button onClick={() => handleTabClick(3)} className={[selectedTab === 3 ? style.selected : '',style.pestanas].join(" ")}>Tactician's Crown</button>
+				<button onClick={() => handleTabClick(0)} className={[selectedTab === 0 ? style.selected : '',stylePestana.pestanas].join(" ")}>Open</button>
+				<button onClick={() => handleTabClick(1)} className={[selectedTab === 1 ? style.selected : '',stylePestana.pestanas].join(" ")}>Tactician's Trials & Cup</button>
+				<button onClick={() => handleTabClick(2)} className={[selectedTab === 2 ? style.selected : '',stylePestana.pestanas].join(" ")}>Golden Spatula Americas</button>
+				<button onClick={() => handleTabClick(3)} className={[selectedTab === 3 ? style.selected : '',stylePestana.pestanas].join(" ")}>Tactician's Crown</button>
 			</div>
 			<div className={stylePestana.contenido}>
 				{selectedTab === 0 && 
@@ -32,7 +32,7 @@ const Pestana = () =>{
 					<li>Top 5-8 avanza a Tactician’s Cup</li>
 				</ul>
 				<ModalImage client:only="react">
-					<img src="/competitivo/premios-open-TFT-Set-12.webp" alt="premios open TFT Set 12"/>
+					<img className={stylePestana.image} src="/competitivo/premios-open-TFT-Set-12.webp" alt="premios open TFT Set 12"/>
 				</ModalImage>
 				
 				<p>Open 1 - <strike>REGISTRO CERRADO</strike></p>

@@ -21,6 +21,22 @@
     border: 2px solid var(--border-color)
 }
 
+.pestanas{
+    list-style: none;
+    background-color: var(--bg-secondary);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    font-size: 1rem;
+    color: white;
+    box-sizing: border-box;
+    flex: 1;
+    align-self: stretch;
+    text-wrap: balance;
+}
+
 a{
     color:brown
 }
@@ -31,4 +47,10 @@ ul > li {
 
 ul{
     margin-top: 5px;
+}
+
+@media only screen and (min-width:900px) {
+    .pestanas{
+        padding: 10px;
+    }
 }

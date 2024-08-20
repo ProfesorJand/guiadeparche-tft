@@ -83,6 +83,7 @@ const Twitch = () => {
         bottom: 0px;
         left: 0px;
         width: 25%;
+        z-index:-1
       }
   }
     `}</style>
