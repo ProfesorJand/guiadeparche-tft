@@ -2,11 +2,11 @@ import React from 'react';
 import style from "./css/ImgTier.module.css";
 
 const ImgTier = ({ llave, index, alternativa }) => {
-  let src = `/Tier-${llave}.png`;
+  let src = `/tiers/Tier-${llave}.webp`;
 
   if (llave.includes("Alternativa")) {
     const valor = llave.split("-")[1];
-    src = `/Tier-${valor}.png`;
+    src = `/tiers/Tier-${valor}.webp`;
   }
 
   return (
