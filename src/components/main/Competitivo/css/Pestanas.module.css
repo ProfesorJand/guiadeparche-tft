@@ -34,8 +34,19 @@
     flex: 1;
     align-self: stretch;
     text-wrap: balance;
+
+}
+
+.pestanas:hover{
+    background-color: var(--bg-primary);
     cursor:pointer;
 }
+
+.selected{
+    background-color: var(--bg-terciary);
+}
+
+
 
 a{
     color:brown
