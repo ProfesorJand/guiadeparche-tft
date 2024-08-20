@@ -1,0 +1,12 @@
+.pestanaPrincipal{
+    display: flex;
+    position: relative;
+
+}
+
+.flecha{
+    display: flex;
+    position:absolute;
+    right: 10px;
+
+}

@@ -1,6 +1,8 @@
 import React, {useState} from "react";
 import style from "../../meta-comp/css/ComposicionPestana.module.css";
-import stylePestana from "./css/Pestanas.module.css"
+import stylePestana from "./css/Pestanas.module.css";
+import ModalImage from "../../modal/ModalImagen.jsx";
+
 
 const Pestana = () =>{
 	const [selectedTab, setSelectedTab] = useState(0);
@@ -19,7 +21,9 @@ const Pestana = () =>{
 			<div className={stylePestana.contenido}>
 				{selectedTab === 0 && 
 				<div className={stylePestana.contenidoInfo}>
-				<img className={stylePestana.image} src="/competitivo/open-image-TFT-set12.webp" alt="Open Latam TFT"/>
+					<ModalImage client:only="react">
+						<img className={stylePestana.image} src="/competitivo/open-image-TFT-set12.webp" alt="Open Latam TFT"/>
+					</ModalImage>
 				<p>Hosteado por ESL / Faceit Full detalles en: <a href="https://play.eslgaming.com/latin-america/news/284275/" target="_blank" rel="noreferrer noopener">ELSGAMING</a></p>
 				<p>Premios:</p>
 				<ul>
@@ -27,7 +31,9 @@ const Pestana = () =>{
 					<li>Top 4 avanza a Tactician’s Trials</li>
 					<li>Top 5-8 avanza a Tactician’s Cup</li>
 				</ul>
-				<img src="/competitivo/premios-open-TFT-Set-12.webp" alt=""/>
+				<ModalImage client:only="react">
+					<img src="/competitivo/premios-open-TFT-Set-12.webp" alt="premios open TFT Set 12"/>
+				</ModalImage>
 				
 				<p>Open 1 - <strike>REGISTRO CERRADO</strike></p>
 				<ul>
@@ -51,7 +57,9 @@ const Pestana = () =>{
 				</div>
 				}
 				{selectedTab === 1 && <div className={stylePestana.contenidoInfo}>
-					<img className={stylePestana.image} src="/competitivo/america-esports.webp" alt="America ESPORTS TFT"/>
+					<ModalImage client:only="react">
+						<img className={stylePestana.image} src="/competitivo/america-esports.webp" alt="America ESPORTS TFT"/>
+					</ModalImage>
 					<p>Hosteado por GGtech full detalles en: <a href="https://americastftesports.teamfighttactics.leagueoflegends.com/landing/mnm-tacticians-cup-i" target="_blank" rel="noreferrer noopener">AMERICAS TFT ESPORTS</a></p>
 				 	<p>Premios:</p>
 					<ul>
@@ -61,7 +69,7 @@ const Pestana = () =>{
 						<li>Los Mejores de las Cups pasan a la Golden Spatula Americas</li>
 					</ul>
 					<p>REGISTRO para Trials y Cups según cada servidor en: <a href="https://americastftesports.teamfighttactics.leagueoflegends.com/landing/mnm-tacticians-cup-i" target="_blank" rel="noopener noreferrer">AMERICA TFT ESPORTS</a></p>
-					<p>Discord Americas TFT Esports: te lo mandan al inscribirte.</p>
+					<p><a href="https://discord.com/invite/xqV5K4gw5s" target="_blank" rel="noreferrer noopener"></a>Discord Americas TFT Esports: te lo mandan al inscribirte.</p>
 				</div>}
 				{selectedTab === 2 && <div className={stylePestana.contenidoInfo}>
 					<p>La Americas Golden Spatula se erige como la cúspide de los esports de TFT Americas.</p>
@@ -74,7 +82,9 @@ const Pestana = () =>{
 
 				}
 				{selectedTab === 3 && <div className={stylePestana.contenidoInfo}>
+				<ModalImage client:only="react">
 					<img className={stylePestana.image} src="/competitivo/ecosystem-update.webp" alt="Open Latam TFT"/>
+				</ModalImage>
 					<h2>TFT Official Channels</h2>
 					<p>Stay up-to-date on the latest TFT announcements and updates by following our channels:</p>
 					<ul>

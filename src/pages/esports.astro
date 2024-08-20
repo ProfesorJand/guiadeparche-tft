@@ -3,26 +3,36 @@ import Main from "@components/main/Main.astro";
 import Layout from "src/layouts/Layout.astro";
 import {crearJSONSchema} from "src/json/schema/crearJSONSchema";
 import Pestana from "../components/main/Competitivo/Pestanas.jsx";
-const title="Campeones Set 12 TFT";
+const title="Torneos Oficiales TFT Latam - Esports Americas Teamfight Tactics";
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-//const description = `✅ Información de campeones del Set 12 de Teamfight Tactics (TFT)`;
+const description = `✅ Calendario, links de inscripción y registro para los torneos oficiales del competitivo de TFT Latam - Esports Americas`;
 const keywords = `Campeones TFT, Campeones Teamfight Tactics, Campeones Set 12 TFT, Campeones Mágico y Caótico, TFT, Teamfight Tactics, Habilidades de Campeones TFT`;
 const JSONSchema = crearJSONSchema({title})
-
+import ModalImage from "../components/modal/ModalImagen.jsx";
 ---
 
 <link rel="canonical" href={canonicalURL} />
 <!-- <meta property="og:image" content={socialImageURL} /> -->
-<!-- <meta name="description" content={description}> -->
+<meta name="description" content={description}>
 <meta name="keywords" content={keywords}>
 
 <Layout title={title} JSONSchema={JSONSchema}>
     <Main>
         <h1 class="titulo">Competitivo TFT Latam & Americas</h1>
-        <h2 class="titulo">Calendario Torneos TFT Set 12</h2>
-        <img class="imagenRectangular" src="/competitivo/cronograma-magico-y-caotico.webp" alt="Calendario del Competitivo TFT Set 12 Mágico y Caótico"/>
+        <ModalImage client:only="react">
+            <img class="imagenRectangular" src="/competitivo/competitivo-tft-seguimiento.webp" alt="competitivo TFT Seguimiento Set 12"/>
+        </ModalImage>
+            <h2 class="titulo">Calendario Torneos TFT Set 12</h2>
+            <ModalImage client:only="react">
+                <img class="imagenRectangular" src="/competitivo/cronograma-magico-y-caotico.webp" alt="Calendario del Competitivo TFT Set 12 Mágico y Caótico"/>
+            </ModalImage>
         <h3 class="titulo">Eventos próximos</h3>
-        <h4>Tactician Trials + Tactician's Cup I</h4>
+        <h4>Open Latam #1 - REGISTRO CERRADO</h4>
+        <ul>
+            <li>Cierre de Pre-Registro: Lunes 05/08/2024 a las 19:00 MX, 20:00 CO, 22:00 AR</li>
+            <li>Fecha de competencia: Viernes 09/08/2024 - Domingo 11/08/2024</li>
+        </ul>
+        <h4>Tactician Trials + Tactician's Cup I:</h4>
         <ul>
             <li>Registrations Open: viernes, 2 de agosto de 2024 12:00</li>
             <li>Registrations Close: sábado, 10 de agosto de 2024 22:59</li>
@@ -34,7 +44,12 @@ const JSONSchema = crearJSONSchema({title})
             <li>Tactician's Cup I Day 3: domingo, 25 de agosto de 2024 14:00</li>
         </ul>
        
-        <h4>Tactician Trials + Tactician's Cup II</h4>
+        <h4>Open Latam 2 - <a href="https://docs.google.com/forms/d/e/1FAIpQLSdrL8VkvsR8hgiLQ2tkSCysKxlcAKlV9WAhtkgw2LtSqGMjug/viewform" target="_blank" rel="noopener noreferrer">REGISTRO ABIERTO</a></h4>
+        <ul>
+            <li>Cierre de Pre-Registro: Lunes 02/09/2024 a las 17:00 MX, 18:00 CO, 20:00 AR</li>
+            <li>Fecha de competencia: Viernes 06/09/2024 - Domingo 08/09/2024</li>
+        </ul>
+        <h4>Tactician Trials + Tactician's Cup II:</h4>
         <ul>
             <li>Registrations Open: viernes, 30 de agosto de 2024 12:00</li>
             <li>Registrations Close: sábado, 7 de septiembre de 2024 22:59</li>
@@ -46,7 +61,12 @@ const JSONSchema = crearJSONSchema({title})
             <li>Tactician's Cup II Day 3: domingo, 22 de septiembre de 2024 14:00</li>
         </ul>
 
-        <h4>Tactician Trials + Tactician's Cup III</h4>
+        <h4>Open Latam 3 - <a href="https://docs.google.com/forms/d/e/1FAIpQLSdY4ojLNNQ_DmaYPKdLnXiV9CT89bILO41TURoDfgD8rLZFdQ/viewform" target="_blank" rel="noopener noreferrer">REGISTRO ABIERTO</a></h4>
+        <ul>
+            <li>Cierre de Pre-Registro: Lunes 30/09/2024 a las 17:00 MX, 18:00 CO, 20:00 AR</li>
+            <li>Fecha de competencia: Viernes 04/10/2024 - Domingo 06/10/2024</li>
+        </ul>
+        <h4>Tactician Trials + Tactician's Cup III:</h4>
         <ul>
             <li>Registrations Open: viernes, 27 de septiembre de 2024 12:00</li>
             <li>Registrations Close: sábado, 5 de octubre de 2024 22:59</li>
@@ -58,7 +78,7 @@ const JSONSchema = crearJSONSchema({title})
             <li>Tactician's Cup III Day 3: domingo, 20 de octubre de 2024 14:00</li>
         </ul>
 
-        <h4>Leaderboard Snapshots</h4>
+        <h4>Leaderboard Snapshots:</h4>
         <ul>
             <li>#1 martes, 20 de agosto de 2024 22:00</li>
             <li>#2 martes, 27 de agosto de 2024 22:00</li>
@@ -70,16 +90,32 @@ const JSONSchema = crearJSONSchema({title})
             <li>#8 martes, 8 de octubre de 2024 22:00</li>
             <li>#9 martes, 15 de octubre de 2024 22:00</li>
         </ul>
+        <h4>Golden Spatula Americas:</h4>
+        <ul>
+            <li>Day 1: Viernes, 01 de noviembre 2024</li>
+            <li>Day 2: Sábado, 02 de noviembre 2024</li>
+            <li>Day 3: Domingo, 03 de noviembre 2024</li>
+        </ul>
+
+        <h4>Tactician's Crown:</h4>
+        <ul>
+            <li>Day 1: Viernes, 08 de noviembre 2024</li>
+            <li>Day 2: Sábado, 09 de noviembre 2024</li>
+            <li>Day 3: Domingo, 10 de noviembre 2024</li>
+        </ul>
  
         <h2 class="titulo">Torneos TFT Set 12</h2>
         <Pestana client:only="react"/>
         <p></p>
-        <img class="imagenRectangular" src="/competitivo/piramide-magico-y-caotico.webp" alt="Piramide del Competitivo Set 12 de TFT Mágico y Caótico"/>
+        <ModalImage client:only="react">
+            <img class="imagenRectangular" src="/competitivo/piramide-magico-y-caotico.webp" alt="Piramide del Competitivo Set 12 de TFT Mágico y Caótico"/>
+        </ModalImage>
         <h2 class="titulo">Redes y links importantes</h2>
         <h3>ESL Latinoamerica/ Faceit (torneo sub-regionales):</h3>
         <ul>
             <li><a href="https://twitter.com/ESLlatam" target="_blank" rel="noopener noreferrer" >ESL Latam</a></li>
             <li><a href="https://www.faceit.com/en/organizers/9be626fc-8f37-4b44-ba3f-449ebee7d2ea/TFT%20AMERICAS" target="_blank" rel="noopener noreferrer">Faceit</a></li>
+            <li><a href="https://discord.com/invite/TGxS5Rxbd3" target="_blank" rel="noopener noreferrer">Discord</a></li>
         </ul>
 
         <h3>TFT AMERICA’S:</h3>
