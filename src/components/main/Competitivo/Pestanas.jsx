@@ -60,7 +60,7 @@ const Pestana = () =>{
 					<ModalImage client:only="react">
 						<img className={stylePestana.image} src="/competitivo/america-esports.webp" alt="America ESPORTS TFT"/>
 					</ModalImage>
-					<p>Hosteado por GGtech full detalles en: <a href="https://americastftesports.teamfighttactics.leagueoflegends.com/landing/mnm-tacticians-cup-i" target="_blank" rel="noreferrer noopener">AMERICAS TFT ESPORTS</a></p>
+					<p>Hosteado por GGtech</p>
 				 	<p>Premios:</p>
 					<ul>
 						<li>12.000USD (entre todas las Cups)</li>
@@ -68,7 +68,13 @@ const Pestana = () =>{
 						<li>Top 56 de Tactician’s Trial #2 y #3 pasan a la Tactican’s Cup #2 y #3</li>
 						<li>Los Mejores de las Cups pasan a la Golden Spatula Americas</li>
 					</ul>
-					<p>REGISTRO para Trials y Cups según cada servidor en: <a href="https://americastftesports.teamfighttactics.leagueoflegends.com/landing/mnm-tacticians-cup-i" target="_blank" rel="noopener noreferrer">AMERICA TFT ESPORTS</a></p>
+					<p>REGISTRO para Trials y Cups según cada servidor en:</p>
+						<ul>
+						 <li><a href="https://americastftesports.teamfighttactics.leagueoflegends.com/landing/mnm-tacticians-cup-i" target="_blank" rel="noopener noreferrer">Tactitians Cup I</a></li>
+						 <li><a href="https://americastftesports.teamfighttactics.leagueoflegends.com/landing/mnm-tacticians-cup-ii" target="_blank" rel="noopener noreferrer">Tactitians Cup II</a></li>
+						 <li><a href="https://americastftesports.teamfighttactics.leagueoflegends.com/landing/mnm-tacticians-cup-iii" target="_blank" rel="noopener noreferrer">Tactitians Cup III</a></li>
+						</ul>
+
 					<p><a href="https://discord.com/invite/xqV5K4gw5s" target="_blank" rel="noreferrer noopener"></a>Discord Americas TFT Esports: te lo mandan al inscribirte.</p>
 				</div>}
 				{selectedTab === 2 && <div className={stylePestana.contenidoInfo}>
