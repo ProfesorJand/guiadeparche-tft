@@ -1,0 +1,43 @@
+.pestanaPrincipal{
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    border: 1px solid var(--border-color)
+    
+}
+
+
+.contenedorTitulo{
+    display: flex;
+    position:relative;
+    background-color: var(--bg-primary);
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.contenedorTitulo:hover{
+    cursor:pointer;
+}
+
+.titulo > * {
+    margin: 10px 20px;
+}
+
+.flecha{
+    display: flex;
+    position:relative;
+
+}
+
+.contenedorTexto{
+    display:none;
+    background-color: var(--bg-primary);
+}
+
+.show{
+    display:flex;
+}
+
+h4{
+    font-size: smaller;
+}
