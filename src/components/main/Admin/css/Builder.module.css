@@ -11,13 +11,13 @@
     --hex-border: 4px;
     --hex-transition: all .2s ease;
 
-    --color-hex-default: #122331;
+    --color-hex-cost-default: #122331;
 
-    --color-cost-1: grey;
-    --color-cost-2: green;
-    --color-cost-3: aqua;
-    --color-cost-4: purple;
-    --color-cost-5: gold;
+    --color-hex-cost-1: grey;
+    --color-hex-cost-2: green;
+    --color-hex-cost-3: aqua;
+    --color-hex-cost-4: purple;
+    --color-hex-cost-5: gold;
 }
 
 /* Hexagons */
@@ -48,7 +48,7 @@
 .poligon {
     display: flex;
     position: relative;
-    background: var(--color-hex-default);
+    background: var(--color-hex-cost-default);
     box-sizing: border-box;
     -webkit-clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
     clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
@@ -105,27 +105,37 @@
     width: 100%;
     align-items: flex-start;
     justify-content: center;
-
-   
 }
 
-.containerSinergias::before {
-    content:"";
-    position:absolute;
-    top:0;
-    left:0;
-    right:0;
-    bottom:0;
-    z-index:999;
-  }
 
 .sinergia{
     -webkit-clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
     clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
     display: flex;
-    width: 50px;
-    height: 25px;
-    fill:red;
-    background-color: #122331;
+    flex:0 1 auto;
+    height: 20px;
+    margin:auto;
 }
 
+
+.containerTrait{
+    display:flex;
+    width: 30px;
+    height: 30px;
+}
+
+.backgroundSinergia{
+    display: flex;
+    position:absolute;
+    width: 30px;
+}
+
+.nombreCampeon{
+    display: flex;
+    position:absolute;
+    top:50%;
+    left: 50%;
+    translate: -50% -50%;
+    font-size: smaller;
+    text-shadow: 2px 0 #000, -2px 0 #000, 0 2px #000, 0 -2px #000, 1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
+}

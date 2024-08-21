@@ -30,7 +30,7 @@ const Champions = ()=>{
             nombre:"Briar",
             img:"/campeones/set12/briar.webp",
             coste:5,
-            sinergia:["Ravenaous","Eldritch","Shapeshifter"]
+            sinergia:["Ravenous","Eldritch","Shapeshifter"]
         },
     ]
 
