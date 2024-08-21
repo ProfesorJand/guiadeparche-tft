@@ -75,7 +75,7 @@ const Pestana = () =>{
 						 <li><a href="https://americastftesports.teamfighttactics.leagueoflegends.com/landing/mnm-tacticians-cup-iii" target="_blank" rel="noopener noreferrer">Tactitians Cup III</a></li>
 						</ul>
 
-					<p><a href="https://discord.com/invite/xqV5K4gw5s" target="_blank" rel="noreferrer noopener"></a>Discord Americas TFT Esports: te lo mandan al inscribirte.</p>
+					<p><a href="https://discord.com/invite/xqV5K4gw5s" target="_blank" rel="noreferrer noopener">Discord Americas TFT Esports</a></p>
 				</div>}
 				{selectedTab === 2 && <div className={stylePestana.contenidoInfo}>
 					<p>La Americas Golden Spatula se erige como la cúspide de los esports de TFT Americas.</p>
@@ -84,6 +84,8 @@ const Pestana = () =>{
 						<li>Clasificación a Tacticians Crown</li>
 					</ul>
 					<p>Transmisión oficial en: <a href="https://www.twitch.tv/teamfighttactics" target="_blank" rel="noopener noreferrer">twitch.tv/teamfighttactics</a></p>
+					<p><a href="https://americastftesports.teamfighttactics.leagueoflegends.com/ladder/americas-ladder-snapshot-set-12" target="_blank" rel="noopener noreferrer">Leaderboard Snapshots Ladder</a></p>
+					<p><a href="https://americastftesports.teamfighttactics.leagueoflegends.com/ladder/americas-cup-qualifier-points-set-12" target="_blank" rel="noopener noreferrer">Leaderboard Qualifiers</a>: (puntos de Trial & Cups)</p>
 				</div>
 
 				}

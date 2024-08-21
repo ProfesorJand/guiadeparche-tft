@@ -74,6 +74,8 @@ const { title, JSONSchema } = Astro.props;
     --bg-main: #0c023a;
     --color-primary: #ffffff;
     --border-color: #ffd700;
+    --text-color-white-primary: #e5e5e5;
+    --text-color-white-secondary: #e5e5e5;
     --number-champ-meta: calc(100%/5);
     --accent: 136, 58, 234;
     --accent-light: 224, 204, 250;
@@ -84,9 +86,8 @@ const { title, JSONSchema } = Astro.props;
       rgb(var(--accent-light)) 30%,
       white 60%
     );
-    font-family: 'Roboto', Sans-serif;
-    
-    color: var(--color-primary);
+    font-family: Sans-serif;
+    color: var(--text-color-white-primary);
   }
 
   body::-webkit-scrollbar {
