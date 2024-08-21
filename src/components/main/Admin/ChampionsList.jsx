@@ -36,7 +36,9 @@ const Champions = ()=>{
 
 
     function handleDragStart(e){
-        const campeon = e.dataTransfer.setData("campeon", e.target.id);
+        e.dataTransfer.setData("campeon", e.target.getAttribute("data-campeon"));
+        e.dataTransfer.setData("from", e.target.getAttribute("data-from"));
+        console.log(JSON.parse(e.target.getAttribute("data-campeon")))
     }
 
     function handleDragEnd(e){
@@ -51,6 +53,8 @@ const Champions = ()=>{
                         id={`campeon-${campeon.nombre}`}
                         src={campeon.img}
                         alt={campeon.nombre}
+                        data-campeon={JSON.stringify(campeon)}
+                        data-from={"championList"}
                         onDragEnd={(e)=>{handleDragEnd(e)}}
                         onDragStart={(e)=>{handleDragStart(e)}}
                         draggable="true"
