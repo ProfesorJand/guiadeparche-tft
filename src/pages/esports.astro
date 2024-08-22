@@ -10,6 +10,7 @@ const keywords = `Campeones TFT, Campeones Teamfight Tactics, Campeones Set 12 T
 const JSONSchema = crearJSONSchema({title})
 import ModalImage from "../components/modal/ModalImagen.jsx";
 import Acordion from "../components/acordion/Acordion.jsx";
+import Youtube from "../components/youtube/Youtube.jsx";
 ---
 
 <link rel="canonical" href={canonicalURL} />
@@ -20,9 +21,12 @@ import Acordion from "../components/acordion/Acordion.jsx";
 <Layout title={title} JSONSchema={JSONSchema}>
     <Main>
         <h1 class="titulo">Competitivo TFT Latam & Americas</h1>
+        
         <ModalImage client:only="react">
             <img class="imagenRectangular" src="/competitivo/competitivo-tft-seguimiento.webp" alt="competitivo TFT Seguimiento Set 12"/>
         </ModalImage>
+        <h2 class="titulo">Compite en los torneos de Mágico y Caótico</h2>
+        <Youtube src="https://youtu.be/Kd1ASxpWVOo" client:load></Youtube>
             <h2 class="titulo">Calendario Torneos TFT Set 12</h2>
             <ModalImage client:only="react">
                 <img class="imagenRectangular" src="/competitivo/cronograma-magico-y-caotico.webp" alt="Calendario del Competitivo TFT Set 12 Mágico y Caótico"/>
