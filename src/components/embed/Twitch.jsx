@@ -80,7 +80,7 @@ const Twitch = () => {
   @media only screen and (min-width: 900px) {
       #twitch-embed {
         position: fixed;
-        bottom: 0px;
+        bottom: 5rem;
         left: 0px;
         width: 25%;
         z-index:-1

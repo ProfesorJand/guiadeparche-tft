@@ -12,7 +12,7 @@ const Pestana = () =>{
   };
 	return (
 		<>
-			<div className={style.containerPestanas}>
+			<div className={[style.containerPestanas, stylePestana.containerPestanas].join(" ")}>
 				<button onClick={() => handleTabClick(0)} className={[stylePestana.pestanas, selectedTab === 0 ? stylePestana.selected : ''].join(" ")}>Open</button>
 				<button onClick={() => handleTabClick(1)} className={[stylePestana.pestanas, selectedTab === 1 ? stylePestana.selected : ''].join(" ")}>Tactician's Trials & Cup</button>
 				<button onClick={() => handleTabClick(2)} className={[stylePestana.pestanas, selectedTab === 2 ? stylePestana.selected : ''].join(" ")}>Golden Spatula Americas</button>
@@ -28,8 +28,8 @@ const Pestana = () =>{
 				<p>Premios:</p>
 				<ul>
 					<li>15.000USD (son 3 de 5.000USD c/u)</li>
-					<li>Top 4 avanza a Tactician’s Trials</li>
-					<li>Top 5-8 avanza a Tactician’s Cup</li>
+					<li>Top 4 avanza a Tactician’s Cup</li>
+					<li>Top 5-8 avanza a Tactician’s Trials</li>
 				</ul>
 				<ModalImage client:only="react">
 					<img className={stylePestana.image} src="/competitivo/premios-open-TFT-Set-12.webp" alt="premios open TFT Set 12"/>
@@ -93,6 +93,11 @@ const Pestana = () =>{
 				<ModalImage client:only="react">
 					<img className={stylePestana.image} src="/competitivo/ecosystem-update.webp" alt="Open Latam TFT"/>
 				</ModalImage>
+				<ul>
+					<li>Day 1: Viernes, 08 de noviembre 2024</li>
+					<li>Day 2: Sábado, 09 de noviembre 2024</li>
+					<li>Day 3: Domingo, 10 de noviembre 2024</li>
+           		</ul>
 					<h2>TFT Official Channels</h2>
 					<p>Stay up-to-date on the latest TFT announcements and updates by following our channels:</p>
 					<ul>
@@ -102,7 +107,6 @@ const Pestana = () =>{
 						<li>YouTube: <a href="https://www.youtube.com/@playtft" target="_blank" rel="noreferrer noopener">@playtft</a></li>
 						<li>Website: <a href="https://teamfighttactics.leagueoflegends.com/en-us/news/" target="_blank" rel="noreferrer noopener">TFT Official News</a></li>
 						<li>Twitch: <a href="https://www.twitch.tv/teamfighttactics" target="_blank" rel="noreferrer noopener">twitch.tv/teamfighttactics</a></li>
-
 					</ul>
 				</div>}
 			</div>
