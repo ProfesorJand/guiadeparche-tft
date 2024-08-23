@@ -1,0 +1,37 @@
+:root{
+  --containerItemsInfo-width : calc(100%/3);
+  --itemsNumber-width: calc(100%/9);
+}
+.containerItems{
+  display: flex;
+  position: relative;
+  flex-direction: column;
+}
+.containerBtn{
+  display: flex;
+  flex-direction: row;
+  gap:5px;
+  box-sizing: border-box;
+}
+.btn{
+  display: flex;
+}
+.containerItemsInfo{
+  display: flex;
+  flex-direction: column;
+  background-color: aqua;
+  width: var(--containerItemsInfo-width);
+}
+
+.containerItemsHorizontal{
+  display: flex;
+  flex-direction: row;
+  width: var(--itemsNumber-width);
+}
+
+.imgItems{
+  display: flex;
+  position: relative;
+  width: 100%;
+  
+}

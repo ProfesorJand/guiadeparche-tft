@@ -1,8 +1,9 @@
-import React, {useState} from "react"
+import React, {useContext, useState} from "react"
 import style from "./css/CrearCompoTFT.module.css"
 import Builder from "./Builder.jsx"
 import Champions from "./ChampionsList.jsx"
-import Campeones from "src/pages/campeones.astro"
+import Items from "./Items.jsx";
+
 const CrearCompoTFT = () =>{
     const [tier, setTier] = useState("Oculto")
     const [posicion, setPosicion] = useState(1)
@@ -17,11 +18,19 @@ const CrearCompoTFT = () =>{
     const [gameplay, setGameplay] = useState([])
     const [composiciones, setComposiciones] = useState([]) //[{},{}]
     const [tips, setTips] = useState("");
-    function holis(){
-        console.log("form")
+    const [infoChampsItems, setInfoChampsItems] = useState("items");
+
+    function handleToogleInfo(button){
+        setInfoChampsItems(button)
     }
+
+    function mySubmit(e) { 
+        e.preventDefault(); 
+        
+        return false;
+      }
     return (
-        <form className={style.containerCrearCompo} onSubmit={()=>{holis()}}>
+        <form className={style.containerCrearCompo} onSubmit={(e)=>mySubmit(e)}>
             <label htmlFor="tiers">Tier:
             <select name="tiers" id="tiers">
                 <option value="S">S</option>
@@ -79,8 +88,13 @@ const CrearCompoTFT = () =>{
                 <input type="text" defaultValue={tips}></input>
             </label>
             <Builder/>
-            <Champions/>
-            <input type="submit" value="Crear Compo"/>
+            <div>
+                <button onClick={()=>{handleToogleInfo("campeones")}}>Campeones</button>
+                <button onClick={()=>{handleToogleInfo("items")}}>Items</button>
+                {infoChampsItems === "campeones" ? <Champions/> : <Items/>}
+
+            </div>
+            {/* <input type="submit" value="Crear Compo"/> */}
         </form>
 
 

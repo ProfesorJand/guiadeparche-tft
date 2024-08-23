@@ -1,44 +1,12 @@
 import React, { Fragment } from "react";
-import style from "./css/ChampionsList.module.css"
-const Champions = ()=>{
-    const listaCampeones = [
-        {
-            nombre:"Ashe",
-            img:"/campeones/set12/ashe.webp",
-            coste:1,
-            sinergia:["Eldritch","Multistriker"]
-        },
-        {
-            nombre:"Ahri",
-            img:"/campeones/set12/ahri.webp",
-            coste:2,
-            sinergia:["Arcana","Scholar"]
-        },
-        {
-            nombre:"Bard",
-            img:"/campeones/set12/bard.webp",
-            coste:3,
-            sinergia:["Sugarcraft","Preserver","Scholar"]
-        },
-        {
-            nombre:"Fiora",
-            img:"/campeones/set12/fiora.webp",
-            coste:4,
-            sinergia:["Witchcraft","Warrior"]
-        },
-        {
-            nombre:"Briar",
-            img:"/campeones/set12/briar.webp",
-            coste:5,
-            sinergia:["Ravenous","Eldritch","Shapeshifter"]
-        },
-    ]
+import style from "./css/ChampionsList.module.css";
+import {listaCampeones} from "../../../functions/campeonestft.js";
 
+const Champions = ()=>{
 
     function handleDragStart(e){
         e.dataTransfer.setData("campeon", e.target.getAttribute("data-campeon"));
         e.dataTransfer.setData("from", e.target.getAttribute("data-from"));
-        console.log(JSON.parse(e.target.getAttribute("data-campeon")))
     }
 
     function handleDragEnd(e){
@@ -46,21 +14,24 @@ const Champions = ()=>{
     }
     return(
         <div className={style.containerChampionsList}>
-            {listaCampeones.map((campeon)=>{
-                return (
-                    <img
-                        key={campeon.nombre}
-                        id={`campeon-${campeon.nombre}`}
-                        src={campeon.img}
-                        alt={campeon.nombre}
-                        data-campeon={JSON.stringify(campeon)}
-                        data-from={"championList"}
-                        onDragEnd={(e)=>{handleDragEnd(e)}}
-                        onDragStart={(e)=>{handleDragStart(e)}}
-                        draggable="true"
-                    />
+            {listaCampeones.map((campeon, index)=>{
+                
+                    return (
+                        <div className={style.containerChampion} key={`key${index}`} style={{"borderColor":`var(--color-hex-cost-${campeon.coste}`}}>
+                            <img
+                                id={`campeon-${campeon.nombre}`}
+                                src={campeon.img}
+                                alt={campeon.nombre}
+                                data-campeon={JSON.stringify(campeon)}
+                                data-from={"championList"}
+                                onDragEnd={(e)=>{handleDragEnd(e)}}
+                                onDragStart={(e)=>{handleDragStart(e)}}
+                                draggable="true"
+                            />
+                            <span>{campeon.nombre}</span>
+                        </div>
+                    )    
 
-                )
             })}
 
         </div>

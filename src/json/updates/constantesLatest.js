@@ -1,8 +1,14 @@
 export async function fetchingDataTFT({version, idioma, pais}){
-    const urlDragon = `https://raw.communitydragon.org/${version}/cdragon/tft/${idioma}_${pais}.json`
-    const fetching = await fetch(urlDragon, {cache:"reload"});
-    const {items, sets} = await fetching.json();
-    return {items, sets}
+    try {
+        const urlDragon = `https://raw.communitydragon.org/${version}/cdragon/tft/${idioma}_${pais}.json`
+        console.log(urlDragon)
+        const fetching = await fetch(urlDragon, {cache:"reload"});
+        const {items, sets} = await fetching.json();
+        return {items, sets}
+    } catch (error) {
+        throw new Error('fetchingDataTFT');
+    }
+    
 }
 
 export const version = "latest";

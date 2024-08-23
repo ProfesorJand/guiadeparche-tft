@@ -7,13 +7,17 @@ const AdminPanel = ({allAdmins})=>{
     const [isLoged, setIsLoged] = useState(localStorage.getItem("login") || false)
     const [adminName, setAdminName] = useState(localStorage.getItem("user") || "")
 
+    console.log({isLoged, adminName})
+
     function cerrarSesion(){
         setIsLoged(false)
     }
 
     if(!isLoged || !adminName){
         return (
+            <>
             <Login allAdmins={allAdmins} setIsLoged={setIsLoged} setAdminName={setAdminName}/>
+            </>
         )
     }else if(isLoged && adminName){
         return (

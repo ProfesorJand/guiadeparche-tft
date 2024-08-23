@@ -18,6 +18,7 @@
     --color-hex-cost-3: aqua;
     --color-hex-cost-4: purple;
     --color-hex-cost-5: gold;
+    --text-shadow: 2px 0 #000, -2px 0 #000, 0 2px #000, 0 -2px #000, 1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
 }
 
 /* Hexagons */
@@ -77,6 +78,10 @@
     clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
 }
 
+.containerImageChampion:hover{
+    cursor:grab
+}
+
 .hexRow{
     display: flex;
     position: relative;
@@ -115,6 +120,7 @@
     width: 100%;
     scale:0.6;
     margin:auto;
+
 }
 
 
@@ -140,5 +146,5 @@
     left:50%;
     translate: -50% -50%;
     font-size: smaller;
-    text-shadow: 2px 0 #000, -2px 0 #000, 0 2px #000, 0 -2px #000, 1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
+    text-shadow: var(--text-shadow)
 }
