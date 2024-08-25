@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react"
+import React, {useContext, useEffect, useState} from "react"
 import style from "./css/CrearCompoTFT.module.css"
 import Builder from "./Builder.jsx"
 import Champions from "./ChampionsList.jsx"
@@ -19,7 +19,11 @@ const CrearCompoTFT = () =>{
     const [composiciones, setComposiciones] = useState([]) //[{},{}]
     const [tips, setTips] = useState("");
     const [infoChampsItems, setInfoChampsItems] = useState("items");
+    const [boardInfo, setBoardInfo] = useState({});
 
+    useEffect(()=>{
+        console.log(boardInfo)
+    }, [boardInfo])
     function handleToogleInfo(button){
         setInfoChampsItems(button)
     }
@@ -87,7 +91,9 @@ const CrearCompoTFT = () =>{
             <label htmlFor="tips">Tips:
                 <input type="text" defaultValue={tips}></input>
             </label>
-            <Builder/>
+            <div className={style.builderContainer}>
+            <Builder setBoardInfo={setBoardInfo} boardInfo={boardInfo} />
+            </div>
             <div>
                 <button onClick={()=>{handleToogleInfo("campeones")}}>Campeones</button>
                 <button onClick={()=>{handleToogleInfo("items")}}>Items</button>

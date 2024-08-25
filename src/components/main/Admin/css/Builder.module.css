@@ -8,7 +8,7 @@
     /* Other hexagon dimentions */
     --hex-height-grid: calc(var(--hex-width) / 1.73 /* sqrt(3) */);
     --hex-margin: calc(var(--hex-width) / 2);
-    --hex-border: 4px;
+    --hex-border: 0.2rem;
     --hex-transition: all .2s ease;
 
     --color-hex-cost-default: #122331;
@@ -18,7 +18,7 @@
     --color-hex-cost-3: aqua;
     --color-hex-cost-4: purple;
     --color-hex-cost-5: gold;
-    --text-shadow: 2px 0 #000, -2px 0 #000, 0 2px #000, 0 -2px #000, 1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
+    --text-shadow: 1px 0 #000, -1px 0 #000, 0 1px #000, 0 -1px #000, 1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
 }
 
 /* Hexagons */
@@ -26,10 +26,10 @@
     display: flex;
     position: relative;
     flex-direction: column;
-    margin: 10px;
-    aspect-ratio: 1920/1080;
+    padding: 10px;
     justify-content: center;
     align-items: center;
+    width: 70%;
 }
 
 .hexContainer{
@@ -76,10 +76,12 @@
     height: calc(100% - var(--hex-border)*2); /* container height - (border thickness * 2) */
     -webkit-clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
     clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    pointer-events:none;
 }
 
 .containerImageChampion:hover{
-    cursor:grab
+    cursor:grab;
+    z-index:1;
 }
 
 .hexRow{
@@ -110,6 +112,7 @@
     width: 100%;
     align-items: flex-start;
     justify-content: center;
+    pointer-events:none;
 }
 
 
@@ -145,6 +148,29 @@
     top:50%;
     left:50%;
     translate: -50% -50%;
-    font-size: smaller;
+    font-size: 0.6rem;
     text-shadow: var(--text-shadow)
+}
+
+.containerItems{
+    display: flex;
+    position:absolute;
+    bottom:0;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.containerItem{
+    display: flex;
+    width: calc(100%/3);
+    position: relative;
+    box-sizing: border-box;
+    border: 1px solid #000000;
+}
+
+.containerItem > .imgItem{
+    display:flex;
+    width: 100%;
+    position: relative;
+    z-index: 2;
 }

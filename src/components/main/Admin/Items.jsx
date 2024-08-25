@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import style from "./css/Items.module.css";
 const Items = ()=>{
   const [pestana, setPestana] = useState(0);
+  const [itemsCrafteables, setItemsCrafteables] = useState([])
 
   function handlePestana(number){
     setPestana(number)
@@ -58,9 +59,9 @@ const Items = ()=>{
       sinergia:"",
     },
     {
-      nombre:"Hextech Gumblade",
-      apiName:"hextech_gumblade",
-      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/hextech_gumblade.png",
+      nombre:"Hextech Gunblade",
+      apiName:"hextech_gunblade",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/hextech_gunblade.png",
       sinergia:"",
     },
     {
@@ -226,9 +227,9 @@ const Items = ()=>{
       sinergia:"Faerie",
     },
     {
-      nombre:"Blamble Vest",
-      apiName:"blamble_vest",
-      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/blamble_vest.png",
+      nombre:"Bramble Vest",
+      apiName:"bramble_vest",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/bramble_vest.png",
       sinergia:"",
     },
     {
@@ -298,60 +299,56 @@ const Items = ()=>{
       sinergia:"Witchcraft",
     },
     {
-      nombre:"Thief's Gloves",
-      apiName:"thiefs_gloves",
-      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/thiefs_gloves.png",
+      nombre:"Thieve's Gloves",
+      apiName:"thieves_gloves",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/thieves_gloves.png",
       sinergia:"",
     },
     {
       nombre:"Honeymancy Emblem",
       apiName:"honeymancy_emblem",
-      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_honemancy.png",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_honeymancy.png",
       sinergia:"Witchcraft",
     },
     {
-      nombre:"Tactitian's Crown",
-      apiName:"tactitians_crown",
-      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/tactitians_crown.png",
+      nombre:"Tactician's Crown",
+      apiName:"tacticians_crown",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/tacticians_crown.png",
       sinergia:"Witchcraft",
     },
   ]
 
   const MATRIZ_ITEMS_CRAFTEABLES = [
     ["Deathblade","Giant Slayer", "Hextech Gunblade", "Spear of Shojin", "Edge of Night", "Bloodthirster", "Sterak's Gage", "Infinity Edge", "Sugarcraft Emblem"],
-    ["Giant Slayer", "Red Buff", "Guinsoo's Rageblade", "Stattik Shiv", "Titan's Resolve", "Runaan's Hurricane", "Nashor's Tooth", "Last Wisper", "Pyro Emblem"],
+    ["Giant Slayer", "Red Buff", "Guinsoo's Rageblade", "Statikk Shiv", "Titan's Resolve", "Runaan's Hurricane", "Nashor's Tooth", "Last Whisper", "Pyro Emblem"],
     ["Hextech Gunblade", "Guinsoo's Rageblade", "Rabadon's Deathcap", "Archangel's Staff", "Crownguard", "Ionic Spark", "Morellonomicon", "Jeweled Guantlet", "Portal Emblem"],
-    ["Spear of Shojin", "Stattik Shiv", "Archangel's Staff", "Blue Buff", "Protector's Vow", "Adaptive Helm", "Redemption", "Hand of Justice", "Faerie Emblem"],
+    ["Spear of Shojin", "Statikk Shiv", "Archangel's Staff", "Blue Buff", "Protector's Vow", "Adaptive Helm", "Redemption", "Hand of Justice", "Faerie Emblem"],
     ["Edge of Night", "Titan's Resolve", "Crownguard", "Protector's Vow", "Bramble Vest", "Gargoyle Stoneplate", "Sunfire Cape", "Steadfast Heart", "Frost Emblem"],
-    ["Bloodthirster", "Runaan's Hurricane", "Ionic Spark", "Adaptive Helm", "Gargoyle Stoneplate", "Dragon's Claw", "Evenshroud", "Quicksilver", "Witchcraft Emblem"],
+    ["Bloodthirster", "Runaan's Hurricane", "Ionic Spark", "Adaptive Helm", "Gargoyle Stoneplate", "Dragons Claw", "Evenshroud", "Quicksilver", "Witchcraft Emblem"],
     ["Sterak's Gage","Nashor's Tooth", "Morellonomicon", "Redemption", "Sunfire Cape", "Evenshroud", "Warmog's Armor", "Guardbreaker", "Eldritch Emblem"],
-    ["Infinity Edge", "Last Wisper", "Jeweled Guantlet", "Hand of Justice", "Steadfast Heart", "Quicksilver", "Guardbreaker", "Thief's Gloves", "Honemancy Emblem"],
-    ["Sugarcraft Emblem", "Pyro Emblem", "Portal Emblem", "Faerie Emblem", "Frost Emblem", "Witchcraft Emblem", "Eldritch Emblem", "Honemancy Emblem", "Tacticians's Crown"]
+    ["Infinity Edge", "Last Whisper", "Jeweled Guantlet", "Hand of Justice", "Steadfast Heart", "Quicksilver", "Guardbreaker", "Thieve's Gloves", "Honeymancy Emblem"],
+    ["Sugarcraft Emblem", "Pyro Emblem", "Portal Emblem", "Faerie Emblem", "Frost Emblem", "Witchcraft Emblem", "Eldritch Emblem", "Honeymancy Emblem", "Tactician's Crown"]
   ]
 
-  const [itemsCrafteables, setItemsCrafteables] = useState([])
+ 
   useEffect(()=>{
-    // MATRIZ_ITEMS_CRAFTEABLES.map((fila)=>{
-    //   fila.forEach((item)=>{
-    //     const busqueda = CRAFTEABLE_ITEMS.find((e)=>e.nombre === item);
-    //     if(busqueda){
-    //       setItemsCrafteables((oldArray)=>[...oldArray, busqueda])
-    //     }
-    //   })
-    // }
-    // )
-    // console.log(itemsCrafteables)
-
-    MATRIZ_ITEMS_CRAFTEABLES.map((fila)=>{
-      let items = [];
+    MATRIZ_ITEMS_CRAFTEABLES.forEach((fila)=>{
       fila.forEach((item)=>{
-        items.push(item)
+       const busqueda = CRAFTEABLE_ITEMS.find(({nombre})=>{
+          return nombre === item
+        })
+        if(busqueda && itemsCrafteables.length <= 81){
+          setItemsCrafteables((oldArray)=>[...oldArray,busqueda])
+        }
       })
-      console.log(items.toString())
-      return items.toString()
     })
-    console.log(MATRIZ_ITEMS_CRAFTEABLES)
   },[])
+
+  function handleDragStart(e){
+    e.dataTransfer.setData("item", e.target.getAttribute("data-item"));
+    e.dataTransfer.setData("from", e.target.getAttribute("data-from"));
+}
+
   return (
     <div className={style.containerItems}>
       <div className={style.containerBtn}>
@@ -362,20 +359,22 @@ const Items = ()=>{
       </div>
 
       <div className={style.containerItemsInfo}>
-        <div className={style.containerItemsHorizontal}>
-          {BASIC_ITEMS.map(({nombre,img},index)=>{
+          {BASIC_ITEMS.map((dataItem,index)=>{
             return (
-              <img key={index} src={img} alt={`Basic Item TFT ${nombre}`} className={style.imgItems}></img>
+              <div className={style.itemsDrop} key={index}>
+                <img  src={dataItem.img} alt={`Basic Item TFT ${dataItem.nombre}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} data-item={JSON.stringify(dataItem)} data-from="itemList" draggable="true"></img>
+              </div>
             )
           })}
-          </div>
-          <div className={style.containerItemsHorizontal}>
+
           {
-            itemsCrafteables.map(({nombre, img},index)=>{
-              return (<img key={index} src={img} alt={`Basic Item TFT ${nombre}`} className={style.imgItems}></img>)
+            itemsCrafteables.map((dataItem,index)=>{
+              return (
+              <div className={style.itemsDrop} key={index}>
+                <img  src={dataItem.img} alt={`Basic Item TFT ${dataItem.nombre}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} data-item={JSON.stringify(dataItem)} data-from="itemList" draggable="true"></img>
+              </div>)
             })
           }
-        </div>
         <div  className={style.containerItemsHorizontal}>
           
         </div>

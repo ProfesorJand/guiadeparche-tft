@@ -30,10 +30,8 @@
     position:absolute;
     bottom:0;
     left:50%;
-    translate: -50% -50%;
+    translate: -50% 0%;
     font-size: xx-small;
     text-shadow: var(--text-shadow);
-    -webkit-user-select: none; /* Safari */
-    -ms-user-select: none; /* IE 10 and IE 11 */
-    user-select: none; /* Standard syntax */
+    pointer-events: none; /* Standard syntax */
 }

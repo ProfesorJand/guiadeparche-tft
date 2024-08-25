@@ -6,6 +6,7 @@
   display: flex;
   position: relative;
   flex-direction: column;
+  
 }
 .containerBtn{
   display: flex;
@@ -18,12 +19,13 @@
 }
 .containerItemsInfo{
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   background-color: aqua;
   width: var(--containerItemsInfo-width);
+  flex-wrap: wrap;
 }
 
-.containerItemsHorizontal{
+.itemsDrop{
   display: flex;
   flex-direction: row;
   width: var(--itemsNumber-width);
