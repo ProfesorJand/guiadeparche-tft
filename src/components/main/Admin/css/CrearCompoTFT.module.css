@@ -4,3 +4,58 @@
   position:relative;
   width: 100%;
 }
+
+.containerEarlyComp{
+  display: flex;
+  flex-direction: row;
+  position: relative;
+}
+
+.containerEarlyCompWrapper{
+  display: flex;
+  width: 10%;
+  position: relative;
+}
+
+.imgEarlyComp{
+  display: flex;
+  width: 100%;
+}
+
+.containerAumentos{
+  display: flex;
+  flex-direction: row;
+}
+
+.imgAumento{
+  display: flex;
+  width: 100%;
+}
+
+.btnClose{
+  display: flex;
+  position:absolute;
+  top:0;
+  right: 0;
+}
+
+.btnClose:hover{
+  cursor: pointer;
+}
+
+.containerYoutube{
+  display: flex;
+  flex-direction: row;
+  position: relative;
+}
+
+.horizontalWrapper{
+  display: flex;
+  position: relative;
+  width: 10%;
+}
+
+textarea{
+width: 100%;
+min-height: 150px;
+}
