@@ -1,4 +1,4 @@
-export const imgHex = ["hex-bronze.webp", "hex-silver.webp", "hex-gold.webp", "hex-prismatic.webp"]
+export const imgHex = ["hex-bronze.webp", "hex-silver.webp", "hex-gold.webp", "hex-prismatic.webp","hex-default.webp"]
 export const traitsColors = {
     Arcana:{
         2:imgHex[0],
@@ -262,6 +262,12 @@ export const listaCampeones = [
         img:"/campeones/set12/karma.webp",
         coste:2,
         sinergia:["Chrono","Incantor"]
+    },
+    {
+        nombre:"Kassadin",
+        img:"/campeones/set12/kassadin.webp",
+        coste:2,
+        sinergia:["Portal","Multistriker"]
     },
     {
         nombre:"Katarina",

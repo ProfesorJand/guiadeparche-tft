@@ -5,7 +5,8 @@ import Champions from "./ChampionsList.jsx"
 import Items from "./Items.jsx";
 import {listaCampeones} from "../../../functions/campeonestft.js";
 import {augmentsIDList, itemsData} from "../../../json/updates/constantesLatest.js"
-import Youtube from "../../youtube/Youtube.jsx"
+import Youtube from "../../youtube/Youtube.jsx";
+import styleBuilder from "./css/Builder.module.css"
 const CrearCompoTFT = () =>{
     const urlImgAum = "https://raw.communitydragon.org/latest/game/"
     const [tier, setTier] = useState("S")
@@ -77,6 +78,14 @@ const CrearCompoTFT = () =>{
       const value = gameplayURL.value
       setGameplay(oldArray=>[...oldArray, value])
       gameplayURL.value = "";
+    }
+
+    function toggleOcultarNombre(){
+      const allNames = document.getElementsByClassName(styleBuilder.nombreCampeon);
+      Array.prototype.forEach.call(allNames, function(elemento) {
+        // Do stuff here
+        elemento.classList.toggle(styleBuilder.hideNombreCampeon)
+    });
     }
 
 
@@ -162,8 +171,8 @@ const CrearCompoTFT = () =>{
       <label htmlFor="aumentos">Aumentos:
         <input list="dataListAumentos" name="aumentos" id="aumentos"/>
         <datalist id="dataListAumentos">
-          {listaDeAumentos.map((aum)=>{
-            return <option key={"ListaDeAumentos"+aum.name} id={`datalist-${aum.apiName}`} data-value={JSON.stringify(aum)} value={aum.apiName}>{aum.name}</option>
+          {listaDeAumentos.map((aum, i )=>{
+            return <option key={"ListaDeAumentos"+aum.name+i} id={`datalist-${aum.apiName}`} data-value={JSON.stringify(aum)} value={aum.apiName}>{aum.name}</option>
           })}
         </datalist>
         <button onClick={()=>agregarAumento()}>Agregar Aumento</button>
@@ -201,6 +210,7 @@ const CrearCompoTFT = () =>{
       <div className={style.builderContainer}>
         <Builder setBoardInfo={setBoardInfo} boardInfo={boardInfo} />
       </div>
+        <button className={style.ocultarNombre} onClick={()=>{toggleOcultarNombre()}}>Ocultar Nombres</button>
 
       <div>
         <button onClick={()=>{handleToogleInfo("campeones")}}>Campeones</button>

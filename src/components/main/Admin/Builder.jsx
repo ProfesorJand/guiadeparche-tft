@@ -1,51 +1,75 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, { useEffect, useState} from "react";
 import style from "./css/Builder.module.css";
+import ContextMenuBuilder from "./ContextMenuBuilder.jsx";
 import {traitsColors, imgHex} from "../../../functions/campeonestft.js"
 const Builder = ({boardInfo, setBoardInfo})=>{
+    const [hexId, setHexId] = useState(null)
     const urlHex = "/hexagonos/";
-    const [traits, setTraits] = useState({})
-    const [campeonesEnBoard, setCampeonesEnBoard] = useState([]);
-    const addSinergia = useCallback((sinergia, contadorActual)=>{
-        setTraits((oldTraits) => {return({...oldTraits,[sinergia]:contadorActual+1})});
-    },[traits]);
-    const addChampionBoard = useCallback(({dataCampeon,hexId})=>{
-        setCampeonesEnBoard((oldArray)=>[...oldArray, {dataCampeon, hexId, campeonId:dataCampeon.nombre}])
-    })
+    
     const championsColor =["var(--color-hex-cost-default)","var(--color-hex-cost-1)","var(--color-hex-cost-2)","var(--color-hex-cost-3)","var(--color-hex-cost-4)","var(--color-hex-cost-5)"]
 
-    useEffect(()=>{
-        Object.keys(traits).forEach((sinergia)=>{
+    function updateBoardInfo(from="null"){
+        const containerBuilder = document.getElementsByClassName(style.containerBuilder);
+        const containerImageChampion = containerBuilder[0].getElementsByClassName(style.containerImageChampion);
+        const data = {};
+        const sinergias = {};
+        const noRepeatChampions = [];
+        for( let i = 0; i < containerImageChampion.length; i++){
+        const dataCampeon = containerImageChampion[i].dataset;
+        const imgItem = containerImageChampion[i].getElementsByClassName(style.imgItem) 
+        const hexId = dataCampeon.hexId;
+        const newCampeon = JSON.parse(dataCampeon.campeon).nombre;
+        if(!noRepeatChampions.some((campeon)=>campeon === newCampeon)){
+            noRepeatChampions.push(newCampeon);
+            const sinergiasCampeon = JSON.parse(dataCampeon.campeon).sinergia;
+            sinergiasCampeon.forEach((nombreSinergia)=>{
+                sinergias[nombreSinergia] = (sinergias[nombreSinergia] || 0) + 1;
+            })
+            console.log(newCampeon)
+        }
+        data[hexId] = {dataCampeon:dataCampeon}
+        let dataItems = []; 
+        for(let y = 0; y < imgItem.length; y++){
+            dataItems.push(imgItem[y].dataset)
+            const sinergiasItem = JSON.parse(imgItem[y].dataset.item).sinergia;
+            if(sinergiasItem){
+                sinergias[sinergiasItem] = (sinergias[sinergiasItem] || 0) + 1;
+            }
+        }
+        data[hexId].dataItem = dataItems;
+        }
+        if(Object.keys(data).length){
+            setBoardInfo({...data});
+
+            Object.keys(sinergias).forEach((sinergia)=>{
             const allTraits = document.querySelectorAll(`.${sinergia}`);
             allTraits.forEach((element)=>{
-                const traitSVG = findClosestTraitImage(sinergia, traits[sinergia])
+                const traitSVG  = findClosestTraitImage(sinergia, sinergias[sinergia])
                 element.src = urlHex + traitSVG;
+                element.nextElementSibling.style.filter = "invert(1)"
                 if(traitSVG !== "hex-default.webp"){
-                    element.nextSibling.style.filter = "" 
+                    element.style.filter = "";
+                    element.nextElementSibling.style.filter = ""  
                 }
-            })  
-        })
-				console.log({traits, campeonesEnBoard})
-    },[traits, campeonesEnBoard]);
+            })
+            })
+        }
 
-		const updateBoardInfo = useCallback(()=>{
-			const containerImageChampion = document.getElementsByClassName(style.containerImageChampion);
-			const data = {};
-			for( let i = 0; i < containerImageChampion.length; i++){
-				const dataCampeon = containerImageChampion[i].dataset;
-				const imgItem = containerImageChampion[i].getElementsByClassName(style.imgItem) 
-				const hexId = dataCampeon.hexId;
-				data[hexId] = {dataCampeon:dataCampeon}
-				let dataItems = []; 
-				for(let y = 0; y < imgItem.length; y++){
-					dataItems.push(imgItem[y].dataset)
-				}
-				data[hexId].dataItem = dataItems;
-			}
-			setBoardInfo({...boardInfo, ...data})
+    }
 
-		})
-
-
+    function findClosestTraitImage(traitType, traitLevel) {
+        if(traitsColors[traitType]){
+            const traitLevels = Object.keys(traitsColors[traitType]).map(Number).sort((a, b) => a - b);
+            for (let i = traitLevels.length - 1; i >= 0; i--) {
+                if (traitLevel >= traitLevels[i]) {
+                    return traitsColors[traitType][traitLevels[i]];
+                }
+            }
+            // Retornar una imagen por defecto si el traitLevel es menor que todos los disponibles
+        }
+        return "hex-default.webp";
+    }
+        
     function swap(e){
         const hexSwap = e.currentTarget;
         const hexSwapId = e.currentTarget.id;
@@ -60,7 +84,7 @@ const Builder = ({boardInfo, setBoardInfo})=>{
         hexArrastrado.appendChild(hexSwapClon);
         hexArrastrado.children[0].style.backgroundColor = championsColor[dataCampeonSwap.coste];
         hexSwap.children[0].style.backgroundColor = championsColor[dataCampeonArrastrado.coste]
-				updateBoardInfo();
+        updateBoardInfo("swap");
     }
 
     function move(e){
@@ -71,7 +95,7 @@ const Builder = ({boardInfo, setBoardInfo})=>{
         hexDesocupado.children[0].style.backgroundColor= championsColor[dataCampeon.coste];
         hexArrastrado.children[0].style.backgroundColor = championsColor[0];
         hexDesocupado.children[1].dataset.hexId = e.currentTarget.id;
-				updateBoardInfo();
+		updateBoardInfo("move");
     }
 
     function moveChampionListToBoard(e){
@@ -81,10 +105,12 @@ const Builder = ({boardInfo, setBoardInfo})=>{
         containerImageChampion.setAttribute("draggable",true);
         containerImageChampion.dataset.campeon = JSON.stringify(dataCampeon);
         containerImageChampion.dataset.from = "Board";
+        const hexId = e.currentTarget.id
         containerImageChampion.dataset.hexId = e.currentTarget.id;
         containerImageChampion.ondrop = function(e){handleDrop(e)};
         //containerImageChampion.ondragend = function(e){handleDragEnd(e)};
         containerImageChampion.ondragstart = function(e){handleDragStart(e)};
+        containerImageChampion.ondragend= function(e){handleDropOutside(e,"campeon")};
         containerImageChampion.className=style.containerImageChampion;
 
         /*Crear Imagen del Campeon en el hex */
@@ -94,12 +120,12 @@ const Builder = ({boardInfo, setBoardInfo})=>{
         image.alt= dataCampeon.nombre;
 
         containerImageChampion.appendChild(image)
-        e.currentTarget.appendChild(containerImageChampion); 
-
-        /* añadimos sinergias*/
-        const existeCampeon = campeonesEnBoard.some(({campeonId}) => {
-            return(campeonId === dataCampeon.nombre)
-        })
+        console.log(e.currentTarget)
+        console.log(containerImageChampion)
+        e.currentTarget.appendChild(containerImageChampion);
+        console.log(containerImageChampion.dataset.hexId) 
+        containerImageChampion.onclick= function(){crearContextMenu(containerImageChampion.dataset.hexId)};
+        
         if(dataCampeon.sinergia.length > 0){
             const containerSinergias = document.createElement("div"); /* contenedor de todas sinergias*/
             containerSinergias.className=style.containerSinergias;
@@ -125,11 +151,6 @@ const Builder = ({boardInfo, setBoardInfo})=>{
                 containerTrait.appendChild(sinergia);
                 containerSinergias.appendChild(containerTrait);
 
-                /* corrector de aumentos si ya existe el campeon en el tablero*/
-                if(!existeCampeon){
-                    const contadorActual = traits[siner] ? traits[siner] : 0;
-                    addSinergia(siner,contadorActual);
-                }
             })
             containerImageChampion.appendChild(containerSinergias)
         }
@@ -141,18 +162,15 @@ const Builder = ({boardInfo, setBoardInfo})=>{
         containerItems.className = style.containerItems;
         containerImageChampion.appendChild(containerItems);
         e.currentTarget.getElementsByClassName(style.poligon)[0].style.backgroundColor= championsColor[dataCampeon.coste];
-        /* ver si la key campeon se cambia por dataCampeon o dataCampeon.nombre solamente*/
-        const hexId = e.target.parentNode.id;
-        addChampionBoard({dataCampeon, hexId})
-				updateBoardInfo();
+        
+        /*imagen de 3 estrellas */
+
+        
+        updateBoardInfo("moveChampion");
     }
 
     function crearItem(e){
 			const dataItem = JSON.parse(e.dataTransfer.getData("item"))
-			if(dataItem.sinergia){
-				const contadorActual = traits[dataItem.sinergia] ? traits[dataItem.sinergia] : 0;
-				addSinergia(dataItem.sinergia,contadorActual);
-			}
 			const containerItems = e.currentTarget.getElementsByClassName(style.containerItems)[0];
 			const containerItem = document.createElement("div");
 			containerItem.className = style.containerItem;
@@ -166,9 +184,10 @@ const Builder = ({boardInfo, setBoardInfo})=>{
 			imgItem.dataset.hexId = e.currentTarget.id;
 			imgItem.ondrop = function(e){handleDrop(e)};
 			imgItem.ondragstart = function(e){handleDragStart(e)};
+            imgItem.ondragend= function(e){handleDropOutside(e,"item")};
 			containerItem.appendChild(imgItem)
 			containerItems.appendChild(containerItem)
-			updateBoardInfo()
+			updateBoardInfo("crearItem")
 
     }
 
@@ -181,14 +200,6 @@ const Builder = ({boardInfo, setBoardInfo})=>{
         itemSeleccionado.parentNode.remove()
     }
 
-
-    // function handleDragEnd(e){
-    //     const dataItem =e.currentTarget.getAttribute("data-item");
-    //     if(dataItem){
-    //         e.currentTarget.parentNode.parentNode.parentNode.ondragstart(function(e){handleDragStart(e)})
-    //         e.currentTarget.parentNode.parentNode.parentNode.ondrop(function(e){handleDrop(e)})
-    //     }
-    // }
 
     function handleDragStart(e){
         e.stopPropagation();
@@ -204,6 +215,27 @@ const Builder = ({boardInfo, setBoardInfo})=>{
 
     function handleDragOver(e){
         e.preventDefault()
+    }
+
+    function handleDropOutside(e, elemento){
+        e.stopPropagation();
+        const dropTarget = document.elementFromPoint(e.clientX, e.clientY);
+        if(elemento === "item"){
+            const item = e.currentTarget
+            if(!dropTarget.ondrop){
+                item.remove();
+                updateBoardInfo();
+            }
+        }
+        if(elemento === "campeon"){
+            const campeon = e.currentTarget;
+            const hexBackground = campeon.previousElementSibling;
+            if(!dropTarget.ondrop){
+                hexBackground.style.backgroundColor = championsColor[0];
+                campeon.remove();
+                updateBoardInfo();
+            }
+        }
     }
 
     function handleDrop(e){
@@ -246,44 +278,49 @@ const Builder = ({boardInfo, setBoardInfo})=>{
 
     }
 
-    function findClosestTraitImage(traitType, traitLevel) {
-        if(traitsColors[traitType]){
-            const traitLevels = Object.keys(traitsColors[traitType]).map(Number).sort((a, b) => a - b);
-            for (let i = traitLevels.length - 1; i >= 0; i--) {
-                if (traitLevel >= traitLevels[i]) {
-                    return traitsColors[traitType][traitLevels[i]];
-                }
-            }
-            // Retornar una imagen por defecto si el traitLevel es menor que todos los disponibles
-        }
-        return "hex-default.webp";
+    function crearContextMenu(hexId){
+        console.log(hexId)
+        setHexId(hexId)
+        // const containerImageChampion = elemento.getElementsByClassName(style.containerImageChampion)
+        // if(containerImageChampion.length > 0){
+        //     console.log(containerImageChampion)
+        //     const contextMenuContainer = document.createElement("div")
+        //     contextMenuContainer.className = style.contextMenuContainer;
+        // }
     }
+
 
     return (
         <>
-        <div className={style.containerBuilder}>
+        <div  className={style.containerBuilder} >
             <div className={style.hexRow}>
-                    
                     <div id="hex11" className={style.containerPoligon} onDrop={(e)=>{handleDrop(e)}} onDragOver={(e)=>{handleDragOver(e)}}>
                         <div className={style.poligon}></div>
+                        {hexId === "hex11" && <ContextMenuBuilder hexId={hexId} setHexId={setHexId}/>}
                     </div>
                     <div id="hex12" className={style.containerPoligon} onDrop={(e)=>{handleDrop(e)}} onDragOver={(e)=>{handleDragOver(e)}}>
                         <div className={style.poligon}></div>
+                        {hexId === "hex12" && <ContextMenuBuilder hexId={hexId} setHexId={setHexId}/>}
                     </div>
                     <div id="hex13" className={style.containerPoligon} onDrop={(e)=>{handleDrop(e)}} onDragOver={(e)=>{handleDragOver(e)}}>
                         <div className={style.poligon}></div>
+                        {hexId === "hex13" && <ContextMenuBuilder hexId={hexId} setHexId={setHexId}/>}
                     </div>
                     <div id="hex14" className={style.containerPoligon} onDrop={(e)=>{handleDrop(e)}} onDragOver={(e)=>{handleDragOver(e)}}>
                         <div className={style.poligon}></div>
+                        {hexId === "hex14" && <ContextMenuBuilder hexId={hexId} setHexId={setHexId}/>}
                     </div>
                     <div id="hex15" className={style.containerPoligon} onDrop={(e)=>{handleDrop(e)}} onDragOver={(e)=>{handleDragOver(e)}}>
                         <div className={style.poligon}></div>
+                        {hexId === "hex15" && <ContextMenuBuilder hexId={hexId} setHexId={setHexId}/>}
                     </div>
                     <div id="hex16" className={style.containerPoligon} onDrop={(e)=>{handleDrop(e)}} onDragOver={(e)=>{handleDragOver(e)}}>
                         <div className={style.poligon}></div>
+                        {hexId === "hex16" && <ContextMenuBuilder hexId={hexId} setHexId={setHexId}/>}
                     </div>
                     <div id="hex17" className={style.containerPoligon} onDrop={(e)=>{handleDrop(e)}} onDragOver={(e)=>{handleDragOver(e)}}>
                         <div className={style.poligon}></div>
+                        {hexId === "hex17" && <ContextMenuBuilder hexId={hexId} setHexId={setHexId}/>}
                     </div>
                     <div className={style.halfPoligon}>
                     </div>
@@ -293,47 +330,61 @@ const Builder = ({boardInfo, setBoardInfo})=>{
                     </div>
                     <div id="hex21" className={style.containerPoligon} onDrop={(e)=>{handleDrop(e)}} onDragOver={(e)=>{handleDragOver(e)}}>
                         <div className={style.poligon}></div>
+                        {hexId === "hex21" && <ContextMenuBuilder hexId={hexId} setHexId={setHexId}/>}
                     </div>
                     <div id="hex22" className={style.containerPoligon} onDrop={(e)=>{handleDrop(e)}} onDragOver={(e)=>{handleDragOver(e)}}>
                         <div className={style.poligon}></div>
+                        {hexId === "hex22" && <ContextMenuBuilder hexId={hexId} setHexId={setHexId}/>}
                     </div>
                     <div id="hex23" className={style.containerPoligon} onDrop={(e)=>{handleDrop(e)}} onDragOver={(e)=>{handleDragOver(e)}}>
                         <div className={style.poligon}></div>
+                        {hexId === "hex23" && <ContextMenuBuilder hexId={hexId} setHexId={setHexId}/>}
                     </div>
                     <div id="hex24" className={style.containerPoligon} onDrop={(e)=>{handleDrop(e)}} onDragOver={(e)=>{handleDragOver(e)}}>
                         <div className={style.poligon}></div>
+                        {hexId === "hex24" && <ContextMenuBuilder hexId={hexId} setHexId={setHexId}/>}
                     </div>
                     <div id="hex25" className={style.containerPoligon} onDrop={(e)=>{handleDrop(e)}} onDragOver={(e)=>{handleDragOver(e)}}>
                         <div className={style.poligon}></div>
+                        {hexId === "hex25" && <ContextMenuBuilder hexId={hexId} setHexId={setHexId}/>}
                     </div>
                     <div id="hex26"className={style.containerPoligon} onDrop={(e)=>{handleDrop(e)}} onDragOver={(e)=>{handleDragOver(e)}}>
                         <div className={style.poligon}></div>
+                        {hexId === "hex26" && <ContextMenuBuilder hexId={hexId} setHexId={setHexId}/>}
                     </div>
                     <div id="hex27"className={style.containerPoligon} onDrop={(e)=>{handleDrop(e)}} onDragOver={(e)=>{handleDragOver(e)}}>
                         <div className={style.poligon}></div>
+                        {hexId === "hex27" && <ContextMenuBuilder hexId={hexId} setHexId={setHexId}/>}
                     </div>
             </div>
             <div className={style.hexRow}>
                     <div id="hex31"className={style.containerPoligon} onDrop={(e)=>{handleDrop(e)}} onDragOver={(e)=>{handleDragOver(e)}}>
                         <div className={style.poligon}></div>
+                        {hexId === "hex31" && <ContextMenuBuilder hexId={hexId} setHexId={setHexId}/>}
                     </div>
                     <div id="hex32"className={style.containerPoligon} onDrop={(e)=>{handleDrop(e)}} onDragOver={(e)=>{handleDragOver(e)}}>
                         <div className={style.poligon}></div>
+                        {hexId === "hex32" && <ContextMenuBuilder hexId={hexId} setHexId={setHexId}/>}
                     </div>
                     <div id="hex33" className={style.containerPoligon} onDrop={(e)=>{handleDrop(e)}} onDragOver={(e)=>{handleDragOver(e)}}>
                         <div className={style.poligon}></div>
+                        {hexId === "hex33" && <ContextMenuBuilder hexId={hexId} setHexId={setHexId}/>}
                     </div>
                     <div id="hex34"className={style.containerPoligon} onDrop={(e)=>{handleDrop(e)}} onDragOver={(e)=>{handleDragOver(e)}}>
                         <div className={style.poligon}></div>
+                        {hexId === "hex34" && <ContextMenuBuilder hexId={hexId} setHexId={setHexId}/>}
                     </div>
                     <div id="hex35"className={style.containerPoligon} onDrop={(e)=>{handleDrop(e)}} onDragOver={(e)=>{handleDragOver(e)}}>
                         <div className={style.poligon}></div>
+                        {hexId === "hex35" && <ContextMenuBuilder hexId={hexId} setHexId={setHexId}/>}
                     </div>
                     <div id="hex36" className={style.containerPoligon} onDrop={(e)=>{handleDrop(e)}} onDragOver={(e)=>{handleDragOver(e)}}>
                         <div className={style.poligon}></div>
+                        {hexId === "hex36" && <ContextMenuBuilder hexId={hexId} setHexId={setHexId}/>}
                     </div>
                     <div id="hex37" className={style.containerPoligon} onDrop={(e)=>{handleDrop(e)}} onDragOver={(e)=>{handleDragOver(e)}}>
                         <div className={style.poligon}></div>
+                        {hexId === "hex37" && <ContextMenuBuilder hexId={hexId} setHexId={setHexId}/>}
                     </div>
                     <div className={style.halfPoligon}></div>
             </div>
@@ -341,24 +392,31 @@ const Builder = ({boardInfo, setBoardInfo})=>{
                     <div className={style.halfPoligon}></div>
                     <div id="hex41" className={style.containerPoligon} onDrop={(e)=>{handleDrop(e)}} onDragOver={(e)=>{handleDragOver(e)}}>
                         <div className={style.poligon}></div>
+                        {hexId === "hex41" && <ContextMenuBuilder hexId={hexId} setHexId={setHexId}/>}
                     </div>
                     <div id="hex42" className={style.containerPoligon} onDrop={(e)=>{handleDrop(e)}} onDragOver={(e)=>{handleDragOver(e)}}>
                         <div className={style.poligon}></div>
+                        {hexId === "hex42" && <ContextMenuBuilder hexId={hexId} setHexId={setHexId}/>}
                     </div>
                     <div id="hex43" className={style.containerPoligon} onDrop={(e)=>{handleDrop(e)}} onDragOver={(e)=>{handleDragOver(e)}}>
                         <div className={style.poligon}></div>
+                        {hexId === "hex43" && <ContextMenuBuilder hexId={hexId} setHexId={setHexId}/>}
                     </div>
                     <div id="hex44" className={style.containerPoligon} onDrop={(e)=>{handleDrop(e)}} onDragOver={(e)=>{handleDragOver(e)}}>
                         <div className={style.poligon}></div>
+                        {hexId === "hex44" && <ContextMenuBuilder hexId={hexId} setHexId={setHexId}/>}
                     </div>
                     <div id="hex45" className={style.containerPoligon} onDrop={(e)=>{handleDrop(e)}} onDragOver={(e)=>{handleDragOver(e)}}>
                         <div className={style.poligon}></div>
+                        {hexId === "hex45" && <ContextMenuBuilder hexId={hexId} setHexId={setHexId}/>}
                     </div>
                     <div id="hex46" className={style.containerPoligon} onDrop={(e)=>{handleDrop(e)}} onDragOver={(e)=>{handleDragOver(e)}}>
                         <div className={style.poligon}></div>
+                        {hexId === "hex46" && <ContextMenuBuilder hexId={hexId} setHexId={setHexId}/>}
                     </div>
                     <div id="hex47" className={style.containerPoligon} onDrop={(e)=>{handleDrop(e)}} onDragOver={(e)=>{handleDragOver(e)}}>
                         <div className={style.poligon}></div>
+                        {hexId === "hex47" && <ContextMenuBuilder hexId={hexId} setHexId={setHexId}/>}
                     </div>    
             </div>
             

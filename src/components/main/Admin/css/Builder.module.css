@@ -11,7 +11,7 @@
     --hex-border: 0.2rem;
     --hex-transition: all .2s ease;
 
-    --color-hex-cost-default: #122331;
+    --color-hex-cost-default: #252f3c;
 
     --color-hex-cost-1: grey;
     --color-hex-cost-2: green;
@@ -26,10 +26,11 @@
     display: flex;
     position: relative;
     flex-direction: column;
-    padding: 10px;
+    padding: 0 10px;
     justify-content: center;
     align-items: center;
-    width: 70%;
+    width: 100%;
+    aspect-ratio: 16/9;
 }
 
 .hexContainer{
@@ -108,7 +109,7 @@
     display: flex;
     flex-direction: row;
     position: absolute;
-    top: 0; /* Mueve el contenedor hacia arriba */
+    top: -3px; /* Mueve el contenedor hacia arriba */
     width: 100%;
     align-items: flex-start;
     justify-content: center;
@@ -145,11 +146,54 @@
 .nombreCampeon{
     display: flex;
     position:absolute;
-    top:50%;
+    bottom:25%;
     left:50%;
-    translate: -50% -50%;
+    translate: -50% 0%;
     font-size: 0.6rem;
-    text-shadow: var(--text-shadow)
+    text-shadow: var(--text-shadow);
+    pointer-events: none;
+}
+.hideNombreCampeon{
+    display: none;
+}
+
+.estrellas4::before{
+    width: 100%;
+    content: "★★★★";
+    position: absolute;
+    top: 15%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+    text-align: center;
+    color: #08fb9c;
+    text-shadow: var(--text-shadow);
+}
+
+.estrellas3::before{
+    width: 100%;
+    content: "★★★";
+    position: absolute;
+    top: 15%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+    text-align: center;
+    color: yellow;
+    text-shadow: var(--text-shadow);
+}
+
+.estrellas2::before{
+    width: 100%;
+    content: "★★";
+    position: absolute;
+    top: 15%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+    text-align: center;
+    color: rgb(163, 163, 163);
+    text-shadow: var(--text-shadow);
 }
 
 .containerItems{
@@ -158,11 +202,12 @@
     bottom:0;
     flex-direction: row;
     justify-content: center;
+    width: 100%;
 }
 
 .containerItem{
     display: flex;
-    width: calc(100%/3);
+    width: calc(100%/3.4);
     position: relative;
     box-sizing: border-box;
     border: 1px solid #000000;
@@ -173,4 +218,16 @@
     width: 100%;
     position: relative;
     z-index: 2;
+}
+
+.contextMenuContainer{
+    display: flex;
+    width: 100%;
+    background-image: url(/campeones/set12/varus.webp);
+    position: absolute;
+    left: -16px;
+    top: -6px;
+    height:100%;
+    z-index: 2;
+    pointer-events: none;
 }
