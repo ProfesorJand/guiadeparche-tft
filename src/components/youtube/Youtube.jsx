@@ -47,10 +47,14 @@ const VideoComponent = ({ src, loading = "lazy", titulo="video de Jupeson" }) =>
   }, [src, titulo]);
 
   useEffect(() => {
+    console.log("ha")
     const handlePageLoad = () => {
-      const youtubeThumbnail = document.querySelectorAll(".divIframe");
+      console.log("hi")
+      const youtubeThumbnail = document.querySelectorAll(`.${style.divIframe}`);
+      console.log(youtubeThumbnail)
       youtubeThumbnail.forEach(container => {
         container.addEventListener('click', () => {
+          console.log("hola hizo click")
           const videoId = container.getAttribute('data-url');
           const iframe = document.createElement('iframe');
           iframe.setAttribute("src", videoId + "&autoplay=1&enablejsapi=1");
@@ -65,8 +69,8 @@ const VideoComponent = ({ src, loading = "lazy", titulo="video de Jupeson" }) =>
         });
       });
     };
-
     document.addEventListener('astro:page-load', handlePageLoad);
+
 
     return () => {
       document.removeEventListener('astro:page-load', handlePageLoad);
