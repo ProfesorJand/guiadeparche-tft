@@ -4,6 +4,7 @@ import CrearCompoTFT from "./CrearCompoTFT.jsx";
 
 
 const AdminPanel = ({allAdmins})=>{
+    console.log("hola")
     const [isLoged, setIsLoged] = useState(localStorage.getItem("login") || false)
     const [adminName, setAdminName] = useState(localStorage.getItem("user") || "")
 

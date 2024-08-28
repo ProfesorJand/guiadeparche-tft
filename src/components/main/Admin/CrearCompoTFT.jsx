@@ -6,7 +6,10 @@ import Items from "./Items.jsx";
 import {listaCampeones} from "../../../functions/campeonestft.js";
 import {augmentsIDList, itemsData} from "../../../json/updates/constantesLatest.js"
 import Youtube from "../../youtube/Youtube.jsx";
-import styleBuilder from "./css/Builder.module.css"
+import styleBuilder from "./css/Builder.module.css";
+// import html2canvas from 'html2canvas';
+import { toBlob } from 'html-to-image';
+
 const CrearCompoTFT = () =>{
     const urlImgAum = "https://raw.communitydragon.org/latest/game/"
     const [tier, setTier] = useState("S")
@@ -25,6 +28,8 @@ const CrearCompoTFT = () =>{
     const [tips, setTips] = useState("");
     const [infoChampsItems, setInfoChampsItems] = useState("items");
     const [boardInfo, setBoardInfo] = useState({});
+    const [showBoard, setShowBoard] = useState("early");
+    const [showName, setShowName] = useState(false)
 
     useEffect(()=>{
       const dataAumentos = itemsData.filter(({apiName})=>{
@@ -34,12 +39,46 @@ const CrearCompoTFT = () =>{
 
     }, [])
 
-    useEffect(()=>{
-        console.log(listaDeAumentos)
-    }, [listaDeAumentos])
+    // function captureAndConvertToWebP(id){
+    //   console.log(id)
+    //   const element = document.getElementById(id);
+
+    //   toBlob(element)
+    //   .then((blob) => {
+    //       const webpBlob = new Blob([blob], { type: 'image/webp' });
+    //       const nombreArchivo = titulo ? titulo + `-${id}` : `default-${id}`;
+    //       // Crear un objeto FormData para enviar los datos
+    //       const formData = new FormData();
+    //       formData.append('file', webpBlob, `${nombreArchivo}.webp`);
+    
+    //       // Realizar la solicitud POST al servidor
+    //       fetch('https://guiadeparche.com/tftdata/Set12/uploadImageWebp.php', {
+    //           method: 'POST',
+    //           body: formData,
+    //       })
+    //       .then(response => response.json())
+    //       .then(data => {
+    //           if (data.status === 'success') {
+    //               console.log('File uploaded successfully');
+    //           } else {
+    //               console.error('File upload failed:', data.message);
+    //           }
+    //       })
+    //       .catch(error => {
+    //           console.error('Error uploading file:', error);
+    //       });
+    //   })
+    //   .catch((error) => {
+    //       console.error('Error generating image', error);
+    //   });
+    // }
 
     function handleToogleInfo(button){
         setInfoChampsItems(button)
+    }
+
+    function handleBuilderLevel(id){
+      setShowBoard(id)
     }
 
     function agregarEarlyComp(){
@@ -80,12 +119,9 @@ const CrearCompoTFT = () =>{
       gameplayURL.value = "";
     }
 
-    function toggleOcultarNombre(){
-      const allNames = document.getElementsByClassName(styleBuilder.nombreCampeon);
-      Array.prototype.forEach.call(allNames, function(elemento) {
-        // Do stuff here
-        elemento.classList.toggle(styleBuilder.hideNombreCampeon)
-    });
+    function toggleOcultarNombre(show){
+      
+    setShowName(!show)
     }
 
 
@@ -207,11 +243,24 @@ const CrearCompoTFT = () =>{
       <label htmlFor="tips">Tips:
           <textarea  type="text" defaultValue={tips}></textarea>
       </label>
-      <div className={style.builderContainer}>
-        <Builder setBoardInfo={setBoardInfo} boardInfo={boardInfo} />
+      <div className={style.containerButtonsHorizontal}>
+        <button className={style.btn} onClick={()=>{handleBuilderLevel("early")}}>Early</button>
+        <button className={style.btn} onClick={()=>{handleBuilderLevel("lv7")}}>Lv 7</button>
+        <button className={style.btn} onClick={()=>{handleBuilderLevel("lv8")}}>Lv 8</button>
+        <button className={style.btn} onClick={()=>{handleBuilderLevel("lv9")}}>Lv 9</button>
+        <button className={style.btn} onClick={()=>{handleBuilderLevel("lv10")}}>Lv 10</button>
       </div>
-        <button className={style.ocultarNombre} onClick={()=>{toggleOcultarNombre()}}>Ocultar Nombres</button>
-
+      <h2>{showBoard}</h2>
+      <div className={style.builderContainer}>
+      	{showBoard=== "early" && <Builder setBoardInfo={setBoardInfo} boardInfo={boardInfo} id={showBoard} showName={showName}/>}
+				{showBoard=== "lv7" && <Builder setBoardInfo={setBoardInfo} boardInfo={boardInfo} id={showBoard} showName={showName}/>}
+				{showBoard=== "lv8" && <Builder setBoardInfo={setBoardInfo} boardInfo={boardInfo} id={showBoard} showName={showName}/>}
+				{showBoard=== "lv9" && <Builder setBoardInfo={setBoardInfo} boardInfo={boardInfo} id={showBoard} showName={showName}/>}
+				{showBoard=== "lv10" && <Builder setBoardInfo={setBoardInfo} boardInfo={boardInfo} id={showBoard} showName={showName}/>}
+      </div>
+          
+        <button className={style.ocultarNombre} onClick={()=>{toggleOcultarNombre(showName)}}>{showName ? "Mostrar Nombres" : "Ocultar Nombres" }</button>
+        <button className={style.ocultarNombre} onClick={()=>{captureAndConvertToWebP(showBoard)}}>Guardar imagen</button>
       <div>
         <button onClick={()=>{handleToogleInfo("campeones")}}>Campeones</button>
         <button onClick={()=>{handleToogleInfo("items")}}>Items</button>
