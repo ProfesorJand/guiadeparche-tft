@@ -49,12 +49,9 @@ const VideoComponent = ({ src, loading = "lazy", titulo="video de Jupeson" }) =>
   useEffect(() => {
     console.log("ha")
     const handlePageLoad = () => {
-      console.log("hi")
       const youtubeThumbnail = document.querySelectorAll(`.${style.divIframe}`);
-      console.log(youtubeThumbnail)
       youtubeThumbnail.forEach(container => {
         container.addEventListener('click', () => {
-          console.log("hola hizo click")
           const videoId = container.getAttribute('data-url');
           const iframe = document.createElement('iframe');
           iframe.setAttribute("src", videoId + "&autoplay=1&enablejsapi=1");
