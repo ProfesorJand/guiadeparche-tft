@@ -8,26 +8,47 @@ interface ImageMetadata {
   format: string;
 }
 ---
-
-<Image
-  class="logo"
-  src={logo}
-  alt="Logo Guiadeparche"
-/>
+<div class="containerHeaderLogo">
+  <div class="logoContainer">
+    <Image
+    class="logo"
+    src={logo}
+    alt="Logo Guiadeparche"
+    />
+    <slot/>
+  </div>
+</div>
 
 <style>
   .logo {
     display: none;
   }
 
-  @media only screen and (min-width:960px){
+  @media only screen and (min-width:900px){
     .logo {
       display: flex;
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    width: 100px;
-    height: 100px;
-  }
+      position: relative;
+      width: 50px;
+      max-width: 100%;
+      height: auto;
+      aspect-ratio: 1/1;
+      box-sizing: border-box;
+    }
+    .logoContainer{
+      display: flex;
+      position: relative;
+      width: 100%;
+      height: 100%;
+      justify-content: center;
+      align-items: center;
+      box-sizing: border-box;
+    }
+    .containerHeaderLogo{
+      display: flex;
+      position: relative;
+      width: 10vw;
+      justify-content: center;
+      align-items: center;
+    }
   }
 </style>

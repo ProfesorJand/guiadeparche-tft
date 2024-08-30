@@ -19,6 +19,7 @@
     margin: 0;
     padding: 1rem;
     box-sizing: border-box;
+    text-align: start;
 }
 .youtube_thumbnail{
     width: 100%;

@@ -2,14 +2,19 @@ import { useEffect, useRef, useState } from "react";
 
 const Twitch = () => {
   const divTwitchRef = useRef(null);
-  const [pass, setPass] = useState(false);
+  const [pass, setPass] = useState(localStorage.getItem("twitchOpen"));
+  console.log(localStorage.getItem("twitchOpen"))
   useEffect(()=>{
-    setTimeout(()=>{
-      setPass(true)
-    },5000)
+    if(!pass && !ismMyScriptLoaded("https://embed.twitch.tv/embed/v1.js")){
+      setTimeout(()=>{
+        localStorage.setItem("twitchOpen",true)
+        setPass(true)
+      },5000)
+    }
   },[])
   useEffect(() => {
     if(!pass) return;
+    if(ismMyScriptLoaded("https://embed.twitch.tv/embed/v1.js"))return;
     let embed;
         const script = document.createElement('script');
         script.src = 'https://embed.twitch.tv/embed/v1.js';
@@ -17,6 +22,7 @@ const Twitch = () => {
         document.head.appendChild(script);
 
         script.onload = () => {
+          console.log(document.head)
             const divTwitch = divTwitchRef.current;
             const options = {
                 width: '100%',
@@ -58,7 +64,20 @@ const Twitch = () => {
                 embed.setMuted(true);
             };
         };
+      return ()=>{
+        localStorage.setItem("twitchOpen",false)
+      }
   }, [pass]);
+
+  function ismMyScriptLoaded(url){
+    if (!url) url = "https://embed.twitch.tv/embed/v1.js";
+    var scripts = document.getElementsByTagName('script');
+    for (var i = scripts.length; i--;) {
+        if (scripts[i].src == url) {
+          return true};
+    }
+    return false;
+  }
 
   return (<div id="twitch-embed" ref={divTwitchRef}>
     <style>{`
@@ -79,10 +98,8 @@ const Twitch = () => {
 
   @media only screen and (min-width: 900px) {
       #twitch-embed {
-        position: fixed;
-        bottom: 0px;
-        left: 0px;
-        width: 25%;
+        width: 100%;
+
       }
   }
     `}</style>

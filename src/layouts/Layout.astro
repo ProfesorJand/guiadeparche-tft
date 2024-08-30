@@ -51,7 +51,7 @@ const { title, JSONSchema } = Astro.props;
     <ViewTransitions />
   </head>
   <body>
-    <Header transition:persist/>
+    <!-- <Header transition:persist/>
     <Adsense direction={"left"} dimension={"vertical-izquierda"} transition:persist client:load/>
     <Adsense direction={"right"} dimension={"vertical-derecha"} transition:persist client:load/>
     <Footer />
@@ -61,12 +61,45 @@ const { title, JSONSchema } = Astro.props;
     </div>
     <div style={"display:flex"} transition:persist>
       <Twitch transition:persist client:load/>
-    </div>
+    </div> -->
+    <div class="bodyLayout">
+      <header class="bodyHeader">
+        <Logo>Guiadeparche</Logo>
+        <Header transition:persist/>
+      </header> 
+      <div class="bodyInfo">
+        <aside class="bodyAside">
 
+        </aside>
+        <main class="bodyMain">
+          <aside class="bodyMainAside">
+            <div class="bodyMainAsideSticky">
+              <div class="bodyMainAsideMenu">
+                menuFiltrado
+              </div>
+              <div class="bodyMainAsideEmbed">
+                <Twitch transition:persist client:only="react"/>
+                <ads class="bodyMainAsideAds">Publicidad</ads>
+              </div>
+            </div>
+          </aside>
+          <section class="bodyMainSection">
+            <slot></slot>
+          </section>
+        </main>
+        <aside class="bodyAside">
+
+        </aside>
+      </div>
+      <footer class="bodyFooter">
+        <Footer></Footer>
+      </footer>
+    </div>
   </body>
 </html>
 
 <style is:global>
+
   :root {
     --bg-primary: #130359;
     --bg-secondary: #1e197f;
@@ -74,7 +107,14 @@ const { title, JSONSchema } = Astro.props;
     --bg-main: #0c023a;
     --color-primary: #ffffff;
     --border-color: #ffd700;
-    --number-champ-meta: calc(100%/5);
+    --text-color-white-primary: #e5e5e5;
+    --text-color-white-secondary: #e5e5e5;
+    --link-color-primary:brown;
+    --link-color-secondary:rgb(105, 27, 27);
+    --width-main: 70vw;
+    --height-header: 8vh;
+    --height-footer: 20vh;
+    --number-champ-meta: calc(100%/6);
     --accent: 136, 58, 234;
     --accent-light: 224, 204, 250;
     --accent-dark: 49, 10, 101;
@@ -84,9 +124,8 @@ const { title, JSONSchema } = Astro.props;
       rgb(var(--accent-light)) 30%,
       white 60%
     );
-    font-family: 'Roboto', Sans-serif;
-    
-    color: var(--color-primary);
+    font-family: Sans-serif;
+    color: var(--text-color-white-primary);
   }
 
   body::-webkit-scrollbar {
@@ -106,13 +145,13 @@ const { title, JSONSchema } = Astro.props;
     background-color: var(--bg-primary);
     overflow-y: scroll;
     margin: 0;
-    width: 100%;
+    padding: 0;
+    width: 100vw;
+    max-width: 100%;
     display: flex;
     position: relative;
     flex-direction: column;
-    min-width: fit-content;
     min-height: 100vh;
-    padding-bottom: 2.5rem;
   }
   code {
     font-family:
@@ -158,6 +197,115 @@ const { title, JSONSchema } = Astro.props;
     }
     h1, h2, h3, h4{
       font-size: 1rem;
+    }
+  }
+
+  @media only screen and (min-width:900px) {
+    .bodyLayout{
+      display: flex;
+      position: relative;
+      margin:0;
+      padding: 0;
+      width: 100vw;
+      max-width: 100%;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding-bottom: var(--height-footer);
+    }
+    .bodyHeader{
+      display: flex;
+      position: sticky;
+      z-index: 9;
+      top:0;
+      width: 100vw;
+      max-width: 100%;
+      height: var(--height-header);
+      background-color: var(--bg-primary);
+      flex-direction: row;
+    }
+    .bodyInfo{
+      display: flex;
+      width: 100vw;
+      max-width: 100%;
+      position: relative;
+      flex-direction: row;
+      height: 100%;
+      min-height: 92vh;
+      /* background-color: #ffd700; */
+    }
+    .bodyAside{
+      display: flex;
+      width: calc((100vw - var(--width-main))/2);
+      background-color: aqua;
+    }
+
+    .bodyMain{
+      display: flex;
+      width: var(--width-main);
+      position: relative;
+      flex-direction: row;
+    }
+
+    .bodyMainAside{
+      display: flex;
+      position: relative;
+      flex-direction: column;
+      width: calc(var(--width-main)/3);
+      background-color: #ffd700;
+    }
+
+    .bodyMainAsideSticky{
+      display: flex;
+      flex-direction: column;
+      position: -webkit-sticky;
+      position: sticky;
+      top:var(--height-header);
+      background-color: blueviolet;
+      width: calc(var(--width-main)/3);
+      box-sizing: border-box;
+      gap:5px;
+      height:92vh;
+      justify-content: space-between;
+    }
+
+    .bodyMainAsideMenu{
+      display: flex;
+      position: relative;
+      flex-direction: column;
+      box-sizing: border-box;
+    }
+
+    .bodyMainAsideEmbed{
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      box-sizing: border-box;
+      gap:5px;
+    }
+    .bodyMainAsideAds{
+      display: flex;
+      position:relative;
+      width: 100%;
+      aspect-ratio: 16/9;
+    }
+
+    .bodyMainSection{
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      width: calc(var(--width-main)*2/3);
+      background-color: cadetblue;
+    }
+
+    .bodyFooter{
+      display: flex;
+      position: absolute;
+      justify-content: center;
+      width: 100vw;
+      max-width: 100%;
+      height: var(--height-footer);
+      bottom:0;
     }
   }
 </style>
