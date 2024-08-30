@@ -25,6 +25,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
   
   
   useEffect(() => {
+    console.log(boardInfo)
     function llenarBoard(info) {
       info &&
         Object.keys(info).forEach((key) => {
@@ -58,12 +59,6 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
             containerImageChampion.onclick = function () {
                 crearContextMenu(containerImageChampion.dataset.hexId);
             };
-
-            /*Nombre del campeon */
-            const nombreCampeon = document.createElement("span");
-            nombreCampeon.className = style.nombreCampeon;
-            nombreCampeon.innerHTML = JSON.parse(info[key].dataCampeon.campeon).nombre;
-            containerImageChampion.appendChild(nombreCampeon);
 
             /*sinergias*/
             if (JSON.parse(info[key].dataCampeon.campeon).sinergia.length > 0) {
@@ -110,9 +105,47 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
                     });
                   });
               }
-          }
-        });
-    }
+
+              /*Nombre del campeon */
+              const nombreCampeon = document.createElement("span");
+              nombreCampeon.className = style.nombreCampeon;
+              nombreCampeon.innerHTML = JSON.parse(info[key].dataCampeon.campeon).nombre;
+              containerImageChampion.appendChild(nombreCampeon);
+
+              /* Crear Items */
+              console.log(info[key].dataItem)
+              const containerItems = document.createElement("div");
+              containerItems.className = style.containerItems;
+              info[key].dataItem.forEach((data)=>{
+                const dataItem = JSON.parse(data.item);
+                console.log(dataItem)
+                const containerItem = document.createElement("div");
+                containerItem.className = style.containerItem;
+                const imgItem = document.createElement("img");
+                imgItem.className = style.imgItem;
+                imgItem.src = dataItem.img;
+                imgItem.alt = dataItem.nombre;
+                imgItem.setAttribute("draggable", true);
+                imgItem.dataset.item = JSON.stringify(dataItem);
+                imgItem.dataset.from = "itemBoard";
+                imgItem.dataset.hexId = key;
+                imgItem.ondrop = function (e) {
+                  handleDrop(e);
+                };
+                imgItem.ondragstart = function (e) {
+                  handleDragStart(e);
+                };
+                imgItem.ondragend = function (e) {
+                  handleDropOutside(e, "item");
+                };
+                containerItem.appendChild(imgItem);
+                containerItems.appendChild(containerItem);
+              })
+              containerImageChampion.appendChild(containerItems);
+              
+            }
+          });
+      }
 
     llenarBoard(boardInfo[id]?.data);
   }, [boardInfo]);
@@ -167,6 +200,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
         });
       });
     }
+    console.log(data)
   }
 
   function findClosestTraitImage(traitType, traitLevel) {
@@ -331,8 +365,8 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
     const itemSeleccionado = hexArrastrado.querySelector(
       `[data-item=${JSON.stringify(dataItem)}]`
     );
-    crearItem(e);
     itemSeleccionado.parentNode.remove();
+    crearItem(e);
   }
 
   function handleDragStart(e) {
@@ -361,7 +395,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
     e.stopPropagation();
     const dropTarget = document.elementFromPoint(e.clientX, e.clientY);
     if (elemento === "item") {
-      const item = e.currentTarget;
+      const item = e.currentTarget.parentNode;
       if (!dropTarget.ondrop) {
         item.remove();
         updateBoardInfo();

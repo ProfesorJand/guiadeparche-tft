@@ -17,14 +17,11 @@ const CrearCompoTFT = () =>{
     const [dificultad, setDificultad] = useState("Easy")
     const [titulo, setTitulo] = useState("")
     const [categoria, setCategoria] = useState([])
-    const [campeones, setCampeones] = useState([]) //[{},{}]
-    const [earlyComp, setEarlyComp] = useState([]) //[{},{}]
     const [carousel, setCarousel] = useState([]) //[{},{}]
     const [traits, setTraits] = useState([]) //[{},{}]
     const [aumentos, setAumentos] = useState([]) //[{},{}]
     const [listaDeAumentos, setListaDeAumentos] = useState([])
     const [gameplay, setGameplay] = useState([])
-    const [composiciones, setComposiciones] = useState([]) //[{},{}]
     const [tips, setTips] = useState("");
     const [infoChampsItems, setInfoChampsItems] = useState("items");
     const [boardInfo, setBoardInfo] = useState({});
@@ -79,22 +76,6 @@ const CrearCompoTFT = () =>{
 
     function handleBuilderLevel(id){
       setShowBoard(id)
-    }
-
-    function agregarEarlyComp(){
-      const campeonEarlyComp = document.getElementById("earlyCompChoice");
-      const value = campeonEarlyComp.value;
-      const dataList = document.getElementById("earlyComp");
-      const dataValue = dataList.options.namedItem(`datalist-${value}`)?.dataset.value;
-      if(dataValue){
-        setEarlyComp((oldArray)=>[...oldArray, JSON.parse(dataValue) ]);
-        campeonEarlyComp.value = "";
-      }else{
-        alert("Selecciona o Escribe el nombre completo del campeón")
-      }
-    }
-    function eliminarChampEarlyComp(nombreCampeon){
-        setEarlyComp((oldArray)=> oldArray.filter(data=>data.nombre !== nombreCampeon ))
     }
 
     function agregarAumento(){
@@ -185,25 +166,6 @@ const CrearCompoTFT = () =>{
         </select>
       </label>
 
-      <label htmlFor="earlyCompChoice">Early Comp:
-        <input list="earlyComp" name="earlyCompChoice" id="earlyCompChoice"/>
-        <datalist id="earlyComp">
-            {listaCampeones && listaCampeones.map((dataCampeon)=>{
-              return (<option key={"listaCampeones"+dataCampeon.nombre} id={`datalist-${dataCampeon.nombre}`} data-value={JSON.stringify(dataCampeon)} value={dataCampeon.nombre}></option>)
-            })}
-        </datalist>
-        <button onClick={()=>agregarEarlyComp()}>Agregar Campeon</button>
-      </label>
-      <div className={style.containerEarlyComp}>
-      {earlyComp.map((dataCampeon)=>{
-        return (
-          <div key={"EarlyCompChamp"+dataCampeon.nombre} className={style.containerEarlyCompWrapper}>
-            <button className={style.btnClose} onClick={()=>eliminarChampEarlyComp(dataCampeon.nombre)}>X</button>
-            <img src={dataCampeon.img} alt={dataCampeon.nombre} className={style.imgEarlyComp}></img>
-          </div>
-        )
-      })}
-      </div>
       <label htmlFor="aumentos">Aumentos:
         <input list="dataListAumentos" name="aumentos" id="aumentos"/>
         <datalist id="dataListAumentos">
@@ -225,6 +187,29 @@ const CrearCompoTFT = () =>{
         })}
       </div>
 
+      <div className={style.containerButtonsHorizontal}>
+        <button className={style.btn} onClick={()=>{handleBuilderLevel("early")}}>Early</button>
+        <button className={style.btn} onClick={()=>{handleBuilderLevel("lv7")}}>Lv 7</button>
+        <button className={style.btn} onClick={()=>{handleBuilderLevel("lv8")}}>Lv 8</button>
+        <button className={style.btn} onClick={()=>{handleBuilderLevel("lv9")}}>Lv 9</button>
+        <button className={style.btn} onClick={()=>{handleBuilderLevel("lv10")}}>Lv 10</button>
+      </div>
+      <h2>{showBoard=== "early" ? "Early" : showBoard === "lv7" ? "Level 7": showBoard === "lv8" ? "Level 8": showBoard === "lv9" ? "Level 9" : showBoard=== "lv10" ? "Level 10": ""}</h2>
+      <div className={style.builderContainer}>
+      	{showBoard=== "early" && <Builder setBoardInfo={setBoardInfo} boardInfo={boardInfo} id={showBoard} showName={showName}/>}
+				{showBoard=== "lv7" && <Builder setBoardInfo={setBoardInfo} boardInfo={boardInfo} id={showBoard} showName={showName}/>}
+				{showBoard=== "lv8" && <Builder setBoardInfo={setBoardInfo} boardInfo={boardInfo} id={showBoard} showName={showName}/>}
+				{showBoard=== "lv9" && <Builder setBoardInfo={setBoardInfo} boardInfo={boardInfo} id={showBoard} showName={showName}/>}
+				{showBoard=== "lv10" && <Builder setBoardInfo={setBoardInfo} boardInfo={boardInfo} id={showBoard} showName={showName}/>}
+      </div>
+          
+        <button className={style.ocultarNombre} onClick={()=>{toggleOcultarNombre(showName)}}>{showName ? "Mostrar Nombres" : "Ocultar Nombres" }</button>
+        <button className={style.ocultarNombre} onClick={()=>{captureAndConvertToWebP(showBoard)}}>Guardar imagen</button>
+      <div>
+        <button onClick={()=>{handleToogleInfo("campeones")}}>Campeones</button>
+        <button onClick={()=>{handleToogleInfo("items")}}>Items</button>
+        {infoChampsItems === "campeones" ? <Champions/> : <Items/>}
+      </div>
       <label htmlFor="gameplay">Gameplay:
           <input type="text" defaultValue={gameplay} id="gameplay"></input>
           <button onClick={()=>agregarGameplay()}>Agregar Gameplay</button>
@@ -243,29 +228,6 @@ const CrearCompoTFT = () =>{
       <label htmlFor="tips">Tips:
           <textarea  type="text" defaultValue={tips}></textarea>
       </label>
-      <div className={style.containerButtonsHorizontal}>
-        <button className={style.btn} onClick={()=>{handleBuilderLevel("early")}}>Early</button>
-        <button className={style.btn} onClick={()=>{handleBuilderLevel("lv7")}}>Lv 7</button>
-        <button className={style.btn} onClick={()=>{handleBuilderLevel("lv8")}}>Lv 8</button>
-        <button className={style.btn} onClick={()=>{handleBuilderLevel("lv9")}}>Lv 9</button>
-        <button className={style.btn} onClick={()=>{handleBuilderLevel("lv10")}}>Lv 10</button>
-      </div>
-      <h2>{showBoard}</h2>
-      <div className={style.builderContainer}>
-      	{showBoard=== "early" && <Builder setBoardInfo={setBoardInfo} boardInfo={boardInfo} id={showBoard} showName={showName}/>}
-				{showBoard=== "lv7" && <Builder setBoardInfo={setBoardInfo} boardInfo={boardInfo} id={showBoard} showName={showName}/>}
-				{showBoard=== "lv8" && <Builder setBoardInfo={setBoardInfo} boardInfo={boardInfo} id={showBoard} showName={showName}/>}
-				{showBoard=== "lv9" && <Builder setBoardInfo={setBoardInfo} boardInfo={boardInfo} id={showBoard} showName={showName}/>}
-				{showBoard=== "lv10" && <Builder setBoardInfo={setBoardInfo} boardInfo={boardInfo} id={showBoard} showName={showName}/>}
-      </div>
-          
-        <button className={style.ocultarNombre} onClick={()=>{toggleOcultarNombre(showName)}}>{showName ? "Mostrar Nombres" : "Ocultar Nombres" }</button>
-        <button className={style.ocultarNombre} onClick={()=>{captureAndConvertToWebP(showBoard)}}>Guardar imagen</button>
-      <div>
-        <button onClick={()=>{handleToogleInfo("campeones")}}>Campeones</button>
-        <button onClick={()=>{handleToogleInfo("items")}}>Items</button>
-        {infoChampsItems === "campeones" ? <Champions/> : <Items/>}
-      </div>
         {/* <input type="submit" value="Crear Compo"/> */}
     </form>
 
