@@ -26,10 +26,10 @@ const getId = async (url, titulo) => {
     const newurl = new URL(url);
     const playlistId = newurl.searchParams.get('list');
     const siParam = newurl.searchParams.get('si') || '';
-    return { type: "playlist", url: `https://www.youtube.com/embed/videoseries?list=${playlistId}&si=${siParam}}`, thumbnail, title };
+    return { type: "playlist", url: `https://www.youtube.com/embed/videoseries?list=${playlistId}&si=${siParam}}&autoplay=1&enablejsapi=1"`, thumbnail, title };
   } else if (videoMatch) {
     const { title } = await fetchPlaylist(url, false);
-    return { type: 'video', id: videoMatch[1], thumbnail: `https://i.ytimg.com/vi/${videoMatch[1]}/maxresdefault.jpg`, url: `https://www.youtube.com/embed/${videoMatch[1]}`, title};
+    return { type: 'video', id: videoMatch[1], thumbnail: `https://i.ytimg.com/vi/${videoMatch[1]}/maxresdefault.jpg`, url: `https://www.youtube.com/embed/${videoMatch[1]}?autoplay=1&enablejsapi=1`, title};
   } else {
     return null;
   }
@@ -53,7 +53,7 @@ const VideoComponent = ({ src, loading = "lazy", titulo="video de Jupeson" }) =>
         container.addEventListener('click', () => {
           const videoId = container.getAttribute('data-url');
           const iframe = document.createElement('iframe');
-          iframe.setAttribute("src", videoId + "?autoplay=1&enablejsapi=1");
+          iframe.setAttribute("src", videoId);
           iframe.setAttribute('frameborder', '0');
           iframe.setAttribute('allow', 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture');
           iframe.setAttribute('allowfullscreen', 'true');
