@@ -53,7 +53,7 @@ const VideoComponent = ({ src, loading = "lazy", titulo="video de Jupeson" }) =>
         container.addEventListener('click', () => {
           const videoId = container.getAttribute('data-url');
           const iframe = document.createElement('iframe');
-          iframe.setAttribute("src", videoId + "&autoplay=1&enablejsapi=1");
+          iframe.setAttribute("src", videoId + "?autoplay=1&enablejsapi=1");
           iframe.setAttribute('frameborder', '0');
           iframe.setAttribute('allow', 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture');
           iframe.setAttribute('allowfullscreen', 'true');
