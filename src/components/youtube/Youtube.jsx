@@ -47,7 +47,6 @@ const VideoComponent = ({ src, loading = "lazy", titulo="video de Jupeson" }) =>
   }, [src, titulo]);
 
   useEffect(() => {
-    console.log("ha")
     const handlePageLoad = () => {
       const youtubeThumbnail = document.querySelectorAll(`.${style.divIframe}`);
       youtubeThumbnail.forEach(container => {
@@ -60,7 +59,7 @@ const VideoComponent = ({ src, loading = "lazy", titulo="video de Jupeson" }) =>
           iframe.setAttribute('allowfullscreen', 'true');
           iframe.setAttribute("width", "100%");
           iframe.setAttribute("height", "100%");
-          iframe.classList.add("iframeYoutube");
+          iframe.classList.add(style.iframeYoutube);
           container.innerHTML = '';
           container.appendChild(iframe);
         });
