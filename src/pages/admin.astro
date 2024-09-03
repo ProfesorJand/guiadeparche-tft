@@ -3,12 +3,25 @@ import Main from '@components/main/Main.astro';
 import Layout from 'src/layouts/Layout.astro';
 import AdminPanel from "../components/main/Admin/Admin.jsx";
 import {db, Admin as Admins} from "astro:db";
-
+import MainSection from '@components/main/MainSection';
+import MainAside from "@components/main/MainAside";
+import Twitch from '@components/embed/Twitch';
 const allAdmins = await db.select().from(Admins);
+const menuAside = {
 
+}
 ---
 
 <Layout title='admin'>
+    <Fragment slot="bodyMainAside">
+        hola
+    </Fragment>
+    <Fragment slot="bodyMainAsideTwitch">
+        <Twitch transition:persist client:only="react"/>
+    </Fragment>
+    <Fragment slot="bodyMainAsideAds">
+        Publicidad
+    </Fragment>
     <Main>
         <AdminPanel allAdmins={allAdmins} client:only="react"/>
     </Main>

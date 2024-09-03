@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from "react";
 import style from "./css/Items.module.css";
+import { radiantsItems, emblems } from "src/json/updates/constantesLatest";
 const Items = ()=>{
   const [pestana, setPestana] = useState(0);
   const [itemsCrafteables, setItemsCrafteables] = useState([])
-
   function handlePestana(number){
     setPestana(number)
   }
@@ -296,7 +296,7 @@ const Items = ()=>{
       nombre:"Eldritch Emblem",
       apiName:"eldritch_emblem",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_eldritch.png",
-      sinergia:"Witchcraft",
+      sinergia:"Eldritch",
     },
     {
       nombre:"Thieve's Gloves",
@@ -332,17 +332,21 @@ const Items = ()=>{
 
  
   useEffect(()=>{
-    MATRIZ_ITEMS_CRAFTEABLES.forEach((fila)=>{
-      fila.forEach((item)=>{
+    var resultado = [];
+    MATRIZ_ITEMS_CRAFTEABLES.forEach((fila, x)=>{
+      fila.forEach((item, y)=>{
        const busqueda = CRAFTEABLE_ITEMS.find(({nombre})=>{
           return nombre === item
         })
         if(busqueda && itemsCrafteables.length <= 81){
-          setItemsCrafteables((oldArray)=>[...oldArray,busqueda])
+          resultado.push(busqueda)
         }
       })
     })
+    setItemsCrafteables(resultado)
   },[])
+
+
 
   function handleDragStart(e){
     e.dataTransfer.setData("item", e.target.getAttribute("data-item"));
@@ -353,13 +357,13 @@ const Items = ()=>{
     <div className={style.containerItems}>
       <div className={style.containerBtn}>
       <button onClick={()=>handlePestana(0)} className={style.btn}>Craftable</button>
-      <button onClick={()=>handlePestana(1)} className={style.btn}>Elusive Emblems</button>
-      <button onClick={()=>handlePestana(2)} className={style.btn}>Artifacts</button>
-      <button onClick={()=>handlePestana(3)} className={style.btn}>Supports</button>
+      <button onClick={()=>handlePestana(1)} className={style.btn}>Radiantes</button>
+      <button onClick={()=>handlePestana(2)} className={style.btn}>Emblemas</button>
       </div>
 
       <div className={style.containerItemsInfo}>
-          {BASIC_ITEMS.map((dataItem,index)=>{
+          {pestana === 0 &&
+            BASIC_ITEMS.map((dataItem,index)=>{
             return (
               <div className={style.itemsDrop} key={index}>
                 <img  src={dataItem.img} alt={`Basic Item TFT ${dataItem.nombre}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} data-item={JSON.stringify(dataItem)} data-from="itemList" draggable="true"></img>
@@ -367,7 +371,7 @@ const Items = ()=>{
             )
           })}
 
-          {
+          {pestana === 0 &&
             itemsCrafteables.map((dataItem,index)=>{
               return (
               <div className={style.itemsDrop} key={index}>
@@ -375,22 +379,33 @@ const Items = ()=>{
               </div>)
             })
           }
-        <div  className={style.containerItemsHorizontal}>
-          
         </div>
-      </div>
-      <div className={style.containerItemsVertical}>
-         
-      </div>
-      <div className={style.containerItemsVertical}>
-          Artifacts Items
-      </div>
-      <div className={style.containerItemsVertical}>
-          supports Items
-          Faerie Items
-      </div>
-      <div className={style.containerItemsVertical}>
-      </div>
+
+        <div  className={style.containerItemsHorizontal}>
+          {pestana === 1 &&
+            radiantsItems.map((dataItem,index)=>{
+              return (
+                <div className={style.itemsDropRadiants} key={index}>
+                  <img  src={dataItem.img} alt={`Basic Item TFT ${dataItem.nombre}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} data-item={JSON.stringify(dataItem)} data-from="itemList" draggable="true"></img>
+                </div>
+              )
+            })
+          }
+        </div>
+
+        <div className={style.containerItemsHorizontal}>
+          {pestana === 2 &&
+            emblems.map((dataItem,index)=>{
+              return (
+                <div className={style.itemsDropRadiants} key={index}>
+                  <img  src={dataItem.img} alt={`Basic Item TFT ${dataItem.nombre}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} data-item={JSON.stringify(dataItem)} data-from="itemList" draggable="true"></img>
+                </div>
+              )
+            })
+          }
+        </div>
+
+
     </div>
   )
 }

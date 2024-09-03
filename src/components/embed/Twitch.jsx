@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 const Twitch = () => {
   const divTwitchRef = useRef(null);
   const [pass, setPass] = useState(localStorage.getItem("twitchOpen"));
-  console.log(localStorage.getItem("twitchOpen"))
   useEffect(()=>{
     if(!pass && !ismMyScriptLoaded("https://embed.twitch.tv/embed/v1.js")){
       setTimeout(()=>{
@@ -22,7 +21,6 @@ const Twitch = () => {
         document.head.appendChild(script);
 
         script.onload = () => {
-          console.log(document.head)
             const divTwitch = divTwitchRef.current;
             const options = {
                 width: '100%',

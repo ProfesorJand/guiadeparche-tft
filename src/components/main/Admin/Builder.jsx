@@ -15,7 +15,6 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
   ];
 
   useEffect(()=>{
-    console.log(showName)
     const allNames = document.getElementsByClassName(style.nombreCampeon);
       Array.prototype.forEach.call(allNames, function(elemento) {
         // Do stuff here
@@ -25,7 +24,6 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
   
   
   useEffect(() => {
-    console.log(boardInfo)
     function llenarBoard(info) {
       info &&
         Object.keys(info).forEach((key) => {
@@ -108,17 +106,16 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
 
               /*Nombre del campeon */
               const nombreCampeon = document.createElement("span");
-              nombreCampeon.className = style.nombreCampeon;
+              nombreCampeon.classList.add(style.nombreCampeon);
+              nombreCampeon.classList.toggle(style.hideNombreCampeon, showName);
               nombreCampeon.innerHTML = JSON.parse(info[key].dataCampeon.campeon).nombre;
               containerImageChampion.appendChild(nombreCampeon);
 
               /* Crear Items */
-              console.log(info[key].dataItem)
               const containerItems = document.createElement("div");
               containerItems.className = style.containerItems;
               info[key].dataItem.forEach((data)=>{
                 const dataItem = JSON.parse(data.item);
-                console.log(dataItem)
                 const containerItem = document.createElement("div");
                 containerItem.className = style.containerItem;
                 const imgItem = document.createElement("img");
@@ -314,7 +311,8 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
       containerImageChampion.appendChild(containerSinergias);
     }
     const nombreCampeon = document.createElement("span");
-    nombreCampeon.className = style.nombreCampeon;
+    nombreCampeon.classList.add(style.nombreCampeon);
+    nombreCampeon.classList.toggle(style.hideNombreCampeon, showName);
     nombreCampeon.innerHTML = dataCampeon.nombre;
     containerImageChampion.appendChild(nombreCampeon);
     const containerItems = document.createElement("div");

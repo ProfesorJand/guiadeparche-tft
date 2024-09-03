@@ -27,6 +27,8 @@ export const aumentos = datosTFT.items.filter((e)=>{
     return e.icon.indexOf("/Augments/")>=0 && e?.apiName?.indexOf("TFT12")>=0;
 });
 
+
+
 export async function fetchingMetaTFTPBE(){
     const url = "https://guiadeparche.com/tftdata/Set12/metaTFTComposiciones.json";
     const fetching = await fetch(url, {cache:"reload"});

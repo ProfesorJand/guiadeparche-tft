@@ -4,7 +4,7 @@ import Layout from "src/layouts/Layout.astro";
 import {championsTFT, setPBE} from "../json/updates/constantesPBE.js";
 import {crearJSONSchema} from "src/json/schema/crearJSONSchema";
 import TablaCampeonesTFT from "@components/main/Campeones/TablaCampeonesTFT.jsx";
-
+import Twitch from "@components/embed/Twitch";
 championsTFT.sort(compare)
 function compare( a, b ) {
     if(a.cost < b.cost){
@@ -36,6 +36,15 @@ const JSONSchema = crearJSONSchema({title})
 <meta name="keywords" content={keywords}>
 
 <Layout title={title} JSONSchema={JSONSchema}>
+    <Fragment slot="bodyMainAside">
+        hola
+    </Fragment>
+    <Fragment slot="bodyMainAsideTwitch">
+        <Twitch transition:persist client:only="react"/>
+    </Fragment>
+    <Fragment slot="bodyMainAsideAds">
+        Publicidad
+    </Fragment>
     <Main>
         <h1 class="titulo">Campeones del Set {setPBE} de TFT</h1>
         <TablaCampeonesTFT client:load></TablaCampeonesTFT>

@@ -1,6 +1,7 @@
 :root{
-  --containerItemsInfo-width : calc(100%/3);
+  --containerItemsInfo-width : calc(100%/2);
   --itemsNumber-width: calc(100%/9);
+  --itemsRadiantsNumber-width: calc(100%/10);
 }
 .containerItems{
   display: flex;
@@ -25,10 +26,22 @@
   flex-wrap: wrap;
 }
 
+.containerItemsHorizontal{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
 .itemsDrop{
   display: flex;
   flex-direction: row;
   width: var(--itemsNumber-width);
+}
+
+.itemsDropRadiants{
+  display: flex;
+  flex-direction: row;
+  width: var(--itemsRadiantsNumber-width);
 }
 
 .imgItems{
@@ -36,4 +49,10 @@
   position: relative;
   width: 100%;
   
+}
+
+.imgItems:hover{
+  cursor: grab;
+  border: 1px solid white;
+  box-sizing: border-box;
 }

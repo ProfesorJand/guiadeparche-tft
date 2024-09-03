@@ -63,23 +63,30 @@ const { title, JSONSchema } = Astro.props;
       <Twitch transition:persist client:load/>
     </div> -->
     <div class="bodyLayout">
+      
       <header class="bodyHeader">
         <Logo>Guiadeparche</Logo>
         <Header transition:persist/>
       </header> 
+
       <div class="bodyInfo">
         <aside class="bodyAside">
 
         </aside>
+
         <main class="bodyMain">
           <aside class="bodyMainAside">
             <div class="bodyMainAsideSticky">
               <div class="bodyMainAsideMenu">
-                menuFiltrado
+                <slot name="bodyMainAside"></slot>
               </div>
               <div class="bodyMainAsideEmbed">
-                <Twitch transition:persist client:only="react"/>
-                <ads class="bodyMainAsideAds">Publicidad</ads>
+                <slot name="bodyMainAsideTwitch"></slot>
+                
+                
+                <ads class="bodyMainAsideAds">
+                  <slot name="bodyMainAsideAds"></slot>
+                </ads>
               </div>
             </div>
           </aside>
@@ -87,10 +94,12 @@ const { title, JSONSchema } = Astro.props;
             <slot></slot>
           </section>
         </main>
+
         <aside class="bodyAside">
 
         </aside>
       </div>
+
       <footer class="bodyFooter">
         <Footer></Footer>
       </footer>
@@ -182,6 +191,10 @@ const { title, JSONSchema } = Astro.props;
     text-align: center;
   }
 
+  .bodyMain{
+    background-color: var(--bg-main);
+  }
+
 
   @media only screen and (max-width: 900px) {
     html {
@@ -211,7 +224,7 @@ const { title, JSONSchema } = Astro.props;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      padding-bottom: var(--height-footer);
+      /* padding-bottom: var(--height-footer); */
     }
     .bodyHeader{
       display: flex;
@@ -300,12 +313,12 @@ const { title, JSONSchema } = Astro.props;
 
     .bodyFooter{
       display: flex;
-      position: absolute;
+      position: relative;
       justify-content: center;
       width: 100vw;
       max-width: 100%;
-      height: var(--height-footer);
-      bottom:0;
+      /* height: var(--height-footer); */
+      /* bottom:0; */
     }
   }
 </style>

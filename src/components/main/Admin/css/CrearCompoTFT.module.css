@@ -37,10 +37,14 @@
   position:absolute;
   top:0;
   right: 0;
+  background-color: var(--bg-primary);
+  color:white;
+  z-index: 2;
 }
 
 .btnClose:hover{
   cursor: pointer;
+  background-color: var(--bg-secondary);
 }
 
 .containerYoutube{
@@ -58,4 +62,37 @@
 textarea{
 width: 100%;
 min-height: 150px;
+white-space: pre-wrap;
+}
+
+.containerVideos{
+  display: flex;
+  position: relative;
+}
+
+.savePicture{
+  background-color: green;
+}
+
+.containerCarousel{
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+}
+
+.containerCarouselForm{
+  display: flex;
+  position:relative;
+  flex-direction: row;
+  gap:5px
+}
+
+.containerCarouselFormVertical{
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  gap:5px
 }
