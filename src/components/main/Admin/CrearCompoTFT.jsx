@@ -6,7 +6,8 @@ import Items from "./Items.jsx";
 import {augmentsIDList, itemsData} from "../../../json/updates/constantesLatest.js"
 import Youtube from "../../youtube/Youtube.jsx";
 import { toBlob } from 'html-to-image';
-import { BASIC_ITEMS, CRAFTEABLE_ITEMS } from "src/stores/dataTFT.js";
+import { BASIC_ITEMS, CRAFTEABLE_ITEMS, dataTFTItems } from "src/stores/dataTFT.js";
+import { emblems } from "src/json/updates/constantesLatest";
 
 const CrearCompoTFT = () =>{
     const urlImgAum = "https://raw.communitydragon.org/latest/game/"
@@ -30,13 +31,15 @@ const CrearCompoTFT = () =>{
     const [pictureSave, setPictureSave] = useState({});
     const [carouselBasicItems, setCarouselBasicItems] = useState({});
     const [carouselItems, setCarouselItems] = useState({});
+    const [spatulaItem1, setSpatulaItem1] = useState("");
+    const [spatulaItem2, setSpatulaItem2] = useState("");
 
     useEffect(()=>{
       const dataAumentos = itemsData.filter(({apiName})=>{
         return augmentsIDList.includes(apiName)
       })
       setListaDeAumentos(dataAumentos)
-
+      console.log(emblems)
     }, [])
 
 
@@ -46,7 +49,7 @@ const CrearCompoTFT = () =>{
           alert("Debes añadir un titulo primero para poder guardar las imagenes")
           return
         }
-
+        console.log("hola")
         async function captureAndConvertToWebP(id){
           const element = document.getElementById(id);
           const desiredWidth = 1920;  // Cambia esto al ancho deseado
@@ -82,6 +85,7 @@ const CrearCompoTFT = () =>{
           });
         }
         captureAndConvertToWebP(showBoard)
+
         setTakePicture(false)
         
       }
@@ -124,7 +128,8 @@ const CrearCompoTFT = () =>{
     function eliminarAumento(apiName){
       setAumentos((oldArray)=> oldArray.filter(data=>data.apiName !== apiName ))
     }
-    function agregarGameplay(){
+    function agregarGameplay(e){
+      e.preventDefault();
       const gameplayURL = document.getElementById("gameplay");
       const value = gameplayURL.value
       setGameplay(oldArray=>[...oldArray, value])
@@ -185,6 +190,18 @@ const CrearCompoTFT = () =>{
       setCarouselItems((oldObject)=>{ return {...oldObject, [item]:data }})
     }
 
+    function hanlderSpatulaItem(value, number){
+      const option = document.getElementById("dataListSpatulaItems").options.namedItem(`datalist-${value}`).getAttribute("data-value");
+      const imgUrl = JSON.parse(option).img
+      if(number === 1){
+        setSpatulaItem1(imgUrl);
+        document.getElementById("spatulaItems1").value= value 
+      }else{
+        setSpatulaItem2(imgUrl);
+        document.getElementById("spatulaItems2").value= value 
+      }
+    }
+
     function mySubmit(e) { 
         e.preventDefault(); 
         // obtener datos de: tier, position, dificulty, tittle, shadowCategory, infographicCategory
@@ -199,11 +216,36 @@ const CrearCompoTFT = () =>{
           aumentos,
           carouselItems,
           boardInfo,
+          pictureSave,
           gameplay,
           tips,
+          spatulaItem1,
+          spatulaItem2
         }
-        console.log(resultado)
-        return false;
+        if(tier && posicion && dificultad && titulo && shadowCategory && infographicCategory && aumentos.length && Object.keys(carouselItems).length && Object.keys(boardInfo).length && Object.keys(pictureSave).length){
+
+          fetch('https://guiadeparche.com/tftdata/Set12/crearCompoMeta.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(resultado),
+          })
+          .then(response => response.json())  // Analiza la respuesta JSON del servidor
+          .then(data => {
+            if (data.status === 'success') {
+                alert('Composicion creada de forma exitosa:', data.message);
+            } else {
+                console.error('Error adding data:', data.message);
+            }
+          })
+          .catch(error => {
+              console.error('Error:', error);
+          });
+        }else{
+          alert("Faltan campos por llenar")
+          return
+        }
       }
     return (
     <form className={style.containerCrearCompo} onSubmit={(e)=>mySubmit(e)}>
@@ -308,6 +350,30 @@ const CrearCompoTFT = () =>{
         <button className={[style.btn, pictureSave["spatula2"] ? style.savePicture : ""].join(" ")} onClick={()=>{handleBuilderLevel("spatula2")}}>Spatula #2</button>
       </div>
       <h2>{showBoard=== "early" ? "Early" : showBoard === "lv7" ? "Level 7": showBoard === "lv8" ? "Level 8": showBoard === "lv9" ? "Level 9" : showBoard=== "lv10" ? "Level 10": showBoard=== "spatula1" ? "Spatula #1": showBoard=== "spatula2" ? "Spatula #2" : ""}</h2>
+      {showBoard === "spatula1"  &&
+      <div>
+        <input onChange={(e)=>hanlderSpatulaItem(e.target.value, 1)} list="dataListSpatulaItems" name="spatulaItems1" id="spatulaItems1" ></input>
+        {spatulaItem1 !== "" &&
+        <div>
+          <img src={spatulaItem1} alt="espatulaItem"/>
+        </div>
+        }
+      </div>}
+      {showBoard === "spatula2"  &&
+      <div>
+        <input onChange={(e)=>hanlderSpatulaItem(e.target.value, 2)} list="dataListSpatulaItems" name="spatulaItems2" id="spatulaItems2" ></input>
+        {spatulaItem2 !== "" &&
+        <div>
+          <img src={spatulaItem2} alt="espatulaItem"/>
+        </div>
+        }
+      </div>}
+      <datalist id="dataListSpatulaItems">
+        {emblems.map((dataItem, i )=>{
+          return <option key={"ListaDeEmblemas"+dataItem.nombre+i} id={`datalist-${dataItem.name}`} value={dataItem.name} data-value={JSON.stringify(dataItem)}></option>
+        })}
+      </datalist>
+
       <div className={style.builderContainer}>
       	{showBoard=== "early" && <Builder setBoardInfo={setBoardInfo} boardInfo={boardInfo} id={showBoard} showName={showName}/>}
 				{showBoard=== "lv7" && <Builder setBoardInfo={setBoardInfo} boardInfo={boardInfo} id={showBoard} showName={showName}/>}
@@ -367,7 +433,7 @@ const CrearCompoTFT = () =>{
 
       <label htmlFor="gameplay">Gameplay:
           <input type="text" defaultValue={gameplay} id="gameplay"></input>
-          <button onClick={()=>agregarGameplay()}>Agregar Gameplay</button>
+          <button onClick={(e)=>agregarGameplay(e)}>Agregar Gameplay</button>
       </label>
       <div className={style.containerYoutube}>
           {gameplay.map((url,i)=>{
