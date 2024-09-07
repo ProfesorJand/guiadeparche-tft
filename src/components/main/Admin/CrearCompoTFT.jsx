@@ -9,7 +9,7 @@ import { toBlob } from 'html-to-image';
 import { BASIC_ITEMS, CRAFTEABLE_ITEMS, dataTFTItems } from "src/stores/dataTFT.js";
 import { emblems } from "src/json/updates/constantesLatest";
 
-const CrearCompoTFT = () =>{
+const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,edittitulo,editshadowCategory,editinfographicCategory,editaumentos,editgameplay,edittips,editboardInfo,editpictureSave,editcarouselItems,editspatulaItem1,editspatulaItem2,editoriginalComp}) =>{
     const urlImgAum = "https://raw.communitydragon.org/latest/game/"
     const shadowCategories = ["Fast 8","Specifics Augments","3 Stars"]
     const infographicCategories = ["Roll Lv5","Roll Lv6","Roll Lv7","Roll Lv8","Roll Lv9","Roll Lv10"]
@@ -33,6 +33,8 @@ const CrearCompoTFT = () =>{
     const [carouselItems, setCarouselItems] = useState({});
     const [spatulaItem1, setSpatulaItem1] = useState("");
     const [spatulaItem2, setSpatulaItem2] = useState("");
+    const [originalComp, setOriginalComp] = useState("lv8");
+    const [id, setId] =useState(null)
 
     useEffect(()=>{
       const dataAumentos = itemsData.filter(({apiName})=>{
@@ -41,6 +43,28 @@ const CrearCompoTFT = () =>{
       setListaDeAumentos(dataAumentos)
       console.log(emblems)
     }, [])
+
+    useEffect(()=>{
+      console.log(editcarouselItems)
+      if(edit){
+        setId(editId)
+        setTier(edittier);
+        setPosicion(editposicion);
+        setDificultad(editdificultad)
+        setTitulo(edittitulo)
+        setShadowCategory(editshadowCategory);
+        setInfographicCategory(editinfographicCategory)
+        setAumentos(editaumentos)
+        setGameplay(editgameplay)
+        setTips(edittips)
+        setBoardInfo(editboardInfo)
+        setPictureSave(editpictureSave)
+        setCarouselItems(editcarouselItems)
+        setSpatulaItem1(editspatulaItem1)
+        setSpatulaItem2(editspatulaItem2)
+        setOriginalComp(editoriginalComp)
+      }
+    },[edit])
 
 
     useEffect(()=>{
@@ -96,7 +120,8 @@ const CrearCompoTFT = () =>{
         setInfoChampsItems(button)
     }
 
-    function handleBuilderLevel(id){
+    function handleBuilderLevel(e,id){
+      e.preventDefault()
       setShowBoard(id)
     }
 
@@ -139,7 +164,8 @@ const CrearCompoTFT = () =>{
       setGameplay((oldArray)=>oldArray.filter((value)=>value !== url))
     }
 
-    function toggleOcultarNombre(show){
+    function toggleOcultarNombre(e,show){
+      e.preventDefault();
       setShowName(!show)
     }
 
@@ -202,11 +228,24 @@ const CrearCompoTFT = () =>{
       }
     }
 
+    function generadorID(){
+      const a = Date.now().toString(30);
+      const b = Math.random().toString(30).substring(2);
+      console.log(a+b)
+      return a+b
+    }
+
     function mySubmit(e) { 
+      console.log("submit")
+      if(edit){
+
+      }else{
         e.preventDefault(); 
+      }
         // obtener datos de: tier, position, dificulty, tittle, shadowCategory, infographicCategory
         // check aumentos, boardInfo, pictureSave, carouselItems, Gameplay (opcional), Tips (opcional)
         const resultado = {
+          id:id === null ? generadorID() : id,
           tier,
           posicion,
           dificultad,
@@ -220,7 +259,8 @@ const CrearCompoTFT = () =>{
           gameplay,
           tips,
           spatulaItem1,
-          spatulaItem2
+          spatulaItem2,
+          originalComp
         }
         if(tier && posicion && dificultad && titulo && shadowCategory && infographicCategory && aumentos.length && Object.keys(carouselItems).length && Object.keys(boardInfo).length && Object.keys(pictureSave).length){
 
@@ -243,6 +283,7 @@ const CrearCompoTFT = () =>{
               console.error('Error:', error);
           });
         }else{
+          console.log(resultado)
           alert("Faltan campos por llenar")
           return
         }
@@ -341,13 +382,13 @@ const CrearCompoTFT = () =>{
       </div>
 
       <div className={style.containerButtonsHorizontal}>
-        <button className={[style.btn, pictureSave["early"] ? style.savePicture : ""].join(" ")} onClick={()=>{handleBuilderLevel("early")}}>Early</button>
-        <button className={[style.btn, pictureSave["lv7"] ? style.savePicture : ""].join(" ")} onClick={()=>{handleBuilderLevel("lv7")}}>Lv 7</button>
-        <button className={[style.btn, pictureSave["lv8"] ? style.savePicture : ""].join(" ")} onClick={()=>{handleBuilderLevel("lv8")}}>Lv 8</button>
-        <button className={[style.btn, pictureSave["lv9"] ? style.savePicture : ""].join(" ")} onClick={()=>{handleBuilderLevel("lv9")}}>Lv 9</button>
-        <button className={[style.btn, pictureSave["lv10"] ? style.savePicture : ""].join(" ")} onClick={()=>{handleBuilderLevel("lv10")}}>Lv 10</button>
-        <button className={[style.btn, pictureSave["spatula1"] ? style.savePicture : ""].join(" ")} onClick={()=>{handleBuilderLevel("spatula1")}}>Spatula #1</button>
-        <button className={[style.btn, pictureSave["spatula2"] ? style.savePicture : ""].join(" ")} onClick={()=>{handleBuilderLevel("spatula2")}}>Spatula #2</button>
+        <button className={[style.btn, pictureSave["early"] ? style.savePicture : ""].join(" ")} onClick={(e)=>{handleBuilderLevel(e,"early")}}>Early</button>
+        <button className={[style.btn, pictureSave["lv7"] ? style.savePicture : ""].join(" ")} onClick={(e)=>{handleBuilderLevel(e,"lv7")}}>Lv 7</button>
+        <button className={[style.btn, pictureSave["lv8"] ? style.savePicture : ""].join(" ")} onClick={(e)=>{handleBuilderLevel(e,"lv8")}}>Lv 8</button>
+        <button className={[style.btn, pictureSave["lv9"] ? style.savePicture : ""].join(" ")} onClick={(e)=>{handleBuilderLevel(e,"lv9")}}>Lv 9</button>
+        <button className={[style.btn, pictureSave["lv10"] ? style.savePicture : ""].join(" ")} onClick={(e)=>{handleBuilderLevel(e,"lv10")}}>Lv 10</button>
+        <button className={[style.btn, pictureSave["spatula1"] ? style.savePicture : ""].join(" ")} onClick={(e)=>{handleBuilderLevel(e,"spatula1")}}>Spatula #1</button>
+        <button className={[style.btn, pictureSave["spatula2"] ? style.savePicture : ""].join(" ")} onClick={(e)=>{handleBuilderLevel(e,"spatula2")}}>Spatula #2</button>
       </div>
       <h2>{showBoard=== "early" ? "Early" : showBoard === "lv7" ? "Level 7": showBoard === "lv8" ? "Level 8": showBoard === "lv9" ? "Level 9" : showBoard=== "lv10" ? "Level 10": showBoard=== "spatula1" ? "Spatula #1": showBoard=== "spatula2" ? "Spatula #2" : ""}</h2>
       {showBoard === "spatula1"  &&
@@ -384,11 +425,22 @@ const CrearCompoTFT = () =>{
         {showBoard=== "spatula2" && <Builder setBoardInfo={setBoardInfo} boardInfo={boardInfo} id={showBoard} showName={showName}/>}
       </div>
           
-        <button className={style.ocultarNombre} onClick={()=>{toggleOcultarNombre(showName)}}>{showName ? "Mostrar Nombres" : "Ocultar Nombres" }</button>
-        <button className={style.ocultarNombre} onClick={()=>{setTakePicture(true)}}>Guardar imagen</button>
+        <button className={style.ocultarNombre} onClick={(e)=>{toggleOcultarNombre(e,showName)}}>{showName ? "Mostrar Nombres" : "Ocultar Nombres" }</button>
+        <button className={style.ocultarNombre} onClick={(e)=>{e.preventDefault();setTakePicture(true)}}>Guardar imagen</button>
+        <label>
+        Original Comp to Show in Meta:
+        <select onChange={(e)=>{e.preventDefault();setOriginalComp(e.target.value)}} defaultValue={originalComp}>
+          <option value="lv7">level 7</option>
+          <option value="lv8">level 8</option>
+          <option value="lv9">level 9</option>
+          <option value="lv10">level 10</option>
+          <option value="spatula1">Spatula #1</option>
+          <option value="spatula2">Spatula #2</option>
+        </select>
+        </label>
       <div>
-        <button onClick={()=>{handleToogleInfo("campeones")}}>Campeones</button>
-        <button onClick={()=>{handleToogleInfo("items")}}>Items</button>
+        <button onClick={(e)=>{e.preventDefault();handleToogleInfo("campeones")}}>Campeones</button>
+        <button onClick={(e)=>{e.preventDefault();handleToogleInfo("items")}}>Items</button>
         {infoChampsItems === "campeones" ? <Champions/> : <Items/>}
       </div>
       
@@ -398,9 +450,9 @@ const CrearCompoTFT = () =>{
         
         <div className={style.containerCarouselFormVertical}>
           Basic Item:
-          <input list="dataListItemsBasicos" name="Carousel_Basic_Item1" id="Carousel_Basic_Item1" onChange={(e)=>handlerBasicItem(e.target.value, "BasicItem1")}/>
-          <input list="dataListItemsBasicos" name="Carousel_Basic_Item2" id="Carousel_Basic_Item2" onChange={(e)=>handlerBasicItem(e.target.value, "BasicItem2")}/>
-          <input list="dataListItemsBasicos" name="Carousel_Basic_Item3" id="Carousel_Basic_Item3" onChange={(e)=>handlerBasicItem(e.target.value, "BasicItem3")}/>
+          <input list="dataListItemsBasicos" name="Carousel_Basic_Item1" id="Carousel_Basic_Item1" onChange={(e)=>{e.preventDefault();handlerBasicItem(e.target.value, "BasicItem1")}} defaultValue={carouselItems.BasicItem1 ? carouselItems.BasicItem1.nombre : "" }/>
+          <input list="dataListItemsBasicos" name="Carousel_Basic_Item2" id="Carousel_Basic_Item2" onChange={(e)=>{e.preventDefault();handlerBasicItem(e.target.value, "BasicItem2")}} defaultValue={carouselItems.BasicItem2 ? carouselItems.BasicItem2.nombre : "" }/>
+          <input list="dataListItemsBasicos" name="Carousel_Basic_Item3" id="Carousel_Basic_Item3" onChange={(e)=>{e.preventDefault();handlerBasicItem(e.target.value, "BasicItem3")}} defaultValue={carouselItems.BasicItem3 ? carouselItems.BasicItem3.nombre : "" }/>
           <datalist id="dataListItemsBasicos">
             {BASIC_ITEMS.map((item, i )=>{
               return <option key={"ListaDeItemsBasicos"+item.name+i} id={`datalist-${item.apiName}`} value={item.nombre}></option>
@@ -409,9 +461,9 @@ const CrearCompoTFT = () =>{
         </div>
         <div className={style.containerCarouselFormVertical}>
           Complete Item:
-          <input list="dataListItemsCrafteables1" name="Carousel_Complete_Item1" id="Carousel_Complete_Item1" onChange={(e)=>handlerCompleteItem(e.target.value, "CompleteItem1")} disabled={carouselItems["BasicItem1"] !== undefined ? false: true}/>
-          <input list="dataListItemsCrafteables2" name="Carousel_Complete_Item2" id="Carousel_Complete_Item2" onChange={(e)=>handlerCompleteItem(e.target.value, "CompleteItem2")} disabled={carouselItems["BasicItem2"] !== undefined ? false: true}/>
-          <input list="dataListItemsCrafteables3" name="Carousel_Complete_Item3" id="Carousel_Complete_Item3" onChange={(e)=>handlerCompleteItem(e.target.value, "CompleteItem3")} disabled={carouselItems["BasicItem3"] !== undefined ? false: true}/>
+          <input list="dataListItemsCrafteables1" name="Carousel_Complete_Item1" id="Carousel_Complete_Item1" onChange={(e)=>{e.preventDefault();handlerCompleteItem(e.target.value, "CompleteItem1")}} defaultValue={carouselItems.CompleteItem1 ? carouselItems.CompleteItem1.nombre : "" } disabled={carouselItems["BasicItem1"] !== undefined ? false: true}/>
+          <input list="dataListItemsCrafteables2" name="Carousel_Complete_Item2" id="Carousel_Complete_Item2" onChange={(e)=>{e.preventDefault();handlerCompleteItem(e.target.value, "CompleteItem2")}} defaultValue={carouselItems.CompleteItem2 ? carouselItems.CompleteItem2.nombre : "" } disabled={carouselItems["BasicItem2"] !== undefined ? false: true}/>
+          <input list="dataListItemsCrafteables3" name="Carousel_Complete_Item3" id="Carousel_Complete_Item3" onChange={(e)=>{e.preventDefault();handlerCompleteItem(e.target.value, "CompleteItem3")}} defaultValue={carouselItems.CompleteItem3 ? carouselItems.CompleteItem3.nombre : "" } disabled={carouselItems["BasicItem3"] !== undefined ? false: true}/>
           <datalist id="dataListItemsCrafteables1">
             {CRAFTEABLE_ITEMS.filter(({combine})=>{return combine[0] === carouselBasicItems["BasicItem1"] || combine[1] === carouselBasicItems["BasicItem1"]}).map((item, i )=>{
               return <option key={"ListaDeItemsCrafteables"+item.name+i} id={`datalist-${item.apiName}`} value={item.nombre}></option>
@@ -433,13 +485,13 @@ const CrearCompoTFT = () =>{
 
       <label htmlFor="gameplay">Gameplay:
           <input type="text" defaultValue={gameplay} id="gameplay"></input>
-          <button onClick={(e)=>agregarGameplay(e)}>Agregar Gameplay</button>
+          <button onClick={(e)=>{e.preventDefault();agregarGameplay(e)}}>Agregar Gameplay</button>
       </label>
       <div className={style.containerYoutube}>
           {gameplay.map((url,i)=>{
             return (
               <div key={"gameplaysURL"+i} className={style.containerVideos}>
-                 <button className={style.btnClose} onClick={()=>eliminarGameplay(url)}>X</button>
+                 <button className={style.btnClose} onClick={(e)=>{e.preventDefault();eliminarGameplay(url)}}>X</button>
                 <Youtube src={url}></Youtube>
               </div>
           )
@@ -447,9 +499,9 @@ const CrearCompoTFT = () =>{
       </div>
 
       <label htmlFor="tips">Tips:
-          <textarea  type="text" defaultValue={tips} onChange={(e)=>setTips(e.target.value)}></textarea>
+          <textarea  type="text" defaultValue={tips} onChange={(e)=>{e.preventDefault();setTips(e.target.value)}}></textarea>
       </label>
-        <input type="submit" value="Crear Compo"/>
+        <input type="submit" value={`${edit ? "Editar" : "Crear"} Compo`}/>
     </form>
 
 

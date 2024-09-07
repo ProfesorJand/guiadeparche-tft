@@ -1,0 +1,18 @@
+.containerAumentos{
+  display: flex;
+  position: relative;
+  width: 100%;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+}
+
+.containerAumento{
+  display: flex;
+  flex: 0 0 50%;
+}
+
+.imgAumento{
+  display: flex;
+  position: relative;
+  width: 100%;
+}

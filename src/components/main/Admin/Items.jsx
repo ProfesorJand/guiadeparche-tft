@@ -356,9 +356,9 @@ const Items = ()=>{
   return (
     <div className={style.containerItems}>
       <div className={style.containerBtn}>
-      <button onClick={()=>handlePestana(0)} className={style.btn}>Craftable</button>
-      <button onClick={()=>handlePestana(1)} className={style.btn}>Radiantes</button>
-      <button onClick={()=>handlePestana(2)} className={style.btn}>Emblemas</button>
+      <button onClick={(e)=>{e.preventDefault();handlePestana(0)}} className={style.btn}>Craftable</button>
+      <button onClick={(e)=>{e.preventDefault();handlePestana(1)}} className={style.btn}>Radiantes</button>
+      <button onClick={(e)=>{e.preventDefault();handlePestana(2)}} className={style.btn}>Emblemas</button>
       </div>
 
       <div className={style.containerItemsInfo}>

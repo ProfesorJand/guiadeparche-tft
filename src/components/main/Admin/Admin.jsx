@@ -2,15 +2,18 @@ import React, {useEffect, useState} from "react";
 import Login from "./Login.jsx";
 import CrearCompoTFT from "./CrearCompoTFT.jsx";
 import { dataTFT, loadDataTFTFromAPI } from "src/stores/dataTFT.js";
+import EditarCompoTFT from "./EditarCompoTFT.jsx";
 
 const AdminPanel = ({allAdmins})=>{
     const [isLoged, setIsLoged] = useState(localStorage.getItem("login") || false)
-    const [adminName, setAdminName] = useState(localStorage.getItem("user") || "")
+    const [adminName, setAdminName] = useState(localStorage.getItem("user") || "");
+    const [action, setAction] = useState("editar");
     useEffect(()=>{
-        loadDataTFTFromAPI({version:"latest", idioma:"es", pais:"ar"})
+       loadDataTFTFromAPI({version:"latest", idioma:"es", pais:"ar"})
+        console.log(isLoged)
+        console.log(adminName)
     },[])
 
-    console.log({dataTFT})
     
     function cerrarSesion(){
         setIsLoged(false)
@@ -27,10 +30,14 @@ const AdminPanel = ({allAdmins})=>{
             <>
             <div>{adminName}</div>
             <div slot="hola">
-                <button>crear compo tft</button>
+                <button onClick={()=>setAction("crear")}>Crear compo tft</button>
+            </div>
+            <div slot="hola">
+                <button onClick={()=>setAction("editar")}>Editar compo tft</button>
             </div>
             <div>
-                <CrearCompoTFT />
+                {action === "crear" && <CrearCompoTFT />}
+                {action === "editar" && <EditarCompoTFT />}
             </div>
             <button onClick={()=>cerrarSesion()}>cerrar sesión</button>
             </>

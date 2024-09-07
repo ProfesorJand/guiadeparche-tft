@@ -46,6 +46,20 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
               handleDropOutside(e, "campeon");
             };
             containerImageChampion.className = style.containerImageChampion;
+            switch (info[key].estrellas) {
+              case 4:
+                containerImageChampion.classList.toggle(style.estrellas4,true);
+                break;
+              case 3:
+                containerImageChampion.classList.toggle(style.estrellas3,true);
+                break;
+              case 2:
+                containerImageChampion.classList.toggle(style.estrellas2,true);
+                break;
+              default:
+                break;
+            }
+     
             /*Crear Imagen del Campeon en el hex */
             const image = document.createElement("img");
             image.className = style.imageCampeonBuilder;
@@ -161,6 +175,21 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
       const imgItem = containerImageChampion[i].getElementsByClassName(
         style.imgItem
       );
+      var estrellas = 1;
+      switch (true) {
+        case containerImageChampion[i].classList.contains(style.estrellas4):
+          estrellas = 4;
+          break;
+        case containerImageChampion[i].classList.contains(style.estrellas3):
+          estrellas = 3;
+          break;
+        case containerImageChampion[i].classList.contains(style.estrellas2):
+          estrellas = 2;
+          break;
+        default:
+          estrellas = 1;
+          break;
+      }
       const hexId = dataCampeon.hexId;
       const newCampeon = JSON.parse(dataCampeon.campeon).nombre;
       if (!noRepeatChampions.some((campeon) => campeon === newCampeon)) {
@@ -170,7 +199,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
           sinergias[nombreSinergia] = (sinergias[nombreSinergia] || 0) + 1;
         });
       }
-      data[hexId] = { dataCampeon: dataCampeon };
+      data[hexId] = { dataCampeon: dataCampeon, estrellas };
       let dataItems = [];
       for (let y = 0; y < imgItem.length; y++) {
         dataItems.push(imgItem[y].dataset);
@@ -197,7 +226,6 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
         });
       });
     }
-    console.log(data)
   }
 
   function findClosestTraitImage(traitType, traitLevel) {
@@ -489,7 +517,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
           >
             <div className={style.poligon}></div>
             {hexId === "hex11" && (
-              <ContextMenuBuilder hexId={hexId} setHexId={setHexId} />
+              <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
             )}
           </div>
           <div
@@ -504,7 +532,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
           >
             <div className={style.poligon}></div>
             {hexId === "hex12" && (
-              <ContextMenuBuilder hexId={hexId} setHexId={setHexId} />
+              <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
             )}
           </div>
           <div
@@ -519,7 +547,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
           >
             <div className={style.poligon}></div>
             {hexId === "hex13" && (
-              <ContextMenuBuilder hexId={hexId} setHexId={setHexId} />
+              <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
             )}
           </div>
           <div
@@ -534,7 +562,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
           >
             <div className={style.poligon}></div>
             {hexId === "hex14" && (
-              <ContextMenuBuilder hexId={hexId} setHexId={setHexId} />
+              <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
             )}
           </div>
           <div
@@ -549,7 +577,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
           >
             <div className={style.poligon}></div>
             {hexId === "hex15" && (
-              <ContextMenuBuilder hexId={hexId} setHexId={setHexId} />
+              <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
             )}
           </div>
           {id !== "early" && (
@@ -566,7 +594,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
               >
                 <div className={style.poligon}></div>
                 {hexId === "hex16" && (
-                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} />
+                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
               <div
@@ -581,7 +609,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
               >
                 <div className={style.poligon}></div>
                 {hexId === "hex17" && (
-                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} />
+                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
               <div className={style.halfPoligon}></div>
@@ -604,7 +632,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
               >
                 <div className={style.poligon}></div>
                 {hexId === "hex21" && (
-                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} />
+                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
               <div
@@ -619,7 +647,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
               >
                 <div className={style.poligon}></div>
                 {hexId === "hex22" && (
-                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} />
+                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
               <div
@@ -634,7 +662,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
               >
                 <div className={style.poligon}></div>
                 {hexId === "hex23" && (
-                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} />
+                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
               <div
@@ -649,7 +677,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
               >
                 <div className={style.poligon}></div>
                 {hexId === "hex24" && (
-                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} />
+                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
               <div
@@ -664,7 +692,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
               >
                 <div className={style.poligon}></div>
                 {hexId === "hex25" && (
-                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} />
+                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
               <div
@@ -679,7 +707,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
               >
                 <div className={style.poligon}></div>
                 {hexId === "hex26" && (
-                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} />
+                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
               <div
@@ -694,7 +722,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
               >
                 <div className={style.poligon}></div>
                 {hexId === "hex27" && (
-                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} />
+                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
             </div>
@@ -711,7 +739,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
               >
                 <div className={style.poligon}></div>
                 {hexId === "hex31" && (
-                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} />
+                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
               <div
@@ -726,7 +754,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
               >
                 <div className={style.poligon}></div>
                 {hexId === "hex32" && (
-                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} />
+                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
               <div
@@ -741,7 +769,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
               >
                 <div className={style.poligon}></div>
                 {hexId === "hex33" && (
-                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} />
+                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
               <div
@@ -756,7 +784,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
               >
                 <div className={style.poligon}></div>
                 {hexId === "hex34" && (
-                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} />
+                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
               <div
@@ -771,7 +799,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
               >
                 <div className={style.poligon}></div>
                 {hexId === "hex35" && (
-                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} />
+                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
               <div
@@ -786,7 +814,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
               >
                 <div className={style.poligon}></div>
                 {hexId === "hex36" && (
-                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} />
+                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
               <div
@@ -801,7 +829,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
               >
                 <div className={style.poligon}></div>
                 {hexId === "hex37" && (
-                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} />
+                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
               <div className={style.halfPoligon}></div>
@@ -820,7 +848,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
               >
                 <div className={style.poligon}></div>
                 {hexId === "hex41" && (
-                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} />
+                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
               <div
@@ -835,7 +863,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
               >
                 <div className={style.poligon}></div>
                 {hexId === "hex42" && (
-                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} />
+                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
               <div
@@ -850,7 +878,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
               >
                 <div className={style.poligon}></div>
                 {hexId === "hex43" && (
-                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} />
+                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
               <div
@@ -865,7 +893,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
               >
                 <div className={style.poligon}></div>
                 {hexId === "hex44" && (
-                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} />
+                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
               <div
@@ -880,7 +908,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
               >
                 <div className={style.poligon}></div>
                 {hexId === "hex45" && (
-                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} />
+                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
               <div
@@ -895,7 +923,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
               >
                 <div className={style.poligon}></div>
                 {hexId === "hex46" && (
-                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} />
+                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
               <div
@@ -910,7 +938,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
               >
                 <div className={style.poligon}></div>
                 {hexId === "hex47" && (
-                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} />
+                  <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
             </div>
