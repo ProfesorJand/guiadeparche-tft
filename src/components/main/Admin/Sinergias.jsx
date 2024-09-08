@@ -66,7 +66,6 @@ const Sinergias = ({sinergias})=>{
 
   }
 
-  console.log(getMinMaxTraits(sortable))
   return (
 
       <div className={style.containerSinergia}>

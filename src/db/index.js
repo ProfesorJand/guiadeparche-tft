@@ -21,7 +21,7 @@ export const updateUsersScores = async ({ summonerId, plataforma }) => {
       .set({ tier, rank, leaguePoints, puntaje })
       .where(or(eq(Usuario.puuid, puuid), eq(Usuario.id, summonerId)))
       .returning({ invocador: Usuario.invocador, puntaje: Usuario.puntaje });
-    console.log(userUpdate);
+
   } catch (error) {
     console.log(error);
   }

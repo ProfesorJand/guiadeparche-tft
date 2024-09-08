@@ -57,27 +57,22 @@ var usuarios = await db
 
 function sortByPuntaje(a, b) {
   if (a.puntaje <= b.puntaje && a.leaguePoints >= b.leaguePoints) {
-    console.log('1', a, b);
     return orden === 'asc' ? -1 : 1;
   }
   if (b.puntaje <= a.puntaje && b.leaguePoints >= a.leaguePoints) {
-    console.log('-1', a, b);
     return orden === 'asc' ? 1 : -1;
   }
-  console.log('0', a, b);
+
   return 0;
 }
 
 function sortByPlataforma(a, b) {
   if (a.plataforma <= b.plataforma && a.leaguePoints >= b.leaguePoints) {
-    console.log('1', a, b);
     return orden === 'asc' ? -1 : 1;
   }
   if (b.plataforma <= a.plataforma && b.leaguePoints >= a.leaguePoints) {
-    console.log('-1', a, b);
     return orden === 'asc' ? 1 : -1;
   }
-  console.log('0', a, b);
   return 0;
 }
 

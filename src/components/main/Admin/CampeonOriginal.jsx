@@ -4,7 +4,6 @@ import style from "./css/CampeonOriginal.module.css"
 const CampeonOriginal = ({dataCampeon, dataItem, estrellas}) =>{
   const dataCampeonParseado = JSON.parse(dataCampeon)
   const itemsCampeon = dataItem.map(({item})=>JSON.parse(item))
-  console.log(itemsCampeon)
   return (
     <div className={style.containerCampeon} style={{order:dataCampeonParseado.coste}}>
       <div className={[style.containerCampeonImg, estrellas === 3 ? style.estrellas3 : estrellas === 4 ? style.estrellas4 : ""].join(" ")}>

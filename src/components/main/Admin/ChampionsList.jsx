@@ -26,10 +26,6 @@ const Champions = ()=>{
         }
     }
 
-    useEffect(()=>{
-        console.log(championsList)
-    },[championsList])
-
     return(
         <>
         <div>

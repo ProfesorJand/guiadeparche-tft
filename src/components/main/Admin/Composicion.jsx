@@ -13,7 +13,6 @@ const Composicion = ({compo})=>{
   const [editId, setEditId] = useState(null)
   const colorDificulty= {Easy:"green",Medium:"orange",Hard:"red"}
   const {data, sinergias} = compo.boardInfo[compo.originalComp];
-console.log(compo.spatulaItem1)
   const earlyComp = Object.keys(compo.boardInfo.early.data).map((key)=>{
     const {dataCampeon, dataItem} = compo.boardInfo.early.data[key]
     return {dataCampeon:dataCampeon.campeon, dataItem}

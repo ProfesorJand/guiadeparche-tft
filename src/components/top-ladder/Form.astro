@@ -15,7 +15,6 @@ if (Astro.request.method === 'POST') {
   var etiqueta = formData.get('etiqueta')?.toString();
   const region = formData.get('region')?.toString();
   const plataforma = formData.get('plataforma')?.toString();
-  console.log({ invocador, etiqueta, region, plataforma });
   if (region && invocador && etiqueta) {
     let { puuid, gameName, tagLine } = await getPUUID({
       region,

@@ -10,8 +10,6 @@ const AdminPanel = ({allAdmins})=>{
     const [action, setAction] = useState("editar");
     useEffect(()=>{
        loadDataTFTFromAPI({version:"latest", idioma:"es", pais:"ar"})
-        console.log(isLoged)
-        console.log(adminName)
     },[])
 
     

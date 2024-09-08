@@ -7,8 +7,6 @@ export default function Filtro(){
     
     const $plataforma = useStore(plataforma);
     const $orden = useStore(orden);
-    console.log("$plataforma",$plataforma)
-    console.log("$orden",$orden)
     const PLATAFORMA = [
         {
           value: 'todos',

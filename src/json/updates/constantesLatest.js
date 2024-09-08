@@ -1,10 +1,8 @@
 export async function fetchingDataTFT({version, idioma, pais}){
     try {
-        console.log("ho")
         const urlDragon = `https://raw.communitydragon.org/${version}/cdragon/tft/${idioma}_${pais}.json`
         const fetching = await fetch(urlDragon, {cache:"reload"});
         const {items, sets} = await fetching.json();
-        console.log("hi")
         return {items, sets}
     } catch (error) {
         throw new Error('fetchingDataTFT');
@@ -41,7 +39,6 @@ export const emblems = await itemsData.filter(({apiName})=>{
 
     return apiName.includes("Emblem") && apiName.includes("TFT12") && !apiName.includes("Zap")
 }).map(({apiName, desc, effects, icon, name})=>{
-    console.log(apiName.replace("TFT12_Item_",""))
     const src = `https://raw.communitydragon.org/latest/game/${icon.toLowerCase().replace(".tex",".png")}`;
     return {apiName, desc, effects, img:src, name, sinergia:apiName.replace("TFT12_Item_","").replace("EmblemItem","")}
 })

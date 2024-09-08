@@ -5,7 +5,6 @@ import { useStore } from "@nanostores/react";
 export default function Resultados(){
     const $plataforma = useStore(plataforma);
     const $orden = useStore(orden);
-    console.log($plataforma)
 
 const filtroResultados = $UsuarioDB.sort((a,b)=>b.leaguePoints - a.leaguePoints).sort((a,b)=>a.puntaje - b.puntaje);
 

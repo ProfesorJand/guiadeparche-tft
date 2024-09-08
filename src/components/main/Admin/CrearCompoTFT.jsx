@@ -73,7 +73,6 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
     
 
     useEffect(()=>{
-      console.log(editcarouselItems)
       if(edit){
         setId(editId)
         setTier(edittier);
@@ -258,12 +257,10 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
     function generadorID(){
       const a = Date.now().toString(30);
       const b = Math.random().toString(30).substring(2);
-      console.log(a+b)
       return a+b
     }
 
     function mySubmit(e) { 
-      console.log("submit")
       if(edit){
 
       }else{
@@ -310,7 +307,6 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
               console.error('Error:', error);
           });
         }else{
-          console.log(resultado)
           alert("Faltan campos por llenar")
           return
         }

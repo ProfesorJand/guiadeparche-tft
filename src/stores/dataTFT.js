@@ -3,14 +3,11 @@ import {deepMap, atom, task} from "nanostores";
 // version: latest / pbe ---- idioma: en / es --- pais: mx /es /gb /us
 export const loadDataTFTFromAPI = ({version="latest", idioma="es", pais="ar"}) =>{
   task(async()=>{
-    console.log({version,idioma,pais})
-    console.time("CD data time")
     const urlDragon = `https://raw.communitydragon.org/${version}/cdragon/tft/${idioma}_${pais}.json`
     const response = await fetch(urlDragon);
     const data = await response.json();
     
     updateDataTFT(data)
-    console.timeEnd("CD data time")
   })
 }
 

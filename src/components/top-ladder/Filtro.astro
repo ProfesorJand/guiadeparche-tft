@@ -125,7 +125,6 @@ const ORDEN = [
   function checkSeconds() {
     if (seconds < 60) {
       seconds--;
-      console.log(seconds);
       const timer = document.querySelector('#timer') as HTMLDivElement;
       timer.innerHTML = seconds.toString();
     } else {

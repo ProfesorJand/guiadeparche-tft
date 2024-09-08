@@ -3,11 +3,7 @@ import style from "./css/CampeonEarly.module.css"
 
 const CampeonEarly = ({dataCampeon, dataItem, estrellas}) =>{
   const dataCampeonParseado = JSON.parse(dataCampeon)
-  console.log(dataCampeon)
-  console.log(dataItem)
-  console.log(estrellas)
   const itemsCampeon = dataItem.map(({item})=>JSON.parse(item))
-  console.log(itemsCampeon)
   return (
     <div className={style.containerCampeon}>
       <div className={[style.containerCampeonImg, estrellas === 3 ? style.estrellas3 : estrellas === 4 ? style.estrellas4 : ""].join(" ")}>
