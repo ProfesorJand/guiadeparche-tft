@@ -97,7 +97,6 @@ const Twitch = () => {
   @media only screen and (min-width: 900px) {
       #twitch-embed {
         width: 100%;
-
       }
   }
     `}</style>
