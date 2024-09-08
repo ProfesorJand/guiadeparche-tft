@@ -1,0 +1,94 @@
+.containerCampeon{
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  width: calc(100% / 5);
+  align-items: center;
+  flex-direction: column;
+  aspect-ratio: 1 / 1;
+}
+.containerCampeonImg{
+  display: flex;
+  position: relative;
+  aspect-ratio:  1/1;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+}
+
+.imgCampeon{
+  display: flex;
+  width: 100%;
+  position:relative;
+  box-sizing: border-box;
+}
+
+.estrellas4::before{
+  width: 100%;
+  content: "★★★★";
+  position: absolute;
+  top: 0%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+  text-align: center;
+  color: #08fb9c;
+  text-shadow: var(--text-shadow);
+}
+
+.estrellas3::before{
+  width: 100%;
+  content: "★★★";
+  position: absolute;
+  top: 0%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+  text-align: center;
+  color: yellow;
+  text-shadow: var(--text-shadow);
+  font-size: small;
+}
+
+.estrellas2::before{
+  width: 100%;
+  content: "★★";
+  position: absolute;
+  top: 0%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+  text-align: center;
+  color: rgb(163, 163, 163);
+  text-shadow: var(--text-shadow);
+}
+
+.nombreCampeon{
+  display: flex;
+  position: absolute;
+  bottom:-25px;
+  font-size: xx-small;
+  justify-content: center;
+  text-align: center;
+}
+
+.containerItems{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  bottom:-10px;
+}
+
+.containerItem{
+  display: flex;
+  width: calc(100%/3);
+
+}
+
+.imgItem{
+  display: flex;
+  width: 100%;
+}

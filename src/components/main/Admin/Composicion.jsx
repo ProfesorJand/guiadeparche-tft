@@ -119,7 +119,7 @@ const Composicion = ({compo})=>{
           <AumentosCompos aumentos={compo.aumentos}/>
         </div>
         <div className={style.containerPosicionamiento}>
-          <h3 className={style.titulo}>Posicionamiento</h3>
+          <h3 className={style.titulo}>Late Game</h3>
           <PosicionamientoCompos boardInfo={compo.boardInfo} titulo={compo.titulo}  originalComp={compo.originalComp} gameplay={compo.gameplay} spatula1={compo.espatula1} spatula2={compo.espatula2}/>
         </div>
       </div>

@@ -152,6 +152,8 @@
     font-size: 0.6rem;
     text-shadow: var(--text-shadow);
     pointer-events: none;
+    width: 100%;
+    justify-content: center;
 }
 .hideNombreCampeon{
     display: none;

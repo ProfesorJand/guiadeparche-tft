@@ -1,0 +1,111 @@
+.containerPosicionamiento{
+  display: flex;
+  position: relative;
+  flex-direction: row;
+  
+}
+
+.containerImgPosicionamiento{
+  display: flex;
+  position: relative;
+  flex:11;
+}
+.imgPosicionamiento{
+  display: flex;
+  position: relative;
+  width: 100%;
+}
+
+.containerBtnPosicionamiento{
+  display: flex;
+  position: relative;
+  flex:1;
+  flex-direction: column;
+  margin: 0 5px;
+  gap:20px
+}
+
+.containerLevels{
+  display: flex;
+  flex:3;
+  flex-direction: column;
+}
+.containerSpatula{
+  display: flex;
+  flex: 2;
+  flex-direction: column;
+}
+
+.btnLv{
+  display: flex;
+  flex:0 0 calc(100%/3);
+  position: relative;
+  background-color: var(--bg-secondary);
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box ;
+  scale: 0.8;
+  transition: all 0.5s;
+  font-size: smaller;
+}
+
+.btnLv:hover{
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  scale: 1
+}
+
+.btnSpat{
+  display: flex;
+  flex:0 0 calc(100%/2);
+  position: relative;
+  background-color: var(--bg-secondary);
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box ;
+  scale: 0.8;
+  transition: all 0.5s;
+}
+
+.btnSpat > span{
+  display: flex;
+  position: absolute;
+  text-shadow: var(--text-shadow);
+}
+
+.btnSpat:hover{
+  background-color: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  scale: 1
+}
+.imgSpat{
+  display: flex;
+  width: 100%;
+}
+
+.btnActive{
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  scale: 1
+}
+
+.containerYoutube{
+  display: flex;
+  flex:1;
+  padding: 5px 0;
+}
+
+.ytIcon{
+  width: 100%;
+  scale:0.8;
+  transition: all 0.5s;
+}
+
+.ytIcon:hover{
+  width: 100%;
+  scale:1;
+  cursor: pointer;
+}
+

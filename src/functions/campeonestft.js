@@ -420,7 +420,7 @@ export const listaCampeones = [
         sinergia:["Eldritch","Incantor"]
     },
     {
-        nombre:"Tahm'Kench",
+        nombre:"Tahm Kench",
         img:"/campeones/set12/tahmkench.webp",
         coste:4,
         sinergia:["Arcana","Vanguard"]
@@ -454,6 +454,12 @@ export const listaCampeones = [
         img:"/campeones/set12/veigar.webp",
         coste:3,
         sinergia:["Honeymancy","Mage"]
+    },
+    {
+        nombre:"Vex",
+        img:"/campeones/set12/vex.webp",
+        coste:3,
+        sinergia:["Chrono","Mage"]
     },
     {
         nombre:"Warwick",
