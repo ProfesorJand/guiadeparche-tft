@@ -260,7 +260,7 @@ export const listaCampeones = [
     {
         nombre:"Karma",
         img:"/campeones/set12/karma.webp",
-        coste:2,
+        coste:4,
         sinergia:["Chrono","Incantor"]
     },
     {
