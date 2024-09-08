@@ -1,13 +1,13 @@
 .containerMeta{
   display: flex;
   position: relative;
-  gap:5px;
+  gap:10px;
   flex-direction: column;
 }
 
 .containerMetaTier{
   display: flex;
   position: relative;
-  gap:5px;
+  gap:10px;
   flex-direction: column;
 }

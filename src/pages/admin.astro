@@ -12,13 +12,13 @@ const allAdmins = await db.select().from(Admins);
 
 <Layout title='admin'>
     <Fragment slot="bodyMainAside">
-        hola
+
     </Fragment>
     <Fragment slot="bodyMainAsideTwitch">
         <Twitch transition:persist client:only="react"/>
     </Fragment>
     <Fragment slot="bodyMainAsideAds">
-        Publicidad
+        <!-- Publicidad -->
     </Fragment>
     <Main>
         <AdminPanel allAdmins={allAdmins} client:only="react"/>

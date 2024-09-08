@@ -4,6 +4,8 @@
   width: 100%;
   flex-wrap: wrap;
   box-sizing: border-box;
+  flex-direction: row;
+  row-gap: 25px;
 }
 
 .containerAumento{

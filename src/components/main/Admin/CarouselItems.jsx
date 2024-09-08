@@ -6,23 +6,35 @@ const CarouselItems = ({carouselItems}) =>{
   return (
     <div className={style.containerGlobal}>
       <div className={style.containerBasicItem}>
-        <img className={style.imgBasicItem} src={carouselItems.BasicItem1.img} alt={carouselItems.BasicItem1.nombre}></img>
+      {carouselItems.BasicItem1 &&
+      <img className={style.imgBasicItem} src={carouselItems.BasicItem1.img} alt={carouselItems.BasicItem1.nombre}></img>
+      }
         <div className={style.containerCompleteItem}>
+        {carouselItems.CompleteItem1 && 
           <img className={style.imgCompleteItem} src={carouselItems.CompleteItem1.img} alt={carouselItems.CompleteItem1.nombre}></img>
+        }
         </div>
       </div>
-      {">"}
+      {carouselItems.BasicItem2 && ">"}
       <div className={style.containerBasicItem}>
+      {carouselItems.BasicItem2 &&
         <img className={style.imgBasicItem} src={carouselItems.BasicItem2.img} alt={carouselItems.BasicItem2.nombre}></img>
+      }
         <div className={style.containerCompleteItem}>
+        {carouselItems.CompleteItem2 &&
           <img className={style.imgCompleteItem} src={carouselItems.CompleteItem2.img} alt={carouselItems.CompleteItem2.nombre}></img>
+        }
         </div>
       </div>
-      {">"}
+      {carouselItems.BasicItem3 && ">"}
       <div className={style.containerBasicItem}>
+      {carouselItems.BasicItem3 &&
         <img className={style.imgBasicItem} src={carouselItems.BasicItem3.img} alt={carouselItems.BasicItem3.nombre}></img>
+      }
         <div className={style.containerCompleteItem}>
+        {carouselItems.CompleteItem3 &&
           <img className={style.imgCompleteItem} src={carouselItems.CompleteItem3.img} alt={carouselItems.CompleteItem3.nombre}></img>
+        }
         </div>
       </div>
     </div>

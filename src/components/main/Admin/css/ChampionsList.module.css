@@ -34,4 +34,5 @@
     font-size: xx-small;
     text-shadow: var(--text-shadow);
     pointer-events: none; /* Standard syntax */
+    text-align: center;
 }

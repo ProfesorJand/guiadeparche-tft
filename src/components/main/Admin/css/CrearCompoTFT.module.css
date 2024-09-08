@@ -5,6 +5,15 @@
   width: 100%;
 }
 
+.builderContainerEarly{
+  display: flex;
+  flex-direction: row;
+  position:relative;
+  left: 50%;
+  translate: -50%;
+  width: calc(5*100%/8.5);
+}
+
 .containerEarlyComp{
   display: flex;
   flex-direction: row;
@@ -56,7 +65,7 @@
 .horizontalWrapper{
   display: flex;
   position: relative;
-  width: 10%;
+  width: 20%;
 }
 
 textarea{
@@ -70,9 +79,7 @@ white-space: pre-wrap;
   position: relative;
 }
 
-.savePicture{
-  background-color: green;
-}
+
 
 .containerCarousel{
   display: flex;
@@ -95,4 +102,156 @@ white-space: pre-wrap;
   flex-direction: column;
   align-items: center;
   gap:5px
+}
+
+form > label{
+  justify-content: flex-start;
+  display: flex;
+  flex-direction: row;
+
+}
+
+.containerFirst{
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  justify-content: center;
+  gap:5px;
+  position: relative;
+  left: 50%;
+  translate: -50%;
+}
+
+.containerFirst > label > *{
+  flex:1;
+  border:none;
+  padding:0
+}
+
+.containerSecond{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  gap:5px;
+  position: relative;
+
+}
+
+.containerSecond > label > *{
+  flex:1;
+  border:none;
+  padding:0
+}
+
+.btnAgregar{
+  display: flex;
+  background-color: var(--bg-secondary);
+  justify-content: center;
+}
+
+.btnAgregar:hover{
+  cursor: pointer;
+  background-color: var(--bg-tertiary);
+}
+
+.containerButtonsHorizontal{
+  display: flex;
+  flex-direction: row;
+  position: relative;
+}
+
+.btn{
+  display: flex;
+  position: relative;
+  flex:1;
+  background-color: var(--bg-secondary);
+  justify-content: center;
+  align-items: center;
+  font-size: x-small;
+  aspect-ratio: 3/2;
+}
+
+.btn:hover{
+  background-color: var(--bg-tertiary);
+  cursor: pointer;
+}
+
+
+
+.containerBtnHandlerBuilder{
+  display: flex;
+  flex-direction: row;
+  position:relative;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap:5px;
+  margin-top:20px
+}
+
+.btnHandlerBuilder{
+  display: flex;
+  position:relative;
+  background-color: var(--bg-secondary);
+  padding:10px;
+  flex:0 0 25%;
+  justify-content: center;
+}
+.btnHandlerBuilder:hover{
+  cursor: pointer;
+  background-color: var(--bg-primary);
+
+}
+
+.containerSpatulaSearch{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.containerImgSpatula{
+  display: flex;
+  position: relative;
+  width: 100px;
+}
+.inputSpatulaSearch{
+  display: flex;
+  position: relative;
+  height: fit-content;
+}
+.imgSpatula{
+  width: 100%;
+}
+
+.containerRow{
+  display: flex;
+  position: relative;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+  gap: 5px;
+}
+
+.btnCampeonItem{
+  display: flex;
+  flex:0 0 25%;
+  justify-content: center;
+  background-color: aqua;
+
+}
+
+.containerCarouselReact{
+  display: flex;
+  padding-bottom: 25px;
+  width: 50%;
+}
+
+.btnActive{
+  background-color: var(--bg-primary);
+}
+
+.savePicture{
+  background-color: green;
 }

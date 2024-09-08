@@ -51,17 +51,6 @@ const { title, JSONSchema } = Astro.props;
     <ViewTransitions />
   </head>
   <body>
-    <!-- <Header transition:persist/>
-    <Adsense direction={"left"} dimension={"vertical-izquierda"} transition:persist client:load/>
-    <Adsense direction={"right"} dimension={"vertical-derecha"} transition:persist client:load/>
-    <Footer />
-    <Logo />
-    <div transition:animate="fade">
-      <slot />
-    </div>
-    <div style={"display:flex"} transition:persist>
-      <Twitch transition:persist client:load/>
-    </div> -->
     <div class="bodyLayout">
       
       <header class="bodyHeader">
@@ -114,7 +103,9 @@ const { title, JSONSchema } = Astro.props;
     --bg-secondary: #1e197f;
     --bg-tertiary: #120d69;
     --bg-main: #0c023a;
-    --color-primary: #ffffff;
+    --color-primary: #cfcfcf;
+    --color-white:#cfcfcf;
+    --color-black:#1f1f1f;
     --border-color: #ffd700;
     --border-gray-color: grey;
     --text-color-white-primary: #e5e5e5;
@@ -251,7 +242,7 @@ const { title, JSONSchema } = Astro.props;
     .bodyAside{
       display: flex;
       width: calc((100vw - var(--width-main))/2);
-      background-color: aqua;
+      /* background-color: aqua; */
     }
 
     .bodyMain{
@@ -266,7 +257,6 @@ const { title, JSONSchema } = Astro.props;
       position: relative;
       flex-direction: column;
       width: calc(var(--width-main)/3);
-      background-color: #ffd700;
     }
 
     .bodyMainAsideSticky{
@@ -275,7 +265,7 @@ const { title, JSONSchema } = Astro.props;
       position: -webkit-sticky;
       position: sticky;
       top:var(--height-header);
-      background-color: blueviolet;
+      background-color: var(--bg-secondary);
       width: calc(var(--width-main)/3);
       box-sizing: border-box;
       gap:5px;
@@ -309,7 +299,7 @@ const { title, JSONSchema } = Astro.props;
       flex-direction: column;
       position: relative;
       width: calc(var(--width-main)*2/3);
-      background-color: cadetblue;
+      background-color: var(--bg-main);
     }
 
     .bodyFooter{

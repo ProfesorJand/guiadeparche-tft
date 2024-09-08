@@ -9,6 +9,7 @@
   display: flex;
   position: relative;
   flex:11;
+  aspect-ratio: 16/9;
 }
 .imgPosicionamiento{
   display: flex;
@@ -107,5 +108,12 @@
   width: 100%;
   scale:1;
   cursor: pointer;
+}
+
+.containerImgVideo{
+  display: flex;
+  position: relative;
+  width: 100%;
+  align-items: center;
 }
 

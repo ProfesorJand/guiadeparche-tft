@@ -8,6 +8,7 @@ import Youtube from "../../youtube/Youtube.jsx";
 import { toBlob } from 'html-to-image';
 import { BASIC_ITEMS, CRAFTEABLE_ITEMS, dataTFTItems } from "src/stores/dataTFT.js";
 import { emblems } from "src/json/updates/constantesLatest";
+import CarouselItems from "./CarouselItems.jsx";
 
 const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,edittitulo,editshadowCategory,editinfographicCategory,editaumentos,editgameplay,edittips,editboardInfo,editpictureSave,editcarouselItems,editspatulaItem1,editspatulaItem2,editoriginalComp}) =>{
     const urlImgAum = "https://raw.communitydragon.org/latest/game/"
@@ -23,7 +24,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
     const [listaDeAumentos, setListaDeAumentos] = useState([])
     const [gameplay, setGameplay] = useState([])
     const [tips, setTips] = useState("");
-    const [infoChampsItems, setInfoChampsItems] = useState("items");
+    const [infoChampsItems, setInfoChampsItems] = useState("campeones");
     const [boardInfo, setBoardInfo] = useState({});
     const [showBoard, setShowBoard] = useState("early");
     const [showName, setShowName] = useState(false);
@@ -41,8 +42,35 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         return augmentsIDList.includes(apiName)
       })
       setListaDeAumentos(dataAumentos)
-      console.log(emblems)
-    }, [])
+    }, []);
+
+    useEffect(() => {
+      // Configurar el listener dragover cuando el componente se monte
+      const handleDragOver = (event) => {
+        const mouseY = event.clientY;
+        const windowHeight = window.innerHeight;
+        const scrollThreshold = 200;  // Margen desde el borde superior/inferior
+        const scrollSpeed = 2;       // Velocidad de desplazamiento
+    
+        // Desplazarse hacia arriba si el ratón está cerca del borde superior
+        if (mouseY < scrollThreshold) {
+          window.scrollBy(0, -scrollSpeed);
+        }
+    
+        // Desplazarse hacia abajo si el ratón está cerca del borde inferior
+        if (mouseY > windowHeight - scrollThreshold) {
+          window.scrollBy(0, scrollSpeed);
+        }
+      };
+    
+      document.addEventListener('dragover', handleDragOver);
+    
+      // Limpia el listener cuando el componente se desmonte
+      return () => {
+        document.removeEventListener('dragover', handleDragOver);
+      };
+    }, []);
+    
 
     useEffect(()=>{
       console.log(editcarouselItems)
@@ -73,7 +101,6 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           alert("Debes añadir un titulo primero para poder guardar las imagenes")
           return
         }
-        console.log("hola")
         async function captureAndConvertToWebP(id){
           const element = document.getElementById(id);
           const desiredWidth = 1920;  // Cambia esto al ancho deseado
@@ -290,8 +317,9 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
       }
     return (
     <form className={style.containerCrearCompo} onSubmit={(e)=>mySubmit(e)}>
-
-      <label htmlFor="tiers">Tier:
+      <div className={style.containerFirst}>
+      <label htmlFor="tiers">
+        <span>Tier:</span>
           <select
               name="tiers"
               id="tiers"
@@ -306,7 +334,8 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           </select>
       </label>
 
-      <label htmlFor="position">Position:
+      <label htmlFor="position">
+        <span>Position:</span>
       <input
           name="position"
           type="number"
@@ -317,7 +346,8 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           />
       </label>
 
-      <label htmlFor="dificulty">Dificulty:
+      <label htmlFor="dificulty">
+        <span>Dificulty:</span>
         <select
             name="dificulty"
             id="dificulty"
@@ -330,7 +360,8 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         </select>
       </label>
 
-      <label htmlFor="title">Title:
+      <label htmlFor="title">
+        <span>Title:</span>
         <input
           name="title"
           type="text"
@@ -340,7 +371,8 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         />
       </label>
 
-      <label htmlFor="tiers">Shadow Category:
+      <label htmlFor="tiers">
+      <span>Shadow Category:</span>
         <select name="tiers" id="tiers" onChange={(e)=>setShadowCategory(e.target.value)} required>
           {shadowCategories.map((cat)=>{
             return (
@@ -350,7 +382,8 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         </select>
       </label>
 
-      <label htmlFor="tiers">Infographic Category:
+      <label htmlFor="tiers">
+      <span>Infographic Category:</span>
         <select name="tiers" id="tiers" onChange={(e)=>setInfographicCategory(e.target.value)} required>
           {infographicCategories.map((cat)=>{
             return (
@@ -360,52 +393,46 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         </select>
       </label>
 
-      <label htmlFor="aumentos">Aumentos:
-        <input list="dataListAumentos" name="aumentos" id="aumentos"/>
-        <datalist id="dataListAumentos">
-          {listaDeAumentos.map((aum, i )=>{
-            return <option key={"ListaDeAumentos"+aum.name+i} id={`datalist-${aum.apiName}`} data-value={JSON.stringify(aum)} value={aum.apiName}>{aum.name}</option>
-          })}
-        </datalist>
-        <button onClick={(e)=>agregarAumento(e)}>Agregar Aumento</button>
+      <label>
+        <span>Original Comp to Show:</span>
+        <select onChange={(e)=>{e.preventDefault();setOriginalComp(e.target.value)}} defaultValue={originalComp}>
+          <option value="lv7">Level 7</option>
+          <option value="lv8">Level 8</option>
+          <option value="lv9">Level 9</option>
+          <option value="lv10">Level 10</option>
+          <option value="spatula1">Spatula #1</option>
+          <option value="spatula2">Spatula #2</option>
+        </select>
       </label>
-      <div className={style.containerAumentos}>
-          
-        {aumentos.map(({icon, apiName})=>{
-          return (
-            <div key={"ImgAumentos"+apiName} className={style.horizontalWrapper}>
-              <button className={style.btnClose} onClick={()=>eliminarAumento(apiName)}>X</button>
-              <img src={urlImgAum+icon.toLowerCase().replace(".tex",".png")} className={style.imgAumento}></img>
-            </div>
-        )
-        })}
+    
+      <div className={style.containerButtonsHorizontal}>
+        <div className={[style.btn, showBoard=== "early" ? style.btnActive: "", pictureSave["early"] ? style.savePicture : ""].join(" ")} onClick={(e)=>{handleBuilderLevel(e,"early")}}>Early</div>
+        <div className={[style.btn, showBoard=== "lv7" ? style.btnActive: "", pictureSave["lv7"] ? style.savePicture : ""].join(" ")} onClick={(e)=>{handleBuilderLevel(e,"lv7")}}>Lv 7</div>
+        <div className={[style.btn, showBoard=== "lv8" ? style.btnActive: "", pictureSave["lv8"] ? style.savePicture : ""].join(" ")} onClick={(e)=>{handleBuilderLevel(e,"lv8")}}>Lv 8</div>
+        <div className={[style.btn, showBoard=== "lv9" ? style.btnActive: "", pictureSave["lv9"] ? style.savePicture : ""].join(" ")} onClick={(e)=>{handleBuilderLevel(e,"lv9")}}>Lv 9</div>
+        <div className={[style.btn, showBoard=== "lv10" ? style.btnActive: "", pictureSave["lv10"] ? style.savePicture : ""].join(" ")} onClick={(e)=>{handleBuilderLevel(e,"lv10")}}>Lv 10</div>
+        <div className={[style.btn, showBoard=== "spatula1" ? style.btnActive: "", pictureSave["spatula1"] ? style.savePicture : ""].join(" ")} onClick={(e)=>{handleBuilderLevel(e,"spatula1")}}>Spatula #1</div>
+        <div className={[style.btn, showBoard=== "spatula2" ? style.btnActive: "", pictureSave["spatula2"] ? style.savePicture : ""].join(" ")} onClick={(e)=>{handleBuilderLevel(e,"spatula2")}}>Spatula #2</div>
+      </div>
+      
       </div>
 
-      <div className={style.containerButtonsHorizontal}>
-        <button className={[style.btn, pictureSave["early"] ? style.savePicture : ""].join(" ")} onClick={(e)=>{handleBuilderLevel(e,"early")}}>Early</button>
-        <button className={[style.btn, pictureSave["lv7"] ? style.savePicture : ""].join(" ")} onClick={(e)=>{handleBuilderLevel(e,"lv7")}}>Lv 7</button>
-        <button className={[style.btn, pictureSave["lv8"] ? style.savePicture : ""].join(" ")} onClick={(e)=>{handleBuilderLevel(e,"lv8")}}>Lv 8</button>
-        <button className={[style.btn, pictureSave["lv9"] ? style.savePicture : ""].join(" ")} onClick={(e)=>{handleBuilderLevel(e,"lv9")}}>Lv 9</button>
-        <button className={[style.btn, pictureSave["lv10"] ? style.savePicture : ""].join(" ")} onClick={(e)=>{handleBuilderLevel(e,"lv10")}}>Lv 10</button>
-        <button className={[style.btn, pictureSave["spatula1"] ? style.savePicture : ""].join(" ")} onClick={(e)=>{handleBuilderLevel(e,"spatula1")}}>Spatula #1</button>
-        <button className={[style.btn, pictureSave["spatula2"] ? style.savePicture : ""].join(" ")} onClick={(e)=>{handleBuilderLevel(e,"spatula2")}}>Spatula #2</button>
-      </div>
       <h2>{showBoard=== "early" ? "Early" : showBoard === "lv7" ? "Level 7": showBoard === "lv8" ? "Level 8": showBoard === "lv9" ? "Level 9" : showBoard=== "lv10" ? "Level 10": showBoard=== "spatula1" ? "Spatula #1": showBoard=== "spatula2" ? "Spatula #2" : ""}</h2>
       {showBoard === "spatula1"  &&
-      <div>
-        <input onChange={(e)=>hanlderSpatulaItem(e.target.value, 1)} list="dataListSpatulaItems" name="spatulaItems1" id="spatulaItems1" ></input>
+      <div className={style.containerSpatulaSearch}>
+        <input className={style.inputSpatulaSearch} onChange={(e)=>hanlderSpatulaItem(e.target.value, 1)} list="dataListSpatulaItems" name="spatulaItems1" id="spatulaItems1" ></input>
         {spatulaItem1 !== "" &&
-        <div>
-          <img src={spatulaItem1} alt="espatulaItem"/>
+        <div className={style.containerImgSpatula}>
+          <img className={style.imgSpatula} src={spatulaItem1} alt="espatulaItem"/>
         </div>
         }
       </div>}
       {showBoard === "spatula2"  &&
-      <div>
-        <input onChange={(e)=>hanlderSpatulaItem(e.target.value, 2)} list="dataListSpatulaItems" name="spatulaItems2" id="spatulaItems2" ></input>
+      <div className={style.containerSpatulaSearch}>
+        <input className={style.inputSpatulaSearch} onChange={(e)=>hanlderSpatulaItem(e.target.value, 2)} list="dataListSpatulaItems" name="spatulaItems2" id="spatulaItems2" ></input>
         {spatulaItem2 !== "" &&
-        <div>
-          <img src={spatulaItem2} alt="espatulaItem"/>
+        <div className={style.containerImgSpatula}>
+          <img className={style.imgSpatula} src={spatulaItem2} alt="espatulaItem"/>
         </div>
         }
       </div>}
@@ -415,7 +442,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         })}
       </datalist>
 
-      <div className={style.builderContainer}>
+      <div className={showBoard=== "early" ? style.builderContainerEarly : style.builderContainer}>
       	{showBoard=== "early" && <Builder setBoardInfo={setBoardInfo} boardInfo={boardInfo} id={showBoard} showName={showName}/>}
 				{showBoard=== "lv7" && <Builder setBoardInfo={setBoardInfo} boardInfo={boardInfo} id={showBoard} showName={showName}/>}
 				{showBoard=== "lv8" && <Builder setBoardInfo={setBoardInfo} boardInfo={boardInfo} id={showBoard} showName={showName}/>}
@@ -424,23 +451,17 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         {showBoard=== "spatula1" && <Builder setBoardInfo={setBoardInfo} boardInfo={boardInfo} id={showBoard} showName={showName}/>}
         {showBoard=== "spatula2" && <Builder setBoardInfo={setBoardInfo} boardInfo={boardInfo} id={showBoard} showName={showName}/>}
       </div>
-          
-        <button className={style.ocultarNombre} onClick={(e)=>{toggleOcultarNombre(e,showName)}}>{showName ? "Mostrar Nombres" : "Ocultar Nombres" }</button>
-        <button className={style.ocultarNombre} onClick={(e)=>{e.preventDefault();setTakePicture(true)}}>Guardar imagen</button>
-        <label>
-        Original Comp to Show in Meta:
-        <select onChange={(e)=>{e.preventDefault();setOriginalComp(e.target.value)}} defaultValue={originalComp}>
-          <option value="lv7">level 7</option>
-          <option value="lv8">level 8</option>
-          <option value="lv9">level 9</option>
-          <option value="lv10">level 10</option>
-          <option value="spatula1">Spatula #1</option>
-          <option value="spatula2">Spatula #2</option>
-        </select>
-        </label>
-      <div>
-        <button onClick={(e)=>{e.preventDefault();handleToogleInfo("campeones")}}>Campeones</button>
-        <button onClick={(e)=>{e.preventDefault();handleToogleInfo("items")}}>Items</button>
+      <div className={style.containerBtnHandlerBuilder}>
+        <div className={style.btnHandlerBuilder} onClick={(e)=>{toggleOcultarNombre(e,showName)}}>{showName ? "Mostrar Nombres" : "Ocultar Nombres" }</div>
+        <div className={style.btnHandlerBuilder} onClick={(e)=>{setTakePicture(true)}}>Guardar imagen</div>
+      </div>
+        
+        
+      <div className={style.containerSecond}>
+        <div className={style.containerRow}>
+        <div className={[style.btnHandlerBuilder, infoChampsItems === "campeones" ? style.btnActive : ""].join(" ")} onClick={(e)=>{e.preventDefault();handleToogleInfo("campeones")}}>Campeones</div>
+        <div className={[style.btnHandlerBuilder, infoChampsItems === "items" ? style.btnActive : ""].join(" ")} onClick={(e)=>{e.preventDefault();handleToogleInfo("items")}}>Items</div>
+        </div>
         {infoChampsItems === "campeones" ? <Champions/> : <Items/>}
       </div>
       
@@ -461,46 +482,70 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         </div>
         <div className={style.containerCarouselFormVertical}>
           Complete Item:
-          <input list="dataListItemsCrafteables1" name="Carousel_Complete_Item1" id="Carousel_Complete_Item1" onChange={(e)=>{e.preventDefault();handlerCompleteItem(e.target.value, "CompleteItem1")}} defaultValue={carouselItems.CompleteItem1 ? carouselItems.CompleteItem1.nombre : "" } disabled={carouselItems["BasicItem1"] !== undefined ? false: true}/>
-          <input list="dataListItemsCrafteables2" name="Carousel_Complete_Item2" id="Carousel_Complete_Item2" onChange={(e)=>{e.preventDefault();handlerCompleteItem(e.target.value, "CompleteItem2")}} defaultValue={carouselItems.CompleteItem2 ? carouselItems.CompleteItem2.nombre : "" } disabled={carouselItems["BasicItem2"] !== undefined ? false: true}/>
-          <input list="dataListItemsCrafteables3" name="Carousel_Complete_Item3" id="Carousel_Complete_Item3" onChange={(e)=>{e.preventDefault();handlerCompleteItem(e.target.value, "CompleteItem3")}} defaultValue={carouselItems.CompleteItem3 ? carouselItems.CompleteItem3.nombre : "" } disabled={carouselItems["BasicItem3"] !== undefined ? false: true}/>
+          <input list="dataListItemsCrafteables1" name="Carousel_Complete_Item1" id="Carousel_Complete_Item1" onChange={(e)=>{e.preventDefault();handlerCompleteItem(e.target.value, "CompleteItem1")}} defaultValue={carouselItems.CompleteItem1 ? carouselItems.CompleteItem1.nombre : "" } disabled={carouselItems["BasicItem1"] !== undefined ? false: true} autocomplete="off"/>
+          <input list="dataListItemsCrafteables2" name="Carousel_Complete_Item2" id="Carousel_Complete_Item2" onChange={(e)=>{e.preventDefault();handlerCompleteItem(e.target.value, "CompleteItem2")}} defaultValue={carouselItems.CompleteItem2 ? carouselItems.CompleteItem2.nombre : "" } disabled={carouselItems["BasicItem2"] !== undefined ? false: true} autocomplete="off"/>
+          <input list="dataListItemsCrafteables3" name="Carousel_Complete_Item3" id="Carousel_Complete_Item3" onChange={(e)=>{e.preventDefault();handlerCompleteItem(e.target.value, "CompleteItem3")}} defaultValue={carouselItems.CompleteItem3 ? carouselItems.CompleteItem3.nombre : "" } disabled={carouselItems["BasicItem3"] !== undefined ? false: true} autocomplete="off"/>
           <datalist id="dataListItemsCrafteables1">
-            {CRAFTEABLE_ITEMS.filter(({combine})=>{return combine[0] === carouselBasicItems["BasicItem1"] || combine[1] === carouselBasicItems["BasicItem1"]}).map((item, i )=>{
+            {[...CRAFTEABLE_ITEMS].filter(({combine})=>{return combine[0] === carouselBasicItems["BasicItem1"] || combine[1] === carouselBasicItems["BasicItem1"]}).map((item, i )=>{
               return <option key={"ListaDeItemsCrafteables"+item.name+i} id={`datalist-${item.apiName}`} value={item.nombre}></option>
             })}
           </datalist>
           <datalist id="dataListItemsCrafteables2">
-            {CRAFTEABLE_ITEMS.filter(({combine})=>{return combine[0] === carouselBasicItems["BasicItem2"] || combine[1] === carouselBasicItems["BasicItem2"]}).map((item, i )=>{
+            {[...CRAFTEABLE_ITEMS].filter(({combine})=>{return combine[0] === carouselBasicItems["BasicItem2"] || combine[1] === carouselBasicItems["BasicItem2"]}).map((item, i )=>{
               return <option key={"ListaDeItemsCrafteables"+item.name+i} id={`datalist-${item.apiName}`} data-value={JSON.stringify(item)} value={item.nombre}></option>
             })}
           </datalist>
           <datalist id="dataListItemsCrafteables3">
-            {CRAFTEABLE_ITEMS.filter(({combine})=>{return combine[0] === carouselBasicItems["BasicItem3"] || combine[1] === carouselBasicItems["BasicItem3"]}).map((item, i )=>{
+            {[...CRAFTEABLE_ITEMS].filter(({combine})=>{return combine[0] === carouselBasicItems["BasicItem3"] || combine[1] === carouselBasicItems["BasicItem3"]}).map((item, i )=>{
               return <option key={"ListaDeItemsCrafteables"+item.name+i} id={`datalist-${item.apiName}`} data-value={JSON.stringify(item)} value={item.nombre}></option>
             })}
           </datalist>
         </div>
       </div>
+      <div className={style.containerCarouselReact}>
+        <CarouselItems carouselItems={carouselItems}/>
       </div>
-
-      <label htmlFor="gameplay">Gameplay:
-          <input type="text" defaultValue={gameplay} id="gameplay"></input>
-          <button onClick={(e)=>{e.preventDefault();agregarGameplay(e)}}>Agregar Gameplay</button>
-      </label>
-      <div className={style.containerYoutube}>
-          {gameplay.map((url,i)=>{
-            return (
-              <div key={"gameplaysURL"+i} className={style.containerVideos}>
-                 <button className={style.btnClose} onClick={(e)=>{e.preventDefault();eliminarGameplay(url)}}>X</button>
-                <Youtube src={url}></Youtube>
-              </div>
-          )
+      </div>
+      <div className={style.containerSecond}>
+      <label htmlFor="aumentos">Aumentos:
+        <input list="dataListAumentos" name="aumentos" id="aumentos"/>
+        <datalist id="dataListAumentos">
+          {listaDeAumentos.map((aum, i )=>{
+            return <option key={"ListaDeAumentos"+aum.name+i} id={`datalist-${aum.apiName}`} data-value={JSON.stringify(aum)} value={aum.apiName}>{aum.name}</option>
           })}
-      </div>
-
-      <label htmlFor="tips">Tips:
-          <textarea  type="text" defaultValue={tips} onChange={(e)=>{e.preventDefault();setTips(e.target.value)}}></textarea>
+        </datalist>
+        <div className={style.btnAgregar} onClick={(e)=>agregarAumento(e)}>Agregar Aumento</div>
       </label>
+      <div className={style.containerAumentos}>
+          
+        {aumentos.map(({icon, apiName})=>{
+          return (
+            <div key={"ImgAumentos"+apiName} className={style.horizontalWrapper}>
+              <button className={style.btnClose} onClick={()=>eliminarAumento(apiName)}>X</button>
+              <img src={urlImgAum+icon.toLowerCase().replace(".tex",".png")} className={style.imgAumento}></img>
+            </div>
+        )
+        })}
+      </div>
+        <label htmlFor="gameplay">Gameplay:
+            <input type="text" defaultValue={gameplay} id="gameplay"></input>
+            <div className={style.btnAgregar} onClick={(e)=>{e.preventDefault();agregarGameplay(e)}}>Agregar Gameplay</div>
+        </label>
+        <div className={style.containerYoutube}>
+            {gameplay.map((url,i)=>{
+              return (
+                <div key={"gameplaysURL"+i} className={style.containerVideos}>
+                  <button className={style.btnClose} onClick={(e)=>{e.preventDefault();eliminarGameplay(url)}}>X</button>
+                  <Youtube src={url}></Youtube>
+                </div>
+            )
+          })}
+        </div>
+
+        <label htmlFor="tips">Tips:
+            <input  type="text" defaultValue={tips} onChange={(e)=>{e.preventDefault();setTips(e.target.value)}}></input>
+        </label>
+      </div>
         <input type="submit" value={`${edit ? "Editar" : "Crear"} Compo`}/>
     </form>
 

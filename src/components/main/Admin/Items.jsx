@@ -351,14 +351,15 @@ const Items = ()=>{
   function handleDragStart(e){
     e.dataTransfer.setData("item", e.target.getAttribute("data-item"));
     e.dataTransfer.setData("from", e.target.getAttribute("data-from"));
+    
 }
 
-  return (
+return (
     <div className={style.containerItems}>
       <div className={style.containerBtn}>
       <button onClick={(e)=>{e.preventDefault();handlePestana(0)}} className={style.btn}>Craftable</button>
-      <button onClick={(e)=>{e.preventDefault();handlePestana(1)}} className={style.btn}>Radiantes</button>
-      <button onClick={(e)=>{e.preventDefault();handlePestana(2)}} className={style.btn}>Emblemas</button>
+      <button onClick={(e)=>{e.preventDefault();handlePestana(1)}} className={style.btn}>Radiants</button>
+      <button onClick={(e)=>{e.preventDefault();handlePestana(2)}} className={style.btn}>Emblems</button>
       </div>
 
       <div className={style.containerItemsInfo}>

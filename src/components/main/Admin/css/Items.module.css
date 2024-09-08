@@ -1,13 +1,13 @@
 :root{
   --containerItemsInfo-width : calc(100%/2);
   --itemsNumber-width: calc(100%/9);
-  --itemsRadiantsNumber-width: calc(100%/10);
+  --itemsRadiantsNumber-width: calc(100%/15);
 }
 .containerItems{
   display: flex;
   position: relative;
   flex-direction: column;
-  
+  align-items: center;
 }
 .containerBtn{
   display: flex;
@@ -17,6 +17,9 @@
 }
 .btn{
   display: flex;
+}
+.btn:hover{
+  cursor: pointer;
 }
 .containerItemsInfo{
   display: flex;
@@ -56,3 +59,4 @@
   border: 1px solid white;
   box-sizing: border-box;
 }
+
