@@ -1,0 +1,35 @@
+.containerGlobal{
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: space-evenly;
+  flex: 1;
+}
+.containerBasicItem{
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: calc(100%/5);
+}
+
+.imgBasicItem{
+  display: flex;
+  width: 100%;
+  position: relative;
+}
+
+.containerCompleteItem{
+  display: flex;
+  position: absolute;
+  width: 50%;
+  z-index: 2;
+  bottom: -20px;
+  right:0
+}
+
+.imgCompleteItem{
+  display: flex;
+  width: 100%;
+}

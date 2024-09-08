@@ -1,0 +1,14 @@
+.contextMenuBuilder{
+  display: flex;
+  position: absolute;
+  top:0;
+  left:0;
+  width: 200px;
+  background-color: var(--bg-primary);
+  z-index: 3;
+  cursor: pointer;
+}
+
+.optionsMenu:hover{
+  background-color: var(--bg-secondary);
+}

@@ -5,9 +5,11 @@ import Youtube from '../../components/youtube/Youtube.jsx';
 import Main from '@components/main/Main.astro';
 import { latestVersion, set } from 'src/json/updates/constantesLatest';
 import { setPBE } from 'src/json/updates/constantesPBE';
+import Twitch from 'src/components/embed/Twitch.jsx';
 //import ContainerMetaPBE from '@components/new-meta-comp/ContainerMetaPBE.astro';
 import ContainerMeta from '@components/meta-comp/ContainerMeta.jsx';
 import {crearJSONSchema} from "src/json/schema/crearJSONSchema";
+import AdComponent from 'src/components/adsense/Adsense.jsx';
 const title = "▷ Mejores Composiciones | TFT Set 12 META COMPS | Teamfight Tactics";
 // Example: Construct a canonical URL using your production domain
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -23,6 +25,15 @@ const JSONSchema = crearJSONSchema({title})
 <meta name="description" content={description}>
 <meta name="keywords" content={keywords}>
 <Layout title={title} JSONSchema={JSONSchema}>
+  <Fragment slot="bodyMainAside">
+
+</Fragment>
+<Fragment slot="bodyMainAsideTwitch">
+    <Twitch transition:persist client:only="react"/>
+</Fragment>
+<Fragment slot="bodyMainAsideAds">
+  <AdComponent/>
+</Fragment>
   <Main>
     <h1 class="titulo">
       Mejores Composiciones Meta Parche {latestVersion}<br />TFT Set {set} | Teamfight Tactics

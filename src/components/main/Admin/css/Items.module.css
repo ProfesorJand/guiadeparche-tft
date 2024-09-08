@@ -1,0 +1,62 @@
+:root{
+  --containerItemsInfo-width : calc(100%/2);
+  --itemsNumber-width: calc(100%/9);
+  --itemsRadiantsNumber-width: calc(100%/15);
+}
+.containerItems{
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+}
+.containerBtn{
+  display: flex;
+  flex-direction: row;
+  gap:5px;
+  box-sizing: border-box;
+}
+.btn{
+  display: flex;
+}
+.btn:hover{
+  cursor: pointer;
+}
+.containerItemsInfo{
+  display: flex;
+  flex-direction: row;
+  background-color: aqua;
+  width: var(--containerItemsInfo-width);
+  flex-wrap: wrap;
+}
+
+.containerItemsHorizontal{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.itemsDrop{
+  display: flex;
+  flex-direction: row;
+  width: var(--itemsNumber-width);
+}
+
+.itemsDropRadiants{
+  display: flex;
+  flex-direction: row;
+  width: var(--itemsRadiantsNumber-width);
+}
+
+.imgItems{
+  display: flex;
+  position: relative;
+  width: 100%;
+  
+}
+
+.imgItems:hover{
+  cursor: grab;
+  border: 1px solid white;
+  box-sizing: border-box;
+}
+

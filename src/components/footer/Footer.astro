@@ -1,30 +1,32 @@
 
-<footer>
-  <div class="footer">
+<div class="footerContainer">
+  <div class="footerContainerInfo">
     <article>
-      <h1 class="titulo">GUIADEPARCHE</h1>
-      <ul>
-        <li>
-          <p>Webpage:  <a href="https://guiadeparche.com/" target="_blank">guiadeparche.com</a></p>
-        </li>
-        <li>
-          <p>Instagram: <a href="https://www.instagram.com/guiadeparche/" target="_blank">@guiadeparche</a></p>
-        </li>
-        <li>
-          <p>Twitter: <a href="https://x.com/guiadeparche" target="_blank">@guiadeparche</a></p>
-        </li>
-        <li>
-          <p>Discord: <a href="https://www.discord.gg/F8rsQrx" target="_blank">@guiadeparche</a></p>
-        </li>
-        <li>
-          <p>Author: <a href="https://www.linkedin.com/in/profesorjand/" target="_blank">«Copyright» profesorjand</a></p>
-        </li>
-      </ul>
+      <h1 class="footerTitulo">GUIADEPARCHE</h1>
+      <nav>
+        <ul>
+          <li>
+            <p>Webpage:  <a href="https://guiadeparche.com/" target="_blank">guiadeparche.com</a></p>
+          </li>
+          <li>
+            <p>Instagram: <a href="https://www.instagram.com/guiadeparche/" target="_blank">@guiadeparche</a></p>
+          </li>
+          <li>
+            <p>Twitter: <a href="https://x.com/guiadeparche" target="_blank">@guiadeparche</a></p>
+          </li>
+          <li>
+            <p>Discord: <a href="https://www.discord.gg/F8rsQrx" target="_blank">@guiadeparche</a></p>
+          </li>
+          <li>
+            <p>Author: <a href="https://www.linkedin.com/in/profesorjand/" target="_blank">«Copyright» profesorjand</a></p>
+          </li>
+        </ul>
+      </nav>
     </article>
   </div>
-  <div class="footer">
+  <div class="footerContainerInfo">
     <article>
-      <h1 class="titulo">JUPESON</h1>
+      <h1 class="footerTitulo">JUPESON</h1>
       <ul>
         <li>
           <p>Twitch:  <a href="https://twitch.tv/jupeson" target="_blank">@Jupeson</a></p>
@@ -46,88 +48,62 @@
         </li>
       </ul>
     </article>
-
   </div>
-</footer>
+</div>
 
 <style>
-  footer {
+  .footerContainer {
     display: flex;
-    position: absolute;
-    bottom:0;
-    width: 100%;
-    height:2.5rem;
-    margin: 0 auto 10px auto;
-    justify-content: center;
-    align-items: flex-start;
-    box-sizing: border-box;
     flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: var(--width-main);
+    flex-direction: row;
+    display: flex;
+    position: relative;
+    box-sizing: border-box;
+    gap:5px;
+    padding:5px;
+    /* height: 100%; */
+
   }
-  .titulo{
+  article{
+    display: flex;
+    flex-direction: column;
+    position:relative;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+  }
+  .footerContainerInfo{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border: 2px solid red;
+    flex:1;
+    box-sizing: border-box;
+  }
+  .footerTitulo{
     font-size:smaller;
     text-decoration: underline;
     text-underline-position: under;
-
-  }
-
-  .footer {
-    width: 100%;
-    flex-direction: column;
-    height: max-content;
-    display: flex;
-    position: relative;
-    min-height: inherit;
     box-sizing: border-box;
-    flex: 1;
-    gap:5px;
-    padding:5px;
   }
-
-  .footer p{
+  .footerContainerInfo p{
     margin: 0;
   }
-
-  a{
-    color:grey
+  .footerContainerInfo a{
+    color:var(--link-color-primary);
   }
-  a:visited{
-    color:grey
+  .footerContainerInfo a:visited{
+    color:var(--link-color-secondary)
   }
-
-  ul{
-    padding-inline-start: 1em;
+  .footerContainerInfo ul{
+    padding-inline-start: 2em;
     gap:5px;
     display:flex;
     flex-direction: column;
-
+    margin:0;
+    box-sizing: border-box;
   }
-
-
-  @media only screen and (min-width: 900px) {
-    footer {
-        width: 50%;
-        flex-direction: row;
-        margin: 0 auto;
-        align-items: flex-start;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-    .footer{
-      width: 50%;
-      aspect-ratio: 16 / 9;
-    }
-
-    .footer article{
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .footer article h1{
-      justify-content: flex-start;
-      
-      
-    }
-  }
-
 </style>

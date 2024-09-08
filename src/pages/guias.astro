@@ -3,12 +3,13 @@ import Layout from "../layouts/Layout.astro"
 import Main from "@components/main/Main.astro";
 import {setPBE} from "../json/updates/constantesPBE.js"
 import Youtube from "@components/youtube/Youtube.jsx";
-const title = '▷ TFT Tips & Tricks | Teamfight Tactics';
 import {crearJSONSchema} from "src/json/schema/crearJSONSchema";
+import Twitch from "@components/embed/Twitch";
 // Example: Construct a canonical URL using your production domain
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 // Example: Construct a URL for SEO meta tags using your current domain
 //const socialImageURL = new URL('/images/preview.png', Astro.url);
+const title = '▷ TFT Tips & Tricks | Teamfight Tactics';
 const description = `✅ Tips/ Consejos; How to Play/ Cómo jugar TFT`;
 const keywords = `TFT Tips, TFT Tricks, TFT Guides, TFT Guias, TFT Consejos`;
 const JSONSchema = crearJSONSchema({title})
@@ -19,6 +20,15 @@ const JSONSchema = crearJSONSchema({title})
 <meta name="description" content={description}>
 <meta name="keywords" content={keywords}>
 <Layout title={title} JSONSchema={JSONSchema}>
+    <Fragment slot="bodyMainAside">
+
+    </Fragment>
+    <Fragment slot="bodyMainAsideTwitch">
+        <Twitch transition:persist client:only="react"/>
+    </Fragment>
+    <Fragment slot="bodyMainAsideAds">
+        <!-- Publicidad -->
+    </Fragment>
     <Main>
         <h1 class="titulo">Guias de Teamfight Tactics Set {setPBE}</h1>
         <div class="contenedor">

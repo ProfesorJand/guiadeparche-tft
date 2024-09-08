@@ -1,0 +1,52 @@
+
+.containerSinergia{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap:5px;
+  flex: 1;
+  padding: 5px 0;
+  box-sizing: border-box;
+}
+
+.containerSinergiaHex{
+  display: flex;
+    position: relative;
+    flex-direction: row;
+    flex: 0 0 calc(100%/5.5);
+    align-items: center;
+    clip-path: polygon(37.5% 0, 75% 25%, 100% 24%, 100% 75%, 75% 75%, 37.5% 100%, 0 75%, 0 25%)
+}
+
+
+.imgHexagono{
+  display: flex;
+  position: absolute;
+  top: 0;
+  width: 50%;
+}
+
+.imgSinergia{
+  display: flex;
+  position: relative;
+  flex:3;
+  z-index: 2;
+  overflow: hidden;
+  scale:0.7
+}
+
+.infoSinergia{
+  display: flex;
+  position: relative;
+  flex:1;
+  font-size: 0.73em;
+  font-weight: 800;
+  padding: 0;
+  margin: 0;
+  justify-content: flex-start;
+  color:black;
+
+}
+

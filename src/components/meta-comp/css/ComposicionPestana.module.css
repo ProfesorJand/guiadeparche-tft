@@ -57,7 +57,7 @@
   .tooltip {
     display: flex;
     position:initial;
-    width: 10%;
+    width: 8%;
     align-items: center;
     justify-content: center;
   }

@@ -11,6 +11,7 @@ const JSONSchema = crearJSONSchema({title})
 import ModalImage from "../components/modal/ModalImagen.jsx";
 import Acordion from "../components/acordion/Acordion.jsx";
 import Youtube from "../components/youtube/Youtube.jsx";
+import Twitch from "@components/embed/Twitch";
 ---
 
 <link rel="canonical" href={canonicalURL} />
@@ -19,6 +20,15 @@ import Youtube from "../components/youtube/Youtube.jsx";
 <meta name="keywords" content={keywords}>
 
 <Layout title={title} JSONSchema={JSONSchema}>
+    <Fragment slot="bodyMainAside">
+
+    </Fragment>
+    <Fragment slot="bodyMainAsideTwitch">
+        <Twitch transition:persist client:only="react"/>
+    </Fragment>
+    <Fragment slot="bodyMainAsideAds">
+        <!-- Publicidad -->
+    </Fragment>
     <Main>
         <h1 class="titulo">Competitivo TFT Latam & Americas</h1>
         

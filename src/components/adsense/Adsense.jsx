@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import style from "./Adsense.module.css"
 
-const AdComponent = ({ direction, dimension }) => {
+const AdComponent = ({ direction="", dimension="cuadrado" }) => {
 
   const [pass, setPass] = useState(false);
   useEffect(()=>{

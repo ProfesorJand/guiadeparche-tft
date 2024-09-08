@@ -47,7 +47,16 @@ const Usuario = defineTable({
   // ],
 });
 
+const Admin = defineTable({
+  columns:{
+    user:column.text({ primaryKey: true }),
+    password: column.text(),
+    email: column.text(),
+    superAdmin: column.boolean({default:false})
+  }
+});
+
 // https://astro.build/db/config
 export default defineDb({
-  tables: {Usuario, Evento, Meta}
+  tables: {Usuario, Evento, Meta, Admin}
 });
