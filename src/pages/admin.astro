@@ -7,7 +7,6 @@ import MainSection from '@components/main/MainSection';
 import MainAside from "@components/main/MainAside";
 import Twitch from '@components/embed/Twitch';
 const allAdmins = await db.select().from(Admins);
-
 ---
 
 <Layout title='admin'>
@@ -15,7 +14,7 @@ const allAdmins = await db.select().from(Admins);
 
     </Fragment>
     <Fragment slot="bodyMainAsideTwitch">
-        <Twitch transition:persist client:only="react"/>
+        <Twitch client:only="react"/>
     </Fragment>
     <Fragment slot="bodyMainAsideAds">
         <!-- Publicidad -->

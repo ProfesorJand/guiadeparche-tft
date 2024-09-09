@@ -330,6 +330,29 @@ const Items = ()=>{
     ["Sugarcraft Emblem", "Pyro Emblem", "Portal Emblem", "Faerie Emblem", "Frost Emblem", "Witchcraft Emblem", "Eldritch Emblem", "Honeymancy Emblem", "Tactician's Crown"]
   ]
 
+  const OTROS_ITEMS = [
+    {
+      nombre:"Queenguard's Armor",
+      apiName:"TFT12_Item_Faerie_Armor",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/tft12/tft12_faeriequeenguardarmor.tft_set12.png",
+    },
+    {
+      nombre:"Faerie Queen's Crown",
+      apiName:"TFT12_Item_Faerie_QueensCrown",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/tft12/tft12_faeriecrown.tft_set12.png"
+    },
+    {
+      apiName: "TFT12_Item_Faerie_QueensCrownRadiant",
+      img: "https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/tft12/tft12_faeriecrown_radiant.tft_set12.png",
+      name: "Corona del Monarca Eterno"
+  },
+  {
+      apiName: "TFT12_Item_Faerie_ArmorRadiant",
+      img: "https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/tft12/tft12_faeriequeenguardarmor_radiant.tft_set12.png",
+      name: "Armadura de Devoción Eterna"
+  },
+  ]
+
  
   useEffect(()=>{
     var resultado = [];
@@ -360,6 +383,7 @@ return (
       <button onClick={(e)=>{e.preventDefault();handlePestana(0)}} className={style.btn}>Craftable</button>
       <button onClick={(e)=>{e.preventDefault();handlePestana(1)}} className={style.btn}>Radiants</button>
       <button onClick={(e)=>{e.preventDefault();handlePestana(2)}} className={style.btn}>Emblems</button>
+      <button onClick={(e)=>{e.preventDefault();handlePestana(3)}} className={style.btn}>Faerie</button>
       </div>
 
       <div className={style.containerItemsInfo}>
@@ -405,7 +429,16 @@ return (
             })
           }
         </div>
-
+        <div className={style.containerItemsHorizontal}>
+          {pestana === 3 && 
+            OTROS_ITEMS.map((dataItem,index)=>{
+              return ( 
+              <div className={style.itemsDropRadiants} key={`otrosItems`+index}>
+                <img  src={dataItem.img} alt={`Basic Item TFT ${dataItem.nombre}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} data-item={JSON.stringify(dataItem)} data-from="itemList" draggable="true"></img>
+              </div>)
+            })
+          }
+        </div>
 
     </div>
   )

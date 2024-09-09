@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react"
+import React, {useEffect, useState, Fragment} from "react"
 import style from "./css/EditarCompoTFT.module.css"
 import Builder from "./Builder.jsx"
 import Champions from "./ChampionsList.jsx"
@@ -12,11 +12,40 @@ import Composicion from "./Composicion.jsx";
 const EditarCompoTFT = () =>{
 
   const [composMeta, setComposMeta] = useState({});
+  const hierarchy = ["S","A","B","C","Meme"];
   useEffect(()=>{
     fetch("https://guiadeparche.com/tftdata/Set12/composMeta.json",{cache:"reload"})
     .then((response)=>response.json())
     .then((data)=>{
-      setComposMeta(data)
+      const sortableArray =  Object.keys(data).map((tier,i)=>{
+        const testing = data[tier].sort((a,b)=>{
+          // console.log(hierarchy.indexOf(b.tier))
+          // if(hierarchy.indexOf(a.tier) > hierarchy.indexOf(b.tier)){
+          //   console.log(a.tier)
+          //   console.log(b.tier)
+          //   return -1
+          // }
+          // if(hierarchy.indexOf(a.tier) < hierarchy.indexOf(b.tier)){
+          //   console.log(a.tier)
+          //   console.log(b.tier)
+          //   return 1
+          // }
+          if(a.posicion < b.posicion){
+            console.log(a.posicion)
+            console.log(b.posicion)
+            return -1
+          }
+          if(a.posicion > b.posicion){
+            console.log(a.posicion)
+            console.log(b.posicion)
+            return 1
+          }
+          return 0
+        })
+        return testing
+      })
+
+      setComposMeta(sortableArray)
     })
     .catch((err)=>{
       console.error(err)
@@ -25,17 +54,21 @@ const EditarCompoTFT = () =>{
 
     return (
     <div className={style.containerMeta}>
-      {Object.keys(composMeta).length > 0 && Object.keys(composMeta).map((tier,i)=>{
-        return (
-          <div key={`containerMeta`+i} className={style.containerMetaTier}>
-                {composMeta[tier].map((compo,index)=>{
-                  return (
-                    <Composicion key={index} compo={compo}/>
-                  )
-                })}
-           </div>
-          )
-        })}
+    {
+      composMeta.length > 0 && composMeta.map((tier,index)=>{
+        return(
+          <Fragment key={index}>
+          {tier.map((compo,i)=>{
+            return (
+              <div key={`containerMeta`+i} className={style.containerMetaTier}>
+                <Composicion compo={compo}/>
+              </div>
+            )
+          })}
+          </Fragment>
+        )
+      })
+    }
     </div>
 
     )

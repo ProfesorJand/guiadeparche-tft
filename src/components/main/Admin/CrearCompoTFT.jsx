@@ -336,7 +336,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           name="position"
           type="number"
           defaultValue={posicion}
-          onChange={(e)=>setPosicion(e.target.value)}
+          onChange={(e)=>setPosicion(Number(e.target.value))}
           min={1}
           required
           />
@@ -478,9 +478,9 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         </div>
         <div className={style.containerCarouselFormVertical}>
           Complete Item:
-          <input list="dataListItemsCrafteables1" name="Carousel_Complete_Item1" id="Carousel_Complete_Item1" onChange={(e)=>{e.preventDefault();handlerCompleteItem(e.target.value, "CompleteItem1")}} defaultValue={carouselItems.CompleteItem1 ? carouselItems.CompleteItem1.nombre : "" } disabled={carouselItems["BasicItem1"] !== undefined ? false: true} autocomplete="off"/>
-          <input list="dataListItemsCrafteables2" name="Carousel_Complete_Item2" id="Carousel_Complete_Item2" onChange={(e)=>{e.preventDefault();handlerCompleteItem(e.target.value, "CompleteItem2")}} defaultValue={carouselItems.CompleteItem2 ? carouselItems.CompleteItem2.nombre : "" } disabled={carouselItems["BasicItem2"] !== undefined ? false: true} autocomplete="off"/>
-          <input list="dataListItemsCrafteables3" name="Carousel_Complete_Item3" id="Carousel_Complete_Item3" onChange={(e)=>{e.preventDefault();handlerCompleteItem(e.target.value, "CompleteItem3")}} defaultValue={carouselItems.CompleteItem3 ? carouselItems.CompleteItem3.nombre : "" } disabled={carouselItems["BasicItem3"] !== undefined ? false: true} autocomplete="off"/>
+          <input list="dataListItemsCrafteables1" name="Carousel_Complete_Item1" id="Carousel_Complete_Item1" onChange={(e)=>{e.preventDefault();handlerCompleteItem(e.target.value, "CompleteItem1")}} defaultValue={carouselItems.CompleteItem1 ? carouselItems.CompleteItem1.nombre : "" } disabled={carouselItems["BasicItem1"] !== undefined ? false: true} autoComplete="off"/>
+          <input list="dataListItemsCrafteables2" name="Carousel_Complete_Item2" id="Carousel_Complete_Item2" onChange={(e)=>{e.preventDefault();handlerCompleteItem(e.target.value, "CompleteItem2")}} defaultValue={carouselItems.CompleteItem2 ? carouselItems.CompleteItem2.nombre : "" } disabled={carouselItems["BasicItem2"] !== undefined ? false: true} autoComplete="off"/>
+          <input list="dataListItemsCrafteables3" name="Carousel_Complete_Item3" id="Carousel_Complete_Item3" onChange={(e)=>{e.preventDefault();handlerCompleteItem(e.target.value, "CompleteItem3")}} defaultValue={carouselItems.CompleteItem3 ? carouselItems.CompleteItem3.nombre : "" } disabled={carouselItems["BasicItem3"] !== undefined ? false: true} autoComplete="off"/>
           <datalist id="dataListItemsCrafteables1">
             {[...CRAFTEABLE_ITEMS].filter(({combine})=>{return combine[0] === carouselBasicItems["BasicItem1"] || combine[1] === carouselBasicItems["BasicItem1"]}).map((item, i )=>{
               return <option key={"ListaDeItemsCrafteables"+item.name+i} id={`datalist-${item.apiName}`} value={item.nombre}></option>
@@ -542,7 +542,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
             <input  type="text" defaultValue={tips} onChange={(e)=>{e.preventDefault();setTips(e.target.value)}}></input>
         </label>
       </div>
-        <input type="submit" value={`${edit ? "Editar" : "Crear"} Compo`}/>
+        <input type="submit" value={`${edit ? "Guardar" : "Crear"} Compo`}/>
     </form>
 
 

@@ -2,13 +2,18 @@ import React from "react";
 import style from "./css/AumentosCompos.module.css"
 
 const AumentosCompos =({aumentos})=>{
+  console.log(aumentos)
   const url = "https://raw.communitydragon.org/latest/game/";
   return (
     <div className={style.containerAumentos}>
-      {aumentos.map((aumento)=>{
+      {aumentos.map((aumento, index)=>{
+        var urlImg = url+aumento.icon.toLowerCase().replace(".tex",".png").replace("hexcore","choiceui")
+        if(urlImg.includes("crest_")){
+          urlImg = urlImg.replace("1","")
+        }
         return (
-          <div className={style.containerAumento}>
-            <img className={style.imgAumento} src={url+aumento.icon.toLowerCase().replace(".tex",".png").replace("hexcore","choiceui")} alt={`aumento ${aumento.name}`}/>
+          <div className={style.containerAumento} key={`aumentos`+index}>
+            <img className={style.imgAumento} src={urlImg} alt={`aumento ${aumento.name}`}/>
           </div>
       )
       })}

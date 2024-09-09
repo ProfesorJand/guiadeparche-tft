@@ -11,10 +11,10 @@ const CampeonOriginal = ({dataCampeon, dataItem, estrellas}) =>{
       </div>
       {itemsCampeon.length > 0 &&
       <div className={style.containerItems}>
-      {itemsCampeon.map(({nombre,img})=>{
+      {itemsCampeon.map(({nombre,img},index)=>{
         return (
-          <div className={style.containerItem} >
-        <img className={style.imgItem} src={img} alt={nombre}></img>
+          <div className={style.containerItem} key={"itemsCampeon"+index} >
+            <img className={style.imgItem} src={img} alt={nombre}></img>
           </div>
         )
       })}

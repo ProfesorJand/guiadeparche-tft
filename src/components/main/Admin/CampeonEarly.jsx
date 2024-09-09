@@ -2,6 +2,7 @@ import React from "react";
 import style from "./css/CampeonEarly.module.css"
 
 const CampeonEarly = ({dataCampeon, dataItem, estrellas}) =>{
+
   const dataCampeonParseado = JSON.parse(dataCampeon)
   const itemsCampeon = dataItem.map(({item})=>JSON.parse(item))
   return (
@@ -10,9 +11,9 @@ const CampeonEarly = ({dataCampeon, dataItem, estrellas}) =>{
         <img className={style.imgCampeon} src={dataCampeonParseado.img} style={{border:`2px solid var(--color-hex-cost-${dataCampeonParseado.coste})`}}></img>
       {itemsCampeon.length > 0 &&
       <div className={style.containerItems}>
-      {itemsCampeon.map(({nombre,img})=>{
+      {itemsCampeon.map(({nombre,img}, index)=>{
         return (
-          <div className={style.containerItem}>
+          <div className={style.containerItem} key={index}>
             <img className={style.imgItem} src={img} alt={nombre}></img>
           </div>
         )

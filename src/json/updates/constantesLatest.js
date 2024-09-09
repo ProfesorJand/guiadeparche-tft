@@ -899,34 +899,5 @@ export const radiantsItems = [
         },
         "img": "https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/radiant/adaptive_helm_radiant.png",
         "name": "Jak'Sho, el Proteico"
-    },
-    {
-        "apiName": "TFT12_Item_Faerie_QueensCrownRadiant",
-        "desc": "Tras infligir daño @MaxNumStacks@ veces, obtienes un <TFTRadiantItemBonus>@TFTUnitProperty.item:TFT12_Faerie_DamageAmp@%</TFTRadiantItemBonus> de %i:scaleDA% por el resto del combate.<br><br><TFTRadiantItemBonus>Tras infligir daño @RadiantMaxStacks@ veces, obtienes un @RadiantMaxHealth*100@% de Vida Máxima, un @RadiantOmnivamp*100@% de Omnivampirismo y un @RadiantDamageAmp*100@% de Amplificación de daño.</TFTRadiantItemBonus><br><br><tftitemrules>Solo las Hadas pueden tener este objeto.</tftitemrules><br><tftitemrules>Manda al campeón a la banca para quitarlo.</tftitemrules>",
-        "effects": {
-            "AD": 0.5,
-            "AP": 50,
-            "AS": 0.25,
-            "MaxNumStacks": 12,
-            "RadiantDamageAmp": 0.5,
-            "RadiantMaxHealth": 0.20000000298023224,
-            "RadiantMaxStacks": 25,
-            "RadiantOmnivamp": 0.30000001192092896
-        },
-        "img": "https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/tft12/tft12_faeriecrown_radiant.tft_set12.png",
-        "name": "Corona del Monarca Eterno"
-    },
-    {
-        "apiName": "TFT12_Item_Faerie_ArmorRadiant",
-        "desc": "Obtienes un <TFTRadiantItemBonus>@HealShieldPower*100@%</TFTRadiantItemBonus> de curaciones y escudos aumentados. Cura un <TFTRadiantItemBonus>@QueenHealRatio*100@%</TFTRadiantItemBonus> del daño infligido por la Reina.<br><br><tftitemrules>Solo las Hadas pueden tener este objeto.</tftitemrules><br><tftitemrules>Manda al campeón a la banca para quitarlo.</tftitemrules>",
-        "effects": {
-            "Armor": 60,
-            "HealShieldPower": 0.6000000238418579,
-            "Health": 1000,
-            "MagicResist": 60,
-            "QueenHealRatio": 0.25
-        },
-        "img": "https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/tft12/tft12_faeriequeenguardarmor_radiant.tft_set12.png",
-        "name": "Armadura de Devoción Eterna"
-    },
+    }
 ]
