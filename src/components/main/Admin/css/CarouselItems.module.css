@@ -33,3 +33,9 @@
   display: flex;
   width: 100%;
 }
+
+@media only screen and (max-width:900px){
+  .containerCompleteItem{
+    bottom:-5px
+  }
+}

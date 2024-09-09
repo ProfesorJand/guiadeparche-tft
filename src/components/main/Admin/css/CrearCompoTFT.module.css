@@ -255,3 +255,14 @@ form > label{
 .savePicture{
   background-color: green;
 }
+
+.btnSubmit{
+  background-color: var(--bg-secondary);
+  color: white;
+  height: 30px;
+}
+
+.btnSubmit:hover{
+  background-color: var(--bg-primary);
+  cursor: pointer;
+}

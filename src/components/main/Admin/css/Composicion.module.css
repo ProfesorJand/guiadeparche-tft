@@ -39,15 +39,14 @@
 }
 
 .containerInfoComp{
-  display: flex;
-    flex-direction: column;
+    display: flex;
     position: relative;
-    flex-flow: column;
+    flex-direction: row;
     flex: 6;
     align-items: flex-start;
     padding-left: 5px;
     justify-content: center;
-
+    flex-wrap: wrap;
 }
 
 .containerInfoChamp{
@@ -73,6 +72,14 @@
   border-radius: 10%;
   padding: 0px 5px;
   font-size: smaller;
+  order:2;
+  width: 50%;
+}
+
+.tituloComp{
+  display: flex;
+  order:1;
+  width: 100%;
 }
 
 .titulo{
@@ -84,6 +91,8 @@
   font-size: smaller;
   font-style: italic;
   width: 100%;
+  order:3;
+  width: 50%;
 }
 
 .btn{
@@ -226,4 +235,103 @@
 
 .btnOpen{
   rotate: 180deg;
+}
+
+@media only screen and (max-width: 900px){
+  .containerInfoPrincipal{
+    flex-wrap: wrap;
+    box-sizing: border-box;
+    row-gap: 5px;
+  }
+  .containerTierImg{
+    width:15%;
+    flex:none;
+    box-sizing: border-box;
+  }
+  .containerInfoComp{
+    width: 85%;
+    flex:none;
+    box-sizing: border-box;
+    justify-content: flex-start;
+    column-gap: 5px;
+  }
+  .containerInfoChamp{
+    padding-bottom: 25px;
+  }
+  .dificultad{
+    width: auto;
+  }
+  .tituloComp{
+    width: 100%;
+  }
+  .containerECT{
+    flex-wrap: wrap;
+    box-sizing: border-box;
+    gap:0;
+  }
+  .containerEGlobal{
+    width: 100%;
+    flex:none;
+    box-sizing: border-box;
+  }
+  .containerE{
+    justify-content: center;
+  }
+  .containerC{
+    width: 40%;
+    flex:none;
+    box-sizing: border-box;
+    padding:0
+  }
+  .containerT{
+    width: 60%;
+    flex:none;
+    box-sizing: border-box;
+    padding: 0 5px;
+  }
+  .containerGlobal{
+    align-items: center;
+  }
+  .containerAP{
+    flex-direction: column;
+  }
+}
+
+@media only screen and (min-width: 900px){
+  .containerInfoComp{
+    display: flex;
+    position: relative;
+    flex-direction: row;
+    flex: 6;
+    align-items: flex-start;
+    padding-left: 5px;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 5px;
+    box-sizing: border-box;
+}
+.dificultad{
+  display: flex;
+  box-sizing: border-box;
+  border-radius: 10%;
+  padding: 0px 5px;
+  font-size: smaller;
+  order:2;
+  width: 40%;
+  justify-content: center;
+}
+.tituloComp{
+  display: flex;
+  order:1;
+  width: 100%;
+}
+.category{
+  font-size: smaller;
+  font-style: italic;
+  width: 100%;
+  order:3;
+  width: 50%;
+}
+
+
 }

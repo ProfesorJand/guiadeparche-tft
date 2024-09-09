@@ -65,7 +65,7 @@ const Composicion = ({compo})=>{
       </div>
       <div className={style.containerInfoComp}>
         <div className={style.dificultad} style={{border:`1px solid ${colorDificulty[compo.dificultad]}`, color:`${colorDificulty[compo.dificultad]}`}}>{compo.dificultad}</div>
-        <div className={style.titulo}>{compo.titulo}</div>
+        <div className={[style.titulo, style.tituloComp].join(" ")}>{compo.titulo}</div>
         <div className={style.category}>{compo.infographicCategory}</div>
       </div>
       <div className={style.containerInfoChamp}>
@@ -117,7 +117,7 @@ const Composicion = ({compo})=>{
         </div>
         <div className={style.containerPosicionamiento}>
           <h3 className={style.titulo}>Late Game</h3>
-          <PosicionamientoCompos boardInfo={compo.boardInfo} titulo={compo.titulo}  originalComp={compo.originalComp} gameplay={compo.gameplay} spatula1={compo.spatulaItem1} spatula2={compo.spatulaItem2}/>
+          <PosicionamientoCompos id={compo.id} boardInfo={compo.boardInfo} titulo={compo.titulo}  originalComp={compo.originalComp} gameplay={compo.gameplay} spatula1={compo.spatulaItem1} spatula2={compo.spatulaItem2}/>
         </div>
       </div>
       <div className={style.containerTips}>

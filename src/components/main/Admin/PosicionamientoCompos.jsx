@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import style from "./css/PosicionamientoCompos.module.css"
 import Youtube from "src/components/youtube/Youtube";
 
-const PosicionamientoCompos = ({titulo, originalComp, boardInfo, gameplay, spatula1, spatula2})=>{
+const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, gameplay, spatula1, spatula2})=>{
   const [niveles, setNiveles] = useState(["lv8"]);
   const [posicionamiento, setPosicionamiento] = useState(originalComp)
-
+  console.log(id)
   useEffect(()=>{
     const array= Object.keys(boardInfo).filter((level)=>{
       if(level !== "early"){
@@ -14,7 +14,7 @@ const PosicionamientoCompos = ({titulo, originalComp, boardInfo, gameplay, spatu
     })
     setNiveles(array)
   },[])
-  const url = "https://guiadeparche.com/tftdata/Set12/"
+  const url = "https://guiadeparche.com/tftdata/Set12/composiciones/"
 
   return (
     <div className={style.containerPosicionamiento}>
@@ -22,12 +22,12 @@ const PosicionamientoCompos = ({titulo, originalComp, boardInfo, gameplay, spatu
 
         {posicionamiento !== "gameplay" && posicionamiento !== "spatula1" && posicionamiento !== "spatula2" &&
         <div className={style.containerImgVideo}>
-          <img className={style.imgPosicionamiento} src={url+titulo+"-"+posicionamiento+".webp"+"?v="+Date.now()} alt=""/>
+          <img className={style.imgPosicionamiento} src={url+id+"-"+posicionamiento+".webp"+"?v="+Date.now()} alt=""/>
         </div>
       }
         {(posicionamiento === "spatula1" || posicionamiento === "spatula2") && 
         <div className={style.containerImgVideo}>
-          <img className={style.imgPosicionamiento} src={url+titulo+"-"+posicionamiento+".webp"+"?v="+Date.now()} alt=""/>
+          <img className={style.imgPosicionamiento} src={url+id+"-"+posicionamiento+".webp"+"?v="+Date.now()} alt=""/>
         </div>
       }
         {

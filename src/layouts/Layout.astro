@@ -195,8 +195,93 @@ const { title, JSONSchema } = Astro.props;
 
 
   @media only screen and (max-width: 900px) {
-    html {
-      background-size: 50px 50px;
+    .bodyLayout{
+      display: flex;
+      position: relative;
+      width: 100vw;
+      flex-direction: column;
+    }
+    .bodyHeader{
+      display: flex;
+      position: sticky;
+      z-index: 9;
+      top:0;
+      width: 100vw;
+      max-width: 100%;
+      height: var(--height-header);
+      background-color: var(--bg-primary);
+      flex-direction: row;
+    }
+    .bodyInfo{
+      display: flex;
+      width: 100vw;
+      max-width: 100%;
+      position: relative;
+      flex-direction: column;
+      height: 100%;
+      min-height: 92vh;
+    }
+    .bodyAside{
+      display: flex;
+      width: 100%;
+      /* background-color: aqua; */
+    }
+    .bodyMain{
+      display: flex;
+      width: 100%;
+      position: relative;
+      flex-direction: column;
+    }
+    .bodyMainAside{
+      display: flex;
+      position: relative;
+      flex-direction: column;
+      width: 100%;
+      order:2
+    }
+    .bodyMainAsideSticky{
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      background-color: var(--bg-secondary);
+      width: 100%;
+      box-sizing: border-box;
+      gap:5px;
+      justify-content: space-between;
+    }
+    .bodyMainAsideMenu{
+      display: flex;
+      position: relative;
+      flex-direction: column;
+      box-sizing: border-box;
+    }
+    .bodyMainAsideEmbed{
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      box-sizing: border-box;
+      gap:5px;
+    }
+    .bodyMainAsideAds{
+      display: flex;
+      position:relative;
+      width: 100%;
+    }
+    .bodyMainSection{
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      width: 100%;
+      background-color: var(--bg-main);
+    }
+    .bodyFooter{
+      display: flex;
+      position: relative;
+      justify-content: center;
+      width: 100vw;
+      max-width: 100%;
+      /* height: var(--height-footer); */
+      /* bottom:0; */
     }
     main{
       width: 100%;
@@ -250,14 +335,12 @@ const { title, JSONSchema } = Astro.props;
       width: calc((100vw - var(--width-main))/2);
       /* background-color: aqua; */
     }
-
     .bodyMain{
       display: flex;
       width: var(--width-main);
       position: relative;
       flex-direction: row;
     }
-
     .bodyMainAside{
       display: flex;
       position: relative;
@@ -314,8 +397,6 @@ const { title, JSONSchema } = Astro.props;
       justify-content: center;
       width: 100vw;
       max-width: 100%;
-      /* height: var(--height-footer); */
-      /* bottom:0; */
     }
   }
 </style>

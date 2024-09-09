@@ -35,7 +35,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
     const [spatulaItem1, setSpatulaItem1] = useState("");
     const [spatulaItem2, setSpatulaItem2] = useState("");
     const [originalComp, setOriginalComp] = useState("lv8");
-    const [id, setId] =useState(null)
+    const [id, setId] =useState(generadorID())
 
     useEffect(()=>{
       const dataAumentos = itemsData.filter(({apiName})=>{
@@ -96,18 +96,14 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
 
     useEffect(()=>{
       if(takePicture){
-        if(!titulo){
-          alert("Debes añadir un titulo primero para poder guardar las imagenes")
-          return
-        }
-        async function captureAndConvertToWebP(id){
-          const element = document.getElementById(id);
+        async function captureAndConvertToWebP(showBoardID){
+          const element = document.getElementById(showBoardID);
           const desiredWidth = 1920;  // Cambia esto al ancho deseado
           const desiredHeight = 1080; // Cambia esto al alto deseado
           toBlob(element)
           .then((blob) => {
               const webpBlob = new Blob([blob], { type: 'image/webp' });
-              const nombreArchivo = titulo ? titulo + `-${id}` : `default-${id}`;
+              const nombreArchivo = id + `-${showBoardID}`;
               // Crear un objeto FormData para enviar los datos
               const formData = new FormData();
               formData.append('file', webpBlob, `${nombreArchivo}.webp`);
@@ -120,7 +116,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
               .then(response => response.json())
               .then(data => {
                   if (data.status === 'success') {
-                      setPictureSave((oldObject)=>{return {...oldObject,[id]:true}})
+                      setPictureSave((oldObject)=>{return {...oldObject,[showBoardID]:true}})
                       alert('File uploaded successfully');
                   } else {
                     alert('File upload failed:', data.message);
@@ -131,7 +127,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
               });
           })
           .catch((error) => {
-            alert('Error generating image', error);
+            alert('Error generating image'+ error.message);
           });
         }
         captureAndConvertToWebP(showBoard)
@@ -363,6 +359,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           type="text"
           defaultValue={titulo}
           onChange={(e)=>setTitulo(e.target.value)}
+          placeholder="Type Tittle"
           required
         />
       </label>
@@ -416,7 +413,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
       <h2>{showBoard=== "early" ? "Early" : showBoard === "lv7" ? "Level 7": showBoard === "lv8" ? "Level 8": showBoard === "lv9" ? "Level 9" : showBoard=== "lv10" ? "Level 10": showBoard=== "spatula1" ? "Spatula #1": showBoard=== "spatula2" ? "Spatula #2" : ""}</h2>
       {showBoard === "spatula1"  &&
       <div className={style.containerSpatulaSearch}>
-        <input className={style.inputSpatulaSearch} onChange={(e)=>hanlderSpatulaItem(e.target.value, 1)} list="dataListSpatulaItems" name="spatulaItems1" id="spatulaItems1" ></input>
+        <input className={style.inputSpatulaSearch} onChange={(e)=>hanlderSpatulaItem(e.target.value, 1)} list="dataListSpatulaItems" name="spatulaItems1" id="spatulaItems1" placeholder="Select Spatula"></input>
         {spatulaItem1 !== "" &&
         <div className={style.containerImgSpatula}>
           <img className={style.imgSpatula} src={spatulaItem1} alt="espatulaItem"/>
@@ -425,7 +422,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
       </div>}
       {showBoard === "spatula2"  &&
       <div className={style.containerSpatulaSearch}>
-        <input className={style.inputSpatulaSearch} onChange={(e)=>hanlderSpatulaItem(e.target.value, 2)} list="dataListSpatulaItems" name="spatulaItems2" id="spatulaItems2" ></input>
+        <input className={style.inputSpatulaSearch} onChange={(e)=>hanlderSpatulaItem(e.target.value, 2)} list="dataListSpatulaItems" name="spatulaItems2" id="spatulaItems2" placeholder="Select Spatula"></input>
         {spatulaItem2 !== "" &&
         <div className={style.containerImgSpatula}>
           <img className={style.imgSpatula} src={spatulaItem2} alt="espatulaItem"/>
@@ -504,7 +501,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
       </div>
       <div className={style.containerSecond}>
       <label htmlFor="aumentos">Aumentos:
-        <input list="dataListAumentos" name="aumentos" id="aumentos"/>
+        <input list="dataListAumentos" name="aumentos" id="aumentos" placeholder="Select Augments - Max 6"/>
         <datalist id="dataListAumentos">
           {listaDeAumentos.map((aum, i )=>{
             return <option key={"ListaDeAumentos"+aum.name+i} id={`datalist-${aum.apiName}`} data-value={JSON.stringify(aum)} value={aum.apiName}>{aum.name}</option>
@@ -524,7 +521,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         })}
       </div>
         <label htmlFor="gameplay">Gameplay:
-            <input type="text" defaultValue={gameplay} id="gameplay"></input>
+            <input type="text" defaultValue={gameplay} id="gameplay" placeholder="YT Video Right Clic - Copy URL - Paste Here"></input>
             <div className={style.btnAgregar} onClick={(e)=>{e.preventDefault();agregarGameplay(e)}}>Agregar Gameplay</div>
         </label>
         <div className={style.containerYoutube}>
@@ -539,10 +536,10 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         </div>
 
         <label htmlFor="tips">Tips:
-            <input  type="text" defaultValue={tips} onChange={(e)=>{e.preventDefault();setTips(e.target.value)}}></input>
+            <input  type="text" defaultValue={tips} onChange={(e)=>{e.preventDefault();setTips(e.target.value)}} placeholder="Write Tips Text"></input>
         </label>
       </div>
-        <input type="submit" value={`${edit ? "Guardar" : "Crear"} Compo`}/>
+        <input className={style.btnSubmit} type="submit" value={`${edit ? "Guardar" : "Crear"} Compo`}/>
     </form>
 
 
