@@ -14,9 +14,9 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
     const urlImgAum = "https://raw.communitydragon.org/latest/game/"
     const shadowCategories = ["Fast 8","Specifics Augments","3 Stars"]
     const infographicCategories = ["Roll Lv5","Roll Lv6","Roll Lv7","Roll Lv8","Roll Lv9","Roll Lv10"]
-    const [tier, setTier] = useState("S")
+    const [tier, setTier] = useState("")
     const [posicion, setPosicion] = useState(1)
-    const [dificultad, setDificultad] = useState("Easy")
+    const [dificultad, setDificultad] = useState("")
     const [titulo, setTitulo] = useState("");
     const [shadowCategory, setShadowCategory] = useState(shadowCategories[0])
     const [infographicCategory, setInfographicCategory] = useState(infographicCategories[0])
@@ -221,6 +221,9 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         case "Spatula":
         combineNumber = 8
         break;
+        case "Frying Pan":
+          combineNumber = 9
+        break;
         default:
           break;
       }
@@ -316,6 +319,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
               name="tiers"
               id="tiers"
               onChange={(e)=>setTier(e.target.value)}
+              defaultValue={edittier || tier}
               required
           >
               <option value="S">S</option>
@@ -331,7 +335,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
       <input
           name="position"
           type="number"
-          defaultValue={posicion}
+          defaultValue={editposicion || posicion}
           onChange={(e)=>setPosicion(Number(e.target.value))}
           min={1}
           required
@@ -344,6 +348,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
             name="dificulty"
             id="dificulty"
             onChange={(e)=>setDificultad(e.target.value)}
+            defaultValue={editdificultad || dificultad}
             required
         >
             <option value="Easy">Easy</option>
@@ -357,16 +362,16 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         <input
           name="title"
           type="text"
-          defaultValue={titulo}
+          defaultValue={edittitulo || titulo}
           onChange={(e)=>setTitulo(e.target.value)}
           placeholder="Type Tittle"
           required
         />
       </label>
 
-      <label htmlFor="tiers">
+      <label htmlFor="shadowcategory">
       <span>Shadow Category:</span>
-        <select name="tiers" id="tiers" onChange={(e)=>setShadowCategory(e.target.value)} required>
+        <select name="shadowcategory" id="shadowcategory" onChange={(e)=>setShadowCategory(e.target.value)} defaultValue={editshadowCategory || shadowCategories} required>
           {shadowCategories.map((cat)=>{
             return (
               <option key={cat} value={cat}>{cat}</option>
@@ -375,9 +380,9 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         </select>
       </label>
 
-      <label htmlFor="tiers">
+      <label htmlFor="infographiccategory">
       <span>Infographic Category:</span>
-        <select name="tiers" id="tiers" onChange={(e)=>setInfographicCategory(e.target.value)} required>
+        <select name="infographiccategory" id="infographiccategory" onChange={(e)=>setInfographicCategory(e.target.value)}  defaultValue={editinfographicCategory || infographicCategory} required>
           {infographicCategories.map((cat)=>{
             return (
               <option key={cat} value={cat}>{cat}</option>
