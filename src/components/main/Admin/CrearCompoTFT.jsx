@@ -3,7 +3,7 @@ import style from "./css/CrearCompoTFT.module.css"
 import Builder from "./Builder.jsx"
 import Champions from "./ChampionsList.jsx"
 import Items from "./Items.jsx";
-import {augmentsIDList, itemsData} from "../../../json/updates/constantesLatest.js"
+import {augmentsIDList, itemsDataIngles} from "../../../json/updates/constantesLatest.js"
 import Youtube from "../../youtube/Youtube.jsx";
 import { toBlob } from 'html-to-image';
 import { BASIC_ITEMS, CRAFTEABLE_ITEMS, dataTFTItems } from "src/stores/dataTFT.js";
@@ -38,7 +38,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
     const [id, setId] =useState(generadorID())
 
     useEffect(()=>{
-      const dataAumentos = itemsData.filter(({apiName})=>{
+      const dataAumentos = itemsDataIngles.filter(({apiName})=>{
         return augmentsIDList.includes(apiName)
       })
       setListaDeAumentos(dataAumentos)
@@ -500,7 +500,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
       </div>
       </div>
       <div className={style.containerSecond}>
-      <label htmlFor="aumentos">Aumentos:
+      <label htmlFor="aumentos">Augments:
         <input list="dataListAumentos" name="aumentos" id="aumentos" placeholder="Select Augments - Max 6"/>
         <datalist id="dataListAumentos">
           {listaDeAumentos.map((aum, i )=>{

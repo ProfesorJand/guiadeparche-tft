@@ -28,6 +28,10 @@ export const datosTFT = await fetchingDataTFT({version,idioma,pais});
 export const championsTFT = await datosTFT.sets[set].champions;
 export const itemsData = await datosTFT.items;
 
+export const datosTFTIngles = await fetchingDataTFT({version:"latest",idioma:"en",pais:"us"});
+export const championsTFTIngles = await datosTFTIngles.sets[set].champions;
+export const itemsDataIngles = await datosTFTIngles.items;
+
 export const radiants = await itemsData.filter(({apiName})=>{
     return apiName.includes("Radiant")
 }).map(({apiName, desc, effects, icon, name})=>{
