@@ -66,7 +66,7 @@ const Sinergias = ({sinergias})=>{
 
       <div className={style.containerSinergia}>
     {getMinMaxTraits(sortable).map((key,i)=>{
-      if(i < 6){
+      if(i < 5){
         if(checkColor(traitsColors[key.trait][key.min])?.backgroundColor !== colorHex.default){
   
           return (
