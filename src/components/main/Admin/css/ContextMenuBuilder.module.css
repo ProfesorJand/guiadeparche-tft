@@ -1,7 +1,7 @@
 .contextMenuBuilder{
   display: flex;
   position: absolute;
-  top:0;
+  bottom:100%;
   left:0;
   width: 200px;
   background-color: var(--bg-primary);
