@@ -423,7 +423,6 @@ const Items = ()=>{
     MATRIZ_ITEMS_CRAFTEABLES.forEach((fila, x)=>{
       fila.forEach((item, y)=>{
        const busqueda = CRAFTEABLE_ITEMS.find(({nombre})=>{
-        console.log({nombre, item})
           return nombre === item
         })
         if(busqueda && itemsCrafteables.length <= 89){

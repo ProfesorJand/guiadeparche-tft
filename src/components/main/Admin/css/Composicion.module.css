@@ -98,7 +98,7 @@
 .btn{
   display: flex;
   width: 100%;
-  flex:1
+  flex:0 0 calc(100% / 3);
 }
 
 .containerInfoSecundario{

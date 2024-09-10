@@ -74,6 +74,11 @@ export const BASIC_ITEMS = [
     apiName:"spatula",
     img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/spatula.png",
   },
+  {
+    nombre:"Frying Pan",
+    apiName:"frying_pan",
+    img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/standard/frying_pan.png",
+  },
 ]
 
 export const CRAFTEABLE_ITEMS = [
@@ -141,6 +146,13 @@ export const CRAFTEABLE_ITEMS = [
     combine:[0,8]
   },
   {
+    nombre:"Hunter Emblem",
+    apiName:"TFT12_Item_HunterEmblemItem",
+    img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_hunter.png",
+    sinergia:"Hunter",
+    combine:[0,9]
+  },
+  {
     nombre:"Red Buff",
     apiName:"red_buff",
     img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/redbuff.png",
@@ -197,6 +209,13 @@ export const CRAFTEABLE_ITEMS = [
     combine:[1,8]
   },
   {
+    nombre:"Multistriker Emblem",
+    apiName:"TFT12_Item_MultistrikerEmblemItem",
+    img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_multistriker.png",
+    sinergia:"Multistriker",
+    combine:[1,9]
+  },
+  {
     nombre:"Rabadon's Deathcap",
     apiName:"rabadons_deathcap",
     img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/rabadons_deathcap.png",
@@ -246,6 +265,13 @@ export const CRAFTEABLE_ITEMS = [
     combine:[2,8]
   },
   {
+    nombre:"Mage Emblem",
+    apiName:"TFT12_Item_MageEmblemItem",
+    img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_mage.png",
+    sinergia:"Mage",
+    combine:[2,9]
+  },
+  {
     nombre:"Blue Buff",
     apiName:"blue_buff",
     img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/blue_buff.png",
@@ -288,6 +314,13 @@ export const CRAFTEABLE_ITEMS = [
     combine:[3,8]
   },
   {
+    nombre:"Scholar Emblem",
+    apiName:"TFT12_Item_ScholarEmblemItem",
+    img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_scholar.png",
+    sinergia:"Scholar",
+    combine:[3,9]
+  },
+  {
     nombre:"Bramble Vest",
     apiName:"bramble_vest",
     img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/bramble_vest.png",
@@ -323,6 +356,13 @@ export const CRAFTEABLE_ITEMS = [
     combine:[4,8]
   },
   {
+    nombre:"Bastion Emblem",
+    apiName:"TFT12_Item_BastionEmblemItem",
+    img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_bastion.png",
+    sinergia:"Bastion",
+    combine:[4,9]
+  },
+  {
     nombre:"Dragons Claw",
     apiName:"dragons_claw",
     img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/dragons_claw.png",
@@ -351,6 +391,13 @@ export const CRAFTEABLE_ITEMS = [
     combine:[5,8]
   },
   {
+    nombre:"Preserver Emblem",
+    apiName:"TFT12_Item_PreserverEmblemItem",
+    img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_preserver.png",
+    sinergia:"Preserver",
+    combine:[5,9]
+  },
+  {
     nombre:"Warmog's Armor",
     apiName:"warmogs_armor",
     img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/warmogs_armor.png",
@@ -372,6 +419,13 @@ export const CRAFTEABLE_ITEMS = [
     combine:[6,8]
   },
   {
+    nombre:"Shapeshifter Emblem",
+    apiName:"TFT12_Item_ShapeshifterEmblemItem",
+    img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_shapeshifter.png",
+    sinergia:"Shapeshifter",
+    combine:[6,9]
+  },
+  {
     nombre:"Thieve's Gloves",
     apiName:"thieves_gloves",
     img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/thieves_gloves.png",
@@ -386,10 +440,31 @@ export const CRAFTEABLE_ITEMS = [
     combine:[7,8]
   },
   {
+    nombre:"Warrior Emblem",
+    apiName:"TFT12_Item_WarriorEmblemItem",
+    img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_warrior.png",
+    sinergia:"Warrior",
+    combine:[7,9]
+  },
+  {
     nombre:"Tactician's Crown",
     apiName:"tacticians_crown",
     img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/tacticians_crown.png",
     sinergia:"Witchcraft",
     combine:[8,8]
+  },
+  {
+    nombre:"Tacticians Ring",
+    apiName:"TFT_Item_TacticiansRing",
+    img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/standard/tacticians_ring.png",
+    sinergia:"TacticiansRing",
+    combine:[8,9]
+  },
+  {
+    nombre:"Tacticians Scepter",
+    apiName:"TFT_Item_TacticiansScepter",
+    img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/standard/tacticians_scepter.png",
+    sinergia:"TacticiansScepter",
+    combine:[8,9]
   },
 ]
