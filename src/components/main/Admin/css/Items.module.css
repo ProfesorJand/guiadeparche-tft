@@ -1,6 +1,6 @@
 :root{
   --containerItemsInfo-width : calc(100%/2);
-  --itemsNumber-width: calc(100%/9);
+  --itemsNumber-width: calc(100%/10);
   --itemsRadiantsNumber-width: calc(100%/15);
 }
 .containerItems{
