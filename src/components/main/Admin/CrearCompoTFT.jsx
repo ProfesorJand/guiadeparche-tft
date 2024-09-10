@@ -306,7 +306,8 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
               console.error('Error:', error);
           });
         }else{
-          alert("Faltan campos por llenar")
+          const mensaje= !tier && "\nTier " + !posicion && "\nPosicion " + !dificultad && "\nDificultad "  + !shadowCategory && "\nShadowCategory " + !aumentos.length && "\nAumentos " + !Object.keys(carouselItems).length && "\nCarousel Items " + !Object.keys(boardInfo).length && "\nLlenar la compo de campeones " + !Object.keys(pictureSave).length && "\nGuardar Imagenes ";
+          alert("Faltan campos por llenar: " + mensaje)
           return
         }
       }
