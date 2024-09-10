@@ -21,8 +21,8 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
         elemento.classList.toggle(style.hideNombreCampeon, showName)
     });
   },[showName])
-  
-  
+
+ 
   useEffect(() => {
     function llenarBoard(info) {
       info &&
@@ -225,6 +225,8 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
           }
         });
       });
+    }else{
+      setBoardInfo(({ [id]:value, ...boardInfo})=>boardInfo)
     }
   }
 
