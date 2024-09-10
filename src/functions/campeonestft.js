@@ -368,7 +368,7 @@ export const listaCampeones = [
     {
         nombre:"Rumble",
         img:"/campeones/set12/rumble.webp",
-        coste:1,
+        coste:2,
         sinergia:["Sugarcraft","Vanguard", "Blaster"]
     },
     {
