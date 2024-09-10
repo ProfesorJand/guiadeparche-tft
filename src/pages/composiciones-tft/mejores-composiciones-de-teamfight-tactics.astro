@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 //import ContainerMeta from '../../components/new-meta-comp/ContainerMeta.astro';
 import Youtube from '../../components/youtube/Youtube.jsx';
+import Composicion from "src/components/main/Admin/Composicion.jsx";
 import Main from '@components/main/Main.astro';
 import { latestVersion, set } from 'src/json/updates/constantesLatest';
 import { setPBE } from 'src/json/updates/constantesPBE';
@@ -18,7 +19,46 @@ const socialImageURL = new URL('/images/preview.png', Astro.url);
 const description = `✅ Best TFT Meta Comps and Tierlist Set 12, composiciones meta "FREE ELO" Set 12 Teamfight Tactics`;
 const keywords = `TFT Meta, Meta comps, comps TFT, comp TFT, Meta TFT, composiciones TFT, build TFT`;
 const JSONSchema = crearJSONSchema({title})
-
+const hierarchy = ["S","A","B","C","Meme"];
+const composMeta = await fetch("https://guiadeparche.com/tftdata/Set12/composMeta.json",{cache:"reload"})
+    .then((response)=>response.json())
+    .then((data)=>{
+      const sortableArray =  Object.keys(data).map((tier,i)=>{
+        const testing = data[tier].sort((a,b)=>{
+          // console.log(hierarchy.indexOf(b.tier))
+          // if(hierarchy.indexOf(a.tier) > hierarchy.indexOf(b.tier)){
+          //   console.log(a.tier)
+          //   console.log(b.tier)
+          //   return -1
+          // }
+          // if(hierarchy.indexOf(a.tier) < hierarchy.indexOf(b.tier)){
+          //   console.log(a.tier)
+          //   console.log(b.tier)
+          //   return 1
+          // }
+          if(a.posicion < b.posicion){
+            return -1
+          }
+          if(a.posicion > b.posicion){
+            return 1
+          }
+          return 0
+        })
+        return testing
+      }).sort((a,b)=>{
+          if(hierarchy.indexOf(a[0].tier) > hierarchy.indexOf(b[0].tier)){
+            return 1
+          }
+          if(hierarchy.indexOf(a[0].tier) < hierarchy.indexOf(b[0].tier)){
+            return -1
+          }
+          return 0
+      })
+      return sortableArray
+    })
+    .catch((err)=>{
+      console.error(err)
+    })
 ---
 <link rel="canonical" href={canonicalURL} />
 <!-- <meta property="og:image" content={socialImageURL} /> -->
@@ -36,7 +76,7 @@ const JSONSchema = crearJSONSchema({title})
 </Fragment>
   <Main>
     <h1 class="titulo">
-      Mejores Composiciones Meta Parche {latestVersion}<br />TFT Set {set} | Teamfight Tactics
+      Mejores Composiciones Meta Parche {latestVersion === "14.17" && "14.18"}<br />TFT Set {set} | Teamfight Tactics
     </h1>
     <div class="videosYT">
       <Youtube src="https://youtube.com/playlist?list=PLxRnNvReiLMEriFDu0UxXScDabCIX-PWy&si=YW7NdSvPfu9dQhx9" client:load></Youtube>
@@ -44,7 +84,24 @@ const JSONSchema = crearJSONSchema({title})
     </div>
     <div id="ContainerMetaPBE">
       <!-- <ContainerMetaPBE version={latestVersion} set={setPBE}/> -->
-      <ContainerMeta version={latestVersion} set={set} client:load/>
+      <!-- <ContainerMeta version={latestVersion} set={set} client:load/> -->
+      <div class={"containerMeta"}>
+        {
+          composMeta && composMeta.map((tier)=>{
+            return(
+              <Fragment >
+              {tier.map((compo,i)=>{
+                return (
+                  <div class={"containerMetaTier"}>
+                    <Composicion compo={compo} admin={false} client:only="react"/>
+                  </div>
+                )
+              })}
+              </Fragment>
+            )
+          })
+        }
+        </div>
     </div>
   </Main>
 </Layout>
@@ -145,6 +202,19 @@ const JSONSchema = crearJSONSchema({title})
   .goldText{
     color:gold
   }
+  .containerMeta{
+  display: flex;
+  position: relative;
+  gap:10px;
+  flex-direction: column;
+}
+
+.containerMetaTier{
+  display: flex;
+  position: relative;
+  gap:10px;
+  flex-direction: column;
+}
 </style>
 
 <script>

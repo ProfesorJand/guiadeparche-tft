@@ -6,12 +6,13 @@ import {db, Admin as Admins} from "astro:db";
 import MainSection from '@components/main/MainSection';
 import MainAside from "@components/main/MainAside";
 import Twitch from '@components/embed/Twitch';
+import FiltroComps from '@components/main/Admin/FiltroComps';
 const allAdmins = await db.select().from(Admins);
 ---
 
 <Layout title='admin'>
     <Fragment slot="bodyMainAside">
-
+        <FiltroComps client:only="react">
     </Fragment>
     <Fragment slot="bodyMainAsideTwitch">
         <Twitch client:only="react"/>
