@@ -29,3 +29,13 @@ form{
     flex-direction: column;
     gap:5px
 }
+
+@media only screen and (max-width:900px) {
+    .containerLogin{
+        position: relative;
+        left: inherit;
+        top:inherit;
+        transform: inherit;
+    }
+
+}
