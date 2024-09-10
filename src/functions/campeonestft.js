@@ -43,7 +43,7 @@ export const traitsColors = {
         7:imgHex[2],
         10:imgHex[3]
     },
-    Fearie:{
+    Faerie:{
         2:imgHex[0],
         4:imgHex[1],
         6:imgHex[2],

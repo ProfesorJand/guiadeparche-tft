@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import style from "./css/Sinergias.module.css"
 import { traitsColors, imgHex } from "src/functions/campeonestft";
 const Sinergias = ({sinergias})=>{
@@ -60,10 +60,6 @@ const Sinergias = ({sinergias})=>{
     });
   
     return result;
-  }
-
-  function checkActiveTrait(trait, min){
-
   }
 
   return (

@@ -295,6 +295,9 @@
   .containerAP{
     flex-direction: column;
   }
+  .containerTips{
+    font-size: small;
+  }
 }
 
 @media only screen and (min-width: 900px){

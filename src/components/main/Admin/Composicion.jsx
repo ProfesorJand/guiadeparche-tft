@@ -120,9 +120,9 @@ const Composicion = ({compo})=>{
           <PosicionamientoCompos id={compo.id} boardInfo={compo.boardInfo} titulo={compo.titulo}  originalComp={compo.originalComp} gameplay={compo.gameplay} spatula1={compo.spatulaItem1} spatula2={compo.spatulaItem2}/>
         </div>
       </div>
-      <div className={style.containerTips}>
+      {compo.tips && <div className={style.containerTips}>
         Tip: {compo.tips}
-      </div>
+      </div>}
     </div>
     {editId === compo.id &&
     <CrearCompoTFT

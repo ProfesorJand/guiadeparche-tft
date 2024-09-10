@@ -12,7 +12,8 @@ const AdminPanel = ({allAdmins})=>{
        loadDataTFTFromAPI({version:"latest", idioma:"es", pais:"ar"})
     },[])
 
-    
+    console.log(adminName)
+    console.log(isLoged)
     function cerrarSesion(){
         setIsLoged(false)
     }
