@@ -44,9 +44,9 @@ export const traitsColors = {
         10:imgHex[3]
     },
     Faerie:{
-        2:imgHex[0],
-        4:imgHex[1],
-        6:imgHex[2],
+        3:imgHex[0],
+        5:imgHex[1],
+        7:imgHex[2],
         9:imgHex[3]
     },
     Frost:{
@@ -73,7 +73,7 @@ export const traitsColors = {
         3:imgHex[0],
         5:imgHex[1],
         7:imgHex[2],
-        9:imgHex[3]
+        10:imgHex[3]
     },
     Multistriker:{
         3:imgHex[0],
