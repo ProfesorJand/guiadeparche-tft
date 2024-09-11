@@ -285,7 +285,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           spatulaItem2,
           originalComp
         }
-        if(tier && posicion && dificultad && titulo && shadowCategory && infographicCategory && aumentos.length && Object.keys(carouselItems).length && Object.keys(boardInfo).length && Object.keys(pictureSave).length){
+        if(tier && posicion && dificultad && titulo && shadowCategory && infographicCategory && aumentos.length && Object.keys(carouselItems).length && Object.keys(boardInfo).length && Object.keys(takePicture).length){
 
           fetch('https://guiadeparche.com/tftdata/Set12/crearCompoMeta.php', {
             method: 'POST',
@@ -306,7 +306,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
               console.error('Error:', error);
           });
         }else{
-          const mensaje= !tier && "\nTier " + !posicion && "\nPosicion " + !dificultad && "\nDificultad "  + !shadowCategory && "\nShadowCategory " + !aumentos.length && "\nAumentos " + !Object.keys(carouselItems).length && "\nCarousel Items " + !Object.keys(boardInfo).length && "\nLlenar la compo de campeones " + !Object.keys(pictureSave).length && "\nGuardar Imagenes ";
+          const mensaje= !tier && "\nTier " + !posicion && "\nPosicion " + !dificultad && "\nDificultad "  + !shadowCategory && "\nShadowCategory " + !aumentos.length && "\nAumentos " + !Object.keys(carouselItems).length && "\nCarousel Items " + !Object.keys(boardInfo).length && "\nLlenar la compo de campeones " + !Object.keys(takePicture).length && `\nGuardar Imagenes `;
           alert("Faltan campos por llenar: " + mensaje)
           return
         }
