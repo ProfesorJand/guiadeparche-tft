@@ -6,7 +6,7 @@ export const updateAction = (action)=>{
   defaultAction.set(action)
 }
 
-const hierarchy = ["S","A","B","C","Meme"];
+const hierarchy = ["S","A","B","C","D","Meme"];
 
 export const loadCompsMeta = ()=>{
   task(async()=>{

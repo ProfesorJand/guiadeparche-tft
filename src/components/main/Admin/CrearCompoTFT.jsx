@@ -347,7 +347,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
               <option value="A">A</option>
               <option value="B">B</option>
               <option value="C">C</option>
-              <option value="C">D</option>
+              <option value="D">D</option>
               <option value="MEME">MEME</option>
           </select>
       </label>
