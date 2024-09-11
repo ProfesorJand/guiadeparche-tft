@@ -2,7 +2,6 @@ import React from "react";
 import style from "./css/AumentosCompos.module.css"
 
 const AumentosCompos =({aumentos})=>{
-  console.log(aumentos)
   const url = "https://raw.communitydragon.org/latest/game/";
   return (
     <div className={style.containerAumentos}>

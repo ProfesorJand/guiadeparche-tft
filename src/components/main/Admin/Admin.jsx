@@ -16,6 +16,9 @@ const AdminPanel = ({allAdmins})=>{
     console.log(isLoged)
     function cerrarSesion(){
         setIsLoged(false)
+        localStorage.removeItem("user");
+        localStorage.removeItem("login");
+        localStorage.removeItem("superAdmin");
     }
 
     if(!isLoged || !adminName){

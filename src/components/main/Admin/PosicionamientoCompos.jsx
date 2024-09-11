@@ -5,7 +5,6 @@ import Youtube from "src/components/youtube/Youtube";
 const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, gameplay, spatula1, spatula2})=>{
   const [niveles, setNiveles] = useState(["lv8"]);
   const [posicionamiento, setPosicionamiento] = useState(originalComp)
-  console.log(id)
   useEffect(()=>{
     const array= Object.keys(boardInfo).filter((level)=>{
       if(level !== "early"){

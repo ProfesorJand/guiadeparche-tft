@@ -1,0 +1,52 @@
+.containerAside{
+  display: flex;
+  flex-direction: column;
+  gap:5px;
+  padding: 5px;
+  box-sizing: border-box;
+  border: 1px solid var(--border-color);
+}
+
+.containerAsideFilter{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border: 1px solid grey;
+  font-weight: 700;
+  color: var(--color-white)
+}
+.containerAsideFilter:hover{
+  background-color: var(--bg-primary);
+  cursor:pointer;
+}
+
+.containerOpens{
+  display: flex;
+  flex-direction: column;
+  padding-left: 10px;
+  gap:5px
+}
+
+.containerOptionBox{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border: 1px solid grey
+}
+
+.containerOptionBox:hover{
+  background-color: var(--bg-primary);
+  cursor:pointer;
+}
+
+.checkboxToggle{
+  display: flex;
+  height: 16px;
+  width: 16px;
+justify-content: center;
+}
+
+.btnCheckbox{
+  pointer-events: none;
+}
+

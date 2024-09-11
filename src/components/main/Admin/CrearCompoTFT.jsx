@@ -14,9 +14,9 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
     const urlImgAum = "https://raw.communitydragon.org/latest/game/"
     const shadowCategories = ["Fast 8","Specifics Augments","3 Stars"]
     const infographicCategories = ["Roll Lv5","Roll Lv6","Roll Lv7","Roll Lv8","Roll Lv9","Roll Lv10"]
-    const [tier, setTier] = useState("")
+    const [tier, setTier] = useState("S")
     const [posicion, setPosicion] = useState(1)
-    const [dificultad, setDificultad] = useState("")
+    const [dificultad, setDificultad] = useState("Easy")
     const [titulo, setTitulo] = useState("");
     const [shadowCategory, setShadowCategory] = useState(shadowCategories[0])
     const [infographicCategory, setInfographicCategory] = useState(infographicCategories[0])
@@ -286,7 +286,6 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           originalComp
         }
         if(tier && posicion && dificultad && titulo && shadowCategory && infographicCategory && aumentos.length && Object.keys(carouselItems).length && Object.keys(boardInfo).length){
-          console.log(takePicture)
           fetch('https://guiadeparche.com/tftdata/Set12/crearCompoMeta.php', {
             method: 'POST',
             headers: {
@@ -306,8 +305,28 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
               console.error('Error:', error);
           });
         }else{
-          const mensaje= !tier && "\nTier " + !posicion && "\nPosicion " + !dificultad && "\nDificultad "  + !shadowCategory && "\nShadowCategory " + !aumentos.length && "\nAumentos " + !Object.keys(carouselItems).length && "\nCarousel Items " + !Object.keys(boardInfo).length && "\nLlenar la compo de campeones " ;
-          console.log(takePicture)
+          var mensaje = "Faltan campos por llenar: "
+          if(!tier){
+            mensaje += "\nTier" 
+          }
+          if(!posicion){
+            mensaje += "\nPosición" 
+          }
+          if(!dificultad){
+            mensaje += "\nDificultad" 
+          }
+          if(!titulo){
+            mensaje += "\nTitulo" 
+          }
+          if(!shadowCategory){
+            mensaje += "\nShadow Category" 
+          }
+          if(!infographicCategory){
+            mensaje += "\nInfographic Category" 
+          }
+          if(!aumentos){
+            mensaje += "\nAumentos" 
+          }
           alert("Faltan campos por llenar: " + mensaje)
           return
         }
@@ -328,6 +347,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
               <option value="A">A</option>
               <option value="B">B</option>
               <option value="C">C</option>
+              <option value="C">D</option>
               <option value="MEME">MEME</option>
           </select>
       </label>

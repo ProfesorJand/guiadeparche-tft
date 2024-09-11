@@ -8,7 +8,7 @@ import AumentosCompos from "./AumentosCompos";
 import PosicionamientoCompos from "./PosicionamientoCompos";
 import CrearCompoTFT from "./CrearCompoTFT";
 
-const Composicion = ({compo, admin=true})=>{
+const Composicion = ({compo, admin=false})=>{
   const [open,setOpen]=useState(false);
   const [editId, setEditId] = useState(null)
   const colorDificulty= {Easy:"green",Medium:"orange",Hard:"red"}
@@ -19,7 +19,6 @@ const Composicion = ({compo, admin=true})=>{
   })
   const dataCampeones = Object.keys(data).map((key)=>{
     const {dataCampeon, dataItem} = data[key];
-
     return {dataCampeon:dataCampeon.campeon, dataItem, estrellas:data[key]?.estrellas ? data[key].estrellas : 1}
   })
   function handleEditID(e,id){
