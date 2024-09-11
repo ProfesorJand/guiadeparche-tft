@@ -354,7 +354,7 @@ const Items = ()=>{
       nombre:"Honeymancy Emblem",
       apiName:"honeymancy_emblem",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_honeymancy.png",
-      sinergia:"Witchcraft",
+      sinergia:"Honeymancy",
     },
     {
       nombre:"Warrior Emblem",
@@ -366,7 +366,7 @@ const Items = ()=>{
       nombre:"Tactician's Crown",
       apiName:"tacticians_crown",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/tacticians_crown.png",
-      sinergia:"Witchcraft",
+      sinergia:"",
     },
     {
       nombre:"Tacticians Ring",
