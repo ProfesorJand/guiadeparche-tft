@@ -57,6 +57,7 @@ export const initialStateMetaCompFilter = deepMap({
   ["Tier A"]:true,
   ["Tier B"]:true,
   ["Tier C"]:true,
+  ["Tier D"]:true,
   ["Tier Meme"]:true,
 })
 
@@ -99,6 +100,9 @@ export const filterByCategory = ()=>{
         return true
       }
       if(initialStateMetaCompFilter.get()["Tier C"] && tier === "C" ){
+        return true
+      }
+      if(initialStateMetaCompFilter.get()["Tier D"] && tier === "D" ){
         return true
       }
       if(initialStateMetaCompFilter.get()["Tier Meme"] && tier === "Meme" ){
