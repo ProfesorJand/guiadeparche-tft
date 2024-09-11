@@ -53,6 +53,9 @@ const Composicion = ({compo, admin=false})=>{
         console.error('Error:', error);
       });
     }
+    if(password === "OCULTAR"){
+
+    }
   }
 
   return (
@@ -60,7 +63,10 @@ const Composicion = ({compo, admin=false})=>{
 
     <div className={[style.containerInfoPrincipal, open ? style.downBorder: "" ].join(" ")} onClick={()=>{setOpen(!open)}}>
       <div className={style.containerTierImg}>
-        <img className={style.tierImg} src={`/tiers/Tier-${compo.tier}.webp`} alt="Tier TFT" />
+        <img
+          className={style.tierImg}
+          src={`/tiers/Tier-${compo.tier}.webp`}
+          alt="Tier TFT" />
       </div>
       <div className={style.containerInfoComp}>
         <div className={style.dificultad} style={{border:`1px solid ${colorDificulty[compo.dificultad]}`, color:`${colorDificulty[compo.dificultad]}`}}>{compo.dificultad}</div>
