@@ -6,12 +6,12 @@ export const updateAction = (action)=>{
   defaultAction.set(action)
 }
 
-const hierarchy = ["S","A","B","C","D","Meme"];
+const hierarchy = ["S","A","B","C","D","MEME"];
 
 export const loadCompsMeta = ()=>{
   task(async()=>{
     const urlMeta = "https://guiadeparche.com/tftdata/Set12/composMeta.json"
-    const responde = await fetch(urlMeta);
+    const responde = await fetch(urlMeta,{cache:"reload"});
     const data = await responde.json()
     const sortableArray =  Object.keys(data).map((tier,i)=>{
       const testing = data[tier].sort((a,b)=>{
@@ -58,7 +58,7 @@ export const initialStateMetaCompFilter = deepMap({
   ["Tier B"]:true,
   ["Tier C"]:true,
   ["Tier D"]:true,
-  ["Tier Meme"]:true,
+  ["Tier MEME"]:true,
 })
 
 export const filterByCategory = ()=>{
@@ -105,7 +105,7 @@ export const filterByCategory = ()=>{
       if(initialStateMetaCompFilter.get()["Tier D"] && tier === "D" ){
         return true
       }
-      if(initialStateMetaCompFilter.get()["Tier Meme"] && tier === "Meme" ){
+      if(initialStateMetaCompFilter.get()["Tier MEME"] && tier === "MEME" ){
         return true
       }
       return false

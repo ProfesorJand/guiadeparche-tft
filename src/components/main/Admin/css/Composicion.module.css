@@ -74,6 +74,8 @@
   font-size: smaller;
   order:2;
   width: 50%;
+  justify-content: center;
+  align-items: center;
 }
 
 .tituloComp{
@@ -90,7 +92,6 @@
 .category{
   font-size: smaller;
   font-style: italic;
-  width: 100%;
   order:3;
   width: 50%;
 }
@@ -244,25 +245,31 @@
     row-gap: 5px;
   }
   .containerTierImg{
-    width:15%;
+    width:5%;
     flex:none;
     box-sizing: border-box;
+    align-items: center;
   }
   .containerInfoComp{
-    width: 85%;
+    width: 95%;
     flex:none;
     box-sizing: border-box;
-    justify-content: flex-start;
-    column-gap: 5px;
+    justify-content:space-between;
+    align-items: center;
   }
   .containerInfoChamp{
     padding-bottom: 25px;
+    
   }
   .dificultad{
-    width: auto;
+    width: 25%;
   }
   .tituloComp{
-    width: 100%;
+    width: 50%;
+    font-size: small;
+  }
+  .category{
+    width: 20%;
   }
   .containerECT{
     flex-wrap: wrap;

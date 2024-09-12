@@ -12,7 +12,8 @@ const Composicion = ({compo, admin=false})=>{
   const [open,setOpen]=useState(false);
   const [editId, setEditId] = useState(null)
   const colorDificulty= {Easy:"green",Medium:"orange",Hard:"red"}
-  const {data, sinergias} = compo.boardInfo[compo.originalComp];
+  const [posicionamiento, setPosicionamiento] = useState(compo.originalComp)
+  const {data, sinergias} = compo.boardInfo[posicionamiento];
   const earlyComp = Object.keys(compo.boardInfo.early.data).map((key)=>{
     const {dataCampeon, dataItem} = compo.boardInfo.early.data[key]
     return {dataCampeon:dataCampeon.campeon, dataItem}
@@ -117,7 +118,7 @@ const Composicion = ({compo, admin=false})=>{
         </div>
         <div className={style.containerT}>
         <h3 className={style.titulo}>Traits</h3>
-          <Sinergias sinergias={sinergias}/>
+          <Sinergias sinergias={sinergias} posicionamiento={posicionamiento}/>
           </div>
       </div>
       <div className={style.containerAP}>
@@ -127,14 +128,14 @@ const Composicion = ({compo, admin=false})=>{
         </div>
         <div className={style.containerPosicionamiento}>
           <h3 className={style.titulo}>Late Game</h3>
-          <PosicionamientoCompos id={compo.id} boardInfo={compo.boardInfo} titulo={compo.titulo}  originalComp={compo.originalComp} gameplay={compo.gameplay} spatula1={compo.spatulaItem1} spatula2={compo.spatulaItem2}/>
+          <PosicionamientoCompos id={compo.id} boardInfo={compo.boardInfo} titulo={compo.titulo}  originalComp={compo.originalComp} gameplay={compo.gameplay} spatula1={compo.spatulaItem1} spatula2={compo.spatulaItem2} setPosicionamiento={setPosicionamiento} posicionamiento={posicionamiento}/>
         </div>
       </div>
       {compo.tips && <div className={style.containerTips}>
         Tip: {compo.tips}
       </div>}
     </div>
-    {editId === compo.id &&
+    {editId === compo.id && 
     <CrearCompoTFT
       edit={true}
       editId={compo.id}
@@ -153,7 +154,9 @@ const Composicion = ({compo, admin=false})=>{
       editspatulaItem1={compo.spatulaItem1}
       editspatulaItem2={compo.spatulaItem2}
       editoriginalComp={compo.originalComp}
+      editisHide={compo.isHide}
     />}
+
     </div>
   )
 }

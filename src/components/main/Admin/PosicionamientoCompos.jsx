@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import style from "./css/PosicionamientoCompos.module.css"
 import Youtube from "src/components/youtube/Youtube";
 
-const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, gameplay, spatula1, spatula2})=>{
+const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, gameplay, spatula1, spatula2, posicionamiento, setPosicionamiento})=>{
   const [niveles, setNiveles] = useState(["lv8"]);
-  const [posicionamiento, setPosicionamiento] = useState(originalComp)
+  // const [posicionamiento, setPosicionamiento] = useState(originalComp)
   useEffect(()=>{
     const array= Object.keys(boardInfo).filter((level)=>{
       if(level !== "early"){

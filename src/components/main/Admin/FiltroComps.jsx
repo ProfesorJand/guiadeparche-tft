@@ -68,9 +68,9 @@ const FiltroComps = ()=>{
           <span>Tier D</span>
           <input className={style.btnCheckbox} readOnly={true}type="checkbox" id="specificAugment" checked={estadosFiltros["Tier D"]} ></input>
         </div>
-        <div className={style.containerOptionBox} onClick={()=>{handlerfilterMetaComp("Tier Meme");filterByCategory()}}>
+        <div className={style.containerOptionBox} onClick={()=>{handlerfilterMetaComp("Tier MEME");filterByCategory()}}>
           <span>Tier Meme</span>
-          <input className={style.btnCheckbox} readOnly={true} type="checkbox" id="specificAugment" checked={estadosFiltros["Tier Meme"]} ></input>
+          <input className={style.btnCheckbox} readOnly={true} type="checkbox" id="specificAugment" checked={estadosFiltros["Tier MEME"]} ></input>
         </div>
       </div>
       }

@@ -2,11 +2,12 @@ import { useEffect, useRef, useState } from "react";
 
 const Twitch = () => {
   const divTwitchRef = useRef(null);
-  const [pass, setPass] = useState(localStorage.getItem("twitchOpen"));
+  const [pass, setPass] = useState(false);
   useEffect(()=>{
     if(!pass && !ismMyScriptLoaded("https://embed.twitch.tv/embed/v1.js")){
       setTimeout(()=>{
-        localStorage.setItem("twitchOpen",true)
+        //localStorage.setItem("twitchOpen",true)
+        console.log("HAAAAAAA")
         setPass(true)
       },5000)
     }
@@ -63,7 +64,8 @@ const Twitch = () => {
             };
         };
       return ()=>{
-        localStorage.setItem("twitchOpen",false)
+        // localStorage.setItem("twitchOpen",false)
+        setPass(false)
       }
   }, [pass]);
 

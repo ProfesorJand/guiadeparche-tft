@@ -36,6 +36,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
     const [spatulaItem2, setSpatulaItem2] = useState("");
     const [originalComp, setOriginalComp] = useState("lv8");
     const [id, setId] =useState(generadorID())
+    const [isHide, setIsHide] = useState(false)
 
     useEffect(()=>{
       const dataAumentos = itemsDataIngles.filter(({apiName})=>{
@@ -283,7 +284,8 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           tips,
           spatulaItem1,
           spatulaItem2,
-          originalComp
+          originalComp,
+          isHide
         }
         if(tier && posicion && dificultad && titulo && shadowCategory && infographicCategory && aumentos.length && Object.keys(carouselItems).length && Object.keys(boardInfo).length){
           fetch('https://guiadeparche.com/tftdata/Set12/crearCompoMeta.php', {
@@ -324,10 +326,10 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           if(!infographicCategory){
             mensaje += "\nInfographic Category" 
           }
-          if(!aumentos){
+          if(!aumentos.length){
             mensaje += "\nAumentos" 
           }
-          alert("Faltan campos por llenar: " + mensaje)
+          alert(mensaje)
           return
         }
       }
@@ -422,6 +424,14 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           <option value="lv10">Level 10</option>
           <option value="spatula1">Spatula #1</option>
           <option value="spatula2">Spatula #2</option>
+        </select>
+      </label>
+
+      <label>
+        <span>Hide Comp:</span>
+        <select onChange={(e)=>{e.preventDefault();setIsHide(e.target.value)}} defaultValue={isHide}>
+          <option value={false}>FALSE</option>
+          <option value={true}>TRUE</option>
         </select>
       </label>
     
