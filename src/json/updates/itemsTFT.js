@@ -1475,6 +1475,7 @@ export const emblems = [
 ]
 
 export const augmentsIDList = [
+  "TFT12_Augment_Dragon",
   "TFT10_Augment_BigGains",
   "TFT10_Augment_CrashTestDummies",
   "TFT10_Augment_CrownGuarded",
@@ -1740,6 +1741,25 @@ export const augmentsIDList = [
 ]
 
 export const itemsDataIngles = [
+    {
+        "apiName": "TFT12_Augment_Dragon",
+        "associatedTraits": [
+            "TFT12_Dragon"
+        ],
+        "composition": [],
+        "desc": "Dragons gain @Health*100@% Health and @AttackSpeed*100@% Attack Speed. After Dragons score @TakedownThreshold@ champion takedowns, gain a Smolder. Gain a Nomsy and a Shyvana.<br><br>Takedowns: @TFTUnitProperty.item:TFT12_Augment_Dragon_BurnDamage@",
+        "effects": {
+            "AttackSpeed": 0.18000000715255737,
+            "Health": 0.10000000149011612,
+            "TakedownThreshold": 60.0
+        },
+        "from": null,
+        "icon": "ASSETS/Maps/TFT/Icons/Augments/Hexcore/DraconicMastery_II.TFT_Set12.tex",
+        "id": null,
+        "incompatibleTraits": [],
+        "name": "Draconic Mastery",
+        "unique": false
+    },
   {
       "apiName": "TFT3_Item_StarGuardianSpatulaItem",
       "associatedTraits": [],
@@ -2023,25 +2043,6 @@ export const itemsDataIngles = [
       "id": null,
       "incompatibleTraits": [],
       "name": "Aggressive Preservation",
-      "unique": false
-  },
-  {
-      "apiName": "TFT12_Augment_Dragon",
-      "associatedTraits": [
-          "TFT12_Dragon"
-      ],
-      "composition": [],
-      "desc": "Dragons gain @Health*100@% Health and @AttackSpeed*100@% Attack Speed. After Dragons score @TakedownThreshold@ champion takedowns, gain a Smolder. Gain a Nomsy and a Shyvana.<br><br>Takedowns: @TFTUnitProperty.item:TFT12_Augment_Dragon_BurnDamage@",
-      "effects": {
-          "AttackSpeed": 0.18000000715255737,
-          "Health": 0.10000000149011612,
-          "TakedownThreshold": 60
-      },
-      "from": null,
-      "icon": "ASSETS/Maps/TFT/Icons/Augments/Hexcore/DraconicMastery_II.TFT_Set12.tex",
-      "id": null,
-      "incompatibleTraits": [],
-      "name": "Draconic Mastery",
       "unique": false
   },
   {
