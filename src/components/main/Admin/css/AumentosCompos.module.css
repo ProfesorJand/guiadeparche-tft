@@ -7,21 +7,17 @@
   flex-direction: row;
   row-gap: 25px;
   justify-content: center;
+  gap:15px
 }
 
 .containerAumento{
   display: flex;
-  flex: 0 0 calc(100%/7);
+  flex: 0 0 calc(100% / 10);
+    scale: 1.2;
 }
 
 .imgAumento{
   display: flex;
   position: relative;
   width: 100%;
-}
-
-@media only screen and (max-width:900px){
-  .containerAumento{
-    flex: 0 0 calc(100%/6)
-  }
 }
