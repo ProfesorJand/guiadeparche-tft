@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import Login from "./Login.jsx";
 import CrearCompoTFT from "./CrearCompoTFT.jsx";
-import { dataTFT, loadDataTFTFromAPI } from "src/stores/dataTFT.js";
+import { loadDataTFTFromAPI } from "src/stores/dataTFT.js";
 import EditarCompoTFT from "./EditarCompoTFT.jsx";
 
 const AdminPanel = ({allAdmins})=>{
@@ -12,8 +12,6 @@ const AdminPanel = ({allAdmins})=>{
        loadDataTFTFromAPI({version:"latest", idioma:"es", pais:"ar"})
     },[])
 
-    console.log(adminName)
-    console.log(isLoged)
     function cerrarSesion(){
         setIsLoged(false)
         localStorage.removeItem("user");

@@ -3,11 +3,10 @@ import style from "./css/CrearCompoTFT.module.css"
 import Builder from "./Builder.jsx"
 import Champions from "./ChampionsList.jsx"
 import Items from "./Items.jsx";
-import {augmentsIDList, itemsDataIngles} from "../../../json/updates/constantesLatest.js"
 import Youtube from "../../youtube/Youtube.jsx";
 import { toBlob } from 'html-to-image';
-import { BASIC_ITEMS, CRAFTEABLE_ITEMS, dataTFTItems } from "src/stores/dataTFT.js";
-import { emblems } from "src/json/updates/constantesLatest";
+import { BASIC_ITEMS, CRAFTEABLE_ITEMS } from "src/stores/dataTFT.js";
+import { emblems, augmentsIDList , itemsDataIngles} from "src/json/updates/itemsTFT";
 import CarouselItems from "./CarouselItems.jsx";
 
 const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,edittitulo,editshadowCategory,editinfographicCategory,editaumentos,editgameplay,edittips,editboardInfo,editpictureSave,editcarouselItems,editspatulaItem1,editspatulaItem2,editoriginalComp}) =>{

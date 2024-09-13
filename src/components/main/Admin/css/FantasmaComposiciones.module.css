@@ -1,0 +1,10 @@
+.fantasmaComposiciones{
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-sizing: border-box;
+  border: 1px solid var(--border-color);
+  padding: 5px;
+  height: 88px;
+  width: 100%;
+}

@@ -38,7 +38,7 @@ export const loadCompsMeta = ()=>{
   })
 }
 
-export const initialStateMetaComps = deepMap({})
+export const initialStateMetaComps = deepMap([])
 export const MetaComps = deepMap(initialStateMetaComps.get())
 
 export const handlerfilterMetaComp = (action)=>{

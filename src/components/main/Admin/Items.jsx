@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import style from "./css/Items.module.css";
-import { radiantsItems, emblems } from "src/json/updates/constantesLatest";
+import { radiantsItems, emblems } from "src/json/updates/itemsTFT";
 const Items = ()=>{
   const [pestana, setPestana] = useState(0);
   const [itemsCrafteables, setItemsCrafteables] = useState([])

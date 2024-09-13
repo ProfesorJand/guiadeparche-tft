@@ -6,7 +6,6 @@ export const loadDataTFTFromAPI = ({version="latest", idioma="es", pais="ar"}) =
     const urlDragon = `https://raw.communitydragon.org/${version}/cdragon/tft/${idioma}_${pais}.json`
     const response = await fetch(urlDragon);
     const data = await response.json();
-    
     updateDataTFT(data)
   })
 }
