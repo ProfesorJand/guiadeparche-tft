@@ -195,7 +195,6 @@
   flex:21;
   align-items: center;
   justify-content: center;
-  border-left: 0.5px solid var(--border-gray-color);
   padding:5px 0;
 }
 
@@ -263,6 +262,8 @@
   }
   .dificultad{
     width: 25%;
+    font-size: small;
+    border-radius: 2px;
   }
   .tituloComp{
     width: 50%;
@@ -270,6 +271,7 @@
   }
   .category{
     width: 20%;
+    font-size: small;
   }
   .containerECT{
     flex-wrap: wrap;
@@ -280,6 +282,7 @@
     width: 100%;
     flex:none;
     box-sizing: border-box;
+    border-bottom: 0.5px solid grey;
   }
   .containerE{
     justify-content: center;
@@ -288,6 +291,7 @@
     width: 40%;
     flex:none;
     box-sizing: border-box;
+    border-left:none;
     padding:0
   }
   .containerT{
@@ -342,6 +346,11 @@
   order:3;
   width: 50%;
 }
+
+.containerAP{
+  flex-direction: column;
+}
+
 
 
 }
