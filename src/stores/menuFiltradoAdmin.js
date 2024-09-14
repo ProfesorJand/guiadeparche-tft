@@ -42,7 +42,6 @@ export const initialStateMetaComps = deepMap([])
 export const MetaComps = deepMap(initialStateMetaComps.get())
 
 export const handlerfilterMetaComp = (action)=>{
-  console.log({...initialStateMetaCompFilter.get(),[action]:!initialStateMetaCompFilter.get()[action]})
   initialStateMetaCompFilter.set({...initialStateMetaCompFilter.get(),[action]:!initialStateMetaCompFilter.get()[action]})
 }
 
@@ -62,9 +61,9 @@ export const initialStateMetaCompFilter = deepMap({
 })
 
 export const filterByCategory = ()=>{
-  const oldMeta = initialStateMetaComps.get()
-  const newMeta = [...oldMeta].map((tier)=>{
-    const filters = [...tier].filter(({shadowCategory, dificultad})=>{
+  const oldMeta = JSON.parse(JSON.stringify(initialStateMetaComps.get())); 
+  const newMeta = oldMeta.map((tier)=>{
+    const filters = tier.filter(({shadowCategory, dificultad})=>{
       
       if(initialStateMetaCompFilter.get()["Fast 8"] && shadowCategory === "Fast 8" ){
         return true
@@ -77,7 +76,7 @@ export const filterByCategory = ()=>{
       }
       return false
     })
-    const filtersDificulty = [...filters].filter(({dificultad})=>{
+    const filtersDificulty = filters.filter(({dificultad})=>{
       if(initialStateMetaCompFilter.get()["Easy"] && dificultad === "Easy" ){
         return true
       }
@@ -89,7 +88,8 @@ export const filterByCategory = ()=>{
       }
       return false
     })
-    const filtersTier = [...filtersDificulty].filter(({tier})=>{
+   
+    const filtersTier = filtersDificulty.filter(({tier})=>{
       if(initialStateMetaCompFilter.get()["Tier S"] && tier === "S" ){
         return true
       }
@@ -110,8 +110,10 @@ export const filterByCategory = ()=>{
       }
       return false
     })
+    
     return filtersTier
   })
+
   MetaComps.set(newMeta)
 }
 

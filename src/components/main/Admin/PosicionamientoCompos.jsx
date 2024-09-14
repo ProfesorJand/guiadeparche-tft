@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import style from "./css/PosicionamientoCompos.module.css"
 import Youtube from "src/components/youtube/Youtube";
 
-const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, gameplay, spatula1, spatula2, posicionamiento, setPosicionamiento})=>{
-  const [niveles, setNiveles] = useState(["lv8"]);
+const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, gameplay, spatula1, spatula2, posicionamiento, setPosicionamiento, setData, setSinergias})=>{
+  const [niveles, setNiveles] = useState([posicionamiento]);
   // const [posicionamiento, setPosicionamiento] = useState(originalComp)
   useEffect(()=>{
     const array= Object.keys(boardInfo).filter((level)=>{
@@ -39,7 +39,7 @@ const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, gameplay, s
         {niveles.map((nivel,i)=>{
           if(nivel === "lv7" || nivel === "lv8" || nivel == "lv9" || nivel == "lv10"){
             return (
-              <div key={i} className={[style.btnLv, posicionamiento === nivel ? style.btnActive : ""].join(" ")} onClick={()=>{setPosicionamiento(nivel)}}>{nivel[0].toUpperCase()+nivel.slice(1)}</div>
+              <div key={i} className={[style.btnLv, posicionamiento === nivel ? style.btnActive : ""].join(" ")} onClick={()=>{setPosicionamiento(nivel);setData(boardInfo[nivel].data);setSinergias(boardInfo[nivel].sinergias)}}>{nivel[0].toUpperCase()+nivel.slice(1)}</div>
             )
           }
         })}
@@ -48,10 +48,10 @@ const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, gameplay, s
           {(spatula1 || spatula2) &&
            <div className={[style.btnSpat]}>
             {spatula1 && 
-              <img className={[style.imgSpat,posicionamiento === "spatula1" ? style.btnActive : ""].join(" ")} src={spatula1} onClick={()=>{setPosicionamiento("spatula1")}}></img>
+              <img className={[style.imgSpat,posicionamiento === "spatula1" ? style.btnActive : ""].join(" ")} src={spatula1} onClick={()=>{setPosicionamiento("spatula1");setData(boardInfo["spatula1"].data);setSinergias(boardInfo["spatula1"].sinergias)}}></img>
             }
             {spatula2 && 
-              <img className={[style.imgSpat,posicionamiento === "spatula2" ? style.btnActive : ""].join(" ")} src={spatula2} onClick={()=>{setPosicionamiento("spatula2")}}></img>
+              <img className={[style.imgSpat,posicionamiento === "spatula2" ? style.btnActive : ""].join(" ")} src={spatula2} onClick={()=>{setPosicionamiento("spatula2");setData(boardInfo["spatula2"].data);setSinergias(boardInfo["spatula2"].sinergias)}}></img>
             }  
           </div>
           }

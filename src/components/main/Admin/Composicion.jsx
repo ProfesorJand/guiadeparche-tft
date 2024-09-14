@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import style from "./css/Composicion.module.css";
 import CampeonOriginal from "./CampeonOriginal";
 import CampeonEarly from "./CampeonEarly";
@@ -13,7 +13,9 @@ const Composicion = ({compo, admin=false})=>{
   const [editId, setEditId] = useState(null)
   const colorDificulty= {Easy:"green",Medium:"orange",Hard:"red"}
   const [posicionamiento, setPosicionamiento] = useState(compo.originalComp)
-  const {data, sinergias} = compo.boardInfo[posicionamiento];
+  const [data, setData] = useState(compo.boardInfo[compo.originalComp].data);
+  const [sinergias, setSinergias] = useState(compo.boardInfo[compo.originalComp].sinergias)
+  
   const earlyComp = Object.keys(compo.boardInfo.early.data).map((key)=>{
     const {dataCampeon, dataItem} = compo.boardInfo.early.data[key]
     return {dataCampeon:dataCampeon.campeon, dataItem}
@@ -127,8 +129,8 @@ const Composicion = ({compo, admin=false})=>{
           <AumentosCompos aumentos={compo.aumentos}/>
         </div>
         <div className={style.containerPosicionamiento}>
-          <h3 className={style.titulo}>Late Game</h3>
-          <PosicionamientoCompos id={compo.id} boardInfo={compo.boardInfo} titulo={compo.titulo}  originalComp={compo.originalComp} gameplay={compo.gameplay} spatula1={compo.spatulaItem1} spatula2={compo.spatulaItem2} setPosicionamiento={setPosicionamiento} posicionamiento={posicionamiento}/>
+          <h3 className={style.titulo}>Late Game {(posicionamiento !== "spatula1" && posicionamiento !== "spatula2") ? `- ${posicionamiento}`: posicionamiento === "spatula1" ? `- ${compo.spatulaItem1.split("_").pop().replace(".png","")}`: `- ${compo.spatulaItem2.split("_").pop().replace(".png","")}`}</h3>
+          <PosicionamientoCompos id={compo.id} boardInfo={compo.boardInfo} titulo={compo.titulo}  originalComp={compo.originalComp} gameplay={compo.gameplay} spatula1={compo.spatulaItem1} spatula2={compo.spatulaItem2} setPosicionamiento={setPosicionamiento} posicionamiento={posicionamiento} setData={setData} setSinergias={setSinergias}/>
         </div>
       </div>
       {compo.tips && <div className={style.containerTips}>
