@@ -14,10 +14,11 @@
 .containerChampion{
     display: flex;
     position:relative;
-    width: calc(100% /13);
+    width: calc((100%/14) - 5px + (5px / 14));
     height: auto;
     aspect-ratio: 1/1;
     border: 3px solid;
+    box-sizing: border-box;
 }
 
 .containerChampion:hover{

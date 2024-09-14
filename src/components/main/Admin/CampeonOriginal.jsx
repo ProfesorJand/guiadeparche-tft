@@ -7,7 +7,7 @@ const CampeonOriginal = ({dataCampeon, dataItem, estrellas}) =>{
   return (
     <div className={style.containerCampeon} style={{order:dataCampeonParseado.coste}}>
       <div className={[style.containerCampeonImg, estrellas === 3 ? style.estrellas3 : estrellas === 4 ? style.estrellas4 : ""].join(" ")}>
-        <img className={style.imgCampeon} src={dataCampeonParseado.img} style={{border:`4px solid var(--color-hex-cost-${dataCampeonParseado.coste})`}}></img>
+        <img className={style.imgCampeon} src={dataCampeonParseado.img} style={{border:`2px solid var(--color-hex-cost-${dataCampeonParseado.coste})`}}></img>
       </div>
       {itemsCampeon.length > 0 &&
       <div className={style.containerItems}>

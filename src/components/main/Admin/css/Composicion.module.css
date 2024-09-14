@@ -36,6 +36,7 @@
   position: relative;
   width: 100%;
   aspect-ratio: 1/1;
+  filter: brightness(90%);
 }
 
 .containerInfoComp{
@@ -64,6 +65,7 @@
   flex: 1;
   align-items: flex-start;
   flex-direction: column;
+  justify-content: center;
 }
 
 .dificultad{
@@ -312,6 +314,10 @@
 }
 
 @media only screen and (min-width: 900px){
+
+  .containerInfoPrincipal{
+    padding:10px 5px 15px 5px ;
+  }
   .containerInfoComp{
     display: flex;
     position: relative;
@@ -323,7 +329,17 @@
     flex-wrap: wrap;
     gap: 5px;
     box-sizing: border-box;
-}
+  }
+  .containerInfoChamp{
+    flex: 12
+  }
+  .containerFlecha{
+    flex: 0.6
+  }
+  .containerTierImg{
+    flex: 1.5
+  }
+
 .dificultad{
   display: flex;
   box-sizing: border-box;

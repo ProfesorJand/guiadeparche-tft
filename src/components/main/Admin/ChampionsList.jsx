@@ -25,13 +25,16 @@ const Champions = ()=>{
             setChampionsList(cambios);
         }
     }
+    useEffect(()=>{
+        handleFilter("coste")
+    },[])
 
     return(
         <>
         <div>
             <select onChange={(e)=>{handleFilter(e.target.value)}}>
-                <option value="nombre">Nombre</option>
                 <option value="coste">Coste</option>
+                <option value="nombre">Nombre</option>
             </select>
             
         </div>
