@@ -1475,6 +1475,7 @@ export const emblems = [
 ]
 
 export const augmentsIDList = [
+  "TFT12_Augment_ShenCarry",
   "TFT12_Augment_Dragon",
   "TFT10_Augment_BigGains",
   "TFT10_Augment_CrashTestDummies",
