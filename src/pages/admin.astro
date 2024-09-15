@@ -12,7 +12,7 @@ const allAdmins = await db.select().from(Admins);
 
 <Layout title='admin'>
     <Fragment slot="bodyMainAside">
-        <!-- <FiltroComps client:only="react"> -->
+        <FiltroComps client:only="react">
     </Fragment>
     <Fragment slot="bodyMainAsideTwitch">
         <Twitch client:only="react"/>
