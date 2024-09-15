@@ -1,24 +1,26 @@
 
 .containerSinergia{
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   width: 100%;
   flex-wrap: wrap;
   justify-content: center;
   gap:5px;
   flex: 1;
-  padding: 5px 0;
+  padding: 20px 0;
   box-sizing: border-box;
+  flex:1
 }
 
 .containerSinergiaHex{
   display: flex;
     position: relative;
     flex-direction: row;
-    flex: 0 0 calc(100%/5.5);
+    flex: 0 0 calc((100%/6) - 5px + (5px / 6));
     align-items: center;
-    clip-path: polygon(37.5% 0, 75% 25%, 100% 24%, 100% 75%, 75% 75%, 37.5% 100%, 0 75%, 0 25%)
-}
+    /* clip-path: polygon(37.5% 0, 75% 25%, 100% 24%, 100% 75%, 75% 75%, 37.5% 100%, 0 75%, 0 25%) */
+    clip-path: polygon(32.60869565217391% 0, 65.21739130434783% 25%, 100% 25%, 100% 75%, 65.21739130434783% 75%, 32.60869565217391% 100%, 0 75%, 0 25%);
+  }
 
 
 .imgHexagono{
@@ -40,30 +42,23 @@
 .infoSinergia{
   display: flex;
   position: relative;
-  flex:1;
+  flex:1.6;
   font-size: 0.73em;
   font-weight: 800;
   padding: 0;
   margin: 0;
-  justify-content: flex-start;
+  justify-content: center;
   color:black;
-
 }
 
-@media only screen and (max-width:900px){
-  .containerSinergia{
-    padding: 0;
-    margin-bottom:12px;
-    gap:3px
-  }
+@media only screen and (max-width:900px){ 
 
-  .infoSinergia{
-    font-size: x-small;
-  }
-  /* 
-  .infoSinergia{
-    display: none;
-  } */
+.infoSinergia{
+  font-size: 0.5em;
+}
+.containerSinergia{
+  padding: 0;
+}
 }
 
 @media only screen and (min-width:900px){

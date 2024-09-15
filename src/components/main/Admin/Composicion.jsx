@@ -118,19 +118,22 @@ const Composicion = ({compo, admin=false})=>{
         <h3 className={style.titulo}>Items Prio</h3>
           <CarouselItems carouselItems={compo.carouselItems}/>    
         </div>
-        <div className={style.containerT}>
+        {/* <div className={style.containerT}>
         <h3 className={style.titulo}>Traits</h3>
           <Sinergias sinergias={sinergias} posicionamiento={posicionamiento}/>
-          </div>
+          </div> */}
       </div>
-      <div className={style.containerAP}>
+      <div className={style.containerAP}> 
+      <h3 className={[style.titulo, style.tituloCentrado].join(" ")}>Late Game {(posicionamiento !== "spatula1" && posicionamiento !== "spatula2") ? `- ${posicionamiento}`: posicionamiento === "spatula1" ? `- ${compo.spatulaItem1.split("_").pop().replace(".png","")}`: `- ${compo.spatulaItem2.split("_").pop().replace(".png","")}`}</h3>     
+        <div className={style.containerT}>
+        <Sinergias sinergias={sinergias} posicionamiento={posicionamiento}/>
+        </div>
+        <div className={style.containerPosicionamiento}>
+          <PosicionamientoCompos id={compo.id} boardInfo={compo.boardInfo} titulo={compo.titulo}  originalComp={compo.originalComp} gameplay={compo.gameplay} spatula1={compo.spatulaItem1} spatula2={compo.spatulaItem2} setPosicionamiento={setPosicionamiento} posicionamiento={posicionamiento} setData={setData} setSinergias={setSinergias}/>
+        </div>
         <div className={style.containerAumentos}>
           <h3 className={style.titulo}>Augments</h3>
           <AumentosCompos aumentos={compo.aumentos}/>
-        </div>
-        <div className={style.containerPosicionamiento}>
-          <h3 className={style.titulo}>Late Game {(posicionamiento !== "spatula1" && posicionamiento !== "spatula2") ? `- ${posicionamiento}`: posicionamiento === "spatula1" ? `- ${compo.spatulaItem1.split("_").pop().replace(".png","")}`: `- ${compo.spatulaItem2.split("_").pop().replace(".png","")}`}</h3>
-          <PosicionamientoCompos id={compo.id} boardInfo={compo.boardInfo} titulo={compo.titulo}  originalComp={compo.originalComp} gameplay={compo.gameplay} spatula1={compo.spatulaItem1} spatula2={compo.spatulaItem2} setPosicionamiento={setPosicionamiento} posicionamiento={posicionamiento} setData={setData} setSinergias={setSinergias}/>
         </div>
       </div>
       {compo.tips && <div className={style.containerTips}>

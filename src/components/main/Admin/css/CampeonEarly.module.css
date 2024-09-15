@@ -61,7 +61,7 @@
 }
 
 .nombreCampeon{
-  display: flex;
+  display: none;
   position: absolute;
   bottom:-25px;
   font-size: xx-small;
