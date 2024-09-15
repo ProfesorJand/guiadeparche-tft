@@ -12,6 +12,18 @@ const AumentosCompos =({aumentos})=>{
         }
         return (
           <div className={style.containerAumento} key={`aumentos`+index}>
+            <div className={style.tooltip}>
+              <div className={style.tooltipTitle}>{aumento.name}</div>
+              <div className={style.tooltipDesc}>{aumento.desc}</div>
+              {Object.keys(aumento.effects).length > 0 && Object.keys(aumento.effects).map((variable, index)=>{
+                return (
+                 <div key={index} className={style.effects}>
+                  <span className={style.variableName}>{variable}</span> : <span>{aumento.effects[variable]}</span>
+                  </div>
+                )
+              })}
+              
+            </div>
             <img className={style.imgAumento} src={urlImg} alt={`aumento ${aumento.name}`}/>
           </div>
       )

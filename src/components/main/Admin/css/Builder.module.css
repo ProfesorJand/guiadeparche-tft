@@ -159,39 +159,36 @@
     display: none;
 }
 
-.estrellas4::before{
+.estrellas4::after{
     width: 100%;
     content: "★★★★";
     position: absolute;
     top: 15%;
     height: 100%;
-    z-index: 2;
     pointer-events: none;
     text-align: center;
     color: #08fb9c;
     text-shadow: var(--text-shadow);
 }
 
-.estrellas3::before{
+.estrellas3::after{
     width: 100%;
     content: "★★★";
     position: absolute;
     top: 15%;
     height: 100%;
-    z-index: 2;
     pointer-events: none;
     text-align: center;
     color: yellow;
     text-shadow: var(--text-shadow);
 }
 
-.estrellas2::before{
+.estrellas2::after{
     width: 100%;
     content: "★★";
     position: absolute;
     top: 15%;
     height: 100%;
-    z-index: 2;
     pointer-events: none;
     text-align: center;
     color: rgb(163, 163, 163);
