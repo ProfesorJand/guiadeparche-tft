@@ -12,27 +12,29 @@
 
 .containerAumento{
   display: flex;
-  flex: 0 0 calc(100% / 10);
-    scale: 1.2;
+  flex: 0 0 calc(100% / 10); 
+  scale: none;
 }
 
 .imgAumento{
   display: flex;
   position: relative;
   width: 100%;
+  filter: brightness(0.9);
 }
 
 .tooltip{
   display: flex;
   position: absolute;
   bottom:100%;
-  right:0%;
-  width: 300px;
   background-color: var(--bg-main);
   border: 1px solid grey;
   visibility: hidden;
   flex-direction: column;
   padding: 5px;
+  width: 100%;
+  left:0;
+  box-sizing: border-box;
 }
 
 .containerAumento:hover .tooltip{
@@ -54,12 +56,4 @@
 
 .variableName{
   color:gold
-}
-
-@media only screen and (max-width:900px){
-  .containerAumento:hover .tooltip{
-    visibility: hidden;
-  }
-
-  
 }

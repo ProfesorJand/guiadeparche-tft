@@ -183,7 +183,7 @@ form > label{
   display: flex;
   flex-direction: row;
   position:relative;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
   width: 100%;
   gap:5px;
@@ -195,7 +195,7 @@ form > label{
   position:relative;
   background-color: var(--bg-secondary);
   padding:10px;
-  flex:0 0 25%;
+  flex:1;
   justify-content: center;
 }
 .btnHandlerBuilder:hover{

@@ -103,6 +103,8 @@
     height: 100%;
     overflow: visible;
     -webkit-overflow: visible;
+    container-type: size;
+    resize: horizontal;
 }
 
 .containerSinergias{
@@ -149,7 +151,8 @@
     bottom:25%;
     left:50%;
     translate: -50% 0%;
-    font-size: 0.6rem;
+    font-size: 12cqw;
+    text-align: center;
     text-shadow: var(--text-shadow);
     pointer-events: none;
     width: 100%;

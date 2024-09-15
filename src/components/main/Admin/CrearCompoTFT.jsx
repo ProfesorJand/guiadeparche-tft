@@ -452,7 +452,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         <input className={style.inputSpatulaSearch} onChange={(e)=>hanlderSpatulaItem(e.target.value, 1)} list="dataListSpatulaItems" name="spatulaItems1" id="spatulaItems1" placeholder="Select Spatula"></input>
         {spatulaItem1 !== "" &&
         <div className={style.containerImgSpatula}>
-          <img className={style.imgSpatula} src={spatulaItem1} alt="espatulaItem"/>
+          <img className={style.imgSpatula} src={spatulaItem1} alt="espatulaItem" loading="lazy"/>
         </div>
         }
       </div>}
@@ -461,7 +461,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         <input className={style.inputSpatulaSearch} onChange={(e)=>hanlderSpatulaItem(e.target.value, 2)} list="dataListSpatulaItems" name="spatulaItems2" id="spatulaItems2" placeholder="Select Spatula"></input>
         {spatulaItem2 !== "" &&
         <div className={style.containerImgSpatula}>
-          <img className={style.imgSpatula} src={spatulaItem2} alt="espatulaItem"/>
+          <img className={style.imgSpatula} src={spatulaItem2} alt="espatulaItem" loading="lazy"/>
         </div>
         }
       </div>}
@@ -481,16 +481,14 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         {showBoard=== "spatula2" && <Builder setBoardInfo={setBoardInfo} boardInfo={boardInfo} id={showBoard} showName={showName}/>}
       </div>
       <div className={style.containerBtnHandlerBuilder}>
+        <div className={[style.btnHandlerBuilder, infoChampsItems === "campeones" ? style.btnActive : ""].join(" ")} onClick={(e)=>{e.preventDefault();handleToogleInfo("campeones")}}>Campeones</div>
+        <div className={[style.btnHandlerBuilder, infoChampsItems === "items" ? style.btnActive : ""].join(" ")} onClick={(e)=>{e.preventDefault();handleToogleInfo("items")}}>Items</div>
         <div className={style.btnHandlerBuilder} onClick={(e)=>{toggleOcultarNombre(e,showName)}}>{showName ? "Mostrar Nombres" : "Ocultar Nombres" }</div>
         <div className={style.btnHandlerBuilder} onClick={(e)=>{setTakePicture(true)}}>Guardar imagen</div>
       </div>
         
         
       <div className={style.containerSecond}>
-        <div className={style.containerRow}>
-        <div className={[style.btnHandlerBuilder, infoChampsItems === "campeones" ? style.btnActive : ""].join(" ")} onClick={(e)=>{e.preventDefault();handleToogleInfo("campeones")}}>Campeones</div>
-        <div className={[style.btnHandlerBuilder, infoChampsItems === "items" ? style.btnActive : ""].join(" ")} onClick={(e)=>{e.preventDefault();handleToogleInfo("items")}}>Items</div>
-        </div>
         {infoChampsItems === "campeones" ? <Champions/> : <Items/>}
       </div>
       
@@ -551,7 +549,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           return (
             <div key={"ImgAumentos"+apiName} className={style.horizontalWrapper}>
               <button className={style.btnClose} onClick={()=>eliminarAumento(apiName)}>X</button>
-              <img src={urlImgAum+icon.toLowerCase().replace(".tex",".png")} className={style.imgAumento}></img>
+              <img src={urlImgAum+icon.toLowerCase().replace(".tex",".png")} className={style.imgAumento} loading="lazy"></img>
             </div>
         )
         })}
