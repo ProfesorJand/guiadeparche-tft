@@ -71,7 +71,7 @@ const Sinergias = ({sinergias, posicionamiento})=>{
   
           return (
             <div key={i} className={style.containerSinergiaHex} style={checkColor(traitsColors[key.trait][key.min])}>
-              <img className={style.imgSinergia} src={`/sinergias/Trait_Icon_12_${key.trait}.svg`} alt="Trait_Icon"/>
+              <img className={style.imgSinergia} src={`/sinergias/Trait_Icon_12_${key.trait}.svg`} alt="Trait_Icon" loading="lazy"/>
               <div className={style.infoSinergia}>{key.min}</div>
             </div>
           )

@@ -69,7 +69,9 @@ const Composicion = ({compo, admin=false})=>{
         <img
           className={style.tierImg}
           src={`/tiers/Tier-${compo.tier}.webp`}
-          alt="Tier TFT" />
+          alt="Tier TFT" 
+          loading="lazy"
+          />
       </div>
       <div className={style.containerInfoComp}>
         <div className={style.dificultad} style={{border:`1px solid ${colorDificulty[compo.dificultad]}`, color:`${colorDificulty[compo.dificultad]}`}}>{compo.dificultad}</div>

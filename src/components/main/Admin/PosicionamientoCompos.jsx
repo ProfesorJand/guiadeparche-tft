@@ -21,12 +21,12 @@ const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, gameplay, s
 
         {posicionamiento !== "gameplay" && posicionamiento !== "spatula1" && posicionamiento !== "spatula2" &&
         <div className={style.containerImgVideo}>
-          <img className={style.imgPosicionamiento} src={url+id+"-"+posicionamiento+".webp"+"?v="+Date.now()} alt=""/>
+          <img className={style.imgPosicionamiento} src={url+id+"-"+posicionamiento+".webp"+"?v="+Date.now()} alt="" loading="lazy"/>
         </div>
       }
         {(posicionamiento === "spatula1" || posicionamiento === "spatula2") && 
         <div className={style.containerImgVideo}>
-          <img className={style.imgPosicionamiento} src={url+id+"-"+posicionamiento+".webp"+"?v="+Date.now()} alt=""/>
+          <img className={style.imgPosicionamiento} src={url+id+"-"+posicionamiento+".webp"+"?v="+Date.now()} alt="" loading="lazy"/>
         </div>
       }
         {
@@ -48,17 +48,17 @@ const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, gameplay, s
           {(spatula1 || spatula2) &&
            <div className={[style.btnSpat]}>
             {spatula1 && 
-              <img className={[style.imgSpat,posicionamiento === "spatula1" ? style.btnActive : ""].join(" ")} src={spatula1} onClick={()=>{setPosicionamiento("spatula1");setData(boardInfo["spatula1"].data);setSinergias(boardInfo["spatula1"].sinergias)}}></img>
+              <img className={[style.imgSpat,posicionamiento === "spatula1" ? style.btnActive : ""].join(" ")} src={spatula1} onClick={()=>{setPosicionamiento("spatula1");setData(boardInfo["spatula1"].data);setSinergias(boardInfo["spatula1"].sinergias)}} loading="lazy"></img>
             }
             {spatula2 && 
-              <img className={[style.imgSpat,posicionamiento === "spatula2" ? style.btnActive : ""].join(" ")} src={spatula2} onClick={()=>{setPosicionamiento("spatula2");setData(boardInfo["spatula2"].data);setSinergias(boardInfo["spatula2"].sinergias)}}></img>
+              <img className={[style.imgSpat,posicionamiento === "spatula2" ? style.btnActive : ""].join(" ")} src={spatula2} onClick={()=>{setPosicionamiento("spatula2");setData(boardInfo["spatula2"].data);setSinergias(boardInfo["spatula2"].sinergias)}} loading="lazy"></img>
             }  
           </div>
           }
         </div>
         <div className={style.containerYoutube}>
           {gameplay.length > 0 && 
-          <img className={style.ytIcon} src="/redes/youtube.webp" alt="logo Youtube" onClick={()=>{setPosicionamiento("gameplay")}}></img>
+          <img className={style.ytIcon} src="/redes/youtube.webp" alt="logo Youtube" onClick={()=>{setPosicionamiento("gameplay")}} loading="lazy"></img>
           }
         </div>
       </div>
