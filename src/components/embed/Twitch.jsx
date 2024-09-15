@@ -53,7 +53,7 @@ const Twitch = () => {
         embed.removeEventListener(window.Twitch.Embed.ONLINE, handleOnline);
         embed.addEventListener(window.Twitch.Embed.OFFLINE, handleOffline);
         divTwitch.classList.remove('hide');
-        divTitch.classList.add('show');
+        divTwitch.classList.add('show');
         embed.setMuted(false);
       };
 

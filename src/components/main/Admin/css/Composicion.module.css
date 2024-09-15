@@ -89,6 +89,8 @@
 .titulo{
   font-size: smaller;
   font-weight: 700;
+  padding: 0;
+  margin:0
 }
 
 .category{
@@ -159,21 +161,16 @@
 .containerT{
   display: flex;
   flex-direction: column;
-  position: relative;
-  flex:1;
-  align-items: center;
-  gap:5px;
-  padding: 5px 5px 25px 5px;
+  flex: 1;
+  padding: 0 0 0 5px;
 }
 
-.titulo{
-  padding: 0;
-  margin:0
-}
+
 
 .containerAP{
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   width: 100%;
   justify-content: center;
   border: 0.5px solid var(--border-gray-color);
@@ -185,16 +182,17 @@
 .containerAumentos{
   display: flex;
   flex-direction: column;
-  flex:6;
+  width: 100%;
   align-items: center;
   justify-content: space-between;
-  padding:5px 0 0 0;
+  padding: 5px 0 7px 0;
+  border-top: 0.5px solid grey;
 }
 
 .containerPosicionamiento{
   display: flex;
   flex-direction: column;
-  flex:21;
+  flex:11;
   align-items: center;
   justify-content: center;
   padding:5px 0;
@@ -238,6 +236,10 @@
 .btnOpen{
   rotate: 180deg;
 }
+.tituloCentrado{
+  width: 100%;
+  text-align: center;
+}
 
 @media only screen and (max-width: 900px){
   .containerInfoPrincipal{
@@ -262,11 +264,19 @@
     padding-bottom: 25px;
     
   }
+  .containerEGlobal{
+    padding: 5px 5px 5px 5px;
+  }
   .dificultad{
     width: 25%;
     font-size: small;
     border-radius: 2px;
   }
+
+  .titulo{
+    font-size: xx-small;
+  }
+
   .tituloComp{
     width: 50%;
     font-size: small;
@@ -275,39 +285,13 @@
     width: 20%;
     font-size: small;
   }
-  .containerECT{
-    flex-wrap: wrap;
-    box-sizing: border-box;
-    gap:0;
-  }
-  .containerEGlobal{
-    width: 100%;
-    flex:none;
-    box-sizing: border-box;
-    border-bottom: 0.5px solid grey;
-  }
   .containerE{
     justify-content: center;
-  }
-  .containerC{
-    width: 40%;
-    flex:none;
-    box-sizing: border-box;
-    border-left:none;
-    padding:0
-  }
-  .containerT{
-    width: 60%;
-    flex:none;
-    box-sizing: border-box;
-    padding: 0 5px;
   }
   .containerGlobal{
     align-items: center;
   }
-  .containerAP{
-    flex-direction: column;
-  }
+
   .containerTips{
     font-size: small;
   }
@@ -362,11 +346,5 @@
   order:3;
   width: 50%;
 }
-
-.containerAP{
-  flex-direction: column;
-}
-
-
 
 }
