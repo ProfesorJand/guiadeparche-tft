@@ -1,11 +1,14 @@
-
+:root{
+  --gap-sinergias: 15px;
+  --division-sinergias: 6
+}
 .containerSinergia{
   display: flex;
   flex-direction: column;
   width: 100%;
   flex-wrap: wrap;
   justify-content: center;
-  gap:5px;
+  gap:var(--gap-sinergias);
   flex: 1;
   padding: 20px 0;
   box-sizing: border-box;
@@ -16,11 +19,25 @@
   display: flex;
     position: relative;
     flex-direction: row;
-    flex: 0 0 calc((100%/6) - 5px + (5px / 6));
+    flex: 0 0 calc((100%/var(--division-sinergias)) - var(--gap-sinergias) + (var(--gap-sinergias)/ var(--division-sinergias)));
     align-items: center;
     /* clip-path: polygon(37.5% 0, 75% 25%, 100% 24%, 100% 75%, 75% 75%, 37.5% 100%, 0 75%, 0 25%) */
     clip-path: polygon(32.60869565217391% 0, 65.21739130434783% 25%, 100% 25%, 100% 75%, 65.21739130434783% 75%, 32.60869565217391% 100%, 0 75%, 0 25%);
+    background-color: black;
+
   }
+
+
+.borderHex{
+  position: absolute;
+    width:  calc(100% - 5px); 
+    height: calc(100% - 5px);
+    bottom:50%;
+    left:50%;
+    translate: -50% 50%;
+    clip-path: polygon(32.60869565217391% 0, 65.21739130434783% 25%, 100% 25%, 100% 75%, 65.21739130434783% 75%, 32.60869565217391% 100%, 0 75%, 0 25%);
+    box-shadow: 2cqh;
+}
 
 
 .imgHexagono{

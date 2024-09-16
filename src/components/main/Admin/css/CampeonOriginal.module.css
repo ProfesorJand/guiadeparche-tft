@@ -63,7 +63,8 @@
   justify-content: center;
   bottom: -25px;
   text-align: center;
-
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .containerItems{
