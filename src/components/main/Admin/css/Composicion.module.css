@@ -122,7 +122,6 @@
   position: relative;
   flex-direction: row;
   margin: 5px 0 0 0;
-  gap:5px;
   box-sizing: border-box;
   border: 0.5px solid gray
 
@@ -135,7 +134,7 @@
   flex:1;
   gap:5px;
   align-items: center;
-  padding: 5px 5px 30px 5px;
+  padding: 5px 15px 30px 15px;
 
 }
 .containerE{
@@ -271,6 +270,8 @@
     width: 25%;
     font-size: small;
     border-radius: 2px;
+    scale: 0.9;
+    filter: brightness(0.9);
   }
 
   .titulo{
