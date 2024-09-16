@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react"
 import style from "./css/CrearCompoTFT.module.css"
 import Builder from "./Builder.jsx"
 import Champions from "./ChampionsList.jsx"
+import Sinergias from "./Sinergias.jsx"
 import Items from "./Items.jsx";
 import Youtube from "../../youtube/Youtube.jsx";
 import { toBlob } from 'html-to-image';
@@ -446,7 +447,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
       
       </div>
 
-      <h2>{showBoard=== "early" ? "Early" : showBoard === "lv7" ? "Level 7": showBoard === "lv8" ? "Level 8": showBoard === "lv9" ? "Level 9" : showBoard=== "lv10" ? "Level 10": showBoard=== "spatula1" ? "Spatula #1": showBoard=== "spatula2" ? "Spatula #2" : ""}</h2>
+      <h2 className={style.titulo}>{showBoard=== "early" ? "Early" : showBoard === "lv7" ? "Level 7": showBoard === "lv8" ? "Level 8": showBoard === "lv9" ? "Level 9" : showBoard=== "lv10" ? "Level 10": showBoard=== "spatula1" ? "Spatula #1": showBoard=== "spatula2" ? "Spatula #2" : ""}</h2>
       {showBoard === "spatula1"  &&
       <div className={style.containerSpatulaSearch}>
         <input className={style.inputSpatulaSearch} onChange={(e)=>hanlderSpatulaItem(e.target.value, 1)} list="dataListSpatulaItems" name="spatulaItems1" id="spatulaItems1" placeholder="Select Spatula"></input>
@@ -470,7 +471,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           return <option key={"ListaDeEmblemas"+dataItem.nombre+i} id={`datalist-${dataItem.name}`} value={dataItem.name} data-value={JSON.stringify(dataItem)}></option>
         })}
       </datalist>
-
+        <Sinergias sinergias={boardInfo[showBoard]?.sinergias ? boardInfo[showBoard]?.sinergias : {}} orientacion={"horizontal"}></Sinergias>
       <div className={showBoard=== "early" ? style.builderContainerEarly : style.builderContainer}>
       	{showBoard=== "early" && <Builder setBoardInfo={setBoardInfo} boardInfo={boardInfo} id={showBoard} showName={showName}/>}
 				{showBoard=== "lv7" && <Builder setBoardInfo={setBoardInfo} boardInfo={boardInfo} id={showBoard} showName={showName}/>}
