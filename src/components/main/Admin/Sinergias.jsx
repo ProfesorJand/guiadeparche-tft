@@ -2,14 +2,16 @@ import React, { useEffect } from "react";
 import style from "./css/Sinergias.module.css"
 import { traitsColors, imgHex } from "src/functions/campeonestft";
 const Sinergias = ({sinergias, posicionamiento})=>{
-
   function checkColor(hexColor){
+   
+    if(hexColor === "hex-prismatic.webp"){
+      console.log(hexColor)
+      return {background:colorHex.prismatic};
+    }
     if(!hexColor){
       return {backgroundColor:colorHex.default};
     }
-    if(hexColor === "hex-prismatic.webp"){
-      return {background:colorHex.prismatic};
-    }
+
     return {backgroundColor:colorHex[hexColor.replace("hex-","").replace(".webp","")]}
   }
 
@@ -17,7 +19,7 @@ const Sinergias = ({sinergias, posicionamiento})=>{
     bronze:"#a16f44",
     silver:"#909090",
     gold:"gold",
-    prismatic:"radial-gradient(#ffffff, #9198e5);",
+    prismatic:"radial-gradient(#ffffff, #1623af)",
     default:"grey"
    }
 

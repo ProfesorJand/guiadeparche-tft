@@ -39,7 +39,7 @@ export const loadCompsMeta = ()=>{
 }
 
 export const initialStateMetaComps = deepMap([])
-export const MetaComps = deepMap(initialStateMetaComps.get())
+export const MetaComps = deepMap([])
 
 export const handlerfilterMetaComp = (action)=>{
   initialStateMetaCompFilter.set({...initialStateMetaCompFilter.get(),[action]:!initialStateMetaCompFilter.get()[action]})
@@ -113,7 +113,7 @@ export const filterByCategory = ()=>{
     
     return filtersTier
   })
-
+  console.log(newMeta)
   MetaComps.set(newMeta)
 }
 

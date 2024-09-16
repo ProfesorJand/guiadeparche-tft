@@ -4,7 +4,6 @@ import Youtube from "src/components/youtube/Youtube";
 
 const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, gameplay, spatula1, spatula2, posicionamiento, setPosicionamiento, setData, setSinergias})=>{
   const [niveles, setNiveles] = useState([posicionamiento]);
-  // const [posicionamiento, setPosicionamiento] = useState(originalComp)
   useEffect(()=>{
     const array= Object.keys(boardInfo).filter((level)=>{
       if(level !== "early"){
@@ -12,7 +11,7 @@ const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, gameplay, s
       }
     })
     setNiveles(array)
-  },[])
+  },[originalComp])
   const url = "https://guiadeparche.com/tftdata/Set12/composiciones/"
 
   return (
