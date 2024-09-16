@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import style from "./css/Sinergias.module.css"
 import { traitsColors, imgHex } from "src/functions/campeonestft";
-const Sinergias = ({sinergias, posicionamiento})=>{
+const Sinergias = ({sinergias, orientacion})=>{
   function checkColor(hexColor){
    
     if(hexColor === "hex-prismatic.webp"){
       console.log(hexColor)
-      return {background:colorHex.prismatic};
+      return colorHex.prismatic
     }
     if(!hexColor){
       return {backgroundColor:colorHex.default};
@@ -19,7 +19,8 @@ const Sinergias = ({sinergias, posicionamiento})=>{
     bronze:"#a16f44",
     silver:"#909090",
     gold:"gold",
-    prismatic:"radial-gradient(#ffffff, #1623af)",
+    // prismatic:"radial-gradient(#ffffff 20%, #4c16af 100%)",
+    prismatic: {backgroundImage:"url(/hexagonos/hex-prismatic.webp)",backgroundSize: "125%", backgroundPosition:"center"},
     default:"grey"
    }
 
@@ -66,13 +67,14 @@ const Sinergias = ({sinergias, posicionamiento})=>{
 
   return (
 
-      <div className={style.containerSinergia}>
-    {getMinMaxTraits(sortable).map((key,i)=>{
+      <div className={[style.containerSinergia, orientacion==="horizontal" ? style.containerSinergiaHorizontal: ""].join(" ")}>
+    {Object.keys(sinergias).length > 0 && getMinMaxTraits(sortable).map((key,i)=>{
       if(i < 6){
         if(checkColor(traitsColors[key.trait][key.min])?.backgroundColor !== colorHex.default){
   
           return (
-            <div key={i} className={style.containerSinergiaHex} style={checkColor(traitsColors[key.trait][key.min])}>
+            <div key={i} className={style.containerSinergiaHex} >
+              <span className={style.borderHex} style={checkColor(traitsColors[key.trait][key.min])}></span> 
               <img className={style.imgSinergia} src={`/sinergias/Trait_Icon_12_${key.trait}.svg`} alt="Trait_Icon" loading="lazy"/>
               <div className={style.infoSinergia}>{key.min}</div>
             </div>
