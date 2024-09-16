@@ -16,11 +16,16 @@ const Composicion = ({compo, admin=false})=>{
   const [data, setData] = useState(compo.boardInfo[compo.originalComp].data);
   const [sinergias, setSinergias] = useState(compo.boardInfo[compo.originalComp].sinergias)
   
+  useEffect(()=>{
+    setPosicionamiento(compo.originalComp)
+    setData(compo.boardInfo[compo.originalComp].data)
+    setSinergias(compo.boardInfo[compo.originalComp].sinergias)
+  },[compo])
   const earlyComp = Object.keys(compo.boardInfo.early.data).map((key)=>{
     const {dataCampeon, dataItem} = compo.boardInfo.early.data[key]
     return {dataCampeon:dataCampeon.campeon, dataItem}
   })
-  const dataCampeones = Object.keys(data).map((key)=>{
+  var dataCampeones = Object.keys(data).map((key)=>{
     const {dataCampeon, dataItem} = data[key];
     return {dataCampeon:dataCampeon.campeon, dataItem, estrellas:data[key]?.estrellas ? data[key].estrellas : 1}
   })

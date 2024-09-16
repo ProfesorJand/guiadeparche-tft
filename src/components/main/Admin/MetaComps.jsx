@@ -30,15 +30,13 @@ const MetaComps = ({showHide})=>{
     {
       composMeta.length > 0 && composMeta.map((tier,index)=>{
         return(
-          <Fragment key={index}>
-          {tier.map((compo,i)=>{
+          tier.map((compo,i)=>{
             return (
               <div key={`containerMeta`+i} className={style.containerMetaTier}>
                 <Composicion compo={compo} showHide={showHide} admin={admin}/>
               </div>
             )
-          })}
-          </Fragment>
+          })
         )
       })
     }

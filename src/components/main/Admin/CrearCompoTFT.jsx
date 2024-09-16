@@ -416,7 +416,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
 
       <label>
         <span>Original Comp to Show:</span>
-        <select onChange={(e)=>{e.preventDefault();setOriginalComp(e.target.value)}} defaultValue={originalComp}>
+        <select onChange={(e)=>{setOriginalComp(e.target.value)}} defaultValue={originalComp}>
           <option value="lv7">Level 7</option>
           <option value="lv8">Level 8</option>
           <option value="lv9">Level 9</option>
@@ -428,7 +428,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
 
       <label>
         <span>Hide Comp:</span>
-        <select onChange={(e)=>{e.preventDefault();setIsHide(e.target.value)}} defaultValue={isHide}>
+        <select onChange={(e)=>{setIsHide(e.target.value)}} defaultValue={isHide}>
           <option value={false}>FALSE</option>
           <option value={true}>TRUE</option>
         </select>
@@ -481,8 +481,8 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         {showBoard=== "spatula2" && <Builder setBoardInfo={setBoardInfo} boardInfo={boardInfo} id={showBoard} showName={showName}/>}
       </div>
       <div className={style.containerBtnHandlerBuilder}>
-        <div className={[style.btnHandlerBuilder, infoChampsItems === "campeones" ? style.btnActive : ""].join(" ")} onClick={(e)=>{e.preventDefault();handleToogleInfo("campeones")}}>Campeones</div>
-        <div className={[style.btnHandlerBuilder, infoChampsItems === "items" ? style.btnActive : ""].join(" ")} onClick={(e)=>{e.preventDefault();handleToogleInfo("items")}}>Items</div>
+        <div className={[style.btnHandlerBuilder, infoChampsItems === "campeones" ? style.btnActive : ""].join(" ")} onClick={(e)=>{handleToogleInfo("campeones")}}>Campeones</div>
+        <div className={[style.btnHandlerBuilder, infoChampsItems === "items" ? style.btnActive : ""].join(" ")} onClick={(e)=>{handleToogleInfo("items")}}>Items</div>
         <div className={style.btnHandlerBuilder} onClick={(e)=>{toggleOcultarNombre(e,showName)}}>{showName ? "Mostrar Nombres" : "Ocultar Nombres" }</div>
         <div className={style.btnHandlerBuilder} onClick={(e)=>{setTakePicture(true)}}>Guardar imagen</div>
       </div>
@@ -498,9 +498,9 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         
         <div className={style.containerCarouselFormVertical}>
           Basic Item:
-          <input list="dataListItemsBasicos" name="Carousel_Basic_Item1" id="Carousel_Basic_Item1" onChange={(e)=>{e.preventDefault();handlerBasicItem(e.target.value, "BasicItem1")}} defaultValue={carouselItems.BasicItem1 ? carouselItems.BasicItem1.nombre : "" }/>
-          <input list="dataListItemsBasicos" name="Carousel_Basic_Item2" id="Carousel_Basic_Item2" onChange={(e)=>{e.preventDefault();handlerBasicItem(e.target.value, "BasicItem2")}} defaultValue={carouselItems.BasicItem2 ? carouselItems.BasicItem2.nombre : "" }/>
-          <input list="dataListItemsBasicos" name="Carousel_Basic_Item3" id="Carousel_Basic_Item3" onChange={(e)=>{e.preventDefault();handlerBasicItem(e.target.value, "BasicItem3")}} defaultValue={carouselItems.BasicItem3 ? carouselItems.BasicItem3.nombre : "" }/>
+          <input list="dataListItemsBasicos" name="Carousel_Basic_Item1" id="Carousel_Basic_Item1" onChange={(e)=>{handlerBasicItem(e.target.value, "BasicItem1")}} defaultValue={carouselItems.BasicItem1 ? carouselItems.BasicItem1.nombre : "" }/>
+          <input list="dataListItemsBasicos" name="Carousel_Basic_Item2" id="Carousel_Basic_Item2" onChange={(e)=>{handlerBasicItem(e.target.value, "BasicItem2")}} defaultValue={carouselItems.BasicItem2 ? carouselItems.BasicItem2.nombre : "" }/>
+          <input list="dataListItemsBasicos" name="Carousel_Basic_Item3" id="Carousel_Basic_Item3" onChange={(e)=>{handlerBasicItem(e.target.value, "BasicItem3")}} defaultValue={carouselItems.BasicItem3 ? carouselItems.BasicItem3.nombre : "" }/>
           <datalist id="dataListItemsBasicos">
             {BASIC_ITEMS.map((item, i )=>{
               return <option key={"ListaDeItemsBasicos"+item.name+i} id={`datalist-${item.apiName}`} value={item.nombre}></option>
@@ -509,9 +509,9 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         </div>
         <div className={style.containerCarouselFormVertical}>
           Complete Item:
-          <input list="dataListItemsCrafteables1" name="Carousel_Complete_Item1" id="Carousel_Complete_Item1" onChange={(e)=>{e.preventDefault();handlerCompleteItem(e.target.value, "CompleteItem1")}} defaultValue={carouselItems.CompleteItem1 ? carouselItems.CompleteItem1.nombre : "" } disabled={carouselItems["BasicItem1"] !== undefined ? false: true} autoComplete="off"/>
-          <input list="dataListItemsCrafteables2" name="Carousel_Complete_Item2" id="Carousel_Complete_Item2" onChange={(e)=>{e.preventDefault();handlerCompleteItem(e.target.value, "CompleteItem2")}} defaultValue={carouselItems.CompleteItem2 ? carouselItems.CompleteItem2.nombre : "" } disabled={carouselItems["BasicItem2"] !== undefined ? false: true} autoComplete="off"/>
-          <input list="dataListItemsCrafteables3" name="Carousel_Complete_Item3" id="Carousel_Complete_Item3" onChange={(e)=>{e.preventDefault();handlerCompleteItem(e.target.value, "CompleteItem3")}} defaultValue={carouselItems.CompleteItem3 ? carouselItems.CompleteItem3.nombre : "" } disabled={carouselItems["BasicItem3"] !== undefined ? false: true} autoComplete="off"/>
+          <input list="dataListItemsCrafteables1" name="Carousel_Complete_Item1" id="Carousel_Complete_Item1" onChange={(e)=>{handlerCompleteItem(e.target.value, "CompleteItem1")}} defaultValue={carouselItems.CompleteItem1 ? carouselItems.CompleteItem1.nombre : "" } disabled={carouselItems["BasicItem1"] !== undefined ? false: true} autoComplete="off"/>
+          <input list="dataListItemsCrafteables2" name="Carousel_Complete_Item2" id="Carousel_Complete_Item2" onChange={(e)=>{handlerCompleteItem(e.target.value, "CompleteItem2")}} defaultValue={carouselItems.CompleteItem2 ? carouselItems.CompleteItem2.nombre : "" } disabled={carouselItems["BasicItem2"] !== undefined ? false: true} autoComplete="off"/>
+          <input list="dataListItemsCrafteables3" name="Carousel_Complete_Item3" id="Carousel_Complete_Item3" onChange={(e)=>{handlerCompleteItem(e.target.value, "CompleteItem3")}} defaultValue={carouselItems.CompleteItem3 ? carouselItems.CompleteItem3.nombre : "" } disabled={carouselItems["BasicItem3"] !== undefined ? false: true} autoComplete="off"/>
           <datalist id="dataListItemsCrafteables1">
             {[...CRAFTEABLE_ITEMS].filter(({combine})=>{return combine[0] === carouselBasicItems["BasicItem1"] || combine[1] === carouselBasicItems["BasicItem1"]}).map((item, i )=>{
               return <option key={"ListaDeItemsCrafteables"+item.name+i} id={`datalist-${item.apiName}`} value={item.nombre}></option>
@@ -556,13 +556,13 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
       </div>
         <label htmlFor="gameplay">Gameplay:
             <input type="text" defaultValue={gameplay} id="gameplay" placeholder="YT Video Right Clic - Copy URL - Paste Here"></input>
-            <div className={style.btnAgregar} onClick={(e)=>{e.preventDefault();agregarGameplay(e)}}>Agregar Gameplay</div>
+            <div className={style.btnAgregar} onClick={(e)=>{agregarGameplay(e)}}>Agregar Gameplay</div>
         </label>
         <div className={style.containerYoutube}>
             {gameplay.map((url,i)=>{
               return (
                 <div key={"gameplaysURL"+i} className={style.containerVideos}>
-                  <button className={style.btnClose} onClick={(e)=>{e.preventDefault();eliminarGameplay(url)}}>X</button>
+                  <button className={style.btnClose} onClick={(e)=>{eliminarGameplay(url)}}>X</button>
                   <Youtube src={url}></Youtube>
                 </div>
             )
@@ -570,7 +570,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         </div>
 
         <label htmlFor="tips">Tips:
-            <input  type="text" defaultValue={tips} onChange={(e)=>{e.preventDefault();setTips(e.target.value)}} placeholder="Write Tips Text"></input>
+            <input  type="text" defaultValue={edittips || tips} onChange={(e)=>{setTips(e.target.value)}} placeholder="Write Tips Text" name="tips"></input>
         </label>
       </div>
         <input className={style.btnSubmit} type="submit" value={`${edit ? "Guardar" : "Crear"} Compo`}/>
