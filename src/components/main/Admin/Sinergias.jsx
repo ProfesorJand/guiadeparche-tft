@@ -3,7 +3,7 @@ import style from "./css/Sinergias.module.css"
 import { traitsColors, imgHex } from "src/functions/campeonestft";
 const Sinergias = ({sinergias, orientacion})=>{
   function checkColor(hexColor){
-   
+   console.log(window.innerWidth)
     if(hexColor === "hex-prismatic.webp"){
       console.log(hexColor)
       return colorHex.prismatic
@@ -73,7 +73,7 @@ const Sinergias = ({sinergias, orientacion})=>{
         if(checkColor(traitsColors[key.trait][key.min])?.backgroundColor !== colorHex.default){
   
           return (
-            <div key={i} className={style.containerSinergiaHex} >
+            <div key={i} className={style.containerSinergiaHex} style={window.innerWidth < 900 ? checkColor(traitsColors[key.trait][key.min]) : {}}>
               <span className={style.borderHex} style={checkColor(traitsColors[key.trait][key.min])}></span> 
               <img className={style.imgSinergia} src={`/sinergias/Trait_Icon_12_${key.trait}.svg`} alt="Trait_Icon" loading="lazy"/>
               <div className={style.infoSinergia}>{key.min}</div>

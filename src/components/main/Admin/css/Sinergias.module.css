@@ -1,5 +1,6 @@
 :root{
   --gap-sinergias: 15px;
+  --gap-sinergias-mobile: 5px;
   --division-sinergias: 6
 }
 
@@ -81,6 +82,11 @@
 }
 .containerSinergia{
   padding: 0;
+  gap:var(--gap-sinergias-mobile)
+}
+.containerSinergiaHex{
+  flex: 0 0 calc((100%/var(--division-sinergias)) - var(--gap-sinergias-mobile) + (var(--gap-sinergias-mobile)/ var(--division-sinergias)));
+
 }
 }
 
