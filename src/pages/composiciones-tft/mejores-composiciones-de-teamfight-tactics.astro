@@ -10,12 +10,12 @@ import Twitch from 'src/components/embed/Twitch.jsx';
 //import ContainerMetaPBE from '@components/new-meta-comp/ContainerMetaPBE.astro';
 import {crearJSONSchema} from "src/json/schema/crearJSONSchema";
 import AdComponent from 'src/components/adsense/Adsense.jsx';
-const title = "🔥 Best TFT Comps & Builds for Set 12 🚀 | Updated for Every Patch";
+const title = "▷ Best TFT Comps & Builds for Set 12 | Patch 14.18B";
 // Example: Construct a canonical URL using your production domain
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 // Example: Construct a URL for SEO meta tags using your current domain
 const socialImageURL = new URL('/images/preview.png', Astro.url);
-const description = `✅ Unlock the top meta team compositions and builds for TFT Set 12. 📊 Discover the latest tier lists, strategies, and guides tailored for every patch. ⚔️ Explore now for the best tips and tricks!`;
+const description = `Top TFT Meta Comps for Set 12. Discover the latest Tier List, Augments and best items for every patch. Mejores Composiciones TFT con objetos!`;
 const keywords = `TFT Meta, Meta comps, comps TFT, comp TFT, Meta TFT, composiciones TFT, build TFT`;
 const JSONSchema = crearJSONSchema({title});
 ---
@@ -34,10 +34,10 @@ const JSONSchema = crearJSONSchema({title});
   <AdComponent/>
 </Fragment>
   <Main>
-    <h1 class="titulo">
-      Best TFT Meta Comps & Builds
+    <h1 class="titulo tituloMetaComps">
+      Best TFT Meta Comps & Builds| Mejores Composiciones
     </h1>
-    <span class="minititulo">Tier List for Set 12 TFT - Patch 14.18B</span>
+    <span class="minititulo">Tier List for Set 12 TFT Compos | Patch 14.18B</span>
     <div class="videosYT">
       <Youtube src="https://youtube.com/playlist?list=PLxRnNvReiLMEriFDu0UxXScDabCIX-PWy&si=YW7NdSvPfu9dQhx9" client:load></Youtube>
       <Youtube src="https://www.youtube.com/playlist?list=PLxRnNvReiLMHHtPFxG2tCBzNCrIz_-rnq" client:load/>
@@ -161,10 +161,17 @@ const JSONSchema = crearJSONSchema({title});
   gap:10px;
   flex-direction: column;
 }
+.tituloMetaComps{
+  margin: 5px 0;
+  font-size: 1.4em;
+}
 .minititulo{
   display: flex;
   position: relative;
   justify-content: center;
+  align-items: center;
+  margin: 5px 0 10px 0;
+
 }
 </style>
 

@@ -152,8 +152,8 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
       e.preventDefault();
       const aumentosInput = document.getElementById("aumentos");
       const value = aumentosInput.value;
-      if(aumentos.length >= 7){
-        alert("Has alcanzado el limite de 7 aumentos.\nElimina un aumento para añadir uno nuevo.")
+      if(aumentos.length >= 8){
+        alert("Has alcanzado el limite de 8 aumentos.\nElimina un aumento para añadir uno nuevo.")
         return
       }
       const repetido = aumentos.filter(({apiName})=>{
@@ -536,7 +536,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
       </div>
       <div className={style.containerSecond}>
       <label htmlFor="aumentos">Augments:
-        <input list="dataListAumentos" name="aumentos" id="aumentos" placeholder="Select Augments - Max 6"/>
+        <input list="dataListAumentos" name="aumentos" id="aumentos" placeholder="Select Augments - Max 8"/>
         <datalist id="dataListAumentos">
           {listaDeAumentos.map((aum, i )=>{
             return <option key={"ListaDeAumentos"+aum.name+i} id={`datalist-${aum.apiName}`} data-value={JSON.stringify(aum)} value={aum.apiName}>{aum.name}</option>
