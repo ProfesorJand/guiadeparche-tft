@@ -13,7 +13,6 @@
   flex-direction: row;
   background-color: var(--bg-primary);
   padding: 0;
-
 }
 
 .containerInfoPrincipal:hover{
@@ -64,8 +63,9 @@
   display: flex;
   flex: 1;
   align-items: flex-start;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .dificultad{
@@ -103,7 +103,8 @@
 .btn{
   display: flex;
   width: 100%;
-  flex:0 0 calc(100% / 3);
+  aspect-ratio: 1/1;
+  height: max-content;
 }
 
 .containerInfoSecundario{
@@ -155,7 +156,6 @@
   gap:5px;
   padding: 5px 0 25px 0;
   border-left: 0.5px solid var(--border-gray-color);
-  border-right: 0.5px solid var(--border-gray-color);
 }
 .containerT{
   display: flex;

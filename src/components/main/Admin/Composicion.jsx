@@ -15,7 +15,17 @@ const Composicion = ({compo, admin=false})=>{
   const [posicionamiento, setPosicionamiento] = useState(compo.originalComp)
   const [data, setData] = useState(compo.boardInfo[compo.originalComp].data);
   const [sinergias, setSinergias] = useState(compo.boardInfo[compo.originalComp].sinergias)
-  
+  const textoPosicionamiento = (texto)=>{
+    if(texto === "spatula1"){
+      texto = compo.spatulaItem1.split("_").pop().replace(".png","");
+      return texto[0].toUpperCase() + texto.slice(1)
+    }
+    if(texto === "spatula2"){
+      texto = compo.spatulaItem2.split("_").pop().replace(".png","");
+      return texto[0].toUpperCase() + texto.slice(1)
+    }
+    return texto[0].toUpperCase() + texto.slice(1)
+  }
   useEffect(()=>{
     setPosicionamiento(compo.originalComp)
     setData(compo.boardInfo[compo.originalComp].data)
@@ -131,7 +141,7 @@ const Composicion = ({compo, admin=false})=>{
           </div> */}
       </div>
       <div className={style.containerAP}> 
-      <h3 className={[style.titulo, style.tituloCentrado].join(" ")}>Late Game {(posicionamiento !== "spatula1" && posicionamiento !== "spatula2") ? `- ${posicionamiento}`: posicionamiento === "spatula1" ? `- ${compo.spatulaItem1.split("_").pop().replace(".png","")}`: `- ${compo.spatulaItem2.split("_").pop().replace(".png","")}`}</h3>     
+      <h3 className={[style.titulo, style.tituloCentrado].join(" ")}>Late Game - {textoPosicionamiento(posicionamiento)}</h3>     
         <div className={style.containerT}>
         <Sinergias sinergias={sinergias} posicionamiento={posicionamiento}/>
         </div>

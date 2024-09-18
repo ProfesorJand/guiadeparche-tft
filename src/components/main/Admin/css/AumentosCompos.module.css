@@ -1,3 +1,8 @@
+:root{
+  --gap-container-aumentos:16px;
+  --number-augments:8
+}
+
 .containerAumentos{
   display: flex;
   position: relative;
@@ -7,12 +12,12 @@
   flex-direction: row;
   row-gap: 25px;
   justify-content: center;
-  gap:16px;
+  gap:var(--gap-container-aumentos);
 }
 
 .containerAumento{
   display: flex;
-  flex: 0 0 calc(100% / 10); 
+  flex: 0 0 calc(100% / var(--number-augments) - var(--gap-container-aumentos) + (var(--gap-container-aumentos)/ var(--number-augments))); 
   scale: none;
 }
 
