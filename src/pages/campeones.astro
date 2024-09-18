@@ -27,7 +27,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const description = `✅ Información de campeones del Set 12 de Teamfight Tactics (TFT)`;
 const keywords = `Campeones TFT, Campeones Teamfight Tactics, Campeones Set 12 TFT, Campeones Mágico y Caotico, TFT, Teamfight Tactics, Habilidades de Campeones TFT`;
 const thumbnail="/campeones/poppy.webp"
-const JSONSchema = await crearJSONSchema({title, thumbnail});
+const JSONSchema = crearJSONSchema({title, thumbnail});
 
 ---
 

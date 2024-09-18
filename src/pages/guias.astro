@@ -12,7 +12,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const title = '▷ TFT Tips & Tricks | Teamfight Tactics';
 const description = `✅ Tips/ Consejos; How to Play/ Cómo jugar TFT`;
 const keywords = `TFT Tips, TFT Tricks, TFT Guides, TFT Guias, TFT Consejos`;
-const JSONSchema = await crearJSONSchema({title});
+const JSONSchema = crearJSONSchema({title});
 ---
 
 <link rel="canonical" href={canonicalURL} />

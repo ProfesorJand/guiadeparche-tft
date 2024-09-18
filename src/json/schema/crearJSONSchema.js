@@ -1,7 +1,6 @@
 import logo from "src/assets/GP_logo.png";
 
-export async  function crearJSONSchema({title, thumbnail = logo.src, imgPost = logo.src}){
-    const imgPost = await obtenerImagenDinamica(urlImagePost); // Esperamos a obtener la imagen
+export function crearJSONSchema({title, thumbnail = logo.src, imgPost = logo.src}){
     return JSON.stringify({
         "@context": "http://schema.org",
         "@type": "BlogPosting",
