@@ -51,10 +51,17 @@ const Composicion = ({compo, admin=false})=>{
   function deleteId(id, tier) {
     let password= prompt('Write DELETE to continue');
     if(password === "DELETE"){
+      let token;
+      if(import.meta.env.SSR){
+        token = import.meta.env.TOKEN_META;
+      }else{
+        token = import.meta.env.PUBLIC_TOKEN_META;
+      }
       fetch('https://guiadeparche.com/tftdata/Set12/crearCompoMeta.php', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded', // Cambiado a x-www-form-urlencoded para enviar datos con DELETE
+          'Authorization': `Bearer ${token}`
         },
         body: `id=${id}&tier=${tier}`, // Enviar los datos como parte del cuerpo de la solicitud
       })

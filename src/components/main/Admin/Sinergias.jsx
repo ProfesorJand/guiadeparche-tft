@@ -3,7 +3,6 @@ import style from "./css/Sinergias.module.css"
 import { traitsColors, imgHex } from "src/functions/campeonestft";
 const Sinergias = ({sinergias, orientacion})=>{
   function checkColor(hexColor){
-   console.log(window.innerWidth)
     if(hexColor === "hex-prismatic.webp"){
       console.log(hexColor)
       return colorHex.prismatic

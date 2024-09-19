@@ -288,10 +288,17 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           isHide
         }
         if(tier && posicion && dificultad && titulo && shadowCategory && infographicCategory && aumentos.length && Object.keys(carouselItems).length && Object.keys(boardInfo).length){
+          let token;
+          if(import.meta.env.SSR){
+            token = import.meta.env.TOKEN_META;
+          }else{
+            token = import.meta.env.PUBLIC_TOKEN_META;
+          }
           fetch('https://guiadeparche.com/tftdata/Set12/crearCompoMeta.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(resultado),
           })
@@ -417,7 +424,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
 
       <label>
         <span>Original Comp to Show:</span>
-        <select onChange={(e)=>{setOriginalComp(e.target.value)}} defaultValue={originalComp}>
+        <select onChange={(e)=>{setOriginalComp(e.target.value)}} defaultValue={editoriginalComp || originalComp}>
           <option value="lv7">Level 7</option>
           <option value="lv8">Level 8</option>
           <option value="lv9">Level 9</option>
