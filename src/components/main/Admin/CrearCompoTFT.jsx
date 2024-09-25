@@ -295,6 +295,8 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           } else {
             console.error('Token no disponible');
           }
+          console.log('Variables de entorno:', import.meta.env);
+          console.log('PUBLIC_TOKEN_META:', import.meta.env.PUBLIC_TOKEN_META);
           fetch('https://guiadeparche.com/tftdata/Set12/crearCompoMeta.php', {
             method: 'POST',
             headers: {
