@@ -289,8 +289,9 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         }
         if(tier && posicion && dificultad && titulo && shadowCategory && infographicCategory && aumentos.length && Object.keys(carouselItems).length && Object.keys(boardInfo).length){
           let token;
-          if(import.meta.env.SSR){
+          if(import.meta.env.PROD){
             token = import.meta.env.TOKEN_META;
+            console.log(import.meta.env.SSR)
             console.log("true", token)
           }else{
             token = import.meta.env.PUBLIC_TOKEN_META;
