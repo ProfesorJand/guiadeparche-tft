@@ -288,15 +288,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           isHide
         }
         if(tier && posicion && dificultad && titulo && shadowCategory && infographicCategory && aumentos.length && Object.keys(carouselItems).length && Object.keys(boardInfo).length){
-          let token;
-          if (import.meta.env.PUBLIC_TOKEN_META) {
-            token = import.meta.env.PUBLIC_TOKEN_META;
-            console.log('Token:', token);
-          } else {
-            console.error('Token no disponible');
-          }
-          console.log('Variables de entorno:', import.meta.env);
-          console.log('PUBLIC_TOKEN_META:', import.meta.env.PUBLIC_TOKEN_META);
+          const token = import.meta.env.PUBLIC_TOKEN_META
           fetch('https://guiadeparche.com/tftdata/Set12/crearCompoMeta.php', {
             method: 'POST',
             headers: {

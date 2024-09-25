@@ -4,7 +4,6 @@ import { traitsColors, imgHex } from "src/functions/campeonestft";
 const Sinergias = ({sinergias, orientacion})=>{
 
   function checkColor(hexColor){
-    console.log(hexColor)
     if(hexColor === "hex-prismatic.webp"){
       return colorHex.prismatic
     }
@@ -85,14 +84,12 @@ const Sinergias = ({sinergias, orientacion})=>{
     return result;
   }
 
-  console.log(getMinMaxTraits(sortable))
   return (
 
       <div className={[style.containerSinergia, orientacion==="horizontal" ? style.containerSinergiaHorizontal: ""].join(" ")}>
     {Object.keys(sinergias).length > 0 && getMinMaxTraits(sortable).map((key,i)=>{
       if(i < 6){
         if(key.max !== "hex-default.webp"){
-          console.log()
           return (
             <div key={i} className={style.containerSinergiaHex} style={window.innerWidth < 900 ? checkColor(key.max) : {}}>
               <span className={style.borderHex} style={checkColor(key.max)}></span> 
