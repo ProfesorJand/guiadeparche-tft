@@ -291,9 +291,12 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           let token;
           if(import.meta.env.SSR){
             token = import.meta.env.TOKEN_META;
+            console.log("true", token)
           }else{
             token = import.meta.env.PUBLIC_TOKEN_META;
+            console.log("falso", token)
           }
+          console.log('Token enviado:', token);
           fetch('https://guiadeparche.com/tftdata/Set12/crearCompoMeta.php', {
             method: 'POST',
             headers: {

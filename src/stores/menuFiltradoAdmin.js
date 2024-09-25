@@ -113,7 +113,6 @@ export const filterByCategory = ()=>{
     
     return filtersTier
   })
-  console.log(newMeta)
   MetaComps.set(newMeta)
 }
 

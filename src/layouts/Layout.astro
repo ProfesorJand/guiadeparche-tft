@@ -25,14 +25,14 @@ const { title, JSONSchema } = Astro.props;
       declare global {
         interface Window {
           dataLayer: any[];
+          gtag: (...args: any[]) => void; 
         }
-        function gtag(...args: any[]): void;
       }
       window.dataLayer = window.dataLayer || [];
-      function gtag(){window.dataLayer.push(arguments);}
-      gtag('js', new Date());
+      window.gtag = function gtag(){window.dataLayer.push(arguments);}  // Añadir gtag a window
+      window.gtag('js', new Date());
 
-      gtag('config', 'G-69PWGWV8LZ');
+      window.gtag('config', 'G-69PWGWV8LZ');
     </script>
     <!-- google ads mobile -->
    <script async custom-element="amp-ad" src="https://cdn.ampproject.org/v0/amp-ad-0.1.js" is:inline></script>
