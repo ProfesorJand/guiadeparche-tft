@@ -2,15 +2,12 @@ import React, { useEffect } from "react";
 import style from "./css/Sinergias.module.css"
 import { traitsColors, imgHex } from "src/functions/campeonestft";
 const Sinergias = ({sinergias, orientacion})=>{
+
   function checkColor(hexColor){
+    console.log(hexColor)
     if(hexColor === "hex-prismatic.webp"){
-      console.log(hexColor)
       return colorHex.prismatic
     }
-    if(!hexColor){
-      return {backgroundColor:colorHex.default};
-    }
-
     return {backgroundColor:colorHex[hexColor.replace("hex-","").replace(".webp","")]}
   }
 
@@ -27,36 +24,60 @@ const Sinergias = ({sinergias, orientacion})=>{
     .sort(([,a],[,b]) => b-a)
     .reduce((r, [k, v]) => ({ ...r, [k]: v }), {});
 
+  // Función que busca el nivel más cercano por debajo del valor actual
+  function findClosestLower(trait, value) {
+    const traitData = traitsColors[trait];
+    if (!traitData) return null;
+
+    const levels = Object.keys(traitData)
+      .map(Number)
+      .sort((a, b) => a - b);
+
+    // Busca el nivel más bajo o igual al valor actual
+    let closest = levels[0];
+    for (let i = 0; i < levels.length; i++) {
+      if (levels[i] <= value) {
+        closest = levels[i];
+      } else {
+        break;
+      }
+    }
+
+    return traitData[closest];
+  }
 
   function getMinMaxTraits(traits) {
     const result = [];
   
     Object.entries(traits).forEach(([trait, value]) => {
       const traitData = traitsColors[trait];
+  
       if (traitData) {
         const levels = Object.keys(traitData).map(Number).sort((a, b) => a - b);
-  
         let maxLevel;
-        
-        if (levels.includes(value)) {
-          // Si el valor 'min' ya existe en traitsColors, max será igual al valor de min
-          maxLevel = value;
+        let minLevel = levels[0]; // El nivel más bajo disponible
+        // Si el valor es menor que el nivel más bajo, asigna 'hex-default.webp'
+        if (value < levels[0]) {
+          maxLevel = 'hex-default.webp';
+        } else if (levels.includes(value)) {
+          maxLevel = traitData[value];  // Usa el valor exacto si existe
+          minLevel = value
         } else {
-          // Encuentra el nivel superior más cercano o toma el mayor disponible
-          maxLevel = levels.find(level => level > value) || levels[levels.length - 1];
+          // Encuentra el nivel inferior más cercano
+          maxLevel = traitData[levels.reverse().find(level => level <= value)];
         }
   
         result.push({
           trait,
-          min: value,
+          min: minLevel,
           max: maxLevel
-      });
+        });
       } else {
-        // Si no hay datos del trait en traitsColors, el máximo es el mismo que el mínimo
+        // Si no hay datos del trait en traitsColors, asigna 'hex-default.webp'
         result.push({
-            trait,
-            min: value,
-            max: value
+          trait,
+          min: 1,
+          max: 'hex-default.webp'
         });
       }
     });
@@ -64,16 +85,17 @@ const Sinergias = ({sinergias, orientacion})=>{
     return result;
   }
 
+  console.log(getMinMaxTraits(sortable))
   return (
 
       <div className={[style.containerSinergia, orientacion==="horizontal" ? style.containerSinergiaHorizontal: ""].join(" ")}>
     {Object.keys(sinergias).length > 0 && getMinMaxTraits(sortable).map((key,i)=>{
       if(i < 6){
-        if(checkColor(traitsColors[key.trait][key.min])?.backgroundColor !== colorHex.default){
-  
+        if(key.max !== "hex-default.webp"){
+          console.log()
           return (
-            <div key={i} className={style.containerSinergiaHex} style={window.innerWidth < 900 ? checkColor(traitsColors[key.trait][key.min]) : {}}>
-              <span className={style.borderHex} style={checkColor(traitsColors[key.trait][key.min])}></span> 
+            <div key={i} className={style.containerSinergiaHex} style={window.innerWidth < 900 ? checkColor(key.max) : {}}>
+              <span className={style.borderHex} style={checkColor(key.max)}></span> 
               <img className={style.imgSinergia} src={`/sinergias/Trait_Icon_12_${key.trait}.svg`} alt="Trait_Icon" loading="lazy"/>
               <div className={style.infoSinergia}>{key.min}</div>
             </div>
