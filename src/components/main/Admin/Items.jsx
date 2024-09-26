@@ -418,6 +418,168 @@ const Items = ()=>{
   },
   ]
 
+  const ARTEFACTOS = [
+    {
+      nombre: "Spirit Visage",
+      apiName: "TFT4_Item_OrnnAnimaVisage",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/ornn_items/tft4_ornnitem_tank_t3_spiritvisage.png",
+    },
+    {
+      nombre: "Blighting Jewel",
+      apiName: "TFT_Item_Artifact_BlightingJewel",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/ornn_items/tft_item_artifact_blightingjewel.png",
+    },
+    {
+      nombre:"Corrupt Vampiric Scepter",
+      apiName:"TFT_Item_Artifact_CursedVampiricScepter",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/ornn_items/tft_item_artifact_cursedvampiricscepter.png",
+    },
+    {
+      nombre:"Death's Defiance",
+      apiName:"TFT4_Item_OrnnDeathsDefiance",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/ornn_items/tft4_ornnitem_fighter_t3_deathsdance.png",
+    },
+    {
+      nombre:"Deathfire Grasp",
+      apiName:"TFT9_Item_OrnnDeathfireGrasp",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/ornn_items/tft9_ornnitem_deathfiregrasp.png",
+    },
+    {
+      nombre:"Eternal Winter",
+      apiName:"TFT4_Item_OrnnEternalWinter",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/ornn_items/tft4_ornnitem_mage_t4_everfrost.png",
+    },
+    {
+      nombre:"Fishbones",
+      apiName:"TFT_Item_Artifact_Fishbones",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/ornn_items/tft_item_artifact_fishbones.png",
+    },
+    {
+      nombre:"Forbidden Idol",
+      apiName:"TFT_Item_Artifact_ForbiddenIdol",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/ornn_items/tft_item_artifact_forbiddenidol.png",
+    },
+    {
+      nombre:"Gambler's Blade",
+      apiName:"TFT7_Item_ShimmerscaleGamblersBlade",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/ornn_items/tft10_gamblersblade.png",
+    },
+    {
+      nombre:"Gold Collector",
+      apiName:"TFT4_Item_OrnnTheCollector",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/ornn_items/tft4_ornnitem_marksman_t3_thecollector.png",
+    },
+    {
+      nombre:"Horizon Focus",
+      apiName:"TFT_Item_Artifact_HorizonFocus",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/ornn_items/tft_item_artifact_horizonfocus.png",
+    },
+    {
+      nombre:"Hullcrusher",
+      apiName:"TFT9_Item_OrnnHullbreaker",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/ornn_items/tft9_ornnitem_hullbreaker.png",
+    },
+    {
+      nombre:"Infinity Force",
+      apiName:"TFT4_Item_OrnnInfinityForce",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/ornn_items/tft4_ornnitem_fighter_t4_trinityforce.png",
+    },
+    {
+      nombre:"Innervating Locket",
+      apiName:"TFT_Item_Artifact_InnervatingLocket",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/ornn_items/tft_item_artifact_innervatinglocket.png",
+    },
+    {
+      nombre:"Lich Bane",
+      apiName:"TFT_Item_Artifact_LichBane",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/ornn_items/tft_item_artifact_lichbane.png",
+    },
+    {
+      nombre:"Lightshield Crest",
+      apiName:"TFT_Item_Artifact_LightshieldCrest",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/ornn_items/tft_item_artifact_lightshieldcrest.png",
+    },
+    {
+      nombre:"Luden's Tempest",
+      apiName:"TFT_Item_Artifact_LudensTempest",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/ornn_items/tft_item_artifact_ludenstempest.png",
+    },
+    {
+      nombre:"Manazane",
+      apiName:"TFT4_Item_OrnnMuramana",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/ornn_items/tft4_ornnitem_marksman_t3_muramana.png",
+    },
+    {
+      nombre:"Mittens",
+      apiName:"TFT_Item_Artifact_Mittens",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/ornn_items/tft_item_artifact_mittens.png",
+    },
+    {
+      nombre:"Mogul's Mail",
+      apiName:"TFT7_Item_ShimmerscaleMogulsMail",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/ornn_items/moguls_mail.png",
+    },
+    {
+      nombre:"Prowler's Claw",
+      apiName:"TFT_Item_Artifact_ProwlersClaw",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/ornn_items/tft_item_artifact_prowlersclaw.png",
+    },
+    {
+      nombre:"Rapid Firecannon",
+      apiName:"TFT_Item_Artifact_RapidFirecannon",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/ornn_items/tft_item_artifact_rapidfirecannon.png",
+    },
+    {
+      nombre:"Seeker's Armguard",
+      apiName:"TFT_Item_Artifact_SeekersArmguard",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/ornn_items/tft_item_artifact_seekersarmguard.png",
+    },
+    {
+      nombre:"Silvermere Dawn",
+      apiName:"TFT_Item_Artifact_SilvermereDawn",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/ornn_items/tft_item_artifact_silvermeredawn.png",
+    },
+    {
+      nombre:"Sniper's Focus",
+      apiName:"TFT9_Item_OrnnHorizonFocus",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/ornn_items/tft9_ornnitem_snipersfocus.png",
+    },
+    {
+      nombre:"Spectral Cutlass",
+      apiName:"TFT_Item_Artifact_SpectralCutlass",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/ornn_items/tft_item_artifact_spectralcutlass.png",
+    },
+    {
+      nombre:"Suspicious Trench Coat",
+      apiName:"TFT_Item_Artifact_SuspiciousTrenchCoat",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/ornn_items/tft_item_artifact_suspicioustrenchcoat.png",
+    },
+    {
+      nombre:"Talisman Of Ascension",
+      apiName:"TFT_Item_Artifact_TalismanOfAscension",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/ornn_items/tft_item_artifact_talismanofascension.png",
+    },
+    {
+      nombre:"Trickster's Glass",
+      apiName:"TFT9_Item_OrnnTrickstersGlass",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/ornn_items/tft9_ornnitem_trickstersglass.png",
+    },
+    {
+      nombre:"Unending Despair",
+      apiName:"TFT_Item_Artifact_UnendingDespair",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/ornn_items/tft_item_artifact_unendingdespair.png",
+    },
+    {
+      nombre:"Wit's End",
+      apiName:"TFT_Item_Artifact_WitsEnd",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/ornn_items/tft_item_artifact_witsend.png",
+    },
+    {
+      nombre:"Zhonya's Paradox",
+      apiName:"TFT4_Item_OrnnZhonyasParadox",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/ornn_items/tft4_ornnitem_mage_t3_zhonyashourglass.png",
+    },
+  ]
  
   useEffect(()=>{
     var resultado = [];
@@ -454,6 +616,7 @@ return (
       <button onClick={(e)=>{e.preventDefault();handlePestana(1)}} className={style.btn}>Radiants</button>
       <button onClick={(e)=>{e.preventDefault();handlePestana(2)}} className={style.btn}>Emblems</button>
       <button onClick={(e)=>{e.preventDefault();handlePestana(3)}} className={style.btn}>Faerie</button>
+      <button onClick={(e)=>{e.preventDefault();handlePestana(4)}} className={style.btn}>Artefacts</button>
       </div>
 
       <div className={style.containerItemsInfo}>
@@ -502,6 +665,17 @@ return (
         <div className={style.containerItemsHorizontal}>
           {pestana === 3 && 
             OTROS_ITEMS.map((dataItem,index)=>{
+              return ( 
+              <div className={style.itemsDropRadiants} key={`otrosItems`+index}>
+                <img  src={dataItem.img} alt={`Basic Item TFT ${dataItem.nombre}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} data-item={JSON.stringify(dataItem)} data-from="itemList" draggable="true"></img>
+              </div>)
+            })
+          }
+        </div>
+
+        <div className={style.containerItemsHorizontal}>
+          {pestana === 4 && 
+            ARTEFACTOS.map((dataItem,index)=>{
               return ( 
               <div className={style.itemsDropRadiants} key={`otrosItems`+index}>
                 <img  src={dataItem.img} alt={`Basic Item TFT ${dataItem.nombre}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} data-item={JSON.stringify(dataItem)} data-from="itemList" draggable="true"></img>
