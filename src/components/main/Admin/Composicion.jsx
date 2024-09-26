@@ -156,7 +156,7 @@ const Composicion = ({compo, admin=false})=>{
           <PosicionamientoCompos id={compo.id} boardInfo={compo.boardInfo} titulo={compo.titulo}  originalComp={compo.originalComp} gameplay={compo.gameplay} spatula1={compo.spatulaItem1} spatula2={compo.spatulaItem2} setPosicionamiento={setPosicionamiento} posicionamiento={posicionamiento} setData={setData} setSinergias={setSinergias}/>
         </div>
         <div className={style.containerAumentos}>
-          <h3 className={style.titulo}>Augments</h3>
+          {/*<h3 className={style.titulo}>Augments</h3>*/}
           <AumentosCompos aumentos={compo.aumentos}/>
         </div>
       </div>

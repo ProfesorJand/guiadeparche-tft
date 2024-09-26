@@ -175,7 +175,8 @@
   border: 0.5px solid var(--border-gray-color);
   margin: 0;
   box-sizing: border-box;
-  border-top:none
+  border-top:none;
+  padding-top: 5px;
 }
 
 .containerAumentos{
