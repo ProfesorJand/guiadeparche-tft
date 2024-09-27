@@ -18,13 +18,13 @@ const Composicion = ({compo, admin=false})=>{
   const textoPosicionamiento = (texto)=>{
     if(texto === "spatula1"){
       texto = compo.spatulaItem1.split("_").pop().replace(".png","");
-      return texto[0].toUpperCase() + texto.slice(1)
+      return texto[0]?.toUpperCase() + texto.slice(1)
     }
     if(texto === "spatula2"){
       texto = compo.spatulaItem2.split("_").pop().replace(".png","");
-      return texto[0].toUpperCase() + texto.slice(1)
+      return texto[0]?.toUpperCase() + texto.slice(1)
     }
-    return texto[0].toUpperCase() + texto.slice(1)
+    return texto[0]?.toUpperCase() + texto.slice(1)
   }
   useEffect(()=>{
     setPosicionamiento(compo.originalComp)

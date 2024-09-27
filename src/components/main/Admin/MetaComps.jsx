@@ -1,4 +1,4 @@
-import React, {useEffect, Fragment} from "react";
+import React, {useEffect} from "react";
 import { useStore } from "@nanostores/react";
 import Composicion from "./Composicion.jsx";
 import style from "./css/EditarCompoTFT.module.css"

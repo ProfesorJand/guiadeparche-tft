@@ -15,7 +15,7 @@ const CarouselItems = ({carouselItems}) =>{
         }
         </div>
       </div>
-      {carouselItems.BasicItem2 && ">"}
+      {carouselItems.BasicItem2 && <span className={style.spanSeparator}>{">"}</span>}
       <div className={style.containerBasicItem}>
       {carouselItems.BasicItem2 &&
         <img className={style.imgBasicItem} src={carouselItems.BasicItem2.img} alt={carouselItems.BasicItem2.nombre} loading="lazy"></img>
@@ -26,7 +26,7 @@ const CarouselItems = ({carouselItems}) =>{
         }
         </div>
       </div>
-      {carouselItems.BasicItem3 && ">"}
+      {carouselItems.BasicItem3 && <span className={style.spanSeparator}>{">"}</span>}
       <div className={style.containerBasicItem}>
       {carouselItems.BasicItem3 &&
         <img className={style.imgBasicItem} src={carouselItems.BasicItem3.img} alt={carouselItems.BasicItem3.nombre} loading="lazy"></img>
