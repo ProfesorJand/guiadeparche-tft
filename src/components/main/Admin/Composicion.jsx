@@ -96,9 +96,11 @@ const Composicion = ({compo, admin=false})=>{
           />
       </div>
       <div className={style.containerInfoComp}>
-        <div className={style.dificultad} style={{border:`1px solid ${colorDificulty[compo.dificultad]}`, color:`${colorDificulty[compo.dificultad]}`}}>{compo.dificultad}</div>
         <div className={[style.titulo, style.tituloComp].join(" ")}>{compo.titulo}</div>
-        <div className={style.category}>{compo.infographicCategory}</div>
+        <div className={style.containerDificultadCategory}>
+          <div className={style.dificultad} style={{border:`1px solid ${colorDificulty[compo.dificultad]}`, color:`${colorDificulty[compo.dificultad]}`}}>{compo.dificultad}</div>
+          <div className={style.category}>{compo.infographicCategory}</div>
+        </div>
       </div>
       <div className={style.containerInfoChamp}>
       {dataCampeones.map(({dataCampeon, dataItem, estrellas},i)=>{

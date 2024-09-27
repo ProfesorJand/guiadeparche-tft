@@ -49,6 +49,14 @@
     flex-wrap: wrap;
 }
 
+.containerDificultadCategory{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  order:2
+}
+
 .containerInfoChamp{
   display: flex;
   flex-direction: row;
@@ -71,7 +79,6 @@
 .dificultad{
   display: flex;
   box-sizing: border-box;
-  border-radius: 10%;
   padding: 0px 5px;
   font-size: smaller;
   order:2;
@@ -259,7 +266,14 @@
     box-sizing: border-box;
     justify-content:space-between;
     align-items: center;
+    flex-direction: row;
   }
+.containerDificultadCategory{
+  width: 40%;
+  justify-content: space-around;
+  align-items: center;
+}
+  
   .containerInfoChamp{
     padding-bottom: 25px;
     
@@ -268,9 +282,8 @@
     padding: 5px 5px 5px 5px;
   }
   .dificultad{
-    width: 25%;
+    width: 50%;
     font-size: small;
-    border-radius: 2px;
     scale: 0.9;
     filter: brightness(0.9);
   }
@@ -280,12 +293,13 @@
   }
 
   .tituloComp{
-    width: 50%;
+    width: 60%;
     font-size: small;
   }
   .category{
-    width: 20%;
+    width: 50%;
     font-size: small;
+    text-wrap: nowrap;
   }
   .containerE{
     justify-content: center;
@@ -307,7 +321,7 @@
   .containerInfoComp{
     display: flex;
     position: relative;
-    flex-direction: row;
+    flex-direction: column;
     flex: 6;
     align-items: flex-start;
     padding-left: 5px;
@@ -329,7 +343,6 @@
 .dificultad{
   display: flex;
   box-sizing: border-box;
-  border-radius: 10%;
   padding: 0px 5px;
   font-size: smaller;
   order:2;
