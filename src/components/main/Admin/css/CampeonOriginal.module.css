@@ -102,9 +102,9 @@
 
 
 @media only screen and (min-width:900px){
-  .containerCampeon{
+  /* .containerCampeon{
     width: calc((100% / 9) - 5px + (5px / 9) );
-  }
+  } */
   
 
 }

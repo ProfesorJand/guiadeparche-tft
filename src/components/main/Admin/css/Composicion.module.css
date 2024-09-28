@@ -192,7 +192,7 @@
   width: 100%;
   align-items: center;
   justify-content: space-between;
-  padding: 5px 0 7px 0;
+  padding: 5px 5px 7px 5px;
   border-top: 0.5px solid grey;
 }
 
@@ -249,31 +249,31 @@
 }
 
 @media only screen and (max-width: 900px){
-  .containerInfoPrincipal{
-    flex-wrap: wrap;
-    box-sizing: border-box;
-    row-gap: 5px;
-  }
-  .containerTierImg{
-    width:5%;
-    flex:none;
-    box-sizing: border-box;
-    align-items: center;
-  }
-  .containerInfoComp{
-    width: 95%;
-    flex:none;
-    box-sizing: border-box;
-    justify-content:space-between;
-    align-items: center;
-    flex-direction: row;
-  }
+.containerInfoPrincipal{
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  row-gap: 5px;
+}
+.containerTierImg{
+  width:5%;
+  flex:none;
+  box-sizing: border-box;
+  align-items: center;
+}
+.containerInfoComp{
+  width: 95%;
+  flex:none;
+  box-sizing: border-box;
+  justify-content:space-between;
+  align-items: center;
+  flex-direction: row;
+}
 .containerDificultadCategory{
   width: 40%;
   justify-content: space-around;
   align-items: center;
 }
-  
+ 
   .containerInfoChamp{
     padding-bottom: 25px;
     
@@ -281,12 +281,12 @@
   .containerEGlobal{
     padding: 5px 5px 5px 5px;
   }
-  .dificultad{
-    width: 50%;
-    font-size: small;
-    scale: 0.9;
-    filter: brightness(0.9);
-  }
+.dificultad{
+  width: 50%;
+  font-size: small;
+  scale: 0.9;
+  filter: brightness(0.9);
+}
 
   .titulo{
     font-size: xx-small;

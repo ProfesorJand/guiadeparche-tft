@@ -1,5 +1,6 @@
 :root{
   --gap-container-aumentos:16px;
+  --gap-container-aumentos-mobile:8px;
   --number-augments:8
 }
 
@@ -61,4 +62,13 @@
 
 .variableName{
   color:gold
+}
+
+@media only screen and (max-width:900px){
+  .containerAumentos{
+    gap:var(--gap-container-aumentos-mobile);
+  }
+  .containerAumento{
+    flex: 0 0 calc(100% / var(--number-augments) - var(--gap-container-aumentos-mobile) + (var(--gap-container-aumentos-mobile)/ var(--number-augments))); 
+  }
 }
