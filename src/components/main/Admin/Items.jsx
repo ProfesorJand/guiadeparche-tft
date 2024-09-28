@@ -1,106 +1,148 @@
 import React, {useEffect, useState} from "react";
 import style from "./css/Items.module.css";
 import { radiantsItems, emblems } from "src/json/updates/itemsTFT";
-const Items = ()=>{
+import {itemsDataIngles} from "src/json/updates/itemsTFT"
+export const Items = ()=>{
+  const primerItem = {
+    apiName: "TFT_Item_BFSword",
+    associatedTraits: [],
+    composition: [],
+    desc: "%i:scaleAD% +@AD*100@% Attack Damage",
+    effects: {
+        AD: 0.10000000149011612
+    },
+    from: null,
+    icon: "ASSETS/Maps/Particles/TFT/Item_Icons/Standard/BF_Sword.tex",
+    id: null,
+    incompatibleTraits: [],
+    name: "B.F. Sword",
+    unique: false,
+}
   const [pestana, setPestana] = useState(0);
   const [itemsCrafteables, setItemsCrafteables] = useState([])
+  const [itemOver, setItemOver] = useState(null);
+  const [tooltip, setTooltip] = useState(null);
+
+  useEffect(()=>{
+    if(itemOver){
+      (async function callApi(){
+        const findItem = itemsDataIngles.find(({apiName, composition})=>{
+          return apiName === itemOver
+        })
+        setTooltip(findItem)
+      })()
+    }else{
+      setTooltip(null)
+    }
+  },[itemOver])
+  
   function handlePestana(number){
     setPestana(number)
   }
   const BASIC_ITEMS = [
     {
       nombre:"bf_sword",
+      apiName:"TFT_Item_BFSword",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/bf_sword.png",
     },
     {
       nombre:"recurve_bow",
+      apiName:"TFT_Item_RecurveBow",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/recurve_bow.png",
     },
     {
       nombre:"needlessly_large_rod",
+      apiName:"TFT_Item_NeedlesslyLargeRod",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/needlessly_large_rod.png",
     },
     {
       nombre:"tear_of_the_goddess",
+      apiName:"TFT_Item_TearOfTheGoddess",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/tear_of_the_goddess.png",
     },
     {
       nombre:"chain_vest",
+      apiName:"TFT_Item_ChainVest",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/chain_vest.png",
     },
     {
       nombre:"negatron_cloak",
+      apiName:"TFT_Item_NegatronCloak",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/negatron_cloak.png",
     },
     {
       nombre:"gaints_belt",
+      apiName:"TFT_Item_GiantsBelt",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/gaints_belt.png",
     },
     {
       nombre:"sparring_gloves",
+      apiName:"TFT_Item_SparringGloves",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/sparring_gloves.png",
     },
     {
       nombre:"spatula",
+      apiName:"TFT_Item_Spatula",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/spatula.png",
     },
     {
       nombre:"frying_pan",
+      apiName:"TFT_Item_FryingPan",
       img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/standard/frying_pan.png",
     },
   ]
   const CRAFTEABLE_ITEMS = [
     {
       nombre:"Deathblade",
-      apiName:"death_blade",
+      apiName:"TFT_Item_Deathblade",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/death_blade.png",
       sinergia:"",
     },
     {
       nombre:"Giant Slayer",
-      apiName:"giant_slayer",
+      apiName:"TFT_Item_MadredsBloodrazor",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/giant_slayer.png",
       sinergia:"",
     },
     {
       nombre:"Hextech Gunblade",
-      apiName:"hextech_gunblade",
+      apiName:"TFT_Item_HextechGunblade",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/hextech_gunblade.png",
       sinergia:"",
     },
     {
       nombre:"Spear of Shojin",
-      apiName:"spear_of_shojin",
+      apiName:"TFT_Item_SpearOfShojin",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/spear_of_shojin.png",
       sinergia:"",
     },
     {
       nombre:"Edge of Night",
-      apiName:"edge_of_night",
+      apiName:"TFT_Item_GuardianAngel",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/edge_of_night.png",
       sinergia:"",
     },
     {
       nombre:"Bloodthirster",
-      apiName:"bloodthirster",
+      apiName:"TFT_Item_Bloodthirster",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/bloodthirster.png",
       sinergia:"",
     },
     {
       nombre:"Sterak's Gage",
-      apiName:"steraks_gage",
+      apiName:"TFT_Item_SteraksGage",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/steraks_gage.png",
       sinergia:"",
     },
     {
       nombre:"Infinity Edge",
-      apiName:"infinity_edge",
+      apiName:"TFT_Item_InfinityEdge",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/infinity_edge.png",
       sinergia:"",
     },
     {
       nombre:"Sugarcraft Emblem",
-      apiName:"sugarcraft_emblem",
+      apiName:"TFT12_Item_SugarcraftEmblemItem",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_sugarcraft.png",
       sinergia:"Sugarcraft",
     },
@@ -112,49 +154,49 @@ const Items = ()=>{
     },
     {
       nombre:"Red Buff",
-      apiName:"red_buff",
+      apiName:"TFT_Item_RapidFireCannon",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/redbuff.png",
       sinergia:"",
     },
     {
       nombre:"Guinsoo's Rageblade",
-      apiName:"guinsoos_rageblade",
+      apiName:"TFT_Item_GuinsoosRageblade",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/guinsoos_rageblade.png",
       sinergia:"",
     },
     {
       nombre:"Statikk Shiv",
-      apiName:"statikk_shiv",
+      apiName:"TFT_Item_StatikkShiv",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/statikk_shiv.png",
       sinergia:"",
     },
     {
       nombre:"Titan's Resolve",
-      apiName:"titans_resolve",
+      apiName:"TFT_Item_TitansResolve",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/titans_resolve.png",
       sinergia:"",
     },
     {
       nombre:"Runaan's Hurricane",
-      apiName:"runaans_hurricane",
+      apiName:"TFT_Item_RunaansHurricane",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/runaans_hurricane.png",
       sinergia:"",
     },
     {
       nombre:"Nashor's Tooth",
-      apiName:"nashors_tooth",
+      apiName:"TFT_Item_Leviathan",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/nashors_tooth.png",
       sinergia:"",
     },
     {
       nombre:"Last Whisper",
-      apiName:"last_whisper",
+      apiName:"TFT_Item_LastWhisper",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/last_whisper.png",
       sinergia:"",
     },
     {
       nombre:"Pyro Emblem",
-      apiName:"pyro_emblem",
+      apiName:"TFT12_Item_PyroEmblemItem",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_pyro.png",
       sinergia:"Pyro",
     },
@@ -166,43 +208,43 @@ const Items = ()=>{
     },
     {
       nombre:"Rabadon's Deathcap",
-      apiName:"rabadons_deathcap",
+      apiName:"TFT_Item_RabadonsDeathcap",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/rabadons_deathcap.png",
       sinergia:"",
     },
     {
       nombre:"Archangel's Staff",
-      apiName:"archangel_staff",
+      apiName:"TFT_Item_ArchangelsStaff",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/archangel_staff.png",
       sinergia:"",
     },
     {
       nombre:"Crownguard",
-      apiName:"crownguard",
+      apiName:"TFT_Item_Crownguard",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/crownguard.png",
       sinergia:"",
     },
     {
       nombre:"Ionic Spark",
-      apiName:"ionic_spark",
+      apiName:"TFT_Item_IonicSpark",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/ionic_spark.png",
       sinergia:"",
     },
     {
       nombre:"Morellonomicon",
-      apiName:"morellonomicon",
+      apiName:"TFT_Item_Morellonomicon",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/morellonomicon.png",
       sinergia:"",
     },
     {
       nombre:"Jeweled Guantlet",
-      apiName:"jeweled_guantlet",
+      apiName:"TFT_Item_JeweledGauntlet",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/jeweled_guantlet.png",
       sinergia:"",
     },
     {
       nombre:"Portal Emblem",
-      apiName:"portal_emblem",
+      apiName:"TFT12_Item_PortalEmblemItem",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_portal.png",
       sinergia:"Portal",
     },
@@ -214,37 +256,37 @@ const Items = ()=>{
     },
     {
       nombre:"Blue Buff",
-      apiName:"blue_buff",
+      apiName:"TFT_Item_BlueBuff",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/blue_buff.png",
       sinergia:"",
     },
     {
       nombre:"Protector's Vow",
-      apiName:"protectors_vow",
+      apiName:"TFT_Item_FrozenHeart",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/winters_approach.png",
       sinergia:"",
     },
     {
       nombre:"Adaptive Helm",
-      apiName:"adaptive_helm",
+      apiName:"TFT_Item_AdaptiveHelm",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/adaptive_helm.png",
       sinergia:"",
     },
     {
       nombre:"Redemption",
-      apiName:"redemption",
+      apiName:"TFT_Item_Redemption",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/redemption.png",
       sinergia:"",
     },
     {
       nombre:"Hand of Justice",
-      apiName:"hand_of_justice",
+      apiName:"TFT_Item_UnstableConcoction",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/hand_of_justice.png",
       sinergia:"",
     },
     {
       nombre:"Faerie Emblem",
-      apiName:"faerie_emblem",
+      apiName:"TFT12_Item_FaerieEmblemItem",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_faerie.png",
       sinergia:"Faerie",
     },
@@ -256,31 +298,31 @@ const Items = ()=>{
     },
     {
       nombre:"Bramble Vest",
-      apiName:"bramble_vest",
+      apiName:"TFT_Item_BrambleVest",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/bramble_vest.png",
       sinergia:"",
     },
     {
       nombre:"Gargoyle Stoneplate",
-      apiName:"gargoyle_stoneplate",
+      apiName:"TFT_Item_GargoyleStoneplate",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/gargoyle_stoneplate.png",
       sinergia:"",
     },
     {
       nombre:"Sunfire Cape",
-      apiName:"sunfire_cape",
+      apiName:"TFT_Item_RedBuff",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/sunfire_cape.png",
       sinergia:"",
     },
     {
       nombre:"Steadfast Heart",
-      apiName:"steadfast_heart",
+      apiName:"TFT_Item_NightHarvester",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/behemoth.png",
       sinergia:"",
     },
     {
       nombre:"Frost Emblem",
-      apiName:"frost_emblem",
+      apiName:"TFT12_Item_FrostEmblemItem",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_frost.png",
       sinergia:"Frost",
     },
@@ -292,25 +334,25 @@ const Items = ()=>{
     },
     {
       nombre:"Dragons Claw",
-      apiName:"dragons_claw",
+      apiName:"TFT_Item_DragonsClaw",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/dragons_claw.png",
       sinergia:"",
     },
     {
       nombre:"Evenshroud",
-      apiName:"evenshroud",
+      apiName:"TFT_Item_SpectralGauntlet",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/evenshroud.png",
       sinergia:"",
     },
     {
       nombre:"Quicksilver",
-      apiName:"quicksilver",
+      apiName:"TFT_Item_Quicksilver",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/quicksilver.png",
       sinergia:"",
     },
     {
       nombre:"Witchcraft Emblem",
-      apiName:"witchcraft_emblem",
+      apiName:"TFT12_Item_WitchcraftEmblemItem",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_witchcraft.png",
       sinergia:"Witchcraft",
     },
@@ -322,19 +364,19 @@ const Items = ()=>{
     },
     {
       nombre:"Warmog's Armor",
-      apiName:"warmogs_armor",
+      apiName:"TFT_Item_WarmogsArmor",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/warmogs_armor.png",
       sinergia:"",
     },
     {
       nombre:"Guardbreaker",
-      apiName:"guardbreaker",
+      apiName:"TFT_Item_PowerGauntlet",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/stridebreaker.png",
       sinergia:"",
     },
     {
       nombre:"Eldritch Emblem",
-      apiName:"eldritch_emblem",
+      apiName:"TFT12_Item_EldritchEmblemItem",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_eldritch.png",
       sinergia:"Eldritch",
     },
@@ -345,14 +387,14 @@ const Items = ()=>{
       sinergia:"Shapeshifter",
     },
     {
-      nombre:"Thieve's Gloves",
-      apiName:"thieves_gloves",
+      nombre:"Thief's Gloves",
+      apiName:"TFT_Item_ThiefsGloves",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/thieves_gloves.png",
       sinergia:"",
     },
     {
       nombre:"Honeymancy Emblem",
-      apiName:"honeymancy_emblem",
+      apiName:"TFT12_Item_HoneymancyEmblemItem",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_honeymancy.png",
       sinergia:"Honeymancy",
     },
@@ -364,7 +406,7 @@ const Items = ()=>{
     },
     {
       nombre:"Tactician's Crown",
-      apiName:"tacticians_crown",
+      apiName:"TFT_Item_ForceOfNature",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/tacticians_crown.png",
       sinergia:"",
     },
@@ -390,7 +432,7 @@ const Items = ()=>{
     ["Edge of Night", "Titan's Resolve", "Crownguard", "Protector's Vow", "Bramble Vest", "Gargoyle Stoneplate", "Sunfire Cape", "Steadfast Heart", "Frost Emblem", "Bastion Emblem"],
     ["Bloodthirster", "Runaan's Hurricane", "Ionic Spark", "Adaptive Helm", "Gargoyle Stoneplate", "Dragons Claw", "Evenshroud", "Quicksilver", "Witchcraft Emblem", "Preserver Emblem"],
     ["Sterak's Gage","Nashor's Tooth", "Morellonomicon", "Redemption", "Sunfire Cape", "Evenshroud", "Warmog's Armor", "Guardbreaker", "Eldritch Emblem", "Shapeshifter Emblem"],
-    ["Infinity Edge", "Last Whisper", "Jeweled Guantlet", "Hand of Justice", "Steadfast Heart", "Quicksilver", "Guardbreaker", "Thieve's Gloves", "Honeymancy Emblem", "Warrior Emblem"],
+    ["Infinity Edge", "Last Whisper", "Jeweled Guantlet", "Hand of Justice", "Steadfast Heart", "Quicksilver", "Guardbreaker", "Thief's Gloves", "Honeymancy Emblem", "Warrior Emblem"],
     ["Sugarcraft Emblem", "Pyro Emblem", "Portal Emblem", "Faerie Emblem", "Frost Emblem", "Witchcraft Emblem", "Eldritch Emblem", "Honeymancy Emblem", "Tactician's Crown", "Tacticians Ring"],
     [ "Hunter Emblem", "Multistriker Emblem", "Mage Emblem", "Scholar Emblem", "Bastion Emblem",  "Preserver Emblem", "Shapeshifter Emblem", "Warrior Emblem", "Tacticians Ring", "Tacticians Scepter"]
   ]
@@ -593,21 +635,16 @@ const Items = ()=>{
         }
       })
     })
-    console.log(resultado)
     setItemsCrafteables(resultado)
   },[])
-
-  useEffect(()=>{
-
-  },[])
-
-
 
   function handleDragStart(e){
     e.dataTransfer.setData("item", e.target.getAttribute("data-item"));
     e.dataTransfer.setData("from", e.target.getAttribute("data-from"));
     
 }
+
+
 
 return (
     <div className={style.containerItems}>
@@ -624,7 +661,7 @@ return (
             BASIC_ITEMS.map((dataItem,index)=>{
             return (
               <div className={style.itemsDrop} key={index}>
-                <img  src={dataItem.img} alt={`Basic Item TFT ${dataItem.nombre}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} data-item={JSON.stringify(dataItem)} data-from="itemList" draggable="true"></img>
+                <img  src={dataItem.img} alt={`Basic Item TFT ${dataItem.nombre}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} onClick={()=>{setItemOver(dataItem.apiName)}} data-item={JSON.stringify(dataItem)} data-from="itemList" draggable="true"></img>
               </div>
             )
           })}
@@ -633,7 +670,7 @@ return (
             itemsCrafteables.map((dataItem,index)=>{
               return (
               <div className={style.itemsDrop} key={index}>
-                <img  src={dataItem.img} alt={`Basic Item TFT ${dataItem.nombre}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} data-item={JSON.stringify(dataItem)} data-from="itemList" draggable="true"></img>
+                <img  src={dataItem.img} alt={`Basic Item TFT ${dataItem.nombre}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} onClick={()=>{setItemOver(dataItem.apiName)}} data-item={JSON.stringify(dataItem)} data-from="itemList" draggable="true"></img>
               </div>)
             })
           }
@@ -644,7 +681,7 @@ return (
             radiantsItems.map((dataItem,index)=>{
               return (
                 <div className={style.itemsDropRadiants} key={index}>
-                  <img  src={dataItem.img} alt={`Basic Item TFT ${dataItem.nombre}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} data-item={JSON.stringify(dataItem)} data-from="itemList" draggable="true"></img>
+                  <img  src={dataItem.img} alt={`Basic Item TFT ${dataItem.nombre}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} onClick={()=>{setItemOver(dataItem.apiName)}} data-item={JSON.stringify(dataItem)} data-from="itemList" draggable="true"></img>
                 </div>
               )
             })
@@ -656,7 +693,7 @@ return (
             emblems.map((dataItem,index)=>{
               return (
                 <div className={style.itemsDropRadiants} key={index}>
-                  <img  src={dataItem.img} alt={`Basic Item TFT ${dataItem.nombre}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} data-item={JSON.stringify(dataItem)} data-from="itemList" draggable="true"></img>
+                  <img  src={dataItem.img} alt={`Basic Item TFT ${dataItem.nombre}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} onClick={()=>{setItemOver(dataItem.apiName)}} data-item={JSON.stringify(dataItem)} data-from="itemList" draggable="true"></img>
                 </div>
               )
             })
@@ -667,7 +704,7 @@ return (
             OTROS_ITEMS.map((dataItem,index)=>{
               return ( 
               <div className={style.itemsDropRadiants} key={`otrosItems`+index}>
-                <img  src={dataItem.img} alt={`Basic Item TFT ${dataItem.nombre}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} data-item={JSON.stringify(dataItem)} data-from="itemList" draggable="true"></img>
+                <img  src={dataItem.img} alt={`Basic Item TFT ${dataItem.nombre}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} onClick={()=>{setItemOver(dataItem.apiName)}} data-item={JSON.stringify(dataItem)} data-from="itemList" draggable="true"></img>
               </div>)
             })
           }
@@ -678,12 +715,64 @@ return (
             ARTEFACTOS.map((dataItem,index)=>{
               return ( 
               <div className={style.itemsDropRadiants} key={`otrosItems`+index}>
-                <img  src={dataItem.img} alt={`Basic Item TFT ${dataItem.nombre}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} data-item={JSON.stringify(dataItem)} data-from="itemList" draggable="true"></img>
+                <img  src={dataItem.img} alt={`Basic Item TFT ${dataItem.nombre}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} onClick={()=>{setItemOver(dataItem.apiName)}} data-item={JSON.stringify(dataItem)} data-from="itemList" draggable="true"></img>
               </div>)
             })
           }
         </div>
-
+        <div className={style.tooltip}>
+          {tooltip ?
+            <div className={style.tooltipContainer}>
+              <div className={style.tooltipContainerImg}>
+                <img className={style.tooltipImg} src={"https://raw.communitydragon.org/latest/game/" + tooltip.icon.toLowerCase().replace(".tex",".png")}></img>
+                {tooltip.composition.length === 2 && 
+                  <div className={style.tooltipContainerComponents}>
+                    <img className={style.tooltipImgComponent} src={"https://raw.communitydragon.org/latest/game/" + itemsDataIngles.find(({apiName})=>apiName === tooltip.composition[0]).icon.toLowerCase().replace(".tex",".png")}></img>
+                    +
+                    <img className={style.tooltipImgComponent} src={"https://raw.communitydragon.org/latest/game/" + itemsDataIngles.find(({apiName})=>apiName === tooltip.composition[1]).icon.toLowerCase().replace(".tex",".png")}></img>
+                  </div>
+                }
+              </div>
+              <div className={style.tooltipContainerText}>
+                <span className={style.tooltipContainerTextTitle}>{tooltip.name}</span>
+                <span className={style.tooltipContainerDesc}>{(new DOMParser()).parseFromString(tooltip.desc, "text/html").body.innerText}</span>
+                {Object.keys(tooltip.effects).map((key, index)=>{
+                  return (
+                    <span key={index} className={style.tooltipContainerEffects}>
+                      <span>{key} : {tooltip.effects[key]}</span>
+                    </span>
+                  )
+                })}
+              </div>
+              
+            </div>
+            : 
+            <div className={style.tooltipContainer}>
+              <div className={style.tooltipContainerImg}>
+                <img className={style.tooltipImg} src={"https://raw.communitydragon.org/latest/game/" + primerItem.icon.toLowerCase().replace(".tex",".png")}></img>
+                {primerItem.composition.length === 2 && 
+                  <div className={style.tooltipContainerComponents}>
+                    <img className={style.tooltipImgComponent} src={"https://raw.communitydragon.org/latest/game/" + itemsDataIngles.find(({apiName})=>apiName === primerItem.composition[0]).icon.toLowerCase().replace(".tex",".png")}></img>
+                    +
+                    <img className={style.tooltipImgComponent} src={"https://raw.communitydragon.org/latest/game/" + itemsDataIngles.find(({apiName})=>apiName === primerItem.composition[1]).icon.toLowerCase().replace(".tex",".png")}></img>
+                  </div>
+                }
+              </div>
+              <div className={style.tooltipContainerText}>
+                <span className={style.tooltipContainerTextTitle}>{primerItem.name}</span>
+                <span className={style.tooltipContainerDesc}>{(new DOMParser()).parseFromString(primerItem.desc, "text/html").body.innerText}</span>
+                {Object.keys(primerItem.effects).map((key, index)=>{
+                  return (
+                    <span key={index} className={style.tooltipContainerEffects}>
+                      <span>{key} : {primerItem.effects[key]}</span>
+                    </span>
+                  )
+                })}
+              </div>
+              
+            </div>
+          }
+        </div>
     </div>
   )
 }
