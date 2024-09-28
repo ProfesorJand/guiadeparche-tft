@@ -109,9 +109,8 @@
 
 .btn{
   display: flex;
-  width: 100%;
-  aspect-ratio: 1/1;
-  height: max-content;
+  width: 20px;
+  height: 20px;
 }
 
 .containerInfoSecundario{
@@ -316,7 +315,7 @@
 @media only screen and (min-width: 900px){
 
   .containerInfoPrincipal{
-    padding:10px 5px 6px 5px ;
+    padding:10px 5px 19px 5px ;
   }
   .containerInfoComp{
     display: flex;
