@@ -1,0 +1,43 @@
+---
+import Layout from "../layouts/Layout.astro"
+import Main from "@components/main/Main.astro";
+import Youtube from "src/components/youtube/Youtube.jsx";
+import {crearJSONSchema} from "src/json/schema/crearJSONSchema";
+import Twitch from "@components/embed/Twitch";
+import {Items as ItemsTable} from "../components/main/Admin/Items";
+const title = 'Ultimate Guide to TFT Items: Best Builds for Set 12!';
+const description = `Explore the best TFT items for Set 12, including radiant items and support options! Check our tier list and interactive builder to enhance your Teamfight Tactics strategies and dominate the battlefield.`;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const keywords = `TFT Tips, TFT Tricks, TFT Guides, TFT Guias, TFT Consejos`;
+const JSONSchema = crearJSONSchema({title});
+
+---
+
+<link rel="canonical" href={canonicalURL} />
+<!-- <meta property="og:image" content={socialImageURL} /> -->
+<meta name="description" content={description}>
+<meta name="keywords" content={keywords}>
+<Layout title={title} JSONSchema={JSONSchema}>
+    <Fragment slot="bodyMainAside">
+      <!-- Publicidad -->
+    </Fragment>
+    <Fragment slot="bodyMainAsideTwitch">
+        <Twitch client:only="react"/>
+    </Fragment>
+    <Fragment slot="bodyMainAsideAds">
+        <!-- Publicidad -->
+    </Fragment>
+    <Main>
+      <h1 class="titulo">Top TFT Items for Set 12</h1>
+      <p class="parrafo">Unlock your Teamfight Tactics gameplay with our guide to TFT items. Discover the best items for Set 12, including radiant items and support options. Our TFT items tier list offers insights on the most effective choices.</p>
+        <ItemsTable client:only="react"/>   
+    </Main>
+</Layout>
+
+<style>
+  .parrafo{
+    font-size: smaller;
+    text-align: center;
+  }
+
+</style>
