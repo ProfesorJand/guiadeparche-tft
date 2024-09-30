@@ -47,36 +47,47 @@ const Sinergias = ({sinergias, orientacion})=>{
 
   function getMinMaxTraits(traits) {
     const result = [];
-  
     Object.entries(traits).forEach(([trait, value]) => {
       const traitData = traitsColors[trait];
-  
+      
       if (traitData) {
         const levels = Object.keys(traitData).map(Number).sort((a, b) => a - b);
-        let maxLevel;
+        let maxLevel = levels[levels.length -1];
         let minLevel = levels[0]; // El nivel más bajo disponible
+        let hexColor;
+        let hexLevel;
         // Si el valor es menor que el nivel más bajo, asigna 'hex-default.webp'
-        if (value < levels[0]) {
-          maxLevel = 'hex-default.webp';
-        } else if (levels.includes(value)) {
-          maxLevel = traitData[value];  // Usa el valor exacto si existe
-          minLevel = value
+        if (value  < minLevel) {
+          hexColor = 'hex-default.webp';
+          hexLevel = value ;
+        } else if (value > levels[levels.length -1]) {
+          hexColor = traitData[levels[levels.length -1]];  // Usa el valor exacto si existe
+          hexLevel = levels[levels.length -1];
         } else {
           // Encuentra el nivel inferior más cercano
-          maxLevel = traitData[levels.reverse().find(level => level <= value)];
+          loopFor:
+          for(let i = value; i >= 0 ; i--){
+            if(levels.includes(i)){
+              hexColor = traitData[levels[levels.indexOf(i)]]; 
+              hexLevel = levels[levels.indexOf(i)];
+              break loopFor;
+            }
+          }
         }
-  
         result.push({
           trait,
           min: minLevel,
-          max: maxLevel
+          max: maxLevel,
+          hexColor,
+          hexLevel
         });
-      } else {
-        // Si no hay datos del trait en traitsColors, asigna 'hex-default.webp'
+      }else{
         result.push({
           trait,
-          min: 1,
-          max: 'hex-default.webp'
+          min: 0,
+          max: 0,
+          hexColor: "hex-default.webp",
+          hexLevel: 0,
         });
       }
     });
@@ -89,12 +100,12 @@ const Sinergias = ({sinergias, orientacion})=>{
       <div className={[style.containerSinergia, orientacion==="horizontal" ? style.containerSinergiaHorizontal: ""].join(" ")}>
     {Object.keys(sinergias).length > 0 && getMinMaxTraits(sortable).map((key,i)=>{
       if(i < 6){
-        if(key.max !== "hex-default.webp"){
+        if(key.hexColor !== "hex-default.webp"){
           return (
-            <div key={i} className={style.containerSinergiaHex} style={window.innerWidth < 900 ? checkColor(key.max) : {}}>
-              <span className={style.borderHex} style={checkColor(key.max)}></span> 
+            <div key={i} className={style.containerSinergiaHex} style={window.innerWidth < 900 ? checkColor(key.hexColor) : {}}>
+              <span className={style.borderHex} style={checkColor(key.hexColor)}></span> 
               <img className={style.imgSinergia} src={`/sinergias/Trait_Icon_12_${key.trait}.svg`} alt="Trait_Icon" loading="lazy"/>
-              <div className={style.infoSinergia}>{key.min}</div>
+              <div className={style.infoSinergia}>{key.hexLevel}</div>
             </div>
           )
         }
