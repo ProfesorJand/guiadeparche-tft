@@ -62,3 +62,72 @@
   box-sizing: border-box;
 }
 
+.tooltip{
+  display: flex;
+  position: relative;
+  width: 100%;
+  background-color: var(--bg-secondary);
+  margin-top:10px
+}
+
+.tooltipContainer{
+  display: flex;
+  position: relative;
+  width: 100%;
+  padding: 10px;
+}
+
+.tooltipContainerText{
+  display: flex;
+  flex-direction: column;
+  padding-left: 10px;
+}
+
+.tooltipContainerImg{
+  display: flex;
+  position: relative;
+  width: 100px;
+  min-width: 100px;
+  flex-direction: column;
+}
+
+.tooltipImg{
+  display: flex;
+  width: 100%;
+}
+
+.tooltipContainerComponents{
+  display: flex;
+  flex-direction: row;
+  width: 100px;
+
+  justify-content: space-between;
+}
+
+.tooltipImgComponent{
+  display: flex;
+  width: 40px;
+}
+
+.tooltipContainerDesc{
+  font-size: smaller;
+}
+
+.tooltipContainerEffects{
+  font-size: small;
+}
+
+@media only screen and (max-width:900px){
+  .tooltipContainerImg{
+    width: 50px;
+    min-width: 50px;
+  }
+  .tooltipContainerComponents{
+    width: 50px;
+    align-items: center;
+  }
+  .tooltipImgComponent{
+    width: 20px;
+    height: 20px;
+  }
+}
