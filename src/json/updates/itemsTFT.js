@@ -1261,16 +1261,7 @@ export const radiants = [
 ]
 
 export const emblems = [
-  {
-      "apiName": "TFT12_Item_SugarcraftEmblemItem",
-      "desc": "El portador obtiene el rasgo Glucomancia.",
-      "effects": {
-          "AD": 0.10000000149011612
-      },
-      "img": "https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_sugarcraft.png",
-      "name": "Emblema de Glucomancia",
-      "sinergia": "Sugarcraft"
-  },
+  
   {
       "apiName": "TFT12_Item_BlasterEmblemItem",
       "desc": "El portador obtiene el rasgo Pistolero.",
@@ -1312,16 +1303,6 @@ export const emblems = [
       "sinergia": "Chrono"
   },
   {
-      "apiName": "TFT12_Item_HoneymancyEmblemItem",
-      "desc": "El portador obtiene el rasgo Melimancia.",
-      "effects": {
-          "CritChance": 20
-      },
-      "img": "https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_honeymancy.png",
-      "name": "Emblema de Melimancia",
-      "sinergia": "Honeymancy"
-  },
-  {
       "apiName": "TFT12_Item_PreserverEmblemItem",
       "desc": "El portador obtiene el rasgo Preservador.",
       "effects": {
@@ -1350,16 +1331,6 @@ export const emblems = [
       "img": "https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_mage.png",
       "name": "Emblema de Mago",
       "sinergia": "Mage"
-  },
-  {
-      "apiName": "TFT12_Item_FaerieEmblemItem",
-      "desc": "El portador obtiene el rasgo Feérico.",
-      "effects": {
-          "Mana": 15
-      },
-      "img": "https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_faerie.png",
-      "name": "Emblema Feérico",
-      "sinergia": "Faerie"
   },
   {
       "apiName": "TFT12_Item_BastionEmblemItem",
@@ -1392,27 +1363,6 @@ export const emblems = [
       "sinergia": "Incantor"
   },
   {
-      "apiName": "TFT12_Item_FrostEmblemItem",
-      "desc": "El portador obtiene el rasgo Escarcha.",
-      "effects": {
-          "Armor": 20
-      },
-      "img": "https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_frost.png",
-      "name": "Emblema de Escarcha",
-      "sinergia": "Frost"
-  },
-  {
-      "apiName": "TFT12_Item_WitchcraftEmblemItem",
-      "desc": "El portador obtiene el rasgo Brujería.",
-      "effects": {
-          "MagicResist": 20,
-          "{71199abe}": 3
-      },
-      "img": "https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_witchcraft.png",
-      "name": "Emblema de Brujería",
-      "sinergia": "Witchcraft"
-  },
-  {
       "apiName": "TFT12_Item_MultistrikerEmblemItem",
       "desc": "El portador obtiene el rasgo Multiatacante.",
       "effects": {
@@ -1433,26 +1383,6 @@ export const emblems = [
       "sinergia": "Shapeshifter"
   },
   {
-      "apiName": "TFT12_Item_EldritchEmblemItem",
-      "desc": "El portador obtiene el rasgo Sobrenatural.",
-      "effects": {
-          "Health": 150
-      },
-      "img": "https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_eldritch.png",
-      "name": "Emblema Sobrenatural",
-      "sinergia": "Eldritch"
-  },
-  {
-      "apiName": "TFT12_Item_PyroEmblemItem",
-      "desc": "El portador obtiene el rasgo Piromancia.",
-      "effects": {
-          "AS": 10
-      },
-      "img": "https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_pyro.png",
-      "name": "Emblema de Piromancia",
-      "sinergia": "Pyro"
-  },
-  {
       "apiName": "TFT12_Item_HunterEmblemItem",
       "desc": "El portador obtiene el rasgo Cazador.",
       "effects": {
@@ -1471,7 +1401,79 @@ export const emblems = [
       "img": "https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_portal.png",
       "name": "Emblema de Portal",
       "sinergia": "Portal"
-  }
+  },
+  {
+    "apiName": "TFT12_Item_SugarcraftEmblemItem",
+    "desc": "El portador obtiene el rasgo Glucomancia.",
+    "effects": {
+        "AD": 0.10000000149011612
+    },
+    "img": "https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_sugarcraft.png",
+    "name": "Emblema de Glucomancia",
+    "sinergia": "Sugarcraft"
+},
+{
+    "apiName": "TFT12_Item_HoneymancyEmblemItem",
+    "desc": "El portador obtiene el rasgo Melimancia.",
+    "effects": {
+        "CritChance": 20
+    },
+    "img": "https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_honeymancy.png",
+    "name": "Emblema de Melimancia",
+    "sinergia": "Honeymancy"
+},
+{
+    "apiName": "TFT12_Item_FrostEmblemItem",
+    "desc": "El portador obtiene el rasgo Escarcha.",
+    "effects": {
+        "Armor": 20
+    },
+    "img": "https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_frost.png",
+    "name": "Emblema de Escarcha",
+    "sinergia": "Frost"
+},
+{
+    "apiName": "TFT12_Item_WitchcraftEmblemItem",
+    "desc": "El portador obtiene el rasgo Brujería.",
+    "effects": {
+        "MagicResist": 20,
+        "{71199abe}": 3
+    },
+    "img": "https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_witchcraft.png",
+    "name": "Emblema de Brujería",
+    "sinergia": "Witchcraft"
+},
+{
+    "apiName": "TFT12_Item_EldritchEmblemItem",
+    "desc": "El portador obtiene el rasgo Sobrenatural.",
+    "effects": {
+        "Health": 150
+    },
+    "img": "https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_eldritch.png",
+    "name": "Emblema Sobrenatural",
+    "sinergia": "Eldritch"
+},
+{
+    "apiName": "TFT12_Item_PyroEmblemItem",
+    "desc": "El portador obtiene el rasgo Piromancia.",
+    "effects": {
+        "AS": 10
+    },
+    "img": "https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_pyro.png",
+    "name": "Emblema de Piromancia",
+    "sinergia": "Pyro"
+},
+{
+    "apiName": "TFT12_Item_FaerieEmblemItem",
+    "desc": "El portador obtiene el rasgo Feérico.",
+    "effects": {
+        "Mana": 15
+    },
+    "img": "https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_faerie.png",
+    "name": "Emblema Feérico",
+    "sinergia": "Faerie"
+},
+
 ]
 
 export const augmentsIDList = [
