@@ -1,6 +1,6 @@
 import logo from "src/assets/GP_logo.png";
 
-export function crearJSONSchema({title, thumbnail = logo.src, imgPost = logo.src}){
+export function crearJSONSchema({title, thumbnail = logo.src, imgPost = logo.src, description}){
     return JSON.stringify({
         "@context": "http://schema.org",
         "@type": "BlogPosting",
@@ -9,6 +9,7 @@ export function crearJSONSchema({title, thumbnail = logo.src, imgPost = logo.src
         "dateModified": new Date().toISOString(),
         "image":imgPost,
         "thumbnailUrl":thumbnail,
+        "description":description,
         "author": [
             {
                 "@type": "Person",
