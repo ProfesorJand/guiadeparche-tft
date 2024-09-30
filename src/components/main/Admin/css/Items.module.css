@@ -1,7 +1,7 @@
 :root{
   --containerItemsInfo-width : calc(100%/2);
   --itemsNumber-width: calc(100%/10);
-  --itemsRadiantsNumber-width: calc(100%/15);
+  --itemsRadiantsNumber-width: calc(100%/8);
 }
 .containerItems{
   display: flex;
@@ -24,7 +24,6 @@
 .containerItemsInfo{
   display: flex;
   flex-direction: row;
-  background-color: aqua;
   width: var(--containerItemsInfo-width);
   flex-wrap: wrap;
 }
@@ -35,6 +34,14 @@
   flex-wrap: wrap;
   justify-content: center;
   width: 100%;
+}
+
+.containerItemsRadiants{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 50%;
 }
 
 .itemsDrop{

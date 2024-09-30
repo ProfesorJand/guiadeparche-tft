@@ -622,6 +622,17 @@ export const Items = ()=>{
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/ornn_items/tft4_ornnitem_mage_t3_zhonyashourglass.png",
     },
   ]
+
+  const ORDENAMIENTO_RADIANTES = [
+    ["TFT5_Item_DeathbladeRadiant","TFT5_Item_GiantSlayerRadiant","TFT5_Item_HextechGunbladeRadiant","TFT5_Item_SpearOfShojinRadiant","TFT5_Item_GuardianAngelRadiant","TFT5_Item_BloodthirsterRadiant","TFT5_Item_SteraksGageRadiant","TFT5_Item_InfinityEdgeRadiant"],
+    ["TFT5_Item_GiantSlayerRadiant","TFT5_Item_RapidFirecannonRadiant","TFT5_Item_GuinsoosRagebladeRadiant","TFT5_Item_StatikkShivRadiant","TFT5_Item_TitansResolveRadiant","TFT5_Item_RunaansHurricaneRadiant","TFT5_Item_LeviathanRadiant","TFT5_Item_LastWhisperRadiant"],
+    ["TFT5_Item_HextechGunbladeRadiant","TFT5_Item_GuinsoosRagebladeRadiant","TFT5_Item_RabadonsDeathcapRadiant","TFT5_Item_ArchangelsStaffRadiant","TFT5_Item_CrownguardRadiant","TFT5_Item_IonicSparkRadiant","TFT5_Item_MorellonomiconRadiant","TFT5_Item_JeweledGauntletRadiant"],
+    ["TFT5_Item_SpearOfShojinRadiant","TFT5_Item_StatikkShivRadiant","TFT5_Item_ArchangelsStaffRadiant","TFT5_Item_BlueBuffRadiant","TFT5_Item_FrozenHeartRadiant","TFT5_Item_AdaptiveHelmRadiant","TFT5_Item_RedemptionRadiant","TFT5_Item_HandOfJusticeRadiant"],
+    ["TFT5_Item_GuardianAngelRadiant","TFT5_Item_TitansResolveRadiant","TFT5_Item_CrownguardRadiant","TFT5_Item_FrozenHeartRadiant","TFT5_Item_BrambleVestRadiant","TFT5_Item_GargoyleStoneplateRadiant","TFT5_Item_SunfireCapeRadiant","TFT5_Item_NightHarvesterRadiant"],
+    ["TFT5_Item_BloodthirsterRadiant","TFT5_Item_RunaansHurricaneRadiant","TFT5_Item_IonicSparkRadiant","TFT5_Item_AdaptiveHelmRadiant","TFT5_Item_GargoyleStoneplateRadiant","TFT5_Item_DragonsClawRadiant","TFT5_Item_SpectralGauntletRadiant","TFT5_Item_QuicksilverRadiant"],
+    ["TFT5_Item_SteraksGageRadiant","TFT5_Item_LeviathanRadiant","TFT5_Item_MorellonomiconRadiant","TFT5_Item_RedemptionRadiant","TFT5_Item_SunfireCapeRadiant","TFT5_Item_SpectralGauntletRadiant","TFT5_Item_WarmogsArmorRadiant","TFT5_Item_TrapClawRadiant"],
+    ["TFT5_Item_InfinityEdgeRadiant","TFT5_Item_LastWhisperRadiant","TFT5_Item_JeweledGauntletRadiant","TFT5_Item_HandOfJusticeRadiant","TFT5_Item_NightHarvesterRadiant","TFT5_Item_QuicksilverRadiant","TFT5_Item_TrapClawRadiant","TFT5_Item_ThiefsGlovesRadiant"]
+  ]
  
   useEffect(()=>{
     var resultado = [];
@@ -676,15 +687,19 @@ return (
           }
         </div>
 
-        <div  className={style.containerItemsHorizontal}>
+        <div  className={style.containerItemsRadiants}>
           {pestana === 1 &&
-            radiantsItems.map((dataItem,index)=>{
+          ORDENAMIENTO_RADIANTES.map((filas, index)=>{
+            return filas.map((busqueda,index2)=>{
+              const resultado = radiantsItems.find(({apiName})=> apiName === busqueda)
               return (
-                <div className={style.itemsDropRadiants} key={index}>
-                  <img  src={dataItem.img} alt={`Basic Item TFT ${dataItem.nombre}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} onClick={()=>{setItemOver(dataItem.apiName)}} data-item={JSON.stringify(dataItem)} data-from="itemList" draggable="true"></img>
+                <div className={style.itemsDropRadiants} key={index2+"-"+index}>
+                  <img  src={resultado.img} alt={`Basic Item TFT ${resultado.nombre}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} onClick={()=>{setItemOver(resultado.apiName)}} data-item={JSON.stringify(resultado)} data-from="itemList" draggable="true"></img>
                 </div>
               )
             })
+          })
+           
           }
         </div>
 

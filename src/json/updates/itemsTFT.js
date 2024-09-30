@@ -13368,7 +13368,7 @@ export const itemsDataIngles = [
       "apiName": "TFT5_Item_DeathbladeRadiant",
       "associatedTraits": [],
       "composition": [],
-      "desc": "",
+      "desc": "@AD%@ Attack Damage",
       "effects": {
           "AD": 1.0499999523162842,
           "BonusDamage": 0.11999999731779099,
