@@ -13,11 +13,11 @@ const JSONSchema = crearJSONSchema({title, description});
 
 ---
 
-<link rel="canonical" href={canonicalURL} />
+<!-- <link rel="canonical" href={canonicalURL} /> -->
 <!-- <meta property="og:image" content={socialImageURL} /> -->
-<meta name="description" content={description}>
-<meta name="keywords" content={keywords}>
-<Layout title={title} JSONSchema={JSONSchema}>
+<!-- <meta name="description" content={description}>
+<meta name="keywords" content={keywords}> -->
+<Layout title={title} JSONSchema={JSONSchema} description={description} keywords={keywords} canonical={canonicalURL}>
     <Fragment slot="bodyMainAside">
       <!-- Publicidad -->
     </Fragment>

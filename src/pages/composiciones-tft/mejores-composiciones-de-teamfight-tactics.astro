@@ -21,12 +21,12 @@ const thumbnail= "/campeones/set12/ryze.webp"
 const imgPost = "https://i.ytimg.com/vi/5ph-NnCjDSk/maxresdefault.jpg"
 const JSONSchema = crearJSONSchema({title, imgPost, thumbnail, description});
 ---
-<link rel="canonical" href={canonicalURL} />
+<!-- <link rel="canonical" href={canonicalURL} /> -->
 <!-- <meta property="og:image" content={socialImageURL} /> -->
-<meta name="description" content={description}>
+<!-- <meta name="description" content={description}>
 <meta name="keywords" content={keywords}>
-<meta property="og:image" content="/campeones/set12/ryze.webp" />
-<Layout title={title} JSONSchema={JSONSchema}>
+<meta property="og:image" content="/campeones/set12/ryze.webp" /> -->
+<Layout title={title} JSONSchema={JSONSchema} description={description} keywords={keywords} image={"/campeones/set12/ryze.webp"} canonical={canonicalURL}>
   <Fragment slot="bodyMainAside">
     <FiltroComps client:only="react"/>
 </Fragment>
