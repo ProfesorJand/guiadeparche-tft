@@ -5,6 +5,7 @@ import Youtube from "src/components/youtube/Youtube.jsx";
 import {crearJSONSchema} from "src/json/schema/crearJSONSchema";
 import Twitch from "@components/embed/Twitch";
 import {Items as ItemsTable} from "../components/main/Admin/Items";
+import ItemTierList from "@components/main/Admin/ItemTierList";
 const title = '▷ Best TFT Items Tier List - Cheat Sheet for Set 12 Patch 14.19';
 const description = `Explore all TFT Items Cheat Sheet and Stats including Tier List for Best Radiant, Artifacts & Support options`;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -31,7 +32,10 @@ const JSONSchema = crearJSONSchema({title, description});
       <h1 class="titulo">TFT Items Cheat Sheet & Stats</h1>
       <!-- <p class="parrafo">Unlock your Teamfight Tactics gameplay with our guide to TFT items. Discover the best items for Set 12, including radiant items and support options. Our TFT items tier list offers insights on the most effective choices.</p> -->
       <p class="parrafo">Items Tier List for Set 12 TFT  | Patch 14.19</p>
-      <ItemsTable client:only="react"/>   
+      <div class="separador">
+      <ItemsTable client:only="react"/>  
+        <ItemTierList client:only="react"/>
+      </div> 
     </Main>
 </Layout>
 
@@ -39,6 +43,11 @@ const JSONSchema = crearJSONSchema({title, description});
   .parrafo{
     font-size: smaller;
     text-align: center;
+  }
+  .separador{
+    display:flex;
+    flex-direction: column;
+    gap:10px;
   }
 
 </style>

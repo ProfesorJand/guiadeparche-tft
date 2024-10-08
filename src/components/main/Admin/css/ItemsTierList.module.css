@@ -1,0 +1,49 @@
+:root{
+  --width-items-tierList: 80px;
+  --number-items-tierList: 12;
+}
+
+.container{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: var(--bg-secondary);
+}
+
+.containerTierList{
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+}
+
+
+.containerTierListTiers{
+  display: flex;
+  width: calc(100% / var(--number-items-tierList));
+  
+}
+
+.containerTierListItems{
+  display: flex;
+  width: calc(100% - (100% / var(--number-items-tierList)));
+  align-items: center;
+}
+
+.containerItem{
+  display: flex;
+  width: calc(100% / var(--number-items-tierList));
+  cursor:grab
+}
+.tierImg{
+  display: flex;
+  width: 100%;
+}
+
+.btnActive{
+  background-color: aqua;
+}
+
+.imgItem{
+  display: flex;
+  width: 100%;
+}

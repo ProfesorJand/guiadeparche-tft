@@ -3,6 +3,7 @@ import Login from "./Login.jsx";
 import CrearCompoTFT from "./CrearCompoTFT.jsx";
 import { loadDataTFTFromAPI } from "src/stores/dataTFT.js";
 import EditarCompoTFT from "./EditarCompoTFT.jsx";
+import ItemsTierList from "./CreateItemsTierList.jsx";
 
 const AdminPanel = ({allAdmins})=>{
     const [isLoged, setIsLoged] = useState(localStorage.getItem("login") || false)
@@ -35,9 +36,13 @@ const AdminPanel = ({allAdmins})=>{
             <div slot="hola">
                 <button onClick={()=>setAction("editar")}>Editar compo tft</button>
             </div>
+            <div slot="hola">
+                <button onClick={()=>setAction("itemsTierList")}>Items Tier List</button>
+            </div>
             <div>
                 {action === "crear" && <CrearCompoTFT />}
                 {action === "editar" && <EditarCompoTFT />}
+                {action === "itemsTierList" && <ItemsTierList />}
             </div>
             <button onClick={()=>cerrarSesion()}>cerrar sesión</button>
             </>
