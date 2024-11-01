@@ -35,7 +35,7 @@ const Twitch = () => {
       const divTwitch = divTwitchRef.current;
       const options = {
         width: '100%',
-        channel: "jupeson", //teamfighttactics
+        channel: "teamfighttactics", //teamfighttactics
         layout: 'video',
         autoplay: true,
         allowfullscreen: true,
@@ -67,7 +67,7 @@ const Twitch = () => {
       };
 
       const volverJupeson = () => {
-        embed.setChannel("jupeson"); //teamfighttactics
+        embed.setChannel("teamfighttactics"); //teamfighttactics
         embed.removeEventListener(window.Twitch.Embed.OFFLINE, handleOffline);
         embed.addEventListener(window.Twitch.Embed.ONLINE, handleOnline);
         embed.setMuted(true);
