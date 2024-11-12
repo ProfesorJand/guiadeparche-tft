@@ -60,7 +60,8 @@
   flex:3;
   z-index: 2;
   overflow: hidden;
-  scale:0.7
+  scale:0.6;
+  filter: invert(1);
 }
 
 .infoSinergia{

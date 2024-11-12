@@ -1,139 +1,278 @@
 export const imgHex = ["hex-bronze.webp", "hex-silver.webp", "hex-gold.webp", "hex-prismatic.webp","hex-default.webp"]
 export const traitsColors = {
-    Arcana:{
+    Academy: {
+        3:imgHex[0],
+        4:imgHex[1],
+        5:imgHex[2],
+        6:imgHex[3],
+    },
+    Ambusher: {
         2:imgHex[0],
         3:imgHex[1],
-        4:imgHex[2]
+        4:imgHex[2],
+        5:imgHex[2]
     },
-    Ascendant:{
-        1:imgHex[3],
-    },
-    Bastion:{
+    Artillerist: {
         2:imgHex[0],
         4:imgHex[1],
         6:imgHex[2],
-        8:imgHex[3]
     },
-    BatQueen:{
-        1:imgHex[3],
-    },
-    Best_Friends:{
-        1:imgHex[3],
-    },
-    Blaster:{
+    Automata:{
         2:imgHex[0],
         4:imgHex[1],
         6:imgHex[2]
     },
-    Chrono:{
-        2:imgHex[0],
+    "Black Rose": {
+        3:imgHex[0],
         4:imgHex[1],
-        6:imgHex[2]
-    },
-    Dragon:{
-        2:imgHex[0],
-        3:imgHex[2],
-    },
-    Druid:{
-        1:imgHex[3],
-    },
-    Eldritch:{
-        3:imgHex[0],
-        5:imgHex[1],
-        7:imgHex[2],
-        10:imgHex[3]
-    },
-    Faerie:{
-        3:imgHex[0],
-        5:imgHex[1],
-        7:imgHex[2],
-        9:imgHex[3]
-    },
-    Frost:{
-        3:imgHex[0],
-        5:imgHex[1],
-        7:imgHex[2],
-        9:imgHex[3]
-    },
-    Honeymancy:{
-        3:imgHex[0],
         5:imgHex[2],
+        7:imgHex[3],
+    },
+    Bruiser: {
+        2:imgHex[0],
+        4:imgHex[1],
+        6:imgHex[2],
+    },
+    "Chem-Baron":{
+        3:imgHex[0],
+        4:imgHex[1],
+        5:imgHex[2],
+        6:imgHex[2],
         7:imgHex[3]
     },
-    Hunter:{
+    Conqueror:{
         2:imgHex[0],
         4:imgHex[1],
-        6:imgHex[2]
+        6:imgHex[2],
+        9:imgHex[3],
     },
-    Incantor:{
+    Dominator: {
         2:imgHex[0],
-        4:imgHex[2],
+        4:imgHex[1],
+        6:imgHex[2],
     },
-    Mage:{
-        3:imgHex[0],
-        5:imgHex[1],
-        7:imgHex[2],
-        10:imgHex[3]
+    Emissary:{
+        1:imgHex[0],
+        4:imgHex[2]
     },
-    Multistriker:{
-        3:imgHex[0],
-        5:imgHex[1],
-        7:imgHex[2],
-        9:imgHex[3]
-    },
-    Preserver:{
+    Enforcer: {
         2:imgHex[0],
-        3:imgHex[1],
-        4:imgHex[2],
-        5:imgHex[3]
-    },
-    Portal:{
-        3:imgHex[0],
-        6:imgHex[1],
+        4:imgHex[1],
+        6:imgHex[2],
         8:imgHex[2],
-        10:imgHex[3]
+        10:imgHex[3],
     },
-    Pyro:{
+    Experiment: {
+        3:imgHex[0],
+        5:imgHex[1],
+        7:imgHex[2],
+    },
+    Experiment: {
+        3:imgHex[0],
+        5:imgHex[1],
+        7:imgHex[2],
+    },
+    Family: {
+        3:imgHex[0],
+    },
+    Firelight: {
         2:imgHex[0],
         3:imgHex[1],
-        4:imgHex[2],
-        5:imgHex[3]
     },
-    Ravenous:{
+    "Form Swapper": {
+        2:imgHex[0],
+        4:imgHex[2],
+    },
+    "High Roller": {
         1:imgHex[3],
     },
-    Scholar:{
-        2:imgHex[0],
-        4:imgHex[1],
-        6:imgHex[2]
+    "Junker King":{
+        1:imgHex[3]
     },
-    Shapeshifter:{
-        2:imgHex[0],
-        4:imgHex[1],
-        6:imgHex[2],
-        8:imgHex[3]
-    },
-    Sugarcraft:{
-        2:imgHex[0],
-        4:imgHex[1],
-        6:imgHex[2]
-    },
-    Vanguard:{
-        2:imgHex[0],
-        4:imgHex[1],
-        6:imgHex[2],
-    },
-    Warrior:{
-        2:imgHex[0],
-        4:imgHex[1],
-        6:imgHex[2]
-    },
-    Witchcraft:{
+    "Pit Fighter": {
         2:imgHex[0],
         4:imgHex[1],
         6:imgHex[2],
         8:imgHex[3]
     },
+    Quickstriker: {
+        2:imgHex[0],
+        3:imgHex[1],
+        4:imgHex[2],
+    },
+    Rebel: {
+        3:imgHex[0],
+        5:imgHex[1],
+        7:imgHex[2],
+        10:imgHex[3]
+    },
+    Scrap: {
+        2:imgHex[0],
+        4:imgHex[1],
+        6:imgHex[2],
+        9:imgHex[3]
+    },
+    Sentinel: {
+        2:imgHex[0],
+        4:imgHex[1],
+        6:imgHex[2],
+    },
+    Sniper: {
+        2:imgHex[0],
+        4:imgHex[1],
+        6:imgHex[2],
+    },
+    Sorcerer: {
+        2:imgHex[0],
+        4:imgHex[1],
+        6:imgHex[2],
+        8:imgHex[3]
+    },
+    Visionary: {
+        2:imgHex[0],
+        4:imgHex[1],
+        6:imgHex[2],
+        8:imgHex[3]
+    },
+    Watcher: {
+        2:imgHex[0],
+        4:imgHex[1],
+        6:imgHex[2],
+    },
+    // Arcana:{
+    //     2:imgHex[0],
+    //     3:imgHex[1],
+    //     4:imgHex[2]
+    // },
+    // Ascendant:{
+    //     1:imgHex[3],
+    // },
+    // Bastion:{
+    //     2:imgHex[0],
+    //     4:imgHex[1],
+    //     6:imgHex[2],
+    //     8:imgHex[3]
+    // },
+    // BatQueen:{
+    //     1:imgHex[3],
+    // },
+    // Best_Friends:{
+    //     1:imgHex[3],
+    // },
+    // Blaster:{
+    //     2:imgHex[0],
+    //     4:imgHex[1],
+    //     6:imgHex[2]
+    // },
+    // Chrono:{
+    //     2:imgHex[0],
+    //     4:imgHex[1],
+    //     6:imgHex[2]
+    // },
+    // Dragon:{
+    //     2:imgHex[0],
+    //     3:imgHex[2],
+    // },
+    // Druid:{
+    //     1:imgHex[3],
+    // },
+    // Eldritch:{
+    //     3:imgHex[0],
+    //     5:imgHex[1],
+    //     7:imgHex[2],
+    //     10:imgHex[3]
+    // },
+    // Faerie:{
+    //     3:imgHex[0],
+    //     5:imgHex[1],
+    //     7:imgHex[2],
+    //     9:imgHex[3]
+    // },
+    // Frost:{
+    //     3:imgHex[0],
+    //     5:imgHex[1],
+    //     7:imgHex[2],
+    //     9:imgHex[3]
+    // },
+    // Honeymancy:{
+    //     3:imgHex[0],
+    //     5:imgHex[2],
+    //     7:imgHex[3]
+    // },
+    // Hunter:{
+    //     2:imgHex[0],
+    //     4:imgHex[1],
+    //     6:imgHex[2]
+    // },
+    // Incantor:{
+    //     2:imgHex[0],
+    //     4:imgHex[2],
+    // },
+    // Mage:{
+    //     3:imgHex[0],
+    //     5:imgHex[1],
+    //     7:imgHex[2],
+    //     10:imgHex[3]
+    // },
+    // Multistriker:{
+    //     3:imgHex[0],
+    //     5:imgHex[1],
+    //     7:imgHex[2],
+    //     9:imgHex[3]
+    // },
+    // Preserver:{
+    //     2:imgHex[0],
+    //     3:imgHex[1],
+    //     4:imgHex[2],
+    //     5:imgHex[3]
+    // },
+    // Portal:{
+    //     3:imgHex[0],
+    //     6:imgHex[1],
+    //     8:imgHex[2],
+    //     10:imgHex[3]
+    // },
+    // Pyro:{
+    //     2:imgHex[0],
+    //     3:imgHex[1],
+    //     4:imgHex[2],
+    //     5:imgHex[3]
+    // },
+    // Ravenous:{
+    //     1:imgHex[3],
+    // },
+    // Scholar:{
+    //     2:imgHex[0],
+    //     4:imgHex[1],
+    //     6:imgHex[2]
+    // },
+    // Shapeshifter:{
+    //     2:imgHex[0],
+    //     4:imgHex[1],
+    //     6:imgHex[2],
+    //     8:imgHex[3]
+    // },
+    // Sugarcraft:{
+    //     2:imgHex[0],
+    //     4:imgHex[1],
+    //     6:imgHex[2]
+    // },
+    // Vanguard:{
+    //     2:imgHex[0],
+    //     4:imgHex[1],
+    //     6:imgHex[2],
+    // },
+    // Warrior:{
+    //     2:imgHex[0],
+    //     4:imgHex[1],
+    //     6:imgHex[2]
+    // },
+    // Witchcraft:{
+    //     2:imgHex[0],
+    //     4:imgHex[1],
+    //     6:imgHex[2],
+    //     8:imgHex[3]
+    // },
 }
 
 export const listaCampeones = [

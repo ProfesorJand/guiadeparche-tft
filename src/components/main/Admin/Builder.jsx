@@ -88,13 +88,13 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
                   const sinergia = document.createElement("img"); /* img de la sinergia*/
                   sinergia.className = style.sinergia;
                   sinergia.style.filter = "invert(1)";
-                  sinergia.src = `/sinergias/Trait_Icon_12_${siner}.svg`;
-                  sinergia.alt = siner;
+                  sinergia.src = "https://raw.communitydragon.org/pbe/game/"+siner.icon.toLowerCase().replace(".tex",".png");
+                  sinergia.alt = siner.name;
           
                   /* background de la sinergia*/
                   const backgroundSinergia = document.createElement("img");
                   backgroundSinergia.classList.add(style.backgroundSinergia);
-                  backgroundSinergia.classList.add(siner);
+                  backgroundSinergia.classList.add(siner.name.replace(" ",""));
                   backgroundSinergia.src = urlHex + imgHex[0];
                   backgroundSinergia.alt = imgHex[0];
           
@@ -103,7 +103,6 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
                   containerSinergias.appendChild(containerTrait);
                 });
                 containerImageChampion.appendChild(containerSinergias);
-
                 Object.keys(boardInfo[id]?.sinergias).forEach((sinergia) => {
                     const allTraits = document.querySelectorAll(`.${sinergia}`);
                     allTraits.forEach((element) => {
@@ -195,8 +194,9 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
       if (!noRepeatChampions.some((campeon) => campeon === newCampeon)) {
         noRepeatChampions.push(newCampeon);
         const sinergiasCampeon = JSON.parse(dataCampeon.campeon).sinergia;
+        console.log({sinergiasCampeon})
         sinergiasCampeon.forEach((nombreSinergia) => {
-          sinergias[nombreSinergia] = (sinergias[nombreSinergia] || 0) + 1;
+          sinergias[nombreSinergia.name.replace(" ","")] = (sinergias[nombreSinergia.name.replace(" ","")] || 0) + 1;
         });
       }
       data[hexId] = { dataCampeon: dataCampeon, estrellas };
@@ -212,11 +212,10 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
     }
     if (Object.keys(data).length) {
       setBoardInfo({ ...boardInfo, [id]: {data,sinergias} });
-
       Object.keys(sinergias).forEach((sinergia) => {
-        const allTraits = document.querySelectorAll(`.${sinergia}`);
+        const allTraits = document.querySelectorAll(`.${sinergia.replace(" ","")}`);
         allTraits.forEach((element) => {
-          const traitSVG = findClosestTraitImage(sinergia, sinergias[sinergia]);
+          const traitSVG = findClosestTraitImage(sinergia.replace(" ",""), sinergias[sinergia.replace(" ","")]);
           element.src = urlHex + traitSVG;
           element.nextElementSibling.style.filter = "invert(1)";
           if (traitSVG !== "hex-default.webp") {
@@ -231,6 +230,22 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
   }
 
   function findClosestTraitImage(traitType, traitLevel) {
+    console.log({traitLevel, traitType})
+    if(traitType === "BlackRose"){
+      traitType = "Black Rose"
+    }
+    if(traitType === "FormSwapper"){
+      traitType = "Form Swapper"
+    }
+    if(traitType === "HighRoller"){
+      traitType = "High Roller"
+    }
+    if(traitType === "JunkerKing"){
+      traitType = "Junker King"
+    }
+    if(traitType === "PitFighter"){
+      traitType = "Pit Fighter"
+    }
     if (traitsColors[traitType]) {
       const traitLevels = Object.keys(traitsColors[traitType])
         .map(Number)
@@ -324,13 +339,13 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
         const sinergia = document.createElement("img"); /* img de la sinergia*/
         sinergia.className = style.sinergia;
         sinergia.style.filter = "invert(1)";
-        sinergia.src = `/sinergias/Trait_Icon_12_${siner}.svg`;
-        sinergia.alt = siner;
+        sinergia.src = "https://raw.communitydragon.org/pbe/game/"+siner.icon.toLowerCase().replace(".tex",".png");
+        sinergia.alt = siner.name;
 
         /* background de la sinergia*/
         const backgroundSinergia = document.createElement("img");
         backgroundSinergia.classList.add(style.backgroundSinergia);
-        backgroundSinergia.classList.add(siner);
+        backgroundSinergia.classList.add(siner.name.replace(" ",""));
         backgroundSinergia.src = urlHex + imgHex[0];
         backgroundSinergia.alt = imgHex[0];
 

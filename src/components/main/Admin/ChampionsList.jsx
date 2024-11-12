@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import style from "./css/ChampionsList.module.css";
 import {listaCampeones} from "../../../functions/campeonestft.js";
+import { fetchingDataTFT } from "src/json/updates/constantesPBE.js";
 
 const Champions = ()=>{
 
     const [championsList, setChampionsList]=useState([...listaCampeones])
+    const [resultado, setResultado] = useState(null)
 
     function handleDragStart(e){
         e.dataTransfer.setData("campeon", e.target.getAttribute("data-campeon"));
@@ -27,6 +29,39 @@ const Champions = ()=>{
     }
     useEffect(()=>{
         handleFilter("coste")
+        const activador = async ()=>{
+            const version="pbe"
+            const response =  await fetchingDataTFT({version:"pbe", idioma:"en",pais:"us"})
+            const {items, sets} = response;
+            const championsList = [];
+            sets["13"].champions.forEach(({ability, apiName, name, cost, characterName, tileIcon, stats, traits})=>{
+                if(traits.length > 0){
+                    const traitsData = ()=>{
+                        const resp = traits.map((trait)=>{
+                            const data = sets["13"].traits.find(({name})=>{
+                                return name === trait
+                            })
+                            return data
+                        })
+                        return resp
+                    }
+                    const data = {
+                        apiName,
+                        nombre:name,
+                        characterName,
+                        coste:cost,
+                        sinergia:traitsData(),
+                        stats,
+                        img: `https://raw.communitydragon.org/${version}/game/`+ tileIcon.replace(".tex",".png").toLowerCase(),
+                        ability,
+                    }
+                    championsList.push(data)
+                }
+            })
+            setChampionsList(championsList)
+            setResultado(response)
+        }
+        activador();
     },[])
 
     return(

@@ -104,7 +104,7 @@ const Sinergias = ({sinergias, orientacion})=>{
           return (
             <div key={i} className={style.containerSinergiaHex} style={window.innerWidth < 900 ? checkColor(key.hexColor) : {}}>
               <span className={style.borderHex} style={checkColor(key.hexColor)}></span> 
-              <img className={style.imgSinergia} src={`/sinergias/Trait_Icon_12_${key.trait}.svg`} alt="Trait_Icon" loading="lazy"/>
+              <img className={style.imgSinergia} src={`/sinergias/Trait_Icon_13_${key.trait}.png`} alt="Trait_Icon" loading="lazy"/>
               <div className={style.infoSinergia}>{key.hexLevel}</div>
             </div>
           )
