@@ -23,6 +23,27 @@
   border-bottom: none;
 }
 
+.containerTextoInfoPrimario{
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+}
+
+.containerTextoInfoPrimarioTier{
+  display: flex;
+  position:relative;
+  flex-direction: row;
+}
+
+.containerTextoInfoPrimarioCode{
+  display: flex;
+  position:relative;
+  font-size: 10px;
+  text-align: center;
+  align-items: center;
+  color:blueviolet;
+}
+
 .containerTierImg{
   display: flex;
   position: relative;
@@ -250,20 +271,33 @@
   text-align: center;
 }
 
+.containerLowerChamps{
+  display: flex;
+  position:relative;
+
+}
+
 @media only screen and (max-width: 900px){
 .containerInfoPrincipal{
   flex-wrap: wrap;
   box-sizing: border-box;
   row-gap: 5px;
+  flex-direction: column;
+}
+.containerTextoInfoPrimarioCode{
+  display: none;
 }
 .containerTierImg{
-  width:5%;
+  width:10%;
   flex:none;
   box-sizing: border-box;
   align-items: center;
 }
+.containerTextoInfoPrimario{
+  width: 100%;
+}
 .containerInfoComp{
-  width: 95%;
+  width: 90%;
   flex:none;
   box-sizing: border-box;
   justify-content:space-between;
@@ -271,18 +305,18 @@
   flex-direction: row;
 }
 .containerDificultadCategory{
-  width: 40%;
-  justify-content: space-around;
+  width: 50%;
+  justify-content: right;
   align-items: center;
 }
- 
-  .containerInfoChamp{
-    padding-bottom: 25px;
-    
-  }
-  .containerEGlobal{
-    padding: 5px 5px 5px 5px;
-  }
+
+.containerInfoChamp{
+  padding-bottom: 25px;
+  width: 95%;
+}
+.containerEGlobal{
+  padding: 5px 5px 5px 5px;
+}
 .dificultad{
   width: 50%;
   font-size: small;
@@ -295,8 +329,7 @@
   }
 
   .tituloComp{
-    width: 60%;
-    font-size: small;
+    width: 50%;
   }
   .category{
     width: 40%;
@@ -314,18 +347,36 @@
   .containerTips{
     font-size: small;
   }
+  .teamCodeMobile{
+    display: flex;
+    font-size: small;
+  }
+  
 }
 
 @media only screen and (min-width: 900px){
-
+  .teamCodeMobile{
+    display: none;
+  }
   .containerInfoPrincipal{
-    padding:10px 5px 19px 5px ;
+    padding:5px 5px 0px 5px ;
+  }
+  .containerTextoInfoPrimario{
+    flex: 2.5;
+  } 
+  .containerTextoInfoPrimarioCode{
+    font-size: clamp(0.2rem, 0.5vw, 1rem); /* Mínimo: 1rem, Fluido: 2vw, Máximo: 2.5rem */
+    overflow: hidden;    /* Oculta el texto desbordado */
+    text-overflow: ellipsis; /* Agrega puntos suspensivos si es necesario */
+  }
+  .containerLowerChamps{
+    flex:4
   }
   .containerInfoComp{
     display: flex;
     position: relative;
     flex-direction: column;
-    flex: 6;
+    width: 75%;
     align-items: flex-start;
     padding-left: 5px;
     justify-content: flex-start;
@@ -340,8 +391,11 @@
     flex: 0.6
   }
   .containerTierImg{
-    flex: 1.5
+    flex: 1.5;
+    width: 50%;
   }
+
+
 
 .dificultad{
   display: flex;
@@ -356,6 +410,9 @@
   display: flex;
   order:1;
   width: 100%;
+  font-size: clamp(0.2rem, 2vw, 1rem); /* Mínimo: 1rem, Fluido: 2vw, Máximo: 2.5rem */
+  white-space: nowrap; /* Evita los saltos de línea */
+  overflow: hidden;    /* Oculta el texto desbordado */
 }
 .category{
   font-size: smaller;

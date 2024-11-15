@@ -7,6 +7,7 @@ import Sinergias from "./Sinergias";
 import AumentosCompos from "./AumentosCompos";
 import PosicionamientoCompos from "./PosicionamientoCompos";
 import CrearCompoTFT from "./CrearCompoTFT";
+import { championsTFT } from "src/json/updates/constantesPBE.js";
 
 const Composicion = ({compo, admin=false})=>{
   const [open,setOpen]=useState(false);
@@ -39,6 +40,63 @@ const Composicion = ({compo, admin=false})=>{
     const {dataCampeon, dataItem} = data[key];
     return {dataCampeon:dataCampeon.campeon, dataItem, estrellas:data[key]?.estrellas ? data[key].estrellas : 1}
   })
+  const allChampionsApiName = dataCampeones.map(({dataCampeon})=>{
+    return {apiName:JSON.parse(dataCampeon).apiName}
+  })
+  
+  function championsCodeBuilder(allChampions){
+    // Ordena el array por apiName en orden ascendente
+    const sortedArray = allChampions.sort((a, b) => a.apiName.localeCompare(b.apiName));
+
+    // Define el objeto resultado y la primera clave
+    const result = { "empty_slot": "00" };
+
+    // Genera la secuencia en el formato requerido
+    const sequence = [];
+    let i = 0;
+    while (sequence.length <= sortedArray.length) {
+        // Convertimos i a hexadecimal y lo formateamos a dos caracteres
+        let hex = i.toString(16).padStart(2, "0");
+
+        // Solo agregamos a la secuencia si es un valor válido
+        sequence.push(hex);
+
+        // Incrementamos i
+        i++;
+    }
+
+    // Asigna cada apiName como clave en el objeto resultado, con su valor correspondiente en la secuencia
+    sortedArray.forEach((item, index) => {
+        result[item.apiName] = sequence[index + 1]; // +1 para empezar después de "empty_slot"
+    });
+
+    return result;
+  }
+
+  function generatorCodeBuilder(allChampionsApiName){
+    let sinDuplicados = [...new Set(allChampionsApiName)];
+    const championsList = [];
+    championsTFT.forEach(({apiName, traits})=>{
+        if(traits.length > 0){
+            const allChampions = {
+                apiName,
+            }
+            championsList.push(allChampions)
+        }
+    })
+    const RulesChampionsCode = championsCodeBuilder(championsList);   
+    let championsCode = "01"
+    for (let i = 0; i < 10; i++) {
+      if(sinDuplicados[i]){
+        championsCode = championsCode.concat(RulesChampionsCode[sinDuplicados[i].apiName]);
+      }else{
+        championsCode = championsCode.concat("00")
+      }
+    }
+    championsCode = championsCode.concat("TFTSet13")
+    return championsCode;
+  }
+
   function handleEditID(e,id){
     e.stopPropagation()
     if(id === editId){
@@ -83,25 +141,45 @@ const Composicion = ({compo, admin=false})=>{
     }
   }
 
+  function copyToClipboard(e,codigo) {
+    e.stopPropagation();
+    navigator.clipboard.writeText(codigo);
+    alert("Copied Code: " + codigo);
+  }
+
   return (
     <div className={style.containerInfoGlobal}>
 
     <div className={[style.containerInfoPrincipal, open ? style.downBorder: "" ].join(" ")} onClick={()=>{setOpen(!open)}}>
-      <div className={style.containerTierImg}>
-        <img
-          className={style.tierImg}
-          src={`/tiers/Tier-${compo.tier}.webp`}
-          alt="Tier TFT" 
-          loading="lazy"
-          />
-      </div>
-      <div className={style.containerInfoComp}>
-        <div className={[style.titulo, style.tituloComp].join(" ")}>{compo.titulo}</div>
-        <div className={style.containerDificultadCategory}>
-          <div className={style.dificultad} style={{border:`1px solid ${colorDificulty[compo.dificultad]}`, color:`${colorDificulty[compo.dificultad]}`}}>{compo.dificultad}</div>
-          <div className={style.category}>{compo.infographicCategory}</div>
+    <div className={style.containerTextoInfoPrimario}>
+      <div className={style.containerTextoInfoPrimarioTier}>
+        <div className={style.containerTierImg}>
+          <img
+            className={style.tierImg}
+            src={`/tiers/Tier-${compo.tier}.webp`}
+            alt="Tier TFT" 
+            loading="lazy"
+            />
+        </div>
+        <div className={style.containerInfoComp}>
+          <div className={[style.titulo, style.tituloComp].join(" ")}>{compo.titulo}</div>
+          <div className={style.containerDificultadCategory}>
+            <div
+              className={style.teamCodeMobile}
+              onClick={(e)=>copyToClipboard(e,generatorCodeBuilder(allChampionsApiName))}>
+                {"📋"}
+            </div>
+            <div className={style.dificultad} style={{border:`1px solid ${colorDificulty[compo.dificultad]}`, color:`${colorDificulty[compo.dificultad]}`}}>{compo.dificultad}</div>
+            <div className={style.category}>{compo.infographicCategory}</div>
+          </div>
         </div>
       </div>
+      <div className={style.containerTextoInfoPrimarioCode} onClick={(e)=>copyToClipboard(e,generatorCodeBuilder(allChampionsApiName))}>
+        {"COPY TEAM CODE: " + generatorCodeBuilder(allChampionsApiName) + " 📋"}
+      </div>
+      </div>
+      
+      <div className={style.containerLowerChamps}>
       <div className={style.containerInfoChamp}>
       {dataCampeones.map(({dataCampeon, dataItem, estrellas},i)=>{
         return (
@@ -118,15 +196,16 @@ const Composicion = ({compo, admin=false})=>{
             </svg>
           </div>
         
-        }
+      }
         {
           admin &&
-        <div className={[style.btn, style.btnDelete].join(" ")} onClick={()=>{deleteId(compo.id, compo.tier)}}>
+          <div className={[style.btn, style.btnDelete].join(" ")} onClick={()=>{deleteId(compo.id, compo.tier)}}>
         </div>
         }
         <div className={[style.btn, style.btnClose, open ? style.btnOpen: ""].join(" ")} >  
         </div>
       </div>
+    </div>
     </div>
     <div className={[style.containerInfoSecundario, open ? "": style.hide, open && style.upBorder].join(" ")}>
       <div className={style.containerECT}>

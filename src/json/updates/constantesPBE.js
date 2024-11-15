@@ -5,10 +5,10 @@ export async function fetchingDataTFT({version, idioma, pais}){
     return {items, sets};
 }
 
-export const version = "latest";
-export const idioma = "es";
-export const pais = "ar";
-export const setPBE = "12";
+export const version = "pbe";
+export const idioma = "en";
+export const pais = "us";
+export const setPBE = "13";
 
 export const pbeVersionLog = (await fetchingPBEVersionTFT()).version.split(".");
 export const pbeVersion = pbeVersionLog[0]+"."+pbeVersionLog[1];
