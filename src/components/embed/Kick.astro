@@ -1,0 +1,29 @@
+<div id="kick-embed" >
+  <iframe 
+    src="https://player.kick.com/orlandovision"
+    frameborder="0"
+    scrolling="no"
+    allowfullscreen="true"
+    >
+  </iframe>
+</div>
+
+<style>
+  #kick-embed {
+      display: flex;
+      position: relative;
+      box-sizing: border-box;
+      width: 100%;
+      aspect-ratio: 16/9;
+      padding: calc(9rem / 16) 1rem;
+    }
+
+  @media only screen and (min-width: 900px) {
+      #kick-embed {
+        position: relative;
+        bottom: 0px;
+        left: 0px;
+        width: 100%;
+      }
+  }
+</style>
