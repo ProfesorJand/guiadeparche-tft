@@ -410,7 +410,7 @@
   display: flex;
   order:1;
   width: 100%;
-  font-size: clamp(0.2rem, 2vw, 1rem); /* Mínimo: 1rem, Fluido: 2vw, Máximo: 2.5rem */
+  font-size: clamp(0.2rem, 0.8vw, 1rem); /* Mínimo: 1rem, Fluido: 0.8vw, Máximo: 1rem */
   white-space: nowrap; /* Evita los saltos de línea */
   overflow: hidden;    /* Oculta el texto desbordado */
 }
