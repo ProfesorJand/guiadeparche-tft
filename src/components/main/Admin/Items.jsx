@@ -149,17 +149,17 @@ export const Items = ()=>{
       combine:[0,7]
     },
     {
-      nombre:"Sugarcraft Emblem",
-      apiName:"sugarcraft_emblem",
-      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_sugarcraft.png",
-      sinergia:"Sugarcraft",
+      nombre:"Conqueror Emblem",
+      apiName:"TFT13_Item_WarbandEmblemItem",
+      img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_conqueror.png",
+      sinergia:"Conqueror",
       combine:[0,8]
     },
     {
-      nombre:"Hunter Emblem",
-      apiName:"TFT12_Item_HunterEmblemItem",
-      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_hunter.png",
-      sinergia:"Hunter",
+      nombre:"Artillerist Emblem",
+      apiName:"TFT13_Item_DemolitionistEmblemItem",
+      img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_artillerist.png",
+      sinergia:"Artillerist",
       combine:[0,9]
     },
     {
@@ -212,17 +212,17 @@ export const Items = ()=>{
       combine:[1,7]
     },
     {
-      nombre:"Pyro Emblem",
-      apiName:"pyro_emblem",
-      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_pyro.png",
-      sinergia:"Pyro",
+      nombre:"Rebel Emblem",
+      apiName:"TFT13_Item_RebelEmblemItem",
+      img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_rebel.png",
+      sinergia:"Rebel",
       combine:[1,8]
     },
     {
-      nombre:"Multistriker Emblem",
-      apiName:"TFT12_Item_MultistrikerEmblemItem",
-      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_multistriker.png",
-      sinergia:"Multistriker",
+      nombre:"Quickstriker Emblem",
+      apiName:"TFT13_Item_ChallengerEmblemItem",
+      img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_quickstriker.png",
+      sinergia:"Quickstriker",
       combine:[1,9]
     },
     {
@@ -268,17 +268,17 @@ export const Items = ()=>{
       combine:[2,7]
     },
     {
-      nombre:"Portal Emblem",
-      apiName:"portal_emblem",
-      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_portal.png",
-      sinergia:"Portal",
+      nombre:"Black Rose Emblem",
+      apiName:"TFT13_Item_CabalEmblemItem",
+      img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_cabal.png",
+      sinergia:"BlackRose",
       combine:[2,8]
     },
     {
-      nombre:"Mage Emblem",
-      apiName:"TFT12_Item_MageEmblemItem",
-      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_mage.png",
-      sinergia:"Mage",
+      nombre:"Sorcerer Emblem",
+      apiName:"TFT13_Item_SorcererEmblemItem",
+      img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_sorcerer.png",
+      sinergia:"Sorcerer",
       combine:[2,9]
     },
     {
@@ -317,17 +317,17 @@ export const Items = ()=>{
       combine:[3,7]
     },
     {
-      nombre:"Faerie Emblem",
-      apiName:"faerie_emblem",
-      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_faerie.png",
-      sinergia:"Faerie",
+      nombre:"Family Emblem",
+      apiName:"TFT13_Item_FamilyEmblemItem",
+      img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_family.png",
+      sinergia:"Family",
       combine:[3,8]
     },
     {
-      nombre:"Scholar Emblem",
-      apiName:"TFT12_Item_ScholarEmblemItem",
-      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_scholar.png",
-      sinergia:"Scholar",
+      nombre:"Visionary Emblem",
+      apiName:"TFT13_Item_InvokerEmblemItem",
+      img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_visionary.png",
+      sinergia:"Visionary",
       combine:[3,9]
     },
     {
@@ -359,17 +359,17 @@ export const Items = ()=>{
       combine:[4,7]
     },
     {
-      nombre:"Frost Emblem",
-      apiName:"frost_emblem",
-      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_frost.png",
-      sinergia:"Frost",
+      nombre:"Enforcer Emblem",
+      apiName:"TFT13_Item_SquadEmblemItem",
+      img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_enforcer.png",
+      sinergia:"Enforcer",
       combine:[4,8]
     },
     {
-      nombre:"Bastion Emblem",
-      apiName:"TFT12_Item_BastionEmblemItem",
-      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_bastion.png",
-      sinergia:"Bastion",
+      nombre:"Sentinel Emblem",
+      apiName:"TFT13_Item_TitanEmblemItem",
+      img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_sentinel.png",
+      sinergia:"Sentinel",
       combine:[4,9]
     },
     {
@@ -394,17 +394,17 @@ export const Items = ()=>{
       combine:[5,7]
     },
     {
-      nombre:"Witchcraft Emblem",
-      apiName:"witchcraft_emblem",
-      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_witchcraft.png",
-      sinergia:"Witchcraft",
+      nombre:"Automata Emblem",
+      apiName:"TFT13_Item_AutomataEmblemItem",
+      img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_automata.png",
+      sinergia:"Automata",
       combine:[5,8]
     },
     {
-      nombre:"Preserver Emblem",
-      apiName:"TFT12_Item_PreserverEmblemItem",
-      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_preserver.png",
-      sinergia:"Preserver",
+      nombre:"Pit Fighter Emblem",
+      apiName:"TFT13_Item_PitFighterEmblemItem",
+      img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_pitfighter.png",
+      sinergia:"PitFighter",
       combine:[5,9]
     },
     {
@@ -422,17 +422,17 @@ export const Items = ()=>{
       combine:[6,7]
     },
     {
-      nombre:"Eldritch Emblem",
-      apiName:"eldritch_emblem",
-      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_eldritch.png",
-      sinergia:"Eldritch",
+      nombre:"Experiment Emblem",
+      apiName:"TFT13_Item_ExperimentEmblemItem",
+      img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_experiment.png",
+      sinergia:"Experiment",
       combine:[6,8]
     },
     {
-      nombre:"Shapeshifter Emblem",
-      apiName:"TFT12_Item_ShapeshifterEmblemItem",
-      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_shapeshifter.png",
-      sinergia:"Shapeshifter",
+      nombre:"Bruiser Emblem",
+      apiName:"TFT13_Item_BruiserEmblemItem",
+      img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_bruiser.png",
+      sinergia:"Bruiser",
       combine:[6,9]
     },
     {
@@ -443,17 +443,17 @@ export const Items = ()=>{
       combine:[7,7]
     },
     {
-      nombre:"Honeymancy Emblem",
-      apiName:"honeymancy_emblem",
-      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_honeymancy.png",
-      sinergia:"Witchcraft",
+      nombre:"Firelight Emblem",
+      apiName:"TFT13_Item_HoverboardEmblemItem",
+      img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_firelight.png",
+      sinergia:"Firelight",
       combine:[7,8]
     },
     {
-      nombre:"Warrior Emblem",
-      apiName:"TFT12_Item_WarriorEmblemItem",
-      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_warrior.png",
-      sinergia:"Warrior",
+      nombre:"Ambusher Emblem",
+      apiName:"TFT13_Item_AmbusherEmblemItem",
+      img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_ambusher.png",
+      sinergia:"Ambusher",
       combine:[7,9]
     },
     {
@@ -480,16 +480,16 @@ export const Items = ()=>{
   ]
 
   const MATRIZ_ITEMS_CRAFTEABLES = [
-    ["Deathblade","Giant Slayer", "Hextech Gunblade", "Spear of Shojin", "Edge of Night", "Bloodthirster", "Sterak's Gage", "Infinity Edge", "Sugarcraft Emblem", "Hunter Emblem"],
-    ["Giant Slayer", "Red Buff", "Guinsoo's Rageblade", "Statikk Shiv", "Titan's Resolve", "Runaan's Hurricane", "Nashor's Tooth", "Last Whisper", "Pyro Emblem", "Multistriker Emblem"],
-    ["Hextech Gunblade", "Guinsoo's Rageblade", "Rabadon's Deathcap", "Archangel's Staff", "Crownguard", "Ionic Spark", "Morellonomicon", "Jeweled Guantlet", "Portal Emblem", "Mage Emblem"],
-    ["Spear of Shojin", "Statikk Shiv", "Archangel's Staff", "Blue Buff", "Protector's Vow", "Adaptive Helm", "Redemption", "Hand of Justice", "Faerie Emblem", "Scholar Emblem"],
-    ["Edge of Night", "Titan's Resolve", "Crownguard", "Protector's Vow", "Bramble Vest", "Gargoyle Stoneplate", "Sunfire Cape", "Steadfast Heart", "Frost Emblem", "Bastion Emblem"],
-    ["Bloodthirster", "Runaan's Hurricane", "Ionic Spark", "Adaptive Helm", "Gargoyle Stoneplate", "Dragons Claw", "Evenshroud", "Quicksilver", "Witchcraft Emblem", "Preserver Emblem"],
-    ["Sterak's Gage","Nashor's Tooth", "Morellonomicon", "Redemption", "Sunfire Cape", "Evenshroud", "Warmog's Armor", "Guardbreaker", "Eldritch Emblem", "Shapeshifter Emblem"],
-    ["Infinity Edge", "Last Whisper", "Jeweled Guantlet", "Hand of Justice", "Steadfast Heart", "Quicksilver", "Guardbreaker", "Thieve's Gloves", "Honeymancy Emblem", "Warrior Emblem"],
-    ["Sugarcraft Emblem", "Pyro Emblem", "Portal Emblem", "Faerie Emblem", "Frost Emblem", "Witchcraft Emblem", "Eldritch Emblem", "Honeymancy Emblem", "Tactician's Crown", "Tacticians Ring"],
-    [ "Hunter Emblem", "Multistriker Emblem", "Mage Emblem", "Scholar Emblem", "Bastion Emblem",  "Preserver Emblem", "Shapeshifter Emblem", "Warrior Emblem", "Tacticians Ring", "Tacticians Scepter"]
+    ["Deathblade","Giant Slayer", "Hextech Gunblade", "Spear of Shojin", "Edge of Night", "Bloodthirster", "Sterak's Gage", "Infinity Edge", "Conqueror Emblem", "Artillerist Emblem"],
+    ["Giant Slayer", "Red Buff", "Guinsoo's Rageblade", "Statikk Shiv", "Titan's Resolve", "Runaan's Hurricane", "Nashor's Tooth", "Last Whisper", "Rebel Emblem", "Quickstriker Emblem"],
+    ["Hextech Gunblade", "Guinsoo's Rageblade", "Rabadon's Deathcap", "Archangel's Staff", "Crownguard", "Ionic Spark", "Morellonomicon", "Jeweled Guantlet", "Black Rose Emblem", "Sorcerer Emblem"],
+    ["Spear of Shojin", "Statikk Shiv", "Archangel's Staff", "Blue Buff", "Protector's Vow", "Adaptive Helm", "Redemption", "Hand of Justice", "Family Emblem", "Visionary Emblem"],
+    ["Edge of Night", "Titan's Resolve", "Crownguard", "Protector's Vow", "Bramble Vest", "Gargoyle Stoneplate", "Sunfire Cape", "Steadfast Heart", "Enforcer Emblem", "Sentinel Emblem"],
+    ["Bloodthirster", "Runaan's Hurricane", "Ionic Spark", "Adaptive Helm", "Gargoyle Stoneplate", "Dragons Claw", "Evenshroud", "Quicksilver", "Automata Emblem", "Pit Fighter Emblem"],
+    ["Sterak's Gage","Nashor's Tooth", "Morellonomicon", "Redemption", "Sunfire Cape", "Evenshroud", "Warmog's Armor", "Guardbreaker", "Experiment Emblem", "Bruiser Emblem"],
+    ["Infinity Edge", "Last Whisper", "Jeweled Guantlet", "Hand of Justice", "Steadfast Heart", "Quicksilver", "Guardbreaker", "Thieve's Gloves", "Firelight Emblem", "Ambusher Emblem"],
+    ["Conqueror Emblem", "Rebel Emblem", "Black Rose Emblem", "Family Emblem", "Enforcer Emblem", "Automata Emblem", "Experiment Emblem", "Firelight Emblem", "Tactician's Crown", "Tacticians Ring"],
+    ["Artillerist Emblem", "Quickstriker Emblem", "Sorcerer Emblem", "Visionary Emblem", "Sentinel Emblem",  "Pit Fighter Emblem", "Bruiser Emblem", "Ambusher Emblem", "Tacticians Ring", "Tacticians Scepter"]
   ]
 
   const OTROS_ITEMS = [
