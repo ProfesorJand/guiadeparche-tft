@@ -10,6 +10,7 @@ import Twitch from 'src/components/embed/Twitch.jsx';
 //import ContainerMetaPBE from '@components/new-meta-comp/ContainerMetaPBE.astro';
 import {crearJSONSchema} from "src/json/schema/crearJSONSchema";
 import AdComponent from 'src/components/adsense/Adsense.jsx';
+import Kick from "src/components/embed/Kick.astro"
 const title = "▷ Best TFT Comps & Builds for Set 13 Arcane";
 // Example: Construct a canonical URL using your production domain
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -20,6 +21,7 @@ const keywords = "TFT Meta, Meta comps, comps TFT, comp TFT, Meta TFT, composici
 const thumbnail= "/campeones/set12/ryze.webp"
 const imgPost = "https://i.ytimg.com/vi/5ph-NnCjDSk/maxresdefault.jpg"
 const JSONSchema = crearJSONSchema({title, imgPost, thumbnail, description});
+
 ---
 <!-- <link rel="canonical" href={canonicalURL} /> -->
 <!-- <meta property="og:image" content={socialImageURL} /> -->
@@ -31,7 +33,8 @@ const JSONSchema = crearJSONSchema({title, imgPost, thumbnail, description});
     <FiltroComps client:only="react"/>
 </Fragment>
 <Fragment slot="bodyMainAsideTwitch">
-    <Twitch client:only="react"/>
+  <Kick></Kick>
+  <!-- <Twitch client:only="react"/> -->
 </Fragment>
 <Fragment slot="bodyMainAsideAds">
   <AdComponent/>
