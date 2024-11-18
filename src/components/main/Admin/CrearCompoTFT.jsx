@@ -7,11 +7,11 @@ import Items from "./Items.jsx";
 import Youtube from "../../youtube/Youtube.jsx";
 import { toBlob } from 'html-to-image';
 import { BASIC_ITEMS, CRAFTEABLE_ITEMS } from "src/stores/dataTFT.js";
-import { emblems, augmentsIDList , itemsDataIngles} from "src/json/updates/itemsTFT";
+import { emblems} from "src/json/updates/itemsTFT";
 import CarouselItems from "./CarouselItems.jsx";
 
 const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,edittitulo,editshadowCategory,editinfographicCategory,editaumentos,editgameplay,edittips,editboardInfo,editpictureSave,editcarouselItems,editspatulaItem1,editspatulaItem2,editoriginalComp}) =>{
-    const urlImgAum = "https://raw.communitydragon.org/latest/game/"
+    const urlImgAum = "https://raw.communitydragon.org/pbe/game/"
     const shadowCategories = ["Fast 8","Specifics Augments","3 Stars"]
     const infographicCategories = ["Roll Lv5","Roll Lv6","Roll Lv7","Roll Lv8","Roll Lv9","Roll Lv10"]
     const [tier, setTier] = useState("S")
@@ -39,10 +39,18 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
     const [isHide, setIsHide] = useState(false)
 
     useEffect(()=>{
-      const dataAumentos = itemsDataIngles.filter(({apiName})=>{
-        return augmentsIDList.includes(apiName)
-      })
-      setListaDeAumentos(dataAumentos)
+      const buscarAumentos = async() =>{
+        const url= "https://raw.communitydragon.org/pbe/cdragon/tft/en_us.json"
+        const items = await fetch(url);
+        const itemsDataIngles1 = await items.json();
+        console.log(itemsDataIngles1.setData[12].augments)
+        const dataAumentos = itemsDataIngles1.items.filter(({apiName})=>{
+          //itemsDataIngles1.setData[12].augments son las listas de los aumentos del set 13
+          return itemsDataIngles1.setData[12].augments.includes(apiName)
+        })
+        setListaDeAumentos(dataAumentos)
+      }
+      buscarAumentos()
     }, []);
 
     useEffect(() => {
