@@ -112,7 +112,7 @@ export const CRAFTEABLE_ITEMS = [
   {
     nombre:"Edge of Night",
     apiName:"edge_of_night",
-    img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/edge_of_night.png",
+    img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/edge_of_night_xl.png",
     sinergia:"",
     combine:[0,4]
   },
@@ -126,7 +126,7 @@ export const CRAFTEABLE_ITEMS = [
   {
     nombre:"Sterak's Gage",
     apiName:"steraks_gage",
-    img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/steraks_gage.png",
+    img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/steraksgage_xl.png",
     sinergia:"",
     combine:[0,6]
   },
@@ -138,17 +138,17 @@ export const CRAFTEABLE_ITEMS = [
     combine:[0,7]
   },
   {
-    nombre:"Sugarcraft Emblem",
-    apiName:"sugarcraft_emblem",
-    img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_sugarcraft.png",
-    sinergia:"Sugarcraft",
+    nombre:"Conqueror Emblem",
+    apiName:"TFT13_Item_WarbandEmblemItem",
+    img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_conqueror.png",
+    sinergia:"Conqueror",
     combine:[0,8]
   },
   {
-    nombre:"Hunter Emblem",
-    apiName:"TFT12_Item_HunterEmblemItem",
-    img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_hunter.png",
-    sinergia:"Hunter",
+    nombre:"Artillerist Emblem",
+    apiName:"TFT13_Item_DemolitionistEmblemItem",
+    img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_artillerist.png",
+    sinergia:"Artillerist",
     combine:[0,9]
   },
   {
@@ -189,7 +189,7 @@ export const CRAFTEABLE_ITEMS = [
   {
     nombre:"Nashor's Tooth",
     apiName:"nashors_tooth",
-    img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/nashors_tooth.png",
+    img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/nashorstooth_xl.png",
     sinergia:"",
     combine:[1,6]
   },
@@ -201,17 +201,17 @@ export const CRAFTEABLE_ITEMS = [
     combine:[1,7]
   },
   {
-    nombre:"Pyro Emblem",
-    apiName:"pyro_emblem",
-    img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_pyro.png",
-    sinergia:"Pyro",
+    nombre:"Rebel Emblem",
+    apiName:"TFT13_Item_RebelEmblemItem",
+    img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_rebel.png",
+    sinergia:"Rebel",
     combine:[1,8]
   },
   {
-    nombre:"Multistriker Emblem",
-    apiName:"TFT12_Item_MultistrikerEmblemItem",
-    img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_multistriker.png",
-    sinergia:"Multistriker",
+    nombre:"Quickstriker Emblem",
+    apiName:"TFT13_Item_ChallengerEmblemItem",
+    img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_quickstriker.png",
+    sinergia:"Quickstriker",
     combine:[1,9]
   },
   {
@@ -257,17 +257,17 @@ export const CRAFTEABLE_ITEMS = [
     combine:[2,7]
   },
   {
-    nombre:"Portal Emblem",
-    apiName:"portal_emblem",
-    img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_portal.png",
-    sinergia:"Portal",
+    nombre:"Black Rose Emblem",
+    apiName:"TFT13_Item_CabalEmblemItem",
+    img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_cabal.png",
+    sinergia:"BlackRose",
     combine:[2,8]
   },
   {
-    nombre:"Mage Emblem",
-    apiName:"TFT12_Item_MageEmblemItem",
-    img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_mage.png",
-    sinergia:"Mage",
+    nombre:"Sorcerer Emblem",
+    apiName:"TFT13_Item_SorcererEmblemItem",
+    img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_sorcerer.png",
+    sinergia:"Sorcerer",
     combine:[2,9]
   },
   {
@@ -306,17 +306,17 @@ export const CRAFTEABLE_ITEMS = [
     combine:[3,7]
   },
   {
-    nombre:"Faerie Emblem",
-    apiName:"faerie_emblem",
-    img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_faerie.png",
-    sinergia:"Faerie",
+    nombre:"Family Emblem",
+    apiName:"TFT13_Item_FamilyEmblemItem",
+    img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_family.png",
+    sinergia:"Family",
     combine:[3,8]
   },
   {
-    nombre:"Scholar Emblem",
-    apiName:"TFT12_Item_ScholarEmblemItem",
-    img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_scholar.png",
-    sinergia:"Scholar",
+    nombre:"Visionary Emblem",
+    apiName:"TFT13_Item_InvokerEmblemItem",
+    img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_visionary.png",
+    sinergia:"Visionary",
     combine:[3,9]
   },
   {
@@ -348,17 +348,17 @@ export const CRAFTEABLE_ITEMS = [
     combine:[4,7]
   },
   {
-    nombre:"Frost Emblem",
-    apiName:"frost_emblem",
-    img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_frost.png",
-    sinergia:"Frost",
+    nombre:"Enforcer Emblem",
+    apiName:"TFT13_Item_SquadEmblemItem",
+    img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_enforcer.png",
+    sinergia:"Enforcer",
     combine:[4,8]
   },
   {
-    nombre:"Bastion Emblem",
-    apiName:"TFT12_Item_BastionEmblemItem",
-    img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_bastion.png",
-    sinergia:"Bastion",
+    nombre:"Sentinel Emblem",
+    apiName:"TFT13_Item_TitanEmblemItem",
+    img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_sentinel.png",
+    sinergia:"Sentinel",
     combine:[4,9]
   },
   {
@@ -371,7 +371,7 @@ export const CRAFTEABLE_ITEMS = [
   {
     nombre:"Evenshroud",
     apiName:"evenshroud",
-    img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/evenshroud.png",
+    img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/support_t4_lunar.png",
     sinergia:"",
     combine:[5,6]
   },
@@ -383,45 +383,45 @@ export const CRAFTEABLE_ITEMS = [
     combine:[5,7]
   },
   {
-    nombre:"Witchcraft Emblem",
-    apiName:"witchcraft_emblem",
-    img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_witchcraft.png",
-    sinergia:"Witchcraft",
+    nombre:"Automata Emblem",
+    apiName:"TFT13_Item_AutomataEmblemItem",
+    img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_automata.png",
+    sinergia:"Automata",
     combine:[5,8]
   },
   {
-    nombre:"Preserver Emblem",
-    apiName:"TFT12_Item_PreserverEmblemItem",
-    img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_preserver.png",
-    sinergia:"Preserver",
+    nombre:"Pit Fighter Emblem",
+    apiName:"TFT13_Item_PitFighterEmblemItem",
+    img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_pitfighter.png",
+    sinergia:"PitFighter",
     combine:[5,9]
   },
   {
     nombre:"Warmog's Armor",
     apiName:"warmogs_armor",
-    img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/warmogs_armor.png",
+    img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/warmogs_xl.png",
     sinergia:"",
     combine:[6,6]
   },
   {
     nombre:"Guardbreaker",
     apiName:"guardbreaker",
-    img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/stridebreaker.png",
+    img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/stridebreaker_xl.png",
     sinergia:"",
     combine:[6,7]
   },
   {
-    nombre:"Eldritch Emblem",
-    apiName:"eldritch_emblem",
-    img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_eldritch.png",
-    sinergia:"Eldritch",
+    nombre:"Experiment Emblem",
+    apiName:"TFT13_Item_ExperimentEmblemItem",
+    img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_experiment.png",
+    sinergia:"Experiment",
     combine:[6,8]
   },
   {
-    nombre:"Shapeshifter Emblem",
-    apiName:"TFT12_Item_ShapeshifterEmblemItem",
-    img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_shapeshifter.png",
-    sinergia:"Shapeshifter",
+    nombre:"Bruiser Emblem",
+    apiName:"TFT13_Item_BruiserEmblemItem",
+    img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_bruiser.png",
+    sinergia:"Bruiser",
     combine:[6,9]
   },
   {
@@ -432,17 +432,17 @@ export const CRAFTEABLE_ITEMS = [
     combine:[7,7]
   },
   {
-    nombre:"Honeymancy Emblem",
-    apiName:"honeymancy_emblem",
-    img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_honeymancy.png",
-    sinergia:"Witchcraft",
+    nombre:"Firelight Emblem",
+    apiName:"TFT13_Item_HoverboardEmblemItem",
+    img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_firelight.png",
+    sinergia:"Firelight",
     combine:[7,8]
   },
   {
-    nombre:"Warrior Emblem",
-    apiName:"TFT12_Item_WarriorEmblemItem",
-    img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/traits/spatula/set12/tft_set12_emblem_warrior.png",
-    sinergia:"Warrior",
+    nombre:"Ambusher Emblem",
+    apiName:"TFT13_Item_AmbusherEmblemItem",
+    img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_ambusher.png",
+    sinergia:"Ambusher",
     combine:[7,9]
   },
   {
