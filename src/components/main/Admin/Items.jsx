@@ -123,7 +123,7 @@ export const Items = ()=>{
     {
       nombre:"Edge of Night",
       apiName:"edge_of_night",
-      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/edge_of_night.png",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/edge_of_night_xl.png",
       sinergia:"",
       combine:[0,4]
     },
@@ -137,7 +137,7 @@ export const Items = ()=>{
     {
       nombre:"Sterak's Gage",
       apiName:"steraks_gage",
-      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/steraks_gage.png",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/steraksgage_xl.png",
       sinergia:"",
       combine:[0,6]
     },
@@ -200,7 +200,7 @@ export const Items = ()=>{
     {
       nombre:"Nashor's Tooth",
       apiName:"nashors_tooth",
-      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/nashors_tooth.png",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/nashorstooth_xl.png",
       sinergia:"",
       combine:[1,6]
     },
@@ -382,7 +382,7 @@ export const Items = ()=>{
     {
       nombre:"Evenshroud",
       apiName:"evenshroud",
-      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/evenshroud.png",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/support_t4_lunar.png",
       sinergia:"",
       combine:[5,6]
     },
@@ -410,14 +410,14 @@ export const Items = ()=>{
     {
       nombre:"Warmog's Armor",
       apiName:"warmogs_armor",
-      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/warmogs_armor.png",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/warmogs_xl.png",
       sinergia:"",
       combine:[6,6]
     },
     {
       nombre:"Guardbreaker",
       apiName:"guardbreaker",
-      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/stridebreaker.png",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/stridebreaker_xl.png",
       sinergia:"",
       combine:[6,7]
     },
