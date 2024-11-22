@@ -1,4 +1,5 @@
 import {atom, deepMap, task} from "nanostores";
+import backupMeta from "src/json/backupMeta.json" assert { type: 'json' };
 
 export const defaultAction = atom("crear")
 
@@ -10,31 +11,61 @@ const hierarchy = ["S","A","B","C","D","MEME"];
 
 export const loadCompsMeta = ()=>{
   task(async()=>{
-    const urlMeta = "https://guiadeparche.com/tftdata/Set12/composMeta.json"
-    const responde = await fetch(urlMeta,{cache:"reload"});
-    const data = await responde.json()
-    const sortableArray =  Object.keys(data).map((tier,i)=>{
-      const testing = data[tier].sort((a,b)=>{
-        if(a.posicion < b.posicion){
-          return -1
-        }
-        if(a.posicion > b.posicion){
-          return 1
-        }
-        return 0
+    try{
+      const urlMeta = "https://guiadeparche.com/tftdata/Set12/composMeta.json"
+      console.log({urlMeta})
+      const responde = await fetch(urlMeta,{cache:"reload"});
+      const data = await responde.json()
+      const sortableArray =  Object.keys(data).map((tier,i)=>{
+        const testing = data[tier].sort((a,b)=>{
+          if(a.posicion < b.posicion){
+            return -1
+          }
+          if(a.posicion > b.posicion){
+            return 1
+          }
+          return 0
+        })
+        return testing
+      }).sort((a,b)=>{
+          if(hierarchy.indexOf(a[0].tier) > hierarchy.indexOf(b[0].tier)){
+            return 1
+          }
+          if(hierarchy.indexOf(a[0].tier) < hierarchy.indexOf(b[0].tier)){
+            return -1
+          }
+          return 0
       })
-      return testing
-    }).sort((a,b)=>{
-        if(hierarchy.indexOf(a[0].tier) > hierarchy.indexOf(b[0].tier)){
-          return 1
-        }
-        if(hierarchy.indexOf(a[0].tier) < hierarchy.indexOf(b[0].tier)){
-          return -1
-        }
-        return 0
-    })
-    initialStateMetaComps.set(sortableArray);
-    MetaComps.set(sortableArray)
+      initialStateMetaComps.set(sortableArray);
+      MetaComps.set(sortableArray)
+    }catch(err){
+      const data = backupMeta
+      console.log({data})
+      const sortableArray =  Object.keys(data).map((tier,i)=>{
+        
+        const testing = data[tier].sort((a,b)=>{
+          if(a.posicion < b.posicion){
+            return -1
+          }
+          if(a.posicion > b.posicion){
+            return 1
+          }
+          return 0
+        })
+        return testing
+      }).sort((a,b)=>{
+          if(hierarchy.indexOf(a[0]?.tier) > hierarchy.indexOf(b[0]?.tier)){
+            return 1
+          }
+          if(hierarchy.indexOf(a[0]?.tier) < hierarchy.indexOf(b[0]?.tier)){
+            return -1
+          }
+          return 0
+      })
+      initialStateMetaComps.set(sortableArray);
+      MetaComps.set(sortableArray)
+      
+    }
   })
 }
 
