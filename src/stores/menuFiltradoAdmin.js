@@ -28,10 +28,10 @@ export const loadCompsMeta = ()=>{
         })
         return testing
       }).sort((a,b)=>{
-          if(hierarchy.indexOf(a[0].tier) > hierarchy.indexOf(b[0].tier)){
+          if(hierarchy.indexOf(a[0]?.tier) > hierarchy.indexOf(b[0]?.tier)){
             return 1
           }
-          if(hierarchy.indexOf(a[0].tier) < hierarchy.indexOf(b[0].tier)){
+          if(hierarchy.indexOf(a[0]?.tier) < hierarchy.indexOf(b[0]?.tier)){
             return -1
           }
           return 0
@@ -39,6 +39,7 @@ export const loadCompsMeta = ()=>{
       initialStateMetaComps.set(sortableArray);
       MetaComps.set(sortableArray)
     }catch(err){
+      console.log({err})
       const data = backupMeta
       console.log({data})
       const sortableArray =  Object.keys(data).map((tier,i)=>{
