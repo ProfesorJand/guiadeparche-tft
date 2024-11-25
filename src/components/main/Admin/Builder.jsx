@@ -94,7 +94,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
                   /* background de la sinergia*/
                   const backgroundSinergia = document.createElement("img");
                   backgroundSinergia.classList.add(style.backgroundSinergia);
-                  backgroundSinergia.classList.add(siner.name.replace(" ",""));
+                  backgroundSinergia.classList.add(siner.apiName);
                   backgroundSinergia.src = urlHex + imgHex[0];
                   backgroundSinergia.alt = imgHex[0];
           
@@ -194,9 +194,8 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
       if (!noRepeatChampions.some((campeon) => campeon === newCampeon)) {
         noRepeatChampions.push(newCampeon);
         const sinergiasCampeon = JSON.parse(dataCampeon.campeon).sinergia;
-        console.log({sinergiasCampeon})
         sinergiasCampeon.forEach((nombreSinergia) => {
-          sinergias[nombreSinergia.name.replace(" ","")] = (sinergias[nombreSinergia.name.replace(" ","")] || 0) + 1;
+          sinergias[nombreSinergia.apiName] = (sinergias[nombreSinergia.apiName] || 0) + 1;
         });
       }
       data[hexId] = { dataCampeon: dataCampeon, estrellas };
@@ -345,7 +344,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
         /* background de la sinergia*/
         const backgroundSinergia = document.createElement("img");
         backgroundSinergia.classList.add(style.backgroundSinergia);
-        backgroundSinergia.classList.add(siner.name.replace(" ",""));
+        backgroundSinergia.classList.add(siner.apiName);
         backgroundSinergia.src = urlHex + imgHex[0];
         backgroundSinergia.alt = imgHex[0];
 

@@ -11,8 +11,8 @@ export async function fetchingDataTFT({version, idioma, pais}){
 }
 
 export const version = "latest";
-export const idioma = "es"; //en
-export const pais = "ar"; //mx /es /gb /us
+export const idioma = "en"; //en
+export const pais = "us"; //mx /es /gb /us
 export const set = "12";
 const latestVersionLog = (await fetchingLatestVersionTFT()).version.split(".");
 export const latestVersion = latestVersionLog[0]+"."+latestVersionLog[1];
@@ -27,6 +27,7 @@ export async function fetchingLatestVersionTFT(){
 export const datosTFT = await fetchingDataTFT({version,idioma,pais});
 export const championsTFT = await datosTFT.sets[set].champions;
 export const itemsData = await datosTFT.items;
+export const sinergiasData = await datosTFT.sets["13"].traits
 
 export const datosTFTIngles = await fetchingDataTFT({version:"latest",idioma:"en",pais:"us"});
 export const championsTFTIngles = await datosTFTIngles.sets[set].champions;

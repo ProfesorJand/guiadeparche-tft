@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import style from "./css/Sinergias.module.css"
 import { traitsColors, imgHex } from "src/functions/campeonestft";
+import { sinergiasData } from "src/json/updates/constantesLatest.js";
 const Sinergias = ({sinergias, orientacion})=>{
 
   function checkColor(hexColor){
@@ -49,7 +50,9 @@ const Sinergias = ({sinergias, orientacion})=>{
     const result = [];
     Object.entries(traits).forEach(([trait, value]) => {
       const traitData = traitsColors[trait];
-      
+      const data = sinergiasData.find(({apiName})=>{
+        return apiName === trait
+      })
       if (traitData) {
         const levels = Object.keys(traitData).map(Number).sort((a, b) => a - b);
         let maxLevel = levels[levels.length -1];
@@ -74,20 +77,23 @@ const Sinergias = ({sinergias, orientacion})=>{
             }
           }
         }
+        
         result.push({
-          trait,
+          trait:data?.name,
           min: minLevel,
           max: maxLevel,
           hexColor,
-          hexLevel
+          hexLevel,
+          icon:data?.icon.replace(".tex",".png").toLowerCase()
         });
       }else{
         result.push({
-          trait,
+          trait:data?.name,
           min: 0,
           max: 0,
           hexColor: "hex-default.webp",
           hexLevel: 0,
+          icon:data?.icon.replace(".tex",".png").toLowerCase()
         });
       }
     });
@@ -104,7 +110,7 @@ const Sinergias = ({sinergias, orientacion})=>{
           return (
             <div key={i} className={style.containerSinergiaHex} style={window.innerWidth < 900 ? checkColor(key.hexColor) : {}}>
               <span className={style.borderHex} style={checkColor(key.hexColor)}></span> 
-              <img className={style.imgSinergia} src={`/sinergias/Trait_Icon_13_${key.trait}.png`} alt="Trait_Icon" loading="lazy"/>
+              <img className={style.imgSinergia} src={`https://raw.communitydragon.org/latest/game/${key.icon}`} alt="Trait_Icon" loading="lazy"/>
               <div className={style.infoSinergia}>{key.hexLevel}</div>
             </div>
           )

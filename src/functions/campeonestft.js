@@ -1,140 +1,135 @@
 export const imgHex = ["hex-bronze.webp", "hex-silver.webp", "hex-gold.webp", "hex-prismatic.webp","hex-default.webp"]
 export const traitsColors = {
-    Academy: {
+    TFT13_Academy: { //academy
         3:imgHex[0],
         4:imgHex[1],
         5:imgHex[2],
         6:imgHex[3],
     },
-    Ambusher: {
+    TFT13_Ambusher: { //ambusher
         2:imgHex[0],
         3:imgHex[1],
         4:imgHex[2],
         5:imgHex[2]
     },
-    Artillerist: {
+    TFT13_Martialist: { //artillerist
         2:imgHex[0],
         4:imgHex[1],
         6:imgHex[2],
     },
-    Automata:{
+    TFT13_Hextech:{ // automata
         2:imgHex[0],
         4:imgHex[1],
         6:imgHex[2]
     },
-    "Black Rose": {
+    TFT13_Cabal: { // black rose
         3:imgHex[0],
         4:imgHex[1],
         5:imgHex[2],
         7:imgHex[3],
     },
-    Bruiser: {
+    TFT13_Bruiser: { //bruiser
         2:imgHex[0],
         4:imgHex[1],
         6:imgHex[2],
     },
-    "Chem-Baron":{
+    TFT13_Crime:{ // Chem-Baron
         3:imgHex[0],
         4:imgHex[1],
         5:imgHex[2],
         6:imgHex[2],
         7:imgHex[3]
     },
-    Conqueror:{
+    TFT13_Warband:{ //conqueror
         2:imgHex[0],
         4:imgHex[1],
         6:imgHex[2],
         9:imgHex[3],
     },
-    Dominator: {
+    TFT13_Infused: { // dominator
         2:imgHex[0],
         4:imgHex[1],
         6:imgHex[2],
     },
-    Emissary:{
+    TFT13_Ambassador:{ //emissary
         1:imgHex[0],
         4:imgHex[2]
     },
-    Enforcer: {
+    TFT13_Squad: { //enforcer
         2:imgHex[0],
         4:imgHex[1],
         6:imgHex[2],
         8:imgHex[2],
         10:imgHex[3],
     },
-    Experiment: {
+    TFT13_Experiment: { //experiment
         3:imgHex[0],
         5:imgHex[1],
         7:imgHex[2],
     },
-    Experiment: {
-        3:imgHex[0],
-        5:imgHex[1],
-        7:imgHex[2],
-    },
-    Family: {
+    TFT13_Family: { // family
         3:imgHex[0],
     },
-    Firelight: {
+    TFT13_Hoverboard: { // firelight
         2:imgHex[0],
         3:imgHex[1],
     },
-    "Form Swapper": {
+    TFT13_FormSwapper: { // form swapper
         2:imgHex[0],
         4:imgHex[2],
     },
-    "High Roller": {
+    TFT13_HighRoller: { // hight Roller
         1:imgHex[3],
     },
-    "Junker King":{
+    TFT13_JunkerKing:{ // junker king
         1:imgHex[3]
     },
-    "Pit Fighter": {
+    TFT13_Pugilist: { //pit fighter
         2:imgHex[0],
         4:imgHex[1],
         6:imgHex[2],
         8:imgHex[3]
     },
-    Quickstriker: {
+    TFT13_Challenger: { //quickstriker
         2:imgHex[0],
         3:imgHex[1],
         4:imgHex[2],
     },
-    Rebel: {
+    TFT13_Rebel: { //rebel
         3:imgHex[0],
         5:imgHex[1],
         7:imgHex[2],
         10:imgHex[3]
     },
-    Scrap: {
+    TFT13_Scrap: { //scrap
         2:imgHex[0],
         4:imgHex[1],
         6:imgHex[2],
         9:imgHex[3]
     },
-    Sentinel: {
+    TFT13_Titan: { // sentinel
         2:imgHex[0],
         4:imgHex[1],
         6:imgHex[2],
     },
-    Sniper: {
+    TFT13_Sniper: { //sniper
         2:imgHex[0],
         4:imgHex[1],
         6:imgHex[2],
     },
-    Sorcerer: {
-        2:imgHex[0],
-        4:imgHex[1],
-        6:imgHex[2],
-        8:imgHex[3]
-    },
-    Visionary: {
+    TFT13_Sorcerer: { // sorcerer
         2:imgHex[0],
         4:imgHex[1],
         6:imgHex[2],
         8:imgHex[3]
     },
-    Watcher: {
+    TFT13_Invoker: { //visionary
+        2:imgHex[0],
+        4:imgHex[1],
+        6:imgHex[2],
+        8:imgHex[3]
+    },
+    TFT13_Watcher: { // watcher
         2:imgHex[0],
         4:imgHex[1],
         6:imgHex[2],
