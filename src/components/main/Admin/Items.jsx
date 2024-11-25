@@ -152,14 +152,14 @@ export const Items = ()=>{
       nombre:"Conqueror Emblem",
       apiName:"TFT13_Item_WarbandEmblemItem",
       img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_conqueror.png",
-      sinergia:"Conqueror",
+      sinergia:"TFT13_Warband",
       combine:[0,8]
     },
     {
       nombre:"Artillerist Emblem",
       apiName:"TFT13_Item_DemolitionistEmblemItem",
       img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_artillerist.png",
-      sinergia:"Artillerist",
+      sinergia:"TFT13_Martialist",
       combine:[0,9]
     },
     {
@@ -215,14 +215,14 @@ export const Items = ()=>{
       nombre:"Rebel Emblem",
       apiName:"TFT13_Item_RebelEmblemItem",
       img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_rebel.png",
-      sinergia:"Rebel",
+      sinergia:"TFT13_Rebel",
       combine:[1,8]
     },
     {
       nombre:"Quickstriker Emblem",
       apiName:"TFT13_Item_ChallengerEmblemItem",
       img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_quickstriker.png",
-      sinergia:"Quickstriker",
+      sinergia:"TFT13_Challenger",
       combine:[1,9]
     },
     {
@@ -271,14 +271,14 @@ export const Items = ()=>{
       nombre:"Black Rose Emblem",
       apiName:"TFT13_Item_CabalEmblemItem",
       img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_cabal.png",
-      sinergia:"BlackRose",
+      sinergia:"TFT13_Cabal",
       combine:[2,8]
     },
     {
       nombre:"Sorcerer Emblem",
       apiName:"TFT13_Item_SorcererEmblemItem",
       img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_sorcerer.png",
-      sinergia:"Sorcerer",
+      sinergia:"TFT13_Sorcerer",
       combine:[2,9]
     },
     {
@@ -320,14 +320,14 @@ export const Items = ()=>{
       nombre:"Family Emblem",
       apiName:"TFT13_Item_FamilyEmblemItem",
       img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_family.png",
-      sinergia:"Family",
+      sinergia:"TFT13_Family",
       combine:[3,8]
     },
     {
       nombre:"Visionary Emblem",
       apiName:"TFT13_Item_InvokerEmblemItem",
       img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_visionary.png",
-      sinergia:"Visionary",
+      sinergia:"TFT13_Invoker",
       combine:[3,9]
     },
     {
@@ -362,14 +362,14 @@ export const Items = ()=>{
       nombre:"Enforcer Emblem",
       apiName:"TFT13_Item_SquadEmblemItem",
       img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_enforcer.png",
-      sinergia:"Enforcer",
+      sinergia:"TFT13_Squad",
       combine:[4,8]
     },
     {
       nombre:"Sentinel Emblem",
       apiName:"TFT13_Item_TitanEmblemItem",
       img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_sentinel.png",
-      sinergia:"Sentinel",
+      sinergia:"TFT13_Titan",
       combine:[4,9]
     },
     {
@@ -397,14 +397,14 @@ export const Items = ()=>{
       nombre:"Automata Emblem",
       apiName:"TFT13_Item_AutomataEmblemItem",
       img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_automata.png",
-      sinergia:"Automata",
+      sinergia:"TFT13_Hextech",
       combine:[5,8]
     },
     {
       nombre:"Pit Fighter Emblem",
       apiName:"TFT13_Item_PitFighterEmblemItem",
       img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_pitfighter.png",
-      sinergia:"PitFighter",
+      sinergia:"TFT13_Pugilist",
       combine:[5,9]
     },
     {
@@ -425,14 +425,14 @@ export const Items = ()=>{
       nombre:"Experiment Emblem",
       apiName:"TFT13_Item_ExperimentEmblemItem",
       img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_experiment.png",
-      sinergia:"Experiment",
+      sinergia:"TFT13_Experiment",
       combine:[6,8]
     },
     {
       nombre:"Bruiser Emblem",
       apiName:"TFT13_Item_BruiserEmblemItem",
       img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_bruiser.png",
-      sinergia:"Bruiser",
+      sinergia:"TFT13_Bruiser",
       combine:[6,9]
     },
     {
@@ -446,21 +446,21 @@ export const Items = ()=>{
       nombre:"Firelight Emblem",
       apiName:"TFT13_Item_HoverboardEmblemItem",
       img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_firelight.png",
-      sinergia:"Firelight",
+      sinergia:"TFT13_Hoverboard",
       combine:[7,8]
     },
     {
       nombre:"Ambusher Emblem",
       apiName:"TFT13_Item_AmbusherEmblemItem",
       img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set13/tft_set13_emblem_ambusher.png",
-      sinergia:"Ambusher",
+      sinergia:"TFT13_Ambusher",
       combine:[7,9]
     },
     {
       nombre:"Tactician's Crown",
       apiName:"tacticians_crown",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/tacticians_crown.png",
-      sinergia:"Witchcraft",
+      sinergia:"tacticians_crown",
       combine:[8,8]
     },
     {
