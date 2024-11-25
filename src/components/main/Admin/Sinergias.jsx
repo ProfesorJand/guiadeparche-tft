@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import style from "./css/Sinergias.module.css"
 import { traitsColors, imgHex } from "src/functions/campeonestft";
-import { sinergiasData } from "src/json/updates/constantesLatest.js";
+import sinergiasData from "src/json/updates/sinergiasData";
 const Sinergias = ({sinergias, orientacion})=>{
 
   function checkColor(hexColor){
