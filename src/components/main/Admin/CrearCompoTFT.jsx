@@ -40,13 +40,12 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
 
     useEffect(()=>{
       const buscarAumentos = async() =>{
-        const url= "https://raw.communitydragon.org/pbe/cdragon/tft/en_us.json"
+        const url= "https://raw.communitydragon.org/latest/cdragon/tft/en_us.json"
         const items = await fetch(url);
         const itemsDataIngles1 = await items.json();
-        console.log(itemsDataIngles1.setData[12].augments)
         const dataAumentos = itemsDataIngles1.items.filter(({apiName})=>{
           //itemsDataIngles1.setData[12].augments son las listas de los aumentos del set 13
-          return itemsDataIngles1.setData[12].augments.includes(apiName)
+          return itemsDataIngles1.setData[14].augments.includes(apiName)
         })
         setListaDeAumentos(dataAumentos)
       }
