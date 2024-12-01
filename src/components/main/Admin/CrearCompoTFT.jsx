@@ -252,14 +252,17 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
 
     function hanlderSpatulaItem(value, number){
       const option = document.getElementById("dataListSpatulaItems").options.namedItem(`datalist-${value}`)?.getAttribute("data-value");
+      
       if(option){
         const data  = JSON.parse(option);
         let imgUrl;
+        const url = "https://raw.communitydragon.org/latest/game/"
         if(data.img){
           imgUrl = data.img
-        }else{
-          const url = "https://raw.communitydragon.org/latest/game/"
+        }else if(data.icon && data.tileIcon){
           imgUrl = url+data.tileIcon.replace(".tex",".png").toLowerCase();
+        }else{
+          imgUrl = url+data.icon.replace(".tex",".png").toLowerCase();
         }
         if(number === 1){
           setSpatulaItem1(imgUrl);
@@ -490,6 +493,9 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           return <option key={"ListaDeEmblemas"+dataItem.nombre+i} id={`datalist-${dataItem.name}`} value={dataItem.name} data-value={JSON.stringify(dataItem)}></option>
         })}
         {championsTFT.map((dataItem, i )=>{
+          return <option key={"ListaDeEmblemas"+dataItem.name+i} id={`datalist-${dataItem.name}`} value={dataItem.name} data-value={JSON.stringify(dataItem)}></option>
+        })}
+        {listaDeAumentos.map((dataItem, i )=>{
           return <option key={"ListaDeEmblemas"+dataItem.name+i} id={`datalist-${dataItem.name}`} value={dataItem.name} data-value={JSON.stringify(dataItem)}></option>
         })}
       </datalist>
