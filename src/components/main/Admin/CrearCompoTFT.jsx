@@ -9,6 +9,7 @@ import { toBlob } from 'html-to-image';
 import { BASIC_ITEMS, CRAFTEABLE_ITEMS } from "src/stores/dataTFT.js";
 import { emblems} from "src/json/updates/itemsTFT";
 import CarouselItems from "./CarouselItems.jsx";
+import { championsTFT } from "src/json/updates/constantesLatest.js"
 
 const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,edittitulo,editshadowCategory,editinfographicCategory,editaumentos,editgameplay,edittips,editboardInfo,editpictureSave,editcarouselItems,editspatulaItem1,editspatulaItem2,editoriginalComp}) =>{
     const urlImgAum = "https://raw.communitydragon.org/pbe/game/"
@@ -250,14 +251,23 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
     }
 
     function hanlderSpatulaItem(value, number){
-      const option = document.getElementById("dataListSpatulaItems").options.namedItem(`datalist-${value}`).getAttribute("data-value");
-      const imgUrl = JSON.parse(option).img
-      if(number === 1){
-        setSpatulaItem1(imgUrl);
-        document.getElementById("spatulaItems1").value= value 
-      }else{
-        setSpatulaItem2(imgUrl);
-        document.getElementById("spatulaItems2").value= value 
+      const option = document.getElementById("dataListSpatulaItems").options.namedItem(`datalist-${value}`)?.getAttribute("data-value");
+      if(option){
+        const data  = JSON.parse(option);
+        let imgUrl;
+        if(data.img){
+          imgUrl = data.img
+        }else{
+          const url = "https://raw.communitydragon.org/latest/game/"
+          imgUrl = url+data.tileIcon.replace(".tex",".png").toLowerCase();
+        }
+        if(number === 1){
+          setSpatulaItem1(imgUrl);
+          document.getElementById("spatulaItems1").value= value 
+        }else{
+          setSpatulaItem2(imgUrl);
+          document.getElementById("spatulaItems2").value= value 
+        }
       }
     }
 
@@ -478,6 +488,9 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
       <datalist id="dataListSpatulaItems">
         {emblems.map((dataItem, i )=>{
           return <option key={"ListaDeEmblemas"+dataItem.nombre+i} id={`datalist-${dataItem.name}`} value={dataItem.name} data-value={JSON.stringify(dataItem)}></option>
+        })}
+        {championsTFT.map((dataItem, i )=>{
+          return <option key={"ListaDeEmblemas"+dataItem.name+i} id={`datalist-${dataItem.name}`} value={dataItem.name} data-value={JSON.stringify(dataItem)}></option>
         })}
       </datalist>
         <Sinergias sinergias={boardInfo[showBoard]?.sinergias ? boardInfo[showBoard]?.sinergias : {}} orientacion={"horizontal"}></Sinergias>
