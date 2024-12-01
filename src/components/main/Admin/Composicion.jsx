@@ -7,15 +7,18 @@ import Sinergias from "./Sinergias";
 import AumentosCompos from "./AumentosCompos";
 import PosicionamientoCompos from "./PosicionamientoCompos";
 import CrearCompoTFT from "./CrearCompoTFT";
-import { championsTFT } from "src/json/updates/constantesPBE.js";
+import { championsTFT } from "src/json/updates/constantesLatest.js";
+import ShowBigCompScreen from "./ShowBigCompScreen"; 
 
-const Composicion = ({compo, admin=false})=>{
-  const [open,setOpen]=useState(false);
+const Composicion = ({compo, admin=false, show=true, allwaysOpen=false})=>{
+  const [open,setOpen]=useState(allwaysOpen);
   const [editId, setEditId] = useState(null)
   const colorDificulty= {Easy:"green",Medium:"orange",Hard:"red"}
   const [posicionamiento, setPosicionamiento] = useState(compo.originalComp)
   const [data, setData] = useState(compo.boardInfo[compo.originalComp].data);
-  const [sinergias, setSinergias] = useState(compo.boardInfo[compo.originalComp].sinergias)
+  const [sinergias, setSinergias] = useState(compo.boardInfo[compo.originalComp].sinergias);
+  const [showBigComp, setShowBigComp] = useState(false);
+  const [bigCompId, setBigCompId] = useState(null);
   const textoPosicionamiento = (texto)=>{
     if(texto === "spatula1"){
       texto = compo.spatulaItem1.split("_").pop().replace(".png","");
@@ -57,7 +60,6 @@ const Composicion = ({compo, admin=false})=>{
     while (sequence.length <= sortedArray.length) {
         // Convertimos i a hexadecimal y lo formateamos a dos caracteres
         let hex = i.toString(16).padStart(2, "0");
-
         // Solo agregamos a la secuencia si es un valor válido
         sequence.push(hex);
 
@@ -67,7 +69,9 @@ const Composicion = ({compo, admin=false})=>{
 
     // Asigna cada apiName como clave en el objeto resultado, con su valor correspondiente en la secuencia
     sortedArray.forEach((item, index) => {
+      if(item.apiName !== "TFT13_Warwick" || item.apiName !=="TFT13_MissMage" || item.apiName !== "TFT13_Viktor" || item.apiName !=="TFT13_Rammus"){
         result[item.apiName] = sequence[index + 1]; // +1 para empezar después de "empty_slot"
+      }
     });
 
     return result;
@@ -147,6 +151,16 @@ const Composicion = ({compo, admin=false})=>{
     alert("Copied Code: " + codigo);
   }
 
+  function ShowBigComp(e,id){
+    e.stopPropagation();
+    setShowBigComp((valor)=>!valor);
+    setBigCompId(id);
+  }
+
+  if (!compo) {
+    return <div>Composición no disponible</div>;
+  }
+
   return (
     <div className={style.containerInfoGlobal}>
 
@@ -164,19 +178,24 @@ const Composicion = ({compo, admin=false})=>{
         <div className={style.containerInfoComp}>
           <div className={[style.titulo, style.tituloComp].join(" ")}>{compo.titulo}</div>
           <div className={style.containerDificultadCategory}>
+            { show && 
             <div
               className={style.teamCodeMobile}
               onClick={(e)=>copyToClipboard(e,generatorCodeBuilder(allChampionsApiName))}>
                 {"📋"}
             </div>
+            }
             <div className={style.dificultad} style={{border:`1px solid ${colorDificulty[compo.dificultad]}`, color:`${colorDificulty[compo.dificultad]}`}}>{compo.dificultad}</div>
             <div className={style.category}>{compo.infographicCategory}</div>
           </div>
         </div>
       </div>
-      <div className={style.containerTextoInfoPrimarioCode} onClick={(e)=>copyToClipboard(e,generatorCodeBuilder(allChampionsApiName))}>
-        {"COPY TEAM CODE: " + generatorCodeBuilder(allChampionsApiName) + " 📋"}
-      </div>
+      {
+        show && 
+        <div className={style.containerTextoInfoPrimarioCode} onClick={(e)=>copyToClipboard(e,generatorCodeBuilder(allChampionsApiName))}>
+          {"COPY TEAM CODE: " + generatorCodeBuilder(allChampionsApiName) + " 📋"}
+        </div>
+      }
       </div>
       
       <div className={style.containerLowerChamps}>
@@ -201,6 +220,10 @@ const Composicion = ({compo, admin=false})=>{
           admin &&
           <div className={[style.btn, style.btnDelete].join(" ")} onClick={()=>{deleteId(compo.id, compo.tier)}}>
         </div>
+        }
+        {
+          show && admin && 
+          <div onClick={(e)=>ShowBigComp(e,compo.id)}>boton</div>
         }
         <div className={[style.btn, style.btnClose, open ? style.btnOpen: ""].join(" ")} >  
         </div>
@@ -266,8 +289,15 @@ const Composicion = ({compo, admin=false})=>{
       editoriginalComp={compo.originalComp}
       editisHide={compo.isHide}
     />}
-
+    {
+      showBigComp &&
+      <ShowBigCompScreen 
+        id={bigCompId}
+        setShowBigComp={setShowBigComp}
+      />
+    }
     </div>
+    
   )
 }
 

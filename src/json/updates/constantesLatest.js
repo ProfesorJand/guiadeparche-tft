@@ -13,7 +13,7 @@ export async function fetchingDataTFT({version, idioma, pais}){
 export const version = "latest";
 export const idioma = "en"; //en
 export const pais = "us"; //mx /es /gb /us
-export const set = "12";
+export const set = "13";
 const latestVersionLog = (await fetchingLatestVersionTFT()).version.split(".");
 export const latestVersion = latestVersionLog[0]+"."+latestVersionLog[1];
 
@@ -34,6 +34,6 @@ export const championsTFTIngles = await datosTFTIngles.sets[set].champions;
 export const itemsDataIngles = await datosTFTIngles.items;
 console.log(itemsDataIngles)
 
-export const fetchMeta = await fetch(`https://guiadeparche.com/tftdata/Set${set}/metaTFTComposiciones.json`, {cache:"reload"});
+export const fetchMeta = await fetch(`https://guiadeparche.com/tftdata/Set12/metaTFTComposiciones.json`, {cache:"reload"});
 export const meta = await fetchMeta.json();
 
