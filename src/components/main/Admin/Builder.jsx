@@ -202,9 +202,11 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
       let dataItems = [];
       for (let y = 0; y < imgItem.length; y++) {
         dataItems.push(imgItem[y].dataset);
-        const sinergiasItem = JSON.parse(imgItem[y].dataset.item).sinergia;
-        if (sinergiasItem) {
-          sinergias[sinergiasItem] = (sinergias[sinergiasItem] || 0) + 1;
+        console.log(imgItem[y].dataset)
+        const sinergiasItem = JSON.parse(imgItem[y].dataset.item);
+        const getSinergia = sinergiasItem.sinergia ? sinergiasItem.sinergia : sinergiasItem.incompatibleTraits[0]; //arreglar a futuro
+        if (getSinergia) {
+          sinergias[getSinergia] = (sinergias[getSinergia] || 0) + 1;
         }
       }
       data[hexId].dataItem = dataItems;
@@ -373,6 +375,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
 
   function crearItem(e) {
     const dataItem = JSON.parse(e.dataTransfer.getData("item"));
+    console.log({dataItem})
     const containerItems = e.currentTarget.getElementsByClassName(
       style.containerItems
     )[0];
@@ -380,7 +383,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
     containerItem.className = style.containerItem;
     const imgItem = document.createElement("img");
     imgItem.className = style.imgItem;
-    imgItem.src = dataItem.img;
+    imgItem.src = dataItem.icon ? "https://raw.communitydragon.org/latest/game/"+dataItem.icon?.replace(".tex",".png").toLowerCase() : dataItem.img; //arreglar a futuro
     imgItem.alt = dataItem.nombre;
     imgItem.setAttribute("draggable", true);
     imgItem.dataset.item = JSON.stringify(dataItem);

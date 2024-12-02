@@ -26,27 +26,27 @@ export const Items = ()=>{
   const [tooltip, setTooltip] = useState(null);
   const [allItemsApiNames, setAllItemsApiNames] = useState(null);
   const [allItemsInfo, setAllItemsInfo] = useState(null);
+  const [allEmblemsItemsApiNames, setAllEmblemsItemsApiName] = useState(null);
 
   useEffect(()=>{
     const getAllItems = async ()=>{
       setAllItemsApiNames((await getDataTFTBySet({})).setData); //apiName de todos los items del set
       setAllItemsInfo((await getDataTFTBySet({})).setInfo)
+      setAllEmblemsItemsApiName((await getDataTFTBySet({})).setData.items.filter((apiName)=>{
+        return apiName.includes("EmblemItem")
+      }))
     }
     getAllItems();
   },[])
 
   useEffect(()=>{
-    if(allItemsApiNames && allItemsInfo ){
+    if(allItemsApiNames && allItemsInfo  && allEmblemsItemsApiNames){
       console.log({allItemsApiNames})
       console.log({allItemsInfo})
-      allItemsApiNames.items.forEach((apiName)=>{
-        if(apiName.includes("adiant") ){
-          console.log({apiName})
-        }
-      })
+      console.log({allEmblemsItemsApiNames})
       //console.log(allItemsInfo.find(({apiName})=>apiName === "TFT4_Item_OrnnZhonyasParadox"))
     }
-  },[allItemsApiNames, allItemsInfo])
+  },[allItemsApiNames, allItemsInfo, allEmblemsItemsApiNames])
 
   useEffect(()=>{
     if(itemOver){
@@ -769,7 +769,7 @@ return (
               const resultado = allItemsInfo.find(({apiName})=> apiName === busqueda)
               return (
                 <div className={style.itemsDropRadiants} key={index2+"-"+index}>
-                  <img src={"https://raw.communitydragon.org/latest/game/"+resultado.icon.replace(".tex",".png").toLowerCase()} alt={`Basic Item TFT ${resultado.ApiName}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} onClick={()=>{setItemOver(resultado.apiName)}} data-item={JSON.stringify(resultado)} data-from="itemList" draggable="true"></img>
+                  <img src={"https://raw.communitydragon.org/latest/game/"+resultado.icon.replace(".tex",".png").toLowerCase()} alt={`Basic Item TFT ${resultado.name}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} onClick={()=>{setItemOver(resultado.apiName)}} data-item={JSON.stringify(resultado)} data-from="itemList" draggable="true"></img>
                 </div>
               )
             })
@@ -780,10 +780,11 @@ return (
 
         <div className={style.containerItemsHorizontal}>
           {pestana === 2 &&
-            emblems.map((dataItem,index)=>{
+            allEmblemsItemsApiNames.map((dataItem,index)=>{
+              const resultado = allItemsInfo.find(({apiName})=> apiName === dataItem)
               return (
                 <div className={style.itemsDropRadiants} key={index}>
-                  <img  src={dataItem.img} alt={`Basic Item TFT ${dataItem.nombre}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} onClick={()=>{setItemOver(dataItem.apiName)}} data-item={JSON.stringify(dataItem)} data-from="itemList" draggable="true"></img>
+                  <img  src={"https://raw.communitydragon.org/latest/game/"+resultado.icon.replace(".tex",".png").toLowerCase()} alt={`Basic Item TFT ${resultado.name}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} onClick={()=>{setItemOver(resultado.apiName)}} data-item={JSON.stringify(resultado)} data-from="itemList" draggable="true"></img>
                 </div>
               )
             })
