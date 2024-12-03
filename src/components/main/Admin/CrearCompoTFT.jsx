@@ -265,10 +265,10 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           imgUrl = url+data.icon.replace(".tex",".png").toLowerCase();
         }
         if(number === 1){
-          setSpatulaItem1(imgUrl);
+          setSpatulaItem1({...data, icon: imgUrl});
           document.getElementById("spatulaItems1").value= value 
         }else{
-          setSpatulaItem2(imgUrl);
+          setSpatulaItem2({...data, icon: imgUrl});
           document.getElementById("spatulaItems2").value= value 
         }
       }
@@ -475,7 +475,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         <input className={style.inputSpatulaSearch} onChange={(e)=>hanlderSpatulaItem(e.target.value, 1)} list="dataListSpatulaItems" name="spatulaItems1" id="spatulaItems1" placeholder="Select Spatula"></input>
         {spatulaItem1 !== "" &&
         <div className={style.containerImgSpatula}>
-          <img className={style.imgSpatula} src={spatulaItem1} alt="espatulaItem" loading="lazy"/>
+          <img className={style.imgSpatula} src={spatulaItem1.icon} alt="espatulaItem" loading="lazy"/>
         </div>
         }
       </div>}
@@ -484,7 +484,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         <input className={style.inputSpatulaSearch} onChange={(e)=>hanlderSpatulaItem(e.target.value, 2)} list="dataListSpatulaItems" name="spatulaItems2" id="spatulaItems2" placeholder="Select Spatula"></input>
         {spatulaItem2 !== "" &&
         <div className={style.containerImgSpatula}>
-          <img className={style.imgSpatula} src={spatulaItem2} alt="espatulaItem" loading="lazy"/>
+          <img className={style.imgSpatula} src={spatulaItem2.icon} alt="espatulaItem" loading="lazy"/>
         </div>
         }
       </div>}

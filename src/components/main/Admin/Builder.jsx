@@ -133,8 +133,8 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
                 containerItem.className = style.containerItem;
                 const imgItem = document.createElement("img");
                 imgItem.className = style.imgItem;
-                imgItem.src = dataItem.img;
-                imgItem.alt = dataItem.nombre;
+                imgItem.src = dataItem.img ? dataItem.img : dataItem.icon; // arreglar a futuro
+                imgItem.alt = dataItem.nombre ? dataItem.nombre : dataItem.name; // arreglar a futuro
                 imgItem.setAttribute("draggable", true);
                 imgItem.dataset.item = JSON.stringify(dataItem);
                 imgItem.dataset.from = "itemBoard";
@@ -204,7 +204,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
         dataItems.push(imgItem[y].dataset);
         console.log(imgItem[y].dataset)
         const sinergiasItem = JSON.parse(imgItem[y].dataset.item);
-        const getSinergia = sinergiasItem.sinergia ? sinergiasItem.sinergia : sinergiasItem.incompatibleTraits[0]; //arreglar a futuro
+        const getSinergia = sinergiasItem?.sinergia ? sinergiasItem.sinergia : sinergiasItem?.incompatibleTraits ? sinergiasItem.incompatibleTraits[0] : false; //arreglar a futuro
         if (getSinergia) {
           sinergias[getSinergia] = (sinergias[getSinergia] || 0) + 1;
         }

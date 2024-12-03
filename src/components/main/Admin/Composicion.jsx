@@ -21,11 +21,11 @@ const Composicion = ({compo, admin=false, show=true, allwaysOpen=false})=>{
   const [bigCompId, setBigCompId] = useState(null);
   const textoPosicionamiento = (texto)=>{
     if(texto === "spatula1"){
-      texto = compo.spatulaItem1.split("_").pop().replace(".png","");
+      texto = compo.spatulaItem1.name;
       return texto[0]?.toUpperCase() + texto.slice(1)
     }
     if(texto === "spatula2"){
-      texto = compo.spatulaItem2.split("_").pop().replace(".png","");
+      texto = compo.spatulaItem2.name;
       return texto[0]?.toUpperCase() + texto.slice(1)
     }
     return texto[0]?.toUpperCase() + texto.slice(1)
@@ -34,6 +34,7 @@ const Composicion = ({compo, admin=false, show=true, allwaysOpen=false})=>{
     setPosicionamiento(compo.originalComp)
     setData(compo.boardInfo[compo.originalComp].data)
     setSinergias(compo.boardInfo[compo.originalComp].sinergias)
+    
   },[compo])
   const earlyComp = Object.keys(compo.boardInfo.early.data).map((key)=>{
     const {dataCampeon, dataItem} = compo.boardInfo.early.data[key]
@@ -257,7 +258,7 @@ const Composicion = ({compo, admin=false, show=true, allwaysOpen=false})=>{
         <Sinergias sinergias={sinergias} posicionamiento={posicionamiento}/>
         </div>
         <div className={style.containerPosicionamiento}>
-          <PosicionamientoCompos id={compo.id} boardInfo={compo.boardInfo} titulo={compo.titulo}  originalComp={compo.originalComp} gameplay={compo.gameplay} spatula1={compo.spatulaItem1} spatula2={compo.spatulaItem2} setPosicionamiento={setPosicionamiento} posicionamiento={posicionamiento} setData={setData} setSinergias={setSinergias}/>
+          <PosicionamientoCompos id={compo.id} boardInfo={compo.boardInfo} titulo={compo.titulo}  originalComp={compo.originalComp} gameplay={compo.gameplay} spatula1={compo.spatulaItem1.icon} spatula2={compo.spatulaItem2.icon} setPosicionamiento={setPosicionamiento} posicionamiento={posicionamiento} setData={setData} setSinergias={setSinergias}/>
         </div>
         <div className={style.containerAumentos}>
           {/*<h3 className={style.titulo}>Augments</h3>*/}

@@ -51,7 +51,7 @@ export const Items = ()=>{
   useEffect(()=>{
     if(itemOver){
       (async function callApi(){
-        const findItem = itemsDataIngles.find(({apiName, composition})=>{
+        const findItem = allItemsInfo.find(({apiName, composition})=>{
           return apiName === itemOver
         })
         setTooltip(findItem)
@@ -726,6 +726,7 @@ export const Items = ()=>{
 
   function handleDragStart(e){
     e.dataTransfer.setData("item", e.target.getAttribute("data-item"));
+    console.log({leer:e.target.getAttribute("data-item") })
     e.dataTransfer.setData("from", e.target.getAttribute("data-from"));
     
 }
@@ -818,9 +819,9 @@ return (
                 <img className={style.tooltipImg} src={"https://raw.communitydragon.org/latest/game/" + tooltip.icon.toLowerCase().replace(".tex",".png")}></img>
                 {tooltip.composition.length === 2 && 
                   <div className={style.tooltipContainerComponents}>
-                    <img className={style.tooltipImgComponent} src={"https://raw.communitydragon.org/latest/game/" + itemsDataIngles.find(({apiName})=>apiName === tooltip.composition[0]).icon.toLowerCase().replace(".tex",".png")}></img>
+                    <img className={style.tooltipImgComponent} src={"https://raw.communitydragon.org/latest/game/" + allItemsInfo.find(({apiName})=>apiName === tooltip.composition[0]).icon.toLowerCase().replace(".tex",".png")}></img>
                     +
-                    <img className={style.tooltipImgComponent} src={"https://raw.communitydragon.org/latest/game/" + itemsDataIngles.find(({apiName})=>apiName === tooltip.composition[1]).icon.toLowerCase().replace(".tex",".png")}></img>
+                    <img className={style.tooltipImgComponent} src={"https://raw.communitydragon.org/latest/game/" + allItemsInfo.find(({apiName})=>apiName === tooltip.composition[1]).icon.toLowerCase().replace(".tex",".png")}></img>
                   </div>
                 }
               </div>
@@ -843,9 +844,9 @@ return (
                 <img className={style.tooltipImg} src={"https://raw.communitydragon.org/latest/game/" + primerItem.icon.toLowerCase().replace(".tex",".png")}></img>
                 {primerItem.composition.length === 2 && 
                   <div className={style.tooltipContainerComponents}>
-                    <img className={style.tooltipImgComponent} src={"https://raw.communitydragon.org/latest/game/" + itemsDataIngles.find(({apiName})=>apiName === primerItem.composition[0]).icon.toLowerCase().replace(".tex",".png")}></img>
+                    <img className={style.tooltipImgComponent} src={"https://raw.communitydragon.org/latest/game/" + allItemsInfo.find(({apiName})=>apiName === primerItem.composition[0]).icon.toLowerCase().replace(".tex",".png")}></img>
                     +
-                    <img className={style.tooltipImgComponent} src={"https://raw.communitydragon.org/latest/game/" + itemsDataIngles.find(({apiName})=>apiName === primerItem.composition[1]).icon.toLowerCase().replace(".tex",".png")}></img>
+                    <img className={style.tooltipImgComponent} src={"https://raw.communitydragon.org/latest/game/" + allItemsInfo.find(({apiName})=>apiName === primerItem.composition[1]).icon.toLowerCase().replace(".tex",".png")}></img>
                   </div>
                 }
               </div>
