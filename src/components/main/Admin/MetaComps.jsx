@@ -32,7 +32,7 @@ const MetaComps = ({showHide})=>{
         return(
           tier.map((compo,i)=>{
             return (
-              <div key={`containerMeta`+i} className={style.containerMetaTier}>
+              <div key={`containerMeta`+i} className={[style.containerMetaTier, compo?.isHide && admin ? style.isHideForAdmin : compo?.isHide && !admin ? style.isHide : ""].join(" ")}>
                 <Composicion compo={compo} showHide={showHide} admin={admin}/>
               </div>
             )

@@ -11,3 +11,10 @@
   gap:10px;
   flex-direction: column;
 }
+
+.isHide{
+  display: none;
+}
+.isHideForAdmin{
+  opacity: 0.2;
+}
