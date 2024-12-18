@@ -35,7 +35,7 @@ const Twitch = () => {
       const divTwitch = divTwitchRef.current;
       const options = {
         width: '100%',
-        channel: "blue_rtv", //teamfighttactics
+        channel: "jupeson", //teamfighttactics
         layout: 'video',
         autoplay: true,
         allowfullscreen: true,
