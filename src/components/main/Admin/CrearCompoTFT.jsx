@@ -6,10 +6,11 @@ import Sinergias from "./Sinergias.jsx"
 import Items from "./Items.jsx";
 import Youtube from "../../youtube/Youtube.jsx";
 import { toBlob } from 'html-to-image';
-import { BASIC_ITEMS, CRAFTEABLE_ITEMS } from "src/stores/dataTFT.js";
+import { BASIC_ITEMS, CRAFTEABLE_ITEMS, ARTEFACTOS } from "src/stores/dataTFT.js";
 import { emblems} from "src/json/updates/itemsTFT";
 import CarouselItems from "./CarouselItems.jsx";
-import { championsTFT } from "src/json/updates/constantesLatest.js"
+import { championsTFT } from "src/json/updates/constantesLatest.js";
+
 
 const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,edittitulo,editshadowCategory,editinfographicCategory,editaumentos,editgameplay,edittips,editboardInfo,editpictureSave,editcarouselItems,editspatulaItem1,editspatulaItem2,editoriginalComp}) =>{
     const urlImgAum = "https://raw.communitydragon.org/pbe/game/"
@@ -497,6 +498,12 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         })}
         {listaDeAumentos.map((dataItem, i )=>{
           return <option key={"ListaDeEmblemas"+dataItem.name+i} id={`datalist-${dataItem.name}`} value={dataItem.name} data-value={JSON.stringify(dataItem)}></option>
+        })}
+         {listaDeAumentos.map((dataItem, i )=>{
+          return <option key={"ListaDeEmblemas"+dataItem.name+i} id={`datalist-${dataItem.name}`} value={dataItem.name} data-value={JSON.stringify(dataItem)}></option>
+        })}
+        {ARTEFACTOS.map((dataItem, i )=>{
+          return <option key={"ListaDeEmblemas"+dataItem.nombre+i} id={`datalist-${dataItem.nombre}`} value={dataItem.nombre} data-value={JSON.stringify(dataItem)}></option>
         })}
       </datalist>
         <Sinergias sinergias={boardInfo[showBoard]?.sinergias ? boardInfo[showBoard]?.sinergias : {}} orientacion={"horizontal"}></Sinergias>
