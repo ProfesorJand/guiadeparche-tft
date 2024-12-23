@@ -193,7 +193,7 @@ const Composicion = ({compo, admin=false, show=true, allwaysOpen=false})=>{
             />
         </div>
         <div className={style.containerInfoComp}>
-          <div className={[style.titulo, style.tituloComp].join(" ")}>{compo.titulo}</div>
+          <h3 className={[style.titulo, style.tituloComp].join(" ")}>{compo.titulo}</h3>
           <div className={style.containerDificultadCategory}>
             { show && 
             <div
