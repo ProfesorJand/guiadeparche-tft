@@ -39,6 +39,8 @@ const Twitch = () => {
         layout: 'video',
         autoplay: true,
         allowfullscreen: true,
+        muted: true, // false es por defecto
+        theme: "dark", //light or dark
         parent: ['tft.guiadeparche.com'],
       };
 
