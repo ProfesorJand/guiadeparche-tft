@@ -23,13 +23,13 @@ const Composicion = ({compo, admin=false, show=true, allwaysOpen=false})=>{
     if(texto === "spatula1"){
     
       texto = compo.spatulaItem1.name;
-      return texto[0]?.toUpperCase() + texto.slice(1)
+      return texto?.[0]?.toUpperCase() + texto?.slice(1)
     }
     if(texto === "spatula2"){
       texto = compo.spatulaItem2.name;
-      return texto[0]?.toUpperCase() + texto.slice(1)
+      return texto?.[0]?.toUpperCase() + texto?.slice(1)
     }
-    return texto[0]?.toUpperCase() + texto.slice(1)
+    return texto?.[0]?.toUpperCase() + texto?.slice(1)
   }
   useEffect(()=>{
     setPosicionamiento(compo.originalComp)
@@ -38,7 +38,7 @@ const Composicion = ({compo, admin=false, show=true, allwaysOpen=false})=>{
     
   },[compo])
   const earlyComp = Object.keys(compo.boardInfo.early.data).map((key)=>{
-    const {dataCampeon, dataItem} = compo.boardInfo.early.data[key]
+    const {dataCampeon, dataItem} = compo?.boardInfo?.early?.data?.[key]
     return {dataCampeon:dataCampeon.campeon, dataItem}
   })
   var dataCampeones = Object.keys(data).map((key)=>{
