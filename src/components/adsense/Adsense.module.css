@@ -29,6 +29,8 @@
     .adsense_vertical {
       display: flex;
       height: calc(100% - 10rem);
+      position: sticky;
+      width: calc((100vw - var(--width-main)) / 2);
     }
     .adsense_horizontal {
       display: none;

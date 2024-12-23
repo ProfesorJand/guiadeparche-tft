@@ -13,7 +13,6 @@ export const loadCompsMeta = ()=>{
   task(async()=>{
     try{
       const urlMeta = "https://guiadeparche.com/tftdata/Set12/composMeta.json"
-      console.log({urlMeta})
       const responde = await fetch(urlMeta,{cache:"reload"});
       const data = await responde.json()
       const sortableArray =  Object.keys(data).map((tier,i)=>{

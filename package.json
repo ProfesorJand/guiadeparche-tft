@@ -18,6 +18,7 @@
     "@astrojs/react": "^3.6.0",
     "@astrojs/sitemap": "^3.1.6",
     "@nanostores/react": "^0.7.2",
+    "@reduxjs/toolkit": "^2.3.0",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "astro": "^4.6.4",
@@ -26,6 +27,7 @@
     "nanostores": "^0.10.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-redux": "^9.1.2",
     "typescript": "^5.4.5"
   },
   "devDependencies": {

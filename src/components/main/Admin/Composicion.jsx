@@ -21,6 +21,7 @@ const Composicion = ({compo, admin=false, show=true, allwaysOpen=false})=>{
   const [bigCompId, setBigCompId] = useState(null);
   const textoPosicionamiento = (texto)=>{
     if(texto === "spatula1"){
+    
       texto = compo.spatulaItem1.name;
       return texto[0]?.toUpperCase() + texto.slice(1)
     }
@@ -50,8 +51,23 @@ const Composicion = ({compo, admin=false, show=true, allwaysOpen=false})=>{
   
   function championsCodeBuilder(allChampions){
     // Ordena el array por apiName en orden ascendente
-    const sortedArray = allChampions.sort((a, b) => a.apiName.localeCompare(b.apiName));
-
+    const priorityNames = ['TFT13_MissMage', 'TFT13_Viktor', 'TFT13_Warwick'];
+    const sortedArray = allChampions.sort((a, b) => {
+      // Si ambos están en la lista de prioridad
+      if (priorityNames.includes(a.apiName) && priorityNames.includes(b.apiName)) {
+          return priorityNames.indexOf(a.apiName) - priorityNames.indexOf(b.apiName);
+      }
+      // Si 'a' está en la lista de prioridad, lo mueve al final
+      if (priorityNames.includes(a.apiName)) {
+          return 1;
+      }
+      // Si 'b' está en la lista de prioridad, lo mueve al final
+      if (priorityNames.includes(b.apiName)) {
+          return -1;
+      }
+      // De lo contrario, ordena alfabéticamente
+      return a.apiName.localeCompare(b.apiName);
+  });
     // Define el objeto resultado y la primera clave
     const result = { "empty_slot": "00" };
 
@@ -70,7 +86,7 @@ const Composicion = ({compo, admin=false, show=true, allwaysOpen=false})=>{
 
     // Asigna cada apiName como clave en el objeto resultado, con su valor correspondiente en la secuencia
     sortedArray.forEach((item, index) => {
-      if(item.apiName !== "TFT13_Warwick" || item.apiName !=="TFT13_MissMage" || item.apiName !== "TFT13_Viktor" || item.apiName !=="TFT13_Rammus"){
+      if(item.apiName !=="TFT13_Rammus"){
         result[item.apiName] = sequence[index + 1]; // +1 para empezar después de "empty_slot"
       }
     });

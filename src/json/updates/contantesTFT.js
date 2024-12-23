@@ -67,7 +67,6 @@ export const getDataTFTBySet = async ({
 export const datosTFTIngles = await fetchingDataTFT({version:"latest",idioma:"en",pais:"us"});
 export const championsTFTIngles = await datosTFTIngles.sets[SET_LATEST].champions;
 export const itemsDataIngles = await datosTFTIngles.items;
-console.log(itemsDataIngles)
 
 export const fetchMeta = await fetch(`https://guiadeparche.com/tftdata/Set12/metaTFTComposiciones.json`, {cache:"reload"});
 export const meta = await fetchMeta.json();

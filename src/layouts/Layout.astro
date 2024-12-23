@@ -68,7 +68,7 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
 
       <div class="bodyInfo">
         <aside class="bodyAside">
-
+          <Adsense direction='left' dimension="vertical-izquierda" client:only="react"/>
         </aside>
 
         <main class="bodyMain">
@@ -81,9 +81,9 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
                 <slot name="bodyMainAsideTwitch"></slot>
                 
                 
-                <ads class="bodyMainAsideAds">
+                <!-- <ads class="bodyMainAsideAds">
                   <slot name="bodyMainAsideAds"></slot>
-                </ads>
+                </ads> -->
               </div>
             </div>
           </aside>
@@ -93,7 +93,7 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
         </main>
 
         <aside class="bodyAside">
-
+          <Adsense direction='right' dimension="vertical-derecha" client:only="react" />
         </aside>
       </div>
 

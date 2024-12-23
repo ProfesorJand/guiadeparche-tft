@@ -59,7 +59,7 @@ const AdComponent = ({ direction="", dimension="cuadrado" }) => {
   
 
   return (
-    <div>
+    <>
       {(dimension === 'vertical-izquierda' || dimension === "vertical-derecha") && (
         <div className={[style.adsense_container, style.adsense_vertical].join(" ")} style={direction === "right" ? {right:0}: {left:0}}>
           <ins
@@ -69,7 +69,7 @@ const AdComponent = ({ direction="", dimension="cuadrado" }) => {
               data-ad-slot={adsenseID}
               data-ad-format="auto"
               data-full-width-responsive="true"
-            ></ins> 
+              ></ins> 
         </div>
       )}
 
@@ -82,7 +82,7 @@ const AdComponent = ({ direction="", dimension="cuadrado" }) => {
             data-ad-layout-key="-f9+4w+7x-eg+3a"
             data-ad-client="ca-pub-6116944495372863"
             data-ad-slot="8326664156"
-          ></ins>
+            ></ins>
         </div>
       )}
 
@@ -95,10 +95,11 @@ const AdComponent = ({ direction="", dimension="cuadrado" }) => {
             data-ad-slot="4837474033"
             data-ad-format="auto"
             data-full-width-responsive="true"
-          ></ins>
+            ></ins>
         </div>
       )}
-    </div>
+
+    </>
   );
 };
 
