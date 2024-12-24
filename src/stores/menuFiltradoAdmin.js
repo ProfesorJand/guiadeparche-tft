@@ -15,55 +15,42 @@ export const loadCompsMeta = ()=>{
       const urlMeta = "https://guiadeparche.com/tftdata/Set12/composMeta.json"
       const responde = await fetch(urlMeta,{cache:"reload"});
       const data = await responde.json()
-      const sortableArray =  Object.keys(data).map((tier,i)=>{
-        const testing = data[tier].sort((a,b)=>{
-          if(a.posicion < b.posicion){
-            return -1
-          }
-          if(a.posicion > b.posicion){
-            return 1
-          }
-          return 0
+      const sortableArray = Object.keys(data)
+        .map((tier, i) => {
+          return data[tier].sort((a, b) => a.posicion - b.posicion);
         })
-        return testing
-      }).sort((a,b)=>{
-          if(hierarchy.indexOf(a[0]?.tier) > hierarchy.indexOf(b[0]?.tier)){
-            return 1
-          }
-          if(hierarchy.indexOf(a[0]?.tier) < hierarchy.indexOf(b[0]?.tier)){
-            return -1
-          }
-          return 0
-      })
+        .sort((a, b) => {
+          return (
+            hierarchy.indexOf(a[0]?.tier) - hierarchy.indexOf(b[0]?.tier)
+          );
+        });
+      // Aplicar el filtro para mostrar solo Tier S y Tier A
+      const filteredArray = sortableArray.map((tier) =>
+        tier.filter(({ tier: compoTier }) => compoTier === "S" || compoTier === "A")
+      );
       initialStateMetaComps.set(sortableArray);
-      MetaComps.set(sortableArray)
+      MetaComps.set(filteredArray) // acá
     }catch(err){
       console.log({err})
       const data = backupMeta
       console.log({data})
-      const sortableArray =  Object.keys(data).map((tier,i)=>{
-        
-        const testing = data[tier].sort((a,b)=>{
-          if(a.posicion < b.posicion){
-            return -1
-          }
-          if(a.posicion > b.posicion){
-            return 1
-          }
-          return 0
+      const sortableArray = Object.keys(data)
+        .map((tier, i) => {
+          return data[tier].sort((a, b) => a.posicion - b.posicion);
         })
-        return testing
-      }).sort((a,b)=>{
-          if(hierarchy.indexOf(a[0]?.tier) > hierarchy.indexOf(b[0]?.tier)){
-            return 1
-          }
-          if(hierarchy.indexOf(a[0]?.tier) < hierarchy.indexOf(b[0]?.tier)){
-            return -1
-          }
-          return 0
-      })
+        .sort((a, b) => {
+          return (
+            hierarchy.indexOf(a[0]?.tier) - hierarchy.indexOf(b[0]?.tier)
+          );
+        });
+
+       // Aplicar el filtro para mostrar solo Tier S y Tier A
+       const filteredArray = sortableArray.map((tier) =>
+        tier.filter(({ tier: compoTier }) => compoTier === "S" || compoTier === "A")
+      );
+
       initialStateMetaComps.set(sortableArray);
-      MetaComps.set(sortableArray)
+      MetaComps.set(filteredArray)
       
     }
   })
@@ -85,10 +72,10 @@ export const initialStateMetaCompFilter = deepMap({
   ["Hard"]:true,
   ["Tier S"]:true,
   ["Tier A"]:true,
-  ["Tier B"]:true,
-  ["Tier C"]:true,
-  ["Tier D"]:true,
-  ["Tier MEME"]:true,
+  ["Tier B"]:false,
+  ["Tier C"]:false,
+  ["Tier D"]:false,
+  ["Tier MEME"]:false,
 })
 
 export const filterByCategory = ()=>{

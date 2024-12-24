@@ -13,7 +13,7 @@ const MetaComps = ({showHide})=>{
   const title = {
     fast8:"Standard Comps - Fast 8/9",
     stars3:"Reroll Comps - 3 Star",
-    specificsAugments:"Situational Comps - Specific Auments / Emblem+1"
+    specificsAugments:"Situational Comps - Augments / Emblem+1 / Artifacts"
   }
 
   useEffect(()=>{
@@ -44,12 +44,6 @@ const MetaComps = ({showHide})=>{
     }
   },[composMeta])
 
-  useEffect(()=>{
-    console.log({allFast8})
-    console.log({all3Stars})
-    console.log({allAugmentsHero})
-
-  },[all3Stars, allFast8, allAugmentsHero])
 
   if(composMeta.length === 0){
     return (
