@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import style from "./css/PosicionamientoCompos.module.css"
 import Youtube from "src/components/youtube/Youtube";
 
-const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, gameplay, spatula1, spatula2, posicionamiento, setPosicionamiento, setData, setSinergias})=>{
+const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, gameplay, spatula1, spatula2, posicionamiento, setPosicionamiento, setData, setSinergias, showOnWrapper})=>{
   const [niveles, setNiveles] = useState([posicionamiento]);
   useEffect(()=>{
     const array= Object.keys(boardInfo).filter((level)=>{
@@ -33,6 +33,7 @@ const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, gameplay, s
           <Youtube src={gameplay[0]} />
         }
       </div>
+      {showOnWrapper && 
       <div className={style.containerBtnPosicionamiento}>
         <div className={style.containerLevels}>
         {niveles.map((nivel,i)=>{
@@ -43,6 +44,7 @@ const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, gameplay, s
           }
         })}
         </div>
+
         <div className={style.containerSpatula}>
           {(spatula1 || spatula2) &&
            <div className={[style.btnSpat,posicionamiento === "spatula1" ? style.btnActive : ""].join(" ")}>
@@ -55,12 +57,15 @@ const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, gameplay, s
           </div>
           }
         </div>
+
         <div className={style.containerYoutube}>
           {gameplay.length > 0 && 
           <img className={style.ytIcon} src="/redes/youtube.webp" alt="logo Youtube" onClick={()=>{setPosicionamiento("gameplay")}} loading="lazy"></img>
           }
         </div>
+  
       </div>
+      }
     </div>
   )
 }

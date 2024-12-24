@@ -12,10 +12,12 @@
 }
 
 .aspectWrapper {
-  width: 35%; /* Ajusta según el diseño deseado */
+   /*width: 35%; Ajusta según el diseño deseado */
+  height: 100%;
   aspect-ratio: 4 / 5;
   display: flex;
   align-items: center;
   justify-content: center; /* Opcional: Centrar contenido */
-  background-color: yellow;
+  background-color: var(--bg-primary);
+  transform: rotate(90deg);
 }

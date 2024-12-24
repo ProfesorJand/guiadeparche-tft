@@ -275,7 +275,7 @@ const Composicion = ({compo, admin=false, show=true, allwaysOpen=false})=>{
         <Sinergias sinergias={sinergias} posicionamiento={posicionamiento}/>
         </div>
         <div className={style.containerPosicionamiento}>
-          <PosicionamientoCompos id={compo.id} boardInfo={compo.boardInfo} titulo={compo.titulo}  originalComp={compo.originalComp} gameplay={compo.gameplay} spatula1={compo.spatulaItem1.icon} spatula2={compo.spatulaItem2.icon} setPosicionamiento={setPosicionamiento} posicionamiento={posicionamiento} setData={setData} setSinergias={setSinergias}/>
+          <PosicionamientoCompos id={compo.id} boardInfo={compo.boardInfo} titulo={compo.titulo}  originalComp={compo.originalComp} gameplay={compo.gameplay} spatula1={compo.spatulaItem1.icon} spatula2={compo.spatulaItem2.icon} setPosicionamiento={setPosicionamiento} posicionamiento={posicionamiento} setData={setData} setSinergias={setSinergias} showOnWrapper={show}/>
         </div>
         <div className={style.containerAumentos}>
           {/*<h3 className={style.titulo}>Augments</h3>*/}
