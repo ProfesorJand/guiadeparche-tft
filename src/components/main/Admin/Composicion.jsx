@@ -9,6 +9,7 @@ import PosicionamientoCompos from "./PosicionamientoCompos";
 import CrearCompoTFT from "./CrearCompoTFT";
 import { championsTFT } from "src/json/updates/constantesLatest.js";
 import ShowBigCompScreen from "./ShowBigCompScreen"; 
+import RadiantsItems from "./RadiantsItems";
 
 const Composicion = ({compo, admin=false, show=true, allwaysOpen=false})=>{
   const [open,setOpen]=useState(allwaysOpen);
@@ -207,12 +208,6 @@ const Composicion = ({compo, admin=false, show=true, allwaysOpen=false})=>{
           </div>
         </div>
       </div>
-      {
-        show && 
-        <div className={style.containerTextoInfoPrimarioCode} onClick={(e)=>copyToClipboard(e,generatorCodeBuilder(allChampionsApiName))}>
-          {"COPY TEAM CODE: " + generatorCodeBuilder(allChampionsApiName) + " 📋"}
-        </div>
-      }
       </div>
       
       <div className={style.containerLowerChamps}>
@@ -263,6 +258,12 @@ const Composicion = ({compo, admin=false, show=true, allwaysOpen=false})=>{
         <h3 className={style.titulo}>Items Prio</h3>
           <CarouselItems carouselItems={compo.carouselItems}/>    
         </div>
+        {compo.radiantsItems && 
+        <div className={style.containerC}>
+        <h3 className={style.titulo}>Best Radiant</h3>
+          <RadiantsItems radiantsItems={compo?.radiantsItems}/>    
+        </div>
+        }
         {/* <div className={style.containerT}>
         <h3 className={style.titulo}>Traits</h3>
           <Sinergias sinergias={sinergias} posicionamiento={posicionamiento}/>
@@ -281,9 +282,14 @@ const Composicion = ({compo, admin=false, show=true, allwaysOpen=false})=>{
           <AumentosCompos aumentos={compo.aumentos}/>
         </div>
       </div>
-      {compo.tips && <div className={style.containerTips}>
-        Tip: {compo.tips}
-      </div>}
+      <div className={style.containerTips}>
+      {
+        show && 
+        <div className={style.containerTextoInfoPrimarioCode} onClick={(e)=>copyToClipboard(e,generatorCodeBuilder(allChampionsApiName))}>
+          {"COPY TEAM CODE: " + generatorCodeBuilder(allChampionsApiName) + " 📋"}
+        </div>
+      }
+      </div>
     </div>
     {editId === compo.id && 
     <CrearCompoTFT

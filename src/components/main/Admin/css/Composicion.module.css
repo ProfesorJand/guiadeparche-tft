@@ -4,7 +4,7 @@
   position: relative;
   box-sizing: border-box;
   border: 1px solid var(--border-color);
-  padding: 5px;
+  padding: 0px 5px 5px 5px;
 }
 
 .containerInfoPrincipal{
@@ -391,7 +391,7 @@
     flex: 0.6
   }
   .containerTierImg{
-    flex: 1.5;
+    flex: 1.34;
     width: 50%;
   }
 

@@ -1,8 +1,11 @@
+:root{
+  --cantidadCampeonesOriginales: 9;
+}
 .containerCampeon{
   display: flex;
   flex-direction: column;
   position: relative;
-  width: calc(100% / 8 - 5px + (5px / 8));
+  width: calc(100% / var(--cantidadCampeonesOriginales) - 5px + (5px / var(--cantidadCampeonesOriginales)));
   align-items: center;
 }
 .containerCampeonImg{
@@ -61,7 +64,7 @@
   position: absolute;
   font-size: xx-small;
   justify-content: center;
-  bottom: -25px;
+  bottom: -15px;
   text-align: center;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -70,11 +73,11 @@
 .containerItems{
   display: flex;
   flex-direction: row;
-  width: 100%;
+  width: 90%;
   align-items: center;
   justify-content: center;
   position: absolute;
-  bottom:-10px;
+  bottom:-3px;
 }
 
 .containerItem{

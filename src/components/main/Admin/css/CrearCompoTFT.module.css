@@ -89,6 +89,14 @@ white-space: pre-wrap;
   align-items: center;
 }
 
+.containerBestRadiants{
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+}
+
 .containerCarouselForm{
   display: flex;
   position:relative;
@@ -247,6 +255,12 @@ form > label{
   padding-bottom: 25px;
   width: 50%;
 }
+.containerBestRadiantsReact{
+  display: flex;
+  padding-bottom: 25px;
+  width: 50%;
+}
+
 
 .btnActive{
   background-color: var(--bg-primary);

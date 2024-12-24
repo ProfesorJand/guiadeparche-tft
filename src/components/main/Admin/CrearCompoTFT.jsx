@@ -7,12 +7,13 @@ import Items from "./Items.jsx";
 import Youtube from "../../youtube/Youtube.jsx";
 import { toBlob } from 'html-to-image';
 import { BASIC_ITEMS, CRAFTEABLE_ITEMS, ARTEFACTOS } from "src/stores/dataTFT.js";
-import { emblems} from "src/json/updates/itemsTFT";
+import { emblems, radiantsItems as listOfRadiantsItems} from "src/json/updates/itemsTFT";
 import CarouselItems from "./CarouselItems.jsx";
+import RadiantsItems from "./RadiantsItems.jsx";
 import { championsTFT } from "src/json/updates/constantesLatest.js";
 
 
-const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,edittitulo,editshadowCategory,editinfographicCategory,editaumentos,editgameplay,edittips,editboardInfo,editpictureSave,editcarouselItems,editspatulaItem1,editspatulaItem2,editoriginalComp}) =>{
+const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,edittitulo,editshadowCategory,editinfographicCategory,editaumentos,editgameplay,edittips,editboardInfo,editpictureSave,editcarouselItems,editradiantItem,editspatulaItem1,editspatulaItem2,editoriginalComp}) =>{
     const urlImgAum = "https://raw.communitydragon.org/pbe/game/"
     const shadowCategories = ["Fast 8","Specifics Augments","3 Stars"]
     const infographicCategories = ["Roll Lv5","Roll Lv6","Roll Lv7","Roll Lv8","Roll Lv9","Roll Lv10"]
@@ -25,7 +26,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
     const [aumentos, setAumentos] = useState([]) //[{},{}]
     const [listaDeAumentos, setListaDeAumentos] = useState([])
     const [gameplay, setGameplay] = useState([])
-    const [tips, setTips] = useState("");
+    //const [tips, setTips] = useState(""); //ya no va tips
     const [infoChampsItems, setInfoChampsItems] = useState("campeones");
     const [boardInfo, setBoardInfo] = useState({});
     const [showBoard, setShowBoard] = useState("early");
@@ -34,11 +35,12 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
     const [pictureSave, setPictureSave] = useState({});
     const [carouselBasicItems, setCarouselBasicItems] = useState({});
     const [carouselItems, setCarouselItems] = useState({});
+    const [radiantsItems, setRadiantsItems] = useState({})
     const [spatulaItem1, setSpatulaItem1] = useState("");
     const [spatulaItem2, setSpatulaItem2] = useState("");
     const [originalComp, setOriginalComp] = useState("lv8");
-    const [id, setId] =useState(generadorID())
-    const [isHide, setIsHide] = useState(false)
+    const [id, setId] =useState(generadorID());
+    const [isHide, setIsHide] = useState(false);
 
     useEffect(()=>{
       const buscarAumentos = async() =>{
@@ -93,10 +95,11 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         setInfographicCategory(editinfographicCategory)
         setAumentos(editaumentos)
         setGameplay(editgameplay)
-        setTips(edittips)
+        //setTips(edittips) // ya no va tips
         setBoardInfo(editboardInfo)
         setPictureSave(editpictureSave)
         setCarouselItems(editcarouselItems)
+        setRadiantsItems(editradiantItem)
         setSpatulaItem1(editspatulaItem1)
         setSpatulaItem2(editspatulaItem2)
         setOriginalComp(editoriginalComp)
@@ -244,6 +247,13 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
       setCarouselItems((oldObject)=>{ return {...oldObject, [item]:data }})
     }
 
+    function handlerRadiantItem(value, item){
+      const [data] = listOfRadiantsItems.filter((item)=>{
+        return item.name === value
+      })
+      setRadiantsItems((oldObject)=>{ return {...oldObject, [item]:data }})
+    }
+
     function handlerCompleteItem(value, item){
       const [data] = CRAFTEABLE_ITEMS.filter((item)=>{
         return item.nombre === value
@@ -299,10 +309,11 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           infographicCategory,
           aumentos,
           carouselItems,
+          radiantsItems,
           boardInfo,
           pictureSave,
           gameplay,
-          tips,
+          //tips, ya no va tips
           spatulaItem1,
           spatulaItem2,
           originalComp,
@@ -569,6 +580,22 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         <CarouselItems carouselItems={carouselItems}/>
       </div>
       </div>
+      <div className={style.containerBestRadiants}>
+        Best Radiants
+        <div className={style.containerBestRadiantsReact}>
+        <RadiantsItems radiantsItems={radiantsItems}/>
+        </div>
+        <div>
+          <input list="dataListItemsRadiants" name="Radiant_Item1" id="Radiant_Item1" onChange={(e)=>{handlerRadiantItem(e.target.value, "RadiantItem1")}} defaultValue={radiantsItems?.RadiantItem1 ? radiantsItems?.RadiantItem1.nombre : "" } autoComplete="off"/>
+          {/* <input list="dataListItemsRadiants" name="Radiant_Item2" id="Radiant_Item2" onChange={(e)=>{handlerRadiantItem(e.target.value, "RadiantItem2")}} defaultValue={radiantsItems.RadiantItem2 ? radiantsItems.RadiantItem2.nombre : "" } autoComplete="off"/>
+          <input list="dataListItemsRadiants" name="Radiant_Item3" id="Radiant_Item3" onChange={(e)=>{handlerRadiantItem(e.target.value, "RadiantItem3")}} defaultValue={radiantsItems.RadiantItem3 ? radiantsItems.RadiantItem3.nombre : "" } autoComplete="off"/> */}
+          <datalist id="dataListItemsRadiants">
+            {listOfRadiantsItems.map((item, i )=>{
+              return <option key={"ListaDeItemsRadiantes"+item.name+i} id={`datalist-${item.apiName}`} value={item.name}></option>
+            })}
+          </datalist>
+        </div>
+      </div>
       <div className={style.containerSecond}>
       <label htmlFor="aumentos">Augments:
         <input list="dataListAumentos" name="aumentos" id="aumentos" placeholder="Select Augments - Max 8"/>
@@ -605,9 +632,9 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           })}
         </div>
 
-        <label htmlFor="tips">Tips:
+        {/* <label htmlFor="tips">Tips:
             <input  type="text" defaultValue={edittips || tips} onChange={(e)=>{setTips(e.target.value)}} placeholder="Write Tips Text" name="tips"></input>
-        </label>
+        </label> */}
       </div>
         <input className={style.btnSubmit} type="submit" value={`${edit ? "Guardar" : "Crear"} Compo`}/>
     </form>
