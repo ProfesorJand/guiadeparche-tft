@@ -1,8 +1,6 @@
 .adsense_container {
     display: flex;
     position: relative;
-    justify-content: center;
-    align-items: center;
     width: 100%;
     margin: 1rem 0;
   }
@@ -24,12 +22,9 @@
   @media only screen and (min-width: 900px) {
     .adsense_container {
       position: fixed;
-      width: 25%;
     }
     .adsense_vertical {
       display: flex;
-      height: calc(100% - 10rem);
-      position: sticky;
       width: calc((100vw - var(--width-main)) / 2);
     }
     .adsense_horizontal {

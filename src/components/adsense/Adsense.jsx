@@ -40,10 +40,14 @@ const AdComponent = ({ direction="", dimension="cuadrado" }) => {
     case 'vertical-derecha':
       adsenseID = 7127054478;
       styleINS.height = '600px';
+      styleINS.top = "calc(var(--height-header) + 16px);";
+      styleINS.position = "sticky";
       break;
     case 'vertical-izquierda':
     adsenseID = 7127054478;
     styleINS.height = '600px';
+    styleINS.top = "calc(var(--height-header) + 16px);";
+    styleINS.position = "sticky";
     break;
     case 'horizontal':
       adsenseID = 8326664156;
