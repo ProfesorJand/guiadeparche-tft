@@ -4,8 +4,8 @@ import {handlerfilterMetaComp, initialStateMetaCompFilter, filterByCategory} fro
 import style from "./css/FiltroComps.module.css"
 const FiltroComps = ()=>{
   const estadosFiltros = useStore(initialStateMetaCompFilter)
-  const [openDificulty, setOpenDificulty] = useState(false)
-  const [openTier, setOpenTier] = useState(false)
+  const [openDificulty, setOpenDificulty] = useState(true) // true para que este abierto - false para que este cerrado
+  const [openTier, setOpenTier] = useState(true) // true para que este abierto - false para que este cerrado
 
   return (
     <div className={style.containerAside}>
