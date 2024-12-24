@@ -14,17 +14,10 @@ const RadiantsItems = ({radiantsItems}) =>{
 
   },[])
 
-  useEffect(()=>{
-    if(allItemsInfo){
-      console.log({allItemsInfo});
-      console.log(allItemsInfo.find((radiant)=>radiantsItems?.RadiantItem1?.apiName === radiant?.apiName))
-    }
-  },[allItemsInfo, radiantsItems])
-
   return (
     <div className={style.containerGlobal}>
       {radiantsItems?.RadiantItem1 && allItemsInfo &&
-      <div className={style.containerBasicItem}>
+      <div className={style.containerRadiantItem}>
       <img className={style.imgBasicItem} src={url + allItemsInfo.find((radiant)=>radiantsItems?.RadiantItem1?.apiName === radiant?.apiName)?.icon.replace(".tex",".png").toLowerCase()} alt={radiantsItems?.RadiantItem1?.nombre} loading="lazy"></img>
       </div>
       }

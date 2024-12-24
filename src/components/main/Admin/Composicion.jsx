@@ -259,7 +259,7 @@ const Composicion = ({compo, admin=false, show=true, allwaysOpen=false})=>{
           <CarouselItems carouselItems={compo.carouselItems}/>    
         </div>
         {compo.radiantsItems && 
-        <div className={style.containerC}>
+        <div className={style.containerR}>
         <h3 className={style.titulo}>Best Radiant</h3>
           <RadiantsItems radiantsItems={compo?.radiantsItems}/>    
         </div>
