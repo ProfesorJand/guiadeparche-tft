@@ -5,7 +5,6 @@ import { getDataTFTBySet } from "src/json/updates/contantesTFT";
 const RadiantsItems = ({radiantsItems}) =>{
   const [allItemsInfo, setAllItemsInfo] = useState(null);
   const url = "https://raw.communitydragon.org/latest/game/"
-  console.log({radiantsItems})
   useEffect(()=>{
     const getAllItems = async ()=>{
       setAllItemsInfo((await getDataTFTBySet({})).setInfo)

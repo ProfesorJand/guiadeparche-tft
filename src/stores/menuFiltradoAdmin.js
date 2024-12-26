@@ -78,7 +78,8 @@ export const initialStateMetaCompFilter = deepMap({
   ["Tier MEME"]:false,
 })
 
-export const filterByCategory = ()=>{
+export const filterByCategory = (e)=>{
+  e.stopPropagation();
   const oldMeta = JSON.parse(JSON.stringify(initialStateMetaComps.get())); 
   const newMeta = oldMeta.map((tier)=>{
     const filters = tier.filter(({shadowCategory, dificultad})=>{

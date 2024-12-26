@@ -1,21 +1,29 @@
 .containerAside{
   display: flex;
   flex-direction: column;
-  gap:5px;
+  gap:15px;
   padding: 5px;
   box-sizing: border-box;
-  border: 1px solid var(--border-color);
+  /* border: 1px solid var(--border-color); */
 }
 
 .containerAsideFilter{
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
   border: 1px solid grey;
   font-weight: 700;
-  color: var(--color-white)
+  color: var(--color-white);
+  padding: 5px;
 }
-.containerAsideFilter:hover{
+
+.containerAsideFilter2{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.containerAsideFilter2:hover{
   background-color: var(--bg-primary);
   cursor:pointer;
 }
@@ -48,5 +56,9 @@ justify-content: center;
 
 .btnCheckbox{
   pointer-events: none;
+}
+
+.selected{
+  background-color: #050060;
 }
 

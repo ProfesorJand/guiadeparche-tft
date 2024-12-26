@@ -44,7 +44,6 @@ const MetaComps = ({showHide})=>{
     }
   },[composMeta])
 
-
   if(composMeta.length === 0){
     return (
       <div className={style.containerMeta}>
@@ -65,7 +64,7 @@ const MetaComps = ({showHide})=>{
   if(allFast8 || all3Stars || allAugmentsHero){
     return (
       <div className={style.containerMeta}>
-        {allFast8.length > 0 && 
+        {allFast8.some(innerArray => innerArray.length > 0) && 
         <>
         <h2>{title.fast8}</h2>
         {
@@ -83,7 +82,7 @@ const MetaComps = ({showHide})=>{
       }
       </>
       }
-      {all3Stars.length > 0 && 
+      {all3Stars.some(innerArray => innerArray.length > 0) && 
         <>
         <h2>{title.stars3}</h2>
         {
@@ -101,7 +100,7 @@ const MetaComps = ({showHide})=>{
       }
       </>
       }
-      {allAugmentsHero.length > 0 && 
+      {allAugmentsHero.some(innerArray => innerArray.length > 0) && 
         <>
         <h2>{title.specificsAugments}</h2>
         {
