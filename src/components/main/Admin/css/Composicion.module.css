@@ -28,6 +28,11 @@
   flex-direction: column;
   width: 40%;
 }
+.containerLowerChampsOculto{
+  display: flex;
+  width: 100%;
+  padding: 0 0 10px 0
+}
 
 .containerTextoInfoPrimarioTier{
   display: flex;

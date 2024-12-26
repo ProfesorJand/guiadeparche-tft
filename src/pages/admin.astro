@@ -14,12 +14,12 @@ const allAdmins = await db.select().from(Admins);
     <Fragment slot="bodyMainAside">
         <FiltroComps client:only="react">
     </Fragment>
-    <Fragment slot="bodyMainAsideTwitch">
+    <!-- <Fragment slot="bodyMainAsideTwitch">
         <Twitch client:only="react"/>
     </Fragment>
     <Fragment slot="bodyMainAsideAds">
-        <!-- Publicidad -->
-    </Fragment>
+        Publicidad
+    </Fragment> -->
     <Main>
         <AdminPanel allAdmins={allAdmins} client:only="react"/>
     </Main>

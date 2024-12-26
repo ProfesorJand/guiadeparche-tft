@@ -183,8 +183,9 @@ const Composicion = ({compo, admin=false, show=true, allwaysOpen=false})=>{
     <div className={style.containerInfoGlobal}>
 
     <div className={[style.containerInfoPrincipal, open ? style.downBorder: "" ].join(" ")} onClick={()=>{setOpen(!open)}}>
-    <div className={style.containerTextoInfoPrimario}>
+    <div className={show ? style.containerTextoInfoPrimario : ""}>
       <div className={style.containerTextoInfoPrimarioTier}>
+        {show && 
         <div className={style.containerTierImg}>
           <img
             className={style.tierImg}
@@ -193,24 +194,26 @@ const Composicion = ({compo, admin=false, show=true, allwaysOpen=false})=>{
             loading="lazy"
             />
         </div>
+        }
+        { show && 
         <div className={style.containerInfoComp}>
           <h3 className={[style.titulo, style.tituloComp].join(" ")}>{compo.titulo}</h3>
           <div className={style.containerDificultadCategory}>
-            { show && 
             <div
               className={style.teamCodeMobile}
               onClick={(e)=>copyToClipboard(e,generatorCodeBuilder(allChampionsApiName))}>
                 {"📋"}
             </div>
-            }
             <div className={style.dificultad} style={{border:`1px solid ${colorDificulty[compo.dificultad]}`, color:`${colorDificulty[compo.dificultad]}`}}>{compo.dificultad}</div>
             <div className={style.category}>{compo.infographicCategory}</div>
           </div>
         </div>
+        }
+
       </div>
-      </div>
+    </div>
       
-      <div className={style.containerLowerChamps}>
+    <div className={show ? style.containerLowerChamps : style.containerLowerChampsOculto}>
       <div className={style.containerInfoChamp}>
       {dataCampeones.map(({dataCampeon, dataItem, estrellas},i)=>{
         return (
