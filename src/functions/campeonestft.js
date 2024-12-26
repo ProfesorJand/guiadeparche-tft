@@ -53,6 +53,8 @@ export const traitsColors = {
     },
     TFT13_Ambassador:{ //emissary
         1:imgHex[0],
+        2:imgHex[4],
+        3:imgHex[4],
         4:imgHex[2]
     },
     TFT13_Squad: { //enforcer
