@@ -13,7 +13,14 @@
   flex:11;
   aspect-ratio: 16/9;
 }
+
 .imgPosicionamiento{
+  display: flex;
+  position: relative;
+  width: 100%;
+}
+
+.imgPosicionamientoOculto{
   display: flex;
   position: relative;
   width: 100%;
@@ -117,6 +124,14 @@
   position: relative;
   width: 100%;
   align-items: center;
+}
+
+.containerImgVideoOculto{
+  display: flex;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  justify-content: center;
 }
 
 @media only screen and (max-width:900px){

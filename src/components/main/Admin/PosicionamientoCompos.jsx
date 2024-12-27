@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import style from "./css/PosicionamientoCompos.module.css"
 import Youtube from "src/components/youtube/Youtube";
 
-const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, gameplay, spatula1, spatula2, posicionamiento, setPosicionamiento, setData, setSinergias, showOnWrapper})=>{
+const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, gameplay, spatula1, spatula2, posicionamiento, setPosicionamiento, setData, setSinergias, show})=>{
   const [niveles, setNiveles] = useState([posicionamiento]);
   useEffect(()=>{
     const array= Object.keys(boardInfo).filter((level)=>{
@@ -19,13 +19,13 @@ const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, gameplay, s
       <div className={style.containerImgPosicionamiento}>
 
         {posicionamiento !== "gameplay" && posicionamiento !== "spatula1" && posicionamiento !== "spatula2" &&
-        <div className={style.containerImgVideo}>
-          <img className={style.imgPosicionamiento} src={url+id+"-"+posicionamiento+".webp"+"?v="+Date.now()} alt="" loading="lazy"/>
+        <div className={show ? style.containerImgVideo : style.containerImgVideoOculto}>
+          <img className={show ? style.imgPosicionamiento : style.imgPosicionamientoOculto} src={url+id+"-"+posicionamiento+".webp"+"?v="+Date.now()} alt="" loading="lazy"/>
         </div>
       }
         {(posicionamiento === "spatula1" || posicionamiento === "spatula2") && 
-        <div className={style.containerImgVideo}>
-          <img className={style.imgPosicionamiento} src={url+id+"-"+posicionamiento+".webp"+"?v="+Date.now()} alt="" loading="lazy"/>
+        <div className={show ? style.containerImgVideo : style.containerImgVideoOculto}>
+          <img className={show ? style.imgPosicionamiento : style.imgPosicionamientoOculto} src={url+id+"-"+posicionamiento+".webp"+"?v="+Date.now()} alt="" loading="lazy"/>
         </div>
       }
         {
@@ -33,7 +33,7 @@ const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, gameplay, s
           <Youtube src={gameplay[0]} />
         }
       </div>
-      {showOnWrapper && 
+      {show && 
       <div className={style.containerBtnPosicionamiento}>
         <div className={style.containerLevels}>
         {niveles.map((nivel,i)=>{
