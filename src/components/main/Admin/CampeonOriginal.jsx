@@ -1,7 +1,7 @@
 import React from "react";
 import style from "./css/CampeonOriginal.module.css"
 
-const CampeonOriginal = ({dataCampeon, dataItem, estrellas}) =>{
+const CampeonOriginal = ({dataCampeon, dataItem, estrellas, show}) =>{
   const dataCampeonParseado = JSON.parse(dataCampeon)
   const itemsCampeon = dataItem.map(({item})=>JSON.parse(item))
   return (
@@ -20,7 +20,7 @@ const CampeonOriginal = ({dataCampeon, dataItem, estrellas}) =>{
       })}
       </div>
       }
-      <span className={style.nombreCampeon}>{dataCampeonParseado.nombre}</span>
+      <span className={show ? style.nombreCampeon : style.nombreCampeonOculto}>{dataCampeonParseado.nombre}</span>
     </div>
   )
 }

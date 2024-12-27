@@ -7,6 +7,16 @@
   padding: 0px 0px 7px 0px;
 }
 
+.containerInfoGlobalOculto{
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-sizing: border-box;
+  /* border: 1px solid var(--border-color); */
+  padding: 0px;
+  gap:15px
+}
+
 .containerInfoPrincipal{
   display: flex;
   position: relative;
@@ -94,6 +104,16 @@
   justify-content: flex-end;
 }
 
+.containerInfoChampOculto{
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  align-items: flex-start;
+  flex:18;
+  gap:5px;
+  justify-content: center;
+}
+
 .containerFlecha{
   display: flex;
   flex: 1;
@@ -101,6 +121,10 @@
   flex-direction: row;
   justify-content: center;
   flex-wrap: wrap;
+}
+
+.containerFlechaOculto{
+  display: none;
 }
 
 .dificultad{
@@ -124,7 +148,8 @@
   font-size: smaller;
   font-weight: 700;
   padding: 0;
-  margin:0
+  margin:0;
+  color: var(--color-primary);
 }
 
 .category{
@@ -150,6 +175,15 @@
   box-sizing: border-box;
 }
 
+.containerInfoSecundarioOculto{
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  gap:15px
+}
+
 .upBorder{
   border-top: none;
 }
@@ -159,8 +193,19 @@
   flex-direction: row;
   margin: 5px 0 0 0;
   box-sizing: border-box;
-  border: 0.5px solid gray
+  border: 0.5px solid gray;
+  padding: 0 0 0 0;
 
+}
+
+.containerECTOculto{
+  display: flex;
+  position: relative;
+  flex-direction: row;
+  margin: 0;
+  box-sizing: border-box;
+  border: 0.5px solid gray;
+  background-color: var(--bg-primary);
 }
 
 .containerEGlobal{
@@ -170,9 +215,10 @@
   flex:1;
   gap:5px;
   align-items: center;
-  padding: 5px 15px 30px 15px;
+  padding: 5px 15px 15px 15px;
 
 }
+
 .containerE{
   display: flex;
   flex-direction: row;
@@ -189,7 +235,7 @@
   flex:0.8;
   align-items: center;
   gap:5px;
-  padding: 5px 0 25px 0;
+  padding: 5px 0 0 0;
   border-left: 0.5px solid var(--border-gray-color);
 }
 
@@ -200,7 +246,7 @@
   flex: 0.4;
   align-items: center;
   gap: 5px;
-  padding: 5px 0 25px;
+  padding: 5px 0 0;
   border-left: .5px solid var(--border-gray-color);
 }
 
@@ -211,6 +257,14 @@
   padding: 0 0 0 5px;
 }
 
+.containerTOculto{
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  padding: 20px 50px 20px 50px;
+  align-items: center;
+  translate: 0px 10px;
+}
 
 
 .containerAP{
@@ -226,14 +280,39 @@
   padding-top: 5px;
 }
 
+.containerAPOculto{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: center;
+  border: 0.5px solid var(--border-gray-color);
+  margin: 0;
+  box-sizing: border-box;
+  background-color: var(--bg-primary);
+}
+
 .containerAumentos{
   display: flex;
   flex-direction: column;
   width: 100%;
   align-items: center;
   justify-content: space-between;
-  padding: 5px 5px 7px 5px;
-  border-top: 0.5px solid grey;
+  /* padding: 5px 5px 7px 5px; */
+  border: 0.5px solid grey;
+  box-sizing: border-box;
+}
+
+.containerAumentosOculto{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  /* padding: 5px 5px 7px 5px; */
+  border: 0.5px solid grey;
+  box-sizing: border-box;
+  background-color: var(--bg-primary);
 }
 
 .containerPosicionamiento{
@@ -286,6 +365,11 @@
 .tituloCentrado{
   width: 100%;
   text-align: center;
+}
+
+.tituloCentradoOculto{
+  text-align: center;
+  font-size: smaller;
 }
 
 .containerLowerChamps{
@@ -378,6 +462,14 @@
   .containerInfoPrincipal{
     padding:5px 5px 0px 5px ;
   }
+  .containerInfoPrincipalOculto{
+    display: flex;
+    position: relative;
+    flex-direction: row;
+    background-color: var(--bg-primary);
+    padding: 5px 5px 10px 5px;
+    border: 0.5px solid gray
+  }
   .containerTextoInfoPrimario{
     flex: 2.5;
   } 
@@ -398,7 +490,7 @@
     padding-left: 5px;
     justify-content: flex-start;
     flex-wrap: wrap;
-    gap: 5px;
+    gap: 3px;
     box-sizing: border-box;
   }
   .containerInfoChamp{

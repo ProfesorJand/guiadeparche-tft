@@ -1,17 +1,18 @@
 .containerGlobal{
-  display: flex;
+  display: flex  ;
   flex-direction: row;
   position: relative;
   width: 100%;
   align-items: flex-start;
-  justify-content: space-evenly;
+  justify-content: center;
+  gap: 5px;
   flex: 1;
 }
 .containerBasicItem{
   display: flex;
   flex-direction: column;
   position: relative;
-  width: calc(100%/5);
+  width: calc(100%/4.3);
 }
 
 .containerRadiantItem{
@@ -31,7 +32,7 @@
   display: flex;
   position: absolute;
   width: 50%;
-  bottom: -20px;
+  bottom: -9px;
   right:0
 }
 
@@ -51,6 +52,7 @@
     height: 80%;
     display: flex;
     align-items: center;
-    font-size: xx-large;
+    font-size: 1em;
+    padding: 0 5px;
   }
 }

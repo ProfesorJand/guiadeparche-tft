@@ -57,8 +57,25 @@ const Champions = ()=>{
                     }
                     championsList.push(data)
                 }
+                if(apiName === "TFT13_JayceSummon" || apiName === "TFT13_Sion"){
+                    const data = {
+                        apiName,
+                        nombre:name,
+                        characterName,
+                        coste:cost,
+                        sinergia:traits,
+                        stats,
+                        img: `https://raw.communitydragon.org/${version}/game/`+ tileIcon.replace(".tex",".png").toLowerCase(),
+                        ability,
+                    }
+                    championsList.push(data)
+                }
             })
-            setChampionsList(championsList)
+            setChampionsList(championsList.sort((a,b)=>{
+                if(a["coste"] < b["coste"]) {return -1}
+                if(a["coste"] > b["coste"]) {return 1}
+                return 0;
+            }))
             setResultado(response)
         }
         activador();

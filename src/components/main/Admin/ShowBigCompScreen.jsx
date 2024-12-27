@@ -25,30 +25,46 @@ const ShowBigCompScreen = ({id, setShowBigComp}) => {
   if(admin){
     return (
       <div className={style.compToShow} onClick={(e)=>{closeComp(e)}}>
-        <div className={style.aspectWrapper}>
-          <div className={style.upperStyle}>
-            <div className={style.containerTierImg}>
-              <img
-              className={style.tierImg}
-              src={`/tiers/Tier-${CompToShow.tier}.webp`}
-              alt="Tier TFT" 
-              loading="lazy"
-              />
-            </div>
-            <div className={style.titulos}>
-              <div>
-                Titulo arriba
+        <div className={style.background}>
+          <div className={style.aspectWrapper}>
+            <div className={style.upperStyle}>
+              <div className={style.containerTierImg}>
+                <img
+                className={style.tierImg}
+                src={`/tiers/Tier-${CompToShow.tier}.webp`}
+                alt="Tier TFT" 
+                loading="lazy"
+                />
               </div>
-              <div>
-              <span className={[style.titulo, style.tituloComp].join(" ")}>{CompToShow.titulo}</span>
+              <div className={style.titulos}>
+                <div className={style.tituloPrincipal}>
+                  SET 13 META COMP [14.24B]
+                </div>
+                <div className={style.titutloSecundario}>
+                <span className={[style.titulo, style.tituloComp].join(" ")}>{CompToShow.titulo}</span>
+                </div>
+              </div>
+              <div className={style.tags}>
+                <div className={style.dificultad} style={{border:`1px solid ${colorDificulty[CompToShow.dificultad]}`, color:`${colorDificulty[CompToShow.dificultad]}`}}>{CompToShow.dificultad}</div>
+                <div className={style.category}>{CompToShow.infographicCategory}</div>
               </div>
             </div>
-            <div className={style.tags}>
-              <div className={style.dificultad} style={{border:`1px solid ${colorDificulty[CompToShow.dificultad]}`, color:`${colorDificulty[CompToShow.dificultad]}`}}>{CompToShow.dificultad}</div>
-              <div className={style.category}>{CompToShow.infographicCategory}</div>
+            <Composicion compo={CompToShow} showHide={true} admin={false} show={false} allwaysOpen={true}/>
+            <div className={style.lowerStyle}>
+              <div className={style.divJupesonLogo}>
+                <img className={style.imgJupesonLogo} src="/tft/assets/Jupeson_LOGO_Sin_Publicidad.png" alt=""></img>
+              </div>
+              <div className={style.divWebLogo}>
+                <img className={style.divWebLogo} src="/tft/assets/GP_logo.png" alt="logo Guiadeparche"></img>
+                  <span className={style.textoWeb}>
+                    TFT.GUIADEPARCHE.COM
+                  </span>
+              </div>
+              <div className={style.divSetTFTLogo}>
+                <img className={style.imgSetTFTLogo} src="/tft/sets/13/logo.png" alt="TFT LOGO"></img>
+              </div>
             </div>
           </div>
-        <Composicion compo={CompToShow} showHide={true} admin={false} show={false} allwaysOpen={true}/>
         </div>
       </div>
     )

@@ -70,6 +70,17 @@
   white-space: nowrap;
 }
 
+.nombreCampeonOculto{
+  display: flex;
+  position: absolute;
+  font-size: 15px;
+  justify-content: center;
+  bottom: -20px;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .containerItems{
   display: flex;
   flex-direction: row;

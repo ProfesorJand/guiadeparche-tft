@@ -2,10 +2,9 @@
   display: flex;
   flex-direction: row;
   position: relative;
-  width: calc(100% / 5);
+  width: calc((100% / 5) - 5px);
   align-items: center;
   flex-direction: column;
-  aspect-ratio: 1 / 1;
 }
 .containerCampeonImg{
   display: flex;
@@ -68,6 +67,7 @@
   justify-content: center;
   text-align: center;
 }
+
 
 .containerItems{
   display: flex;

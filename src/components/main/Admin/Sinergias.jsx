@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import style from "./css/Sinergias.module.css"
 import { traitsColors, imgHex } from "src/functions/campeonestft";
 import sinergiasData from "src/json/updates/sinergiasData";
-const Sinergias = ({sinergias, orientacion})=>{
+const Sinergias = ({sinergias, orientacion, show})=>{
 
   function checkColor(hexColor){
     if(hexColor === "hex-prismatic.webp"){
@@ -103,12 +103,12 @@ const Sinergias = ({sinergias, orientacion})=>{
 
   return (
 
-      <div className={[style.containerSinergia, orientacion==="horizontal" ? style.containerSinergiaHorizontal: ""].join(" ")}>
+      <div className={show ? [style.containerSinergia, orientacion==="horizontal" ? style.containerSinergiaHorizontal: ""].join(" ") : style.containerSinergiaOculto }>
     {Object.keys(sinergias).length > 0 && getMinMaxTraits(sortable).map((key,i)=>{
-      if(i < 6){
+      if(i < 9){
         if(key.hexColor !== "hex-default.webp"){
           return (
-            <div key={i} className={style.containerSinergiaHex} style={window.innerWidth < 900 ? checkColor(key.hexColor) : {}}>
+            <div key={i} className={show ? style.containerSinergiaHex : style.containerSinergiaHexOculto} style={window.innerWidth < 900 ? checkColor(key.hexColor) : {}}>
               <span className={style.borderHex} style={checkColor(key.hexColor)}></span> 
               <img className={style.imgSinergia} src={`https://raw.communitydragon.org/latest/game/${key.icon}`} alt="Trait_Icon" loading="lazy"/>
               <div className={style.infoSinergia}>{key.hexLevel}</div>

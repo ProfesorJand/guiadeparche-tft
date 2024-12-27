@@ -1,7 +1,9 @@
 :root{
   --gap-sinergias: 15px;
   --gap-sinergias-mobile: 5px;
-  --division-sinergias: 6
+  --division-sinergias: 6;
+  --gap-sinergias-oculto: 5px;
+  --division-sinergias-oculto: 9;
 }
 
 .containerSinergia{
@@ -15,6 +17,16 @@
   padding: 20px 0;
   box-sizing: border-box;
   flex:1
+}
+
+.containerSinergiaOculto{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap:var(--gap-sinergias-oculto);
+  box-sizing: border-box;
 }
 
 .containerSinergiaHorizontal{
@@ -32,7 +44,19 @@
     clip-path: polygon(32.60869565217391% 0, 65.21739130434783% 25%, 100% 25%, 100% 75%, 65.21739130434783% 75%, 32.60869565217391% 100%, 0 75%, 0 25%);
     background-color: black;
     filter: brightness(0.9);
-  }
+}
+
+.containerSinergiaHexOculto{
+  display: flex;
+  position: relative;
+  flex-direction: row;
+  flex: 0 0 calc((100%/var(--division-sinergias-oculto)) - var(--gap-sinergias-oculto) + (var(--gap-sinergias-oculto)/ var(--division-sinergias-oculto)));
+  align-items: center;
+  /* clip-path: polygon(37.5% 0, 75% 25%, 100% 24%, 100% 75%, 75% 75%, 37.5% 100%, 0 75%, 0 25%) */
+  clip-path: polygon(32.60869565217391% 0, 65.21739130434783% 25%, 100% 25%, 100% 75%, 65.21739130434783% 75%, 32.60869565217391% 100%, 0 75%, 0 25%);
+  background-color: black;
+  filter: brightness(0.9);
+}
 
 
 .borderHex{

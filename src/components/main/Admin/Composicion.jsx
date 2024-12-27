@@ -180,9 +180,9 @@ const Composicion = ({compo, admin=false, show=true, allwaysOpen=false})=>{
   }
 
   return (
-    <div className={style.containerInfoGlobal}>
+    <div className={[show ? style.containerInfoGlobal: style.containerInfoGlobalOculto].join(" ")}>
 
-    <div className={[style.containerInfoPrincipal, open ? style.downBorder: "" ].join(" ")} onClick={()=>{setOpen(!open)}}>
+    <div className={[show ? style.containerInfoPrincipal : style.containerInfoPrincipalOculto , open ? style.downBorder: "" ].join(" ")} onClick={()=>{setOpen(!open)}}>
     <div className={show ? style.containerTextoInfoPrimario : ""}>
       <div className={style.containerTextoInfoPrimarioTier}>
         {show && 
@@ -214,14 +214,14 @@ const Composicion = ({compo, admin=false, show=true, allwaysOpen=false})=>{
     </div>
       
     <div className={show ? style.containerLowerChamps : style.containerLowerChampsOculto}>
-      <div className={style.containerInfoChamp}>
+      <div className={show ? style.containerInfoChamp: style.containerInfoChampOculto}>
       {dataCampeones.map(({dataCampeon, dataItem, estrellas},i)=>{
         return (
-          <CampeonOriginal  key={`OriginalCampeon`+i} dataCampeon={dataCampeon} dataItem={dataItem} estrellas={estrellas}/>
+          <CampeonOriginal  key={`OriginalCampeon`+i} dataCampeon={dataCampeon} dataItem={dataItem} estrellas={estrellas} show={show}/>
         )
       })}
       </div>
-      <div className={style.containerFlecha}>
+      <div className={show ? style.containerFlecha : style.containerFlechaOculto}>
         {
           admin &&
           <div className={style.btn} onClick={(e)=>{handleEditID(e,compo.id)}}>
@@ -245,8 +245,8 @@ const Composicion = ({compo, admin=false, show=true, allwaysOpen=false})=>{
       </div>
     </div>
     </div>
-    <div className={[style.containerInfoSecundario, open ? "": style.hide, open && style.upBorder].join(" ")}>
-      <div className={style.containerECT}>
+    <div className={[show ? style.containerInfoSecundario : style.containerInfoSecundarioOculto, open ? "": style.hide, open && style.upBorder].join(" ")}>
+      <div className={[show ? style.containerECT : style.containerECTOculto].join(" ")}>
         <div className={style.containerEGlobal}>
           <h3 className={style.titulo}>Early Game</h3>
           <div className={style.containerE}>
@@ -272,27 +272,35 @@ const Composicion = ({compo, admin=false, show=true, allwaysOpen=false})=>{
           <Sinergias sinergias={sinergias} posicionamiento={posicionamiento}/>
           </div> */}
       </div>
-      <div className={style.containerAP}> 
-      <h3 className={[style.titulo, style.tituloCentrado].join(" ")}>Late Game - {textoPosicionamiento(posicionamiento)}</h3>     
+      <div className={[show ? style.containerAP: style.containerAPOculto].join(" ")}> 
+        {show ?
+        <>
+        <h3 className={[style.titulo, style.tituloCentrado].join(" ")}>Late Game - {textoPosicionamiento(posicionamiento)}</h3>     
         <div className={style.containerT}>
-        <Sinergias sinergias={sinergias} posicionamiento={posicionamiento}/>
+          <Sinergias sinergias={sinergias} posicionamiento={posicionamiento} show={show}/>
         </div>
+        </>
+         :
+          <div className={style.containerTOculto}>
+          {/* <h3 className={show ? [style.titulo, style.tituloCentrado].join(" ") : style.tituloCentradoOculto}>Late Game - {textoPosicionamiento(posicionamiento)}</h3>     */}
+          <Sinergias sinergias={sinergias} posicionamiento={posicionamiento} show={show}/> 
+          </div>
+        }
         <div className={style.containerPosicionamiento}>
           <PosicionamientoCompos id={compo.id} boardInfo={compo.boardInfo} titulo={compo.titulo}  originalComp={compo.originalComp} gameplay={compo.gameplay} spatula1={compo.spatulaItem1.icon} spatula2={compo.spatulaItem2.icon} setPosicionamiento={setPosicionamiento} posicionamiento={posicionamiento} setData={setData} setSinergias={setSinergias} showOnWrapper={show}/>
         </div>
-        <div className={style.containerAumentos}>
-          {/*<h3 className={style.titulo}>Augments</h3>*/}
-          <AumentosCompos aumentos={compo.aumentos}/>
-        </div>
       </div>
+      <div className={[show ? style.containerAumentos : style.containerAumentosOculto].join(" ")}>
+        {/*<h3 className={style.titulo}>Augments</h3>*/}
+        <AumentosCompos aumentos={compo.aumentos}/>
+      </div>
+      {show && 
       <div className={style.containerTips}>
-      {
-        show && 
         <div className={style.containerTextoInfoPrimarioCode} onClick={(e)=>copyToClipboard(e,generatorCodeBuilder(allChampionsApiName))}>
           {"COPY TEAM CODE: " + generatorCodeBuilder(allChampionsApiName) + " 📋"}
         </div>
-      }
       </div>
+      }
     </div>
     {editId === compo.id && 
     <CrearCompoTFT

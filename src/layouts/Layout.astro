@@ -137,6 +137,16 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
     color: var(--text-color-white-primary);
   }
 
+  @font-face {
+    font-family: 'ObvioslyWideBoldItalic'; /* Name your font family */
+    src: url('/fonts/ObviouslyWide-BoldItalic.otf') format("opentype"); /* Locate the .ttf file within your directory*/
+  }
+
+  @font-face {
+    font-family: 'ObvioslyWideBold'; /* Name your font family */
+    src: url('/fonts/ObviouslyWide-Bold.otf') format("opentype"); /* Locate the .ttf file within your directory*/
+  }
+
   body::-webkit-scrollbar {
     width: 12px; /* width of the entire scrollbar */
   }
