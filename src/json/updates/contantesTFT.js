@@ -18,9 +18,11 @@ export async function fetchingDataTFT({version=VERSION_LATEST, idioma=IDIOMA_DEF
 }
 
 const GET_LAST_VERSION_NUMBER = async (version=VERSION_LATEST)=> {
-  return (await fetchingLatestVersionTFT(version)).version.split(".")
+  const resultado = await fetchingLatestVersionTFT(version);
+  const getVersion= resultado?.version.split(".")
+  return getVersion[0] + "." +  getVersion[1]
 };
-export const latestVersion = GET_LAST_VERSION_NUMBER[0] + "." + GET_LAST_VERSION_NUMBER[1];
+export const latestVersion = GET_LAST_VERSION_NUMBER()
 
 export async function fetchingLatestVersionTFT(version=VERSION_LATEST){
   const urlDragon = `https://raw.communitydragon.org/${version}/content-metadata.json`

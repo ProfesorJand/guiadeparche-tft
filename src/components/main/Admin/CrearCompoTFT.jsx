@@ -463,7 +463,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
 
       <label>
         <span>Hide Comp:</span>
-        <select onChange={(e)=>{setIsHide(e.target.value)}} defaultValue={isHide}>
+        <select onChange={(e)=>{setIsHide(e.target.value)}} defaultValue={isHide.toString()}>
           <option value={false}>FALSE</option>
           <option value={true}>TRUE</option>
         </select>
@@ -598,7 +598,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
       </div>
       <div className={style.containerSecond}>
       <label htmlFor="aumentos">Augments:
-        <input list="dataListAumentos" name="aumentos" id="aumentos" placeholder="Select Augments - Max 8"/>
+        <input list="dataListAumentos" name="aumentos" id="aumentos1" placeholder="Select Augments - Max 8"/>
         <datalist id="dataListAumentos">
           {listaDeAumentos.map((aum, i )=>{
             return <option key={"ListaDeAumentos"+aum.name+i} id={`datalist-${aum.apiName}`} data-value={JSON.stringify(aum)} value={aum.apiName}>{aum.name}</option>

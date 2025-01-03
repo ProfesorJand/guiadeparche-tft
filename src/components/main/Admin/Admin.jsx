@@ -3,12 +3,16 @@ import Login from "./Login.jsx";
 import CrearCompoTFT from "./CrearCompoTFT.jsx";
 import { loadDataTFTFromAPI } from "src/stores/dataTFT.js";
 import EditarCompoTFT from "./EditarCompoTFT.jsx";
-import ItemsTierList from "./CreateItemsTierList.jsx";
+import CreateItemsTierList from "./CreateItemsTierList.jsx";
+import CrearTierListChampItem from "./crearTierListChampItem.jsx"
+import CreateAugmentsTierList from "./CreateAugmentsTierList.jsx";
+import style from "./css/Admin.module.css"
 
 const AdminPanel = ({allAdmins})=>{
     const [isLoged, setIsLoged] = useState(localStorage.getItem("login") || false)
     const [adminName, setAdminName] = useState(localStorage.getItem("user") || "");
     const [action, setAction] = useState("editar");
+    const [pestana, setPestana] = useState(1)
     useEffect(()=>{
        loadDataTFTFromAPI({version:"latest", idioma:"es", pais:"ar"})
     },[])
@@ -30,19 +34,39 @@ const AdminPanel = ({allAdmins})=>{
         return (
             <>
             <div>{adminName}</div>
-            <div slot="hola">
-                <button onClick={()=>setAction("crear")}>Crear compo tft</button>
-            </div>
-            <div slot="hola">
-                <button onClick={()=>setAction("editar")}>Editar compo tft</button>
-            </div>
-            <div slot="hola">
-                <button onClick={()=>setAction("itemsTierList")}>Items Tier List</button>
+            <div className={style.navegador}>
+                <div className={style.container}>
+                    Compos TFT
+                    <div className={style.compos}>
+                        <div slot="hola">
+                            <button className={pestana === 0 ? style.btnActive: ""} onClick={()=>{setAction("crear"); setPestana(0)}}>Crear</button>
+                        </div>
+                        <div slot="hola">
+                            <button className={pestana === 1 ? style.btnActive: ""} onClick={()=>{setAction("editar"); setPestana(1)}}>Editar</button>
+                        </div>
+                    </div>
+                </div>
+                <div className={style.container}>
+                    Tier List TFT
+                    <div className={style.tierList}>
+                        <div slot="hola">
+                            <button className={pestana === 2 ? style.btnActive: ""}onClick={()=>{setAction("itemsTierList"); setPestana(2)}}>Items</button>
+                        </div>
+                        <div slot="hola">
+                            <button className={pestana === 3 ? style.btnActive: ""} onClick={()=>{setAction("augmentsTierList"); setPestana(3)}}>Augments</button>
+                        </div>
+                        {/* <div slot="hola">
+                            <button className={pestana === 0 ? style.btnActive: ""} onClick={()=>{setAction("champsItemsTierList"); setPestana(0)}}>Champions Items Tier List</button>
+                        </div> */}
+                    </div>
+                </div>
             </div>
             <div>
                 {action === "crear" && <CrearCompoTFT />}
                 {action === "editar" && <EditarCompoTFT />}
-                {action === "itemsTierList" && <ItemsTierList />}
+                {action === "itemsTierList" && <CreateItemsTierList />}
+                {action === "augmentsTierList" && <CreateAugmentsTierList admin={true}/>}
+                {action === "champsItemsTierList" && <CrearTierListChampItem />}
             </div>
             <button onClick={()=>cerrarSesion()}>cerrar sesión</button>
             </>

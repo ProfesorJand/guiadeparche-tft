@@ -1,0 +1,30 @@
+.navegador{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+
+}
+
+.compos{
+  display: flex;
+  flex-direction: row;
+  flex:1;
+  gap:5px
+}
+
+.tierList{
+  display: flex;
+  flex-direction: row;
+  flex:1;
+  gap:5px
+}
+.btnActive{
+  background-color: var(--color-hex-cost-2);
+  color:white
+}
+
+.container{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

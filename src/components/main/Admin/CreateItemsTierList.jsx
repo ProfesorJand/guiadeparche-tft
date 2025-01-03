@@ -1,8 +1,11 @@
 import React, {useState, useEffect} from "react"
 import Items from "./Items.jsx"
-import style from "./css/ItemsTierList.module.css"
+import style from "./css/ItemsTierList.module.css";
+import ItemsTierList from "./ItemTierList.jsx"
 
-const ItemsTierList = ()=>{
+const CreateItemsTierList = ()=>{
+  //localStorage.getItem("login")
+  const urlDataDragon="https://raw.communitydragon.org/latest/game/"
   const [tierList, setTierList] = useState({
     Craftable:{
       "S":[],
@@ -32,9 +35,23 @@ const ItemsTierList = ()=>{
       "C":[],
       "D":[]
     },
+    Supports:{
+      "S":[],
+      "A":[],
+      "B":[],
+      "C":[],
+      "D":[],
+    },
+    Others:{
+      "S":[],
+      "A":[],
+      "B":[],
+      "C":[],
+      "D":[],
+    }
   });
   const [pestana, setPestana] = useState(0)
-  const category = ["Craftable","Radiants","Emblems","Artefacts"]
+  const category = ["Craftable","Radiants","Emblems","Artefacts","Supports","Others"]
 
   useEffect(()=>{
     (async function traerDatos(){
@@ -56,17 +73,7 @@ const ItemsTierList = ()=>{
     var rectB = document.getElementById("B").getBoundingClientRect();
     var rectC = document.getElementById("C").getBoundingClientRect();
     var rectD = document.getElementById("D").getBoundingClientRect();
-    console.log(rectS.top, rectS.right, rectS.bottom, rectS.left);
-    console.log(e.clientY, e.clientX)
-    console.log("derecha",e.clientX > rectS.right)
-    console.log("izquierda",e.clientX < rectS.left)
-    console.log("top",e.clientY < rectS.top)
-    console.log("bottom",e.clientY > rectD.bottom)
     if(e.clientX > rectS.right || e.clientY < rectS.left || e.clientY < rectS.top ||  e.clientY > rectD.bottom){
-      console.log("se elimina", dataItem.apiName)
-      console.log(tierList)
-      console.log(tier)
-      console.log(tierList[category[pestana]][tier].filter(({apiName})=>apiName !== dataItem.apiName))
       setTierList((oldObject)=>{return {
         ...oldObject,
         [category[pestana]]: {
@@ -137,7 +144,7 @@ const ItemsTierList = ()=>{
     const dataFrom = e.dataTransfer.getData("from");
     const dataItem = e.dataTransfer.getData("item");
     const dataTier = e.dataTransfer.getData("tier");
-
+    console.log({dataItem})
     if (dataFrom === "itemList" && dataItem) {
       crearItem(e);
     }
@@ -154,7 +161,6 @@ const ItemsTierList = ()=>{
   async function saveTierList(){
     const url = 'https://guiadeparche.com/tftdata/Set12/crearTierListItem.php';  // Cambia esto por la URL de tu archivo PHP
     const token = import.meta.env.PUBLIC_TOKEN_META
-    console.log(token)
     console.log(JSON.stringify({[category[pestana]]:tierList[category[pestana]]}))
     try {
         const response = await fetch(url, {
@@ -182,10 +188,9 @@ const ItemsTierList = ()=>{
     <>
     <div className={style.container}>
       <div className={style.btn}>
-        <button className={pestana === 0 ? style.btnActive : ""} onClick={()=>setPestana(0)}>Craftable</button>
-        <button className={pestana === 1 ? style.btnActive : ""} onClick={()=>setPestana(1)}>Radiants</button>
-        <button className={pestana === 2 ? style.btnActive : ""} onClick={()=>setPestana(2)}>Emblems</button>
-        <button className={pestana === 3 ? style.btnActive : ""} onClick={()=>setPestana(3)}>Artefacts</button>
+      {category.map((name, index)=>{
+          return <button key={name+index} className={pestana === index ? style.btnActive : ""} onClick={()=>setPestana(index)}>{name}</button>
+        })}
       </div>
       <div className={style.containerTierList}>
         <div className={style.containerTierListTiers}>
@@ -200,10 +205,10 @@ const ItemsTierList = ()=>{
             }}
           draggable
         >
-          {tierList[category[pestana]]["S"].map((dataItem,i)=>{
+          {tierList?.[category?.[pestana]]?.["S"].map((dataItem,i)=>{
               return (
                 <div key={"S"+i} className={style.containerItem}>
-                  <img className={style.imgItem} src={dataItem.img} alt={dataItem.nombre} data-from="itemBoard" data-tier="S" data-item={JSON.stringify(dataItem)} onDrop={(e)=>handleDrop(e)} onDragStart={(e)=>handleDragStart(e)} onDragEnd={(e)=>handleDropOutside(e,"item")}/>
+                  <img className={style.imgItem} src={dataItem?.img || urlDataDragon + dataItem?.icon.replace(".tex",".png").toLowerCase()} alt={dataItem.nombre} data-from="itemBoard" data-tier="S" data-item={JSON.stringify(dataItem)} onDrop={(e)=>handleDrop(e)} onDragStart={(e)=>handleDragStart(e)} onDragEnd={(e)=>handleDropOutside(e,"item")}/>
                 </div>
               )
             })}
@@ -222,7 +227,7 @@ const ItemsTierList = ()=>{
               }}
             draggable
             >
-            {tierList[category[pestana]]["A"].map((dataItem,i)=>{
+            {tierList?.[category?.[pestana]]?.["A"].map((dataItem,i)=>{
               return (
                 <div key={"A"+i} className={style.containerItem}>
                   <img className={style.imgItem} src={dataItem.img} alt={dataItem.nombre} data-from="itemBoard" data-tier="A" data-item={JSON.stringify(dataItem)}  onDrop={(e)=>handleDrop(e)} onDragStart={(e)=>handleDragStart(e)} onDragEnd={(e)=>handleDropOutside(e,"item")}/>
@@ -244,7 +249,7 @@ const ItemsTierList = ()=>{
             }}
             draggable
             >
-            {tierList[category[pestana]]["B"].map((dataItem,i)=>{
+            {tierList?.[category?.[pestana]]?.["B"].map((dataItem,i)=>{
               return (
                 <div key={"B"+i} className={style.containerItem}>
                   <img className={style.imgItem} src={dataItem.img} alt={dataItem.nombre} data-from="itemBoard" data-tier="B" data-item={JSON.stringify(dataItem)}  onDrop={(e)=>handleDrop(e)} onDragStart={(e)=>handleDragStart(e)} onDragEnd={(e)=>handleDropOutside(e,"item")}/>
@@ -266,7 +271,7 @@ const ItemsTierList = ()=>{
             }}
             draggable
             >
-            {tierList[category[pestana]]["C"].map((dataItem,i)=>{
+            {tierList?.[category?.[pestana]]?.["C"].map((dataItem,i)=>{
               return (
                 <div key={"C"+i} className={style.containerItem}>
                   <img className={style.imgItem} src={dataItem.img} alt={dataItem.nombre} data-from="itemBoard" data-tier="C" data-item={JSON.stringify(dataItem)}  onDrop={(e)=>handleDrop(e)} onDragStart={(e)=>handleDragStart(e)} onDragEnd={(e)=>handleDropOutside(e,"item")}/>
@@ -288,7 +293,7 @@ const ItemsTierList = ()=>{
             }}
             draggable
             >
-            {tierList[category[pestana]]["D"].map((dataItem,i)=>{
+            {tierList?.[category?.[pestana]]?.["D"].map((dataItem,i)=>{
               return (
                 <div key={"D"+i} className={style.containerItem}>
                   <img className={style.imgItem} src={dataItem.img} alt={dataItem.nombre} data-from="itemBoard" data-tier="D" data-item={JSON.stringify(dataItem)}  onDrop={(e)=>handleDrop(e)} onDragStart={(e)=>handleDragStart(e)} onDragEnd={(e)=>handleDropOutside(e,"item")}/>
@@ -300,8 +305,9 @@ const ItemsTierList = ()=>{
       </div>
       <button onClick={()=>{saveTierList()}}>SAVE</button>
       <Items/>
+      <ItemsTierList/>
     </>
   )
 }
 
-export default ItemsTierList
+export default CreateItemsTierList

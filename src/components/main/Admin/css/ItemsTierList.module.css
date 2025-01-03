@@ -7,13 +7,15 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  background-color: var(--bg-secondary);
+  
+  gap:5px
 }
 
 .containerTierList{
   display: flex;
   width: 100%;
   flex-direction: row;
+  background-color: var(--bg-secondary);
 }
 
 

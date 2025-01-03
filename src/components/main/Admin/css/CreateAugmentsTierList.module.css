@@ -1,0 +1,47 @@
+:root{
+  --cantidadDeAumentos:8;
+  --gapDeAumentos:5px
+}
+.containerAumentos{
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  gap:5px;
+}
+.horizontalWrapper{
+  display: flex;
+  width: 100%;
+  position: relative;
+  width: calc(100% / var(--cantidadDeAumentos) - (var(--gapDeAumentos) + (var(--gapDeAumentos) / var(--cantidadDeAumentos))));
+}
+
+.btnClose{
+  display: flex;
+  position: absolute;
+  top:0;
+  right: 0;
+  z-index: 2 ;
+}
+.btnClose:hover{
+  cursor:pointer;
+  background-color: rgb(47, 47, 168);
+  color:white
+}
+.btnSave{
+  background-color: var(--bg-secondary);
+  color:grey;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  border: 2px solid var(--color-hex-cost-2);
+}
+.btnSave:hover{
+  background-color: var(--bg-primary);
+  color:grey;
+  cursor: pointer;
+}
+
+.imgAumento{
+  display: flex;
+  position: relative;
+  width: 100%;
+}
