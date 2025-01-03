@@ -4,7 +4,7 @@ import CrearCompoTFT from "./CrearCompoTFT.jsx";
 import { loadDataTFTFromAPI } from "src/stores/dataTFT.js";
 import EditarCompoTFT from "./EditarCompoTFT.jsx";
 import CreateItemsTierList from "./CreateItemsTierList.jsx";
-import CrearTierListChampItem from "./crearTierListChampItem.jsx"
+//import CrearTierListChampItem from "./crearTierListChampItem.jsx"
 import CreateAugmentsTierList from "./CreateAugmentsTierList.jsx";
 import style from "./css/Admin.module.css"
 
@@ -66,7 +66,7 @@ const AdminPanel = ({allAdmins})=>{
                 {action === "editar" && <EditarCompoTFT />}
                 {action === "itemsTierList" && <CreateItemsTierList />}
                 {action === "augmentsTierList" && <CreateAugmentsTierList admin={true}/>}
-                {action === "champsItemsTierList" && <CrearTierListChampItem />}
+                {/* {action === "champsItemsTierList" && <CrearTierListChampItem />} */}
             </div>
             <button onClick={()=>cerrarSesion()}>cerrar sesión</button>
             </>
