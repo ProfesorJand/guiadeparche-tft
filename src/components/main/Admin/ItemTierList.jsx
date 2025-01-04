@@ -5,18 +5,16 @@ const ItemTierList = ()=>{
   const urlDataDragon="https://raw.communitydragon.org/latest/game/"
   const [itemsTierList,setItemsTierList] = useState({});
   const category = ["Craftable","Radiants","Emblems","Artefacts","Supports","Others"] //"Craftable","Radiants","Emblems","Artefacts","Support"
-useEffect(()=>{
-  (async function traerDatos(){
-    const url="https://guiadeparche.com/tftdata/Set12/tierListItem.json";
-    const datos = await fetch(url, {cache:"no-cache"});
-    const resp = await datos.json();
-    setItemsTierList(resp)
-  })()
+  useEffect(()=>{
+    (async function traerDatos(){
+      const url="https://guiadeparche.com/tftdata/Set12/tierListItem.json";
+      const datos = await fetch(url, {cache:"no-cache"});
+      const resp = await datos.json();
+      setItemsTierList(resp)
+    })()
 
-},[])
+  },[])
 
-
-if(Object.keys(itemsTierList).length > 0){
   return (
     <>
     <h2>
@@ -45,7 +43,6 @@ if(Object.keys(itemsTierList).length > 0){
     </div>
     </>
   )
-}
 
 }
 

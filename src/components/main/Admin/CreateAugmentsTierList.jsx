@@ -162,40 +162,43 @@
         }
       }
     
-      function agregarAumento(e, pestana, index) {
-        e.preventDefault();
-        const selectedValue = e.target.value;
+      function handleInputChange(e, pestana, index) {
+        const newValue = e.target.value;
       
-        // Verifica si el aumento ya está repetido
-        const repetido = aumentos?.[category?.[pestana]]?.some(
-          ({ apiName }) => apiName === selectedValue
-        );
-        if (repetido) {
-          alert(`Aumento: ${selectedValue} está repetido, añade otro aumento`);
-          return;
-        }
-      
-        // Obtiene el valor del datalist seleccionado
+        // Verificar si el valor corresponde a una opción del datalist
         const dataList = document.getElementById("dataListAumentos");
-        const dataValue = dataList.options.namedItem(`datalist-${selectedValue}`)?.dataset.value;
+        const selectedOption = dataList.options.namedItem(`datalist-${newValue}`);
       
-        if (dataValue) {
+        if (selectedOption) {
+          // Valor seleccionado del datalist
+          const dataValue = selectedOption.dataset.value;
           const parsedValue = JSON.parse(dataValue);
       
           setAumentos((oldAumentos) => {
             const updatedAumentos = { ...oldAumentos };
             const currentCategory = updatedAumentos[category[pestana]] || [];
       
-            // Asegúrate de que el array tenga el índice correspondiente y actualiza solo ese valor
-            currentCategory.push(parsedValue);
+            // Asegúrate de que el array tenga el índice correspondiente
+            currentCategory[index] = parsedValue;
             updatedAumentos[category[pestana]] = currentCategory;
       
             return updatedAumentos;
           });
         } else {
-          //alert("este esta fuckiado llamar a profesorjand");
+          // Manejar el texto libre del usuario (si es necesario)
+          setAumentos((oldAumentos) => {
+            const updatedAumentos = { ...oldAumentos };
+            const currentCategory = updatedAumentos[category[pestana]] || [];
+      
+            currentCategory[index] = { apiName: newValue }; // Temporal o texto libre
+            updatedAumentos[category[pestana]] = currentCategory;
+      
+            return updatedAumentos;
+          });
         }
       }
+      
+      
 
       function eliminarAumento(apiName, pestana){
         setAumentos((oldArray)=>{
@@ -217,35 +220,49 @@
             </div>
             <div className={styleAugments.containerAumentos}>
               {aumentos?.[category?.[pestana]]?.map(({icon, apiName})=>{
-                return (
-                  <div key={"ImgAumentos"+apiName} className={styleAugments.horizontalWrapper}>
-                    <button className={styleAugments.btnClose} onClick={()=>eliminarAumento(apiName, pestana)}>X</button>
-                    <img src={urlDataDragon+icon.toLowerCase().replace(".tex",".png")} className={styleAugments.imgAumento} loading="lazy"></img>
-                  </div>
-              )
+                if(icon){
+                  return (
+                    <div key={"ImgAumentos"+apiName} className={styleAugments.horizontalWrapper}>
+                      <button className={styleAugments.btnClose} onClick={()=>eliminarAumento(apiName, pestana)}>X</button>
+                      <img src={urlDataDragon+icon?.toLowerCase().replace(".tex",".png")} className={styleAugments.imgAumento} loading="lazy"></img>
+                    </div>
+                )
+                }
               })}
             </div>
             {Array(8)
             .fill(null)
             .map((_augment, i) => {
               return (
-              <input
-                key={`aumentos-input-${i}`}
-                list="dataListAumentos"
-                name={`aumentos${i + 1}`}
-                id={`aumentos${i + 1}`}
-                placeholder={
-                  aumentos?.[category?.[pestana]]?.[i]?.apiName || "Select Augment"
-                }
-                value={aumentos?.[category?.[pestana]]?.[i]?.apiName || ""}
-                onChange={(e) => agregarAumento(e, pestana, i)}
-              />
-            )})}
-            <datalist id="dataListAumentos">
-              {listaDeAumentos.map((aum, i )=>{
-                return <option key={"ListaDeAumentos"+aum.name+i} id={`datalist-${aum.apiName}`} data-value={JSON.stringify(aum)} value={aum.apiName}>{aum.name}</option>
-              })}
-            </datalist>
+                <input
+                  key={`aumentos-input-${i}`}
+                  list="dataListAumentos"
+                  name={`aumentos${i + 1}`}
+                  id={`aumentos${i + 1}`}
+                  placeholder={
+                    aumentos?.[category?.[pestana]]?.[i]?.apiName || "Select Augment"
+                  }
+                  value={aumentos?.[category?.[pestana]]?.[i]?.apiName || ""}
+                  onInput={(e) => handleInputChange(e, pestana, i)} // Maneja escritura y selección
+                />
+              );
+            })}
+
+          <datalist id="dataListAumentos">
+            {listaDeAumentos.map((aum, i) => {
+              return (
+                <option
+                  key={`ListaDeAumentos${aum.name}${i}`}
+                  id={`datalist-${aum.apiName}`}
+                  data-value={JSON.stringify(aum)}
+                  value={aum.apiName}
+                >
+                  {aum.name}
+                </option>
+              );
+            })}
+          </datalist>
+
             <button className={styleAugments.btnSave} onClick={()=>{saveTierList(pestana)}}>SAVE</button>
           </div>}
             {

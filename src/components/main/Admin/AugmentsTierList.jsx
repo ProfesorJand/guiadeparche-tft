@@ -25,7 +25,7 @@ if(tierList?.Prismatic?.length > 0 || tierList?.Gold?.length > 0 || tierList?.Si
           {tierList?.Prismatic?.map((dataItem,i)=>{
               return (
                 <div key={"Prismatic"+i} className={style.containerItem}>
-                  <img className={style.imgItem} src={dataItem?.img || urlDataDragon + dataItem?.icon.replace(".tex",".png").toLowerCase()} alt={dataItem?.nombre || dataItem?.name} data-from="itemBoard" data-tier="S" data-item={JSON.stringify(dataItem)} onDrop={(e)=>handleDrop(e)} onDragStart={(e)=>handleDragStart(e)} onDragEnd={(e)=>handleDropOutside(e,"item")}/>
+                  <img className={style.imgItem} src={dataItem?.img || urlDataDragon + dataItem?.icon?.replace(".tex",".png").toLowerCase()} alt={dataItem?.nombre || dataItem?.name} data-from="itemBoard" data-tier="S" data-item={JSON.stringify(dataItem)} onDrop={(e)=>handleDrop(e)} onDragStart={(e)=>handleDragStart(e)} onDragEnd={(e)=>handleDropOutside(e,"item")}/>
                 </div>
               )
             })}
@@ -47,7 +47,7 @@ if(tierList?.Prismatic?.length > 0 || tierList?.Gold?.length > 0 || tierList?.Si
           {tierList?.Gold?.map((dataItem,i)=>{
             return (
               <div key={"Gold"+i} className={style.containerItem}>
-                  <img className={style.imgItem} src={dataItem?.img || urlDataDragon + dataItem?.icon.replace(".tex",".png").toLowerCase()} alt={dataItem?.nombre || dataItem?.name} data-from="itemBoard" data-tier="S" data-item={JSON.stringify(dataItem)} onDrop={(e)=>handleDrop(e)} onDragStart={(e)=>handleDragStart(e)} onDragEnd={(e)=>handleDropOutside(e,"item")}/>
+                  <img className={style.imgItem} src={dataItem?.img || urlDataDragon + dataItem?.icon?.replace(".tex",".png").toLowerCase()} alt={dataItem?.nombre || dataItem?.name} data-from="itemBoard" data-tier="S" data-item={JSON.stringify(dataItem)} onDrop={(e)=>handleDrop(e)} onDragStart={(e)=>handleDragStart(e)} onDragEnd={(e)=>handleDropOutside(e,"item")}/>
                 </div>
               )
             })}
@@ -69,7 +69,7 @@ if(tierList?.Prismatic?.length > 0 || tierList?.Gold?.length > 0 || tierList?.Si
           {tierList?.Silver?.map((dataItem,i)=>{
             return (
               <div key={"Silver"+i} className={style.containerItem}>
-                  <img className={style.imgItem} src={dataItem?.img || urlDataDragon + dataItem?.icon.replace(".tex",".png").toLowerCase()} alt={dataItem?.nombre || dataItem?.name} data-from="itemBoard" data-tier="S" data-item={JSON.stringify(dataItem)} onDrop={(e)=>handleDrop(e)} onDragStart={(e)=>handleDragStart(e)} onDragEnd={(e)=>handleDropOutside(e,"item")}/>
+                  <img className={style.imgItem} src={dataItem?.img || urlDataDragon + dataItem?.icon?.replace(".tex",".png").toLowerCase()} alt={dataItem?.nombre || dataItem?.name} data-from="itemBoard" data-tier="S" data-item={JSON.stringify(dataItem)} onDrop={(e)=>handleDrop(e)} onDragStart={(e)=>handleDragStart(e)} onDragEnd={(e)=>handleDropOutside(e,"item")}/>
                 </div>
               )
             })}

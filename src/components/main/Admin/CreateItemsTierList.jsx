@@ -60,20 +60,22 @@ const CreateItemsTierList = ()=>{
       const resp = await datos.json();
       setTierList(resp)
     })()
-  },[])
+  },[]);
+
 
   function handleDropOutside(e, elemento) {
     e.stopPropagation();
-    const dropTarget = document.elementFromPoint(e.clientX, e.clientY);
-    var item = e.currentTarget;
+    // const dropTarget = document.elementFromPoint(e.clientX, e.clientY);
+    // var item = e.currentTarget;
     const tier = e.currentTarget.getAttribute("data-tier")
     const dataItem = JSON.parse(e.currentTarget.getAttribute("data-item"))
     var rectS = document.getElementById("S").getBoundingClientRect();
-    var rectA = document.getElementById("A").getBoundingClientRect();
-    var rectB = document.getElementById("B").getBoundingClientRect();
-    var rectC = document.getElementById("C").getBoundingClientRect();
+    // var rectA = document.getElementById("A").getBoundingClientRect();
+    // var rectB = document.getElementById("B").getBoundingClientRect();
+    // var rectC = document.getElementById("C").getBoundingClientRect();
     var rectD = document.getElementById("D").getBoundingClientRect();
-    if(e.clientX > rectS.right || e.clientY < rectS.left || e.clientY < rectS.top ||  e.clientY > rectD.bottom){
+    if(e.clientX > rectS.right || e.clientX < rectS.left || e.clientY < rectS.top ||  e.clientY > rectD.bottom){
+      console.log("entre")
       setTierList((oldObject)=>{return {
         ...oldObject,
         [category[pestana]]: {
@@ -121,16 +123,28 @@ const CreateItemsTierList = ()=>{
       newTier = e.currentTarget.parentNode.parentNode.id;
     }
     const dataItem = JSON.parse(e.dataTransfer.getData("item"));
-    setTierList((oldObject)=>{
-      return {
-        ...oldObject,
-        [category[pestana]]:{
-          ...oldObject[category[pestana]],
-          [fromTier]: [...oldObject[category[pestana]][fromTier]].filter(({apiName})=>apiName !== dataItem.apiName),
-          [newTier]:[...oldObject[category[pestana]][newTier],dataItem] 
-        },
-      }
-    })
+    if(fromTier === newTier){
+      setTierList((oldObject)=>{
+        return {
+          ...oldObject,
+          [category[pestana]]:{
+            ...oldObject[category[pestana]],
+            [newTier]: [...oldObject[category[pestana]][fromTier].filter(({apiName})=>apiName !== dataItem.apiName).map((item) => structuredClone(item)),dataItem],
+          },
+        }
+      })
+    }else{
+      setTierList((oldObject)=>{
+        return {
+          ...oldObject,
+          [category[pestana]]:{
+            ...oldObject[category[pestana]],
+            [fromTier]: [...oldObject[category[pestana]][fromTier]].filter(({apiName})=>apiName !== dataItem.apiName).map((item) => structuredClone(item)),
+            [newTier]:[...oldObject[category[pestana]][newTier],dataItem],
+          },
+        }
+      })
+    }
   }
 
   function checkDuplicate(dataItem){
@@ -144,7 +158,6 @@ const CreateItemsTierList = ()=>{
     const dataFrom = e.dataTransfer.getData("from");
     const dataItem = e.dataTransfer.getData("item");
     const dataTier = e.dataTransfer.getData("tier");
-    console.log({dataItem})
     if (dataFrom === "itemList" && dataItem) {
       crearItem(e);
     }
@@ -161,7 +174,6 @@ const CreateItemsTierList = ()=>{
   async function saveTierList(){
     const url = 'https://guiadeparche.com/tftdata/Set12/crearTierListItem.php';  // Cambia esto por la URL de tu archivo PHP
     const token = import.meta.env.PUBLIC_TOKEN_META
-    console.log(JSON.stringify({[category[pestana]]:tierList[category[pestana]]}))
     try {
         const response = await fetch(url, {
             method: 'POST',
@@ -208,7 +220,7 @@ const CreateItemsTierList = ()=>{
           {tierList?.[category?.[pestana]]?.["S"].map((dataItem,i)=>{
               return (
                 <div key={"S"+i} className={style.containerItem}>
-                  <img className={style.imgItem} src={dataItem?.img || urlDataDragon + dataItem?.icon.replace(".tex",".png").toLowerCase()} alt={dataItem.nombre} data-from="itemBoard" data-tier="S" data-item={JSON.stringify(dataItem)} onDrop={(e)=>handleDrop(e)} onDragStart={(e)=>handleDragStart(e)} onDragEnd={(e)=>handleDropOutside(e,"item")}/>
+                  <img className={style.imgItem} src={dataItem?.img || urlDataDragon + dataItem?.icon?.replace(".tex",".png").toLowerCase()} alt={dataItem?.nombre} data-from="itemBoard" data-tier="S" data-item={JSON.stringify(dataItem)} onDrop={(e)=>handleDrop(e)} onDragStart={(e)=>handleDragStart(e)} onDragEnd={(e)=>handleDropOutside(e,"item")}/>
                 </div>
               )
             })}
@@ -230,7 +242,7 @@ const CreateItemsTierList = ()=>{
             {tierList?.[category?.[pestana]]?.["A"].map((dataItem,i)=>{
               return (
                 <div key={"A"+i} className={style.containerItem}>
-                  <img className={style.imgItem} src={dataItem.img} alt={dataItem.nombre} data-from="itemBoard" data-tier="A" data-item={JSON.stringify(dataItem)}  onDrop={(e)=>handleDrop(e)} onDragStart={(e)=>handleDragStart(e)} onDragEnd={(e)=>handleDropOutside(e,"item")}/>
+                  <img className={style.imgItem} src={dataItem?.img || urlDataDragon + dataItem?.icon?.replace(".tex",".png").toLowerCase()} alt={dataItem.nombre} data-from="itemBoard" data-tier="A" data-item={JSON.stringify(dataItem)}  onDrop={(e)=>handleDrop(e)} onDragStart={(e)=>handleDragStart(e)} onDragEnd={(e)=>handleDropOutside(e,"item")}/>
                 </div>
               )
             })}
@@ -252,7 +264,7 @@ const CreateItemsTierList = ()=>{
             {tierList?.[category?.[pestana]]?.["B"].map((dataItem,i)=>{
               return (
                 <div key={"B"+i} className={style.containerItem}>
-                  <img className={style.imgItem} src={dataItem.img} alt={dataItem.nombre} data-from="itemBoard" data-tier="B" data-item={JSON.stringify(dataItem)}  onDrop={(e)=>handleDrop(e)} onDragStart={(e)=>handleDragStart(e)} onDragEnd={(e)=>handleDropOutside(e,"item")}/>
+                  <img className={style.imgItem} src={dataItem?.img || urlDataDragon + dataItem?.icon?.replace(".tex",".png").toLowerCase()} alt={dataItem.nombre} data-from="itemBoard" data-tier="B" data-item={JSON.stringify(dataItem)}  onDrop={(e)=>handleDrop(e)} onDragStart={(e)=>handleDragStart(e)} onDragEnd={(e)=>handleDropOutside(e,"item")}/>
                 </div>
               )
             })}
@@ -274,7 +286,7 @@ const CreateItemsTierList = ()=>{
             {tierList?.[category?.[pestana]]?.["C"].map((dataItem,i)=>{
               return (
                 <div key={"C"+i} className={style.containerItem}>
-                  <img className={style.imgItem} src={dataItem.img} alt={dataItem.nombre} data-from="itemBoard" data-tier="C" data-item={JSON.stringify(dataItem)}  onDrop={(e)=>handleDrop(e)} onDragStart={(e)=>handleDragStart(e)} onDragEnd={(e)=>handleDropOutside(e,"item")}/>
+                  <img className={style.imgItem} src={dataItem?.img || urlDataDragon + dataItem?.icon?.replace(".tex",".png").toLowerCase()} alt={dataItem.nombre} data-from="itemBoard" data-tier="C" data-item={JSON.stringify(dataItem)}  onDrop={(e)=>handleDrop(e)} onDragStart={(e)=>handleDragStart(e)} onDragEnd={(e)=>handleDropOutside(e,"item")}/>
                 </div>
               )
             })}
@@ -296,7 +308,7 @@ const CreateItemsTierList = ()=>{
             {tierList?.[category?.[pestana]]?.["D"].map((dataItem,i)=>{
               return (
                 <div key={"D"+i} className={style.containerItem}>
-                  <img className={style.imgItem} src={dataItem.img} alt={dataItem.nombre} data-from="itemBoard" data-tier="D" data-item={JSON.stringify(dataItem)}  onDrop={(e)=>handleDrop(e)} onDragStart={(e)=>handleDragStart(e)} onDragEnd={(e)=>handleDropOutside(e,"item")}/>
+                  <img className={style.imgItem} src={dataItem?.img || urlDataDragon + dataItem?.icon?.replace(".tex",".png").toLowerCase()} alt={dataItem.nombre} data-from="itemBoard" data-tier="D" data-item={JSON.stringify(dataItem)}  onDrop={(e)=>handleDrop(e)} onDragStart={(e)=>handleDragStart(e)} onDragEnd={(e)=>handleDropOutside(e,"item")}/>
                 </div>
               )
             })}
