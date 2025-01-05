@@ -1,0 +1,93 @@
+:root{
+  --width-augments-tierList: 80px;
+  --number-augments-tierList: 12;
+  --gap-augments-tierList: 0;
+}
+
+.container{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  
+  gap:5px
+}
+
+.containerTierList{
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  background-color: var(--bg-secondary);
+}
+
+
+.containerTierListTiers{
+  display: flex;
+  width: calc(100% / var(--number-augments-tierList));
+  
+}
+
+.containerTierListItems{
+  display: flex;
+  width: calc(100% - (100% / var(--number-augments-tierList)));
+  align-items: center;
+}
+
+.containerItem{
+  display: flex;
+  width: calc(100% / var(--number-augments-tierList));
+  cursor:grab
+}
+.tierImg{
+  display: flex;
+  width: 100%;
+}
+
+.btnActive{
+  background-color: aqua;
+}
+
+.imgItem{
+  display: flex;
+  width: 100%;
+}
+
+.tooltipContainer {
+  position: relative;
+  display: inline-block;
+}
+
+/* Tooltip oculto por defecto */
+.tooltip {
+  visibility: hidden;
+  background-color: rgba(0, 0, 0, 1); /* Fondo oscuro */
+  color: #fff; /* Texto blanco */
+  text-align: center;
+  border-radius: 4px;
+  padding: 5px 10px;
+  position: absolute;
+  bottom: 100%; /* Posición sobre la imagen */
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* Flecha del tooltip */
+.tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%; /* Flecha apunta hacia abajo */
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+}
+
+/* Mostrar el tooltip al hacer hover */
+.tooltipContainer:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
+}
