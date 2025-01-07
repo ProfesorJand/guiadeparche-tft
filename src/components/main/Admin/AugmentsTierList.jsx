@@ -1,5 +1,6 @@
 
 import style from "./css/AugmentsTierList.module.css";
+import styleAugments from "./css/AumentosCompos.module.css"
 
 const AugmentsTierList = ({tierList} )=>{
   const urlDataDragon="https://raw.communitydragon.org/latest/game/";
@@ -26,6 +27,18 @@ if(tierList?.Prismatic?.length > 0 || tierList?.Gold?.length > 0 || tierList?.Si
               return (
                 <div key={"Prismatic"+i} className={style.containerItem}>
                   <div className={style.tooltipContainer}>
+                    <div className={style.tooltip}>
+                      <div className={style.tooltipTitle}>{dataItem.name}</div>
+                      <div className={style.tooltipDesc}>{dataItem.desc}</div>
+                      {Object.keys(dataItem.effects).length > 0 && Object.keys(dataItem.effects).map((variable, i)=>{
+                        return (
+                        <div key={i} className={style.effects}>
+                          <span className={style.variableName}>{variable}</span> : <span>{dataItem.effects[variable]}</span>
+                          </div>
+                        )
+                      })}
+                      
+                    </div>
                     <img 
                       className={style.imgItem} 
                       src={dataItem?.img || urlDataDragon + dataItem?.icon?.replace(".tex",".png").toLowerCase()} 
@@ -37,7 +50,6 @@ if(tierList?.Prismatic?.length > 0 || tierList?.Gold?.length > 0 || tierList?.Si
                       onDragStart={(e)=>handleDragStart(e)} 
                       onDragEnd={(e)=>handleDropOutside(e,"item")}
                     />
-                    <span className={style.tooltip}>{dataItem?.name}</span>
                   </div>
                 </div>
               )
@@ -61,6 +73,17 @@ if(tierList?.Prismatic?.length > 0 || tierList?.Gold?.length > 0 || tierList?.Si
             return (
               <div key={"Gold"+i} className={style.containerItem}>
                   <div className={style.tooltipContainer}>
+                    <div className={style.tooltip}>
+                      <div className={style.tooltipTitle}>{dataItem.name}</div>
+                      <div className={style.tooltipDesc}>{dataItem.desc}</div>
+                      {Object.keys(dataItem.effects).length > 0 && Object.keys(dataItem.effects).map((variable, i)=>{
+                        return (
+                        <div key={i} className={style.effects}>
+                          <span className={style.variableName}>{variable}</span> : <span>{dataItem.effects[variable]}</span>
+                          </div>
+                        )
+                      })}
+                    </div>
                     <img 
                       className={style.imgItem} 
                       src={dataItem?.img || urlDataDragon + dataItem?.icon?.replace(".tex",".png").toLowerCase()} 
@@ -72,7 +95,6 @@ if(tierList?.Prismatic?.length > 0 || tierList?.Gold?.length > 0 || tierList?.Si
                       onDragStart={(e)=>handleDragStart(e)} 
                       onDragEnd={(e)=>handleDropOutside(e,"item")}
                     />
-                    <span className={style.tooltip}>{dataItem?.name}</span>
                   </div>
                 </div>
               )
@@ -96,6 +118,17 @@ if(tierList?.Prismatic?.length > 0 || tierList?.Gold?.length > 0 || tierList?.Si
             return (
               <div key={"Silver"+i} className={style.containerItem}>
                   <div className={style.tooltipContainer}>
+                    <div className={style.tooltip}>
+                      <div className={style.tooltipTitle}>{dataItem.name}</div>
+                      <div className={style.tooltipDesc}>{dataItem.desc}</div>
+                      {Object.keys(dataItem.effects).length > 0 && Object.keys(dataItem.effects).map((variable, i)=>{
+                        return (
+                        <div key={i} className={style.effects}>
+                          <span className={style.variableName}>{variable}</span> : <span>{dataItem.effects[variable]}</span>
+                          </div>
+                        )
+                      })}
+                    </div>
                     <img 
                       className={style.imgItem} 
                       src={dataItem?.img || urlDataDragon + dataItem?.icon?.replace(".tex",".png").toLowerCase()} 
@@ -107,7 +140,6 @@ if(tierList?.Prismatic?.length > 0 || tierList?.Gold?.length > 0 || tierList?.Si
                       onDragStart={(e)=>handleDragStart(e)} 
                       onDragEnd={(e)=>handleDropOutside(e,"item")}
                     />
-                    <span className={style.tooltip}>{dataItem?.name}</span>
                   </div>
                 </div>
               )
