@@ -119,56 +119,56 @@ export const Items = ()=>{
   const CRAFTEABLE_ITEMS = [
     {
       nombre:"Deathblade",
-      apiName:"death_blade",
+      apiName:"TFT_Item_Deathblade",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/death_blade.png",
       sinergia:"",
       combine:[0,0]
     },
     {
       nombre:"Giant Slayer",
-      apiName:"giant_slayer",
+      apiName:"TFT_Item_MadredsBloodrazor",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/giant_slayer.png",
       sinergia:"",
       combine:[0,1]
     },
     {
       nombre:"Hextech Gunblade",
-      apiName:"hextech_gunblade",
+      apiName:"TFT_Item_HextechGunblade",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/hextech_gunblade.png",
       sinergia:"",
       combine:[0,2]
     },
     {
       nombre:"Spear of Shojin",
-      apiName:"spear_of_shojin",
+      apiName:"TFT_Item_SpearOfShojin",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/spear_of_shojin.png",
       sinergia:"",
       combine:[0,3]
     },
     {
       nombre:"Edge of Night",
-      apiName:"edge_of_night",
+      apiName:"TFT_Item_GuardianAngel",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/edge_of_night_xl.png",
       sinergia:"",
       combine:[0,4]
     },
     {
       nombre:"Bloodthirster",
-      apiName:"bloodthirster",
+      apiName:"TFT_Item_Bloodthirster",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/bloodthirster.png",
       sinergia:"",
       combine:[0,5]
     },
     {
       nombre:"Sterak's Gage",
-      apiName:"steraks_gage",
+      apiName:"TFT_Item_SteraksGage",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/steraksgage_xl.png",
       sinergia:"",
       combine:[0,6]
     },
     {
       nombre:"Infinity Edge",
-      apiName:"infinity_edge",
+      apiName:"TFT_Item_InfinityEdge",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/infinity_edge.png",
       sinergia:"",
       combine:[0,7]
@@ -189,49 +189,49 @@ export const Items = ()=>{
     },
     {
       nombre:"Red Buff",
-      apiName:"red_buff",
+      apiName:"TFT_Item_RapidFireCannon",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/redbuff.png",
       sinergia:"",
       combine:[1,1]
     },
     {
       nombre:"Guinsoo's Rageblade",
-      apiName:"guinsoos_rageblade",
+      apiName:"TFT_Item_GuinsoosRageblade",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/guinsoos_rageblade.png",
       sinergia:"",
       combine:[1,2]
     },
     {
       nombre:"Statikk Shiv",
-      apiName:"statikk_shiv",
+      apiName:"TFT_Item_StatikkShiv",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/statikk_shiv.png",
       sinergia:"",
       combine:[1,3]
     },
     {
       nombre:"Titan's Resolve",
-      apiName:"titans_resolve",
+      apiName:"TFT_Item_TitansResolve",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/titans_resolve.png",
       sinergia:"",
       combine:[1,4]
     },
     {
       nombre:"Runaan's Hurricane",
-      apiName:"runaans_hurricane",
+      apiName:"TFT_Item_RunaansHurricane",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/runaans_hurricane.png",
       sinergia:"",
       combine:[1,5]
     },
     {
       nombre:"Nashor's Tooth",
-      apiName:"nashors_tooth",
+      apiName:"TFT_Item_Leviathan",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/nashorstooth_xl.png",
       sinergia:"",
       combine:[1,6]
     },
     {
       nombre:"Last Whisper",
-      apiName:"last_whisper",
+      apiName:"TFT_Item_LastWhisper",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/last_whisper.png",
       sinergia:"",
       combine:[1,7]
@@ -252,42 +252,42 @@ export const Items = ()=>{
     },
     {
       nombre:"Rabadon's Deathcap",
-      apiName:"rabadons_deathcap",
+      apiName:"TFT_Item_RabadonsDeathcap",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/rabadons_deathcap.png",
       sinergia:"",
       combine:[2,2]
     },
     {
       nombre:"Archangel's Staff",
-      apiName:"archangel_staff",
+      apiName:"TFT_Item_ArchangelsStaff",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/archangel_staff.png",
       sinergia:"",
       combine:[2,3]
     },
     {
       nombre:"Crownguard",
-      apiName:"crownguard",
+      apiName:"TFT_Item_Crownguard",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/crownguard.png",
       sinergia:"",
       combine:[2,4]
     },
     {
       nombre:"Ionic Spark",
-      apiName:"ionic_spark",
+      apiName:"TFT_Item_IonicSpark",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/ionic_spark.png",
       sinergia:"",
       combine:[2,5]
     },
     {
       nombre:"Morellonomicon",
-      apiName:"morellonomicon",
+      apiName:"TFT_Item_Morellonomicon",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/morellonomicon.png",
       sinergia:"",
       combine:[2,6]
     },
     {
-      nombre:"Jeweled Guantlet",
-      apiName:"jeweled_guantlet",
+      nombre:"Jeweled Gauntlet", 
+      apiName:"TFT_Item_JeweledGauntlet",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/jeweled_guantlet.png",
       sinergia:"",
       combine:[2,7]
@@ -308,35 +308,35 @@ export const Items = ()=>{
     },
     {
       nombre:"Blue Buff",
-      apiName:"blue_buff",
+      apiName:"TFT_Item_BlueBuff",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/blue_buff.png",
       sinergia:"",
       combine:[3,3]
     },
     {
       nombre:"Protector's Vow",
-      apiName:"protectors_vow",
+      apiName:"TFT_Item_FrozenHeart",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/winters_approach.png",
       sinergia:"",
       combine:[3,4]
     },
     {
       nombre:"Adaptive Helm",
-      apiName:"adaptive_helm",
+      apiName:"TFT_Item_AdaptiveHelm",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/adaptive_helm.png",
       sinergia:"",
       combine:[3,5]
     },
     {
       nombre:"Redemption",
-      apiName:"redemption",
+      apiName:"TFT_Item_Redemption",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/redemption.png",
       sinergia:"",
       combine:[3,6]
     },
     {
       nombre:"Hand of Justice",
-      apiName:"hand_of_justice",
+      apiName:"TFT_Item_UnstableConcoction",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/hand_of_justice.png",
       sinergia:"",
       combine:[3,7]
@@ -357,28 +357,28 @@ export const Items = ()=>{
     },
     {
       nombre:"Bramble Vest",
-      apiName:"bramble_vest",
+      apiName:"TFT_Item_BrambleVest",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/bramble_vest.png",
       sinergia:"",
       combine:[4,4]
     },
     {
       nombre:"Gargoyle Stoneplate",
-      apiName:"gargoyle_stoneplate",
+      apiName:"TFT_Item_GargoyleStoneplate",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/gargoyle_stoneplate.png",
       sinergia:"",
       combine:[4,5]
     },
     {
       nombre:"Sunfire Cape",
-      apiName:"sunfire_cape",
+      apiName:"TFT_Item_RedBuff",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/sunfire_cape.png",
       sinergia:"",
       combine:[4,6]
     },
     {
       nombre:"Steadfast Heart",
-      apiName:"steadfast_heart",
+      apiName:"TFT_Item_NightHarvester",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/behemoth.png",
       sinergia:"",
       combine:[4,7]
@@ -398,22 +398,22 @@ export const Items = ()=>{
       combine:[4,9]
     },
     {
-      nombre:"Dragons Claw",
-      apiName:"dragons_claw",
+      nombre:"Dragon's Claw",
+      apiName:"TFT_Item_DragonsClaw",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/dragons_claw.png",
       sinergia:"",
       combine:[5,5]
     },
     {
       nombre:"Evenshroud",
-      apiName:"evenshroud",
+      apiName:"TFT_Item_SpectralGauntlet",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/support_t4_lunar.png",
       sinergia:"",
       combine:[5,6]
     },
     {
       nombre:"Quicksilver",
-      apiName:"quicksilver",
+      apiName:"TFT_Item_Quicksilver",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/quicksilver.png",
       sinergia:"",
       combine:[5,7]
@@ -434,14 +434,14 @@ export const Items = ()=>{
     },
     {
       nombre:"Warmog's Armor",
-      apiName:"warmogs_armor",
+      apiName:"TFT_Item_WarmogsArmor",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/warmogs_xl.png",
       sinergia:"",
       combine:[6,6]
     },
     {
       nombre:"Guardbreaker",
-      apiName:"guardbreaker",
+      apiName:"TFT_Item_PowerGauntlet",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/stridebreaker_xl.png",
       sinergia:"",
       combine:[6,7]
@@ -461,8 +461,8 @@ export const Items = ()=>{
       combine:[6,9]
     },
     {
-      nombre:"Thieve's Gloves",
-      apiName:"thieves_gloves",
+      nombre:"Thief's Gloves",
+      apiName:"TFT_Item_ThiefsGloves",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/thieves_gloves.png",
       sinergia:"",
       combine:[7,7]
@@ -483,7 +483,7 @@ export const Items = ()=>{
     },
     {
       nombre:"Tactician's Crown",
-      apiName:"tacticians_crown",
+      apiName:"TFT_Item_ForceOfNature",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/tacticians_crown.png",
       sinergia:"tacticians_crown",
       combine:[8,8]
@@ -507,12 +507,12 @@ export const Items = ()=>{
   const MATRIZ_ITEMS_CRAFTEABLES = [
     ["Deathblade","Giant Slayer", "Hextech Gunblade", "Spear of Shojin", "Edge of Night", "Bloodthirster", "Sterak's Gage", "Infinity Edge", "Conqueror Emblem", "Artillerist Emblem"],
     ["Giant Slayer", "Red Buff", "Guinsoo's Rageblade", "Statikk Shiv", "Titan's Resolve", "Runaan's Hurricane", "Nashor's Tooth", "Last Whisper", "Rebel Emblem", "Quickstriker Emblem"],
-    ["Hextech Gunblade", "Guinsoo's Rageblade", "Rabadon's Deathcap", "Archangel's Staff", "Crownguard", "Ionic Spark", "Morellonomicon", "Jeweled Guantlet", "Black Rose Emblem", "Sorcerer Emblem"],
+    ["Hextech Gunblade", "Guinsoo's Rageblade", "Rabadon's Deathcap", "Archangel's Staff", "Crownguard", "Ionic Spark", "Morellonomicon", "Jeweled Gauntlet", "Black Rose Emblem", "Sorcerer Emblem"],
     ["Spear of Shojin", "Statikk Shiv", "Archangel's Staff", "Blue Buff", "Protector's Vow", "Adaptive Helm", "Redemption", "Hand of Justice", "Family Emblem", "Visionary Emblem"],
     ["Edge of Night", "Titan's Resolve", "Crownguard", "Protector's Vow", "Bramble Vest", "Gargoyle Stoneplate", "Sunfire Cape", "Steadfast Heart", "Enforcer Emblem", "Sentinel Emblem"],
-    ["Bloodthirster", "Runaan's Hurricane", "Ionic Spark", "Adaptive Helm", "Gargoyle Stoneplate", "Dragons Claw", "Evenshroud", "Quicksilver", "Automata Emblem", "Pit Fighter Emblem"],
+    ["Bloodthirster", "Runaan's Hurricane", "Ionic Spark", "Adaptive Helm", "Gargoyle Stoneplate", "Dragon's Claw", "Evenshroud", "Quicksilver", "Automata Emblem", "Pit Fighter Emblem"],
     ["Sterak's Gage","Nashor's Tooth", "Morellonomicon", "Redemption", "Sunfire Cape", "Evenshroud", "Warmog's Armor", "Guardbreaker", "Experiment Emblem", "Bruiser Emblem"],
-    ["Infinity Edge", "Last Whisper", "Jeweled Guantlet", "Hand of Justice", "Steadfast Heart", "Quicksilver", "Guardbreaker", "Thieve's Gloves", "Firelight Emblem", "Ambusher Emblem"],
+    ["Infinity Edge", "Last Whisper", "Jeweled Gauntlet", "Hand of Justice", "Steadfast Heart", "Quicksilver", "Guardbreaker", "Thief's Gloves", "Firelight Emblem", "Ambusher Emblem"],
     ["Conqueror Emblem", "Rebel Emblem", "Black Rose Emblem", "Family Emblem", "Enforcer Emblem", "Automata Emblem", "Experiment Emblem", "Firelight Emblem", "Tactician's Crown", "Tacticians Ring"],
     ["Artillerist Emblem", "Quickstriker Emblem", "Sorcerer Emblem", "Visionary Emblem", "Sentinel Emblem",  "Pit Fighter Emblem", "Bruiser Emblem", "Ambusher Emblem", "Tacticians Ring", "Tacticians Scepter"]
   ]
@@ -593,7 +593,7 @@ export const Items = ()=>{
     },
     {
       nombre:"Horizon Focus",
-      apiName:"TFT_Item_Artifact_HorizonFocus",
+      apiName:"TFT9_Item_OrnnHorizonFocus",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/tft/icons/items/hexcore/tft9_item_ornnhorizonfocus.tft_set13.png",
     },
     {
@@ -732,141 +732,165 @@ export const Items = ()=>{
 }
 
 
+if(allItemsInfo){
 
-return (
-    <div className={style.containerItems}>
-      <div className={style.containerBtn}>
-      <button onClick={(e)=>{e.preventDefault();handlePestana(0)}} className={style.btn}>Craftable</button>
-      <button onClick={(e)=>{e.preventDefault();handlePestana(1)}} className={style.btn}>Radiants</button>
-      <button onClick={(e)=>{e.preventDefault();handlePestana(2)}} className={style.btn}>Emblems</button>
-      <button onClick={(e)=>{e.preventDefault();handlePestana(3)}} className={style.btn}>Faerie</button>
-      <button onClick={(e)=>{e.preventDefault();handlePestana(4)}} className={style.btn}>Artefacts</button>
+  return (
+      <div className={style.containerItems}>
+        <div className={style.containerBtn}>
+        <button onClick={(e)=>{e.preventDefault();handlePestana(0)}} className={style.btn}>Craftable</button>
+        <button onClick={(e)=>{e.preventDefault();handlePestana(1)}} className={style.btn}>Radiants</button>
+        <button onClick={(e)=>{e.preventDefault();handlePestana(2)}} className={style.btn}>Emblems</button>
+        <button onClick={(e)=>{e.preventDefault();handlePestana(3)}} className={style.btn}>Faerie</button>
+        <button onClick={(e)=>{e.preventDefault();handlePestana(4)}} className={style.btn}>Artefacts</button>
+        </div>
+  
+        <div className={style.containerItemsInfo}>
+            {pestana === 0 &&
+              BASIC_ITEMS.map((dataItem,index)=>{
+              return (
+                <div className={style.itemsDrop} key={index}>
+                  <img  src={dataItem.img} alt={`Basic Item TFT ${dataItem.nombre}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} onClick={()=>{setItemOver(dataItem.apiName)}} data-item={JSON.stringify(dataItem)} data-from="itemList" draggable="true"></img>
+                </div>
+              )
+            })}
+  
+            {pestana === 0 &&
+              itemsCrafteables.map((dataItem,index)=>{
+                return (
+                <div className={style.itemsDrop} key={index}>
+                  <img 
+                    src={dataItem.img}
+                    alt={`Basic Item TFT ${dataItem.nombre}`}
+                    className={style.imgItems}
+                    onDragStart={(e)=>{handleDragStart(e)}}
+                    onClick={()=>{setItemOver(dataItem.apiName)}}
+                    data-item={JSON.stringify(allItemsInfo.find(({apiName})=>{
+                      return apiName === dataItem.apiName
+                    }))}
+                    data-from="itemList"
+                    draggable="true"
+                    >
+                    </img>
+                </div>)
+              })
+            }
+          </div>
+  
+          <div  className={style.containerItemsRadiants}>
+            {pestana === 1 &&
+            ORDENAMIENTO_RADIANTES.map((filas, index)=>{
+              return filas.map((busqueda,index2)=>{
+                const resultado = allItemsInfo.find(({apiName})=> apiName === busqueda)
+                return (
+                  <div className={style.itemsDropRadiants} key={index2+"-"+index}>
+                    <img src={"https://raw.communitydragon.org/latest/game/"+resultado.icon.replace(".tex",".png").toLowerCase()} alt={`Basic Item TFT ${resultado.name}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} onClick={()=>{setItemOver(resultado.apiName)}} data-item={JSON.stringify(resultado)} data-from="itemList" draggable="true"></img>
+                  </div>
+                )
+              })
+            })
+             
+            }
+          </div>
+  
+          <div className={style.containerItemsHorizontal}>
+            {pestana === 2 &&
+              allEmblemsItemsApiNames.map((dataItem,index)=>{
+                const resultado = allItemsInfo.find(({apiName})=> apiName === dataItem)
+                return (
+                  <div className={style.itemsDropOtros} key={index}>
+                    <img  src={"https://raw.communitydragon.org/latest/game/"+resultado.icon.replace(".tex",".png").toLowerCase()} alt={`Basic Item TFT ${resultado.name}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} onClick={()=>{setItemOver(resultado.apiName)}} data-item={JSON.stringify(resultado)} data-from="itemList" draggable="true"></img>
+                  </div>
+                )
+              })
+            }
+          </div>
+          <div className={style.containerItemsHorizontal}>
+            {pestana === 3 && 
+              OTROS_ITEMS.map((dataItem,index)=>{
+                return ( 
+                <div className={style.itemsDropOtros} key={`otrosItems`+index}>
+                  <img  src={dataItem.img} alt={`Basic Item TFT ${dataItem.nombre}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} onClick={()=>{setItemOver(dataItem.apiName)}} data-item={JSON.stringify(dataItem)} data-from="itemList" draggable="true"></img>
+                </div>)
+              })
+            }
+          </div>
+  
+          <div className={style.containerItemsHorizontalOtros}>
+            {pestana === 4 && 
+              ARTEFACTOS.map((dataItem,index)=>{
+                return ( 
+                <div className={style.itemsDropOtros} key={`otrosItems`+index}>
+                  <img 
+                  src={dataItem.img}
+                  alt={`Basic Item TFT ${dataItem.nombre}`}
+                  className={style.imgItems}
+                  onDragStart={(e)=>{handleDragStart(e)}}
+                  onClick={()=>{setItemOver(dataItem.apiName)}}
+                  data-item={JSON.stringify(allItemsInfo.find(({apiName})=>{
+                    return apiName === dataItem.apiName
+                  }))}
+                  data-from="itemList"
+                  draggable="true"></img>
+                </div>)
+              })
+            }
+          </div>
+          <div className={style.tooltip}>
+            {tooltip ?
+              <div className={style.tooltipContainer}>
+                <div className={style.tooltipContainerImg}>
+                  <img className={style.tooltipImg} src={"https://raw.communitydragon.org/latest/game/" + tooltip.icon.toLowerCase().replace(".tex",".png")}></img>
+                  {tooltip.composition.length === 2 && 
+                    <div className={style.tooltipContainerComponents}>
+                      <img className={style.tooltipImgComponent} src={"https://raw.communitydragon.org/latest/game/" + allItemsInfo.find(({apiName})=>apiName === tooltip.composition[0]).icon.toLowerCase().replace(".tex",".png")}></img>
+                      +
+                      <img className={style.tooltipImgComponent} src={"https://raw.communitydragon.org/latest/game/" + allItemsInfo.find(({apiName})=>apiName === tooltip.composition[1]).icon.toLowerCase().replace(".tex",".png")}></img>
+                    </div>
+                  }
+                </div>
+                <div className={style.tooltipContainerText}>
+                  <span className={style.tooltipContainerTextTitle}>{tooltip.name}</span>
+                  <span className={style.tooltipContainerDesc}>{(new DOMParser()).parseFromString(tooltip.desc, "text/html").body.innerText}</span>
+                  {Object.keys(tooltip.effects).map((key, index)=>{
+                    return (
+                      <span key={index} className={style.tooltipContainerEffects}>
+                        <span>{key} : {tooltip.effects[key]}</span>
+                      </span>
+                    )
+                  })}
+                </div>
+                
+              </div>
+              : 
+              <div className={style.tooltipContainer}>
+                <div className={style.tooltipContainerImg}>
+                  <img className={style.tooltipImg} src={"https://raw.communitydragon.org/latest/game/" + primerItem.icon.toLowerCase().replace(".tex",".png")}></img>
+                  {primerItem.composition.length === 2 && 
+                    <div className={style.tooltipContainerComponents}>
+                      <img className={style.tooltipImgComponent} src={"https://raw.communitydragon.org/latest/game/" + allItemsInfo.find(({apiName})=>apiName === primerItem.composition[0]).icon.toLowerCase().replace(".tex",".png")}></img>
+                      +
+                      <img className={style.tooltipImgComponent} src={"https://raw.communitydragon.org/latest/game/" + allItemsInfo.find(({apiName})=>apiName === primerItem.composition[1]).icon.toLowerCase().replace(".tex",".png")}></img>
+                    </div>
+                  }
+                </div>
+                <div className={style.tooltipContainerText}>
+                  <span className={style.tooltipContainerTextTitle}>{primerItem.name}</span>
+                  <span className={style.tooltipContainerDesc}>{(new DOMParser()).parseFromString(primerItem.desc, "text/html").body.innerText}</span>
+                  {Object.keys(primerItem.effects).map((key, index)=>{
+                    return (
+                      <span key={index} className={style.tooltipContainerEffects}>
+                        <span>{key} : {primerItem.effects[key]}</span>
+                      </span>
+                    )
+                  })}
+                </div>
+                
+              </div>
+            }
+          </div>
       </div>
-
-      <div className={style.containerItemsInfo}>
-          {pestana === 0 &&
-            BASIC_ITEMS.map((dataItem,index)=>{
-            return (
-              <div className={style.itemsDrop} key={index}>
-                <img  src={dataItem.img} alt={`Basic Item TFT ${dataItem.nombre}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} onClick={()=>{setItemOver(dataItem.apiName)}} data-item={JSON.stringify(dataItem)} data-from="itemList" draggable="true"></img>
-              </div>
-            )
-          })}
-
-          {pestana === 0 &&
-            itemsCrafteables.map((dataItem,index)=>{
-              return (
-              <div className={style.itemsDrop} key={index}>
-                <img  src={dataItem.img} alt={`Basic Item TFT ${dataItem.nombre}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} onClick={()=>{setItemOver(dataItem.apiName)}} data-item={JSON.stringify(dataItem)} data-from="itemList" draggable="true"></img>
-              </div>)
-            })
-          }
-        </div>
-
-        <div  className={style.containerItemsRadiants}>
-          {pestana === 1 &&
-          ORDENAMIENTO_RADIANTES.map((filas, index)=>{
-            return filas.map((busqueda,index2)=>{
-              const resultado = allItemsInfo.find(({apiName})=> apiName === busqueda)
-              return (
-                <div className={style.itemsDropRadiants} key={index2+"-"+index}>
-                  <img src={"https://raw.communitydragon.org/latest/game/"+resultado.icon.replace(".tex",".png").toLowerCase()} alt={`Basic Item TFT ${resultado.name}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} onClick={()=>{setItemOver(resultado.apiName)}} data-item={JSON.stringify(resultado)} data-from="itemList" draggable="true"></img>
-                </div>
-              )
-            })
-          })
-           
-          }
-        </div>
-
-        <div className={style.containerItemsHorizontal}>
-          {pestana === 2 &&
-            allEmblemsItemsApiNames.map((dataItem,index)=>{
-              const resultado = allItemsInfo.find(({apiName})=> apiName === dataItem)
-              return (
-                <div className={style.itemsDropRadiants} key={index}>
-                  <img  src={"https://raw.communitydragon.org/latest/game/"+resultado.icon.replace(".tex",".png").toLowerCase()} alt={`Basic Item TFT ${resultado.name}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} onClick={()=>{setItemOver(resultado.apiName)}} data-item={JSON.stringify(resultado)} data-from="itemList" draggable="true"></img>
-                </div>
-              )
-            })
-          }
-        </div>
-        <div className={style.containerItemsHorizontal}>
-          {pestana === 3 && 
-            OTROS_ITEMS.map((dataItem,index)=>{
-              return ( 
-              <div className={style.itemsDropRadiants} key={`otrosItems`+index}>
-                <img  src={dataItem.img} alt={`Basic Item TFT ${dataItem.nombre}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} onClick={()=>{setItemOver(dataItem.apiName)}} data-item={JSON.stringify(dataItem)} data-from="itemList" draggable="true"></img>
-              </div>)
-            })
-          }
-        </div>
-
-        <div className={style.containerItemsHorizontal}>
-          {pestana === 4 && 
-            ARTEFACTOS.map((dataItem,index)=>{
-              return ( 
-              <div className={style.itemsDropRadiants} key={`otrosItems`+index}>
-                <img  src={dataItem.img} alt={`Basic Item TFT ${dataItem.nombre}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} onClick={()=>{setItemOver(dataItem.apiName)}} data-item={JSON.stringify(dataItem)} data-from="itemList" draggable="true"></img>
-              </div>)
-            })
-          }
-        </div>
-        <div className={style.tooltip}>
-          {tooltip ?
-            <div className={style.tooltipContainer}>
-              <div className={style.tooltipContainerImg}>
-                <img className={style.tooltipImg} src={"https://raw.communitydragon.org/latest/game/" + tooltip.icon.toLowerCase().replace(".tex",".png")}></img>
-                {tooltip.composition.length === 2 && 
-                  <div className={style.tooltipContainerComponents}>
-                    <img className={style.tooltipImgComponent} src={"https://raw.communitydragon.org/latest/game/" + allItemsInfo.find(({apiName})=>apiName === tooltip.composition[0]).icon.toLowerCase().replace(".tex",".png")}></img>
-                    +
-                    <img className={style.tooltipImgComponent} src={"https://raw.communitydragon.org/latest/game/" + allItemsInfo.find(({apiName})=>apiName === tooltip.composition[1]).icon.toLowerCase().replace(".tex",".png")}></img>
-                  </div>
-                }
-              </div>
-              <div className={style.tooltipContainerText}>
-                <span className={style.tooltipContainerTextTitle}>{tooltip.name}</span>
-                <span className={style.tooltipContainerDesc}>{(new DOMParser()).parseFromString(tooltip.desc, "text/html").body.innerText}</span>
-                {Object.keys(tooltip.effects).map((key, index)=>{
-                  return (
-                    <span key={index} className={style.tooltipContainerEffects}>
-                      <span>{key} : {tooltip.effects[key]}</span>
-                    </span>
-                  )
-                })}
-              </div>
-              
-            </div>
-            : 
-            <div className={style.tooltipContainer}>
-              <div className={style.tooltipContainerImg}>
-                <img className={style.tooltipImg} src={"https://raw.communitydragon.org/latest/game/" + primerItem.icon.toLowerCase().replace(".tex",".png")}></img>
-                {primerItem.composition.length === 2 && 
-                  <div className={style.tooltipContainerComponents}>
-                    <img className={style.tooltipImgComponent} src={"https://raw.communitydragon.org/latest/game/" + allItemsInfo.find(({apiName})=>apiName === primerItem.composition[0]).icon.toLowerCase().replace(".tex",".png")}></img>
-                    +
-                    <img className={style.tooltipImgComponent} src={"https://raw.communitydragon.org/latest/game/" + allItemsInfo.find(({apiName})=>apiName === primerItem.composition[1]).icon.toLowerCase().replace(".tex",".png")}></img>
-                  </div>
-                }
-              </div>
-              <div className={style.tooltipContainerText}>
-                <span className={style.tooltipContainerTextTitle}>{primerItem.name}</span>
-                <span className={style.tooltipContainerDesc}>{(new DOMParser()).parseFromString(primerItem.desc, "text/html").body.innerText}</span>
-                {Object.keys(primerItem.effects).map((key, index)=>{
-                  return (
-                    <span key={index} className={style.tooltipContainerEffects}>
-                      <span>{key} : {primerItem.effects[key]}</span>
-                    </span>
-                  )
-                })}
-              </div>
-              
-            </div>
-          }
-        </div>
-    </div>
-  )
+    )
+}
 }
 
 export default Items;

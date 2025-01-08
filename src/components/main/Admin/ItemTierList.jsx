@@ -32,6 +32,18 @@ const ItemTierList = ()=>{
               {itemsTierList?.[categoryItemName]?.["S"].map((dataItem,i)=>{
                 return (
                   <div key={"S"+i} className={style.containerItem}>
+                    {dataItem.desc &&
+                     <div className={style.tooltip}>
+                      <div className={style.tooltipTitle}>{dataItem?.name || dataItem?.nombre}</div>
+                      <div className={style.tooltipDesc}>{dataItem?.desc}</div>
+                      {Object.keys(dataItem?.effects).length > 0 && Object.keys(dataItem?.effects).map((variable, i)=>{
+                        return (
+                        <div key={i} className={style.effects}>
+                          <span className={style.variableName}>{variable}</span> : <span>{dataItem?.effects[variable]}</span>
+                          </div>
+                        )
+                      })}
+                    </div>}
                     <img className={style.imgItem} src={dataItem?.img || urlDataDragon + dataItem?.icon.replace(".tex",".png").toLowerCase()} alt={dataItem.nombre} data-from="itemBoard" data-tier="S" data-item={JSON.stringify(dataItem)} onDrop={(e)=>handleDrop(e)} onDragStart={(e)=>handleDragStart(e)} onDragEnd={(e)=>handleDropOutside(e,"item")}/>
                   </div>
                 )

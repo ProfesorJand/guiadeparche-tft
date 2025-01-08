@@ -16,6 +16,7 @@
   width: 100%;
   flex-direction: row;
   background-color: var(--bg-secondary);
+  position:relative;
 }
 
 
@@ -48,4 +49,45 @@
 .imgItem{
   display: flex;
   width: 100%;
+}
+
+/* Tooltip oculto por defecto */
+.tooltip {
+  display: flex;
+  position: absolute;
+  top:100%;
+  background-color: var(--bg-main);
+  border: 1px solid grey;
+  visibility: hidden;
+  flex-direction: column;
+  padding: 5px;
+  width: 100%;
+  left:0;
+  box-sizing: border-box;
+  opacity: 0;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 1000;
+}
+
+/* Mostrar el tooltip al hacer hover */
+.containerItem:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+.tooltipTitle{
+  font-size: smaller;
+  color:gold
+}
+
+.tooltipDesc{
+  font-size: small;
+}
+
+.effects{
+  font-size: small;
+}
+
+.variableName{
+  color:gold
 }
