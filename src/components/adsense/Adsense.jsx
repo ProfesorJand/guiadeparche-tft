@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import style from "./Adsense.module.css"
 
-const AdComponent = ({ direction="", dimension="cuadrado" }) => {
+const AdComponent = ({ direction="", dimension="cuadrado", numeracion=0 }) => {
 
   const [pass, setPass] = useState(false);
   useEffect(()=>{
@@ -52,6 +52,7 @@ const AdComponent = ({ direction="", dimension="cuadrado" }) => {
     case 'horizontal':
       adsenseID = 8326664156;
       styleINS.height = '150px';
+      styleINS.minWidth = "250px";
       break;
     case 'cuadrado':
     default:
@@ -67,6 +68,7 @@ const AdComponent = ({ direction="", dimension="cuadrado" }) => {
       {(dimension === 'vertical-izquierda' || dimension === "vertical-derecha") && (
         <div className={[style.adsense_container, style.adsense_vertical].join(" ")} style={direction === "right" ? {right:0}: {left:0}}>
           <ins
+              key={`adsense-${numeracion}-${direction}`}
               className="adsbygoogle"
               style={styleINS}
               data-ad-client="ca-pub-6116944495372863"
@@ -80,6 +82,7 @@ const AdComponent = ({ direction="", dimension="cuadrado" }) => {
       {dimension === 'horizontal' && (
         <div className={[style.adsense_container, style.adsense_horizontal].join(" ")}>
           <ins
+            key={`adsense-${numeracion}-${direction}`}
             className="adsbygoogle"
             style={styleINS}
             data-ad-format="fluid"
@@ -93,6 +96,7 @@ const AdComponent = ({ direction="", dimension="cuadrado" }) => {
       {dimension === 'cuadrado' && (
         <div className={[style.adsense_container, style.adsense_cuadrado].join(" ")}>
           <ins
+            key={`adsense-${numeracion}-${direction}`}
             className="adsbygoogle"
             style={styleINS}
             data-ad-client="ca-pub-6116944495372863"

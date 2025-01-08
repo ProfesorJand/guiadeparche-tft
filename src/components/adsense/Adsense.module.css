@@ -27,7 +27,4 @@
       display: flex;
       width: calc((100vw - var(--width-main)) / 2);
     }
-    .adsense_horizontal {
-      display: none;
-    }
   }

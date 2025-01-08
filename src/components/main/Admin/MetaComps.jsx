@@ -4,6 +4,7 @@ import Composicion from "./Composicion.jsx";
 import style from "./css/EditarCompoTFT.module.css"
 import {MetaComps as compos, loadCompsMeta} from "src/stores/menuFiltradoAdmin.js"
 import FantasmaComposiciones from "./FantasmaComposiciones.jsx";
+import Adsense from "@components/adsense/Adsense.jsx";
 const MetaComps = ({showHide})=>{
   const composMeta = useStore(compos);
   const [allFast8, setAllFast8] = useState([]);
@@ -64,6 +65,7 @@ const MetaComps = ({showHide})=>{
   if(allFast8 || all3Stars || allAugmentsHero){
     return (
       <div className={style.containerMeta}>
+        <Adsense direction='' dimension="horizontal" numeracion={0} client:only="react"/>
         {allFast8.some(innerArray => innerArray.length > 0) && 
         <>
         <h2>{title.fast8}</h2>
@@ -82,6 +84,7 @@ const MetaComps = ({showHide})=>{
       }
       </>
       }
+      <Adsense direction='' dimension="horizontal" numeracion={1} client:only="react"/>
       {all3Stars.some(innerArray => innerArray.length > 0) && 
         <>
         <h2>{title.stars3}</h2>
@@ -100,6 +103,7 @@ const MetaComps = ({showHide})=>{
       }
       </>
       }
+      <Adsense direction='' dimension="horizontal" numeracion={2} client:only="react"/>
       {allAugmentsHero.some(innerArray => innerArray.length > 0) && 
         <>
         <h2>{title.specificsAugments}</h2>
