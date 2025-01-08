@@ -11,8 +11,9 @@ import { championsTFT } from "src/json/updates/constantesLatest.js";
 import ShowBigCompScreen from "./ShowBigCompScreen"; 
 import RadiantsItems from "./RadiantsItems";
 
-const Composicion = ({compo, admin=false, show=true, allwaysOpen=false})=>{
+const Composicion = ({compo, admin=false, show=true, allwaysOpen=false, onToggle, isOpen})=>{
   const [open,setOpen]=useState(allwaysOpen);
+
   const [editId, setEditId] = useState(null)
   const colorDificulty= {Easy:"green",Medium:"orange",Hard:"red"}
   const [posicionamiento, setPosicionamiento] = useState(compo.originalComp)
@@ -182,7 +183,7 @@ const Composicion = ({compo, admin=false, show=true, allwaysOpen=false})=>{
   return (
     <div className={[show ? style.containerInfoGlobal: style.containerInfoGlobalOculto].join(" ")}>
 
-    <div className={[show ? style.containerInfoPrincipal : style.containerInfoPrincipalOculto , open ? style.downBorder: "" ].join(" ")} onClick={()=>{setOpen(!open)}}>
+    <div className={[show ? style.containerInfoPrincipal : style.containerInfoPrincipalOculto , (open || isOpen) ? style.downBorder: "" ].join(" ")} onClick={()=>{onToggle()}}>
     <div className={show ? style.containerTextoInfoPrimario : ""}>
       <div className={style.containerTextoInfoPrimarioTier}>
         {show && 
@@ -250,7 +251,7 @@ const Composicion = ({compo, admin=false, show=true, allwaysOpen=false})=>{
       </div>
     </div>
     </div>
-    <div className={[show ? style.containerInfoSecundario : style.containerInfoSecundarioOculto, open ? "": style.hide, open && style.upBorder].join(" ")}>
+    <div className={[show ? style.containerInfoSecundario : style.containerInfoSecundarioOculto, (open || isOpen) ? "": style.hide, (open || isOpen) && style.upBorder].join(" ")}>
       <div className={[show ? style.containerECT : style.containerECTOculto].join(" ")}>
         <div className={style.containerEGlobal}>
           <h3 className={style.titulo}>Early Game</h3>
