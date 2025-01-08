@@ -11,7 +11,9 @@ const AdComponent = ({ direction="", dimension="cuadrado", numeracion=0 }) => {
   },[])
 
   useEffect(() => {
-    if(pass) (window.adsbygoogle = window.adsbygoogle || []).push({});
+    if (pass && document.querySelectorAll('ins.adsbygoogle[data-ad-status="filled"]').length === 0) {
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+    }
   }, [pass]);
 
   let right;
@@ -53,6 +55,7 @@ const AdComponent = ({ direction="", dimension="cuadrado", numeracion=0 }) => {
       adsenseID = 8326664156;
       styleINS.height = '150px';
       styleINS.minWidth = "250px";
+      styleINS.position = "relative"
       break;
     case 'cuadrado':
     default:
@@ -80,7 +83,7 @@ const AdComponent = ({ direction="", dimension="cuadrado", numeracion=0 }) => {
       )}
 
       {dimension === 'horizontal' && (
-        <div className={[style.adsense_container, style.adsense_horizontal].join(" ")}>
+        <div className={[style.adsense_container_relative, style.adsense_horizontal].join(" ")}>
           <ins
             key={`adsense-${numeracion}-${direction}`}
             className="adsbygoogle"
@@ -94,7 +97,7 @@ const AdComponent = ({ direction="", dimension="cuadrado", numeracion=0 }) => {
       )}
 
       {dimension === 'cuadrado' && (
-        <div className={[style.adsense_container, style.adsense_cuadrado].join(" ")}>
+        <div className={[style.adsense_container_relative, style.adsense_cuadrado].join(" ")}>
           <ins
             key={`adsense-${numeracion}-${direction}`}
             className="adsbygoogle"

@@ -13,6 +13,9 @@
   .adsense_cuadrado{
     display:flex;
   }
+  .adsense_container_relative{
+    position:relative
+  }
   ins.adsbygoogle[data-ad-status="unfilled"] {
     display: none !important;
   }
