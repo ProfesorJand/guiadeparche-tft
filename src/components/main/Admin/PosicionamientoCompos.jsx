@@ -46,11 +46,15 @@ const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, gameplay, s
         </div>
 
         <div className={style.containerSpatula}>
-          {(spatula1 || spatula2) &&
+          {(spatula1) &&
            <div className={[style.btnSpat,posicionamiento === "spatula1" ? style.btnActive : ""].join(" ")}>
             {spatula1 && 
               <img className={[style.imgSpat].join(" ")} src={spatula1} onClick={()=>{setPosicionamiento("spatula1");setData(boardInfo["spatula1"].data);setSinergias(boardInfo["spatula1"].sinergias)}} loading="lazy"></img>
             }
+          </div>
+          }
+          {(spatula2) &&
+           <div className={[style.btnSpat,posicionamiento === "spatula2" ? style.btnActive : ""].join(" ")}>
             {spatula2 && 
               <img className={[style.imgSpat].join(" ")} src={spatula2} onClick={()=>{setPosicionamiento("spatula2");setData(boardInfo["spatula2"].data);setSinergias(boardInfo["spatula2"].sinergias)}} loading="lazy"></img>
             }  
