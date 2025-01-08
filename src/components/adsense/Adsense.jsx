@@ -11,7 +11,7 @@ const AdComponent = ({ direction="", dimension="cuadrado", numeracion=0 }) => {
   },[])
 
   useEffect(() => {
-    if (pass && document.querySelectorAll('ins.adsbygoogle[data-ad-status="filled"]').length === 0) {
+    if (pass && document.querySelectorAll('ins.adsbygoogle[data-ad-status="unfilled"]').length === 0) {
       (window.adsbygoogle = window.adsbygoogle || []).push({});
     }
   }, [pass]);
