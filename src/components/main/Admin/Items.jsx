@@ -27,6 +27,7 @@ export const Items = ()=>{
   const [allItemsApiNames, setAllItemsApiNames] = useState(null);
   const [allItemsInfo, setAllItemsInfo] = useState(null);
   const [allEmblemsItemsApiNames, setAllEmblemsItemsApiName] = useState(null);
+  const [allSupportsItems, setAllSupportsItems] = useState(null)
 
   useEffect(()=>{
     const getAllItems = async ()=>{
@@ -34,6 +35,28 @@ export const Items = ()=>{
       setAllItemsInfo((await getDataTFTBySet({})).setInfo)
       setAllEmblemsItemsApiName((await getDataTFTBySet({})).setData.items.filter((apiName)=>{
         return apiName.includes("EmblemItem")
+      }))
+      setAllSupportsItems((await getDataTFTBySet({})).setInfo.filter(({apiName})=>{
+        const apiNameOfSupportsItems = [
+          "TFT_Item_BansheesVeil",
+          "TFT_Item_AegisOfTheLegion",
+          "TFT_Item_Chalice",
+          "TFT_Item_SupportKnightsVow",
+          "TFT_Item_LocketOfTheIronSolari",
+          "TFT_Item_Moonstone",
+          "TFT7_Item_ShimmerscaleHeartOfGold",
+          "TFT4_Item_OrnnObsidianCleaver",
+          "TFT4_Item_OrnnRanduinsSanctum",
+          "TFT_Item_Shroud",
+          "TFT_Item_Spite",
+          "TFT_Item_EternalFlame",
+          "TFT_Item_UnstableTreasureChest",
+          "TFT_Item_RadiantVirtue",
+          "TFT_Item_ZekesHerald",
+          "TFT_Item_Zephyr",
+          "TFT5_Item_ZzRotPortalRadiant"
+        ]
+        return apiNameOfSupportsItems.some((item)=> item.includes(apiName))
       }))
     }
     getAllItems();
@@ -44,6 +67,7 @@ export const Items = ()=>{
       console.log({allItemsApiNames})
       console.log({allItemsInfo})
       console.log({allEmblemsItemsApiNames})
+      console.log({allSupportsItems})
       //console.log(allItemsInfo.find(({apiName})=>apiName === "TFT4_Item_OrnnZhonyasParadox"))
     }
   },[allItemsApiNames, allItemsInfo, allEmblemsItemsApiNames])
@@ -708,6 +732,8 @@ export const Items = ()=>{
     ["TFT5_Item_SteraksGageRadiant","TFT5_Item_LeviathanRadiant","TFT5_Item_MorellonomiconRadiant","TFT5_Item_RedemptionRadiant","TFT5_Item_SunfireCapeRadiant","TFT5_Item_SpectralGauntletRadiant","TFT5_Item_WarmogsArmorRadiant","TFT5_Item_TrapClawRadiant"],
     ["TFT5_Item_InfinityEdgeRadiant","TFT5_Item_LastWhisperRadiant","TFT5_Item_JeweledGauntletRadiant","TFT5_Item_HandOfJusticeRadiant","TFT5_Item_NightHarvesterRadiant","TFT5_Item_QuicksilverRadiant","TFT5_Item_TrapClawRadiant","TFT5_Item_ThiefsGlovesRadiant"]
   ]
+
+  const SUPPORTS_ITEMS = [];
  
   useEffect(()=>{
     var resultado = [];
@@ -742,6 +768,7 @@ if(allItemsInfo){
         <button onClick={(e)=>{e.preventDefault();handlePestana(2)}} className={style.btn}>Emblems</button>
         <button onClick={(e)=>{e.preventDefault();handlePestana(3)}} className={style.btn}>Faerie</button>
         <button onClick={(e)=>{e.preventDefault();handlePestana(4)}} className={style.btn}>Artefacts</button>
+        <button onClick={(e)=>{e.preventDefault();handlePestana(5)}} className={style.btn}>Supports</button>
         </div>
   
         <div className={style.containerItemsInfo}>
@@ -822,6 +849,26 @@ if(allItemsInfo){
                 <div className={style.itemsDropOtros} key={`otrosItems`+index}>
                   <img 
                   src={dataItem.img}
+                  alt={`Basic Item TFT ${dataItem.nombre}`}
+                  className={style.imgItems}
+                  onDragStart={(e)=>{handleDragStart(e)}}
+                  onClick={()=>{setItemOver(dataItem.apiName)}}
+                  data-item={JSON.stringify(allItemsInfo.find(({apiName})=>{
+                    return apiName === dataItem.apiName
+                  }))}
+                  data-from="itemList"
+                  draggable="true"></img>
+                </div>)
+              })
+            }
+          </div>
+          <div className={style.containerItemsHorizontalOtros}>
+            {pestana === 5 && 
+              allSupportsItems.map((dataItem,index)=>{
+                return ( 
+                <div className={style.itemsDropOtros} key={`otrosItems`+index}>
+                  <img 
+                  src={dataItem?.img || "https://raw.communitydragon.org/latest/game/"+dataItem.icon.replace(".tex",".png").toLowerCase()}
                   alt={`Basic Item TFT ${dataItem.nombre}`}
                   className={style.imgItems}
                   onDragStart={(e)=>{handleDragStart(e)}}
