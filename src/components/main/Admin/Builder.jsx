@@ -133,7 +133,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
                 containerItem.className = style.containerItem;
                 const imgItem = document.createElement("img");
                 imgItem.className = style.imgItem;
-                imgItem.src = dataItem.img ? dataItem.img : dataItem.icon; // arreglar a futuro
+                imgItem.src = dataItem.img ? dataItem.img : "https://raw.communitydragon.org/latest/game/"+dataItem.icon.toLowerCase().replace(".tex",".png"); // arreglar a futuro
                 imgItem.alt = dataItem.nombre ? dataItem.nombre : dataItem.name; // arreglar a futuro
                 imgItem.setAttribute("draggable", true);
                 imgItem.dataset.item = JSON.stringify(dataItem);
@@ -383,7 +383,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
     containerItem.className = style.containerItem;
     const imgItem = document.createElement("img");
     imgItem.className = style.imgItem;
-    imgItem.src = dataItem.icon ? "https://raw.communitydragon.org/latest/game/"+dataItem.icon?.replace(".tex",".png").toLowerCase() : dataItem.img; //arreglar a futuro
+    imgItem.src = dataItem.img ? dataItem.img : "https://raw.communitydragon.org/latest/game/"+dataItem.icon.toLowerCase().replace(".tex",".png"); // arreglar a futuro
     imgItem.alt = dataItem.nombre;
     imgItem.setAttribute("draggable", true);
     imgItem.dataset.item = JSON.stringify(dataItem);
