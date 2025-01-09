@@ -12,7 +12,7 @@ const hierarchy = ["S","A","B","C","D","MEME"];
 export const loadCompsMeta = ()=>{
   task(async()=>{
     try{
-      const urlMeta = "https://guiadeparche.com/tftdata/Set12/composMeta.json"
+      const urlMeta = "https://guiadeparche.com/tftdata/Set12/composMeta.json";
       const responde = await fetch(urlMeta,{cache:"reload"});
       const data = await responde.json()
       const sortableArray = Object.keys(data)

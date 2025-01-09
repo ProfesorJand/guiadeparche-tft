@@ -22,6 +22,8 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "astro": "^4.6.4",
+    "dompurify": "^3.2.3",
+    "html-react-parser": "^5.2.2",
     "html-to-image": "^1.11.11",
     "jsdom": "^25.0.0",
     "nanostores": "^0.10.3",
