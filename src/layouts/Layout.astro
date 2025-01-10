@@ -68,7 +68,7 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
 
       <div class="bodyInfo">
         <aside class="bodyAside">
-          <Adsense direction='left' dimension="vertical-izquierda" client:only="react"/>
+          <Adsense direction='left' dimension="vertical-izquierda" numeracion={0} client:only="react"/>
         </aside>
 
         <main class="bodyMain">
@@ -93,7 +93,7 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
         </main>
 
         <aside class="bodyAside">
-          <Adsense direction='right' dimension="vertical-derecha" client:only="react" />
+          <Adsense direction='right' dimension="vertical-derecha" numeracion={1} client:only="react" />
         </aside>
       </div>
 

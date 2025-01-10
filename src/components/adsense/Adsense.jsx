@@ -4,11 +4,10 @@ import style from "./Adsense.module.css"
 const AdComponent = ({ direction="", dimension="cuadrado", numeracion=0 }) => {
 
   const [pass, setPass] = useState(false);
-  useEffect(()=>{
-    setTimeout(() => {
-      setPass(true)
-    }, 5000);
-  },[])
+  useEffect(() => {
+    const timer = setTimeout(() => setPass(true), 10000); // Aumenta a 10 segundos
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     if (pass && document.querySelectorAll('ins.adsbygoogle[data-ad-status="unfilled"]').length === 0) {
