@@ -51,7 +51,7 @@ const CreateItemsTierList = ()=>{
     }
   });
   const [pestana, setPestana] = useState(0)
-  const category = ["Craftable","Radiants","Emblems","Artefacts","Supports","Others"]
+  const category = ["Craftable", "Radiants", "Emblems", "Artefacts", "Supports", "Chembaron", "Others"]; // Categorías a incluir
 
   useEffect(()=>{
     (async function traerDatos(){

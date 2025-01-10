@@ -6,7 +6,7 @@ import DOMPurify from "dompurify";
 const ItemTierList = () => {
   const urlDataDragon = "https://raw.communitydragon.org/latest/game/";
   const [itemsTierList, setItemsTierList] = useState({});
-  const category = ["Craftable", "Radiants", "Emblems", "Artefacts", "Supports", "Others"]; // Categorías a incluir
+  const category = ["Craftable", "Radiants", "Emblems", "Artefacts", "Supports", "Chembaron", "Others"]; // Categorías a incluir
 
   useEffect(() => {
     (async function traerDatos() {

@@ -28,6 +28,7 @@ export const Items = ()=>{
   const [allItemsInfo, setAllItemsInfo] = useState(null);
   const [allEmblemsItemsApiNames, setAllEmblemsItemsApiName] = useState(null);
   const [allSupportsItems, setAllSupportsItems] = useState(null)
+  const [allChemBaronItems, setAllChemBaronItems] = useState(null)
 
   useEffect(()=>{
     const getAllItems = async ()=>{
@@ -58,6 +59,38 @@ export const Items = ()=>{
         ]
         return apiNameOfSupportsItems.some((item)=> item.includes(apiName))
       }))
+      setAllChemBaronItems((await getDataTFTBySet({})).setInfo.filter(({apiName})=>{
+        const apiNameOfChemBaronItems = [
+          "TFT13_Crime_Bronze_ChemGrips",
+          "TFT13_Crime_Bronze_MageGuard",
+          "TFT13_Crime_Bronze_MiningGauntlet",
+          "TFT13_Crime_Silver_DestabilizedChemtank",
+          "TFT13_Crime_Gold_DestabilizedChemtank",
+          "TFT13_Crime_Prismatic_DestabilizedChemtank",
+          "TFT13_Crime_Silver_ExecutionersVorpalblade",
+          "TFT13_Crime_Gold_ExecutionersVorpalblade",
+          "TFT13_Crime_Prismatic_ExecutionersVorpalblade",
+          "TFT13_Crime_Silver_FleshRipper",
+          "TFT13_Crime_Gold_FleshRipper",
+          "TFT13_Crime_Prismatic_FleshRipper",
+          "TFT13_Crime_Silver_PiltovenHexplating",
+          "TFT13_Crime_Gold_PiltovenHexplating",
+          "TFT13_Crime_Prismatic_PiltovenHexplating",
+          "TFT13_Crime_Silver_ShimmerBloom",
+          "TFT13_Crime_Gold_ShimmerBloom",
+          "TFT13_Crime_Prismatic_ShimmerBloom",
+          "TFT13_Crime_Silver_UnleashedToxins",
+          "TFT13_Crime_Gold_UnleashedToxins",
+          "TFT13_Crime_Prismatic_UnleashedToxins",
+          "TFT13_Crime_Silver_VirulentVirus",
+          "TFT13_Crime_Gold_VirulentVirus",
+          "TFT13_Crime_Prismatic_VirulentVirus",
+          "TFT13_Crime_Silver_VoltaicSaber",
+          "TFT13_Crime_Gold_VoltaicSaber",
+          "TFT13_Crime_Prismatic_VoltaicSaber"
+        ]
+        return apiNameOfChemBaronItems.some((item) => item === apiName);
+      }))  
     }
     getAllItems();
   },[])
@@ -769,6 +802,8 @@ if(allItemsInfo){
         <button onClick={(e)=>{e.preventDefault();handlePestana(3)}} className={style.btn}>Faerie</button>
         <button onClick={(e)=>{e.preventDefault();handlePestana(4)}} className={style.btn}>Artefacts</button>
         <button onClick={(e)=>{e.preventDefault();handlePestana(5)}} className={style.btn}>Supports</button>
+        <button onClick={(e)=>{e.preventDefault();handlePestana(6)}} className={style.btn}>ChemBron</button>
+    
         </div>
   
         <div className={style.containerItemsInfo}>
@@ -869,13 +904,33 @@ if(allItemsInfo){
                 <div className={style.itemsDropOtros} key={`otrosItems`+index}>
                   <img 
                   src={dataItem?.img || "https://raw.communitydragon.org/latest/game/"+dataItem.icon.replace(".tex",".png").toLowerCase()}
-                  alt={`Basic Item TFT ${dataItem.nombre}`}
+                  alt={`Support Item TFT ${dataItem.name}`}
                   className={style.imgItems}
                   onDragStart={(e)=>{handleDragStart(e)}}
                   onClick={()=>{setItemOver(dataItem.apiName)}}
-                  data-item={JSON.stringify(allItemsInfo.find(({apiName})=>{
-                    return apiName === dataItem.apiName
-                  }))}
+                  data-item={JSON.stringify(dataItem)}
+                  data-from="itemList"
+                  draggable="true"></img>
+                </div>)
+              })
+            }
+          </div>
+          <div className={style.containerItemsHorizontalOtros}>
+            {pestana === 6 && 
+              allChemBaronItems.sort(function(a, b){
+                if(a.apiName < b.apiName) { return -1; }
+                if(a.apiName > b.apiName) { return 1; }
+                return 0;
+              }).map((dataItem,index)=>{
+                return ( 
+                <div className={style.itemsDropOtros} key={`otrosItems`+index}>
+                  <img 
+                  src={dataItem?.img || "https://raw.communitydragon.org/latest/game/"+dataItem.icon.replace(".tex",".png").toLowerCase()}
+                  alt={`Chem Baron Item TFT ${dataItem.name}`}
+                  className={style.imgItems}
+                  onDragStart={(e)=>{handleDragStart(e)}}
+                  onClick={()=>{setItemOver(dataItem.apiName)}}
+                  data-item={JSON.stringify(dataItem)}
                   data-from="itemList"
                   draggable="true"></img>
                 </div>)
