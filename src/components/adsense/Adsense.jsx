@@ -15,6 +15,15 @@ const AdComponent = ({ direction="", dimension="cuadrado", numeracion=0 }) => {
     }
   }, [pass]);
 
+  useEffect(() => {
+    const ads = document.querySelectorAll("ins.adsbygoogle");
+    ads.forEach((ad) => {
+      if (!ad.hasAttribute("data-ad-status")) {
+        ad.style.display = "none";
+      }
+    });
+  }, [pass]);
+
   let right;
   let left;
   if (direction === 'left') {
