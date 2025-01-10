@@ -87,10 +87,11 @@ const AdComponent = ({ direction="", dimension="cuadrado", numeracion=0 }) => {
             key={`adsense-${numeracion}-${direction}`}
             className="adsbygoogle"
             style={styleINS}
-            data-ad-format="fluid"
-            data-ad-layout-key="-f9+4w+7x-eg+3a"
             data-ad-client="ca-pub-6116944495372863"
-            data-ad-slot="8326664156"
+            data-ad-slot={adsenseID}
+            data-ad-format="auto"
+            data-full-width-responsive="true"
+
             ></ins>
         </div>
       )}
@@ -102,7 +103,7 @@ const AdComponent = ({ direction="", dimension="cuadrado", numeracion=0 }) => {
             className="adsbygoogle"
             style={styleINS}
             data-ad-client="ca-pub-6116944495372863"
-            data-ad-slot="4837474033"
+            data-ad-slot={adsenseID}
             data-ad-format="auto"
             data-full-width-responsive="true"
             ></ins>

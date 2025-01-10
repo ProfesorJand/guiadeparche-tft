@@ -9,11 +9,13 @@
   }
   .adsense_horizontal {
     display: flex;
+    justify-content: center;
   }
   .adsense_cuadrado{
     display:flex;
   }
   .adsense_container_relative{
+    display:flex;
     position:relative
   }
   ins.adsbygoogle[data-ad-status="unfilled"] {
