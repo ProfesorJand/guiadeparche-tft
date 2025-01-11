@@ -5,7 +5,7 @@ const AdComponent = ({ direction = '', dimension = 'cuadrado', numeracion = 0 })
   const [pass, setPass] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setPass(true),5000); // Aumenta a 5 segundos
+    const timer = setTimeout(() => setPass(true),10000); // Aumenta a 10 segundos
     return () => clearTimeout(timer);
   }, []);
 
@@ -31,7 +31,7 @@ const AdComponent = ({ direction = '', dimension = 'cuadrado', numeracion = 0 })
   }, [pass]);
 
   let adsenseID;
-  let styleINS = { display: 'block', width: '100%' };
+  let styleINS = { display: 'block', width: '100%', minWidth: "90px", minHeight:"90px" };
 
   switch (dimension) {
     case 'vertical-derecha':
