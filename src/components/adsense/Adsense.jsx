@@ -31,6 +31,7 @@ const AdComponent = ({ direction = '', dimension = 'cuadrado', numeracion = 0 })
             console.log({parent})
             if (parent) {
               parent.style.minHeight = '100px';
+              parent.style.maxHeight = '600px';
             }
           }
         });
@@ -48,7 +49,7 @@ const AdComponent = ({ direction = '', dimension = 'cuadrado', numeracion = 0 })
     case 'vertical-izquierda':
       adsenseID = 7127054478;
       styleINS.height = '600px';
-      styleINS.minWidth = '250px';
+      styleINS.minWidth = '100px';
       styleINS.maxWidth = "100%"
       break;
     case 'horizontal':
@@ -66,68 +67,70 @@ const AdComponent = ({ direction = '', dimension = 'cuadrado', numeracion = 0 })
       break;
   }
 
-  return (
-    <>
-      {dimension === 'vertical-izquierda' && (
-        <div
-          className={`${style.adsense_container} ${style.adsense_vertical} ${style.left}`}
-          style={{ left: 0 }}
-        >
-          <ins
-            data-key={`adsense-${numeracion}-left`}
-            className="adsbygoogle"
-            style={styleINS}
-            data-ad-client="ca-pub-6116944495372863"
-            data-ad-slot={adsenseID}
-            data-ad-format="auto"
-            data-full-width-responsive="true"
-          ></ins>
-        </div>
-      )}
-      {dimension === 'vertical-derecha' && (
-        <div
-          className={`${style.adsense_container} ${style.adsense_vertical} ${style.right}`}
-          style={{ right: 0 }}
-        >
-          <ins
-            data-key={`adsense-${numeracion}-right`}
-            className="adsbygoogle"
-            style={styleINS}
-            data-ad-client="ca-pub-6116944495372863"
-            data-ad-slot={adsenseID}
-            data-ad-format="auto"
-            data-full-width-responsive="true"
-          ></ins>
-        </div>
-      )}
-      {dimension === 'horizontal' && (
-        <div className={`${style.adsense_container_relative} ${style.adsense_horizontal}`}>
-          <ins
-            data-key={`adsense-${numeracion}-horizontal`}
-            className="adsbygoogle"
-            style={styleINS}
-            data-ad-client="ca-pub-6116944495372863"
-            data-ad-slot={adsenseID}
-            data-ad-format="fluid"
-            data-full-width-responsive="true"
-          ></ins>
-        </div>
-      )}
-      {dimension === 'cuadrado' && (
-        <div className={`${style.adsense_container_relative} ${style.adsense_cuadrado}`}>
-          <ins
-            data-key={`adsense-${numeracion}-cuadrado`}
-            className="adsbygoogle"
-            style={styleINS}
-            data-ad-client="ca-pub-6116944495372863"
-            data-ad-slot={adsenseID}
-            data-ad-format="auto"
-            data-full-width-responsive="true"
-          ></ins>
-        </div>
-      )}
-    </>
-  );
+  if(pass){
+    return (
+      <>
+        {dimension === 'vertical-izquierda' && (
+          <div
+            className={`${style.adsense_container} ${style.adsense_vertical} ${style.left}`}
+            style={{ left: 0 }}
+          >
+            <ins
+              data-key={`adsense-${numeracion}-left`}
+              className="adsbygoogle"
+              style={styleINS}
+              data-ad-client="ca-pub-6116944495372863"
+              data-ad-slot={adsenseID}
+              data-ad-format="auto"
+              data-full-width-responsive="true"
+            ></ins>
+          </div>
+        )}
+        {dimension === 'vertical-derecha' && (
+          <div
+            className={`${style.adsense_container} ${style.adsense_vertical} ${style.right}`}
+            style={{ right: 0 }}
+          >
+            <ins
+              data-key={`adsense-${numeracion}-right`}
+              className="adsbygoogle"
+              style={styleINS}
+              data-ad-client="ca-pub-6116944495372863"
+              data-ad-slot={adsenseID}
+              data-ad-format="auto"
+              data-full-width-responsive="true"
+            ></ins>
+          </div>
+        )}
+        {dimension === 'horizontal' && (
+          <div className={`${style.adsense_container_relative} ${style.adsense_horizontal}`}>
+            <ins
+              data-key={`adsense-${numeracion}-horizontal`}
+              className="adsbygoogle"
+              style={styleINS}
+              data-ad-client="ca-pub-6116944495372863"
+              data-ad-slot={adsenseID}
+              data-ad-format="fluid"
+              data-full-width-responsive="true"
+            ></ins>
+          </div>
+        )}
+        {dimension === 'cuadrado' && (
+          <div className={`${style.adsense_container_relative} ${style.adsense_cuadrado}`}>
+            <ins
+              data-key={`adsense-${numeracion}-cuadrado`}
+              className="adsbygoogle"
+              style={styleINS}
+              data-ad-client="ca-pub-6116944495372863"
+              data-ad-slot={adsenseID}
+              data-ad-format="auto"
+              data-full-width-responsive="true"
+            ></ins>
+          </div>
+        )}
+      </>
+    );
+  }
 };
 
 export default AdComponent;
