@@ -1,40 +1,56 @@
 .adsense_container {
-    display: flex;
-    position: relative;
-    width: 100%;
-    margin: 1rem 0;
-  }
+  display: flex;
+  position: relative;
+  width: 100%;
+  margin: 1rem 0;
+}
+
+.adsense_vertical {
+  display: none;
+}
+
+.adsense_horizontal {
+  display: flex;
+  justify-content: center;
+  min-height: 100px;
+  max-height: 100px;
+}
+
+.adsense_cuadrado {
+  display: flex;
+}
+
+.adsense_container_relative {
+  display: flex;
+  position: relative;
+  min-width: 250px;
+  width: 100%;
+}
+
+ins.adsbygoogle[data-ad-status="unfilled"] {
+  display: none !important;
+}
+
+ins#google-anno-sa {
+  display: none !important;
+}
+
+/* Mostrar anuncios verticales sólo en pantallas mayores a 900px */
+@media only screen and (min-width: 900px) {
   .adsense_vertical {
-    display: none;
-  }
-  .adsense_horizontal {
     display: flex;
-    justify-content: center;
-    min-height: 100px; /* Altura mínima para los bloques horizontales */
-    max-height: 100px;
+    position: fixed;
+    width: calc((100vw - var(--width-main)) / 2);
+    min-height: 600px;
   }
-  .adsense_cuadrado{
-    display:flex;
+
+  .adsense_vertical.left {
+    left: 0;
+    top: calc(var(--height-header) + 16px);
   }
-  .adsense_container_relative{
-    display:flex;
-    position:relative;
-    min-width: 250px;
-    width: 100%;
+
+  .adsense_vertical.right {
+    right: 0;
+    top: calc(var(--height-header) + 16px);
   }
-  ins.adsbygoogle[data-ad-status="unfilled"] {
-    display: none !important;
-  }
-  ins#google-anno-sa{
-    display: none !important;
-  }
-  @media only screen and (min-width: 900px) {
-    .adsense_container {
-      position: fixed;
-    }
-    .adsense_vertical {
-      display: flex;
-      width: calc((100vw - var(--width-main)) / 2);
-      min-height: 600px; /* Altura mínima para los bloques verticales */
-    }
-  }
+}
