@@ -2,12 +2,11 @@ import React, { useEffect, useState } from 'react';
 import style from './Adsense.module.css';
 
 const AdComponent = ({ direction = '', dimension = 'cuadrado', numeracion = 0 }) => {
-  const [pass, setPass] = useState(true);
+  const [pass, setPass] = useState(false);
 
   useEffect(() => {
-    setPass(true)
-    // const timer = setTimeout(() => setPass(true), 10000); // Aumenta a 10 segundos
-    // return () => clearTimeout(timer);
+    const timer = setTimeout(() => setPass(true),5000); // Aumenta a 5 segundos
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
