@@ -11,23 +11,23 @@ const AdComponent = ({ direction = '', dimension = 'cuadrado', numeracion = 0 })
 
   useEffect(() => {
     if (pass) {
+      // Activa el script de adsbygoogle
       (window.adsbygoogle = window.adsbygoogle || []).push({});
+
+      // Verifica el estado de los anuncios
+      const handleAdStatus = () => {
+        const ads = document.querySelectorAll('ins.adsbygoogle');
+        ads.forEach((ad) => {
+          const adStatus = ad.getAttribute('data-ad-status');
+          if (adStatus !== 'filled') {
+            const parent = ad.closest(`.${style.adsense_container}`);
+            if (parent) parent.style.display = 'none';
+          }
+        });
+      };
+
+      handleAdStatus();
     }
-  }, [pass]);
-
-  const handleAdStatus = () => {
-    const ads = document.querySelectorAll('ins.adsbygoogle');
-    ads.forEach((ad) => {
-      const adStatus = ad.getAttribute('data-ad-status');
-      if (adStatus !== 'filled') {
-        const parent = ad.closest(`.${style.adsense_container}`);
-        if (parent) parent.style.display = 'none';
-      }
-    });
-  };
-
-  useEffect(() => {
-    handleAdStatus();
   }, [pass]);
 
   let adsenseID;
