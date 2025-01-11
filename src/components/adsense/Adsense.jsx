@@ -29,6 +29,7 @@ const AdComponent = ({ direction = '', dimension = 'cuadrado', numeracion = 0 })
             if (parent) {
               parent.style.minHeight = '100px';
               parent.style.maxHeight = '600px';
+              parent.style.display = 'contents';
             }
           }
         });
