@@ -22,6 +22,7 @@ const AdComponent = ({ direction = '', dimension = 'cuadrado', numeracion = 0 })
             const parent = ad.closest(`.${style.adsense_container}`) || ad.closest(`.${style.adsense_container_relative}`);
             if (parent) {
               parent.style.maxHeight = '1px';
+              parent.style.display = 'contents';
             }
           }else{
             const parent = ad.closest(`.${style.adsense_container}`) || ad.closest(`.${style.adsense_container_relative}`);
