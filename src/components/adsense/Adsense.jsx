@@ -19,10 +19,10 @@ const AdComponent = ({ direction="", dimension="cuadrado", numeracion=0 }) => {
   useEffect(() => {
     const ads = document.querySelectorAll("ins.adsbygoogle");
     ads.forEach((ad) => {
-      if (ad.hasAttribute("data-ad-status") !== "filled") {
-        ad.style.display = "none";
+      if(ad.getAttribute("data-ad-status") !== "unfilled"){
+        ad.style.display = "flex";
       }else{
-        console.log("show",numeracion)
+        ad.style.display = "none";
       }
     });
   }, [pass]);
