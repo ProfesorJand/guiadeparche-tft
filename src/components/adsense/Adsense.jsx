@@ -25,6 +25,10 @@ const AdComponent = ({ direction="", dimension="cuadrado", numeracion=0 }) => {
         ad.style.display = "none";
       }
     });
+    const bodyElement = document.querySelector('body');
+    if (bodyElement && bodyElement.hasAttribute('aria-hidden')) {
+      bodyElement.removeAttribute('aria-hidden');
+    }
   }, [pass]);
 
   let right;
