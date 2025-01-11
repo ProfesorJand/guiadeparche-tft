@@ -19,16 +19,12 @@ const AdComponent = ({ direction = '', dimension = 'cuadrado', numeracion = 0 })
         ads.forEach((ad) => {
           const adStatus = ad.getAttribute('data-ad-status');
           if (adStatus !== 'filled') {
-            console.log("if")
             const parent = ad.closest(`.${style.adsense_container}`) || ad.closest(`.${style.adsense_container_relative}`);
-            console.log({parent})
             if (parent) {
               parent.style.maxHeight = '1px';
             }
           }else{
-            console.log("else")
             const parent = ad.closest(`.${style.adsense_container}`) || ad.closest(`.${style.adsense_container_relative}`);
-            console.log({parent})
             if (parent) {
               parent.style.minHeight = '100px';
               parent.style.maxHeight = '600px';
@@ -42,7 +38,7 @@ const AdComponent = ({ direction = '', dimension = 'cuadrado', numeracion = 0 })
   }, [pass]);
 
   let adsenseID;
-  let styleINS = { display: 'block', width: '100%', minWidth: "90px", minHeight:"90px" };
+  let styleINS = { display: 'flex', width: '100%', minWidth: "90px", minHeight:"90px", justifyContent: "center"};
 
   switch (dimension) {
     case 'vertical-derecha':
