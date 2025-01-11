@@ -114,8 +114,9 @@ const AdComponent = ({ direction="", dimension="cuadrado", numeracion=0 }) => {
             className="adsbygoogle"
             style={styleINS}
             data-ad-client="ca-pub-6116944495372863"
+            data-ad-layout-key="-f9+4w+7x-eg+3a"
             data-ad-slot={adsenseID}
-            data-ad-format="rectangle"
+            data-ad-format="fluid"
             data-full-width-responsive="true"
 
             ></ins>
