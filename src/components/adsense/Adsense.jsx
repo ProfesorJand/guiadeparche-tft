@@ -13,17 +13,24 @@ const AdComponent = ({ direction = '', dimension = 'cuadrado', numeracion = 0 })
     if (pass) {
       // Activa el script de adsbygoogle
       (window.adsbygoogle = window.adsbygoogle || []).push({});
-      console.log({window:window.adsbygoogle})
       // Verifica el estado de los anuncios
       const handleAdStatus = () => {
         const ads = document.querySelectorAll('ins.adsbygoogle');
         ads.forEach((ad) => {
           const adStatus = ad.getAttribute('data-ad-status');
           if (adStatus !== 'filled') {
+            console.log("if")
             const parent = ad.closest(`.${style.adsense_container}`) || ad.closest(`.${style.adsense_container_relative}`);
             console.log({parent})
             if (parent) {
               parent.style.maxHeight = '1px';
+            }
+          }else{
+            console.log("else")
+            const parent = ad.closest(`.${style.adsense_container}`) || ad.closest(`.${style.adsense_container_relative}`);
+            console.log({parent})
+            if (parent) {
+              parent.style.minHeight = '100px';
             }
           }
         });
