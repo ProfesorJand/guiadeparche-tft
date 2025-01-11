@@ -10,12 +10,19 @@ const AdComponent = ({ direction="", dimension="cuadrado", numeracion=0 }) => {
   }, []);
 
   useEffect(() => {
-    if (pass && document.querySelectorAll('ins.adsbygoogle[data-ad-status="unfilled"]').length === 0) {
+    const unfilledAds = document.querySelectorAll('ins.adsbygoogle[data-ad-status="unfilled"]').length;
+    if (pass && unfilledAds === 0) {
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+      console.log({window})
+    } else if (unfilledAds > 0) {
+      console.log(`There are ${unfilledAds} unfilled ads.`);
+      console.log(numeracion);
       (window.adsbygoogle = window.adsbygoogle || []).push({});
     }
   }, [pass]);
 
   useEffect(() => {
+    console.log({pass})
     const ads = document.querySelectorAll("ins.adsbygoogle");
     ads.forEach((ad) => {
       if (!ad.hasAttribute("data-ad-status")) {
