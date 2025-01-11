@@ -26,7 +26,8 @@
   position: relative;
   min-width: 250px;
   width: 100%;
-  min-width: 90px;
+  min-width: 100px;
+  min-height: 100px;
 }
 
 ins.adsbygoogle[data-ad-status="unfilled"] {
@@ -44,6 +45,7 @@ ins#google-anno-sa {
     position: fixed;
     width: calc((100vw - var(--width-main)) / 2);
     min-height: 600px;
+    min-width: 90px;
   }
 
   .adsense_vertical.left {
