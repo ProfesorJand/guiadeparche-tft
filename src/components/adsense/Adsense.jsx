@@ -17,11 +17,12 @@ const AdComponent = ({ direction="", dimension="cuadrado", numeracion=0 }) => {
   }, [pass]);
 
   useEffect(() => {
-    console.log({pass})
     const ads = document.querySelectorAll("ins.adsbygoogle");
     ads.forEach((ad) => {
-      if (!ad.hasAttribute("data-ad-status")) {
+      if (ad.hasAttribute("data-ad-status") !== "filled") {
         ad.style.display = "none";
+      }else{
+        console.log("show",numeracion)
       }
     });
   }, [pass]);
