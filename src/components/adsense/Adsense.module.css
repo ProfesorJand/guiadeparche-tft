@@ -13,7 +13,7 @@
 .adsense_horizontal {
   display: flex;
   justify-content: center;
-  max-height: 100px;
+  height: auto;
 }
 
 .adsense_cuadrado {
@@ -23,7 +23,6 @@
 .adsense_container_relative {
   display: flex;
   position: relative;
-  min-width: 250px;
   width: 100%;
   min-width: 100px;
 }

@@ -22,7 +22,9 @@ const AdComponent = ({ direction = '', dimension = 'cuadrado', numeracion = 0 })
           if (adStatus !== 'filled') {
             const parent = ad.closest(`.${style.adsense_container}`) || ad.closest(`.${style.adsense_container_relative}`);
             console.log({parent})
-            if (parent) parent.style.maxHeight = '1px';
+            if (parent) {
+              parent.style.maxHeight = '1px';
+            }
           }
         });
       };
@@ -40,17 +42,20 @@ const AdComponent = ({ direction = '', dimension = 'cuadrado', numeracion = 0 })
       adsenseID = 7127054478;
       styleINS.height = '600px';
       styleINS.minWidth = '250px';
+      styleINS.maxWidth = "100%"
       break;
     case 'horizontal':
       adsenseID = 3557613428;
       styleINS.maxHeight = '100px';
       styleINS.minWidth = '100px';
+      styleINS.maxWidth = "100%"
       break;
     case 'cuadrado':
     default:
       adsenseID = 4837474033;
       styleINS.height = '300px';
       styleINS.minWidth = '300px';
+      styleINS.maxWidth = "100%"
       break;
   }
 
