@@ -18,19 +18,19 @@ const AdComponent = ({ direction="", dimension="cuadrado", numeracion=0 }) => {
 
   useEffect(() => {
     const ads = document.querySelectorAll("ins.adsbygoogle");
-
-ads.forEach((ad) => {
-    // Verifica si el elemento tiene el atributo data-ad-status
-    const adStatus = ad.getAttribute("data-ad-status");
-    
-    // Si el atributo no es "filled" o está ausente, oculta el elemento padre
-    if (adStatus !== "filled") {
-      if (ad.parentNode && ad.parentNode.style) {
-        ad.parentNode.style.display = "none";
+  
+    ads.forEach((ad) => {
+      // Verifica si el elemento tiene el atributo data-ad-status
+      const adStatus = ad.getAttribute("data-ad-status");
+      
+      // Oculta únicamente los contenedores de anuncios no "filled"
+      if (adStatus !== "filled") {
+        const parent = ad.parentNode;
+        if (parent && parent.classList.contains("adsense_container")) {
+          parent.style.display = "none";
+        }
       }
-    }
     });
-
   }, [pass]);
 
   let right;
