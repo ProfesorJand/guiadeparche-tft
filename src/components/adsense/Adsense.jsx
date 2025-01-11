@@ -19,16 +19,10 @@ const AdComponent = ({ direction="", dimension="cuadrado", numeracion=0 }) => {
   useEffect(() => {
     const ads = document.querySelectorAll("ins.adsbygoogle");
     ads.forEach((ad) => {
-      if(ad.getAttribute("data-ad-status") !== "unfilled"){
-        ad.style.display = "flex";
-      }else{
-        ad.style.display = "none";
+      if (ad.getAttribute("data-ad-status") !== "filled") {
+        ad.parentNode.style.display = "none";
       }
     });
-    const bodyElement = document.querySelector('body');
-    if (bodyElement && bodyElement.hasAttribute('aria-hidden')) {
-      bodyElement.removeAttribute('aria-hidden');
-    }
   }, [pass]);
 
   let right;
