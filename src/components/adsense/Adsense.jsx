@@ -26,7 +26,10 @@ const AdComponent = ({ direction="", dimension="cuadrado", numeracion=0 }) => {
       // Oculta únicamente los contenedores de anuncios no "filled"
       if (adStatus !== "filled") {
         const parent = ad.parentNode;
-        if (parent && parent.classList.contains("adsense_container")) {
+        if (parent && parent.classList.contains(style.adsense_container)) {
+          parent.style.display = "none";
+        }
+        if (parent && parent.classList.contains(style.adsense_container_relative)) {
           parent.style.display = "none";
         }
       }
