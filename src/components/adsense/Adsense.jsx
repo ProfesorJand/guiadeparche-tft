@@ -20,8 +20,8 @@ const AdComponent = ({ direction = '', dimension = 'cuadrado', numeracion = 0 })
         ads.forEach((ad) => {
           const adStatus = ad.getAttribute('data-ad-status');
           if (adStatus !== 'filled') {
-            const parent = ad.closest(`.${style.adsense_container}`);
-            if (parent) parent.style.display = 'none';
+            const parent = ad.closest(`.${style.adsense_container}`) || ad.closest(`.${style.adsense_container_relative}`);
+            if (parent) parent.style.maxheight = '1px';
           }
         });
       };
