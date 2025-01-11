@@ -13,7 +13,7 @@ const AdComponent = ({ direction = '', dimension = 'cuadrado', numeracion = 0 })
     if (pass) {
       // Activa el script de adsbygoogle
       (window.adsbygoogle = window.adsbygoogle || []).push({});
-
+      console.log({window:window.adsbygoogle})
       // Verifica el estado de los anuncios
       const handleAdStatus = () => {
         const ads = document.querySelectorAll('ins.adsbygoogle');
@@ -21,7 +21,8 @@ const AdComponent = ({ direction = '', dimension = 'cuadrado', numeracion = 0 })
           const adStatus = ad.getAttribute('data-ad-status');
           if (adStatus !== 'filled') {
             const parent = ad.closest(`.${style.adsense_container}`) || ad.closest(`.${style.adsense_container_relative}`);
-            if (parent) parent.style.maxheight = '1px';
+            console.log({parent})
+            if (parent) parent.style.maxHeight = '1px';
           }
         });
       };
@@ -61,7 +62,7 @@ const AdComponent = ({ direction = '', dimension = 'cuadrado', numeracion = 0 })
           style={{ left: 0 }}
         >
           <ins
-            key={`adsense-${numeracion}-left`}
+            data-key={`adsense-${numeracion}-left`}
             className="adsbygoogle"
             style={styleINS}
             data-ad-client="ca-pub-6116944495372863"
@@ -77,7 +78,7 @@ const AdComponent = ({ direction = '', dimension = 'cuadrado', numeracion = 0 })
           style={{ right: 0 }}
         >
           <ins
-            key={`adsense-${numeracion}-right`}
+            data-key={`adsense-${numeracion}-right`}
             className="adsbygoogle"
             style={styleINS}
             data-ad-client="ca-pub-6116944495372863"
@@ -90,7 +91,7 @@ const AdComponent = ({ direction = '', dimension = 'cuadrado', numeracion = 0 })
       {dimension === 'horizontal' && (
         <div className={`${style.adsense_container_relative} ${style.adsense_horizontal}`}>
           <ins
-            key={`adsense-${numeracion}-horizontal`}
+            data-key={`adsense-${numeracion}-horizontal`}
             className="adsbygoogle"
             style={styleINS}
             data-ad-client="ca-pub-6116944495372863"
@@ -103,7 +104,7 @@ const AdComponent = ({ direction = '', dimension = 'cuadrado', numeracion = 0 })
       {dimension === 'cuadrado' && (
         <div className={`${style.adsense_container_relative} ${style.adsense_cuadrado}`}>
           <ins
-            key={`adsense-${numeracion}-cuadrado`}
+            data-key={`adsense-${numeracion}-cuadrado`}
             className="adsbygoogle"
             style={styleINS}
             data-ad-client="ca-pub-6116944495372863"

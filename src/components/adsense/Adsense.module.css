@@ -13,7 +13,6 @@
 .adsense_horizontal {
   display: flex;
   justify-content: center;
-  min-height: 100px;
   max-height: 100px;
 }
 
@@ -27,7 +26,6 @@
   min-width: 250px;
   width: 100%;
   min-width: 100px;
-  min-height: 100px;
 }
 
 ins.adsbygoogle[data-ad-status="unfilled"] {
