@@ -10,7 +10,8 @@
   .adsense_horizontal {
     display: flex;
     justify-content: center;
-    min-height: 150px; /* Altura mínima para los bloques horizontales */
+    min-height: 100px; /* Altura mínima para los bloques horizontales */
+    max-height: 100px;
   }
   .adsense_cuadrado{
     display:flex;
@@ -19,6 +20,7 @@
     display:flex;
     position:relative;
     min-width: 250px;
+    width: 100%;
   }
   ins.adsbygoogle[data-ad-status="unfilled"] {
     display: none !important;
