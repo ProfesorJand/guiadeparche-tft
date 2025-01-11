@@ -59,12 +59,16 @@ const AdComponent = ({ direction="", dimension="cuadrado", numeracion=0 }) => {
     case 'vertical-derecha':
       adsenseID = 7127054478;
       styleINS.height = '600px';
+      styleINS.minHeight = "600px";
+      styleINS.minWidth = "250px";
       styleINS.top = "calc(var(--height-header) + 16px)";
       styleINS.position = "sticky";
       break;
     case 'vertical-izquierda':
     adsenseID = 7127054478;
     styleINS.height = '600px';
+    styleINS.minHeight = "600px";
+    styleINS.minWidth = "250px";
     styleINS.top = "calc(var(--height-header) + 16px)";
     styleINS.position = "sticky";
     break;
@@ -78,6 +82,7 @@ const AdComponent = ({ direction="", dimension="cuadrado", numeracion=0 }) => {
     default:
       adsenseID = 4837474033;
       styleINS.height = '300px';
+      styleINS.minWidth = "300px";
       break;
   }
 
