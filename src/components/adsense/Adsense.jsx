@@ -16,23 +16,23 @@ const AdComponent = ({ direction = '', dimension = 'cuadrado', numeracion = 0 })
           clearInterval(checkAdsByGoogle); // Detiene el intervalo una vez que el script está disponible
           (window.adsbygoogle = window.adsbygoogle || []).push({}); // Inicializa el anuncio
   
-          const handleAdStatus = () => {
-            const ads = document.querySelectorAll('ins.adsbygoogle');
-            ads.forEach((ad) => {
-              const adStatus = ad.getAttribute('data-ad-status');
-              const parent = ad.parentNode;
-              if (parent) {
-                if (adStatus !== 'filled') {
-                  parent.style.maxHeight = '1px';
-                } else {
-                  parent.style.minHeight = '100px';
-                  parent.style.maxHeight = '600px';
-                }
-              }
-            });
-          };
+          // const handleAdStatus = () => {
+          //   const ads = document.querySelectorAll('ins.adsbygoogle');
+          //   ads.forEach((ad) => {
+          //     const adStatus = ad.getAttribute('data-ad-status');
+          //     const parent = ad.parentNode;
+          //     if (parent) {
+          //       if (adStatus !== 'filled') {
+          //         parent.style.maxHeight = '1px';
+          //       } else {
+          //         parent.style.minHeight = '100px';
+          //         parent.style.maxHeight = '600px';
+          //       }
+          //     }
+          //   });
+          // };
   
-          handleAdStatus();
+          // handleAdStatus();
         }
       }, 100); // Verifica cada 100ms
       return () => clearInterval(checkAdsByGoogle); // Limpia el intervalo cuando se desmonte el componente
