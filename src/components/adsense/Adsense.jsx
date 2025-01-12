@@ -105,7 +105,7 @@ const AdComponent = ({ direction = '', dimension = 'cuadrado', numeracion = 0 })
               style={styleINS}
               data-ad-client="ca-pub-6116944495372863"
               data-ad-slot={adsenseID}
-              data-ad-format="auto"
+              data-ad-format="horizontal"
               data-full-width-responsive="true"
             ></ins>
           </div>
