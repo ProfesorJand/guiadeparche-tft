@@ -11,36 +11,36 @@ const AdComponent = ({ direction = '', dimension = 'cuadrado', numeracion = 0 })
 
   useEffect(() => {
     if (pass) {
-      // Activa el script de adsbygoogle
-      (window.adsbygoogle = window.adsbygoogle || []).push({});
-      // Verifica el estado de los anuncios
-      const handleAdStatus = () => {
-        const ads = document.querySelectorAll('ins.adsbygoogle');
-        ads.forEach((ad) => {
-          const adStatus = ad.getAttribute('data-ad-status');
-          if (adStatus !== 'filled') {
-            const parent = ad.closest(`.${style.adsense_container}`) || ad.closest(`.${style.adsense_container_relative}`);
-            if (parent) {
-              parent.style.maxHeight = '1px';
-              parent.style.display = 'contents';
-            }
-          }else{
-            const parent = ad.closest(`.${style.adsense_container}`) || ad.closest(`.${style.adsense_container_relative}`);
-            if (parent) {
-              parent.style.minHeight = '100px';
-              parent.style.maxHeight = '600px';
-              parent.style.display = 'contents';
-            }
-          }
-        });
-      };
-
-      handleAdStatus();
+      const checkAdsByGoogle = setInterval(() => {
+        if (window.adsbygoogle) {
+          clearInterval(checkAdsByGoogle); // Detiene el intervalo una vez que el script está disponible
+          (window.adsbygoogle = window.adsbygoogle || []).push({}); // Inicializa el anuncio
+  
+          const handleAdStatus = () => {
+            const ads = document.querySelectorAll('ins.adsbygoogle');
+            ads.forEach((ad) => {
+              const adStatus = ad.getAttribute('data-ad-status');
+              const parent = ad.parentNode;
+              if (parent) {
+                if (adStatus !== 'filled') {
+                  parent.style.maxHeight = '1px';
+                } else {
+                  parent.style.minHeight = '100px';
+                  parent.style.maxHeight = '600px';
+                }
+              }
+            });
+          };
+  
+          handleAdStatus();
+        }
+      }, 100); // Verifica cada 100ms
+      return () => clearInterval(checkAdsByGoogle); // Limpia el intervalo cuando se desmonte el componente
     }
   }, [pass]);
 
   let adsenseID;
-  let styleINS = { display: 'flex', width: '100%', minWidth: "90px", minHeight:"90px", justifyContent: "center"};
+  let styleINS = { display: 'flex', width: '100%', minWidth: "90px", minHeight:"90px", justifyContent: "center", maxWidth: "100%"};
 
   switch (dimension) {
     case 'vertical-derecha':
@@ -48,20 +48,17 @@ const AdComponent = ({ direction = '', dimension = 'cuadrado', numeracion = 0 })
       adsenseID = 7127054478;
       styleINS.height = '600px';
       styleINS.minWidth = '100px';
-      styleINS.maxWidth = "100%"
       break;
     case 'horizontal':
       adsenseID = 3557613428;
       styleINS.maxHeight = '100px';
       styleINS.minWidth = '100px';
-      styleINS.maxWidth = "100%"
       break;
     case 'cuadrado':
     default:
       adsenseID = 4837474033;
       styleINS.height = '300px';
       styleINS.minWidth = '300px';
-      styleINS.maxWidth = "100%"
       break;
   }
 
@@ -108,7 +105,7 @@ const AdComponent = ({ direction = '', dimension = 'cuadrado', numeracion = 0 })
               style={styleINS}
               data-ad-client="ca-pub-6116944495372863"
               data-ad-slot={adsenseID}
-              data-ad-format="fluid"
+              data-ad-format="auto"
               data-full-width-responsive="true"
             ></ins>
           </div>
