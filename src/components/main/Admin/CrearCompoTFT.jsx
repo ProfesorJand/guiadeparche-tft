@@ -49,7 +49,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         const itemsDataIngles1 = await items.json();
         const dataAumentos = itemsDataIngles1.items.filter(({apiName})=>{
           //itemsDataIngles1.setData[12].augments son las listas de los aumentos del set 13
-          return itemsDataIngles1.setData[14].augments.includes(apiName)
+          return itemsDataIngles1.setData[23].augments.includes(apiName) // al parecer el 23 será esto (itemsDataIngles1.setData,lenght - 1)
         })
         setListaDeAumentos(dataAumentos)
       }
