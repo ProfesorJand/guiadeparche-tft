@@ -30,8 +30,8 @@ const Champions = ()=>{
     useEffect(()=>{
         handleFilter("coste")
         const activador = async ()=>{
-            const version="pbe"
-            const response =  await fetchingDataTFT({version:"pbe", idioma:"en",pais:"us"})
+            const version="latest"
+            const response =  await fetchingDataTFT({version:"latest", idioma:"en",pais:"us"})
             const {items, sets} = response;
             const championsList = [];
             sets["13"].champions.forEach(({ability, apiName, name, cost, characterName, tileIcon, stats, traits})=>{

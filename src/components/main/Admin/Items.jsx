@@ -811,7 +811,15 @@ if(allItemsInfo){
               BASIC_ITEMS.map((dataItem,index)=>{
               return (
                 <div className={style.itemsDrop} key={index}>
-                  <img  src={dataItem.img} alt={`Basic Item TFT ${dataItem.nombre}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} onClick={()=>{setItemOver(dataItem.apiName)}} data-item={JSON.stringify(dataItem)} data-from="itemList" draggable="true"></img>
+                  <img 
+                  src={dataItem.img} 
+                  alt={`Basic Item TFT ${dataItem.nombre}`} 
+                  className={style.imgItems} 
+                  onDragStart={(e)=>{handleDragStart(e)}} 
+                  onClick={()=>{setItemOver(dataItem.apiName)}} 
+                  data-item={JSON.stringify(allItemsInfo.find(({apiName})=>{return apiName === dataItem.apiName}))} 
+                  data-from="itemList" 
+                  draggable="true"></img>
                 </div>
               )
             })}
@@ -845,7 +853,16 @@ if(allItemsInfo){
                 const resultado = allItemsInfo.find(({apiName})=> apiName === busqueda)
                 return (
                   <div className={style.itemsDropRadiants} key={index2+"-"+index}>
-                    <img src={"https://raw.communitydragon.org/latest/game/"+resultado.icon.replace(".tex",".png").toLowerCase()} alt={`Basic Item TFT ${resultado.name}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} onClick={()=>{setItemOver(resultado.apiName)}} data-item={JSON.stringify(resultado)} data-from="itemList" draggable="true"></img>
+                    <img
+                      src={"https://raw.communitydragon.org/latest/game/"+resultado.icon.replace(".tex",".png").toLowerCase()}
+                      alt={`Basic Item TFT ${resultado.name}`}
+                      className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}}
+                      onClick={()=>{setItemOver(resultado.apiName)}}
+                      data-item={JSON.stringify(resultado)}
+                      data-from="itemList"
+                      draggable="true"
+                    >
+                    </img>
                   </div>
                 )
               })
@@ -871,7 +888,15 @@ if(allItemsInfo){
               OTROS_ITEMS.map((dataItem,index)=>{
                 return ( 
                 <div className={style.itemsDropOtros} key={`otrosItems`+index}>
-                  <img  src={dataItem.img} alt={`Basic Item TFT ${dataItem.nombre}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} onClick={()=>{setItemOver(dataItem.apiName)}} data-item={JSON.stringify(dataItem)} data-from="itemList" draggable="true"></img>
+                  <img 
+                    src={dataItem.img}
+                    alt={`Basic Item TFT ${dataItem.nombre}`}
+                    className={style.imgItems}
+                    onDragStart={(e)=>{handleDragStart(e)}}
+                    onClick={()=>{setItemOver(dataItem.apiName)}}
+                    data-item={JSON.stringify(allItemsInfo.find(({apiName})=>{return apiName === dataItem.apiName}))}// 
+                    data-from="itemList"
+                    draggable="true"></img>
                 </div>)
               })
             }
@@ -930,7 +955,7 @@ if(allItemsInfo){
                   className={style.imgItems}
                   onDragStart={(e)=>{handleDragStart(e)}}
                   onClick={()=>{setItemOver(dataItem.apiName)}}
-                  data-item={JSON.stringify(dataItem)}
+                  data-item={JSON.stringify(dataItem)} //allItemsInfo.find(({apiName})=>apiName === dataItem.apiName)
                   data-from="itemList"
                   draggable="true"></img>
                 </div>)

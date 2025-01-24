@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import style from "./css/ItemsTierList.module.css";
 import parse from "html-react-parser";
 import DOMPurify from "dompurify";
+import TooltipItem from "@components/tooltips/items";
 
 const ItemTierList = () => {
   const urlDataDragon = "https://raw.communitydragon.org/latest/game/";
   const [itemsTierList, setItemsTierList] = useState({});
   const category = ["Craftable", "Radiants", "Emblems", "Artefacts", "Supports", "Chembaron", "Others"]; // Categorías a incluir
-
+  const [tooltipData, setTooltipData] = useState(null);
+  const [rowIndex, setRowIndex] = useState(null);
   useEffect(() => {
     (async function traerDatos() {
       const url = "https://guiadeparche.com/tftdata/Set12/tierListItem.json";
@@ -53,26 +55,27 @@ const ItemTierList = () => {
                   </div>
                   {itemsTierList?.[categoryItemName]?.["S"].map((dataItem, i) => {
                     return (
-                      <div key={"S" + i} className={style.containerItem}>
-                        {dataItem.desc && (
-                          <div className={style.tooltip}>
-                            <div className={style.tooltipTitle}>
-                              {dataItem?.name || dataItem?.nombre}
-                            </div>
-                            <SanitizedComponent
-                              htmlContent={replaceVariables(dataItem?.desc, dataItem?.effects)}
-                            />
-                            {Object.keys(dataItem?.effects).length > 0 &&
-                              Object.keys(dataItem?.effects).map((variable, i) => {
-                                return (
-                                  <div key={i} className={style.effects}>
-                                    <span className={style.variableName}>{variable}</span> :{" "}
-                                    <span>{dataItem?.effects[variable]}</span>
-                                  </div>
-                                );
-                              })}
-                          </div>
-                        )}
+                      <div
+                        key={"S" + i}
+                        className={style.containerItem}
+                        onMouseEnter={() => {
+                          if (dataItem?.desc) {
+                            setTooltipData(i);
+                            setRowIndex(index)
+                          }
+                        }}
+                        onMouseLeave={() => {
+                          setTooltipData(null)
+                          setRowIndex(null)
+                        }}
+                      >
+                          <TooltipItem
+                            desc={dataItem?.desc}
+                            effects={dataItem?.effects}
+                            name={dataItem?.name}
+                            nombre={dataItem?.nombre}
+                            isVisible={tooltipData === i && rowIndex === index}
+                          />     
                         <img
                           className={style.imgItem}
                           src={

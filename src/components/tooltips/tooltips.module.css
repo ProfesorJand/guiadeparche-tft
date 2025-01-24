@@ -1,0 +1,46 @@
+/* Tooltip oculto por defecto */
+.tooltip {
+  display: flex;
+  position: absolute;
+  top:100%;
+  background-color: var(--bg-main);
+  border: 1px solid grey;
+  visibility: hidden;
+  opacity: 0;
+  flex-direction: column;
+  padding: 5px;
+  width: 100%;
+  min-width: 350px;
+  left:0;
+  box-sizing: border-box;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+  z-index: 1000;
+}
+
+.tooltip.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.tooltip.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+
+.tooltipTitle{
+  font-size: smaller;
+  color:gold
+}
+
+.tooltipDesc{
+  font-size: small;
+}
+
+.effects{
+  font-size: small;
+}
+
+.variableName{
+  color:gold
+}
