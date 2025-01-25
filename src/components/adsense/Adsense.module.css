@@ -4,6 +4,7 @@
   width: 100%;
   margin: 1rem 0;
   min-width: 90px;
+  transition: all 0.3s ease-in-out; /* Transición suave */
 }
 
 .adsense_vertical {
@@ -25,10 +26,19 @@
   position: relative;
   width: 100%;
   min-width: 100px;
+  transition: all 0.3s ease-in-out; /* Transición suave */
 }
 
 ins.adsbygoogle[data-ad-status="unfilled"] {
   display: none !important;
+  visibility: hidden;
+  opacity: 0;
+}
+
+ins.adsbygoogle[data-ad-status="filled"] {
+  display: flex;
+  visibility: visible;
+  opacity: 1;
 }
 
 ins#google-anno-sa {

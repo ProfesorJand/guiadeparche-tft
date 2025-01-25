@@ -14,7 +14,10 @@ const AdComponent = ({ direction = '', dimension = 'cuadrado', numeracion = 0 })
       const checkAdsByGoogle = setInterval(() => {
         if (window.adsbygoogle) {
           clearInterval(checkAdsByGoogle); // Detiene el intervalo una vez que el script está disponible
-          (window.adsbygoogle = window.adsbygoogle || []).push({}); // Inicializa el anuncio
+          (window.adsbygoogle = window.adsbygoogle || []).push({
+            google_adtest: "on",
+            google_console: true
+          }); // Inicializa el anuncio
   
           // const handleAdStatus = () => {
           //   const ads = document.querySelectorAll('ins.adsbygoogle');

@@ -102,7 +102,7 @@ const MetaComps = ({showHide})=>{
       <div className={style.containerMeta}>
         {allFast8.some(innerArray => innerArray.length > 0) && 
         <>
-        <Adsense direction='' dimension="horizontal" numeracion={2}/>
+        {/*<Adsense direction='' dimension="horizontal" numeracion={2}/>*/}
         <h2>{title.fast8}</h2>
         {
         allFast8.map((tier,index)=>{
@@ -121,7 +121,7 @@ const MetaComps = ({showHide})=>{
       }
       {all3Stars.some(innerArray => innerArray.length > 0) && 
         <>
-        <Adsense direction='' dimension="horizontal" numeracion={3}/>
+        {/*<Adsense direction='' dimension="horizontal" numeracion={3}/>*/}
         <h2>{title.stars3}</h2>
         {
         all3Stars.map((tier,index)=>{
@@ -140,7 +140,7 @@ const MetaComps = ({showHide})=>{
       }
       {allAugmentsHero.some(innerArray => innerArray.length > 0) && 
         <>
-        <Adsense direction='' dimension="horizontal" numeracion={4}/>
+        {/*<Adsense direction='' dimension="horizontal" numeracion={4}/>*/}
         <h2>{title.specificsAugments}</h2>
         {
         allAugmentsHero.map((tier,index)=>{
