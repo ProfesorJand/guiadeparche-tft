@@ -4,6 +4,7 @@ import Footer from '../components/footer/Footer.astro';
 import Logo from '../components/logo/Logo.astro';
 import Adsense from '../components/adsense/Adsense.jsx';
 import { ViewTransitions } from 'astro:transitions';
+import Youtube from '@components/youtube/Youtube.jsx';
 interface Props {
   title: string;
   JSONSchema?: string;
@@ -79,7 +80,7 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
               </div>
               <div class="bodyMainAsideEmbed">
                 <slot name="bodyMainAsideTwitch"></slot>
-                
+                <Youtube src={"https://www.youtube.com/playlist?list=PLxRnNvReiLMEriFDu0UxXScDabCIX-PWy"} client:only="react"/>
                 
                 <!-- <ads class="bodyMainAsideAds">
                   <slot name="bodyMainAsideAds"></slot>
@@ -266,8 +267,8 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
       background-color: var(--bg-secondary);
       width: 100%;
       box-sizing: border-box;
-      gap:5px;
-      justify-content: space-between;
+      justify-content: flex-start;
+      gap: 20px;
     }
     .bodyMainAsideMenu{
       display: flex;
@@ -379,7 +380,8 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
       box-sizing: border-box;
       gap:5px;
       height:92vh;
-      justify-content: space-between;
+      justify-content: flex-start;
+      gap: 20px;
     }
 
     .bodyMainAsideMenu{

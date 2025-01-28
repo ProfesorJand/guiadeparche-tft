@@ -59,8 +59,6 @@ import Twitch from '@components/embed/Twitch';
 
 <style>
   .footerContainer {
-    display: flex;
-    flex-direction: row;
     justify-content: center;
     align-items: center;
     width: var(--width-main);
@@ -111,5 +109,23 @@ import Twitch from '@components/embed/Twitch';
     flex-direction: column;
     margin:0;
     box-sizing: border-box;
+  }
+  @media only screen and (max-width:900px) {
+    .footerContainer {
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    flex-direction: column;
+    display: flex;
+    position: relative;
+    box-sizing: border-box;
+    gap:5px;
+    padding:5px;
+    /* height: 100%; */
+
+  }
+  .footerContainerInfo{
+    width: 100%;
+  }
   }
 </style>
