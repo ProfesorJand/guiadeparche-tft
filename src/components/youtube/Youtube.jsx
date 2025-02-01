@@ -39,16 +39,14 @@ const VideoComponent = ({ src, loading = "lazy", titulo="video de Jupeson" }) =>
   const [video, setVideo] = useState(null);
 
   useEffect(() => {
+    console.log({src})
     const fetchData = async () => {
       const videoData = await getId(src, titulo);
       setVideo(videoData);
     };
     fetchData();
-  }, [src, titulo]);
-
-  useEffect(() => {
-    const handlePageLoad = () => {
-      const youtubeThumbnail = document.querySelectorAll(`.${style.divIframe}`);
+    //volver a pedir informacion para activar el click
+    const youtubeThumbnail = document.querySelectorAll(`.${style.divIframe}`);
       youtubeThumbnail.forEach(container => {
         container.addEventListener('click', () => {
           const videoId = container.getAttribute('data-url');
@@ -64,14 +62,35 @@ const VideoComponent = ({ src, loading = "lazy", titulo="video de Jupeson" }) =>
           container.appendChild(iframe);
         });
       });
-    };
-    document.addEventListener('astro:page-load', handlePageLoad);
+  }, [src, titulo]);
+
+  // useEffect(() => {
+  //   const handlePageLoad = () => {
+  //     const youtubeThumbnail = document.querySelectorAll(`.${style.divIframe}`);
+  //     youtubeThumbnail.forEach(container => {
+  //       container.addEventListener('click', () => {
+  //         console.log("click en video")
+  //         const videoId = container.getAttribute('data-url');
+  //         const iframe = document.createElement('iframe');
+  //         iframe.setAttribute("src", videoId);
+  //         iframe.setAttribute('frameborder', '0');
+  //         iframe.setAttribute('allow', 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture');
+  //         iframe.setAttribute('allowfullscreen', 'true');
+  //         iframe.setAttribute("width", "100%");
+  //         iframe.setAttribute("height", "100%");
+  //         iframe.classList.add(style.iframeYoutube);
+  //         container.innerHTML = '';
+  //         container.appendChild(iframe);
+  //       });
+  //     });
+  //   };
+  //   document.addEventListener('astro:page-load', handlePageLoad);
 
 
-    return () => {
-      document.removeEventListener('astro:page-load', handlePageLoad);
-    };
-  }, []);
+  //   return () => {
+  //     document.removeEventListener('astro:page-load', handlePageLoad);
+  //   };
+  // }, []);
 
   if (!video) {
     return <div className={[style.divIframe, styleLoading.skeleton].join(" ")}>
