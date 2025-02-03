@@ -1,0 +1,28 @@
+.containerTierListMetaComps{
+  display: flex;
+  position: relative;
+  flex-direction: column;
+}
+
+.containerMetaCompByTier{
+  display: flex;
+  flex-direction: row;
+}
+
+.containerImgTier{
+  display: flex;
+  width: calc(100% / var(--number-champ-tier-list) - var(--gap-champ-tier-list) + (var(--gap-champ-tier-list) / var(--number-champ-tier-list)) ); 
+}
+
+.imgTier{
+  display: flex;
+  width: 100%;
+}
+
+.containerChampTierList{
+  display: flex;
+  width: 92%;
+  gap: var(--gap-champ-tier-list);
+  padding: 5px;
+  box-sizing: border-box;
+}

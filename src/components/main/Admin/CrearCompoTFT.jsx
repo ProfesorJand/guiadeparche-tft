@@ -11,10 +11,21 @@ import { emblems, radiantsItems as listOfRadiantsItems} from "src/json/updates/i
 import CarouselItems from "./CarouselItems.jsx";
 import RadiantsItems from "./RadiantsItems.jsx";
 import { championsTFT } from "src/json/updates/constantesLatest.js";
+import { listaCampeones } from "src/functions/campeonestft.js";
+import { itemsDataIngles, getDataTFTBySet, championsTFTIngles } from "src/json/updates/contantesTFT.js"
+import ChampTierList from "@components/TFT/ChampTierList.jsx"
 
 
-const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,edittitulo,editshadowCategory,editinfographicCategory,editaumentos,editgameplay,edittips,editboardInfo,editpictureSave,editcarouselItems,editradiantItem,editspatulaItem1,editspatulaItem2,editoriginalComp}) =>{
-    const urlImgAum = "https://raw.communitydragon.org/pbe/game/"
+
+
+const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,edittitulo,editshadowCategory,editinfographicCategory,editaumentos,editgameplay,edittips,editboardInfo,editpictureSave,editcarouselItems,editradiantItem,editspatulaItem1,editspatulaItem2,editoriginalComp, editCampeonTierList, editAugmentTierList, editCampeonItemTierList =[{},{},{}], editCampeonTraitTierList = [{}] }) =>{
+    const [allItemsInfo, setAllItemsInfo] = useState(null);
+    const [allItemsApiNames, setAllItemsApiNames] = useState(null);
+    const [allEmblemsItemsApiNames, setAllEmblemsItemsApiName] = useState(null)
+    const [allSupportsItems, setAllSupportsItems] = useState(null)
+    const [allChemBaronItems, setAllChemBaronItems] = useState(null)
+    const urlImgAum = "https://raw.communitydragon.org/pbe/game/";
+    const urlDataDragonLatestGame = "https://raw.communitydragon.org/latest/game/";
     const shadowCategories = ["Fast 8","Specifics Augments","3 Stars"]
     const infographicCategories = ["Roll Lv5","Roll Lv6","Roll Lv7","Roll Lv8","Roll Lv9","Roll Lv10"]
     const [tier, setTier] = useState("S")
@@ -41,7 +52,18 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
     const [originalComp, setOriginalComp] = useState("lv8");
     const [id, setId] =useState(generadorID());
     const [isHide, setIsHide] = useState(false);
-
+    const [campeonTierList, setCampeonTierList] = useState({});
+    const [augmentTierList, setAugmentTierList] = useState({});
+    const [champItem, setChampItem] = useState([{}])
+    const [champTrait, setChampTrait] = useState([{}])
+    const championsColor = [
+      "var(--color-hex-cost-default)",
+      "var(--color-hex-cost-1)",
+      "var(--color-hex-cost-2)",
+      "var(--color-hex-cost-3)",
+      "var(--color-hex-cost-4)",
+      "var(--color-hex-cost-5)",
+    ];
     useEffect(()=>{
       const buscarAumentos = async() =>{
         const url= "https://raw.communitydragon.org/latest/cdragon/tft/en_us.json"
@@ -53,7 +75,70 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         })
         setListaDeAumentos(dataAumentos)
       }
-      buscarAumentos()
+      
+      const getAllItems = async ()=>{
+        setAllItemsApiNames((await getDataTFTBySet({})).setData); //apiName de todos los items del set
+        setAllItemsInfo((await getDataTFTBySet({})).setInfo)
+        setAllEmblemsItemsApiName((await getDataTFTBySet({})).setData.items.filter((apiName)=>{
+          return apiName.includes("EmblemItem")
+        }))
+        setAllSupportsItems((await getDataTFTBySet({})).setInfo.filter(({apiName})=>{
+          const apiNameOfSupportsItems = [
+            "TFT_Item_BansheesVeil",
+            "TFT_Item_AegisOfTheLegion",
+            "TFT_Item_Chalice",
+            "TFT_Item_SupportKnightsVow",
+            "TFT_Item_LocketOfTheIronSolari",
+            "TFT_Item_Moonstone",
+            "TFT7_Item_ShimmerscaleHeartOfGold",
+            "TFT4_Item_OrnnObsidianCleaver",
+            "TFT4_Item_OrnnRanduinsSanctum",
+            "TFT_Item_Shroud",
+            "TFT_Item_Spite",
+            "TFT_Item_EternalFlame",
+            "TFT_Item_UnstableTreasureChest",
+            "TFT_Item_RadiantVirtue",
+            "TFT_Item_ZekesHerald",
+            "TFT_Item_Zephyr",
+            "TFT5_Item_ZzRotPortalRadiant"
+          ]
+          return apiNameOfSupportsItems.some((item)=> item.includes(apiName))
+        }))
+        setAllChemBaronItems((await getDataTFTBySet({})).setInfo.filter(({apiName})=>{
+          const apiNameOfChemBaronItems = [
+            "TFT13_Crime_Bronze_ChemGrips",
+            "TFT13_Crime_Bronze_MageGuard",
+            "TFT13_Crime_Bronze_MiningGauntlet",
+            "TFT13_Crime_Silver_DestabilizedChemtank",
+            "TFT13_Crime_Gold_DestabilizedChemtank",
+            "TFT13_Crime_Prismatic_DestabilizedChemtank",
+            "TFT13_Crime_Silver_ExecutionersVorpalblade",
+            "TFT13_Crime_Gold_ExecutionersVorpalblade",
+            "TFT13_Crime_Prismatic_ExecutionersVorpalblade",
+            "TFT13_Crime_Silver_FleshRipper",
+            "TFT13_Crime_Gold_FleshRipper",
+            "TFT13_Crime_Prismatic_FleshRipper",
+            "TFT13_Crime_Silver_PiltovenHexplating",
+            "TFT13_Crime_Gold_PiltovenHexplating",
+            "TFT13_Crime_Prismatic_PiltovenHexplating",
+            "TFT13_Crime_Silver_ShimmerBloom",
+            "TFT13_Crime_Gold_ShimmerBloom",
+            "TFT13_Crime_Prismatic_ShimmerBloom",
+            "TFT13_Crime_Silver_UnleashedToxins",
+            "TFT13_Crime_Gold_UnleashedToxins",
+            "TFT13_Crime_Prismatic_UnleashedToxins",
+            "TFT13_Crime_Silver_VirulentVirus",
+            "TFT13_Crime_Gold_VirulentVirus",
+            "TFT13_Crime_Prismatic_VirulentVirus",
+            "TFT13_Crime_Silver_VoltaicSaber",
+            "TFT13_Crime_Gold_VoltaicSaber",
+            "TFT13_Crime_Prismatic_VoltaicSaber"
+          ]
+          return apiNameOfChemBaronItems.some((item) => item === apiName);
+        }))  
+      }
+      buscarAumentos();
+      getAllItems();
     }, []);
 
     useEffect(() => {
@@ -86,6 +171,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
 
     useEffect(()=>{
       if(edit){
+        
         setId(editId)
         setTier(edittier);
         setPosicion(editposicion);
@@ -103,6 +189,10 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         setSpatulaItem1(editspatulaItem1)
         setSpatulaItem2(editspatulaItem2)
         setOriginalComp(editoriginalComp)
+        setCampeonTierList(editCampeonTierList)
+        setAugmentTierList(editAugmentTierList)
+        setChampItem(editCampeonItemTierList)
+        setChampTrait(editCampeonTraitTierList)
       }
     },[edit])
 
@@ -153,6 +243,61 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
 
     function handleToogleInfo(button){
         setInfoChampsItems(button)
+    }
+
+
+    function seleccionarAumentoTierList(e){
+      
+      const aumentosInput = document.getElementById("aumentos2");
+      const value = aumentosInput.value;
+      if(!value){
+        setAugmentTierList({})
+      }
+      const dataList = document.getElementById("dataListAumentos2");
+      const dataValue = dataList.options.namedItem(`datalist-${value}`)?.dataset.value;
+      if(dataValue){
+        setAugmentTierList(JSON.parse(dataValue));
+      }
+    }
+
+    function addItemChampion(e, itemNumber){
+      const value = e.target.value;
+      if(!value){
+        setChampItem((oldValue)=>{
+          oldValue[itemNumber] = {}
+          return [...oldValue]
+        })
+      }
+      const dataList = document.getElementById("dataListChampsItems");
+      const dataValue = dataList.options.namedItem(`datalist-${value}`)?.dataset.value;
+      if(dataValue){
+        setChampItem((oldValue)=>{
+          oldValue[itemNumber] = JSON.parse(dataValue)
+          return [...oldValue]
+        })
+      }
+    }
+
+    function addChampTrait(e, traitNumber){
+      const value = e.target.value;
+    
+      setChampTrait((oldValue) => {
+        const newValue = Array.isArray(oldValue) ? [...oldValue] : []; // Garantiza que sea un array
+        
+        if (!value) {
+          newValue[traitNumber] = {}; // Aseguramos que el índice exista
+          return newValue;
+        }
+    
+        const dataList = document.getElementById("dataListChampsTraits");
+        const dataValue = dataList.options.namedItem(`datalist-${value}`)?.dataset.value;
+    
+        if (dataValue) {
+          newValue[traitNumber] = JSON.parse(dataValue); // Asignamos el nuevo valor
+        }
+        
+        return newValue;
+      });
     }
 
     function handleBuilderLevel(e,id){
@@ -317,9 +462,13 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           spatulaItem1,
           spatulaItem2,
           originalComp,
-          isHide
+          isHide,
+          campeonTierList,
+          augmentTierList,
+          champItem,
+          champTrait
         }
-        if(tier && posicion && dificultad && titulo && shadowCategory && infographicCategory && aumentos.length && Object.keys(carouselItems).length && Object.keys(boardInfo).length){
+        if(tier && posicion && dificultad && titulo && shadowCategory && infographicCategory && aumentos.length && Object.keys(carouselItems).length && Object.keys(boardInfo).length && Object.keys(campeonTierList).length){
           const token = import.meta.env.PUBLIC_TOKEN_META
           fetch('https://guiadeparche.com/tftdata/Set12/crearCompoMeta.php', {
             method: 'POST',
@@ -362,6 +511,9 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           }
           if(!aumentos.length){
             mensaje += "\nAumentos" 
+          }
+          if(!Object.keys(campeonTierList).length){
+            mensaje += "\nSelect Champion Tier List"
           }
           alert(mensaje)
           return
@@ -461,6 +613,8 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         </select>
       </label>
 
+
+
       <label>
         <span>Hide Comp:</span>
         <select onChange={(e)=>{setIsHide(e.target.value)}} defaultValue={isHide.toString()}>
@@ -468,6 +622,83 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           <option value={true}>TRUE</option>
         </select>
       </label>
+
+      <br></br>
+      <div className={style.containerFormChampTierList}>
+        <div className={style.containerOptionsChampTierList}>
+          <span>Tier List Data:</span>
+          <label htmlFor="title">
+            <span>Champion:</span>
+            <select onChange={(e)=>{setCampeonTierList(JSON.parse(e.target.options[e.target.selectedIndex].dataset.value))}} defaultValue={editCampeonTierList || campeonTierList}>
+              {
+                championsTFTIngles.map((campeon,index)=>{
+                  return (
+                    <option key={index} value={campeon.name} data-value={JSON.stringify(campeon)}>{campeon.name}</option>
+                  )
+                })
+              }
+            </select>
+          </label>
+          <label htmlFor="aumentos">
+            Augments:
+            <input list="dataListAumentos2" onChange={(e)=>seleccionarAumentoTierList(e)} name="aumentos2" id="aumentos2" defaultValue={editAugmentTierList?.name ||augmentTierList?.name } placeholder="Select Augment"/>
+            <datalist id="dataListAumentos2">
+              {listaDeAumentos.map((aum, i )=>{
+                return <option key={"TierListAumentos"+aum.name+i} id={`datalist-${aum.apiName}`} data-value={JSON.stringify(aum)} value={aum.apiName}>{aum.name}</option>
+              })}
+            </datalist>
+          </label>
+                    
+          <label>
+            Trait:
+            <input className={style.input} onChange={(e)=>addChampTrait(e, 0)} list="dataListChampsTraits" name="dataListChampsTraits" id="dataListChampsTraits1" defaultValue={editCampeonTraitTierList?.[0]?.name || champTrait?.[0]?.name } placeholder="Select Trait to Show"></input>
+            <datalist id="dataListChampsTraits">
+            {allItemsInfo?.length > 0 && allEmblemsItemsApiNames?.length && allItemsInfo.map((dataItem, i )=>{
+              if(allEmblemsItemsApiNames?.includes(dataItem.apiName)){
+                return (
+                  <option key={"ListaDeEmblemas"+dataItem.name+i} id={`datalist-${dataItem.apiName}`} value={dataItem.apiName} data-value={JSON.stringify(dataItem)}>
+                    {dataItem.name}
+                  </option>
+                )
+              }
+            })}
+          </datalist>
+          </label>
+
+          <label htmlFor="championItem1">
+            Item 1:
+            <input className={style.input} onChange={(e)=>addItemChampion(e, 0)} list="dataListChampsItems" name="dataListChampsItems" id="dataListChampsItems1" defaultValue={editCampeonItemTierList?.[0]?.name || champItem?.[0]?.name } placeholder="Select First Item"></input>
+          </label>
+          <label htmlFor="championItem2">
+            Item 2:
+            <input className={style.input} onChange={(e)=>addItemChampion(e, 1)} list="dataListChampsItems" name="dataListChampsItems" id="dataListChampsItems2" defaultValue={editCampeonItemTierList?.[1]?.name || champItem?.[1]?.name } placeholder="Select Second Item"></input>
+          </label>
+          <label htmlFor="championItem3">
+            Item 3:
+            <input className={style.input} onChange={(e)=>addItemChampion(e, 2)} list="dataListChampsItems" name="dataListChampsItems" id="dataListChampsItems3" defaultValue={editCampeonItemTierList?.[2]?.name || champItem?.[2]?.name } placeholder="Select Third Item"></input>
+          </label>
+
+          <datalist id="dataListChampsItems">
+            {itemsDataIngles.map((dataItem, i )=>{
+              return (
+                <option key={"ListaDeEmblemas"+dataItem.nombre+i} id={`datalist-${dataItem.apiName}`} value={dataItem.apiName} data-value={JSON.stringify(dataItem)}>
+                  {dataItem.name}
+                </option>
+              )
+            })}
+          </datalist>
+          
+        </div>
+        <div className={style.champTierListSample}>
+          <ChampTierList
+            campeonTierList={campeonTierList}
+            augmentTierList={augmentTierList}
+            champItem={champItem}
+            champTrait={champTrait}
+            isSample={true}
+            />
+        </div>
+      </div>
     
       <div className={style.containerButtonsHorizontal}>
         <div className={[style.btn, showBoard=== "early" ? style.btnActive: "", pictureSave["early"] ? style.savePicture : ""].join(" ")} onClick={(e)=>{handleBuilderLevel(e,"early")}}>Early</div>
@@ -508,9 +739,6 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           return <option key={"ListaDeEmblemas"+dataItem.name+i} id={`datalist-${dataItem.name}`} value={dataItem.name} data-value={JSON.stringify(dataItem)}></option>
         })}
         {listaDeAumentos.map((dataItem, i )=>{
-          return <option key={"ListaDeEmblemas"+dataItem.name+i} id={`datalist-${dataItem.name}`} value={dataItem.name} data-value={JSON.stringify(dataItem)}></option>
-        })}
-         {listaDeAumentos.map((dataItem, i )=>{
           return <option key={"ListaDeEmblemas"+dataItem.name+i} id={`datalist-${dataItem.name}`} value={dataItem.name} data-value={JSON.stringify(dataItem)}></option>
         })}
         {ARTEFACTOS.map((dataItem, i )=>{

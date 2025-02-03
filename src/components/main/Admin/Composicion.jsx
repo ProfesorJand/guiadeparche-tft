@@ -328,6 +328,10 @@ const Composicion = ({compo, admin=false, show=true, allwaysOpen=false, onToggle
       editspatulaItem2={compo.spatulaItem2}
       editoriginalComp={compo.originalComp}
       editisHide={compo.isHide}
+      editCampeonTierList={compo.campeonTierList}
+      editAugmentTierList={compo.augmentTierList}
+      editCampeonItemTierList={compo.champItem}
+      editCampeonTraitTierList={compo.champTrait}
     />}
     {
       showBigComp &&

@@ -1,0 +1,97 @@
+:root{
+  --number-champ-tier-list:8;
+  --gap-champ-tier-list:5px
+}
+
+.containerChampTierList{
+  display: flex;
+  position: relative;
+  width: calc(100% / var(--number-champ-tier-list) - var(--gap-champ-tier-list) + (var(--gap-champ-tier-list) / var(--number-champ-tier-list)) ); 
+  height: fit-content;
+
+}
+
+.containerSampleChampTierList{
+  display: flex;
+  position: relative;
+  width: 100%; 
+  height: fit-content;
+}
+
+.poligonChampTierList{
+  display: flex;
+  position: relative;
+  box-sizing: border-box;
+  -webkit-clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+  aspect-ratio: 1.15 / 1.2;
+  width: 100%;
+  box-sizing: border-box;
+  -webkit-overflow: visible;
+  overflow: visible;
+}
+
+.imgCampeonBuilder{
+  position: absolute;
+  top: var(--hex-border);
+  left: var(--hex-border);
+  width: calc(100% - var(--hex-border)* 2);
+  height: calc(100% - var(--hex-border)* 2);
+  -webkit-clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+  pointer-events: none;
+}
+
+.containerAumChampTierList{
+  display: flex;
+  position: absolute;
+  width: var(--icon-size);
+  top:0;
+  left:10%;
+  border-width:var(--hex-border);
+  border-style: solid;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.imgAumChampTierList{
+  display: flex;
+  position: relative;
+  width: 100%;
+}
+
+.containerItemsChampTierList{
+  display: flex;
+  position: absolute;
+  width: 70%;
+  bottom:0;
+  left: 50%;
+  transform: translate(-50%, 0);
+  box-sizing: border-box;
+  justify-content: center;
+}
+.itemsChampTierList{
+  display: flex;
+  position: relative;
+  width: calc(100%/3);
+}
+.imgItemChampTierList{
+  display: flex;
+  width: 100%;
+}
+.containerTraitChampTierList{
+  display: flex;
+  position: absolute;
+  width: var(--icon-size);
+  top:0;
+  right:10%;
+  border-width:var(--hex-border);
+  border-style: solid;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.imgTraitChampTierList{
+  display: flex;
+  position: relative;
+  width: 100%;
+}
