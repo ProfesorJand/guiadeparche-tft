@@ -2,16 +2,20 @@
   display: flex;
   position: relative;
   flex-direction: column;
+  gap:5px
 }
 
 .containerMetaCompByTier{
   display: flex;
   flex-direction: row;
+  background-color: var(--bg-tertiary);
 }
 
 .containerImgTier{
   display: flex;
   width: calc(100% / var(--number-champ-tier-list) - var(--gap-champ-tier-list) + (var(--gap-champ-tier-list) / var(--number-champ-tier-list)) ); 
+  height: fit-content;
+  margin: auto;
 }
 
 .imgTier{
@@ -23,6 +27,24 @@
   display: flex;
   width: 92%;
   gap: var(--gap-champ-tier-list);
-  padding: 5px;
+  padding: 5px 5px 0 5px;
   box-sizing: border-box;
+  overflow-x:auto;
+  scroll-behavior: smooth;
+  /* background-color: var(--bg-secondary); */
 }
+
+.containerChampTierList::-webkit-scrollbar {
+  height: 8px; /* Cambia 'width' a 'height' para barras de scroll horizontal */
+}
+
+.containerChampTierList::-webkit-scrollbar-track {
+  background: var(--bg-tertiary);
+}
+
+.containerChampTierList::-webkit-scrollbar-thumb {
+  background-color: blue;
+  border-radius: 20px;
+  border: 2px solid var(--border-color);
+}
+

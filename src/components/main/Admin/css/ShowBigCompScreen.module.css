@@ -20,7 +20,7 @@
    justify-content: center; /* Opcional: Centrar contenido */
    transform: rotate(90deg);
    flex-direction: column;
-   background-image: url("/public/tft/assets/backgroundWrapper.png");
+   background-image: url("/tft/assets/backgroundWrapper.png");
    background-repeat: no-repeat;
    box-sizing: border-box;
    background-position-x: right;

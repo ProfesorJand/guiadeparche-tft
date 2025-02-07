@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import style from "./css/ChampionsList.module.css";
-import {listaCampeones} from "../../../functions/campeonestft.js";
-import { fetchingDataTFT } from "src/json/updates/constantesPBE.js";
-
+// import {listaCampeones} from "../../../functions/campeonestft.js";
+// import { fetchingDataTFT } from "src/json/updates/constantesPBE.js";
+import { championsTFTIngles, traitsTFTIngles } from "src/json/updates/contantesTFT.js";
 const Champions = ()=>{
 
-    const [championsList, setChampionsList]=useState([...listaCampeones])
-    const [resultado, setResultado] = useState(null)
+    const [championsList, setChampionsList]=useState(null);
+    const [sortBy, setSortBy] = useState("coste")
 
     function handleDragStart(e){
         e.dataTransfer.setData("campeon", e.target.getAttribute("data-campeon"));
@@ -14,31 +14,32 @@ const Champions = ()=>{
     }
 
     function handleFilter(filtro){
-        if(filtro === "coste"){
-            const cambios = [...championsList].sort((a,b)=>a[filtro] - b[filtro])
-            setChampionsList(cambios);
-        }
-        if(filtro === "nombre"){
-            const cambios = [...championsList].sort((a,b)=>{
-                if(a[filtro] < b[filtro]) {return -1}
-                if(a[filtro] > b[filtro]) {return 1}
-                return 0;
-            })
-            setChampionsList(cambios);
+        if(championsList){
+            if(filtro === "coste"){
+                const cambios = [...championsList].sort((a,b)=>a[filtro] - b[filtro])
+                setChampionsList(cambios);
+                setSortBy("coste")
+            }
+            if(filtro === "nombre"){
+                const cambios = [...championsList].sort((a,b)=>{
+                    if(a[filtro] < b[filtro]) {return -1}
+                    if(a[filtro] > b[filtro]) {return 1}
+                    return 0;
+                })
+                setChampionsList(cambios);
+                setSortBy("nombre")
+            }
         }
     }
     useEffect(()=>{
-        handleFilter("coste")
         const activador = async ()=>{
             const version="latest"
-            const response =  await fetchingDataTFT({version:"latest", idioma:"en",pais:"us"})
-            const {items, sets} = response;
             const championsList = [];
-            sets["13"].champions.forEach(({ability, apiName, name, cost, characterName, tileIcon, stats, traits})=>{
+            championsTFTIngles.forEach(({ability, apiName, name, cost, characterName, tileIcon, stats, traits})=>{
                 if(traits.length > 0){
                     const traitsData = ()=>{
                         const resp = traits.map((trait)=>{
-                            const data = sets["13"].traits.find(({name})=>{
+                            const data = traitsTFTIngles.find(({name})=>{
                                 return name === trait
                             })
                             return data
@@ -76,9 +77,10 @@ const Champions = ()=>{
                 if(a["coste"] > b["coste"]) {return 1}
                 return 0;
             }))
-            setResultado(response)
+            //setResultado(response)
         }
         activador();
+        handleFilter("coste")
     },[])
 
     return(
@@ -90,10 +92,10 @@ const Champions = ()=>{
             </select>
             
         </div>
-        <div className={style.containerChampionsList}>
-            {championsList.map((campeon, index)=>{
+        <div className={[style.containerChampionsList, sortBy === "coste" ? style.containerChampionsListByCost:""].join(" ")}>
+            {championsList && sortBy === "nombre" && championsList.map((campeon, index)=>{
                 return (
-                    <div className={style.containerChampion} key={`key${index}`} style={{"borderColor":`var(--color-hex-cost-${campeon.coste}`}}>
+                    <div className={style.containerChampion} key={`key${index}`} style={{"borderColor":`var(--color-hex-cost-${campeon.coste})`}}>
                             <img
                                 id={`campeon-${campeon.nombre}`}
                                 src={campeon.img}
@@ -106,7 +108,155 @@ const Champions = ()=>{
                             <span>{campeon.nombre}</span>
                         </div>
                     )    
+
                 })}
+            {championsList && sortBy === "coste" && 
+                <div className={style.containerChampionsByCost}>
+                {championsList?.filter(({coste})=>coste===1)?.map((campeon, index)=>{
+                    return (
+                        <div className={style.containerChampion} key={`key${index}`} style={{"borderColor":`var(--color-hex-cost-${campeon.coste})`}}>
+                                <img
+                                    id={`campeon-${campeon.nombre}`}
+                                    src={campeon.img}
+                                    alt={campeon.nombre}
+                                    data-campeon={JSON.stringify(campeon)}
+                                    data-from={"championList"}
+                                    onDragStart={(e)=>{handleDragStart(e)}}
+                                    draggable="true"
+                                    />
+                                <span>{campeon.nombre}</span>
+                            </div>
+                        )    
+                        
+                    })}
+                </div>
+            }
+            {championsList && sortBy === "coste" &&
+            <div className={style.containerChampionsByCost}>
+            {championsList?.filter(({coste})=>coste===2)?.map((campeon, index)=>{
+                return (
+                    <div className={style.containerChampion} key={`key${index}`} style={{"borderColor":`var(--color-hex-cost-${campeon.coste})`}}>
+                            <img
+                                id={`campeon-${campeon.nombre}`}
+                                src={campeon.img}
+                                alt={campeon.nombre}
+                                data-campeon={JSON.stringify(campeon)}
+                                data-from={"championList"}
+                                onDragStart={(e)=>{handleDragStart(e)}}
+                                draggable="true"
+                                />
+                            <span>{campeon.nombre}</span>
+                        </div>
+                    )    
+                    
+                })}
+            </div>
+            }
+            {championsList && sortBy === "coste" &&
+            <div className={style.containerChampionsByCost}>
+            {championsList?.filter(({coste})=>coste===3)?.map((campeon, index)=>{
+                return (
+                    <div className={style.containerChampion} key={`key${index}`} style={{"borderColor":`var(--color-hex-cost-${campeon.coste})`}}>
+                            <img
+                                id={`campeon-${campeon.nombre}`}
+                                src={campeon.img}
+                                alt={campeon.nombre}
+                                data-campeon={JSON.stringify(campeon)}
+                                data-from={"championList"}
+                                onDragStart={(e)=>{handleDragStart(e)}}
+                                draggable="true"
+                                />
+                            <span>{campeon.nombre}</span>
+                        </div>
+                    )    
+                    
+                })}
+            </div>
+            }
+            {championsList && sortBy === "coste" &&
+            <div className={style.containerChampionsByCost}>
+            {championsList?.filter(({coste})=>coste===4)?.map((campeon, index)=>{
+                return (
+                    <div className={style.containerChampion} key={`key${index}`} style={{"borderColor":`var(--color-hex-cost-${campeon.coste})`}}>
+                            <img
+                                id={`campeon-${campeon.nombre}`}
+                                src={campeon.img}
+                                alt={campeon.nombre}
+                                data-campeon={JSON.stringify(campeon)}
+                                data-from={"championList"}
+                                onDragStart={(e)=>{handleDragStart(e)}}
+                                draggable="true"
+                                />
+                            <span>{campeon.nombre}</span>
+                        </div>
+                    )    
+                    
+                })}
+            </div>
+            }
+            {championsList && sortBy === "coste" && 
+            <div className={style.containerChampionsByCost}>
+            {championsList?.filter(({coste})=>coste===5)?.map((campeon, index)=>{
+                return (
+                    <div className={style.containerChampion} key={`key${index}`} style={{"borderColor":`var(--color-hex-cost-${campeon.coste})`}}>
+                            <img
+                                id={`campeon-${campeon.nombre}`}
+                                src={campeon.img}
+                                alt={campeon.nombre}
+                                data-campeon={JSON.stringify(campeon)}
+                                data-from={"championList"}
+                                onDragStart={(e)=>{handleDragStart(e)}}
+                                draggable="true"
+                                />
+                            <span>{campeon.nombre}</span>
+                        </div>
+                    )    
+                    
+                })}
+            </div>
+            }
+            {championsList && sortBy === "coste" &&
+            <div className={style.containerChampionsByCost}>
+            {championsList?.filter(({coste})=>coste===6)?.map((campeon, index)=>{
+                return (
+                    <div className={style.containerChampion} key={`key${index}`} style={{"borderColor":`var(--color-hex-cost-${campeon.coste})`}}>
+                            <img
+                                id={`campeon-${campeon.nombre}`}
+                                src={campeon.img}
+                                alt={campeon.nombre}
+                                data-campeon={JSON.stringify(campeon)}
+                                data-from={"championList"}
+                                onDragStart={(e)=>{handleDragStart(e)}}
+                                draggable="true"
+                                />
+                            <span>{campeon.nombre}</span>
+                        </div>
+                    )    
+                    
+                })}
+            </div>
+            }
+            {championsList && sortBy === "coste" &&
+            <div className={style.containerChampionsByCost}>
+            {championsList?.filter(({coste})=>coste===11)?.map((campeon, index)=>{
+                return (
+                    <div className={style.containerChampion} key={`key${index}`} style={{"borderColor":`var(--color-hex-cost-${campeon.coste})`}}>
+                            <img
+                                id={`campeon-${campeon.nombre}`}
+                                src={campeon.img}
+                                alt={campeon.nombre}
+                                data-campeon={JSON.stringify(campeon)}
+                                data-from={"championList"}
+                                onDragStart={(e)=>{handleDragStart(e)}}
+                                draggable="true"
+                                />
+                            <span>{campeon.nombre}</span>
+                        </div>
+                    )    
+                    
+                })}
+            </div>
+            }
         </div>
         </>
     )

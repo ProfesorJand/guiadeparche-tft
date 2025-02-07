@@ -18,6 +18,8 @@
     --color-hex-cost-3: aqua;
     --color-hex-cost-4: purple;
     --color-hex-cost-5: gold;
+    --color-hex-cost-6: rgb(219, 13, 13);
+    --color-hex-cost-11: rgb(219, 13, 13);
     --text-shadow: 1px 0 #000, -1px 0 #000, 0 1px #000, 0 -1px #000, 1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
 }
 

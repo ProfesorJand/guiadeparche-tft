@@ -12,6 +12,12 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
     "var(--color-hex-cost-3)",
     "var(--color-hex-cost-4)",
     "var(--color-hex-cost-5)",
+    "var(--color-hex-cost-6)",
+    ,
+    ,
+    ,
+    ,
+    "var(--color-hex-cost-11)",
   ];
 
   useEffect(()=>{

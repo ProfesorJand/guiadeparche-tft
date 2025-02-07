@@ -4,16 +4,17 @@ import Composicion from "./Composicion.jsx";
 import style from "./css/EditarCompoTFT.module.css";
 import { MetaComps as compos, loadCompsMeta } from "src/stores/menuFiltradoAdmin.js";
 import FantasmaComposiciones from "./FantasmaComposiciones.jsx";
+import { scrollToComposicion, setOpenCompo, openCompoId } from "src/stores/openCompoById.js";
 
-const MetaComps = ({ showHide }) => {
+
+const MetaComps = ({ showHide,admin }) => {
   const composMeta = useStore(compos);
   const [allFast8, setAllFast8] = useState([]);
   const [all3Stars, setAll3Stars] = useState([]);
   const [allAugmentsHero, setAllAugmentsHero] = useState([]);
   const [isLoading, setIsLoading] = useState(true); // Nuevo estado de carga
-  const [openCompoId, setOpenCompoId] = useState(null);
+  const openCompId = useStore(openCompoId)
   const refs = useRef({});
-  const admin = localStorage.getItem("superAdmin") || false;
 
   const title = {
     fast8: "Standard Comps - Fast 8/9",
@@ -22,28 +23,33 @@ const MetaComps = ({ showHide }) => {
   };
 
   const toggleCompo = (id) => {
-    setOpenCompoId((prevId) => (prevId === id ? null : id));
-    scrollToComposicion(id);
+    //setOpenCompo((prevId) => (prevId === id ? null : id));
+    //scrollToComposicion(id);
+    setOpenCompo(id);
   };
+
+  useEffect(()=>{
+    scrollToComposicion();
+  },[openCompoId])
 
   
 
-  const scrollToComposicion = (id) => {
-    const element = refs.current[id];
-    if (element) {
-      const offsetTop = element.offsetTop;
-      setTimeout(() => {
-        window.scrollTo({
-          top: offsetTop,
-          behavior: "smooth",
-        });
-      }, 150);
-    }
-  };
+  // const scrollToComposicion = (id) => {
+  //   const element = refs.current[id];
+  //   if (element) {
+  //     const offsetTop = element.offsetTop;
+  //     setTimeout(() => {
+  //       window.scrollTo({
+  //         top: offsetTop,
+  //         behavior: "smooth",
+  //       });
+  //     }, 150);
+  //   }
+  // };
 
-  useEffect(() => {
-    loadCompsMeta();
-  }, []);
+  // useEffect(() => {
+  //   loadCompsMeta();
+  // }, []);
 
   useEffect(() => {
     setIsLoading(true);
@@ -111,7 +117,8 @@ const MetaComps = ({ showHide }) => {
                   showHide={showHide}
                   admin={admin}
                   onToggle={() => toggleCompo(compo.id)}
-                  isOpen={openCompoId === compo.id}
+                  isOpen={openCompId === compo.id}
+                  id={compo.id}
                 />
               </div>
             ))
@@ -137,7 +144,8 @@ const MetaComps = ({ showHide }) => {
                   showHide={showHide}
                   admin={admin}
                   onToggle={() => toggleCompo(compo.id)}
-                  isOpen={openCompoId === compo.id}
+                  isOpen={openCompId === compo.id}
+                  id={compo.id}
                 />
               </div>
             ))
@@ -157,13 +165,15 @@ const MetaComps = ({ showHide }) => {
                   style.containerMetaTier,
                   compo?.isHide && admin ? style.isHideForAdmin : compo?.isHide ? style.isHide : "",
                 ].join(" ")}
+                
               >
                 <Composicion
                   compo={compo}
                   showHide={showHide}
                   admin={admin}
                   onToggle={() => toggleCompo(compo.id)}
-                  isOpen={openCompoId === compo.id}
+                  isOpen={openCompId === compo.id}
+                  id={compo.id}
                 />
               </div>
             ))

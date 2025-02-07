@@ -8,56 +8,47 @@ export const updateAction = (action)=>{
 }
 
 const hierarchy = ["S","A","B","C","D","MEME"];
+const hierarchyShadowCategory = ["Fast 8","3 Stars","Specifics Augments"];
 
-export const loadCompsMeta = ()=>{
-  task(async()=>{
-    try{
-      const urlMeta = "https://guiadeparche.com/tftdata/Set12/composMeta.json";
-      const responde = await fetch(urlMeta,{cache:"reload"});
-      const data = await responde.json()
-      const sortableArray = Object.keys(data)
-        .map((tier, i) => {
-          return data[tier].sort((a, b) => a.posicion - b.posicion);
-        })
-        .sort((a, b) => {
-          return (
-            hierarchy.indexOf(a[0]?.tier) - hierarchy.indexOf(b[0]?.tier)
-          );
-        });
-      // Aplicar el filtro para mostrar solo Tier S y Tier A
-      const filteredArray = sortableArray.map((tier) =>
-        tier.filter(({ tier: compoTier }) => compoTier === "S" || compoTier === "A")
-      );
-      initialStateMetaComps.set(sortableArray);
-      MetaComps.set(filteredArray) // acá
-    }catch(err){
-      console.log({err})
-      const data = backupMeta
-      console.log({data})
-      const sortableArray = Object.keys(data)
-        .map((tier, i) => {
-          return data[tier].sort((a, b) => a.posicion - b.posicion);
-        })
-        .sort((a, b) => {
-          return (
-            hierarchy.indexOf(a[0]?.tier) - hierarchy.indexOf(b[0]?.tier)
-          );
-        });
 
-       // Aplicar el filtro para mostrar solo Tier S y Tier A
-       const filteredArray = sortableArray.map((tier) =>
-        tier.filter(({ tier: compoTier }) => compoTier === "S" || compoTier === "A")
-      );
+export const loadCompsMeta = async () => {
+  const urlMeta = "https://guiadeparche.com/tftdata/Set12/composMeta.json";
 
-      initialStateMetaComps.set(sortableArray);
-      MetaComps.set(filteredArray)
-      
-    }
-  })
-}
+  try {
+    const response = await fetch(urlMeta, { cache: "reload" });
+    const data = await response.json();
+    const sortableArray = Object.keys(data).sort((a,b)=> hierarchy.indexOf(a) - hierarchy.indexOf(b))
+      .map((tier) => data[tier].sort((a, b) => a.posicion - b.posicion)
+      .sort((a, b) => hierarchyShadowCategory.indexOf(a?.shadowCategory) - hierarchyShadowCategory.indexOf(b?.shadowCategory)))
+    // const filteredArray = [...sortableArray]
+    // Actualiza el estado global
+    initialStateMetaComps.set(sortableArray);
+    MetaComps.set(sortableArray);
+    return sortableArray; // También retorna los datos
+  } catch (err) {
+    console.error(err);
+    const data = backupMeta;
+    const sortableArray =Object.keys(data).sort((a,b)=> hierarchy.indexOf(a) - hierarchy.indexOf(b))
+    .map((tier) => data[tier].sort((a, b) => a.posicion - b.posicion)
+    .sort((a, b) => hierarchyShadowCategory.indexOf(a?.shadowCategory) - hierarchyShadowCategory.indexOf(b?.shadowCategory)))
+
+    // const filteredArray = sortableArray.map((tier) =>
+    //   tier.filter(({ tier: compoTier }) => compoTier === "S" || compoTier === "A")
+    // );
+    // const filteredArray = [...sortableArray]
+
+    // Actualiza el estado global en caso de error
+    initialStateMetaComps.set(sortableArray);
+    MetaComps.set(sortableArray);
+
+    return sortableArray;
+  }
+};
+
 
 export const initialStateMetaComps = deepMap([])
-export const MetaComps = deepMap([])
+export const MetaComps = deepMap(null)
+export const TierListMetaComps = deepMap([])
 
 export const handlerfilterMetaComp = (action)=>{
   initialStateMetaCompFilter.set({...initialStateMetaCompFilter.get(),[action]:!initialStateMetaCompFilter.get()[action]})
@@ -72,10 +63,10 @@ export const initialStateMetaCompFilter = deepMap({
   ["Hard"]:true,
   ["Tier S"]:true,
   ["Tier A"]:true,
-  ["Tier B"]:false,
-  ["Tier C"]:false,
-  ["Tier D"]:false,
-  ["Tier MEME"]:false,
+  ["Tier B"]:true,
+  ["Tier C"]:true,
+  ["Tier D"]:true,
+  ["Tier MEME"]:true,
 })
 
 export const filterByCategory = (e)=>{
@@ -135,4 +126,20 @@ export const filterByCategory = (e)=>{
   MetaComps.set(newMeta)
 }
 
+await loadCompsMeta();
 
+
+export const getMetaCompVersion = async () => {
+  const urlMeta = "https://guiadeparche.com/tftdata/Set12/constantes.json";
+  try {
+    const response = await fetch(urlMeta, { cache: "reload" });
+    const {MetaCompVersion: version} = await response.json();
+    MetaCompVersion.set(version)
+  }catch(error){
+
+  }
+}
+
+export const MetaCompVersion = deepMap(null)
+
+await getMetaCompVersion()

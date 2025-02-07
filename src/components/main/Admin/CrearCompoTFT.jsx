@@ -629,7 +629,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           <span>Tier List Data:</span>
           <label htmlFor="title">
             <span>Champion:</span>
-            <select onChange={(e)=>{setCampeonTierList(JSON.parse(e.target.options[e.target.selectedIndex].dataset.value))}} defaultValue={editCampeonTierList || campeonTierList}>
+            <select onChange={(e)=>{setCampeonTierList(JSON.parse(e.target.options[e.target.selectedIndex].dataset.value))}} defaultValue={editCampeonTierList?.name || campeonTierList?.name}>
               {
                 championsTFTIngles.map((campeon,index)=>{
                   return (

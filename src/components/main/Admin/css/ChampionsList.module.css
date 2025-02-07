@@ -6,6 +6,18 @@
     gap:5px
 }
 
+.containerChampionsListByCost{
+    flex-direction:column;
+}
+
+.containerChampionsByCost{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap:5px;
+    width: 100%;
+}
+
 .containerChampion > img{
     display:flex;
     width: 100%;

@@ -2,10 +2,12 @@ import React, {useEffect} from "react";
 import { useStore } from "@nanostores/react";
 import {MetaComps as compos, loadCompsMeta} from "src/stores/menuFiltradoAdmin.js";
 import Composicion from "./Composicion.jsx";
-import style from "./css/ShowBigCompScreen.module.css"
+import style from "./css/ShowBigCompScreen.module.css";
+import { MetaCompVersion } from "src/stores/menuFiltradoAdmin.js";
 const ShowBigCompScreen = ({id, setShowBigComp}) => {
   const colorDificulty= {Easy:"green",Medium:"orange",Hard:"red"}
   const composMeta = useStore(compos);
+  const version = useStore(MetaCompVersion)
   function findObjectById(id, composMeta) {
     for (const array of composMeta) {
       const found = array.find(obj => obj.id === id);
@@ -38,7 +40,7 @@ const ShowBigCompScreen = ({id, setShowBigComp}) => {
               </div>
               <div className={style.titulos}>
                 <div className={style.tituloPrincipal}>
-                  SET 13 META COMP [13.3]
+                  {`SET 13 META COMP [${version}]`}
                 </div>
                 <div className={style.titutloSecundario}>
                 <span className={[style.titulo, style.tituloComp].join(" ")}>{CompToShow.titulo}</span>

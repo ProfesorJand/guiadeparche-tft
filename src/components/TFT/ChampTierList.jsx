@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { useStore } from "@nanostores/react";
 import style from "./css/ChampTierList.module.css";
 import { openCompoId, setOpenCompo, scrollToComposicion } from "src/stores/openCompoById";
-
 const ChampTierList = ({id,isSample,campeonTierList, augmentTierList, champItem, champTrait})=>{
   const championsColor = [
     "var(--color-hex-cost-default)",
@@ -18,7 +17,7 @@ const ChampTierList = ({id,isSample,campeonTierList, augmentTierList, champItem,
     scrollToComposicion()
   },[compId])
   return (
-    <div className={isSample ? style.containerSampleChampTierList : style.containerChampTierList} onClick={()=>setOpenCompo(id)}>
+    <div className={[isSample ? style.containerSampleChampTierList : style.containerChampTierList, (compId === id && !isSample)? style.isActive : ""].join(" ")} onClick={()=>setOpenCompo(id)}>
       {
         Object.keys(campeonTierList || {})?.length > 0 && 
         // añadir color del borde

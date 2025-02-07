@@ -11,9 +11,8 @@ import { championsTFT } from "src/json/updates/constantesLatest.js";
 import ShowBigCompScreen from "./ShowBigCompScreen"; 
 import RadiantsItems from "./RadiantsItems";
 
-const Composicion = ({compo, admin=false, show=true, allwaysOpen=false, onToggle, isOpen})=>{
+const Composicion = ({id, compo, admin=false, show=true, allwaysOpen=false, onToggle, isOpen})=>{
   const [open,setOpen]=useState(allwaysOpen);
-
   const [editId, setEditId] = useState(null)
   const colorDificulty= {Easy:"green",Medium:"orange",Hard:"red"}
   const [posicionamiento, setPosicionamiento] = useState(compo.originalComp)
@@ -181,7 +180,7 @@ const Composicion = ({compo, admin=false, show=true, allwaysOpen=false, onToggle
   }
 
   return (
-    <div className={[show ? style.containerInfoGlobal: style.containerInfoGlobalOculto].join(" ")}>
+    <div id={id} className={[show ? style.containerInfoGlobal: style.containerInfoGlobalOculto].join(" ")}>
 
     <div className={[show ? style.containerInfoPrincipal : style.containerInfoPrincipalOculto , (open || isOpen) ? style.downBorder: "" ].join(" ")} onClick={()=>{onToggle()}}>
     <div className={show ? style.containerTextoInfoPrimario : ""}>
@@ -245,7 +244,7 @@ const Composicion = ({compo, admin=false, show=true, allwaysOpen=false, onToggle
           </div>
         }
         {show &&
-          <div className={[style.btn, style.btnClose, open ? style.btnOpen: ""].join(" ")} >  
+          <div className={[style.btn, style.btnClose, isOpen ? style.btnOpen: ""].join(" ")} >  
           </div>
         }
       </div>

@@ -24,3 +24,10 @@ h2{
   margin-bottom: 0;
   font-size: 1.2em;
 }
+
+.containerConstanteUpdate{
+  display: flex;
+  margin: 10px 0;
+  justify-content: center;
+  gap:5px
+}
