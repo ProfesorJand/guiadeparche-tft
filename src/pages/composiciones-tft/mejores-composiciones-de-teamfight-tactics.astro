@@ -9,7 +9,10 @@ import Main from '@components/main/Main.astro';
 import Twitch from 'src/components/embed/Twitch.jsx';
 //import ContainerMetaPBE from '@components/new-meta-comp/ContainerMetaPBE.astro';
 import {crearJSONSchema} from "src/json/schema/crearJSONSchema";
-import Kick from "src/components/embed/Kick.astro"
+import Kick from "src/components/embed/Kick.astro";
+import TierListMetaComps from '@components/TFT/TierListMetaComps.jsx';
+import { MetaCompVersion } from 'src/stores/menuFiltradoAdmin';
+// import { loadCompsMeta } from 'src/stores/menuFiltradoAdmin';
 const title = "▷ Best TFT Comps & Builds for Set 13 Arcane";
 // Example: Construct a canonical URL using your production domain
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -20,7 +23,7 @@ const keywords = "TFT Meta, Meta comps, comps TFT, comp TFT, Meta TFT, composici
 const thumbnail= "/campeones/set12/ryze.webp"
 const imgPost = "https://i.ytimg.com/vi/5ph-NnCjDSk/maxresdefault.jpg"
 const JSONSchema = crearJSONSchema({title, imgPost, thumbnail, description});
-
+const admin = typeof window !== "undefined" ? localStorage.getItem("superAdmin") : false;
 ---
 <!-- <link rel="canonical" href={canonicalURL} /> -->
 <!-- <meta property="og:image" content={socialImageURL} /> -->
@@ -29,7 +32,8 @@ const JSONSchema = crearJSONSchema({title, imgPost, thumbnail, description});
 <meta property="og:image" content="/campeones/set12/ryze.webp" /> -->
 <Layout title={title} JSONSchema={JSONSchema} description={description} keywords={keywords} image={"/campeones/set12/ryze.webp"} canonical={canonicalURL}>
   <Fragment slot="bodyMainAside">
-    <FiltroComps client:only="react"/>
+    <!-- <FiltroComps client:only="react"/> -->
+    <TierListMetaComps client:load/>
     <!-- <Youtube src={"https://www.youtube.com/playlist?list=PLxRnNvReiLMEriFDu0UxXScDabCIX-PWy"} client:only="react"/> -->
 </Fragment>
 <!-- <Fragment slot="bodyMainAsideTwitch">
@@ -43,7 +47,7 @@ const JSONSchema = crearJSONSchema({title, imgPost, thumbnail, description});
     <h1 id="tituloMetaComps" class="titulo tituloMetaComps">
       Best TFT Meta Comps & Builds | Mejores Composiciones
     </h1>
-    <span id="minititulo" class="minititulo">Tier List for Set 13 Arcane TFT Compos - Patch 13.4</span>
+    <span id="minititulo" class="minititulo">Tier List for Set 13 Arcane TFT Compos - Patch {MetaCompVersion.value}</span>
     <!-- <div class="videosYT">
       <div class="videoYTAdd">
         <h2 class="tituloYt">Español</h2>
@@ -58,7 +62,7 @@ const JSONSchema = crearJSONSchema({title, imgPost, thumbnail, description});
       <!-- <ContainerMetaPBE version={latestVersion} set={setPBE}/> -->
       <!-- <ContainerMeta version={latestVersion} set={set} client:load/> -->
       <div class={"containerMeta"}>
-        <MetaComps showHide={false} client:only="react"/>
+        <MetaComps showHide={false} admin={admin} client:load/>
       </div>
     </div>
   </Main>
@@ -209,10 +213,10 @@ const JSONSchema = crearJSONSchema({title, imgPost, thumbnail, description});
   document.addEventListener("astro:page-load",()=>{
     const pantalla = window.innerWidth;
     const tituloMetaComps = document.getElementById("tituloMetaComps");
-    if(pantalla <= 900){
+    if(tituloMetaComps && pantalla <= 900){
       tituloMetaComps.innerHTML = "Best TFT Meta Comps & Builds Mejores Composiciones"
     }
-    if(pantalla > 900){
+    if(tituloMetaComps && pantalla > 900){
       tituloMetaComps.innerHTML = "Best TFT Meta Comps & Builds | Mejores Composiciones"
     }
   })
