@@ -2,13 +2,15 @@
   display: flex;
   position: relative;
   flex-direction: column;
-  gap:5px
+  gap:5px;
+  width: 100%;
 }
 
 .containerMetaCompByTier{
   display: flex;
   flex-direction: row;
   background-color: var(--bg-tertiary);
+  width: 100%;
 }
 
 .containerImgTier{
@@ -25,9 +27,9 @@
 
 .containerChampTierList{
   display: flex;
-  width: 92%;
+  width: 100%;
   gap: var(--gap-champ-tier-list);
-  padding: 5px 5px 0 5px;
+  /* padding: 5px 5px 0 5px; */
   box-sizing: border-box;
   overflow-x:auto;
   scroll-behavior: smooth;

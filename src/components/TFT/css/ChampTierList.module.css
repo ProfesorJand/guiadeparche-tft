@@ -12,6 +12,7 @@
   height: fit-content;
   transition-duration: 0.5s;
   cursor: pointer;
+  margin: 5px 0;
 }
 .containerChampTierList:hover{
   filter: drop-shadow(0px 0px 4px rgba(167, 94, 94, 0.9));
