@@ -50,3 +50,8 @@
   border: 2px solid var(--border-color);
 }
 
+@media only screen and (max-width:900px){
+  .containerChampTierList{
+    flex-wrap: wrap;
+  }
+}
