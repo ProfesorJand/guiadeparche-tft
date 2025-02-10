@@ -44,3 +44,9 @@
 .variableName{
   color:gold
 }
+
+@media only screen and (max-width:900px) {
+  .tooltip{
+    display: none;
+  }
+}

@@ -54,7 +54,4 @@
   .containerChampTierList{
     flex-wrap: wrap;
   }
-  .containerTierListMetaComps{
-    display: none;
-  }
 }
