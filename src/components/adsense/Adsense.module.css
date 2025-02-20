@@ -53,6 +53,8 @@ ins#google-anno-sa {
     width: calc((100vw - var(--width-main)) / 2);
     min-height: 600px;
     min-width: 90px;
+    padding: 5px;
+    box-sizing: border-box;
   }
 
   .adsense_vertical.left {
