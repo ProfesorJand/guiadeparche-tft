@@ -353,8 +353,11 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
     }
     .bodyAside{
       display: flex;
-      width: calc((100vw - var(--width-main))/2);
-      /* background-color: aqua; */
+      width: calc((100vw - var(--width-main)) / 2);
+      position: sticky;
+      top: calc(var(--height-header));
+      padding: 5px;
+      box-sizing: border-box;
     }
     .bodyMain{
       display: flex;
