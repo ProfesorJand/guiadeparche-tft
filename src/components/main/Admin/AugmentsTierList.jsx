@@ -30,7 +30,7 @@ if(tierList?.Prismatic?.length > 0 || tierList?.Gold?.length > 0 || tierList?.Si
                     <div className={style.tooltip}>
                       <div className={style.tooltipTitle}>{dataItem.name}</div>
                       <div className={style.tooltipDesc}>{dataItem.desc}</div>
-                      {Object.keys(dataItem.effects).length > 0 && Object.keys(dataItem.effects).map((variable, i)=>{
+                      {Object.keys(dataItem?.effects || {}).length > 0 && Object.keys(dataItem?.effects || {}).map((variable, i)=>{
                         return (
                         <div key={i} className={style.effects}>
                           <span className={style.variableName}>{variable}</span> : <span>{dataItem.effects[variable]}</span>

@@ -24,6 +24,7 @@
           const datos = await fetch(url, {cache:"no-cache"});
           const resp = await datos.json();
           setAumentos(resp)
+          
           setTierList(resp)
         })()
       },[])
@@ -35,7 +36,7 @@
           const itemsDataIngles1 = await items.json();
           const dataAumentos = itemsDataIngles1.items.filter(({apiName})=>{
             //itemsDataIngles1.setData[12].augments son las listas de los aumentos del set 13
-            return itemsDataIngles1.setData[14].augments.includes(apiName)
+            return itemsDataIngles1.setData[itemsDataIngles1.setData.length - 2].augments.includes(apiName)
           })
           setListaDeAumentos(dataAumentos)
         }
