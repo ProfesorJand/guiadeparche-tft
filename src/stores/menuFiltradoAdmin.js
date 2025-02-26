@@ -132,7 +132,7 @@ await loadCompsMeta();
 export const getMetaCompVersion = async () => {
   const urlMeta = "https://guiadeparche.com/tftdata/Set12/constantes.json";
   try {
-    const response = await fetch(urlMeta, { cache: "reload" });
+    const response = await fetch(urlMeta, { cache:"no-cache" });
     const {MetaCompVersion: version} = await response.json();
     MetaCompVersion.set(version)
   }catch(error){
