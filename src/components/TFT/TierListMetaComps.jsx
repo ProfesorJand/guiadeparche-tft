@@ -2,7 +2,7 @@ import { MetaComps as compos } from "src/stores/menuFiltradoAdmin.js";
 import { useStore } from "@nanostores/react";
 import style from "./css/TierListMetaComps.module.css";
 import ChampTierList from "./ChampTierList.jsx";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef } from "react";
 
 const TierListMetaComps = () => {
   const composMeta = useStore(compos);
@@ -30,10 +30,13 @@ const TierListMetaComps = () => {
     <div className={style.containerTierListMetaComps}>
       {composMeta.length > 0 ? (
         composMeta.map((comps, index) => {
-          // Dividir comps en grupos de numberOfChampsInTierList
+          // Filtrar los campeones donde isHide es false
+          const visibleComps = comps.filter((comp) => !comp.isHide);
+
+          // Dividir visibleComps en grupos de numberOfChampsInTierList
           const chunkedComps = [];
-          for (let i = 0; i < comps.length; i += numberOfChampsInTierList) {
-            chunkedComps.push(comps.slice(i, i + numberOfChampsInTierList));
+          for (let i = 0; i < visibleComps.length; i += numberOfChampsInTierList) {
+            chunkedComps.push(visibleComps.slice(i, i + numberOfChampsInTierList));
           }
 
           return chunkedComps.map((compGroup, groupIndex) => (
@@ -46,21 +49,16 @@ const TierListMetaComps = () => {
                 />
               </div>
               <div className={style.containerChampTierList} ref={(el) => (scrollContainersRef.current[index] = el)}>
-                {compGroup.map(({ id, isHide, campeonTierList, augmentTierList, champItem, champTrait }) => {
-                  if (!isHide && campeonTierList?.name) {
-                    return (
-                      <ChampTierList
-                        key={id}
-                        id={id}
-                        campeonTierList={campeonTierList}
-                        augmentTierList={augmentTierList}
-                        champItem={champItem}
-                        champTrait={champTrait}
-                      />
-                    );
-                  }
-                  return null;
-                })}
+                {compGroup.map(({ id, campeonTierList, augmentTierList, champItem, champTrait }) => (
+                  <ChampTierList
+                    key={id}
+                    id={id}
+                    campeonTierList={campeonTierList}
+                    augmentTierList={augmentTierList}
+                    champItem={champItem}
+                    champTrait={champTrait}
+                  />
+                ))}
               </div>
             </div>
           ));
