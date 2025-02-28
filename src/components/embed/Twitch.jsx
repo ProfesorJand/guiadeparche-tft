@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-const STREAMERS = ["jupeson", "teamfighttactics", "relic_lol"];
+const STREAMERS = ["jupeson", "relic_lol"]; //"teamfighttactics"
 
 const Twitch = () => {
   const divTwitchRef = useRef(null);
