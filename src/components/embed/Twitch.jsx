@@ -1,22 +1,26 @@
 import { useEffect, useRef, useState } from "react";
 
+const STREAMERS = ["jupeson", "teamfighttactics", "relic_lol"];
+
 const Twitch = () => {
   const divTwitchRef = useRef(null);
   const [pass, setPass] = useState(false);
+  const [currentStreamerIndex, setCurrentStreamerIndex] = useState(0);
+  const [checkedAll, setCheckedAll] = useState(false);
+  const embedRef = useRef(null); // Guardamos la referencia de embed
 
   useEffect(() => {
     const handlePageLoad = () => {
       if (!pass && !ismMyScriptLoaded("https://embed.twitch.tv/embed/v1.js")) {
-          setPass(true);
+        setPass(true);
       }
     };
-  
+
     window.addEventListener("astro:page-load", handlePageLoad);
-    // Simula el evento "astro:page-load" después de 5segundos
     setTimeout(() => {
       window.dispatchEvent(new Event("astro:page-load"));
     }, 5000);
-  
+
     return () => {
       window.removeEventListener("astro:page-load", handlePageLoad);
     };
@@ -25,26 +29,27 @@ const Twitch = () => {
   useEffect(() => {
     if (!pass) return;
     if (ismMyScriptLoaded("https://embed.twitch.tv/embed/v1.js")) return;
-    let embed;
-    const script = document.createElement('script');
-    script.src = 'https://embed.twitch.tv/embed/v1.js';
+    
+    const script = document.createElement("script");
+    script.src = "https://embed.twitch.tv/embed/v1.js";
     script.async = true;
     document.head.appendChild(script);
 
     script.onload = () => {
       const divTwitch = divTwitchRef.current;
       const options = {
-        width: '100%',
-        channel: "jupeson", //teamfighttactics
-        layout: 'video',
+        width: "100%",
+        channel: STREAMERS[currentStreamerIndex], 
+        layout: "video",
         autoplay: true,
         allowfullscreen: true,
-        muted: true, // false es por defecto
-        theme: "dark", //light or dark
-        parent: ['tft.guiadeparche.com'],
+        muted: true, 
+        theme: "dark", 
+        parent: ["tft.guiadeparche.com"],
       };
 
-      embed = new window.Twitch.Embed('twitch-embed', options);
+      const embed = new window.Twitch.Embed("twitch-embed", options);
+      embedRef.current = embed; // Guardamos la instancia de embed
 
       embed.addEventListener(window.Twitch.Embed.READY, () => {
         embed.addEventListener(window.Twitch.Embed.ONLINE, handleOnline);
@@ -52,27 +57,13 @@ const Twitch = () => {
       });
 
       const handleOnline = () => {
-        embed.removeEventListener(window.Twitch.Embed.ONLINE, handleOnline);
-        embed.addEventListener(window.Twitch.Embed.OFFLINE, handleOffline);
-        divTwitch.classList.remove('hide');
-        divTwitch.classList.add('show');
         embed.setMuted(false);
+        divTwitch.classList.remove("hide");
+        divTwitch.classList.add("show");
       };
 
       const handleOffline = () => {
-        checkAnotherStreamer();
-      };
-
-      const checkAnotherStreamer = () => {
-        embed.setChannel("relic_lol");
-        embed.addEventListener(window.Twitch.Embed.OFFLINE, volverJupeson);
-      };
-
-      const volverJupeson = () => {
-        embed.setChannel("jupeson"); //teamfighttactics
-        embed.removeEventListener(window.Twitch.Embed.OFFLINE, handleOffline);
-        embed.addEventListener(window.Twitch.Embed.ONLINE, handleOnline);
-        embed.setMuted(true);
+        checkNextStreamer();
       };
     };
 
@@ -81,10 +72,34 @@ const Twitch = () => {
     };
   }, [pass]);
 
+  // Función para verificar el siguiente streamer
+  const checkNextStreamer = () => {
+    setCurrentStreamerIndex((prevIndex) => {
+      const newIndex = (prevIndex + 1) % STREAMERS.length;
+      // Si hemos recorrido todo el array, marcamos que todos están offline
+      if (newIndex === 0) {
+        setCheckedAll(true);
+      }
+      return newIndex;
+    });
+  };
+
+  // Efecto para actualizar el canal cuando cambia currentStreamerIndex o checkedAll
+  useEffect(() => {
+    if (!pass || !embedRef.current) return;
+
+    if (checkedAll) {
+      embedRef.current.setChannel("jupeson");
+      return;
+    }
+
+    embedRef.current.setChannel(STREAMERS[currentStreamerIndex]);
+  }, [currentStreamerIndex, checkedAll]);
+
   function ismMyScriptLoaded(url) {
     if (!url) url = "https://embed.twitch.tv/embed/v1.js";
-    var scripts = document.getElementsByTagName('script');
-    for (var i = scripts.length; i--;) {
+    var scripts = document.getElementsByTagName("script");
+    for (var i = scripts.length; i--; ) {
       if (scripts[i].src === url) {
         return true;
       }
