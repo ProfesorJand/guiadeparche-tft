@@ -81,7 +81,7 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
               <div class="bodyMainAsideEmbed">
                 <slot name="bodyMainAsideTwitch"></slot>
                 <Youtube src={"https://www.youtube.com/playlist?list=PLxRnNvReiLMEriFDu0UxXScDabCIX-PWy"} client:only="react"/>
-                
+                <Youtube src={"https://youtu.be/ZsrrHBHKqUY"} client:only="react"/>
                 <!-- <ads class="bodyMainAsideAds">
                   <slot name="bodyMainAsideAds"></slot>
                 </ads> -->
@@ -369,6 +369,7 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
       position: relative;
       flex-direction: column;
       width: calc(var(--width-main)/3);
+      background-color: var(--bg-secondary);
     }
 
     .bodyMainAsideSticky{
@@ -380,7 +381,7 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
       background-color: var(--bg-secondary);
       width: calc(var(--width-main)/3);
       box-sizing: border-box;
-      height:92vh;
+      height:max-content;
       justify-content: flex-start;
     }
 
