@@ -6,7 +6,8 @@ import EditarCompoTFT from "./EditarCompoTFT.jsx";
 import CreateItemsTierList from "./CreateItemsTierList.jsx";
 //import CrearTierListChampItem from "./crearTierListChampItem.jsx"
 import CreateAugmentsTierList from "./CreateAugmentsTierList.jsx";
-import style from "./css/Admin.module.css"
+import style from "./css/Admin.module.css";
+import TwitchStreamersManager from "@components/embed/TwitchStreamersManager.jsx";
 
 const AdminPanel = ({allAdmins})=>{
     const [isLoged, setIsLoged] = useState(localStorage.getItem("login") || false)
@@ -60,12 +61,23 @@ const AdminPanel = ({allAdmins})=>{
                         </div> */}
                     </div>
                 </div>
+                {adminName !== "relic" && 
+                <div className={style.container}>
+                    Streamers
+                    <div className={style.tierList}>
+                        <div slot="hola">
+                            <button className={pestana === 2 ? style.btnActive: ""}onClick={()=>{setAction("twitch"); setPestana(4)}}>Twitch</button>
+                        </div>
+                    </div>
+                </div>
+                }
             </div>
             <div>
                 {action === "crear" && <CrearCompoTFT />}
                 {action === "editar" && <EditarCompoTFT />}
                 {action === "itemsTierList" && <CreateItemsTierList />}
                 {action === "augmentsTierList" && <CreateAugmentsTierList admin={true}/>}
+                {action === "twitch" && <TwitchStreamersManager/>}
                 {/* {action === "champsItemsTierList" && <CrearTierListChampItem />} */}
             </div>
             <button onClick={()=>cerrarSesion()}>cerrar sesión</button>

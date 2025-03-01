@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-
-const STREAMERS = ["jupeson", "relic_lol"]; //"teamfighttactics"
+import { STREAMERS as todosLosStreamers } from "src/stores/menuFiltradoAdmin";
+import { useStore } from "@nanostores/react";
+// const STREAMERS = ["jupeson", "teamfighttactics", "relic_lol"]; //"teamfighttactics"
 
 const Twitch = () => {
   const divTwitchRef = useRef(null);
@@ -8,6 +9,8 @@ const Twitch = () => {
   const [currentStreamerIndex, setCurrentStreamerIndex] = useState(0);
   const [checkedAll, setCheckedAll] = useState(false);
   const embedRef = useRef(null); // Guardamos la referencia de embed
+  const STREAMERS = useStore(todosLosStreamers)
+
 
   useEffect(() => {
     const handlePageLoad = () => {
