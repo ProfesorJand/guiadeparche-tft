@@ -66,7 +66,7 @@ const AdminPanel = ({allAdmins})=>{
                     Streamers
                     <div className={style.tierList}>
                         <div slot="hola">
-                            <button className={pestana === 2 ? style.btnActive: ""}onClick={()=>{setAction("twitch"); setPestana(4)}}>Twitch</button>
+                            <button className={pestana === 4 ? style.btnActive: ""}onClick={()=>{setAction("twitch"); setPestana(4)}}>Twitch</button>
                         </div>
                     </div>
                 </div>
