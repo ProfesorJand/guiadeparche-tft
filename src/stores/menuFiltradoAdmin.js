@@ -129,17 +129,20 @@ export const filterByCategory = (e)=>{
 await loadCompsMeta();
 
 
-export const getMetaCompVersion = async () => {
+export const getConstantsTFT = async () => {
   const urlMeta = "https://guiadeparche.com/tftdata/Set12/constantes.json";
   try {
     const response = await fetch(urlMeta, { cache:"no-cache" });
-    const {MetaCompVersion: version} = await response.json();
+    const {MetaCompVersion: version, Streamers} = await response.json();
     MetaCompVersion.set(version)
+    STREAMERS.set(Streamers)
   }catch(error){
 
   }
 }
 
-export const MetaCompVersion = deepMap(null)
 
-await getMetaCompVersion()
+export const MetaCompVersion = deepMap(null)
+export const STREAMERS = deepMap(["jupeson"])
+
+await getConstantsTFT()
