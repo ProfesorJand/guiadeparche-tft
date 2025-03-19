@@ -11,11 +11,15 @@ const hierarchy = ["S","A","B","C","D","MEME"];
 const hierarchyShadowCategory = ["Fast 8","3 Stars","Specifics Augments"];
 
 
-export const loadCompsMeta = async () => {
-  const urlMeta = "https://guiadeparche.com/tftdata/Set12/composMeta.json";
-
+export const loadCompsMeta = async (currentVersion) => {
+  //const urlMeta = "https://guiadeparche.com/tftdata/Set12/composMeta.json";
+  const urlMetaBackend = currentVersion === "pbe" ?
+  "https://guiadeparche.com/tftdata/Set12/composMetaPBE.json"
+  :
+  "https://guiadeparche.com/tftdata/Set12/composMeta.json";
+  
   try {
-    const response = await fetch(urlMeta, { cache: "reload" });
+    const response = await fetch(urlMetaBackend, { cache: "reload" });
     const data = await response.json();
     const sortableArray = Object.keys(data).sort((a,b)=> hierarchy.indexOf(a) - hierarchy.indexOf(b))
       .map((tier) => data[tier].sort((a, b) => a.posicion - b.posicion)

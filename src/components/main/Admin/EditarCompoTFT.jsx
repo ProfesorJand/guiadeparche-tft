@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import MetaComps from "./MetaComps.jsx";
 import TierListMetaComps from "@components/TFT/TierListMetaComps.jsx";
+import { versionTFT, swapVersionTFT } from "src/stores/dataTFT.js";
+import { useStore } from "@nanostores/react";
 import style from "./css/EditarCompoTFT.module.css"
 
 const EditarCompoTFT = () => {
+  const currentVersion = useStore(versionTFT);
   const [constantes, setConstantes] = useState({});
   const admin = localStorage.getItem("superAdmin") || false;
   useEffect(() => {
@@ -56,13 +59,27 @@ const EditarCompoTFT = () => {
   return (
     <>
         <label className={style.containerConstanteUpdate}>
-          <span>Meta Comps Version:</span>
+          <span>Label Meta Comps Version:</span>
           <input id="inputMetaCompVersion" type="text" placeholder={constantes?.MetaCompVersion || ""} />
           <input
             type="button"
             value="Update"
             onClick={() => actualizarConstantes("inputMetaCompVersion")}
             />
+        </label>
+
+        <label className={style.containerConstanteUpdate}>
+          <span>Selecciona Version:</span>
+          <select
+              name="versions"
+              id="versions"
+              onChange={(e)=>swapVersionTFT(e.target.value)}
+              defaultValue={currentVersion}
+              required
+          >
+              <option value="pbe">pbe</option>
+              <option value="latest">latest</option>
+          </select>
         </label>
       {/* <TierListMetaComps /> */}
 

@@ -3,7 +3,7 @@ import style from "./css/PosicionamientoCompos.module.css"
 import Youtube from "src/components/youtube/Youtube";
 import spinner180 from "../../../assets/loading-180-v2.svg"
 
-const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, gameplay, spatula1, spatula2, posicionamiento, setPosicionamiento, setData, setSinergias, show})=>{
+const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, gameplay, spatula1, spatula2, posicionamiento, setPosicionamiento, setData, setSinergias, show, version})=>{
   const [niveles, setNiveles] = useState([posicionamiento]);
   const [isLoading, setIsLoading] = useState(false)
   useEffect(()=>{
@@ -27,12 +27,12 @@ const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, gameplay, s
           <>
             {posicionamiento !== "gameplay" && posicionamiento !== "spatula1" && posicionamiento !== "spatula2" &&
             <div className={show ? style.containerImgVideo : style.containerImgVideoOculto}>
-              <img className={show ? style.imgPosicionamiento : style.imgPosicionamientoOculto} src={url+id+"-"+posicionamiento+".webp"+"?v="+Date.now()} alt="" loading="lazy"/>
+              <img className={show ? style.imgPosicionamiento : style.imgPosicionamientoOculto} src={url+id+"-"+posicionamiento+(version === "pbe" ? "-pbe" : "")+".webp"+"?v="+Date.now()} alt="" loading="lazy"/>
             </div>
           }
             {(posicionamiento === "spatula1" || posicionamiento === "spatula2") && 
             <div className={show ? style.containerImgVideo : style.containerImgVideoOculto}>
-              <img className={show ? style.imgPosicionamiento : style.imgPosicionamientoOculto} src={url+id+"-"+posicionamiento+".webp"+"?v="+Date.now()} alt="" loading="lazy"/>
+              <img className={show ? style.imgPosicionamiento : style.imgPosicionamientoOculto} src={url+id+"-"+posicionamiento+(version === "pbe" ? "-pbe" : "")+".webp"+"?v="+Date.now()} alt="" loading="lazy"/>
             </div>
           }
           {

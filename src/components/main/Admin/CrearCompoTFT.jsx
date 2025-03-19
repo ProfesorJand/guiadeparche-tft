@@ -12,13 +12,15 @@ import CarouselItems from "./CarouselItems.jsx";
 import RadiantsItems from "./RadiantsItems.jsx";
 import { championsTFT } from "src/json/updates/constantesLatest.js";
 import { listaCampeones } from "src/functions/campeonestft.js";
-import { itemsDataIngles, getDataTFTBySet, championsTFTIngles } from "src/json/updates/contantesTFT.js"
+import { itemsDataIngles, getDataTFTBySet, championsTFTIngles  as getAllChampions} from "src/json/updates/contantesTFT.js"
 import ChampTierList from "@components/TFT/ChampTierList.jsx"
+import { versionTFT } from "src/stores/dataTFT.js"
+import { useStore } from "@nanostores/react"
 
 
-
-
-const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,edittitulo,editshadowCategory,editinfographicCategory,editaumentos,editgameplay,edittips,editboardInfo,editpictureSave,editcarouselItems,editradiantItem,editspatulaItem1,editspatulaItem2,editoriginalComp, editCampeonTierList, editAugmentTierList, editCampeonItemTierList =[{},{},{}], editCampeonTraitTierList = [{}] }) =>{
+const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,edittitulo,editshadowCategory,editinfographicCategory,editaumentos,editgameplay,edittips,editboardInfo,editpictureSave,editcarouselItems,editradiantItem,editspatulaItem1,editspatulaItem2,editoriginalComp, editCampeonTierList, editAugmentTierList, editCampeonItemTierList =[{},{},{}], editCampeonTraitTierList = [{}], editVersion=null }) =>{
+    const currentVersion= useStore(versionTFT);
+    const [version, setVersion] = useState(currentVersion)
     const [allItemsInfo, setAllItemsInfo] = useState(null);
     const [allItemsApiNames, setAllItemsApiNames] = useState(null);
     const [allEmblemsItemsApiNames, setAllEmblemsItemsApiName] = useState(null)
@@ -56,6 +58,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
     const [augmentTierList, setAugmentTierList] = useState({});
     const [champItem, setChampItem] = useState([{}])
     const [champTrait, setChampTrait] = useState([{}])
+    const [allChampions, setAllChampions] = useState([])
     const championsColor = [
       "var(--color-hex-cost-default)",
       "var(--color-hex-cost-1)",
@@ -64,6 +67,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
       "var(--color-hex-cost-4)",
       "var(--color-hex-cost-5)",
     ];
+    
     useEffect(()=>{
       const buscarAumentos = async() =>{
         const url= "https://raw.communitydragon.org/latest/cdragon/tft/en_us.json"
@@ -140,6 +144,17 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
       buscarAumentos();
       getAllItems();
     }, []);
+    
+    useEffect(()=>{
+      const gettingAllChampions = async ()=>{
+        const respuestaGettingAllChampions = await getAllChampions({version,set:version === "pbe" ? "14" : "13"})
+        console.log({verSION:version})
+        console.log({respuestaGettingAllChampions})
+        setAllChampions(respuestaGettingAllChampions)  
+      }
+      gettingAllChampions();
+      console.log({useEffectVersion:version})
+    },[version])
 
     useEffect(() => {
       // Configurar el listener dragover cuando el componente se monte
@@ -171,7 +186,6 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
 
     useEffect(()=>{
       if(edit){
-        
         setId(editId)
         setTier(edittier);
         setPosicion(editposicion);
@@ -193,6 +207,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         setAugmentTierList(editAugmentTierList)
         setChampItem(editCampeonItemTierList)
         setChampTrait(editCampeonTraitTierList)
+        setVersion(editVersion)
       }
     },[edit])
 
@@ -209,7 +224,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
               const nombreArchivo = id + `-${showBoardID}`;
               // Crear un objeto FormData para enviar los datos
               const formData = new FormData();
-              formData.append('file', webpBlob, `${nombreArchivo}.webp`);
+              formData.append('file', webpBlob, `${nombreArchivo}-${version}.webp`);
         
               // Realizar la solicitud POST al servidor
               fetch('https://guiadeparche.com/tftdata/Set12/uploadImageWebp.php', {
@@ -466,7 +481,8 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           campeonTierList,
           augmentTierList,
           champItem,
-          champTrait
+          champTrait,
+          version
         }
         if(tier && posicion && dificultad && titulo && shadowCategory && infographicCategory && aumentos.length && Object.keys(carouselItems).length && Object.keys(boardInfo).length && Object.keys(campeonTierList).length){
           const token = import.meta.env.PUBLIC_TOKEN_META
@@ -522,6 +538,20 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
     return (
     <form className={style.containerCrearCompo} onSubmit={(e)=>mySubmit(e)}>
       <div className={style.containerFirst}>
+      <label htmlFor="version">
+        <span>Version:</span>
+          <select
+              name="versions"
+              id="versions"
+              onChange={(e)=>setVersion(e.target.value)}
+              defaultValue={editVersion || version}
+              required
+          >
+              <option value="pbe">pbe</option>
+              <option value="latest">latest</option>
+          </select>
+      </label>
+
       <label htmlFor="tiers">
         <span>Tier:</span>
           <select
@@ -631,7 +661,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
             <span>Champion:</span>
             <select onChange={(e)=>{setCampeonTierList(JSON.parse(e.target.options[e.target.selectedIndex].dataset.value))}} defaultValue={editCampeonTierList?.name || campeonTierList?.name}>
               {
-                championsTFTIngles.map((campeon,index)=>{
+                allChampions.map((campeon,index)=>{
                   return (
                     <option key={index} value={campeon.name} data-value={JSON.stringify(campeon)}>{campeon.name}</option>
                   )
@@ -696,6 +726,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
             champItem={champItem}
             champTrait={champTrait}
             isSample={true}
+            version={version || "latest"}
             />
         </div>
       </div>
@@ -764,7 +795,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         
         
       <div className={style.containerSecond}>
-        {infoChampsItems === "campeones" ? <Champions/> : <Items/>}
+        {infoChampsItems === "campeones" ? <Champions allChampions={allChampions} version={version}/> : <Items/>}
       </div>
       
       <div className={style.containerCarousel}>

@@ -49,7 +49,7 @@ const TierListMetaComps = () => {
                 />
               </div>
               <div className={style.containerChampTierList} ref={(el) => (scrollContainersRef.current[index] = el)}>
-                {compGroup.map(({ id, campeonTierList, augmentTierList, champItem, champTrait }) => (
+                {compGroup.map(({ id, campeonTierList, augmentTierList, champItem, champTrait,version }) => (
                   <ChampTierList
                     key={id}
                     id={id}
@@ -57,6 +57,7 @@ const TierListMetaComps = () => {
                     augmentTierList={augmentTierList}
                     champItem={champItem}
                     champTrait={champTrait}
+                    version={version || "latest"}
                   />
                 ))}
               </div>

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useStore } from "@nanostores/react";
 import style from "./css/ChampTierList.module.css";
 import { openCompoId, setOpenCompo, scrollToComposicion } from "src/stores/openCompoById";
-const ChampTierList = ({id,isSample,campeonTierList, augmentTierList, champItem, champTrait})=>{
+const ChampTierList = ({id,isSample,campeonTierList, augmentTierList, champItem, champTrait,version})=>{
   const championsColor = [
     "var(--color-hex-cost-default)",
     "var(--color-hex-cost-1)",
@@ -11,7 +11,7 @@ const ChampTierList = ({id,isSample,campeonTierList, augmentTierList, champItem,
     "var(--color-hex-cost-4)",
     "var(--color-hex-cost-5)",
   ];
-  const urlDataDragonLatestGame = "https://raw.communitydragon.org/latest/game/";
+  const urlDataDragonLatestGame = `https://raw.communitydragon.org/${version}/game/`;
   const compId = useStore(openCompoId)
   useEffect(()=>{
     scrollToComposicion()

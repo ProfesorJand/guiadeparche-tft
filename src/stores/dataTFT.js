@@ -1,7 +1,17 @@
 import {deepMap, atom, task} from "nanostores";
+const initialStateDataTFT = {};
+const initialStateDataTFTItems = [];
+const initialStateDataTFTSetData = [];
+const initialStateDataTFTSets = [];
+const initialStateVersion = "latest"
+
+export const dataTFT = deepMap(initialStateDataTFT)
+export const dataTFTItems = atom(initialStateDataTFTItems);
+export const dataTFTSetData = atom(initialStateDataTFTSetData);
+export const versionTFT = atom(initialStateVersion)
 
 // version: latest / pbe ---- idioma: en / es --- pais: mx /es /gb /us
-export const loadDataTFTFromAPI = ({version="latest", idioma="es", pais="ar"}) =>{
+export const loadDataTFTFromAPI = ({version=versionTFT, idioma="es", pais="ar"}) =>{
   task(async()=>{
     const urlDragon = `https://raw.communitydragon.org/${version}/cdragon/tft/${idioma}_${pais}.json`
     const response = await fetch(urlDragon);
@@ -10,21 +20,16 @@ export const loadDataTFTFromAPI = ({version="latest", idioma="es", pais="ar"}) =
   })
 }
 
-const initialStateDataTFT = {};
-const initialStateDataTFTItems = [];
-const initialStateDataTFTSetData = [];
-const initialStateDataTFTSets = [];
-
-export const dataTFT = deepMap(initialStateDataTFT)
-export const dataTFTItems = atom(initialStateDataTFTItems);
-export const dataTFTSetData = atom(initialStateDataTFTSetData)
-
 export const updateDataTFT = (data)=>{
   const {items, setData, sets} = data;
   dataTFT.set(data);
   dataTFTItems.set(items);
   dataTFTSetData.set(setData)
 };
+
+export const swapVersionTFT = (data) =>{
+  versionTFT.set(data)
+}
 
 
 export const BASIC_ITEMS = [
@@ -679,3 +684,5 @@ export  const ARTEFACTOS = [
     img:"https://raw.communitydragon.org/latest/game/assets/maps/tft/icons/items/hexcore/tft4_item_ornnzhonyasparadox.tft_set13.png",
   },
 ]
+
+export const RADIANTS_ITEMS = []

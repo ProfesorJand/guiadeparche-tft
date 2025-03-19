@@ -5,10 +5,12 @@ import style from "./css/EditarCompoTFT.module.css";
 import { MetaComps as compos, loadCompsMeta } from "src/stores/menuFiltradoAdmin.js";
 import FantasmaComposiciones from "./FantasmaComposiciones.jsx";
 import { scrollToComposicion, setOpenCompo, openCompoId } from "src/stores/openCompoById.js";
+import { versionTFT } from "src/stores/dataTFT.js";
 
 
 const MetaComps = ({ showHide,admin }) => {
   const composMeta = useStore(compos);
+  const currentVersion = useStore(versionTFT)
   const [allFast8, setAllFast8] = useState([]);
   const [all3Stars, setAll3Stars] = useState([]);
   const [allAugmentsHero, setAllAugmentsHero] = useState([]);
@@ -31,6 +33,10 @@ const MetaComps = ({ showHide,admin }) => {
   useEffect(()=>{
     scrollToComposicion();
   },[openCompoId])
+
+  useEffect(()=>{
+    loadCompsMeta(currentVersion)
+  },[currentVersion])
 
   
 

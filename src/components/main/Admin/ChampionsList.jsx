@@ -3,8 +3,8 @@ import style from "./css/ChampionsList.module.css";
 // import {listaCampeones} from "../../../functions/campeonestft.js";
 // import { fetchingDataTFT } from "src/json/updates/constantesPBE.js";
 import { championsTFTIngles, traitsTFTIngles } from "src/json/updates/contantesTFT.js";
-const Champions = ()=>{
 
+const Champions = ({version = "pbe"})=>{
     const [championsList, setChampionsList]=useState(null);
     const [sortBy, setSortBy] = useState("coste")
 
@@ -33,9 +33,8 @@ const Champions = ()=>{
     }
     useEffect(()=>{
         const activador = async ()=>{
-            const version="latest"
             const championsList = [];
-            championsTFTIngles.forEach(({ability, apiName, name, cost, characterName, tileIcon, stats, traits})=>{
+            (await championsTFTIngles({version, set:version === "pbe" ? "14":"13"})).forEach(({ability, apiName, name, cost, characterName, tileIcon, stats, traits})=>{
                 if(traits.length > 0){
                     const traitsData = ()=>{
                         const resp = traits.map((trait)=>{
@@ -57,6 +56,7 @@ const Champions = ()=>{
                         ability,
                     }
                     championsList.push(data)
+                    
                 }
                 if(apiName === "TFT13_JayceSummon" || apiName === "TFT13_Sion"){
                     const data = {
@@ -81,7 +81,7 @@ const Champions = ()=>{
         }
         activador();
         handleFilter("coste")
-    },[])
+    },[version])
 
     return(
         <>

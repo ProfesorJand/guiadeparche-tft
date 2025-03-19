@@ -3,9 +3,10 @@ export const VERSION_PBE = "pbe";
 export const IDIOMA_DEFAULT = "en"; //en
 export const PAIS_DEFAULT = "us"; //mx /es /gb /us
 export const SET_LATEST = "13";
-export const SET_PBE = SET_LATEST + 1;
+export const SET_PBE = (Number(SET_LATEST) + 1).toString();
 
 export async function fetchingDataTFT({version=VERSION_LATEST, idioma=IDIOMA_DEFAULT, pais=PAIS_DEFAULT}){
+  console.log({version, idioma, pais})
   try {
       const urlDragon = `https://raw.communitydragon.org/${version}/cdragon/tft/${idioma}_${pais}.json`
       const fetching = await fetch(urlDragon, {cache:"reload"});
@@ -57,6 +58,7 @@ export const getDataTFTBySet = async ({
   idioma=IDIOMA_DEFAULT,
   pais=PAIS_DEFAULT}) => {
     const data = await fetchingDataTFT({ version, idioma, pais });
+
     if (!data || !data.setData) {
       console.error("La respuesta de fetchingDataTFT no contiene setData:", data);
       return null;
@@ -66,10 +68,17 @@ export const getDataTFTBySet = async ({
     return {setData, setInfo};
 }
 
-export const datosTFTIngles = await fetchingDataTFT({version:"latest",idioma:"en",pais:"us"});
-export const championsTFTIngles = await datosTFTIngles.sets[SET_LATEST].champions;
-export const traitsTFTIngles = await datosTFTIngles.sets[SET_LATEST].traits;
-export const itemsDataIngles = await datosTFTIngles.items;
+export async function datosTFTIngles({version=VERSION_PBE,idioma="en",pais="us"}){ //version latest
+  return await fetchingDataTFT({version,idioma,pais})
+}; 
+
+console.log({SET_PBE})
+export async function championsTFTIngles({version=VERSION_PBE, set=SET_PBE}) {
+  return (await datosTFTIngles({version})).sets[set].champions; // SET_LATEST 
+}
+
+export const traitsTFTIngles = (await datosTFTIngles({})).sets[SET_PBE].traits; // SET_LATEST
+export const itemsDataIngles = (await datosTFTIngles({})).items;
 
 export const fetchMeta = await fetch(`https://guiadeparche.com/tftdata/Set12/metaTFTComposiciones.json`, {cache:"reload"});
 export const meta = await fetchMeta.json();
