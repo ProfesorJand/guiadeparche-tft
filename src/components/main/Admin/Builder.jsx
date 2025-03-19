@@ -237,7 +237,6 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
   }
 
   function findClosestTraitImage(traitType, traitLevel) {
-    console.log({traitLevel, traitType})
     if(traitType === "BlackRose"){
       traitType = "Black Rose"
     }
@@ -381,7 +380,6 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
 
   function crearItem(e) {
     const dataItem = JSON.parse(e.dataTransfer.getData("item"));
-    console.log({dataItem})
     const containerItems = e.currentTarget.getElementsByClassName(
       style.containerItems
     )[0];

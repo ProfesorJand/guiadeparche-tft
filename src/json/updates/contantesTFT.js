@@ -6,7 +6,6 @@ export const SET_LATEST = "13";
 export const SET_PBE = (Number(SET_LATEST) + 1).toString();
 
 export async function fetchingDataTFT({version=VERSION_LATEST, idioma=IDIOMA_DEFAULT, pais=PAIS_DEFAULT}){
-  console.log({version, idioma, pais})
   try {
       const urlDragon = `https://raw.communitydragon.org/${version}/cdragon/tft/${idioma}_${pais}.json`
       const fetching = await fetch(urlDragon, {cache:"reload"});
@@ -72,7 +71,6 @@ export async function datosTFTIngles({version=VERSION_PBE,idioma="en",pais="us"}
   return await fetchingDataTFT({version,idioma,pais})
 }; 
 
-console.log({SET_PBE})
 export async function championsTFTIngles({version=VERSION_PBE, set=SET_PBE}) {
   return (await datosTFTIngles({version})).sets[set].champions; // SET_LATEST 
 }

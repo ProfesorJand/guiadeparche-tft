@@ -39,7 +39,6 @@ const VideoComponent = ({ src, loading = "lazy", titulo="video de Jupeson" }) =>
   const [video, setVideo] = useState(null);
 
   useEffect(() => {
-    console.log({src})
     const fetchData = async () => {
       const videoData = await getId(src, titulo);
       setVideo(videoData);

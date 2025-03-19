@@ -154,12 +154,9 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
     useEffect(()=>{
       const gettingAllChampions = async ()=>{
         const respuestaGettingAllChampions = await getAllChampions({version,set:version === "pbe" ? "14" : "13"})
-        console.log({verSION:version})
-        console.log({respuestaGettingAllChampions})
         setAllChampions(respuestaGettingAllChampions)  
       }
       gettingAllChampions();
-      console.log({useEffectVersion:version})
     },[version])
 
     useEffect(() => {
@@ -801,7 +798,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         
         
       <div className={style.containerSecond}>
-        {infoChampsItems === "campeones" ? <Champions allChampions={allChampions} version={version}/> : <Items/>}
+        {infoChampsItems === "campeones" ? <Champions allChampions={allChampions} version={version}/> : <Items version={version}/>}
       </div>
       
       <div className={style.containerCarousel}>

@@ -20,9 +20,7 @@ const ItemTierList = () => {
   }, []);
 
   function SanitizedComponent({ htmlContent }) {
-    console.log({ htmlContent });
     const sanitizedContent = DOMPurify.sanitize(htmlContent);
-    console.log({ sanitizedContent });
     return <div className={style.tooltipDesc}>{parse(sanitizedContent)}</div>; // Usa `parse` para renderizar el HTML sanitizado
   }
 

@@ -96,16 +96,6 @@ export const Items = ({version})=>{
   },[])
 
   useEffect(()=>{
-    if(allItemsApiNames && allItemsInfo  && allEmblemsItemsApiNames){
-      console.log({allItemsApiNames})
-      console.log({allItemsInfo})
-      console.log({allEmblemsItemsApiNames})
-      console.log({allSupportsItems})
-      //console.log(allItemsInfo.find(({apiName})=>apiName === "TFT4_Item_OrnnZhonyasParadox"))
-    }
-  },[allItemsApiNames, allItemsInfo, allEmblemsItemsApiNames])
-
-  useEffect(()=>{
     if(itemOver){
       (async function callApi(){
         const findItem = allItemsInfo.find(({apiName, composition})=>{
@@ -683,7 +673,6 @@ export const Items = ({version})=>{
     return replacement ? replacement : item;
   });
 
-  console.log({ITEMS_CRAFTEABLES_PBE})
   const MatrixSize = 10
   const MATRIZ_ITEMS_CRAFTEABLES_PBE = Array.from({ length: MatrixSize }, () => Array(MatrixSize).fill(null));
   // Llenar la matriz con los apiName según los componentes convertidos en índices
@@ -905,7 +894,6 @@ export const Items = ({version})=>{
   const SUPPORTS_ITEMS = [];
  
   useEffect(()=>{
-    console.log({version})
     const resultado = [];
     const cualMatriz = version === "pbe" ? MATRIZ_ITEMS_CRAFTEABLES_PBE : MATRIZ_ITEMS_CRAFTEABLES;
     const cualBusqueda =  version === "pbe" ? ITEMS_CRAFTEABLES_PBE  : CRAFTEABLE_ITEMS;
@@ -924,7 +912,6 @@ export const Items = ({version})=>{
 
   function handleDragStart(e){
     e.dataTransfer.setData("item", e.target.getAttribute("data-item"));
-    console.log({leer:e.target.getAttribute("data-item") })
     e.dataTransfer.setData("from", e.target.getAttribute("data-from"));
     
 }

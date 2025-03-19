@@ -125,7 +125,6 @@
         const dataFrom = e.dataTransfer.getData("from");
         const dataItem = e.dataTransfer.getData("item");
         const dataTier = e.dataTransfer.getData("tier");
-        console.log({dataItem})
         if (dataFrom === "itemList" && dataItem) {
           crearItem(e);
         }
