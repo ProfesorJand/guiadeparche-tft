@@ -87,12 +87,12 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
       }
       
       const getAllItems = async ()=>{
-        setAllItemsApiNames((await getDataTFTBySet({})).setData); //apiName de todos los items del set
-        setAllItemsInfo((await getDataTFTBySet({})).setInfo)
-        setAllEmblemsItemsApiName((await getDataTFTBySet({})).setData.items.filter((apiName)=>{
+        setAllItemsApiNames((await getDataTFTBySet({version,set:version === "pbe" ? "14": "13"})).setData); //apiName de todos los items del set
+        setAllItemsInfo((await getDataTFTBySet({version,set:version === "pbe" ? "14": "13"})).setInfo)
+        setAllEmblemsItemsApiName((await getDataTFTBySet({version,set:version === "pbe" ? "14": "13"})).setData.items.filter((apiName)=>{
           return apiName.includes("EmblemItem")
         }))
-        setAllSupportsItems((await getDataTFTBySet({})).setInfo.filter(({apiName})=>{
+        setAllSupportsItems((await getDataTFTBySet({version,set:version === "pbe" ? "14": "13"})).setInfo.filter(({apiName})=>{
           const apiNameOfSupportsItems = [
             "TFT_Item_BansheesVeil",
             "TFT_Item_AegisOfTheLegion",
@@ -114,7 +114,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           ]
           return apiNameOfSupportsItems.some((item)=> item.includes(apiName))
         }))
-        setAllChemBaronItems((await getDataTFTBySet({})).setInfo.filter(({apiName})=>{
+        setAllChemBaronItems((await getDataTFTBySet({version,set:version === "pbe" ? "14": "13"})).setInfo.filter(({apiName})=>{
           const apiNameOfChemBaronItems = [
             "TFT13_Crime_Bronze_ChemGrips",
             "TFT13_Crime_Bronze_MageGuard",
