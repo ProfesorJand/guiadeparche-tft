@@ -70,13 +70,19 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
     
     useEffect(()=>{
       const buscarAumentos = async() =>{
-        const url= "https://raw.communitydragon.org/latest/cdragon/tft/en_us.json"
+        const url= `https://raw.communitydragon.org/${version}/cdragon/tft/en_us.json`;
         const items = await fetch(url);
         const itemsDataIngles1 = await items.json();
-        const dataAumentos = itemsDataIngles1.items.filter(({apiName})=>{
-          //itemsDataIngles1.setData[12].augments son las listas de los aumentos del set 13
-          return itemsDataIngles1.setData[23].augments.includes(apiName) // al parecer el 23 será esto (itemsDataIngles1.setData,lenght - 1)
-        })
+        const setDataFiltrado = itemsDataIngles1.setData.find(
+          (set) => set.mutator === (version === "pbe" ? "TFTSet14" : "TFTSet13")
+        );
+        if (!setDataFiltrado) {
+          console.warn("No se encontró el set con mutator 'TFTSet14'");
+          return;
+        }
+        const dataAumentos = itemsDataIngles1.items.filter(({ apiName }) =>
+          setDataFiltrado.augments.includes(apiName)
+        );
         setListaDeAumentos(dataAumentos)
       }
       
@@ -143,7 +149,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
       }
       buscarAumentos();
       getAllItems();
-    }, []);
+    }, [version]);
     
     useEffect(()=>{
       const gettingAllChampions = async ()=>{
