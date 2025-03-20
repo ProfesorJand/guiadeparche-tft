@@ -1323,7 +1323,1178 @@ const sinergiasData = [
       ],
       "icon": "ASSETS/UX/TraitIcons/Trait_Icon_13_Watcher.TFT_Set13.tex",
       "name": "Watcher"
-  }
+  },
+  {
+    "apiName": "TFT14_Divinicorp",
+    "desc": "Divinicorp champions grant unique stats to your team, increased for each Divinicorp in play. <br><br>Divinicorp champions gain double.<br><br><expandRow>(@MinUnits@) <TFTGuildActive>@DivinicorpBonus*100@%</TFTGuildActive>&nbsp;bonus.</expandRow><br><br><TFTGuildActive enabled=TFT14_Trait_Divinicorp_ActiveAP alternate=TFTGuildInactive>Morgana - </TFTGuildActive>&nbsp;%i:scaleAP% <spellActive enabled=TFT14_Trait_Divinicorp_ActiveAP alternate=TFTGuildInactive>@TFTUnitProperty.trait:TFT14_Trait_Divinicorp_AP@%</spellActive><br><TFTGuildActive enabled=TFT14_Trait_Divinicorp_ActiveDefenses alternate=TFTGuildInactive>Rhaast - </TFTGuildActive>&nbsp;%i:scaleArmor%&nbsp;%i:scaleMR% <spellActive enabled=TFT14_Trait_Divinicorp_ActiveDefenses alternate=TFTGuildInactive>@TFTUnitProperty.trait:TFT14_Trait_Divinicorp_Defenses@</spellActive><br><TFTGuildActive enabled=TFT14_Trait_Divinicorp_ActiveAttackDamage alternate=TFTGuildInactive>Senna - </TFTGuildActive>&nbsp;%i:scaleAD% <spellActive enabled=TFT14_Trait_Divinicorp_ActiveAttackDamage alternate=TFTGuildInactive>@TFTUnitProperty.trait:TFT14_Trait_Divinicorp_AD@%</spellActive><br><TFTGuildActive enabled=TFT14_Trait_Divinicorp_ActiveHealth alternate=TFTGuildInactive>Gragas - </TFTGuildActive>&nbsp;%i:scaleHealth% <spellActive enabled=TFT14_Trait_Divinicorp_ActiveHealth alternate=TFTGuildInactive>@TFTUnitProperty.trait:TFT14_Trait_Divinicorp_Health@</spellActive><br><TFTGuildActive enabled=TFT14_Trait_Divinicorp_ActiveCrit alternate=TFTGuildInactive>Vex - &nbsp;%i:scaleCrit% </TFTGuildActive><spellActive enabled=TFT14_Trait_Divinicorp_ActiveCrit alternate=TFTGuildInactive>@TFTUnitProperty.trait:TFT14_Trait_Divinicorp_Crit@%</spellActive><br><TFTGuildActive enabled=TFT14_Trait_Divinicorp_ActiveAttackSpeed alternate=TFTGuildInactive>Renekton - </TFTGuildActive>&nbsp;%i:scaleAS% <spellActive enabled=TFT14_Trait_Divinicorp_ActiveAttackSpeed alternate=TFTGuildInactive>@TFTUnitProperty.trait:TFT14_Trait_Divinicorp_AS@%</spellActive><br><TFTGuildActive enabled=TFT14_Trait_Divinicorp_ActiveOmnivamp alternate=TFTGuildInactive>Emblem - </TFTGuildActive>&nbsp;%i:scaleSV% <spellActive enabled=TFT14_Trait_Divinicorp_ActiveOmnivamp alternate=TFTGuildInactive>@TFTUnitProperty.trait:TFT14_Trait_Divinicorp_Omnivamp@%</spellActive>",
+    "effects": [
+        {
+            "maxUnits": 1,
+            "minUnits": 1,
+            "style": 1,
+            "variables": {
+                "{10948251}": 1.0,
+                "{19e47528}": 9.0,
+                "{3c9e3624}": 3.0,
+                "{414a2beb}": 7.0,
+                "{4803a4eb}": 5.0,
+                "{4e1c6b85}": 1.0,
+                "{912546f4}": 8.0,
+                "{a8a84fe9}": 50.0,
+                "{f82ecbac}": 6.0
+            }
+        },
+        {
+            "maxUnits": 2,
+            "minUnits": 2,
+            "style": 3,
+            "variables": {
+                "{10948251}": 1.100000023841858,
+                "{19e47528}": 9.0,
+                "{3c9e3624}": 3.0,
+                "{414a2beb}": 7.0,
+                "{4803a4eb}": 5.0,
+                "{4e1c6b85}": 1.0,
+                "{912546f4}": 8.0,
+                "{a8a84fe9}": 50.0,
+                "{f82ecbac}": 6.0
+            }
+        },
+        {
+            "maxUnits": 3,
+            "minUnits": 3,
+            "style": 3,
+            "variables": {
+                "{10948251}": 1.25,
+                "{19e47528}": 9.0,
+                "{3c9e3624}": 3.0,
+                "{414a2beb}": 7.0,
+                "{4803a4eb}": 5.0,
+                "{4e1c6b85}": 1.0,
+                "{912546f4}": 8.0,
+                "{a8a84fe9}": 50.0,
+                "{f82ecbac}": 6.0
+            }
+        },
+        {
+            "maxUnits": 4,
+            "minUnits": 4,
+            "style": 3,
+            "variables": {
+                "{10948251}": 1.4500000476837158,
+                "{19e47528}": 9.0,
+                "{3c9e3624}": 3.0,
+                "{414a2beb}": 7.0,
+                "{4803a4eb}": 5.0,
+                "{4e1c6b85}": 1.0,
+                "{912546f4}": 8.0,
+                "{a8a84fe9}": 50.0,
+                "{f82ecbac}": 6.0
+            }
+        },
+        {
+            "maxUnits": 5,
+            "minUnits": 5,
+            "style": 5,
+            "variables": {
+                "{10948251}": 1.649999976158142,
+                "{19e47528}": 9.0,
+                "{3c9e3624}": 3.0,
+                "{414a2beb}": 7.0,
+                "{4803a4eb}": 5.0,
+                "{4e1c6b85}": 1.0,
+                "{912546f4}": 8.0,
+                "{a8a84fe9}": 50.0,
+                "{f82ecbac}": 6.0
+            }
+        },
+        {
+            "maxUnits": 6,
+            "minUnits": 6,
+            "style": 5,
+            "variables": {
+                "{10948251}": 1.850000023841858,
+                "{19e47528}": 9.0,
+                "{3c9e3624}": 3.0,
+                "{414a2beb}": 7.0,
+                "{4803a4eb}": 5.0,
+                "{4e1c6b85}": 1.0,
+                "{912546f4}": 8.0,
+                "{a8a84fe9}": 50.0,
+                "{f82ecbac}": 6.0
+            }
+        },
+        {
+            "maxUnits": 25000,
+            "minUnits": 7,
+            "style": 5,
+            "variables": {
+                "{10948251}": 2.0,
+                "{19e47528}": 9.0,
+                "{3c9e3624}": 3.0,
+                "{414a2beb}": 7.0,
+                "{4803a4eb}": 5.0,
+                "{4e1c6b85}": 1.0,
+                "{912546f4}": 8.0,
+                "{a8a84fe9}": 50.0,
+                "{f82ecbac}": 6.0
+            }
+        }
+    ],
+    "icon": "ASSETS/UX/TraitIcons/Trait_Icon_14_Divinicorp.TFT_Set14.tex",
+    "name": "Divinicorp"
+},
+{
+    "apiName": "TFT14_StreetDemon",
+    "desc": "Allies in painted hexes gain Health, Ability Power, and Attack Damage. Some hexes are Signature hexes and grant @EmpoweredHexPercentBonus*100@% more. <br><br>Street Demons double all bonuses.<br><br><row>(@MinUnits@) +@HP*100@%&nbsp;%i:scaleHealth%, @ADAP@&nbsp;%i:scaleAP%, @ADAP@%&nbsp;%i:scaleAD%</row><br><row>(@MinUnits@) +@HP*100@%&nbsp;%i:scaleHealth%, @ADAP@&nbsp;%i:scaleAP%, @ADAP@%&nbsp;%i:scaleAD%</row><br><row>(@MinUnits@) +@HP*100@%&nbsp;%i:scaleHealth%, @ADAP@&nbsp;%i:scaleAP%, @ADAP@%&nbsp;%i:scaleAD%</row><br><row>(@MinUnits@) +@HP*100@%&nbsp;%i:scaleHealth%, @ADAP@&nbsp;%i:scaleAP%, @ADAP@%&nbsp;%i:scaleAD%<br>Paint the town!</row>",
+    "effects": [
+        {
+            "maxUnits": 4,
+            "minUnits": 3,
+            "style": 1,
+            "variables": {
+                "ADAP": 6.0,
+                "HP": 0.05999999865889549,
+                "{05fa71fc}": 2.0,
+                "{179ecb0a}": 0.5,
+                "{696854de}": 20.0
+            }
+        },
+        {
+            "maxUnits": 6,
+            "minUnits": 5,
+            "style": 3,
+            "variables": {
+                "ADAP": 10.0,
+                "HP": 0.10000000149011612,
+                "{05fa71fc}": 2.0,
+                "{179ecb0a}": 0.5,
+                "{696854de}": 20.0
+            }
+        },
+        {
+            "maxUnits": 9,
+            "minUnits": 7,
+            "style": 5,
+            "variables": {
+                "ADAP": 15.0,
+                "HP": 0.15000000596046448,
+                "{05fa71fc}": 2.0,
+                "{179ecb0a}": 0.5,
+                "{696854de}": 20.0
+            }
+        },
+        {
+            "maxUnits": 25000,
+            "minUnits": 10,
+            "style": 6,
+            "variables": {
+                "ADAP": 40.0,
+                "HP": 0.4000000059604645,
+                "{05fa71fc}": 2.0,
+                "{179ecb0a}": 0.5,
+                "{696854de}": 20.0
+            }
+        }
+    ],
+    "icon": "ASSETS/UX/TraitIcons/Trait_Icon_14_StreetDemon.TFT_Set14.tex",
+    "name": "Street Demon"
+},
+{
+    "apiName": "TFT14_Supercharge",
+    "desc": "A.M.P. champions upgrade their abilities in unique ways with Amp (%i:set14AmpIcon%). They also gain&nbsp;Health.<br><br><expandRow>(@MinUnits@) @SuperchargeAmount@ %i:set14AmpIcon%, @HPAmt@ %i:scaleHealth%</expandRow>",
+    "effects": [
+        {
+            "maxUnits": 2,
+            "minUnits": 2,
+            "style": 1,
+            "variables": {
+                "HPAmt": 100.0,
+                "{a2a0725c}": 1.0
+            }
+        },
+        {
+            "maxUnits": 3,
+            "minUnits": 3,
+            "style": 3,
+            "variables": {
+                "HPAmt": 200.0,
+                "{a2a0725c}": 2.0
+            }
+        },
+        {
+            "maxUnits": 4,
+            "minUnits": 4,
+            "style": 3,
+            "variables": {
+                "HPAmt": 350.0,
+                "{a2a0725c}": 3.0
+            }
+        },
+        {
+            "maxUnits": 25000,
+            "minUnits": 5,
+            "style": 5,
+            "variables": {
+                "HPAmt": 500.0,
+                "{a2a0725c}": 4.0
+            }
+        }
+    ],
+    "icon": "ASSETS/UX/TraitIcons/Trait_Icon_14_Amp.TFT_Set14.tex",
+    "name": "A.M.P."
+},
+{
+    "apiName": "TFT14_AnimaSquad",
+    "desc": "At each tier, pick a weapon that a random Anima Squad champion fires periodically during combat. Anima Squad champions gain Armor, Magic Resist, and Damage Amp.<br><br><row>(@MinUnits@) @Resists@ %i:scaleArmor%%i:scaleMR%, @DamageAmp*100@% %i:scaleDA%,<br>@TFTUnitProperty.trait:TFT14_AnimaSquad_Bonus_1@</row><br><row>(@MinUnits@) @Resists@ %i:scaleArmor%%i:scaleMR%, @DamageAmp*100@% %i:scaleDA%,<br>@TFTUnitProperty.trait:TFT14_AnimaSquad_Bonus_2@</row><br><row>(@MinUnits@) @Resists@ %i:scaleArmor%%i:scaleMR%, @DamageAmp*100@% %i:scaleDA%,<br>@TFTUnitProperty.trait:TFT14_AnimaSquad_Bonus_3@</row><br><row>(@MinUnits@) @Resists@ %i:scaleArmor%%i:scaleMR%, @DamageAmp*100@% %i:scaleDA%,<br>@TFTUnitProperty.trait:TFT14_AnimaSquad_Bonus_4@</row><br><br><rules>Weapons scale with Anima Squad star level and stage.</rules>",
+    "effects": [
+        {
+            "maxUnits": 4,
+            "minUnits": 3,
+            "style": 1,
+            "variables": {
+                "DamageAmp": 0.05000000074505806,
+                "Resists": 10.0,
+                "{0d14760d}": 4.0,
+                "{52b463c3}": 0.05000000074505806
+            }
+        },
+        {
+            "maxUnits": 6,
+            "minUnits": 5,
+            "style": 3,
+            "variables": {
+                "DamageAmp": 0.10000000149011612,
+                "Resists": 20.0,
+                "{0d14760d}": 4.0,
+                "{52b463c3}": 0.05000000074505806
+            }
+        },
+        {
+            "maxUnits": 9,
+            "minUnits": 7,
+            "style": 5,
+            "variables": {
+                "DamageAmp": 0.15000000596046448,
+                "Resists": 30.0,
+                "{0d14760d}": 4.0,
+                "{52b463c3}": 0.05000000074505806
+            }
+        },
+        {
+            "maxUnits": 25000,
+            "minUnits": 10,
+            "style": 6,
+            "variables": {
+                "DamageAmp": 0.5,
+                "Resists": 100.0,
+                "{0d14760d}": 4.0,
+                "{52b463c3}": 0.05000000074505806
+            }
+        }
+    ],
+    "icon": "ASSETS/UX/TraitIcons/Trait_Icon_14_AnimaSquad.TFT_Set14.tex",
+    "name": "Anima Squad"
+},
+{
+    "apiName": "TFT14_Vanguard",
+    "desc": "Vanguards gain @DamageReductionPct*100@% Durability while Shielded. <br><br>Combat start and @HealthThreshold*100@%&nbsp;Health: Gain a max Health Shield for @ShieldDuration@&nbsp;seconds.<br><br><row>(@MinUnits@) @ShieldPercentAmount*100@% max Health</row><br><row>(@MinUnits@) @ShieldPercentAmount*100@% max Health</row><br><row>(@MinUnits@) @ShieldPercentAmount*100@% max Health;<br>@EnhancedDurability*100@%&nbsp;%i:scaleDR% while Shielded</row>",
+    "effects": [
+        {
+            "maxUnits": 3,
+            "minUnits": 2,
+            "style": 1,
+            "variables": {
+                "DamageReductionPct": 0.10000000149011612,
+                "HealthThreshold": 0.5,
+                "ShieldDuration": 10.0,
+                "ShieldPercentAmount": 0.1599999964237213,
+                "{f8fac858}": 0.20000000298023224
+            }
+        },
+        {
+            "maxUnits": 5,
+            "minUnits": 4,
+            "style": 3,
+            "variables": {
+                "DamageReductionPct": 0.10000000149011612,
+                "HealthThreshold": 0.5,
+                "ShieldDuration": 10.0,
+                "ShieldPercentAmount": 0.3199999928474426,
+                "{f8fac858}": 0.20000000298023224
+            }
+        },
+        {
+            "maxUnits": 25000,
+            "minUnits": 6,
+            "style": 5,
+            "variables": {
+                "DamageReductionPct": 0.10000000149011612,
+                "HealthThreshold": 0.5,
+                "ShieldDuration": 10.0,
+                "ShieldPercentAmount": 0.4000000059604645,
+                "{f8fac858}": 0.20000000298023224
+            }
+        }
+    ],
+    "icon": "ASSETS/UX/TraitIcons/Trait_Icon_12_Vanguard.TFT_Set12.tex",
+    "name": "Vanguard"
+},
+{
+    "apiName": "TFT14_Strong",
+    "desc": "Slayers gain Attack Damage and Omnivamp. Overhealing heals the lowest percent Health Slayer for @OverhealPercent*100@% of the excess amount.<br><br><expandRow>(@MinUnits@) @AttackDamage*100@% %i:scaleAD%, @Healing*100@% %i:scaleSV%</expandRow>",
+    "effects": [
+        {
+            "maxUnits": 3,
+            "minUnits": 2,
+            "style": 1,
+            "variables": {
+                "AttackDamage": 0.15000000596046448,
+                "Healing": 0.15000000596046448,
+                "{696854de}": 20.0,
+                "{88ef08c2}": 0.5
+            }
+        },
+        {
+            "maxUnits": 5,
+            "minUnits": 4,
+            "style": 3,
+            "variables": {
+                "AttackDamage": 0.4000000059604645,
+                "Healing": 0.15000000596046448,
+                "{88ef08c2}": 0.5
+            }
+        },
+        {
+            "maxUnits": 25000,
+            "minUnits": 6,
+            "style": 5,
+            "variables": {
+                "AttackDamage": 0.699999988079071,
+                "Healing": 0.20000000298023224,
+                "{88ef08c2}": 0.5
+            }
+        }
+    ],
+    "icon": "ASSETS/UX/TraitIcons/Trait_Icon_4_Slayer.tex",
+    "name": "Slayer"
+},
+{
+    "apiName": "TFT14_ViegoUniqueTrait",
+    "desc": "Gain a hologram copy of the highest cost enemy Viego helped kill last round. It has @Level1Health@/@Level2Health@/@Level3Health@ Health, deals @Level1Damage*100@%/@Level2Damage*100@%/@Level3Damage*100@% damage, and has @ItemCount@ recommended item.",
+    "effects": [
+        {
+            "maxUnits": 25000,
+            "minUnits": 1,
+            "style": 4,
+            "variables": {
+                "ItemCount": 1,
+                "{1a9b5d47}": 2.0,
+                "{3e1815e0}": 3000,
+                "{57bdd6b7}": 900,
+                "{676a4ba8}": 0.4000000059604645,
+                "{80354075}": 0.30000001192092896,
+                "{a6d2de92}": 600
+            }
+        }
+    ],
+    "icon": "ASSETS/UX/TraitIcons/Trait_Icon_14_SoulKiller.TFT_Set14.tex",
+    "name": "Soul Killer"
+},
+{
+    "apiName": "TFT14_Cyberboss",
+    "desc": "Your strongest Cyberboss upgrades to its final form and gains Health, Ability Power, and its ability hits more&nbsp;enemies.<br><br><row>(@MinUnits@) @BossPercentHealth*100@%&nbsp;%i:scaleHealth%, @BossAP@&nbsp;%i:scaleAP% </row><br><row>(@MinUnits@) @BossPercentHealth*100@%&nbsp;%i:scaleHealth%, @BossAP@&nbsp;%i:scaleAP% </row><br><row>(@MinUnits@) All Cyberbosses upgrade. Your strongest Cyberboss gains @BigBossPercentHealth*100@% %i:scaleHealth% and @BigBossAP@ %i:scaleAP%.</row>",
+    "effects": [
+        {
+            "maxUnits": 2,
+            "minUnits": 2,
+            "style": 1,
+            "variables": {
+                "{23b17109}": 0.800000011920929,
+                "{38e1c4bf}": 0.18000000715255737,
+                "{57be2e24}": 0.30000001192092896,
+                "{6b2da2a5}": 15.0,
+                "{7d488deb}": 0.33000001311302185,
+                "{ab4bceb1}": 30,
+                "{c7b34fa5}": 0.3499999940395355
+            }
+        },
+        {
+            "maxUnits": 3,
+            "minUnits": 3,
+            "style": 3,
+            "variables": {
+                "{23b17109}": 0.800000011920929,
+                "{38e1c4bf}": 0.25,
+                "{57be2e24}": 0.30000001192092896,
+                "{6b2da2a5}": 25.0,
+                "{7d488deb}": 0.33000001311302185,
+                "{ab4bceb1}": 30,
+                "{c7b34fa5}": 0.3499999940395355
+            }
+        },
+        {
+            "maxUnits": 25000,
+            "minUnits": 4,
+            "style": 5,
+            "variables": {
+                "{23b17109}": 0.800000011920929,
+                "{38e1c4bf}": 0.25,
+                "{57be2e24}": 0.30000001192092896,
+                "{6b2da2a5}": 25.0,
+                "{7d488deb}": 0.33000001311302185,
+                "{ab4bceb1}": 30,
+                "{c7b34fa5}": 0.3499999940395355
+            }
+        }
+    ],
+    "icon": "ASSETS/UX/TraitIcons/Trait_Icon_14_Cyberbosses.TFT_Set14.tex",
+    "name": "Cyberboss"
+},
+{
+    "apiName": "TFT14_Cutter",
+    "desc": "Executioner Abilities can critically strike. They also gain bonus Critical Strike Chance and Critical Strike Damage.<br><br>If the target's Health is below @HealthThreshold*100@%, the bonus Critical Strike Damage is doubled.<br><br><row>(@MinUnits@) @CRIT_PERCENT*100@%&nbsp;%i:scaleCrit%, @CRIT_DAMAGE*100@%&nbsp;%i:scaleCritMult%</row><br><row>(@MinUnits@) @CRIT_PERCENT*100@%&nbsp;%i:scaleCrit%, @CRIT_DAMAGE*100@%&nbsp;%i:scaleCritMult%</row><br><row>(@MinUnits@) @CRIT_PERCENT*100@%&nbsp;%i:scaleCrit%, @CRIT_DAMAGE*100@%&nbsp;%i:scaleCritMult%</row><br><row>(@MinUnits@) @CRIT_PERCENT*100@%&nbsp;%i:scaleCrit%, @CRIT_DAMAGE*100@%&nbsp;%i:scaleCritMult%; also gain @DamageReduction*100@% Durability</row>",
+    "effects": [
+        {
+            "maxUnits": 2,
+            "minUnits": 2,
+            "style": 1,
+            "variables": {
+                "CRIT_DAMAGE": 0.07999999821186066,
+                "CRIT_PERCENT": 0.25,
+                "DamageReduction": null,
+                "HealthThreshold": 0.30000001192092896,
+                "{696854de}": 20.0
+            }
+        },
+        {
+            "maxUnits": 3,
+            "minUnits": 3,
+            "style": 3,
+            "variables": {
+                "CRIT_DAMAGE": 0.15000000596046448,
+                "CRIT_PERCENT": 0.3499999940395355,
+                "DamageReduction": null,
+                "HealthThreshold": 0.30000001192092896,
+                "{696854de}": 20.0
+            }
+        },
+        {
+            "maxUnits": 4,
+            "minUnits": 4,
+            "style": 3,
+            "variables": {
+                "CRIT_DAMAGE": 0.20000000298023224,
+                "CRIT_PERCENT": 0.44999998807907104,
+                "DamageReduction": null,
+                "HealthThreshold": 0.30000001192092896,
+                "{696854de}": 20.0
+            }
+        },
+        {
+            "maxUnits": 25000,
+            "minUnits": 5,
+            "style": 5,
+            "variables": {
+                "CRIT_DAMAGE": 0.25,
+                "CRIT_PERCENT": 0.550000011920929,
+                "DamageReduction": 0.15000000596046448,
+                "HealthThreshold": 0.30000001192092896,
+                "{696854de}": 20.0
+            }
+        }
+    ],
+    "icon": "ASSETS/UX/TraitIcons/Trait_Icon_4_Executioner.tex",
+    "name": "Executioner"
+},
+{
+    "apiName": "TFT14_Armorclad",
+    "desc": "Your team gains @TeamwideArmor@ Armor and Magic Resist. Bastions gain more.<br><br>For the first @Duration@ seconds of combat, Bastions increase their bonus by @StatMultiplier*100@%.<br><br><row>(@MinUnits@) @BonusArmor@ %i:scaleArmor%%i:scaleMR% </row><br><row>(@MinUnits@) @BonusArmor@ %i:scaleArmor%%i:scaleMR% </row><br><row>(@MinUnits@) @BonusArmor@ %i:scaleArmor%%i:scaleMR% Non-Bastions gain an additional @EnhancedTeamwideArmor@ %i:scaleArmor%%i:scaleMR%.</row>",
+    "effects": [
+        {
+            "maxUnits": 3,
+            "minUnits": 2,
+            "style": 1,
+            "variables": {
+                "BonusArmor": 18.0,
+                "BonusMR": 18.0,
+                "Duration": 10.0,
+                "StatMultiplier": 1.0,
+                "{2812f038}": 40.0,
+                "{696854de}": 20.0,
+                "{e6c715a2}": 10.0
+            }
+        },
+        {
+            "maxUnits": 5,
+            "minUnits": 4,
+            "style": 3,
+            "variables": {
+                "BonusArmor": 50.0,
+                "BonusMR": 50.0,
+                "Duration": 10.0,
+                "StatMultiplier": 1.0,
+                "{2812f038}": 40.0,
+                "{696854de}": 20.0,
+                "{e6c715a2}": 10.0
+            }
+        },
+        {
+            "maxUnits": 25000,
+            "minUnits": 6,
+            "style": 5,
+            "variables": {
+                "BonusArmor": 90.0,
+                "BonusMR": 90.0,
+                "Duration": 10.0,
+                "StatMultiplier": 1.0,
+                "{2812f038}": 40.0,
+                "{696854de}": 20.0,
+                "{e6c715a2}": 10.0
+            }
+        }
+    ],
+    "icon": "ASSETS/UX/TraitIcons/Trait_Icon_9_Bastion.tex",
+    "name": "Bastion"
+},
+{
+    "apiName": "TFT14_EdgeRunner",
+    "desc": "Gain unique items that can only be equipped by Exotech champions. They gain Health and Attack Speed for each item equipped.<br><br><row>(@MinUnits@) @HealthBonus@ %i:scaleHealth%, @ASBonus@% %i:scaleAS%,<br>@TFTUnitProperty.trait:TFT14_Cybernetic_Item1@</row><br><row>(@MinUnits@) @HealthBonus@ %i:scaleHealth%, @ASBonus@% %i:scaleAS%,<br>@TFTUnitProperty.trait:TFT14_Cybernetic_Item2@</row><br><row>(@MinUnits@) @HealthBonus@ %i:scaleHealth%, @ASBonus@% %i:scaleAS%,<br>@TFTUnitProperty.trait:TFT14_Cybernetic_Item3@</row> <br><row>(@MinUnits@) @HealthBonus@ %i:scaleHealth%, @ASBonus@% %i:scaleAS%,<br>Enhance. </row> ",
+    "effects": [
+        {
+            "maxUnits": 4,
+            "minUnits": 3,
+            "style": 1,
+            "variables": {
+                "ASBonus": 2.0,
+                "HealthBonus": 30.0,
+                "{696854de}": 20.0
+            }
+        },
+        {
+            "maxUnits": 6,
+            "minUnits": 5,
+            "style": 3,
+            "variables": {
+                "ASBonus": 3.0,
+                "HealthBonus": 110.0,
+                "{696854de}": 20.0
+            }
+        },
+        {
+            "maxUnits": 9,
+            "minUnits": 7,
+            "style": 5,
+            "variables": {
+                "ASBonus": 7.0,
+                "HealthBonus": 200.0,
+                "{696854de}": 20.0
+            }
+        },
+        {
+            "maxUnits": 25000,
+            "minUnits": 10,
+            "style": 6,
+            "variables": {
+                "ASBonus": 40.0,
+                "HealthBonus": 500.0,
+                "{696854de}": 20.0
+            }
+        }
+    ],
+    "icon": "ASSETS/UX/TraitIcons/Trait_Icon_14_Exotech.TFT_Set14.tex",
+    "name": "Exotech"
+},
+{
+    "apiName": "TFT14_Overlord",
+    "desc": "The Overlord takes a bite out of the unit in the hex behind him, dealing @HPPercentDamage*100@% of their max Health as true damage. He gains @PercentHPGain*100@% of their Health and @PercentADGain*100@% of their Attack Damage.",
+    "effects": [
+        {
+            "maxUnits": 25000,
+            "minUnits": 1,
+            "style": 4,
+            "variables": {
+                "{260807d8}": 0.33000001311302185,
+                "{2d542917}": 0.4000000059604645,
+                "{2f5370b8}": 1.0,
+                "{3b5ffaa0}": 1.0,
+                "{52e98675}": 0.4000000059604645,
+                "{c028da4f}": 1.0
+            }
+        }
+    ],
+    "icon": "ASSETS/UX/TraitIcons/Trait_Icon_14_Overlord.TFT_Set14.tex",
+    "name": "Overlord"
+},
+{
+    "apiName": "TFT14_Netgod",
+    "desc": "After @Rounds@ player combats, open an Armory of Trait Mods that permanently reprogram a champion to benefit from a trait (but not contribute).<br><br>Every time you get a Trait Mod, the next one requires @RoundIncrement@ additional round.<br><br>Rounds remaining: @TFTUnitProperty.trait:TFT14_Netgod_RoundsRemaining@<br><rules>Champions can only have one Trait Mod.</rules><br><br>Equipped Mods:<br><ShowIf.TFT14_Netgod_Slot1>@TFTUnitProperty.trait:TFT14_Netgod_Trait1@ - @TFTUnitProperty.trait:TFT14_Netgod_Champ1@<br><ShowIf.TFT14_Netgod_Slot2>@TFTUnitProperty.trait:TFT14_Netgod_Trait2@ - @TFTUnitProperty.trait:TFT14_Netgod_Champ2@<br><ShowIf.TFT14_Netgod_Slot3>@TFTUnitProperty.trait:TFT14_Netgod_Trait3@ - @TFTUnitProperty.trait:TFT14_Netgod_Champ3@<br><ShowIf.TFT14_Netgod_Slot4>@TFTUnitProperty.trait:TFT14_Netgod_Trait4@ - @TFTUnitProperty.trait:TFT14_Netgod_Champ4@<br><ShowIf.TFT14_Netgod_Slot5>@TFTUnitProperty.trait:TFT14_Netgod_Trait5@ - @TFTUnitProperty.trait:TFT14_Netgod_Champ5@<br><ShowIf.TFT14_Netgod_Slot6>@TFTUnitProperty.trait:TFT14_Netgod_Trait6@ - @TFTUnitProperty.trait:TFT14_Netgod_Champ6@<br><ShowIf.TFT14_Netgod_Slot7>@TFTUnitProperty.trait:TFT14_Netgod_Trait7@ - @TFTUnitProperty.trait:TFT14_Netgod_Champ7@<br><ShowIf.TFT14_Netgod_Slot8>@TFTUnitProperty.trait:TFT14_Netgod_Trait8@ - @TFTUnitProperty.trait:TFT14_Netgod_Champ8@<br><ShowIf.TFT14_Netgod_Slot9>@TFTUnitProperty.trait:TFT14_Netgod_Trait9@ - @TFTUnitProperty.trait:TFT14_Netgod_Champ9@</ShowIf.TFT14_Netgod_Slot9></ShowIf.TFT14_Netgod_Slot8></ShowIf.TFT14_Netgod_Slot7></ShowIf.TFT14_Netgod_Slot6></ShowIf.TFT14_Netgod_Slot5></ShowIf.TFT14_Netgod_Slot4></ShowIf.TFT14_Netgod_Slot3></ShowIf.TFT14_Netgod_Slot2></ShowIf.TFT14_Netgod_Slot1>",
+    "effects": [
+        {
+            "maxUnits": 25000,
+            "minUnits": 1,
+            "style": 4,
+            "variables": {
+                "rounds": 2.0,
+                "{25ec242e}": 9.0,
+                "{f3d51ef8}": 1
+            }
+        }
+    ],
+    "icon": "ASSETS/UX/TraitIcons/Trait_Icon_14_GodoftheNet.TFT_Set14.tex",
+    "name": "God of the Net"
+},
+{
+    "apiName": "TFT14_Swift",
+    "desc": "Your team gains @TeamBonus*100@% Attack Speed. Rapidfire champions gain more on each attack, stacking up to @MaxStacks@ times.<br><br><expandRow>(@MinUnits@) @AttackSpeed*100@% %i:scaleAS% per stack</expandRow>",
+    "effects": [
+        {
+            "maxUnits": 3,
+            "minUnits": 2,
+            "style": 1,
+            "variables": {
+                "AttackSpeed": 0.03999999910593033,
+                "MaxStacks": 10.0,
+                "{696854de}": 20.0,
+                "{b6739a03}": 0.10000000149011612
+            }
+        },
+        {
+            "maxUnits": 5,
+            "minUnits": 4,
+            "style": 3,
+            "variables": {
+                "AttackSpeed": 0.10000000149011612,
+                "MaxStacks": 10.0,
+                "{696854de}": 20.0,
+                "{b6739a03}": 0.10000000149011612
+            }
+        },
+        {
+            "maxUnits": 25000,
+            "minUnits": 6,
+            "style": 5,
+            "variables": {
+                "AttackSpeed": 0.2199999988079071,
+                "MaxStacks": 10.0,
+                "{696854de}": 20.0,
+                "{b6739a03}": 0.10000000149011612
+            }
+        }
+    ],
+    "icon": "ASSETS/UX/TraitIcons/Trait_Icon_10_Rapidfire.tex",
+    "name": "Rapidfire"
+},
+{
+    "apiName": "TFT14_Controller",
+    "desc": "<spellPassive>Combat Start:</spellPassive> Allies in the back 2 rows gain Damage Amp. Allies in the front 2 rows gain Durability. Strategists get triple.<br><br><expandRow>(@MinUnits@) @DamageAmp*100@% %i:scaleDA%, @Durability*100@% %i:scaleDR%</expandRow>",
+    "effects": [
+        {
+            "maxUnits": 2,
+            "minUnits": 2,
+            "style": 1,
+            "variables": {
+                "DamageAmp": 0.07000000029802322,
+                "Durability": 0.05000000074505806,
+                "{c4205fb0}": 2.0
+            }
+        },
+        {
+            "maxUnits": 3,
+            "minUnits": 3,
+            "style": 3,
+            "variables": {
+                "DamageAmp": 0.10999999940395355,
+                "Durability": 0.07000000029802322,
+                "{c4205fb0}": 2.0
+            }
+        },
+        {
+            "maxUnits": 4,
+            "minUnits": 4,
+            "style": 3,
+            "variables": {
+                "DamageAmp": 0.1599999964237213,
+                "Durability": 0.10999999940395355,
+                "{c4205fb0}": 2.0
+            }
+        },
+        {
+            "maxUnits": 25000,
+            "minUnits": 5,
+            "style": 5,
+            "variables": {
+                "DamageAmp": 0.20000000298023224,
+                "Durability": 0.12999999523162842,
+                "{c4205fb0}": 2.0
+            }
+        }
+    ],
+    "icon": "ASSETS/UX/TraitIcons/Trait_Icon_9_Strategist.tex",
+    "name": "Strategist"
+},
+{
+    "apiName": "TFT14_Bruiser",
+    "desc": "Your team gains @TeamwideHealth@ Health. Bruisers gain more.<br><br><expandRow>(@MinUnits@) @HealthBonus*100@% %i:scaleHealth% </expandRow>",
+    "effects": [
+        {
+            "maxUnits": 3,
+            "minUnits": 2,
+            "style": 1,
+            "variables": {
+                "HealthBonus": 0.20000000298023224,
+                "{696854de}": 20.0,
+                "{ba40d775}": 100.0
+            }
+        },
+        {
+            "maxUnits": 5,
+            "minUnits": 4,
+            "style": 3,
+            "variables": {
+                "HealthBonus": 0.44999998807907104,
+                "{696854de}": 20.0,
+                "{ba40d775}": 100.0
+            }
+        },
+        {
+            "maxUnits": 25000,
+            "minUnits": 6,
+            "style": 5,
+            "variables": {
+                "HealthBonus": 0.75,
+                "{696854de}": 20.0,
+                "{ba40d775}": 100.0
+            }
+        }
+    ],
+    "icon": "ASSETS/UX/TraitIcons/Trait_Icon_14_Bruiser.TFT_Set14.tex",
+    "name": "Bruiser"
+},
+{
+    "apiName": "TFT14_Marksman",
+    "desc": "Marksmen gain Attack Damage. After @EnhancedTime@ seconds of combat, they increase their bonus by @EnhancedBonus*100@%.<br><br><row>(@MinUnits@) @BonusAD*100@%&nbsp;%i:scaleAD%</row><br><row>(@MinUnits@) @BonusAD*100@%&nbsp;%i:scaleAD%. After @EnhancedTime@&nbsp;seconds, gain @RepeatBonus*100@%&nbsp;%i:scaleAD% every @RepeatTime@&nbsp;seconds.</row>",
+    "effects": [
+        {
+            "maxUnits": 3,
+            "minUnits": 2,
+            "style": 1,
+            "variables": {
+                "BonusAD": 0.18000000715255737,
+                "RepeatTime": null,
+                "{696854de}": 20.0,
+                "{6ab0afa6}": 8.0,
+                "{9696a6ba}": 1.0,
+                "{b6739a03}": null,
+                "{c3eaf65d}": null
+            }
+        },
+        {
+            "maxUnits": 25000,
+            "minUnits": 4,
+            "style": 5,
+            "variables": {
+                "BonusAD": 0.4000000059604645,
+                "RepeatTime": 6.0,
+                "{696854de}": 20.0,
+                "{6ab0afa6}": 8.0,
+                "{9696a6ba}": 1.0,
+                "{b6739a03}": null,
+                "{c3eaf65d}": 0.20000000298023224
+            }
+        }
+    ],
+    "icon": "ASSETS/UX/TraitIcons/Trait_Icon_14_Marksman.TFT_Set14.tex",
+    "name": "Marksman"
+},
+{
+    "apiName": "TFT14_Immortal",
+    "desc": "Golden Ox gain Damage Amp and have a chance to drop gold on kill.<br><br>If you spend @TFTUnitProperty.trait:TFT14_Immortal_GoldNeededForBreakpoint@ gold on rerolls or XP in a single turn, permanently increase their Damage Amp and the gold required for the next bonus. Rerolls count double towards gold spent.<br><rules>(Golden Ox must have fought last round)</rules><br><br><row>(@MinUnits@) @DamageAmp*100@% %i:scaleDA%, @KillDrop*100@% gold</row><br><row>(@MinUnits@) @DamageAmp*100@% %i:scaleDA%, @KillDrop*100@% gold</row><br><row>(@MinUnits@) @DamageAmp*100@% %i:scaleDA%, @KillDrop*100@% loot, @ComponentDropChance*100@% chance loot is a component</row><br>Current Bonus: @TFTUnitProperty.trait:TFT14_Immortal_GoldBonusStacks@% %i:scaleDA%",
+    "effects": [
+        {
+            "maxUnits": 3,
+            "minUnits": 2,
+            "style": 1,
+            "variables": {
+                "DamageAmp": 0.18000000715255737,
+                "{0bd4b104}": 1.0,
+                "{12bbe349}": null,
+                "{19e84ec6}": 1.0,
+                "{24626b4a}": 0.07999999821186066,
+                "{38d15b70}": null,
+                "{786dea50}": 0.20000000298023224,
+                "{85d365ea}": null,
+                "{d0e12874}": 7.0,
+                "{e29303a0}": null
+            }
+        },
+        {
+            "maxUnits": 5,
+            "minUnits": 4,
+            "style": 3,
+            "variables": {
+                "DamageAmp": 0.20000000298023224,
+                "{0bd4b104}": 1.0,
+                "{12bbe349}": null,
+                "{19e84ec6}": 1.0,
+                "{24626b4a}": 0.07999999821186066,
+                "{38d15b70}": null,
+                "{786dea50}": 0.4000000059604645,
+                "{85d365ea}": null,
+                "{d0e12874}": 4.0,
+                "{e29303a0}": null
+            }
+        },
+        {
+            "maxUnits": 25000,
+            "minUnits": 6,
+            "style": 5,
+            "variables": {
+                "DamageAmp": 0.2199999988079071,
+                "{0bd4b104}": 1.0,
+                "{12bbe349}": 0.07000000029802322,
+                "{19e84ec6}": 1.0,
+                "{24626b4a}": 0.07999999821186066,
+                "{38d15b70}": null,
+                "{786dea50}": 0.6600000262260437,
+                "{85d365ea}": null,
+                "{d0e12874}": 3.0,
+                "{e29303a0}": null
+            }
+        }
+    ],
+    "icon": "ASSETS/UX/TraitIcons/Trait_Icon_14_GoldenOx.TFT_Set14.tex",
+    "name": "Golden Ox"
+},
+{
+    "apiName": "TFT14_BallisTek",
+    "desc": "BoomBots fire a missile every @DamageDealtThreshold@ damage dealt at a nearby enemy that deals magic damage. @DamageTakenMod*100@% of damage taken contributes to damage dealt.<br><br><row>(@MinUnits@) @MissileDamage@ magic damage</row><br><row>(@MinUnits@) @MissileDamage@ magic damage</row><br><row>(@MinUnits@) Fire two missiles, each dealing @MissileDamage@ magic damage</row>",
+    "effects": [
+        {
+            "maxUnits": 3,
+            "minUnits": 2,
+            "style": 1,
+            "variables": {
+                "MissileDamage": 145.0,
+                "{540aad25}": 0.07999999821186066,
+                "{91f7abc1}": 400.0
+            }
+        },
+        {
+            "maxUnits": 5,
+            "minUnits": 4,
+            "style": 3,
+            "variables": {
+                "MissileDamage": 310.0,
+                "{540aad25}": 0.07999999821186066,
+                "{91f7abc1}": 400.0
+            }
+        },
+        {
+            "maxUnits": 25000,
+            "minUnits": 6,
+            "style": 5,
+            "variables": {
+                "MissileDamage": 190.0,
+                "{540aad25}": 0.07999999821186066,
+                "{91f7abc1}": 400.0
+            }
+        }
+    ],
+    "icon": "ASSETS/UX/TraitIcons/Trait_Icon_14_BoomBots.TFT_Set14.tex",
+    "name": "BoomBot"
+},
+{
+    "apiName": "TFT14_Techie",
+    "desc": "Techies gain Ability Power.<br><br>Enemies hit by their abilities deal @DamageAmpDebuff*100@% less damage for @DebuffDuration@ seconds.<br><br><row>(@MinUnits@) @APBonus@ %i:scaleAP%</row><br><row>(@MinUnits@) @APBonus@ %i:scaleAP%</row><br><row>(@MinUnits@) @APBonus@ %i:scaleAP%</row><br><row>(@MinUnits@) @APBonus@ %i:scaleAP% Enemies hit deal @EnhancedDebuff*100@% less damage.</row>",
+    "effects": [
+        {
+            "maxUnits": 3,
+            "minUnits": 2,
+            "style": 1,
+            "variables": {
+                "APBonus": 15.0,
+                "DebuffDuration": 3.0,
+                "{11b60890}": 0.10000000149011612,
+                "{440affed}": 0.18000000715255737
+            }
+        },
+        {
+            "maxUnits": 5,
+            "minUnits": 4,
+            "style": 3,
+            "variables": {
+                "APBonus": 45.0,
+                "DebuffDuration": 3.0,
+                "{11b60890}": 0.10000000149011612,
+                "{440affed}": 0.18000000715255737
+            }
+        },
+        {
+            "maxUnits": 7,
+            "minUnits": 6,
+            "style": 5,
+            "variables": {
+                "APBonus": 80.0,
+                "DebuffDuration": 3.0,
+                "{11b60890}": 0.10000000149011612,
+                "{440affed}": 0.18000000715255737
+            }
+        },
+        {
+            "maxUnits": 25000,
+            "minUnits": 8,
+            "style": 5,
+            "variables": {
+                "APBonus": 110.0,
+                "DebuffDuration": 3.0,
+                "{11b60890}": 0.10000000149011612,
+                "{440affed}": 0.18000000715255737
+            }
+        }
+    ],
+    "icon": "ASSETS/UX/TraitIcons/Trait_Icon_14_Techie.TFT_Set14.tex",
+    "name": "Techie"
+},
+{
+    "apiName": "TFT14_Thirsty",
+    "desc": "Every @Timer@ seconds, your team gains Mana. Dynamos gain @ThirstyBonus*100@% more.<br><br><row>(@MinUnits@) @Mana@ %i:scaleMana% </row><br><row>(@MinUnits@) @Mana@ %i:scaleMana% </row><br><row>(@MinUnits@) @Mana@ %i:scaleMana% </row>",
+    "effects": [
+        {
+            "maxUnits": 2,
+            "minUnits": 2,
+            "style": 1,
+            "variables": {
+                "Mana": 5.0,
+                "Timer": 3.0,
+                "{696854de}": 20.0,
+                "{f31c7b07}": 1.0
+            }
+        },
+        {
+            "maxUnits": 3,
+            "minUnits": 3,
+            "style": 3,
+            "variables": {
+                "Mana": 7.0,
+                "Timer": 3.0,
+                "{696854de}": 20.0,
+                "{f31c7b07}": 1.0
+            }
+        },
+        {
+            "maxUnits": 25000,
+            "minUnits": 4,
+            "style": 5,
+            "variables": {
+                "Mana": 10.0,
+                "Timer": 3.0,
+                "{696854de}": 20.0,
+                "{f31c7b07}": 1.0
+            }
+        }
+    ],
+    "icon": "ASSETS/UX/TraitIcons/Trait_Icon_14_Dynamo.TFT_Set14.tex",
+    "name": "Dynamo"
+},
+{
+    "apiName": "TFT14_Virus",
+    "desc": "The Virus infects your shop with a @ChanceToSee@% chance to spawn a bloblet. When purchased, it merges and increases the strongest Zac's max Health by @BonusPercentHPPerStack*100@% and Ability Power by @BonusAPPerStack@. <br><br><TFTTracker>(Total Bloblets: <TFTBonus>@TFTUnitProperty.trait:TFT14_Virus_Stacks@</TFTBonus>)</TFTTracker>",
+    "effects": [
+        {
+            "maxUnits": 25000,
+            "minUnits": 1,
+            "style": 4,
+            "variables": {
+                "BonusAPPerStack": 5.0,
+                "{1e6d4a33}": 10.0,
+                "{978a9814}": 0.029999999329447746
+            }
+        }
+    ],
+    "icon": "ASSETS/UX/TraitIcons/Trait_Icon_14_Virus.TFT_Set14.tex",
+    "name": "Virus"
+},
+{
+    "apiName": "TFT14_Mob",
+    "desc": "Get a Kingpin hat that uniquely upgrades a Syndicate champion's ability.<br><br>Syndicate champions gain Health and Damage Amp.<br><br><row>(@MinUnits@) @MobHealth@ %i:scaleHealth%, @DamageAmp*100@% %i:scaleDA%, @NumBosses@ Kingpin</row><br><row>(@MinUnits@) @MobHealth@ %i:scaleHealth%, @DamageAmp*100@% %i:scaleDA%, @NumBosses@ Kingpins</row><br><row>(@MinUnits@) @MobHealth@ %i:scaleHealth%, @DamageAmp*100@% %i:scaleDA%, Upgrade Kingpin effect</row>",
+    "effects": [
+        {
+            "maxUnits": 4,
+            "minUnits": 3,
+            "style": 1,
+            "variables": {
+                "DamageAmp": 0.05000000074505806,
+                "{09065692}": 1,
+                "{61b5370e}": 1,
+                "{6cc5531f}": 100.0
+            }
+        },
+        {
+            "maxUnits": 6,
+            "minUnits": 5,
+            "style": 3,
+            "variables": {
+                "DamageAmp": 0.20000000298023224,
+                "{09065692}": 2,
+                "{61b5370e}": 2,
+                "{6cc5531f}": 450.0
+            }
+        },
+        {
+            "maxUnits": 25000,
+            "minUnits": 7,
+            "style": 5,
+            "variables": {
+                "DamageAmp": 0.30000001192092896,
+                "{09065692}": 2,
+                "{61b5370e}": 2,
+                "{6cc5531f}": 600.0
+            }
+        }
+    ],
+    "icon": "ASSETS/UX/TraitIcons/Trait_Icon_14_Mob.TFT_Set14.tex",
+    "name": "Syndicate"
+},
+{
+    "apiName": "TFT14_HotRod",
+    "desc": "Every round, Nitro champions grant Chrome to R-080T, based on their star level. Each Chrome grants @HealthPerScrap@ Health and @APPerScrap@ Ability Power. <br><br>At @FourStarScrapThreshold@ Chrome, it upgrades to T-43X! <br><br><row>(@MinUnits@) Summon R-080T!</row><br><row>(@MinUnits@) Fire a giant laser!</row><br><br><rules>Chrome per star: @ScrapPerOneStar@/@ScrapPerTwoStar@/@ScrapPerThreeStar@/@ScrapPerFourStar@</rules>",
+    "effects": [
+        {
+            "maxUnits": 3,
+            "minUnits": 3,
+            "style": 1,
+            "variables": {
+                "{00933536}": 400,
+                "{0903a0c3}": null,
+                "{093846b7}": null,
+                "{10423961}": null,
+                "{4d6eede4}": null,
+                "{4eb7d3e8}": 1300,
+                "{8911c1f3}": 14.0,
+                "{8a85bbd1}": 200.0,
+                "{a691af58}": 1.0,
+                "{bba458bd}": null,
+                "{bbd3f177}": 130.0,
+                "{c5d6c3d5}": 60.0,
+                "{e75fa38f}": 850,
+                "{f38b0f5d}": 100
+            }
+        },
+        {
+            "maxUnits": 25000,
+            "minUnits": 4,
+            "style": 5,
+            "variables": {
+                "{00933536}": 400,
+                "{0903a0c3}": null,
+                "{093846b7}": null,
+                "{10423961}": null,
+                "{4d6eede4}": null,
+                "{4eb7d3e8}": 1300,
+                "{8911c1f3}": 14.0,
+                "{8a85bbd1}": 200.0,
+                "{a691af58}": 1.0,
+                "{bba458bd}": null,
+                "{bbd3f177}": 130.0,
+                "{c5d6c3d5}": 60.0,
+                "{e75fa38f}": 850,
+                "{f38b0f5d}": 100
+            }
+        }
+    ],
+    "icon": "ASSETS/UX/TraitIcons/Trait_Icon_14_NitroForge.TFT_Set14.tex",
+    "name": "Nitro"
+},
+{
+    "apiName": "TFT14_Suits",
+    "desc": "Gain Intel by losing combat, increased for loss streaks. Gain a small amount for killing&nbsp;enemies. <br><br>You may trade your Intel for loot one time on round<br>@CashoutStage1@-@CashoutRound1@, @CashoutStage2@-@CashoutRound2@, @CashoutStage3@-@CashoutRound3@, @CashoutStage4@-@CashoutRound4@, or @CashoutStage5@-@CashoutRound5@.<br>After trading Intel, Cypher champions gain Attack Damage and Ability Power.<br><br><expandRow>(@MinUnits@) @ValueMultiplier@x Intel, @AttackDamage*100@% %i:scaleAD%%i:scaleAP%</expandRow>",
+    "effects": [
+        {
+            "maxUnits": 3,
+            "minUnits": 3,
+            "style": 1,
+            "variables": {
+                "AbilityPower": 25.0,
+                "AttackDamage": 0.25,
+                "{10472c4d}": 1.0,
+                "{1f98073f}": 0.029999999329447746,
+                "{2c9b3e4e}": 0.5,
+                "{48df4661}": 5,
+                "{76664467}": null,
+                "{7d910997}": null,
+                "{8d9e3028}": 2.0,
+                "{bd1003e3}": null,
+                "{be100576}": null,
+                "{bf100709}": null,
+                "{c010089c}": null,
+                "{c1100a2f}": null,
+                "{c68adc9e}": null,
+                "{c78ade31}": null,
+                "{c88adfc4}": null,
+                "{c98ae157}": null,
+                "{cb8ae47d}": null,
+                "{f2f00c97}": null
+            }
+        },
+        {
+            "maxUnits": 4,
+            "minUnits": 4,
+            "style": 3,
+            "variables": {
+                "AbilityPower": 35.0,
+                "AttackDamage": 0.3499999940395355,
+                "{10472c4d}": 1.5,
+                "{1f98073f}": 0.029999999329447746,
+                "{2c9b3e4e}": 0.5,
+                "{48df4661}": 5,
+                "{76664467}": null,
+                "{7d910997}": null,
+                "{8d9e3028}": 2.0,
+                "{bd1003e3}": null,
+                "{be100576}": null,
+                "{bf100709}": null,
+                "{c010089c}": null,
+                "{c1100a2f}": null,
+                "{c68adc9e}": null,
+                "{c78ade31}": null,
+                "{c88adfc4}": null,
+                "{c98ae157}": null,
+                "{cb8ae47d}": null,
+                "{f2f00c97}": null
+            }
+        },
+        {
+            "maxUnits": 25000,
+            "minUnits": 5,
+            "style": 5,
+            "variables": {
+                "AbilityPower": 45.0,
+                "AttackDamage": 0.44999998807907104,
+                "{10472c4d}": 2.0,
+                "{1f98073f}": 0.029999999329447746,
+                "{2c9b3e4e}": 0.5,
+                "{48df4661}": 5,
+                "{76664467}": null,
+                "{7d910997}": null,
+                "{8d9e3028}": 2.0,
+                "{bd1003e3}": null,
+                "{be100576}": null,
+                "{bf100709}": null,
+                "{c010089c}": null,
+                "{c1100a2f}": null,
+                "{c68adc9e}": null,
+                "{c78ade31}": null,
+                "{c88adfc4}": null,
+                "{c98ae157}": null,
+                "{cb8ae47d}": null,
+                "{f2f00c97}": null
+            }
+        }
+    ],
+    "icon": "ASSETS/UX/TraitIcons/Trait_Icon_14_Cypher.TFT_Set14.tex",
+    "name": "Cypher"
+}
 ]
 
 export default sinergiasData;

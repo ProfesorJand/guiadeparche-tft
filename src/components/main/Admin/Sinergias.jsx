@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import style from "./css/Sinergias.module.css"
 import { traitsColors, imgHex } from "src/functions/campeonestft";
 import sinergiasData from "src/json/updates/sinergiasData";
-const Sinergias = ({sinergias, orientacion, show})=>{
+const Sinergias = ({sinergias, orientacion, show, version})=>{
 
   function checkColor(hexColor){
     if(hexColor === "hex-prismatic.webp"){
@@ -110,7 +110,7 @@ const Sinergias = ({sinergias, orientacion, show})=>{
           return (
             <div key={i} className={show ? style.containerSinergiaHex : style.containerSinergiaHexOculto} style={window.innerWidth < 900 ? checkColor(key.hexColor) : {}}>
               <span className={style.borderHex} style={checkColor(key.hexColor)}></span> 
-              <img className={style.imgSinergia} src={`https://raw.communitydragon.org/latest/game/${key.icon}`} alt="Trait_Icon" loading="lazy"/>
+              <img className={style.imgSinergia} src={`https://raw.communitydragon.org/${version}/game/${key.icon}`} alt="Trait_Icon" loading="lazy"/>
               <div className={style.infoSinergia}>{key.hexLevel}</div>
             </div>
           )

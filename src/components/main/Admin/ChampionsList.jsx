@@ -58,7 +58,7 @@ const Champions = ({version = "pbe"})=>{
                     championsList.push(data)
                     
                 }
-                if(apiName === "TFT13_JayceSummon" || apiName === "TFT13_Sion"){
+                if(apiName === "TFT13_JayceSummon" || apiName === "TFT13_Sion" || apiName === "TFT14_SummonLevel4" || apiName === "TFT14_SummonLevel2" || apiName === "TFT_TrainingDummy"){
                     const data = {
                         apiName,
                         nombre:name,

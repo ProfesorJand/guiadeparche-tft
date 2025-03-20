@@ -1,3 +1,11 @@
+# Capacitor
+android/
+ios/
+node_modules/
+
+# Capacitor configuration
+capacitor.config.ts
+
 # build output
 dist/
 
@@ -19,6 +27,7 @@ pnpm-debug.log*
 
 # macOS-specific files
 .DS_Store
+Thumbs.db
 
 # jetbrains setting folder
 .idea/

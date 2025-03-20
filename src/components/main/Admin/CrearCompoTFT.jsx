@@ -779,7 +779,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           return <option key={"ListaDeEmblemas"+dataItem.nombre+i} id={`datalist-${dataItem.name}`} value={dataItem.name} data-value={JSON.stringify(dataItem)}></option>
         })}
       </datalist>
-        <Sinergias sinergias={boardInfo[showBoard]?.sinergias ? boardInfo[showBoard]?.sinergias : {}} orientacion={"horizontal"}></Sinergias>
+        <Sinergias sinergias={boardInfo[showBoard]?.sinergias ? boardInfo[showBoard]?.sinergias : {}} orientacion={"horizontal"} version={currentVersion}></Sinergias>
       <div className={showBoard=== "early" ? style.builderContainerEarly : style.builderContainer}>
       	{showBoard=== "early" && <Builder setBoardInfo={setBoardInfo} boardInfo={boardInfo} id={showBoard} showName={showName}/>}
 				{showBoard=== "lv7" && <Builder setBoardInfo={setBoardInfo} boardInfo={boardInfo} id={showBoard} showName={showName}/>}

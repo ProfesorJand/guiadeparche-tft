@@ -136,140 +136,157 @@ export const traitsColors = {
         4:imgHex[1],
         6:imgHex[2],
     },
-    // Arcana:{
-    //     2:imgHex[0],
-    //     3:imgHex[1],
-    //     4:imgHex[2]
-    // },
-    // Ascendant:{
-    //     1:imgHex[3],
-    // },
-    // Bastion:{
-    //     2:imgHex[0],
-    //     4:imgHex[1],
-    //     6:imgHex[2],
-    //     8:imgHex[3]
-    // },
-    // BatQueen:{
-    //     1:imgHex[3],
-    // },
-    // Best_Friends:{
-    //     1:imgHex[3],
-    // },
-    // Blaster:{
-    //     2:imgHex[0],
-    //     4:imgHex[1],
-    //     6:imgHex[2]
-    // },
-    // Chrono:{
-    //     2:imgHex[0],
-    //     4:imgHex[1],
-    //     6:imgHex[2]
-    // },
-    // Dragon:{
-    //     2:imgHex[0],
-    //     3:imgHex[2],
-    // },
-    // Druid:{
-    //     1:imgHex[3],
-    // },
-    // Eldritch:{
+    //Set 14
+    TFT14_AnimaSquad:{
+        3:imgHex[0],
+        5:imgHex[1],
+        7:imgHex[2],
+        10:imgHex[3],
+    },
+    TFT14_Cyberboss:{
+        2:imgHex[0],
+        3:imgHex[1],
+        4:imgHex[2],
+    },
+    TFT14_Divinicorp:{
+        1:imgHex[0],
+        3:imgHex[1],
+        5:imgHex[2],
+        7:imgHex[3],
+    },
+    TFT14_Netgod:{
+        1:imgHex[3],
+    },
+    TFT14_StreetDemon:{
+        3:imgHex[0],
+        5:imgHex[1],
+        7:imgHex[2],
+        10:imgHex[3],
+    },
+    TFT14_Supercharge:{
+        2:imgHex[0],
+        3:imgHex[1],
+        4:imgHex[1],
+        5:imgHex[2],
+    },
+    TFT14_Vanguard:{
+        2:imgHex[0],
+        4:imgHex[1],
+        6:imgHex[2],
+    },
+    TFT14_Strong:{
+        2:imgHex[0],
+        4:imgHex[1],
+        6:imgHex[2],
+    },
+    TFT14_ViegoUniqueTrait:{
+        1:imgHex[3],
+    },
+    TFT14_Cutter:{
+        2:imgHex[0],
+        3:imgHex[1],
+        4:imgHex[1],
+        5:imgHex[2],
+    },
+    TFT14_Armorclad:{
+        2:imgHex[0],
+        4:imgHex[1],
+        6:imgHex[2],
+    },
+    TFT14_EdgeRunner:{
+        3:imgHex[0],
+        5:imgHex[1],
+        7:imgHex[2],
+        10:imgHex[3],
+    },
+    TFT14_Overlord:{
+        1:imgHex[3],
+    },
+    TFT14_Swift:{
+        2:imgHex[0],
+        4:imgHex[1],
+        6:imgHex[2],
+        10:imgHex[3],
+    },
+    TFT14_Controller:{
+        2:imgHex[0],
+        3:imgHex[1],
+        4:imgHex[1],
+        5:imgHex[2],
+    },
+    TFT14_Bruiser:{
+        2:imgHex[0],
+        4:imgHex[1],
+        6:imgHex[2],
+    },
+    TFT14_Marksman:{
+        2:imgHex[0],
+        4:imgHex[3],
+    },
+    TFT14_Immortal:{
+        2:imgHex[0],
+        4:imgHex[1],
+        6:imgHex[2],
+    },
+    TFT14_BallisTek:{
+        2:imgHex[0],
+        4:imgHex[1],
+        6:imgHex[2],
+    },
+    TFT14_Techie:{
+        2:imgHex[0],
+        4:imgHex[1],
+        6:imgHex[2],
+        8:imgHex[3],
+    },
+    TFT14_Thirsty:{
+        2:imgHex[0],
+        3:imgHex[1],
+        4:imgHex[2],
+    },
+    TFT14_Virus:{
+        1:imgHex[3],
+    },
+    TFT14_Mob:{
+        3:imgHex[0],
+        5:imgHex[1],
+        7:imgHex[2],
+    },
+    TFT14_HotRod:{
+        3:imgHex[0],
+        5:imgHex[2],
+    },
+    TFT14_Suits:{
+        3:imgHex[0],
+        4:imgHex[1],
+        5:imgHex[2],
+    },
+    // TFT14_StreetDemon:{
     //     3:imgHex[0],
     //     5:imgHex[1],
     //     7:imgHex[2],
-    //     10:imgHex[3]
+    //     10:imgHex[3],
     // },
-    // Faerie:{
+    // TFT14_StreetDemon:{
     //     3:imgHex[0],
     //     5:imgHex[1],
     //     7:imgHex[2],
-    //     9:imgHex[3]
+    //     10:imgHex[3],
     // },
-    // Frost:{
+    // TFT14_StreetDemon:{
     //     3:imgHex[0],
     //     5:imgHex[1],
     //     7:imgHex[2],
-    //     9:imgHex[3]
+    //     10:imgHex[3],
     // },
-    // Honeymancy:{
-    //     3:imgHex[0],
-    //     5:imgHex[2],
-    //     7:imgHex[3]
-    // },
-    // Hunter:{
-    //     2:imgHex[0],
-    //     4:imgHex[1],
-    //     6:imgHex[2]
-    // },
-    // Incantor:{
-    //     2:imgHex[0],
-    //     4:imgHex[2],
-    // },
-    // Mage:{
+    // TFT14_StreetDemon:{
     //     3:imgHex[0],
     //     5:imgHex[1],
     //     7:imgHex[2],
-    //     10:imgHex[3]
+    //     10:imgHex[3],
     // },
-    // Multistriker:{
-    //     3:imgHex[0],
-    //     5:imgHex[1],
-    //     7:imgHex[2],
-    //     9:imgHex[3]
-    // },
-    // Preserver:{
-    //     2:imgHex[0],
-    //     3:imgHex[1],
-    //     4:imgHex[2],
-    //     5:imgHex[3]
-    // },
-    // Portal:{
-    //     3:imgHex[0],
-    //     6:imgHex[1],
-    //     8:imgHex[2],
-    //     10:imgHex[3]
-    // },
-    // Pyro:{
-    //     2:imgHex[0],
-    //     3:imgHex[1],
-    //     4:imgHex[2],
-    //     5:imgHex[3]
-    // },
-    // Ravenous:{
-    //     1:imgHex[3],
-    // },
-    // Scholar:{
-    //     2:imgHex[0],
-    //     4:imgHex[1],
-    //     6:imgHex[2]
-    // },
-    // Shapeshifter:{
-    //     2:imgHex[0],
-    //     4:imgHex[1],
-    //     6:imgHex[2],
-    //     8:imgHex[3]
-    // },
-    // Sugarcraft:{
-    //     2:imgHex[0],
-    //     4:imgHex[1],
-    //     6:imgHex[2]
-    // },
-    // Vanguard:{
-    //     2:imgHex[0],
-    //     4:imgHex[1],
-    //     6:imgHex[2],
-    // },
-    // Warrior:{
-    //     2:imgHex[0],
-    //     4:imgHex[1],
-    //     6:imgHex[2]
-    // },
-    // Witchcraft:{
-    //     2:imgHex[0],
-    //     4:imgHex[1],
-    //     6:imgHex[2],
-    //     8:imgHex[3]
-    // },
+
+
 }
 
 export const listaCampeones = [

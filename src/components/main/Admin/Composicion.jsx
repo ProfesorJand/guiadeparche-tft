@@ -128,40 +128,37 @@ const Composicion = ({id, compo, admin=false, show=true, allwaysOpen=false, onTo
     }
   }
 
-  function deleteId(id, tier) {
-    let password= prompt('Write DELETE to continue');
-    if(password === "DELETE"){
-      let token;
-      if(import.meta.env.SSR){
-        token = import.meta.env.TOKEN_META;
-      }else{
-        token = import.meta.env.PUBLIC_TOKEN_META;
-      }
-      fetch('https://guiadeparche.com/tftdata/Set12/crearCompoMeta.php', {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded', // Cambiado a x-www-form-urlencoded para enviar datos con DELETE
-          'Authorization': `Bearer ${token}`
-        },
-        body: `id=${id}&tier=${tier}`, // Enviar los datos como parte del cuerpo de la solicitud
-      })
-      .then(response => response.json()) // Parsear la respuesta como JSON
-      .then(data => {
-        if (data.status === 'success') {
-          alert(`ID: ${id} eliminado correctamente:`)
-          console.log('ID eliminado correctamente:', data.message);
+  function deleteId(id, tier, version = "latest") { // Agregamos version por defecto
+    let password = prompt('Write DELETE to continue');
+    if (password === "DELETE") {
+        let token;
+        if (import.meta.env.SSR) {
+            token = import.meta.env.TOKEN_META;
         } else {
-          console.error('Error al eliminar el ID:', data.message);
+            token = import.meta.env.PUBLIC_TOKEN_META;
         }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
+        fetch('https://guiadeparche.com/tftdata/Set12/crearCompoMeta.php', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': `Bearer ${token}`
+            },
+            body: `id=${id}&tier=${tier}&version=${version}`, // Se envía la versión
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert(`ID: ${id} eliminado correctamente`);
+                console.log('ID eliminado correctamente:', data.message);
+            } else {
+                console.error('Error al eliminar el ID:', data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
     }
-    if(password === "OCULTAR"){
-
-    }
-  }
+}
 
   function copyToClipboard(e,codigo) {
     e.stopPropagation();
@@ -240,7 +237,7 @@ const Composicion = ({id, compo, admin=false, show=true, allwaysOpen=false, onTo
         }
         {
           admin &&
-          <div className={[style.btn, style.btnDelete].join(" ")} onClick={()=>{deleteId(compo.id, compo.tier)}}>
+          <div className={[style.btn, style.btnDelete].join(" ")} onClick={()=>{deleteId(compo.id, compo.tier, compo?.version || "latest")}}>
           </div>
         }
         {show &&
@@ -282,13 +279,13 @@ const Composicion = ({id, compo, admin=false, show=true, allwaysOpen=false, onTo
         <>
         <h3 className={[style.titulo, style.tituloCentrado].join(" ")}>Late Game - {textoPosicionamiento(posicionamiento)}</h3>     
         <div className={style.containerT}>
-          <Sinergias sinergias={sinergias} posicionamiento={posicionamiento} show={show}/>
+          <Sinergias sinergias={sinergias} posicionamiento={posicionamiento} show={show} version={compo?.version || "latest"}/>
         </div>
         </>
          :
           <div className={style.containerTOculto}>
           {/* <h3 className={show ? [style.titulo, style.tituloCentrado].join(" ") : style.tituloCentradoOculto}>Late Game - {textoPosicionamiento(posicionamiento)}</h3>     */}
-          <Sinergias sinergias={sinergias} posicionamiento={posicionamiento} show={show}/> 
+          <Sinergias sinergias={sinergias} posicionamiento={posicionamiento} show={show} version={compo?.version || "latest"}/> 
           </div>
         }
         <div className={style.containerPosicionamiento}>

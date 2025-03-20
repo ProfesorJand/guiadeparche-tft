@@ -1,17 +1,18 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 //import ContainerMeta from '../../components/new-meta-comp/ContainerMeta.astro';
-import Youtube from '../../components/youtube/Youtube.jsx';
-import FiltroComps from 'src/components/main/Admin/FiltroComps.jsx';
+// import Youtube from '../../components/youtube/Youtube.jsx';
+// import FiltroComps from 'src/components/main/Admin/FiltroComps.jsx';
 import MetaComps from "src/components/main/Admin/MetaComps.jsx"
 import Main from '@components/main/Main.astro';
 
 import Twitch from 'src/components/embed/Twitch.jsx';
 //import ContainerMetaPBE from '@components/new-meta-comp/ContainerMetaPBE.astro';
 import {crearJSONSchema} from "src/json/schema/crearJSONSchema";
-import Kick from "src/components/embed/Kick.astro";
+// import Kick from "src/components/embed/Kick.astro";
 import TierListMetaComps from '@components/TFT/TierListMetaComps.jsx';
-import { MetaCompVersion } from 'src/stores/menuFiltradoAdmin';
+//import { MetaCompVersion } from '@stores/menuFiltradoAdmin';
+import SelectVersion  from "@components/versionTFT/SelectVersion.jsx"
 // import { loadCompsMeta } from 'src/stores/menuFiltradoAdmin';
 const title = "▷ Best TFT Comps & Builds for Set 13 Arcane";
 // Example: Construct a canonical URL using your production domain
@@ -33,7 +34,7 @@ const admin = typeof window !== "undefined" ? localStorage.getItem("superAdmin")
 <Layout title={title} JSONSchema={JSONSchema} description={description} keywords={keywords} image={"/campeones/set12/ryze.webp"} canonical={canonicalURL}>
   <Fragment slot="bodyMainAside">
     <!-- <FiltroComps client:only="react"/> -->
-    <TierListMetaComps client:load/>
+    <TierListMetaComps client:only="react"/>
     <!-- <Youtube src={"https://www.youtube.com/playlist?list=PLxRnNvReiLMEriFDu0UxXScDabCIX-PWy"} client:only="react"/> -->
 </Fragment>
 <!-- <Fragment slot="bodyMainAsideTwitch">
@@ -47,7 +48,7 @@ const admin = typeof window !== "undefined" ? localStorage.getItem("superAdmin")
     <h1 id="tituloMetaComps" class="titulo tituloMetaComps">
       Best TFT Meta Comps & Builds | Mejores Composiciones
     </h1>
-    <span id="minititulo" class="minititulo">Tier List for Set 13 Arcane TFT Compos - Patch {MetaCompVersion.value}</span>
+    <span id="minititulo" class="minititulo">Tier List</span> {/*  for Set 13 Arcane TFT Compos - Patch {MetaCompVersion.value} */}
     <!-- <div class="videosYT">
       <div class="videoYTAdd">
         <h2 class="tituloYt">Español</h2>
@@ -58,17 +59,27 @@ const admin = typeof window !== "undefined" ? localStorage.getItem("superAdmin")
         <Youtube src="https://www.youtube.com/playlist?list=PLxRnNvReiLMHHtPFxG2tCBzNCrIz_-rnq" client:load></Youtube>
       </div>
     </div> -->
+    <div id="SelectVersion">
+      <SelectVersion client:only="react"/>
+    </div>
     <div id="ContainerMetaPBE">
       <!-- <ContainerMetaPBE version={latestVersion} set={setPBE}/> -->
       <!-- <ContainerMeta version={latestVersion} set={set} client:load/> -->
       <div class={"containerMeta"}>
-        <MetaComps showHide={false} admin={admin} client:load/>
+        <MetaComps showHide={false} admin={admin} client:only="react"/>
       </div>
     </div>
   </Main>
 </Layout>
 
 <style>
+  #SelectVersion{
+    display: flex;
+    width: 100%;
+    position: relative;
+    justify-content: center;
+    align-items: center
+  }
   #containerSwitch{
     display: flex;
     width: 100%;

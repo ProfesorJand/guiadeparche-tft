@@ -4,6 +4,7 @@ import TierListMetaComps from "@components/TFT/TierListMetaComps.jsx";
 import { versionTFT, swapVersionTFT } from "src/stores/dataTFT.js";
 import { useStore } from "@nanostores/react";
 import style from "./css/EditarCompoTFT.module.css"
+import SelectVersion from "@components/versionTFT/SelectVersion.jsx";
 
 const EditarCompoTFT = () => {
   const currentVersion = useStore(versionTFT);
@@ -69,17 +70,8 @@ const EditarCompoTFT = () => {
         </label>
 
         <label className={style.containerConstanteUpdate}>
-          <span>Selecciona Version:</span>
-          <select
-              name="versions"
-              id="versions"
-              onChange={(e)=>swapVersionTFT(e.target.value)}
-              defaultValue={currentVersion}
-              required
-          >
-              <option value="pbe">pbe</option>
-              <option value="latest">latest</option>
-          </select>
+          
+          <SelectVersion></SelectVersion>
         </label>
       {/* <TierListMetaComps /> */}
 
