@@ -6,7 +6,7 @@ import Sinergias from "./Sinergias.jsx"
 import Items from "./Items.jsx";
 import Youtube from "../../youtube/Youtube.jsx";
 import { toBlob } from 'html-to-image';
-import { BASIC_ITEMS, CRAFTEABLE_ITEMS, ARTEFACTOS } from "src/stores/dataTFT.js";
+import { BASIC_ITEMS, CRAFTEABLE_ITEMS, ARTEFACTOS, ITEMS_CRAFTEABLES_PBE } from "src/stores/dataTFT.js";
 import { emblems, radiantsItems as listOfRadiantsItems} from "src/json/updates/itemsTFT";
 import CarouselItems from "./CarouselItems.jsx";
 import RadiantsItems from "./RadiantsItems.jsx";
@@ -418,7 +418,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
     }
 
     function handlerCompleteItem(value, item){
-      const [data] = CRAFTEABLE_ITEMS.filter((item)=>{
+      const [data] = (version === "pbe" ? ITEMS_CRAFTEABLES_PBE : CRAFTEABLE_ITEMS).filter((item)=>{
         return item.nombre === value
       })
       setCarouselItems((oldObject)=>{ return {...oldObject, [item]:data }})
@@ -487,7 +487,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           champTrait,
           version
         }
-        if(tier && posicion && dificultad && titulo && shadowCategory && infographicCategory && aumentos.length && Object.keys(carouselItems).length && Object.keys(boardInfo).length && Object.keys(campeonTierList).length){
+        if(tier && posicion && dificultad && titulo && shadowCategory && infographicCategory && aumentos.length && Object.keys(carouselItems).length && Object.keys(boardInfo).length && Object.keys(campeonTierList).length && Object.keys(boardInfo?.[originalComp]?.data || {}).length){
           const token = import.meta.env.PUBLIC_TOKEN_META
           fetch('https://guiadeparche.com/tftdata/Set12/crearCompoMeta.php', {
             method: 'POST',
@@ -533,6 +533,9 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           }
           if(!Object.keys(campeonTierList).length){
             mensaje += "\nSelect Champion Tier List"
+          }
+          if(!Object.keys(boardInfo?.[originalComp]?.data || {}).length){
+            mensaje += `\nTienes en Original Comp "${originalComp}" selecionado, pero no tienes campeones en ese Posicionamiento`
           }
           alert(mensaje)
           return
@@ -822,17 +825,17 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           <input list="dataListItemsCrafteables2" name="Carousel_Complete_Item2" id="Carousel_Complete_Item2" onChange={(e)=>{handlerCompleteItem(e.target.value, "CompleteItem2")}} defaultValue={carouselItems.CompleteItem2 ? carouselItems.CompleteItem2.nombre : "" } disabled={carouselItems["BasicItem2"] !== undefined ? false: true} autoComplete="off"/>
           <input list="dataListItemsCrafteables3" name="Carousel_Complete_Item3" id="Carousel_Complete_Item3" onChange={(e)=>{handlerCompleteItem(e.target.value, "CompleteItem3")}} defaultValue={carouselItems.CompleteItem3 ? carouselItems.CompleteItem3.nombre : "" } disabled={carouselItems["BasicItem3"] !== undefined ? false: true} autoComplete="off"/>
           <datalist id="dataListItemsCrafteables1">
-            {[...CRAFTEABLE_ITEMS].filter(({combine})=>{return combine[0] === carouselBasicItems["BasicItem1"] || combine[1] === carouselBasicItems["BasicItem1"]}).map((item, i )=>{
+            {(version === "pbe" ? [...ITEMS_CRAFTEABLES_PBE] : [...CRAFTEABLE_ITEMS]).filter(({combine})=>{return combine[0] === carouselBasicItems["BasicItem1"] || combine[1] === carouselBasicItems["BasicItem1"]}).map((item, i )=>{
               return <option key={"ListaDeItemsCrafteables"+item.name+i} id={`datalist-${item.apiName}`} value={item.nombre}></option>
             })}
           </datalist>
           <datalist id="dataListItemsCrafteables2">
-            {[...CRAFTEABLE_ITEMS].filter(({combine})=>{return combine[0] === carouselBasicItems["BasicItem2"] || combine[1] === carouselBasicItems["BasicItem2"]}).map((item, i )=>{
+            {(version === "pbe" ? [...ITEMS_CRAFTEABLES_PBE] : [...CRAFTEABLE_ITEMS]).filter(({combine})=>{return combine[0] === carouselBasicItems["BasicItem2"] || combine[1] === carouselBasicItems["BasicItem2"]}).map((item, i )=>{
               return <option key={"ListaDeItemsCrafteables"+item.name+i} id={`datalist-${item.apiName}`} data-value={JSON.stringify(item)} value={item.nombre}></option>
             })}
           </datalist>
           <datalist id="dataListItemsCrafteables3">
-            {[...CRAFTEABLE_ITEMS].filter(({combine})=>{return combine[0] === carouselBasicItems["BasicItem3"] || combine[1] === carouselBasicItems["BasicItem3"]}).map((item, i )=>{
+            {(version === "pbe" ? [...ITEMS_CRAFTEABLES_PBE] : [...CRAFTEABLE_ITEMS]).filter(({combine})=>{return combine[0] === carouselBasicItems["BasicItem3"] || combine[1] === carouselBasicItems["BasicItem3"]}).map((item, i )=>{
               return <option key={"ListaDeItemsCrafteables"+item.name+i} id={`datalist-${item.apiName}`} data-value={JSON.stringify(item)} value={item.nombre}></option>
             })}
           </datalist>

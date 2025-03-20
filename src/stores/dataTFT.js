@@ -469,9 +469,132 @@ export const CRAFTEABLE_ITEMS = [
     apiName:"TFT_Item_TacticiansScepter",
     img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/standard/tacticians_scepter.png",
     sinergia:"TacticiansScepter",
-    combine:[8,9]
+    combine:[9,9]
   },
 ]
+
+const PBE_ITEMS_CRAFTEABLES = [
+  {
+    nombre:"Strategist Emblem",
+    apiName:"TFT14_Item_ControllerEmblemItem",
+    img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/Set14/TFT14_Emblem_Strategist.TFT_Set14.png".toLowerCase(),
+    sinergia:"TFT14_Controller",
+    combine:[0,8]
+  },
+  {
+    nombre:"Marksman Emblem",
+    apiName:"TFT14_Item_MarksmanEmblemItem",
+    img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/set14/tft14_emblem_marksman.tft_set14.png",
+    sinergia:"TFT14_Marksman",
+    combine:[0,9]
+  },
+  {
+    nombre:"Divinicorp Emblem",
+    apiName:"TFT14_Item_DivinicorpEmblemItem",
+    img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/Set14/TFT14_Emblem_Divinicorp.TFT_Set14.png".toLowerCase(),
+    sinergia:"TFT14_Divinicorp",
+    combine:[1,8]
+  },
+  {
+    nombre:"Rapidfire Emblem",
+    apiName:"TFT14_Item_SwiftEmblemItem",
+    img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/Set14/TFT14_Emblem_Rapidfire.TFT_Set14.png".toLowerCase(),
+    sinergia:"TFT14_Swift",
+    combine:[1,9]
+  },
+  {
+    nombre:"Street Demon Emblem",
+    apiName:"TFT14_Item_StreetDemonEmblemItem",
+    img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/Set14/TFT14_Emblem_StreetDemon.TFT_Set14.png".toLowerCase(),
+    sinergia:"TFT14_StreetDemon",
+    combine:[2,8]
+  },
+  {
+    nombre:"Techie Emblem",
+    apiName:"TFT14_Item_TechieEmblemItem",
+    img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/Set14/TFT14_Emblem_Techie.TFT_Set14.png".toLowerCase(),
+    sinergia:"TFT14_Techie",
+    combine:[2,9]
+  },
+  {
+    nombre:"Anima Squad Emblem",
+    apiName:"TFT14_Item_DarkWebEmblemItem",
+    img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/Set14/TFT14_Emblem_AnimaSquad.TFT_Set14.png".toLowerCase(),
+    sinergia:"TFT14_AnimaSquad",
+    combine:[3,8]
+  },
+  {
+    nombre:"Dynamo Emblem",
+    apiName:"TFT14_Item_ThirstyEmblemItem",
+    img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/Set14/TFT14_Emblem_Dynamo.TFT_Set14.png".toLowerCase(),
+    sinergia:"TFT14_Thirsty",
+    combine:[3,9]
+  },
+  {
+    nombre:"BoomBot Emblem",
+    apiName:"TFT14_Item_BallistekEmblemItem",
+    img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/Set14/TFT14_Emblem_BoomBots.TFT_Set14.png".toLowerCase(),
+    sinergia:"TFT14_BallisTek",
+    combine:[4,8]
+  },
+  {
+    nombre:"Bastion Emblem",
+    apiName:"TFT14_Item_ArmorcladEmblemItem",
+    img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/Set14/TFT14_Emblem_Bastion.TFT_Set14.png".toLowerCase(),
+    sinergia:"TFT14_Armorclad",
+    combine:[4,9]
+  },
+  {
+    nombre:"Syndicate Emblem",
+    apiName:"TFT14_Item_MobEmblemItem",
+    img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/Set14/TFT14_Emblem_Syndicate.TFT_Set14.png".toLowerCase(),
+    sinergia:"TFT14_Mob",
+    combine:[5,8]
+  },
+  {
+    nombre:"Slayer Emblem",
+    apiName:"TFT14_Item_StrongEmblemItem",
+    img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/Set14/TFT14_Emblem_Slayer.TFT_Set14.png".toLowerCase(),
+    sinergia:"TFT14_Strong",
+    combine:[5,9]
+  },
+  {
+    nombre:"Golden Ox Emblem",
+    apiName:"TFT14_Item_ImmortalEmblemItem",
+    img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/Set14/TFT14_Emblem_GoldenOx.TFT_Set14.png".toLowerCase(),
+    sinergia:"TFT14_Immortal",
+    combine:[6,8]
+  },
+  {
+    nombre:"Bruiser Emblem",
+    apiName:"TFT14_Item_BruiserEmblemItem",
+    img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/Set14/TFT14_Emblem_Bruiser.TFT_Set14.png".toLowerCase(),
+    sinergia:"TFT14_Bruiser",
+    combine:[6,9]
+  },
+  {
+    nombre:"Exotech Emblem",
+    apiName:"TFT14_Item_EdgeRunnerEmblemItem",
+    img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/Set14/TFT14_Emblem_Exotech.TFT_Set14.png".toLowerCase(),
+    sinergia:"TFT14_EdgeRunner",
+    combine:[7,8]
+  },
+  {
+    nombre:"Executioner Emblem",
+    apiName:"TFT14_Item_CutterEmblemItem",
+    img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/traits/spatula/Set14/TFT14_Emblem_Executioner.TFT_Set14.png".toLowerCase(),
+    sinergia:"TFT14_Cutter",
+    combine:[7,9]
+  }
+]
+
+export const ITEMS_CRAFTEABLES_PBE = CRAFTEABLE_ITEMS.map(item => {
+  const replacement = PBE_ITEMS_CRAFTEABLES.find(pbeItem => 
+    JSON.stringify(pbeItem.combine) === JSON.stringify(item.combine)
+  );
+  return replacement ? replacement : item;
+});
+
 
 export const OTROS_ITEMS = [
   {
