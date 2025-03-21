@@ -221,7 +221,7 @@ export const traitsColors = {
     },
     TFT14_Marksman:{
         2:imgHex[0],
-        4:imgHex[3],
+        4:imgHex[2],
     },
     TFT14_Immortal:{
         2:imgHex[0],

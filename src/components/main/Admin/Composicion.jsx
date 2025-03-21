@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, version} from "react";
 import style from "./css/Composicion.module.css";
 import CampeonOriginal from "./CampeonOriginal";
 import CampeonEarly from "./CampeonEarly";
@@ -7,11 +7,16 @@ import Sinergias from "./Sinergias";
 import AumentosCompos from "./AumentosCompos";
 import PosicionamientoCompos from "./PosicionamientoCompos";
 import CrearCompoTFT from "./CrearCompoTFT";
-import { championsTFT } from "src/json/updates/constantesLatest.js";
+//import { championsTFT as otrosChampions} from "src/json/updates/constantesLatest.js";
+import { teamPlannerCode, dataTFTChampions, versionTFT, loadDataTFTFromAPI, getTeamPlannerCodeAPI } from "@stores/dataTFT";
 import ShowBigCompScreen from "./ShowBigCompScreen"; 
 import RadiantsItems from "./RadiantsItems";
+import { useStore } from "@nanostores/react";
 
 const Composicion = ({id, compo, admin=false, show=true, allwaysOpen=false, onToggle, isOpen})=>{
+  const championsTFT = useStore(dataTFTChampions);
+  const currentVersion = useStore(versionTFT);
+  const codeOfChampions = useStore(teamPlannerCode);
   const [open,setOpen]=useState(allwaysOpen);
   const [editId, setEditId] = useState(null)
   const colorDificulty= {Easy:"green",Medium:"orange",Hard:"red"}
@@ -36,7 +41,6 @@ const Composicion = ({id, compo, admin=false, show=true, allwaysOpen=false, onTo
     setPosicionamiento(compo.originalComp)
     setData(compo.boardInfo[compo.originalComp].data)
     setSinergias(compo.boardInfo[compo.originalComp].sinergias)
-    
   },[compo])
   const earlyComp = Object.keys(compo.boardInfo.early.data).map((key)=>{
     const {dataCampeon, dataItem} = compo?.boardInfo?.early?.data?.[key]
@@ -91,7 +95,6 @@ const Composicion = ({id, compo, admin=false, show=true, allwaysOpen=false, onTo
         result[item.apiName] = sequence[index + 1]; // +1 para empezar después de "empty_slot"
       }
     });
-
     return result;
   }
 
@@ -118,6 +121,23 @@ const Composicion = ({id, compo, admin=false, show=true, allwaysOpen=false, onTo
     championsCode = championsCode.concat("TFTSet13")
     return championsCode;
   }
+
+  function codeForPBE(allChampionsApiName){
+    let sinDuplicados = [...new Set(allChampionsApiName)];
+    let championsCode = "02";
+    let cantidadDeCampeones = sinDuplicados.length;
+    sinDuplicados.forEach(({apiName})=>{
+      championsCode = championsCode.concat(codeOfChampions[apiName])
+    })
+    let espaciosVacios = 10 - cantidadDeCampeones;
+    if (espaciosVacios > 0) {
+        championsCode = championsCode.concat("000".repeat(espaciosVacios));
+    }
+    championsCode = championsCode.concat("TFTSet14")
+    return championsCode
+  }
+
+  
 
   function handleEditID(e,id){
     e.stopPropagation()
@@ -298,8 +318,8 @@ const Composicion = ({id, compo, admin=false, show=true, allwaysOpen=false, onTo
       </div>
       {show && 
       <div className={style.containerTips}>
-        <div className={style.containerTextoInfoPrimarioCode} onClick={(e)=>copyToClipboard(e,generatorCodeBuilder(allChampionsApiName))}>
-          {"COPY TEAM CODE: " + generatorCodeBuilder(allChampionsApiName) + " 📋"}
+        <div className={style.containerTextoInfoPrimarioCode} onClick={(e)=>copyToClipboard(e,(currentVersion === "pbe" ? codeForPBE(allChampionsApiName) : generatorCodeBuilder(allChampionsApiName)))}>
+          {"COPY TEAM CODE: " + (currentVersion === "pbe" ? codeForPBE(allChampionsApiName) : generatorCodeBuilder(allChampionsApiName)) + " 📋"}
         </div>
       </div>
       }
@@ -328,6 +348,7 @@ const Composicion = ({id, compo, admin=false, show=true, allwaysOpen=false, onTo
       editAugmentTierList={compo.augmentTierList}
       editCampeonItemTierList={compo.champItem}
       editCampeonTraitTierList={compo.champTrait}
+      editVersion={compo.version}
     />}
     {
       showBigComp &&

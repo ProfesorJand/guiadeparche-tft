@@ -1,5 +1,6 @@
 import {atom, deepMap, task} from "nanostores";
 import backupMeta from "src/json/backupMeta.json" assert { type: 'json' };
+import {versionTFT} from "@stores/dataTFT";
 
 export const defaultAction = atom("crear")
 
@@ -9,11 +10,12 @@ export const updateAction = (action)=>{
 
 const hierarchy = ["S","A","B","C","D","MEME"];
 const hierarchyShadowCategory = ["Fast 8","3 Stars","Specifics Augments"];
+export const isLoadingDataTFTFromApi = atom(true)
 
+export const loadCompsMeta = async () => {
 
-export const loadCompsMeta = async (currentVersion) => {
   //const urlMeta = "https://guiadeparche.com/tftdata/Set12/composMeta.json";
-  const urlMetaBackend = currentVersion === "pbe" ?
+  const urlMetaBackend = versionTFT.get() === "pbe" ?
   "https://guiadeparche.com/tftdata/Set12/composMetaPBE.json"
   :
   "https://guiadeparche.com/tftdata/Set12/composMeta.json";
@@ -28,6 +30,7 @@ export const loadCompsMeta = async (currentVersion) => {
     // Actualiza el estado global
     initialStateMetaComps.set(sortableArray);
     MetaComps.set(sortableArray);
+
     return sortableArray; // También retorna los datos
   } catch (err) {
     console.error(err);
@@ -44,7 +47,6 @@ export const loadCompsMeta = async (currentVersion) => {
     // Actualiza el estado global en caso de error
     initialStateMetaComps.set(sortableArray);
     MetaComps.set(sortableArray);
-
     return sortableArray;
   }
 };

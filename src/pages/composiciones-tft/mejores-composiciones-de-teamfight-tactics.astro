@@ -6,14 +6,13 @@ import Layout from '../../layouts/Layout.astro';
 import MetaComps from "src/components/main/Admin/MetaComps.jsx"
 import Main from '@components/main/Main.astro';
 
-import Twitch from 'src/components/embed/Twitch.jsx';
+//import Twitch from 'src/components/embed/Twitch.jsx';
 //import ContainerMetaPBE from '@components/new-meta-comp/ContainerMetaPBE.astro';
 import {crearJSONSchema} from "src/json/schema/crearJSONSchema";
 // import Kick from "src/components/embed/Kick.astro";
 import TierListMetaComps from '@components/TFT/TierListMetaComps.jsx';
 //import { MetaCompVersion } from '@stores/menuFiltradoAdmin';
-import SelectVersion  from "@components/versionTFT/SelectVersion.jsx"
-// import { loadCompsMeta } from 'src/stores/menuFiltradoAdmin';
+import SelectVersion  from "@components/versionTFT/SelectVersion.jsx";
 const title = "▷ Best TFT Comps & Builds for Set 13 Arcane";
 // Example: Construct a canonical URL using your production domain
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -66,7 +65,7 @@ const admin = typeof window !== "undefined" ? localStorage.getItem("superAdmin")
       <!-- <ContainerMetaPBE version={latestVersion} set={setPBE}/> -->
       <!-- <ContainerMeta version={latestVersion} set={set} client:load/> -->
       <div class={"containerMeta"}>
-        <MetaComps showHide={false} admin={admin} client:only="react"/>
+        <MetaComps showHide={false} admin={admin} client:load/>
       </div>
     </div>
   </Main>

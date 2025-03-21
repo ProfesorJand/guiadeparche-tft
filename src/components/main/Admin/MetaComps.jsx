@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useStore } from "@nanostores/react";
 import Composicion from "./Composicion.jsx";
 import style from "./css/EditarCompoTFT.module.css";
-import { MetaComps as compos, loadCompsMeta } from "src/stores/menuFiltradoAdmin.js";
+import { MetaComps as compos, loadCompsMeta, isLoadingDataTFTFromApi } from "src/stores/menuFiltradoAdmin.js";
 import FantasmaComposiciones from "./FantasmaComposiciones.jsx";
 import { scrollToComposicion, setOpenCompo, openCompoId } from "src/stores/openCompoById.js";
 import { versionTFT } from "src/stores/dataTFT.js";
@@ -10,11 +10,11 @@ import { versionTFT } from "src/stores/dataTFT.js";
 
 const MetaComps = ({ showHide,admin }) => {
   const composMeta = useStore(compos);
-  const currentVersion = useStore(versionTFT)
+  const currentVersion = useStore(versionTFT);
+  const [isLoading, setIsLoading] = useState(true)
   const [allFast8, setAllFast8] = useState([]);
   const [all3Stars, setAll3Stars] = useState([]);
   const [allAugmentsHero, setAllAugmentsHero] = useState([]);
-  const [isLoading, setIsLoading] = useState(true); // Nuevo estado de carga
   const openCompId = useStore(openCompoId)
   const refs = useRef({});
 
@@ -29,14 +29,18 @@ const MetaComps = ({ showHide,admin }) => {
     //scrollToComposicion(id);
     setOpenCompo(id);
   };
+  useEffect(()=>{
+    (async function(){
+      if (versionTFT.get()) {
+         await loadCompsMeta();
+      }
+    })();
+  },[currentVersion])
 
   useEffect(()=>{
     scrollToComposicion();
   },[openCompoId])
 
-  useEffect(()=>{
-    loadCompsMeta(currentVersion)
-  },[currentVersion])
 
   
 
@@ -58,7 +62,7 @@ const MetaComps = ({ showHide,admin }) => {
   // }, []);
 
   useEffect(() => {
-    setIsLoading(true);
+    isLoadingDataTFTFromApi.set(true);
     if (composMeta.length > 0) {
       const allFast8 = [];
       const all3Stars = [];
@@ -87,8 +91,9 @@ const MetaComps = ({ showHide,admin }) => {
       setAllFast8(allFast8);
       setAll3Stars(all3Stars);
       setAllAugmentsHero(allAugmentsHero);
+      setIsLoading(false)
+      isLoadingDataTFTFromApi.set(false);
     }
-    setIsLoading(false); // Actualiza el estado de carga
   }, [composMeta]);
 
   // Mostrar los componentes "fantasma" si está cargando

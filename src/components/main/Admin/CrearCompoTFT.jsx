@@ -20,7 +20,7 @@ import { useStore } from "@nanostores/react"
 
 const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,edittitulo,editshadowCategory,editinfographicCategory,editaumentos,editgameplay,edittips,editboardInfo,editpictureSave,editcarouselItems,editradiantItem,editspatulaItem1,editspatulaItem2,editoriginalComp, editCampeonTierList, editAugmentTierList, editCampeonItemTierList =[{},{},{}], editCampeonTraitTierList = [{}], editVersion=null }) =>{
     const currentVersion= useStore(versionTFT);
-    const [version, setVersion] = useState(currentVersion)
+    const [version, setVersion] = useState(versionTFT.get())
     const [allItemsInfo, setAllItemsInfo] = useState(null);
     const [allItemsApiNames, setAllItemsApiNames] = useState(null);
     const [allEmblemsItemsApiNames, setAllEmblemsItemsApiName] = useState(null)

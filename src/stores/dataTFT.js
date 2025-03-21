@@ -1,17 +1,23 @@
 import {deepMap, atom, task} from "nanostores";
+
+
 const initialStateDataTFT = {};
 const initialStateDataTFTItems = [];
 const initialStateDataTFTSetData = [];
 const initialStateDataTFTSets = [];
-const initialStateVersion = "latest"
+const initialStateDataTFTChampions = [];
+const initialStateVersion = "pbe";
+const initialStateTeamPlannerCode = []
 
 export const dataTFT = deepMap(initialStateDataTFT)
 export const dataTFTItems = atom(initialStateDataTFTItems);
 export const dataTFTSetData = atom(initialStateDataTFTSetData);
+export const dataTFTChampions = atom(initialStateDataTFTChampions)
 export const versionTFT = atom(initialStateVersion)
+export const teamPlannerCode = atom(initialStateTeamPlannerCode)
 
 // version: latest / pbe ---- idioma: en / es --- pais: mx /es /gb /us
-export const loadDataTFTFromAPI = ({version=versionTFT, idioma="es", pais="ar"}) =>{
+export const loadDataTFTFromAPI = ({version=versionTFT.get(), idioma="es", pais="ar"}) =>{
   task(async()=>{
     const urlDragon = `https://raw.communitydragon.org/${version}/cdragon/tft/${idioma}_${pais}.json`
     const response = await fetch(urlDragon);
@@ -24,12 +30,33 @@ export const updateDataTFT = (data)=>{
   const {items, setData, sets} = data;
   dataTFT.set(data);
   dataTFTItems.set(items);
-  dataTFTSetData.set(setData)
+  dataTFTSetData.set(setData);
+  dataTFTChampions.set(sets[versionTFT.get() === "pbe" ? "14": "13"].champions)
 };
 
 export const swapVersionTFT = (data) =>{
   versionTFT.set(data)
 }
+
+export const getTeamPlannerCodeAPI = async () => {
+  const url = `https://raw.communitydragon.org/${versionTFT.get()}/plugins/rcp-be-lol-game-data/global/default/v1/tftchampions-teamplanner.json`;
+  const response = await fetch(url);
+  const data = await response.json();
+  
+  const formattedData = Object.values(data?.[versionTFT.get() === "pbe" ? "TFTSet14" : "TFTSet13"] || [])
+    .reduce((acc, { character_id, team_planner_code }) => {
+      acc[character_id] = team_planner_code.toString(16);
+      return acc;
+    }, {});
+
+  teamPlannerCode.set(formattedData);
+};
+
+versionTFT.subscribe(() => {
+  getTeamPlannerCodeAPI(); // Llamar automáticamente cuando cambia la versión
+});
+
+loadDataTFTFromAPI({})
 
 
 export const BASIC_ITEMS = [

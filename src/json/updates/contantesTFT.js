@@ -8,7 +8,7 @@ export const SET_PBE = (Number(SET_LATEST) + 1).toString();
 export async function fetchingDataTFT({version=VERSION_LATEST, idioma=IDIOMA_DEFAULT, pais=PAIS_DEFAULT}){
   try {
       const urlDragon = `https://raw.communitydragon.org/${version}/cdragon/tft/${idioma}_${pais}.json`
-      const fetching = await fetch(urlDragon, {cache:"reload"});
+      const fetching = await fetch(urlDragon);
       const response = await fetching.json();
       return response //items, setData, sets
   } catch (error) {
