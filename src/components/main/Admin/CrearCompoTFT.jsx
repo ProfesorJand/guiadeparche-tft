@@ -487,7 +487,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           champTrait,
           version
         }
-        if(tier && posicion && dificultad && titulo && shadowCategory && infographicCategory && aumentos.length && Object.keys(carouselItems).length && Object.keys(boardInfo).length && Object.keys(campeonTierList).length && Object.keys(boardInfo?.[originalComp]?.data || {}).length){
+        if(tier && posicion && dificultad && titulo && shadowCategory && infographicCategory && aumentos.length && Object.keys(carouselItems).length && Object.keys(boardInfo?.early?.data || {}).length && Object.keys(boardInfo).length && Object.keys(campeonTierList).length && Object.keys(boardInfo?.[originalComp]?.data || {}).length){
           const token = import.meta.env.PUBLIC_TOKEN_META
           fetch('https://guiadeparche.com/tftdata/Set12/crearCompoMeta.php', {
             method: 'POST',
@@ -534,6 +534,10 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           if(!Object.keys(campeonTierList).length){
             mensaje += "\nSelect Champion Tier List"
           }
+          if(!Object.keys(boardInfo?.early?.data || {}).length){
+            mensaje += "\nEarly Game is necesary"
+          }
+          
           if(!Object.keys(boardInfo?.[originalComp]?.data || {}).length){
             mensaje += `\nTienes en Original Comp "${originalComp}" selecionado, pero no tienes campeones en ese Posicionamiento`
           }
