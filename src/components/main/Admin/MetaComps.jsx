@@ -120,7 +120,7 @@ const MetaComps = ({ showHide,admin }) => {
                 key={`fast8-${i}`}
                 className={[
                   style.containerMetaTier,
-                  compo?.isHide && admin ? style.isHideForAdmin : compo?.isHide ? style.isHide : "",
+                  compo?.isHide && admin ? "" : compo?.isHide ? style.isHide : ""
                 ].join(" ")}
               >
                 <Composicion
