@@ -18,7 +18,7 @@ import { versionTFT } from "src/stores/dataTFT.js"
 import { useStore } from "@nanostores/react"
 
 
-const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,edittitulo,editshadowCategory,editinfographicCategory,editaumentos,editgameplay,edittips,editboardInfo,editpictureSave,editcarouselItems,editradiantItem,editspatulaItem1,editspatulaItem2,editoriginalComp, editCampeonTierList, editAugmentTierList, editCampeonItemTierList =[{},{},{}], editCampeonTraitTierList = [{}], editVersion=null }) =>{
+const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,edittitulo,editshadowCategory,editinfographicCategory,editaumentos,editgameplay,edittips,editisHide,editboardInfo,editpictureSave,editcarouselItems,editradiantItem,editspatulaItem1,editspatulaItem2,editoriginalComp, editCampeonTierList, editAugmentTierList, editCampeonItemTierList =[{},{},{}], editCampeonTraitTierList = [{}], editVersion=null }) =>{
     const currentVersion= useStore(versionTFT);
     const [version, setVersion] = useState(versionTFT.get())
     const [allItemsInfo, setAllItemsInfo] = useState(null);
@@ -211,6 +211,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         setChampItem(editCampeonItemTierList)
         setChampTrait(editCampeonTraitTierList)
         setVersion(editVersion)
+        setIsHide(editisHide)
       }
     },[edit])
 
@@ -657,7 +658,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
 
       <label>
         <span>Hide Comp:</span>
-        <select onChange={(e)=>{setIsHide(e.target.value)}} defaultValue={isHide.toString()}>
+        <select onChange={(e)=>{setIsHide(e.target.value)}} defaultValue={editisHide ? editisHide : isHide.toString()}>
           <option value={false}>FALSE</option>
           <option value={true}>TRUE</option>
         </select>
@@ -669,7 +670,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           <span>Tier List Data:</span>
           <label htmlFor="title">
             <span>Champion:</span>
-            <select onChange={(e)=>{setCampeonTierList(JSON.parse(e.target.options[e.target.selectedIndex].dataset.value))}} defaultValue={editCampeonTierList?.name || campeonTierList?.name}>
+            <select onChange={(e)=>{setCampeonTierList(JSON.parse(e.target.options[e.target.selectedIndex].dataset.value))}} value={editCampeonTierList?.name || campeonTierList?.name}>
               {
                 allChampions.map((campeon,index)=>{
                   return (

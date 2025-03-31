@@ -1,8 +1,10 @@
-import React from "react";
-import style from "./css/AumentosCompos.module.css"
-
+import React, { version } from "react";
+import style from "./css/AumentosCompos.module.css";
+import { versionTFT } from "@stores/dataTFT";
+import { useStore } from "@nanostores/react";
 const AumentosCompos =({aumentos})=>{
-  const url = "https://raw.communitydragon.org/latest/game/";
+  const currentVersion = useStore(versionTFT)
+  const url = `https://raw.communitydragon.org/${currentVersion}/game/`;
   return (
     <div className={style.containerAumentos}>
       {aumentos.map((aumento, index)=>{

@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import style from "./css/CampeonOriginal.module.css";
 import TooltipItem from "@components/tooltips/items";
+import { versionTFT } from "@stores/dataTFT";
+import { useStore } from "@nanostores/react";
 
 const CampeonOriginal = ({dataCampeon, dataItem, estrellas, show}) =>{
   const dataCampeonParseado = JSON.parse(dataCampeon)
   const itemsCampeon = dataItem.map(({item})=>JSON.parse(item))
   const [tooltipData, setTooltipData] = useState(null)
+  const currentVersion= useStore(versionTFT);
   return (
     <div className={style.containerCampeon} style={{order:dataCampeonParseado.coste}}>
       <div className={[style.containerCampeonImg, estrellas === 3 ? style.estrellas3 : estrellas === 4 ? style.estrellas4 : ""].join(" ")}>
@@ -34,7 +37,7 @@ const CampeonOriginal = ({dataCampeon, dataItem, estrellas, show}) =>{
               nombre={nombre}
               isVisible={tooltipData === index}
             />  
-            <img className={style.imgItem} src={img ? img : "https://raw.communitydragon.org/latest/game/"+icon.toLowerCase().replace(".tex",".png")} alt={nombre} loading="lazy"></img>
+            <img className={style.imgItem} src={img ? img : `https://raw.communitydragon.org/${currentVersion}/game/`+icon.toLowerCase().replace(".tex",".png")} alt={nombre} loading="lazy"></img>
           </div>
         )
       })}
