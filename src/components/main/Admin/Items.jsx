@@ -29,15 +29,17 @@ export const Items = ({version})=>{
   const [allEmblemsItemsApiNames, setAllEmblemsItemsApiName] = useState(null);
   const [allSupportsItems, setAllSupportsItems] = useState(null)
   const [allChemBaronItems, setAllChemBaronItems] = useState(null)
-
+  const [allChemtechItems, setAllChemtechItems] = useState(null)
+  const [allGarenModItems, setAllGarenModItems] = useState(null)
   useEffect(()=>{
     const getAllItems = async ()=>{
-      setAllItemsApiNames((await getDataTFTBySet({})).setData); //apiName de todos los items del set
-      setAllItemsInfo((await getDataTFTBySet({})).setInfo)
-      setAllEmblemsItemsApiName((await getDataTFTBySet({})).setData.items.filter((apiName)=>{
+      const fetchingDataTFTBySet = await getDataTFTBySet({version,set:version==="pbe" ? "14":"13"})
+      setAllItemsApiNames(fetchingDataTFTBySet.setData); //apiName de todos los items del set
+      setAllItemsInfo(fetchingDataTFTBySet.setInfo)
+      setAllEmblemsItemsApiName(fetchingDataTFTBySet.setData.items.filter((apiName)=>{
         return apiName.includes("EmblemItem")
       }))
-      setAllSupportsItems((await getDataTFTBySet({})).setInfo.filter(({apiName})=>{
+      setAllSupportsItems(fetchingDataTFTBySet.setInfo.filter(({apiName})=>{
         const apiNameOfSupportsItems = [
           "TFT_Item_BansheesVeil",
           "TFT_Item_AegisOfTheLegion",
@@ -59,7 +61,7 @@ export const Items = ({version})=>{
         ]
         return apiNameOfSupportsItems.some((item)=> item.includes(apiName))
       }))
-      setAllChemBaronItems((await getDataTFTBySet({})).setInfo.filter(({apiName})=>{
+      setAllChemBaronItems(fetchingDataTFTBySet.setInfo.filter(({apiName})=>{
         const apiNameOfChemBaronItems = [
           "TFT13_Crime_Bronze_ChemGrips",
           "TFT13_Crime_Bronze_MageGuard",
@@ -91,6 +93,28 @@ export const Items = ({version})=>{
         ]
         return apiNameOfChemBaronItems.some((item) => item === apiName);
       }))  
+      setAllChemtechItems(fetchingDataTFTBySet.setInfo.filter(({apiName})=>{
+        const apiNameOfChemtechItems = [
+          "TFT14_JaxCyberneticItem",
+          "TFT14_NaafiriCyberneticItem",
+          "TFT14_JhinCyberneticItem",
+          "TFT14_MordekaiserCyberneticItem",
+          "TFT14_VarusCyberneticItem",
+          "TFT14_SejuaniCyberneticItem",
+          "TFT14_ZeriCyberneticItem",
+          "TFT14_JaxCyberneticItem_Radiant",
+          "TFT14_NaafiriCyberneticItem_Radiant",
+          "TFT14_JhinCyberneticItem_Radiant",
+          "TFT14_MordekaiserCyberneticItem_Radiant",
+          "TFT14_VarusCyberneticItem_Radiant",
+          "TFT14_SejuaniCyberneticItem_Radiant",
+          "TFT14_ZeriCyberneticItem_Radiant",
+        ]
+        return apiNameOfChemtechItems.some((item) => item === apiName);
+      })) 
+      setAllGarenModItems(fetchingDataTFTBySet.setInfo.filter(({apiName})=>{
+        return apiName.includes("NetGodItem");
+      })) 
     }
     getAllItems();
   },[])
@@ -107,6 +131,10 @@ export const Items = ({version})=>{
       setTooltip(null)
     }
   },[itemOver])
+
+  useEffect(()=>{
+    console.log({itemsCrafteables})
+  },[itemsCrafteables])
   
   function handlePestana(number){
     setPestana(number)
@@ -907,6 +935,7 @@ export const Items = ({version})=>{
         }
       })
     })
+    console.log({resultado})
     setItemsCrafteables(resultado)
   },[version])
 
@@ -925,10 +954,10 @@ if(allItemsInfo){
         <button onClick={(e)=>{e.preventDefault();handlePestana(0)}} className={style.btn}>Craftable</button>
         <button onClick={(e)=>{e.preventDefault();handlePestana(1)}} className={style.btn}>Radiants</button>
         <button onClick={(e)=>{e.preventDefault();handlePestana(2)}} className={style.btn}>Emblems</button>
-        <button onClick={(e)=>{e.preventDefault();handlePestana(3)}} className={style.btn}>Faerie</button>
+        <button onClick={(e)=>{e.preventDefault();handlePestana(3)}} className={style.btn}>{version === "pbe"? "Chemtech" : "Faerie"}</button>
         <button onClick={(e)=>{e.preventDefault();handlePestana(4)}} className={style.btn}>Artefacts</button>
         <button onClick={(e)=>{e.preventDefault();handlePestana(5)}} className={style.btn}>Supports</button>
-        <button onClick={(e)=>{e.preventDefault();handlePestana(6)}} className={style.btn}>ChemBron</button>
+        <button onClick={(e)=>{e.preventDefault();handlePestana(6)}} className={style.btn}>{version === "pbe"? "Garen Mod" : "ChemBaron"}</button>
     
         </div>
   
@@ -980,7 +1009,7 @@ if(allItemsInfo){
                 return (
                   <div className={style.itemsDropRadiants} key={index2+"-"+index}>
                     <img
-                      src={"https://raw.communitydragon.org/latest/game/"+resultado.icon.replace(".tex",".png").toLowerCase()}
+                      src={`https://raw.communitydragon.org/${version}/game/`+resultado.icon.replace(".tex",".png").toLowerCase()}
                       alt={`Basic Item TFT ${resultado.name}`}
                       className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}}
                       onClick={()=>{setItemOver(resultado.apiName)}}
@@ -1003,14 +1032,33 @@ if(allItemsInfo){
                 const resultado = allItemsInfo.find(({apiName})=> apiName === dataItem)
                 return (
                   <div className={style.itemsDropOtros} key={index}>
-                    <img  src={"https://raw.communitydragon.org/latest/game/"+resultado.icon.replace(".tex",".png").toLowerCase()} alt={`Basic Item TFT ${resultado.name}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} onClick={()=>{setItemOver(resultado.apiName)}} data-item={JSON.stringify(resultado)} data-from="itemList" draggable="true"></img>
+                    <img  src={`https://raw.communitydragon.org/${version}/game/`+resultado.icon.replace(".tex",".png").toLowerCase()} alt={`Basic Item TFT ${resultado.name}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} onClick={()=>{setItemOver(resultado.apiName)}} data-item={JSON.stringify(resultado)} data-from="itemList" draggable="true"></img>
                   </div>
                 )
               })
             }
           </div>
           <div className={style.containerItemsHorizontal}>
-            {pestana === 3 && 
+            {pestana === 3 && (version === "pbe" ? 
+              allChemtechItems.sort(function(a, b){
+                if(a.apiName < b.apiName) { return -1; }
+                if(a.apiName > b.apiName) { return 1; }
+                return 0;
+              }).map((dataItem,index)=>{
+                return ( 
+                <div className={style.itemsDropOtros} key={`otrosItems`+index}>
+                  <img 
+                  src={dataItem?.img || `https://raw.communitydragon.org/${version}/game/`+dataItem.icon.replace(".tex",".png").toLowerCase()}
+                  alt={`Chem Baron Item TFT ${dataItem.name}`}
+                  className={style.imgItems}
+                  onDragStart={(e)=>{handleDragStart(e)}}
+                  onClick={()=>{setItemOver(dataItem.apiName)}}
+                  data-item={JSON.stringify(dataItem)} //allItemsInfo.find(({apiName})=>apiName === dataItem.apiName)
+                  data-from="itemList"
+                  draggable="true"></img>
+                </div>)
+              })
+            :
               OTROS_ITEMS.map((dataItem,index)=>{
                 return ( 
                 <div className={style.itemsDropOtros} key={`otrosItems`+index}>
@@ -1024,7 +1072,7 @@ if(allItemsInfo){
                     data-from="itemList"
                     draggable="true"></img>
                 </div>)
-              })
+              }))
             }
           </div>
   
@@ -1067,7 +1115,26 @@ if(allItemsInfo){
             }
           </div>
           <div className={style.containerItemsHorizontalOtros}>
-            {pestana === 6 && 
+            {pestana === 6 && (version === "pbe" ? 
+              allGarenModItems.sort(function(a, b){
+                if(a.apiName < b.apiName) { return -1; }
+                if(a.apiName > b.apiName) { return 1; }
+                return 0;
+              }).map((dataItem,index)=>{
+                return ( 
+                <div className={style.itemsDropOtros} key={`otrosItems`+index}>
+                  <img 
+                  src={dataItem?.img || `https://raw.communitydragon.org/${version}/game/`+dataItem.icon.replace(".tex",".png").toLowerCase()}
+                  alt={`Chem Baron Item TFT ${dataItem.name}`}
+                  className={style.imgItems}
+                  onDragStart={(e)=>{handleDragStart(e)}}
+                  onClick={()=>{setItemOver(dataItem.apiName)}}
+                  data-item={JSON.stringify(dataItem)} //allItemsInfo.find(({apiName})=>apiName === dataItem.apiName)
+                  data-from="itemList"
+                  draggable="true"></img>
+                </div>)
+              })
+            :
               allChemBaronItems.sort(function(a, b){
                 if(a.apiName < b.apiName) { return -1; }
                 if(a.apiName > b.apiName) { return 1; }
@@ -1085,7 +1152,7 @@ if(allItemsInfo){
                   data-from="itemList"
                   draggable="true"></img>
                 </div>)
-              })
+              }))
             }
           </div>
           <div className={style.tooltip}>

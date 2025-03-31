@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import style from "./css/Builder.module.css";
 import ContextMenuBuilder from "./ContextMenuBuilder.jsx";
 import { traitsColors, imgHex } from "../../../functions/campeonestft.js";
+import { versionTFT } from "src/stores/dataTFT.js";
+import { useStore } from "@nanostores/react"
+
 const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
+  const currentVersion= useStore(versionTFT);
   const [hexId, setHexId] = useState(null);
   const urlHex = "/hexagonos/";
   const championsColor = [
@@ -138,8 +142,9 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
                 const containerItem = document.createElement("div");
                 containerItem.className = style.containerItem;
                 const imgItem = document.createElement("img");
+                console.log({dataItem})
                 imgItem.className = style.imgItem;
-                imgItem.src = dataItem.img ? dataItem.img : "https://raw.communitydragon.org/latest/game/"+dataItem.icon.toLowerCase().replace(".tex",".png"); // arreglar a futuro
+                imgItem.src = dataItem.img ? dataItem.img :  `https://raw.communitydragon.org/${currentVersion}/game/`+dataItem.icon.toLowerCase().replace(".tex",".png"); // arreglar a futuro
                 imgItem.alt = dataItem.nombre ? dataItem.nombre : dataItem.name; // arreglar a futuro
                 imgItem.setAttribute("draggable", true);
                 imgItem.dataset.item = JSON.stringify(dataItem);
@@ -386,8 +391,9 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
     const containerItem = document.createElement("div");
     containerItem.className = style.containerItem;
     const imgItem = document.createElement("img");
+    console.log({dataItem})
     imgItem.className = style.imgItem;
-    imgItem.src = dataItem.img ? dataItem.img : "https://raw.communitydragon.org/latest/game/"+dataItem.icon.toLowerCase().replace(".tex",".png"); // arreglar a futuro
+    imgItem.src = dataItem.img ? dataItem.img : `https://raw.communitydragon.org/${currentVersion}/game/`+dataItem.icon.toLowerCase().replace(".tex",".png"); // arreglar a futuro
     imgItem.alt = dataItem.nombre;
     imgItem.setAttribute("draggable", true);
     imgItem.dataset.item = JSON.stringify(dataItem);
