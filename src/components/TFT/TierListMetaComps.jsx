@@ -31,7 +31,7 @@ const TierListMetaComps = () => {
       {composMeta.length > 0 ? (
         composMeta.map((comps, index) => {
           // Filtrar los campeones donde isHide es false
-          const visibleComps = comps.filter((comp) => !comp.isHide);
+          const visibleComps = comps.filter((comp) => comp.isHide !== "true");
 
           // Dividir visibleComps en grupos de numberOfChampsInTierList
           const chunkedComps = [];
