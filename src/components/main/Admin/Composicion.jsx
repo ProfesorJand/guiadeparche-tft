@@ -199,7 +199,7 @@ const Composicion = ({id, compo, admin=false, show=true, allwaysOpen=false, onTo
   return (
     <div id={id} className={[show ? style.containerInfoGlobal: style.containerInfoGlobalOculto].join(" ")}>
 
-    <div className={[show ? style.containerInfoPrincipal : style.containerInfoPrincipalOculto , (open || isOpen) ? style.downBorder: "", compo?.isHide && admin ? style.isHideForAdmin : compo?.isHide ? style.isHide : "" ].join(" ")} onClick={()=>{onToggle()}}>
+    <div className={[show ? style.containerInfoPrincipal : style.containerInfoPrincipalOculto , (open || isOpen) ? style.downBorder: "", compo?.isHide && admin ? "" : compo?.isHide ? style.isHide : "" ].join(" ")} onClick={()=>{onToggle()}}>
     <div className={show ? style.containerTextoInfoPrimario : ""}>
       <div className={style.containerTextoInfoPrimarioTier}>
         {show && 
