@@ -120,7 +120,7 @@ const MetaComps = ({ showHide,admin }) => {
                 key={`fast8-${i}`}
                 className={[
                   style.containerMetaTier,
-                  compo?.isHide && admin ? "" : compo?.isHide ? style.isHide : ""
+                  compo?.isHide === "true" && admin ? "" : compo?.isHide === "true" ? style.isHide : ""
                 ].join(" ")}
               >
                 <Composicion
@@ -147,7 +147,7 @@ const MetaComps = ({ showHide,admin }) => {
                 key={`stars3-${i}`}
                 className={[
                   style.containerMetaTier,
-                  compo?.isHide && admin ? "" : compo?.isHide ? style.isHide : "",
+                  compo?.isHide === "true" && admin ? "" : compo?.isHide === "true" ? style.isHide : "",
                 ].join(" ")}
               >
                 <Composicion
@@ -174,7 +174,7 @@ const MetaComps = ({ showHide,admin }) => {
                 key={`augments-${i}`}
                 className={[
                   style.containerMetaTier,
-                   compo?.isHide && admin ? "" : compo?.isHide ? style.isHide : ""
+                   compo?.isHide === "true" && admin ? "" : compo?.isHide === "true" ? style.isHide : ""
                 ].join(" ")}
                 
               >
