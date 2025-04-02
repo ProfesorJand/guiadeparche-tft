@@ -40,7 +40,7 @@ const ShowBigCompScreen = ({id, setShowBigComp}) => {
               </div>
               <div className={style.titulos}>
                 <div className={style.tituloPrincipal}>
-                  {`SET 13 META COMP [${version}]`}
+                  {`SET 14 META COMP [14.1]`}
                 </div>
                 <div className={style.titutloSecundario}>
                 <span className={[style.titulo, style.tituloComp].join(" ")}>{CompToShow.titulo}</span>
@@ -63,8 +63,11 @@ const ShowBigCompScreen = ({id, setShowBigComp}) => {
                   </span>
               </div>
               <div className={style.divSetTFTLogo}>
-                <img className={style.imgSetTFTLogo} src="/tft/sets/13/logo.png" alt="TFT LOGO"></img>
+                <img className={style.imgSetTFTLogo} src="/tft/sets/14/logo.png" alt="TFT LOGO"></img>
               </div>
+              {/* <div className={style.divWebMovilnetLogo}>
+                <img className={style.imgMovilnetLogo} src="/tft/assets/logoMovilnet-eBlanco.png" alt="logo Guiadeparche"></img>
+              </div> */}
             </div>
           </div>
         </div>

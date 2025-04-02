@@ -20,7 +20,7 @@
    justify-content: center; /* Opcional: Centrar contenido */
    transform: rotate(90deg);
    flex-direction: column;
-   background-image: url("/tft/assets/backgroundWrapper.png");
+   background-image: url("/tft/assets/backgroundWrapper.avif");
    background-repeat: no-repeat;
    box-sizing: border-box;
    background-position-x: right;
@@ -133,12 +133,32 @@
   display: flex;
   position: relative;
   height: 50px;
+  justify-content: center;
+  flex:1
 }
 
 .divWebLogo{
   display: flex;
   position: relative;
   height: 50px;
+  align-items: center;
+  flex:1
+}
+
+.divWebMovilnetLogo{
+  display: flex;
+  position: relative;
+  height: 50px;
+  width: 50%;
+  align-items: center;  
+  justify-content: center;
+  flex:1
+}
+
+.imgMovilnetLogo{
+  display: flex;
+  position: relative;
+  height: 100%;
   align-items: center;
 }
 
@@ -147,7 +167,10 @@
   position: relative;
   height: 50px;
   align-items: center;
+  justify-content: center;
+  flex:1
 }
+
 
 .imgSetTFTLogo{
   display: flex;
