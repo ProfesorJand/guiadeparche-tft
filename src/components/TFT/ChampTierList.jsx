@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 import { useStore } from "@nanostores/react";
 import style from "./css/ChampTierList.module.css";
+import estrellas3 from "../../assets/3-estrellas.webp";
 import { openCompoId, setOpenCompo, scrollToComposicion } from "src/stores/openCompoById";
-const ChampTierList = ({id,isSample,campeonTierList, augmentTierList, champItem, champTrait,version})=>{
+const ChampTierList = ({id,isSample,campeonTierList, augmentTierList, champItem, champTrait,version, champ3Stars})=>{
   const championsColor = [
     "var(--color-hex-cost-default)",
     "var(--color-hex-cost-1)",
@@ -43,6 +44,12 @@ const ChampTierList = ({id,isSample,campeonTierList, augmentTierList, champItem,
               )
             }
           })}
+        </div>
+      }
+      {
+        champ3Stars==="true" && 
+        <div className={[style.container3estrellas].join(" ")}> 
+          <img className={style.img3estrellas} src={estrellas3.src} alt="3 estrellas"></img>
         </div>
       }
       {

@@ -46,6 +46,31 @@
   
 }
 
+.container3estrellas{
+  display: flex;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0%;
+  overflow: hidden;
+}
+
+.img3estrellas{
+  width: 100%;
+}
+
+/* .estrellas3::after{
+  width: 100%;
+  content: "★★★";
+  position: absolute;
+  top:0%;
+  height: 100%;
+  pointer-events: none;
+  text-align: center;
+  color: yellow;
+  text-shadow: var(--text-shadow);
+} */
+
 .imgCampeonBuilder{
   position: absolute;
   top: var(--hex-border-little);
@@ -61,9 +86,9 @@
   display: flex;
   position: absolute;
   /* width: var(--icon-size); */
-  width: 40%;
-  top:0;
-  left:0%;
+  width: 30%;
+  top:30%;
+  right:0%;
   /* border-width: 1px;
   border-style: solid; */
   border-radius: 50%;
@@ -99,7 +124,7 @@
   display: flex;
   position: absolute;
   /* width: var(--icon-size); */
-  width: 40%;
+  width: 30%;
   top:0;
   right:0%;
   /* border-width:calc(var(--hex-border)-0.1rem);

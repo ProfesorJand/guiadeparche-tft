@@ -348,6 +348,7 @@ const Composicion = ({id, compo, admin=false, show=true, allwaysOpen=false, onTo
       editAugmentTierList={compo.augmentTierList}
       editCampeonItemTierList={compo.champItem}
       editCampeonTraitTierList={compo.champTrait}
+      editChamp3Stars={compo?.champ3Stars}
       editVersion={compo.version}
     />}
     {

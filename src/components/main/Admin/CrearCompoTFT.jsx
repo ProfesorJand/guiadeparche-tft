@@ -18,7 +18,7 @@ import { versionTFT } from "src/stores/dataTFT.js"
 import { useStore } from "@nanostores/react"
 
 
-const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,edittitulo,editshadowCategory,editinfographicCategory,editaumentos,editgameplay,edittips,editisHide,editboardInfo,editpictureSave,editcarouselItems,editradiantItem,editspatulaItem1,editspatulaItem2,editoriginalComp, editCampeonTierList, editAugmentTierList, editCampeonItemTierList =[{},{},{}], editCampeonTraitTierList = [{}], editVersion=null }) =>{
+const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,edittitulo,editshadowCategory,editinfographicCategory,editaumentos,editgameplay,edittips,editisHide,editboardInfo,editpictureSave,editcarouselItems,editradiantItem,editspatulaItem1,editspatulaItem2,editoriginalComp, editCampeonTierList, editAugmentTierList, editCampeonItemTierList =[{},{},{}], editCampeonTraitTierList = [{}], editChamp3Stars, editVersion=null }) =>{
     const currentVersion= useStore(versionTFT);
     const [version, setVersion] = useState(versionTFT.get())
     const [allItemsInfo, setAllItemsInfo] = useState(null);
@@ -57,7 +57,8 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
     const [campeonTierList, setCampeonTierList] = useState({});
     const [augmentTierList, setAugmentTierList] = useState({});
     const [champItem, setChampItem] = useState([{}])
-    const [champTrait, setChampTrait] = useState([{}])
+    const [champTrait, setChampTrait] = useState([{}]);
+    const [champ3Stars, setChamp3Stars] = useState(false)
     const [allChampions, setAllChampions] = useState([])
     const championsColor = [
       "var(--color-hex-cost-default)",
@@ -210,6 +211,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         setAugmentTierList(editAugmentTierList)
         setChampItem(editCampeonItemTierList)
         setChampTrait(editCampeonTraitTierList)
+        setChamp3Stars(editChamp3Stars)
         setVersion(editVersion)
         setIsHide(editisHide)
       }
@@ -486,6 +488,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           augmentTierList,
           champItem,
           champTrait,
+          champ3Stars,
           version
         }
         if(tier && posicion && dificultad && titulo && shadowCategory && infographicCategory && aumentos.length && Object.keys(carouselItems).length && Object.keys(boardInfo?.early?.data || {}).length && Object.keys(boardInfo).length && Object.keys(campeonTierList).length && Object.keys(boardInfo?.[originalComp]?.data || {}).length){
@@ -680,6 +683,13 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
               }
             </select>
           </label>
+          <label htmlFor="champ3Stars">
+            <span>★★★ 3 Stars:</span>
+            <select onChange={(e)=>{setChamp3Stars(e.target.value)}} value={editChamp3Stars?.toString() || champ3Stars?.toString()}>
+              <option value={false} >{"False"}</option>
+              <option value={true} >{"True"}</option>
+            </select>
+          </label>
           <label htmlFor="aumentos">
             Augments:
             <input list="dataListAumentos2" onChange={(e)=>seleccionarAumentoTierList(e)} name="aumentos2" id="aumentos2" defaultValue={editAugmentTierList?.name ||augmentTierList?.name } placeholder="Select Augment"/>
@@ -738,6 +748,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
             champTrait={champTrait}
             isSample={true}
             version={version || "latest"}
+            champ3Stars={champ3Stars}
             />
         </div>
       </div>
