@@ -1,11 +1,13 @@
 import React, {useState, useEffect} from "react"
 import Items from "./Items.jsx"
 import style from "./css/ItemsTierList.module.css";
-import ItemsTierList from "./ItemTierList.jsx"
-
+import ItemsTierList from "./ItemTierList.jsx";
+import { versionTFT } from "@stores/dataTFT.js";
+import { useStore } from "@nanostores/react";
 const CreateItemsTierList = ()=>{
   //localStorage.getItem("login")
-  const urlDataDragon="https://raw.communitydragon.org/latest/game/"
+  const currentVersion = useStore(versionTFT)
+  const urlDataDragon=`https://raw.communitydragon.org/${currentVersion}/game/`
   const [tierList, setTierList] = useState({
     Craftable:{
       "S":[],
@@ -51,7 +53,7 @@ const CreateItemsTierList = ()=>{
     }
   });
   const [pestana, setPestana] = useState(0)
-  const category = ["Craftable", "Radiants", "Emblems", "Artefacts", "Supports", "Chembaron", "Others"]; // Categorías a incluir
+  const category = ["Craftable", "Radiants", "Emblems", "Chemtech", "Artefacts", "Supports", "Chembaron", "GarenMod","Others"]; // Categorías a incluir
 
   useEffect(()=>{
     (async function traerDatos(){
@@ -316,7 +318,7 @@ const CreateItemsTierList = ()=>{
         </div>
       </div>
       <button onClick={()=>{saveTierList()}}>SAVE</button>
-      <Items/>
+      <Items version={currentVersion}/>
       <ItemsTierList/>
     </>
   )
