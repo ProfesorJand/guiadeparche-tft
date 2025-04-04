@@ -3,9 +3,12 @@ import style from "./css/ItemsTierList.module.css";
 import parse from "html-react-parser";
 import DOMPurify from "dompurify";
 import TooltipItem from "@components/tooltips/items";
+import { versionTFT } from "@stores/dataTFT";
+import { useStore } from "@nanostores/react"
 
 const ItemTierList = () => {
-  const urlDataDragon = "https://raw.communitydragon.org/latest/game/";
+  const currentVersion = useStore(versionTFT);
+  const urlDataDragon = `https://raw.communitydragon.org/${currentVersion}/game/`;
   const [itemsTierList, setItemsTierList] = useState({});
   const category = ["Craftable", "Radiants", "Emblems", "Artefacts", "Supports", "Chembaron", "Others"]; // Categorías a incluir
   const [tooltipData, setTooltipData] = useState(null);
