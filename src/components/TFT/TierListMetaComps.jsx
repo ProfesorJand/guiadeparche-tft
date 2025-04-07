@@ -10,6 +10,8 @@ const TierListMetaComps = () => {
   const numberOfChampsInTierList = 6; // Puedes modificar este valor según necesites
 
   useEffect(() => {
+    console.log({composMeta})
+    console.log({composMetaSort: composMeta.sort((a,b)=>a.posicion - b.posicion)})
     scrollContainersRef.current.forEach((scrollContainer) => {
       if (!scrollContainer) return;
 
@@ -31,7 +33,7 @@ const TierListMetaComps = () => {
       {composMeta.length > 0 ? (
         composMeta.map((comps, index) => {
           // Filtrar los campeones donde isHide es false
-          const visibleComps = comps.filter((comp) => comp.isHide !== "true");
+          const visibleComps = comps.sort((a,b)=>a.posicion - b.posicion).filter((comp) => comp.isHide !== "true");
 
           // Dividir visibleComps en grupos de numberOfChampsInTierList
           const chunkedComps = [];
