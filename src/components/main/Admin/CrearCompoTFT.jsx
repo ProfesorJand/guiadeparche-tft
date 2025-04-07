@@ -788,7 +788,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         {emblems.map((dataItem, i )=>{
           return <option key={"ListaDeEmblemas"+dataItem.nombre+i} id={`datalist-${dataItem.name}`} value={dataItem.name} data-value={JSON.stringify(dataItem)}></option>
         })}
-        {championsTFT.map((dataItem, i )=>{
+        {allChampions.map((dataItem, i )=>{
           return <option key={"ListaDeEmblemas"+dataItem.name+i} id={`datalist-${dataItem.name}`} value={dataItem.name} data-value={JSON.stringify(dataItem)}></option>
         })}
         {listaDeAumentos.map((dataItem, i )=>{
