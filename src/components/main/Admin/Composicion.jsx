@@ -350,6 +350,7 @@ const Composicion = ({id, compo, admin=false, show=true, allwaysOpen=false, onTo
       editCampeonTraitTierList={compo.champTrait}
       editChamp3Stars={compo?.champ3Stars}
       editVersion={compo.version}
+      editradiantItem={compo?.radiantsItems || []}
     />}
     {
       showBigComp &&
