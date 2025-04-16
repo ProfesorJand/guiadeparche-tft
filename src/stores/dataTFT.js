@@ -7,14 +7,14 @@ const initialStateDataTFTSetData = [];
 const initialStateDataTFTSets = [];
 const initialStateDataTFTChampions = [];
 const initialStateVersion = "pbe";
-const initialStateTeamPlannerCode = []
+const initialStateTeamPlannerCode = [];
 
 export const dataTFT = deepMap(initialStateDataTFT)
 export const dataTFTItems = atom(initialStateDataTFTItems);
 export const dataTFTSetData = atom(initialStateDataTFTSetData);
-export const dataTFTChampions = atom(initialStateDataTFTChampions)
-export const versionTFT = atom(initialStateVersion)
-export const teamPlannerCode = atom(initialStateTeamPlannerCode)
+export const dataTFTChampions = atom(initialStateDataTFTChampions);
+export const versionTFT = atom(initialStateVersion);
+export const teamPlannerCode = atom(initialStateTeamPlannerCode);
 
 // version: latest / pbe ---- idioma: en / es --- pais: mx /es /gb /us
 export const loadDataTFTFromAPI = ({version=versionTFT.get(), idioma="es", pais="ar"}) =>{

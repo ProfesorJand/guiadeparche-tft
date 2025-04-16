@@ -148,7 +148,7 @@ export const getConstantsTFT = async () => {
 }
 
 
-export const MetaCompVersion = deepMap(null)
+export const MetaCompVersion = atom("")
 export const STREAMERS = deepMap(["jupeson"])
 
 await getConstantsTFT()
