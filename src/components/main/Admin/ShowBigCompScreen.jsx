@@ -40,7 +40,7 @@ const ShowBigCompScreen = ({id, setShowBigComp}) => {
               </div>
               <div className={style.titulos}>
                 <div className={style.tituloPrincipal}>
-                  {`SET 14 META COMP [14.1B]`}
+                  {`SET 14 META COMP [14.2]`}
                 </div>
                 <div className={style.titutloSecundario}>
                 <span className={[style.titulo, style.tituloComp].join(" ")}>{CompToShow.titulo}</span>
