@@ -1,12 +1,12 @@
 ---
-import Twitch from '@components/embed/Twitch';
-import Kick from '@components/embed/Kick';
+import PlatformStreamer from "./PlatformStreamer"
 ---
 
 <div class="footerContainer">
   <div class="footerContainerInfo">
+    <PlatformStreamer client:only="react"/>
     <!-- <Twitch client:only="react"/> -->
-     <Kick client:only="react"/>
+     <!-- <Kick client:only="react"/> -->
   </div>
   <div class="footerContainerInfo">
     <article>

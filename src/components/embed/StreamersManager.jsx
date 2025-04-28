@@ -8,8 +8,8 @@ const actualizarStreamers = async (updatedStreamers) => {
   const token = import.meta.env.PUBLIC_TOKEN_META;
 
   const bodyData = {
-    key: "Streamers", // Clave que queremos actualizar en el JSON
-    value: updatedStreamers, // Enviamos el array de streamers actualizado
+    key: "Streamers",
+    value: updatedStreamers,
   };
 
   try {
@@ -31,14 +31,14 @@ const actualizarStreamers = async (updatedStreamers) => {
   }
 };
 
-const TwitchStreamersManager = () => {
+const StreamersManager = () => {
   const streamers = useStore(STREAMERS);
   const [updatedStreamers, setUpdatedStreamers] = useState([...streamers]);
-  const [newStreamer, setNewStreamer] = useState("");
+  const [newStreamerName, setNewStreamerName] = useState("");
+  const [newStreamerPlatform, setNewStreamerPlatform] = useState("twitch");
 
-  // Mover elementos en el array después de un drag & drop
   const onDragEnd = (result) => {
-    if (!result.destination) return; // Si no se soltó en una posición válida, no hacer nada
+    if (!result.destination) return;
 
     const reorderedStreamers = Array.from(updatedStreamers);
     const [movedStreamer] = reorderedStreamers.splice(result.source.index, 1);
@@ -47,19 +47,23 @@ const TwitchStreamersManager = () => {
     setUpdatedStreamers(reorderedStreamers);
   };
 
-  // Agregar streamer
   const addStreamer = () => {
-    if (!newStreamer.trim() || updatedStreamers.includes(newStreamer)) return;
+    const newStreamer = {
+      name: newStreamerName.trim(),
+      platform: newStreamerPlatform,
+    };
+
+    if (!newStreamer.name || updatedStreamers.some(s => s.name === newStreamer.name && s.platform === newStreamer.platform)) return;
+
     setUpdatedStreamers([...updatedStreamers, newStreamer]);
-    setNewStreamer("");
+    setNewStreamerName("");
+    setNewStreamerPlatform("twitch");
   };
 
-  // Eliminar streamer
   const removeStreamer = (streamerToRemove) => {
     setUpdatedStreamers(updatedStreamers.filter((s) => s !== streamerToRemove));
   };
 
-  // Guardar cambios en el backend
   const saveChanges = async () => {
     await actualizarStreamers(updatedStreamers);
   };
@@ -72,10 +76,17 @@ const TwitchStreamersManager = () => {
       <div className="input-group">
         <input
           type="text"
-          value={newStreamer}
-          onChange={(e) => setNewStreamer(e.target.value)}
-          placeholder="Agregar nuevo streamer"
+          value={newStreamerName}
+          onChange={(e) => setNewStreamerName(e.target.value)}
+          placeholder="Nombre del streamer"
         />
+        <select
+          value={newStreamerPlatform}
+          onChange={(e) => setNewStreamerPlatform(e.target.value)}
+        >
+          <option value="twitch">Twitch</option>
+          <option value="kick">Kick</option>
+        </select>
         <button onClick={addStreamer}>Agregar</button>
       </div>
 
@@ -89,7 +100,11 @@ const TwitchStreamersManager = () => {
               ref={provided.innerRef}
             >
               {updatedStreamers.map((streamer, index) => (
-                <Draggable key={streamer} draggableId={streamer} index={index}>
+                <Draggable
+                  key={`${streamer.name}-${streamer.platform}`}
+                  draggableId={`${streamer.name}-${streamer.platform}`}
+                  index={index}
+                >
                   {(provided) => (
                     <li
                       ref={provided.innerRef}
@@ -98,7 +113,7 @@ const TwitchStreamersManager = () => {
                       className="streamer-item"
                     >
                       <span className="drag-handle">☰</span>
-                      {streamer}
+                      {streamer.name} ({streamer.platform})
                       <button onClick={() => removeStreamer(streamer)}>❌</button>
                     </li>
                   )}
@@ -110,9 +125,7 @@ const TwitchStreamersManager = () => {
         </Droppable>
       </DragDropContext>
 
-      {/* Botón para guardar cambios */}
       <button onClick={saveChanges} className="save-button">Guardar Cambios</button>
-
       <style>{`
         .container {
           width: 300px;
@@ -163,4 +176,4 @@ const TwitchStreamersManager = () => {
   );
 };
 
-export default TwitchStreamersManager;
+export default StreamersManager;

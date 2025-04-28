@@ -7,7 +7,7 @@ import CreateItemsTierList from "./CreateItemsTierList.jsx";
 //import CrearTierListChampItem from "./crearTierListChampItem.jsx"
 import CreateAugmentsTierList from "./CreateAugmentsTierList.jsx";
 import style from "./css/Admin.module.css";
-import TwitchStreamersManager from "@components/embed/TwitchStreamersManager.jsx";
+import StreamersManager from "@components/embed/StreamersManager.jsx";
 
 const AdminPanel = ({allAdmins})=>{
     const [isLoged, setIsLoged] = useState(localStorage.getItem("login") || false)
@@ -77,7 +77,7 @@ const AdminPanel = ({allAdmins})=>{
                 {action === "editar" && <EditarCompoTFT />}
                 {action === "itemsTierList" && <CreateItemsTierList />}
                 {action === "augmentsTierList" && <CreateAugmentsTierList admin={true}/>}
-                {action === "twitch" && <TwitchStreamersManager/>}
+                {action === "twitch" && <StreamersManager/>}
                 {/* {action === "champsItemsTierList" && <CrearTierListChampItem />} */}
             </div>
             <button onClick={()=>cerrarSesion()}>cerrar sesión</button>

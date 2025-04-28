@@ -1,16 +1,18 @@
 import { useEffect, useRef, useState } from "react";
 import { STREAMERS as todosLosStreamers } from "src/stores/menuFiltradoAdmin";
 import { useStore } from "@nanostores/react";
-// const STREAMERS = ["jupeson", "teamfighttactics", "relic_lol"]; //"teamfighttactics"
+import { currentStreamer } from "src/stores/streamers";
 
 const Twitch = () => {
   const divTwitchRef = useRef(null);
   const [pass, setPass] = useState(false);
   const [currentStreamerIndex, setCurrentStreamerIndex] = useState(0);
   const [checkedAll, setCheckedAll] = useState(false);
-  const embedRef = useRef(null); // Guardamos la referencia de embed
-  const STREAMERS = useStore(todosLosStreamers)
+  const embedRef = useRef(null);
+  const allStreamers = useStore(todosLosStreamers);
 
+  // 🎯 Aquí filtramos sólo los de Twitch
+  const twitchStreamers = allStreamers.filter(s => s.platform === "twitch");
 
   useEffect(() => {
     const handlePageLoad = () => {
@@ -42,17 +44,17 @@ const Twitch = () => {
       const divTwitch = divTwitchRef.current;
       const options = {
         width: "100%",
-        channel: STREAMERS[currentStreamerIndex], 
+        channel: twitchStreamers[currentStreamerIndex]?.name || "jupeson",
         layout: "video",
         autoplay: true,
         allowfullscreen: true,
-        muted: true, 
-        theme: "dark", 
+        muted: true,
+        theme: "dark",
         parent: ["tft.guiadeparche.com"],
       };
 
       const embed = new window.Twitch.Embed("twitch-embed", options);
-      embedRef.current = embed; // Guardamos la instancia de embed
+      embedRef.current = embed;
 
       embed.addEventListener(window.Twitch.Embed.READY, () => {
         embed.addEventListener(window.Twitch.Embed.ONLINE, handleOnline);
@@ -73,13 +75,11 @@ const Twitch = () => {
     return () => {
       setPass(false);
     };
-  }, [pass]);
+  }, [pass, currentStreamerIndex, twitchStreamers]);
 
-  // Función para verificar el siguiente streamer
   const checkNextStreamer = () => {
     setCurrentStreamerIndex((prevIndex) => {
-      const newIndex = (prevIndex + 1) % STREAMERS.length;
-      // Si hemos recorrido todo el array, marcamos que todos están offline
+      const newIndex = (prevIndex + 1) % twitchStreamers.length;
       if (newIndex === 0) {
         setCheckedAll(true);
       }
@@ -87,16 +87,18 @@ const Twitch = () => {
     });
   };
 
-  // Efecto para actualizar el canal cuando cambia currentStreamerIndex o checkedAll
   useEffect(() => {
     if (!pass || !embedRef.current) return;
 
     if (checkedAll) {
       embedRef.current.setChannel("jupeson");
+      currentStreamer.set({ name: "jupeson", platform: "twitch" });
       return;
     }
 
-    embedRef.current.setChannel(STREAMERS[currentStreamerIndex]);
+    const streamerName = allStreamers[currentStreamerIndex].name; //puede que aca haya un problema
+    embedRef.current.setChannel(streamerName);
+    currentStreamer.set({ name: streamerName, platform: "twitch" });
   }, [currentStreamerIndex, checkedAll]);
 
   function ismMyScriptLoaded(url) {
