@@ -2,7 +2,7 @@ import React from "react";
 
 const Kick = ()=>{
   return (
-    <div id="kick-embed"><iframe src="https://player.kick.com/orlandovision" height="720" width="1280" frameborder="0" scrolling="no" allowfullscreen="true"></iframe>
+    <div id="kick-embed"><iframe src="https://player.kick.com/reliclol" height="auto" width="100%" frameborder="0" scrolling="no" allowfullscreen="true"></iframe>
     <style>{`
       #kick-embed {
         display: flex;
