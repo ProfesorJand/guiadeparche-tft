@@ -66,7 +66,7 @@ const AdminPanel = ({allAdmins})=>{
                     Streamers
                     <div className={style.tierList}>
                         <div slot="hola">
-                            <button className={pestana === 4 ? style.btnActive: ""}onClick={()=>{setAction("twitch"); setPestana(4)}}>Twitch</button>
+                            <button className={pestana === 4 ? style.btnActive: ""}onClick={()=>{setAction("twitch/kick"); setPestana(4)}}>Twitch / Kick</button>
                         </div>
                     </div>
                 </div>
@@ -77,7 +77,7 @@ const AdminPanel = ({allAdmins})=>{
                 {action === "editar" && <EditarCompoTFT />}
                 {action === "itemsTierList" && <CreateItemsTierList />}
                 {action === "augmentsTierList" && <CreateAugmentsTierList admin={true}/>}
-                {action === "twitch" && <StreamersManager/>}
+                {action === "twitch/kick" && <StreamersManager/>}
                 {/* {action === "champsItemsTierList" && <CrearTierListChampItem />} */}
             </div>
             <button onClick={()=>cerrarSesion()}>cerrar sesión</button>
