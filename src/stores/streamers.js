@@ -2,6 +2,6 @@
 import { atom } from 'nanostores';
 
 export const currentStreamer = atom({
-  name: 'jupeson',
-  platform: 'twitch',
+  name: '',
+  platform: '',
 });

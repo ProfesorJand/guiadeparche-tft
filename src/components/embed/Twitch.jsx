@@ -78,8 +78,12 @@ const Twitch = () => {
   }, [pass, currentStreamerIndex, twitchStreamers]);
 
   const checkNextStreamer = () => {
+    console.log("checkNextStreamer")
+    console.log({currentStreamerIndex})
+    console.log({twitchStreamers})
     setCurrentStreamerIndex((prevIndex) => {
       const newIndex = (prevIndex + 1) % twitchStreamers.length;
+      console.log({newIndex})
       if (newIndex === 0) {
         setCheckedAll(true);
       }
@@ -96,7 +100,7 @@ const Twitch = () => {
       return;
     }
 
-    const streamerName = allStreamers[currentStreamerIndex].name; //puede que aca haya un problema
+    const streamerName = twitchStreamers[currentStreamerIndex]?.name; //puede que aca haya un problema
     embedRef.current.setChannel(streamerName);
     currentStreamer.set({ name: streamerName, platform: "twitch" });
   }, [currentStreamerIndex, checkedAll]);
