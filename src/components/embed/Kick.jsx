@@ -50,7 +50,7 @@ const Kick = () => {
   
     const interval = setInterval(() => {
       checkStreamerStatus();
-    }, 15000);
+    }, 2000);
   
     return () => clearInterval(interval);
   }, [kickStreamers, currentStreamerIndex]);
