@@ -25,17 +25,49 @@ const Kick = () => {
   };
 
   useEffect(() => {
+    if (kickStreamers.length === 0) return;
+  
+    const checkStreamerStatus = async () => {
+      const current = kickStreamers[currentStreamerIndex]?.name;
+      if (!current) return;
+  
+      try {
+        const res = await fetch(`https://kick.com/api/v2/channels/${current}`);
+        const data = await res.json();
+  
+        const isOnline = data?.livestream !== null;
+  
+        if (!isOnline) {
+          checkNextStreamer();
+        } else {
+          setCheckedAll(false); // Reinicia si encontramos uno online
+        }
+      } catch (err) {
+        console.error("Error verificando el estado del streamer:", err);
+        checkNextStreamer(); // En caso de error, pasa al siguiente
+      }
+    };
+  
+    const interval = setInterval(() => {
+      checkStreamerStatus();
+    }, 15000);
+  
+    return () => clearInterval(interval);
+  }, [kickStreamers, currentStreamerIndex]);
+  
+
+  useEffect(() => {
     if (!iframeRef.current) return;
   
     if (checkedAll || kickStreamers.length === 0) {
       iframeRef.current.src = `https://player.kick.com/jupeson?autoplay=true&muted=true`;
-      currentStreamer.set({ name: "jupeson", platform: "kick" });
+      // currentStreamer.set({ name: "jupeson", platform: "kick" });
       return;
     }
   
     const streamerName = kickStreamers[currentStreamerIndex]?.name || "jupeson";
     iframeRef.current.src = `https://player.kick.com/${streamerName}?autoplay=true&muted=true`;
-    currentStreamer.set({ name: streamerName, platform: "kick" });
+    // currentStreamer.set({ name: streamerName, platform: "kick" });
   }, [currentStreamerIndex, checkedAll, kickStreamers]);
 
   return (

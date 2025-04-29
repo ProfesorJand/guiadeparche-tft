@@ -2,6 +2,6 @@
 import { atom } from 'nanostores';
 
 export const currentStreamer = atom({
-  name: '',
-  platform: '',
+  name: 'reliclol',
+  platform: 'kick',
 });

@@ -141,6 +141,7 @@ export const getConstantsTFT = async () => {
     const response = await fetch(urlMeta, { cache:"no-cache" });
     const {MetaCompVersion: version, Streamers} = await response.json();
     MetaCompVersion.set(version)
+    console.log({Streamers})
     STREAMERS.set(Streamers)
   }catch(error){
 
@@ -149,6 +150,6 @@ export const getConstantsTFT = async () => {
 
 
 export const MetaCompVersion = atom("")
-export const STREAMERS = deepMap([{ name: "jupeson", platform: "twitch" },])
+export const STREAMERS = deepMap([{ name: "", platform: "" },])
 
 await getConstantsTFT()

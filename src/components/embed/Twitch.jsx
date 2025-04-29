@@ -42,9 +42,11 @@ const Twitch = () => {
 
     script.onload = () => {
       const divTwitch = divTwitchRef.current;
+      const streamerName = twitchStreamers[currentStreamerIndex]?.name || "jupeson";
+
       const options = {
         width: "100%",
-        channel: twitchStreamers[currentStreamerIndex]?.name || "jupeson",
+        channel: streamerName,
         layout: "video",
         autoplay: true,
         allowfullscreen: true,
@@ -65,6 +67,8 @@ const Twitch = () => {
         embed.setMuted(false);
         divTwitch.classList.remove("hide");
         divTwitch.classList.add("show");
+        console.log("handleOnline")
+        currentStreamer.set({ name: streamerName, platform: "twitch" });
       };
 
       const handleOffline = () => {
@@ -85,6 +89,7 @@ const Twitch = () => {
       const newIndex = (prevIndex + 1) % twitchStreamers.length;
       console.log({newIndex})
       if (newIndex === 0) {
+        console.log("llego al 0")
         setCheckedAll(true);
       }
       return newIndex;
@@ -92,17 +97,17 @@ const Twitch = () => {
   };
 
   useEffect(() => {
+    console.log({pass, embedRef})
     if (!pass || !embedRef.current) return;
-
     if (checkedAll) {
+      console.log({checkedAll})
       embedRef.current.setChannel("jupeson");
-      currentStreamer.set({ name: "jupeson", platform: "twitch" });
+      // currentStreamer.set({ name: "jupeson", platform: "twitch" });
       return;
     }
 
     const streamerName = twitchStreamers[currentStreamerIndex]?.name; //puede que aca haya un problema
     embedRef.current.setChannel(streamerName);
-    currentStreamer.set({ name: streamerName, platform: "twitch" });
   }, [currentStreamerIndex, checkedAll]);
 
   function ismMyScriptLoaded(url) {

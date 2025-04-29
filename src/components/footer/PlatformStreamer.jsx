@@ -5,12 +5,17 @@ import Kick from '@components/embed/Kick';
 
 const PlatformStreamer = () => {
   const streamer = useStore(currentStreamer);
-  if (streamer?.platform === "twitch") {
-    return <Twitch/>;
-  }
-  if (streamer?.platform === "kick") {
-    return <Kick/>;
-  }
+  console.log({streamer})
+  // if (streamer?.platform === "twitch") {
+  //   return <Twitch/>;
+  // }
+  // if (streamer?.platform === "kick") {
+  //   return <Kick/>;
+  // }
+
+  return (
+    <Kick></Kick>
+  )
 
   return (
     <Twitch/>
