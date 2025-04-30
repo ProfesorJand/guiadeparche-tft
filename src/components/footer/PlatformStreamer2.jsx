@@ -122,23 +122,6 @@ async function getClientIdToken() {
 }
 
 // 🔍 Utilidades de comprobación
-async function isTwitchOnline(username) {
-  try {
-    const {access_token, expires_in, token_type } = await getClientIdToken();
-    console.log({access_token, expires_in, token_type})
-    const clientId = "7vvu660o1l491sgwidg44o5uje3z4p"; // debes configurar esto
-    const res = await fetch(`https://api.twitch.tv/helix/streams?user_login=${username}`, {
-      headers: {
-        "Client-ID": clientId,
-        Authorization: `Bearer ${access_token}`,
-      },
-    });
-    const data = await res.json();
-    return data.data?.length > 0;
-  } catch {
-    return false;
-  }
-}
 
 async function isKickOnline(username) {
   try {
