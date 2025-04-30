@@ -106,7 +106,7 @@ const Twitch = () => {
       return;
     }
 
-    const streamerName = twitchStreamers[currentStreamerIndex]?.name; //puede que aca haya un problema
+    const streamerName = twitchStreamers[currentStreamerIndex]?.name;
     embedRef.current.setChannel(streamerName);
   }, [currentStreamerIndex, checkedAll]);
 

@@ -41,6 +41,7 @@ const Kick = () => {
           checkNextStreamer();
         } else {
           setCheckedAll(false); // Reinicia si encontramos uno online
+          currentStreamer.set({ name: current, platform: "kick" });
         }
       } catch (err) {
         console.error("Error verificando el estado del streamer:", err);

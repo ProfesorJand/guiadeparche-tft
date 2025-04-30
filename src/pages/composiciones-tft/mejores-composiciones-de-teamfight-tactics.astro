@@ -13,6 +13,7 @@ import {crearJSONSchema} from "src/json/schema/crearJSONSchema";
 import TierListMetaComps from '@components/TFT/TierListMetaComps.jsx';
 //import { MetaCompVersion } from '@stores/menuFiltradoAdmin';
 import SelectVersion  from "@components/versionTFT/SelectVersion.jsx";
+import VersionCompo from "@components/TFT/VersionCompo"
 const title = "▷ Best TFT Comps & Builds for Set 14 Cyber City";
 // Example: Construct a canonical URL using your production domain
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -24,8 +25,8 @@ const thumbnail= "/campeones/set12/ryze.webp"
 const imgPost = "https://i.ytimg.com/vi/5ph-NnCjDSk/maxresdefault.jpg"
 const JSONSchema = crearJSONSchema({title, imgPost, thumbnail, description});
 const admin = typeof window !== "undefined" ? localStorage.getItem("superAdmin") : false;
-import { MetaCompVersion } from '@stores/menuFiltradoAdmin';
-const version = MetaCompVersion.get()
+
+
 ---
 <!-- <link rel="canonical" href={canonicalURL} /> -->
 <!-- <meta property="og:image" content={socialImageURL} /> -->
@@ -49,7 +50,7 @@ const version = MetaCompVersion.get()
     <h1 id="tituloMetaComps" class="titulo tituloMetaComps">
       Best TFT Meta Comps & Builds | Mejores Composiciones
     </h1>
-    <span id="minititulo" class="minititulo">Tier List Set 14 Cyber City / Version {version}</span> {/*  for Set 13 Arcane TFT Compos - Patch {MetaCompVersion.value} */}
+    <VersionCompo></VersionCompo>
     <!-- <div class="videosYT">
       <div class="videoYTAdd">
         <h2 class="tituloYt">Español</h2>

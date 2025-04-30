@@ -141,7 +141,6 @@ export const getConstantsTFT = async () => {
     const response = await fetch(urlMeta, { cache:"no-cache" });
     const {MetaCompVersion: version, Streamers} = await response.json();
     MetaCompVersion.set(version)
-    console.log({Streamers})
     STREAMERS.set(Streamers)
   }catch(error){
 

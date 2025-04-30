@@ -2,20 +2,20 @@ import { useStore } from '@nanostores/react';
 import { currentStreamer } from 'src/stores/streamers';
 import Twitch from '@components/embed/Twitch';
 import Kick from '@components/embed/Kick';
+import { useEffect } from 'react';
 
 const PlatformStreamer = () => {
   const streamer = useStore(currentStreamer);
-  console.log({streamer})
-  // if (streamer?.platform === "twitch") {
-  //   return <Twitch/>;
-  // }
-  // if (streamer?.platform === "kick") {
-  //   return <Kick/>;
-  // }
+  useEffect(()=>{
+    console.log({streamer})
+  },[streamer])
 
-  return (
-    <Kick></Kick>
-  )
+  if (streamer?.platform === "twitch") {
+    return <Twitch/>;
+  }
+  if (streamer?.platform === "kick") {
+    return <Kick/>;
+  }
 
   return (
     <Twitch/>
