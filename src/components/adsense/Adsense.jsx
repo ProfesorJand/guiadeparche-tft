@@ -72,7 +72,6 @@ const AdComponent = ({ direction = '', dimension = 'cuadrado', numeracion = 0 })
         {dimension === 'vertical-izquierda' && (
           <div
             className={`${style.adsense_container} ${style.adsense_vertical} ${style.left}`}
-            style={{ left: 0, height: "max-content !important" }}
           >
             <ins
               data-key={`adsense-${numeracion}-left`}
@@ -88,7 +87,6 @@ const AdComponent = ({ direction = '', dimension = 'cuadrado', numeracion = 0 })
         {dimension === 'vertical-derecha' && (
           <div
             className={`${style.adsense_container} ${style.adsense_vertical} ${style.right}`}
-            style={{ right: 0 }}
           >
             <ins
               data-key={`adsense-${numeracion}-right`}

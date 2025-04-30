@@ -1,24 +1,25 @@
-import { useEffect, useRef} from "react";
+import { useEffect, useRef } from "react";
 
 const Twitch = ({ name = "jupeson" }) => {
   const divTwitchRef = useRef(null);
 
   useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://embed.twitch.tv/embed/v1.js";
-    script.async = true;
-    document.head.appendChild(script);
+    if (!window.Twitch || !window.Twitch.Embed) return;
 
-    script.onload = () => {
-      new window.Twitch.Embed("twitch-embed", {
-        width: "100%",
-        channel: name,
-        layout: "video",
-        autoplay: true,
-        muted: false,
-        theme: "dark",
-        parent: ["tft.guiadeparche.com"],
-      });
+    const embed = new window.Twitch.Embed("twitch-embed", {
+      width: "100%",
+      channel: name,
+      layout: "video",
+      autoplay: true,
+      muted: false,
+      theme: "dark",
+      parent: ["tft.guiadeparche.com"],
+    });
+
+    return () => {
+      // Limpiar Twitch embed si es necesario
+      const container = document.getElementById("twitch-embed");
+      if (container) container.innerHTML = "";
     };
   }, [name]);
 
@@ -50,3 +51,4 @@ const Twitch = ({ name = "jupeson" }) => {
 };
 
 export default Twitch;
+

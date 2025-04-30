@@ -56,6 +56,7 @@ ins#google-anno-sa {
     padding: 5px;
     box-sizing: border-box;
     height: 100vh;
+    align-items: center;
   }
 
   .adsense_vertical.left {
