@@ -59,7 +59,8 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
     const [champItem, setChampItem] = useState([{}])
     const [champTrait, setChampTrait] = useState([{}]);
     const [champ3Stars, setChamp3Stars] = useState(false)
-    const [allChampions, setAllChampions] = useState([])
+    const [allChampions, setAllChampions] = useState([]);
+    const [loadingPicture, setLoadingPicture] = useState(false)
     const championsColor = [
       "var(--color-hex-cost-default)",
       "var(--color-hex-cost-1)",
@@ -218,49 +219,54 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
     },[edit])
 
 
-    useEffect(()=>{
-      if(takePicture){
-        async function captureAndConvertToWebP(showBoardID){
+    useEffect(() => {
+      if (takePicture) {
+        async function captureAndConvertToWebP(showBoardID) {
+          setLoadingPicture(true)
           const element = document.getElementById(showBoardID);
-          const desiredWidth = 1920;  // Cambia esto al ancho deseado
-          const desiredHeight = 1080; // Cambia esto al alto deseado
-          toBlob(element)
-          .then((blob) => {
-              const webpBlob = new Blob([blob], { type: 'image/webp' });
-              const nombreArchivo = id + `-${showBoardID}`;
-              // Crear un objeto FormData para enviar los datos
-              const formData = new FormData();
-              formData.append('file', webpBlob, `${nombreArchivo}-${version}.webp`);
-        
-              // Realizar la solicitud POST al servidor
-              fetch('https://guiadeparche.com/tftdata/Set12/uploadImageWebp.php', {
-                  method: 'POST',
-                  body: formData,
-              })
-              .then(response => response.json())
-              .then(data => {
-                  if (data.status === 'success') {
-                      setPictureSave((oldObject)=>{return {...oldObject,[showBoardID]:true}})
-                      alert('File uploaded successfully');
-                  } else {
-                    alert('File upload failed:', data.message);
-                  }
-              })
-              .catch(error => {
-                alert('Error uploading file:', error);
-              });
-          })
-          .catch((error) => {
-            alert('Error generating image'+ error.message);
-          });
+          const pixelRatio = 3; // Aumenta esto para mejorar la calidad (por ejemplo 2x o 3x)
+    
+          try {
+            const blob = await toBlob(element, {
+              pixelRatio: pixelRatio, // Escala interna del canvas
+              style: {
+                transform: `scale(${pixelRatio})`,
+                transformOrigin: 'top left',
+                width: `${element.offsetWidth}px`,
+                height: `${element.offsetHeight}px`,
+              },
+              width: element.offsetWidth * pixelRatio,
+              height: element.offsetHeight * pixelRatio,
+            });
+    
+            const webpBlob = new Blob([blob], { type: 'image/webp' });
+            const nombreArchivo = id + `-${showBoardID}`;
+            const formData = new FormData();
+            formData.append('file', webpBlob, `${nombreArchivo}-${version}.webp`);
+    
+            const response = await fetch('https://guiadeparche.com/tftdata/Set12/uploadImageWebp.php', {
+              method: 'POST',
+              body: formData,
+            });
+            const data = await response.json();
+    
+            if (data.status === 'success') {
+              setPictureSave(oldObject => ({ ...oldObject, [showBoardID]: true }));
+              setLoadingPicture(false)
+              alert('File uploaded successfully');
+            } else {
+              alert('File upload failed: ' + data.message);
+            }
+    
+          } catch (error) {
+            alert('Error generating image: ' + error.message);
+          }
         }
-        captureAndConvertToWebP(showBoard)
-
-        setTakePicture(false)
-        
+    
+        captureAndConvertToWebP(showBoard);
+        setTakePicture(false);
       }
-      
-    },[takePicture])
+    }, [takePicture]);
 
     function handleToogleInfo(button){
         setInfoChampsItems(button)
@@ -812,7 +818,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         <div className={[style.btnHandlerBuilder, infoChampsItems === "campeones" ? style.btnActive : ""].join(" ")} onClick={(e)=>{handleToogleInfo("campeones")}}>Campeones</div>
         <div className={[style.btnHandlerBuilder, infoChampsItems === "items" ? style.btnActive : ""].join(" ")} onClick={(e)=>{handleToogleInfo("items")}}>Items</div>
         <div className={style.btnHandlerBuilder} onClick={(e)=>{toggleOcultarNombre(e,showName)}}>{showName ? "Mostrar Nombres" : "Ocultar Nombres" }</div>
-        <div className={style.btnHandlerBuilder} onClick={(e)=>{setTakePicture(true)}}>Guardar imagen</div>
+        <div className={style.btnHandlerBuilder} onClick={(e)=>{setTakePicture(true)}}>{loadingPicture ? "Loading" : "Guardar Imagen"}</div>
       </div>
         
         
