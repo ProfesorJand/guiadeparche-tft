@@ -61,6 +61,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
     const [champ3Stars, setChamp3Stars] = useState(false)
     const [allChampions, setAllChampions] = useState([]);
     const [loadingPicture, setLoadingPicture] = useState(false)
+    
     const championsColor = [
       "var(--color-hex-cost-default)",
       "var(--color-hex-cost-1)",
