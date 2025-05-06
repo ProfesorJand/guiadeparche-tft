@@ -51,6 +51,7 @@ const AdComponent = ({ direction = '', dimension = 'cuadrado', numeracion = 0 })
       adsenseID = 7127054478;
       styleINS.height = '600px';
       styleINS.minWidth = '100px';
+      styleINS.maxHeight = "100vh";
       break;
     case 'horizontal':
       adsenseID = 3557613428;
