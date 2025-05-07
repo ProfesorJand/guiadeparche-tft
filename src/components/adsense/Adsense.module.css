@@ -57,6 +57,7 @@ ins#google-anno-sa {
     box-sizing: border-box;
     height: 100vh;
     align-items: center;
+    max-height: 100vh;
   }
 
   .adsense_vertical.left {
