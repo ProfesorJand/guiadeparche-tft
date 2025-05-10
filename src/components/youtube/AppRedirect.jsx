@@ -55,7 +55,7 @@ const AppRedirect = () => {
         return window.location.href = `https://www.twitch.tv/${twitch}`
       }
       //appUrl = `twitch://stream/${channel}`;
-      setAppUrl(`intent://stream/${twitch}#Intent;scheme=twitch;package=tv.twitch.android.app;S.browser_fallback_url=https%3A%2F%2Fwww.twitch.tv%2F${twitch};end`);
+      setAppUrl(`twitch://stream/${twitch}`);
       setWebUrl(`https://www.twitch.tv/${twitch}`);
     }
 
