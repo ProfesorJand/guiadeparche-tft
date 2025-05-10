@@ -1,0 +1,26 @@
+.containerButtons{
+  display: flex;
+  flex-direction: column;
+  gap:30px;
+  font-size: 1.5lh;
+}
+.button{
+  background-color: var(--bg-tertiary);
+  color: var(--color-white);
+  padding: 10px;
+  font-size: 1.5lh;
+  display: flex;
+  justify-content: center;
+  gap:10px
+}
+
+.button:hover{
+  background-color: var(--bg-secondary);
+  cursor: pointer;
+}
+.txtPlataforma{
+  color:gold
+}
+.logo{
+  height: 1lh;
+}

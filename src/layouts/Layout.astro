@@ -121,7 +121,7 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
     --text-color-white-secondary: #e5e5e5;
     --link-color-primary:brown;
     --link-color-secondary:rgb(105, 27, 27);
-    --width-main: 70vw;
+    --width-main: 70%;
     --height-header: 8vh;
     --height-footer: 20vh;
     --number-champ-meta: calc(100%/6);
@@ -219,7 +219,7 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
     .bodyLayout{
       display: flex;
       position: relative;
-      width: 100vw;
+      width: 100%;
       flex-direction: column;
     }
     .bodyHeader{
@@ -323,7 +323,7 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
       position: relative;
       margin:0;
       padding: 0;
-      width: 100vw;
+      width: 100%;
       max-width: 100%;
       flex-direction: column;
       justify-content: center;
@@ -335,7 +335,7 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
       position: sticky;
       z-index: 9;
       top:0;
-      width: 100vw;
+      width: 100%;
       max-width: 100%;
       height: var(--height-header);
       background-color: var(--bg-primary);
@@ -343,7 +343,7 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
     }
     .bodyInfo{
       display: flex;
-      width: 100vw;
+      width: 100%;
       max-width: 100%;
       position: relative;
       flex-direction: row;
@@ -353,7 +353,7 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
     }
     .bodyAside{
       display: flex;
-      width: calc((100vw - var(--width-main)) / 2);
+      width: calc((100% - var(--width-main)) / 2);
       position: sticky;
       top: calc(var(--height-header));
       padding: 5px;
@@ -369,7 +369,7 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
       display: flex;
       position: relative;
       flex-direction: column;
-      width: calc(var(--width-main)/3);
+      width: calc(100%/3);
       background-color: var(--bg-secondary);
     }
 
@@ -380,7 +380,7 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
       position: sticky;
       top:var(--height-header);
       background-color: var(--bg-secondary);
-      width: calc(var(--width-main)/3);
+      width: 100%;
       box-sizing: border-box;
       height:max-content;
       justify-content: flex-start;
@@ -411,7 +411,7 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
       display: flex;
       flex-direction: column;
       position: relative;
-      width: calc(var(--width-main)*2/3);
+      width: calc(100%*2/3);
       background-color: var(--bg-main);
     }
 
@@ -419,7 +419,7 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
       display: flex;
       position: relative;
       justify-content: center;
-      width: 100vw;
+      width: 100%;
       max-width: 100%;
     }
   }
