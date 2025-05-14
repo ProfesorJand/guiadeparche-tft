@@ -37,7 +37,7 @@ const CampeonOriginal = ({dataCampeon, dataItem, estrellas, show}) =>{
               nombre={nombre}
               isVisible={tooltipData === index}
             />  
-            <img className={style.imgItem} src={img ? img : `https://raw.communitydragon.org/${currentVersion}/game/`+icon.toLowerCase().replace(".tex",".png")} alt={nombre} loading="lazy"></img>
+            <img className={style.imgItem} src={img ? img : `https://raw.communitydragon.org/${currentVersion === "pbe" ? "15.10" : currentVersion}/game/`+icon.toLowerCase().replace(".tex",".png")} alt={nombre} loading="lazy"></img>
           </div>
         )
       })}

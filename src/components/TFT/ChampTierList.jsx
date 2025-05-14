@@ -13,6 +13,7 @@ const ChampTierList = ({id,isSample,campeonTierList, augmentTierList, champItem,
     "var(--color-hex-cost-5)",
   ];
   const urlDataDragonLatestGame = `https://raw.communitydragon.org/${version}/game/`;
+  const urlDataDragonPBEGame = `https://raw.communitydragon.org/${"15.10"}/game/`;
   const compId = useStore(openCompoId)
   useEffect(()=>{
     scrollToComposicion()
@@ -39,7 +40,7 @@ const ChampTierList = ({id,isSample,campeonTierList, augmentTierList, champItem,
             if(item.name){
               return (
                 <div key={`champItem-${index}`} className={style.itemsChampTierList}>
-                  <img className={style.imgItemChampTierList} src={urlDataDragonLatestGame + item.icon.replace(".tex",".png").toLowerCase()} alt={item.name}></img>
+                  <img className={style.imgItemChampTierList} src={(version === "pbe" ? urlDataDragonPBEGame : urlDataDragonLatestGame) + item.icon.replace(".tex",".png").toLowerCase()} alt={item.name}></img>
                 </div>
               )
             }
