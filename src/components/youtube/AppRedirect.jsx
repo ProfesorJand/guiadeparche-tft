@@ -9,6 +9,7 @@ const isMobileDevice = () => {
 
 const AppRedirect = () => {
   const [youtube, setYoutube] = useState(null);
+  const [youtubePerfil, setYoutubePerfil] = useState(null);
   const [twitch, setTwitch] = useState(null);
   const [appUrl, setAppUrl] = useState("");
   const [webUrl, setWebUrl] = useState("");
@@ -20,25 +21,38 @@ const AppRedirect = () => {
     // Si no llegaron por props, intenta obtenerlos desde la URL
     const params = new URLSearchParams(window.location.search);
     const yt = params.get("youtube");
+    const ytPerfil = params.get("ytPerfil")
     const tw = params.get("twitch");
-    if(!yt && !tw){
+    
+    if(!yt && !tw && !ytPerfil){
       return window.location.href = `https://tft.guiadeparche.com`
     }
     if(!isMobileDevice()){
       if(yt){
         return window.location.href = `https://www.youtube.com/watch?v=${yt}`
       }
+      if(ytPerfil){
+        return window.location.href = `https://www.youtube.com/@${ytPerfil}`
+      }
       if(tw){
         return window.location.href = `https://www.twitch.tv/${tw}`
       }
+
     }
-    if (!youtube) setYoutube(yt);
-    if (!twitch) setTwitch(tw);
+    const isiOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    const inInstagram = /Instagram/i.test(navigator.userAgent);
+
+    if (isiOS && inInstagram) {
+      alert("Para abrir la app de Twitch, toca el ícono de los 3 puntos arriba a la derecha y selecciona 'Abrir en Safari'.");
+    }
+    setYoutube(yt);
+    setTwitch(tw);
+    setYoutubePerfil(ytPerfil)
     setIsMobile(isMobileDevice());
   }, []);
 
   useEffect(() => {
-    if(!youtube && !twitch ){
+    if(!youtube && !twitch && !youtubePerfil ){
       setWebUrl("https://tft.guiadeparche.com");
       console.error("Ruta no valida, parametros inválidos");
       return; 
@@ -50,6 +64,12 @@ const AppRedirect = () => {
       }
       setAppUrl(`vnd.youtube://${youtube}`);
       setWebUrl(`https://www.youtube.com/watch?v=${youtube}`);
+    }else if (youtubePerfil){
+      if(!isMobile){
+        return window.location.href = `https://www.youtube.com/@${youtubePerfil}`
+      }
+      setAppUrl(`vnd.youtube://user/${youtubePerfil}`);
+      setWebUrl(`https://www.youtube.com/@${youtube}`);
     } else if (twitch) {
       if(!isMobile){
         return window.location.href = `https://www.twitch.tv/${twitch}`

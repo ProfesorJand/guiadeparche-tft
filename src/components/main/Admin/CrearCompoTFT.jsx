@@ -220,54 +220,57 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
     },[edit])
 
 
-    useEffect(() => {
-      if (takePicture) {
-        async function captureAndConvertToWebP(showBoardID) {
-          setLoadingPicture(true)
-          const element = document.getElementById(showBoardID);
-          const pixelRatio = 3; // Aumenta esto para mejorar la calidad (por ejemplo 2x o 3x)
-    
-          try {
-            const blob = await toBlob(element, {
-              pixelRatio: pixelRatio, // Escala interna del canvas
-              style: {
-                transform: `scale(${pixelRatio})`,
-                transformOrigin: 'top left',
-                width: `${element.offsetWidth}px`,
-                height: `${element.offsetHeight}px`,
-              },
-              width: element.offsetWidth * pixelRatio,
-              height: element.offsetHeight * pixelRatio,
-            });
-    
-            const webpBlob = new Blob([blob], { type: 'image/webp' });
-            const nombreArchivo = id + `-${showBoardID}`;
-            const formData = new FormData();
-            formData.append('file', webpBlob, `${nombreArchivo}-${version}.webp`);
-    
-            const response = await fetch('https://guiadeparche.com/tftdata/Set12/uploadImageWebp.php', {
-              method: 'POST',
-              body: formData,
-            });
-            const data = await response.json();
-    
-            if (data.status === 'success') {
-              setPictureSave(oldObject => ({ ...oldObject, [showBoardID]: true }));
-              setLoadingPicture(false)
-              alert('File uploaded successfully');
-            } else {
-              alert('File upload failed: ' + data.message);
-            }
-    
-          } catch (error) {
-            alert('Error generating image: ' + error.message);
-          }
+ useEffect(() => {
+  if (takePicture) {
+    async function captureAndConvertToWebP(showBoardID) {
+      setLoadingPicture(true);
+
+      const element = document.getElementById(showBoardID);
+      const rect = element.getBoundingClientRect();
+      const width = rect.width;
+      const height = rect.height;
+      const pixelRatio = 3;
+      try {
+        const blob = await toBlob(element, {
+          pixelRatio,
+          style: {
+            transform: `scale(${pixelRatio})`,
+            transformOrigin: 'top left',
+            width: `${width}px`,
+            height: `${height}px`,
+          },
+          width: width * pixelRatio,
+          height: height * pixelRatio,
+        });
+
+        const webpBlob = new Blob([blob], { type: 'image/webp' });
+        const nombreArchivo = id + `-${showBoardID}`;
+        const formData = new FormData();
+        formData.append('file', webpBlob, `${nombreArchivo}-${version}.webp`);
+
+        const response = await fetch('https://guiadeparche.com/tftdata/Set12/uploadImageWebp.php', {
+          method: 'POST',
+          body: formData,
+        });
+        const data = await response.json();
+
+        if (data.status === 'success') {
+          setPictureSave(oldObject => ({ ...oldObject, [showBoardID]: true }));
+          alert('File uploaded successfully');
+        } else {
+          alert('File upload failed: ' + data.message);
         }
-    
-        captureAndConvertToWebP(showBoard);
-        setTakePicture(false);
+
+      } catch (error) {
+        alert('Error generating image: ' + error.message);
+      } finally {
+        setLoadingPicture(false);
       }
-    }, [takePicture]);
+    }
+    captureAndConvertToWebP(showBoard);
+    setTakePicture(false);
+  }
+}, [takePicture]);
 
     function handleToogleInfo(button){
         setInfoChampsItems(button)
@@ -568,7 +571,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
               defaultValue={editVersion || version}
               required
           >
-              <option value="pbe">pbe</option>
+              <option value="15.10">pbe</option>
               <option value="latest">latest</option>
           </select>
       </label>

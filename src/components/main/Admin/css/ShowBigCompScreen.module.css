@@ -160,7 +160,7 @@
 .imgMovilnetLogo{
   display: flex;
   position: relative;
-  height: 100%;
+  height: 50%;
   align-items: center;
 }
 
