@@ -4,6 +4,7 @@ import CrearCompoTFT from "./CrearCompoTFT.jsx";
 import { loadDataTFTFromAPI } from "src/stores/dataTFT.js";
 import EditarCompoTFT from "./EditarCompoTFT.jsx";
 import CreateItemsTierList from "./CreateItemsTierList.jsx";
+import FormularioMetaLOL from "@components/leagueOfLegends/FormularioMetaLOL.jsx";
 //import CrearTierListChampItem from "./crearTierListChampItem.jsx"
 import CreateAugmentsTierList from "./CreateAugmentsTierList.jsx";
 import style from "./css/Admin.module.css";
@@ -71,6 +72,14 @@ const AdminPanel = ({allAdmins})=>{
                     </div>
                 </div>
                 }
+                <div className={style.container}>
+                    League of Legends
+                    <div className={style.tierList}>
+                        <div slot="hola">
+                            <button className={pestana === 5 ? style.btnActive: ""} onClick={()=>{setAction("lol"); setPestana(5)}}>Meta</button>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div>
                 {action === "crear" && <CrearCompoTFT />}
@@ -78,6 +87,7 @@ const AdminPanel = ({allAdmins})=>{
                 {action === "itemsTierList" && <CreateItemsTierList />}
                 {action === "augmentsTierList" && <CreateAugmentsTierList admin={true}/>}
                 {action === "twitch/kick" && <StreamersManager/>}
+                {action === "lol" && <FormularioMetaLOL />}
                 {/* {action === "champsItemsTierList" && <CrearTierListChampItem />} */}
             </div>
             <button onClick={()=>cerrarSesion()}>cerrar sesión</button>

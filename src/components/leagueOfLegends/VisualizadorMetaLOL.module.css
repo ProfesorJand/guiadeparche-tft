@@ -1,0 +1,336 @@
+.containerVisualizadorMetaLOL{
+  display: flex;
+  flex-direction: column;
+  padding: 25px 50px;
+  /* background-color: aquamarine; */
+  /* backdrop-filter: blur(5px);  */
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  aspect-ratio: 4/5; /* Mantiene la relación de aspecto 16:9 */
+}
+
+.imgBackground{
+  position:absolute;
+   top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Para simular background-size: cover */
+  filter: blur(5px); /* Difumina el fondo */
+}
+
+.headerElo{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 150px;
+  position: absolute;
+  /* background-color: aqua; */
+  top: -100%;
+  left: 0;
+  z-index: 2; /* Asegura que el header esté por encima del fondo */
+}
+
+.eloEmblem{
+  position:relative;
+  /* width: 100%; */
+  height: 100%;
+  object-fit: cover; /* Para simular background-size: cover */
+}
+
+.contenido{
+  display: flex;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  flex-direction: column;
+  gap:10px;
+}
+
+.header{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  /* background-color: #4a90e2; */
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
+  height: 5%;
+  /* background-color: antiquewhite; */
+  position: relative; 
+}
+
+.headerLeft{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  left:0;
+  justify-content: flex-start;
+  width: 8%;
+  height: 100%;
+  position:absolute;
+}
+
+.lolIcon{
+  display: flex;
+  height: 100%;
+}
+
+.headerRight{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+  right:0;
+  position: absolute;
+  height: 100%;
+  /* background-color: #00000048; */
+}
+
+.headerVersion{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+  height: 100%;
+  position:relative
+}
+
+
+.versionBg{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  font-weight: bold;
+  position:relative
+}
+
+.versionTxt{
+  display: flex;
+  /* background-color: #0a458a; */
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
+  margin: 0;
+  position:absolute;
+  top: 40%; /*  Empieza a 50% desde la parte superior */
+  left: 50%; /* Empieza a 50% desde la izquierda */
+  transform: translate(-50%, -50%);
+}
+
+.title{
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  width: 80%;
+  color: rgb(255, 255, 255);
+  font-size: 22px;
+  font-weight: bold;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  left:50%;
+  transform: translateX(-50%);
+  /* text-shadow: 2px 2px 4px rgba(219, 7, 7, 0.5); */
+  font-family: ObvioslyWideBold, sans-serif;
+}
+
+.containerMeta{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  position: relative;
+  height: calc(90% - 40px);
+  gap:10px;
+  margin-bottom: 20px;
+}
+.container{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: calc((100%/5) - 10px + (10px / 5));
+  /* background-color: #f0f0f0; */
+}
+
+.containerLanerImg{
+  width: calc((100% / 6 ) - 10px + (10px / 6));
+  display: flex;
+  position: relative;
+}
+
+.lanerImg{
+  display: flex;
+  position:absolute;
+  width: 100%;
+  left: -10px;
+  top: 50%;
+  transform: translatey(-50%);
+}
+
+.championsInLaner{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap:10px;
+  height: 100%;
+}
+
+.champion{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: 0px;
+  width: calc((100%/5) - 10px + (10px / 5));
+  /* margin: 10px; */
+  /* max-height: 150px; */
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+.championImg{
+  width: 100%;
+  display: flex;
+
+  height: auto;
+
+  /* Gradiente para difuminado desde el 50% al 100% */
+  /* -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat; */
+
+}
+
+
+.items{
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  position:absolute;
+  align-items: center;
+  justify-content: center;
+  top:100%;
+}
+
+.item{
+  display: flex;
+  width: calc(100%/3);
+}
+
+.itemImg{
+  width: 100%;
+  display: flex;
+  height: fit-content;
+}
+
+.bgBlurred{
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  position:absolute;
+  align-items: center;
+  justify-content: center;
+  bottom: 0%;
+  margin: 0;
+  font-size: 12px;
+  height: 12px;
+}
+.bgBlurred::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: #000000;
+  filter: blur(5px);
+  margin: -10px;
+}
+
+.championsName{
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  position:absolute;
+  align-items: center;
+  justify-content: center;
+  bottom: 0%;
+  margin: 0;
+  font-size: 12px;
+}
+
+.runes{
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  position:absolute;
+  align-items: center;
+  justify-content: center;
+  bottom: 10%;
+
+}
+
+.runePrimary{
+  display: flex;
+  width: calc(100%/3);
+  position:absolute;
+  backdrop-filter: blur(1px);
+  bottom: 10%;
+  z-index: 1;
+  /* right: 55%;
+  transform: translateX(55%); */
+}
+.runeSecondary{
+  display: flex;
+  width: calc(100%/5);
+  position:absolute;
+  backdrop-filter: blur(1px);
+  bottom: 0%;
+  z-index: 2;
+  /* left: 55%;
+  transform: translateX(-55%); */
+}
+
+
+.runeImg{
+  width: 100%;
+  display: flex;
+  height: fit-content;
+   -webkit-filter: drop-shadow(0px 0px 5px #000000);
+  filter: drop-shadow(0px 0px 5px #000000);
+}
+
+
+.footer{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 50px;
+  /* background-color: #4a90e2; */
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
+  height: 5%;
+  opacity: 0.8;
+}
+
+.footer img{
+  width: calc((100%/3) - 20px + (20px / 3));
+  gap:20px;
+  display: flex;
+  height: fit-content;
+}
+

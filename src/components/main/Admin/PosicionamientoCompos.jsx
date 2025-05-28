@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import style from "./css/PosicionamientoCompos.module.css"
-import Youtube from "src/components/youtube/Youtube";
-import spinner180 from "../../../assets/loading-180-v2.svg"
+import Youtube from "@components/youtube/Youtube.jsx";
+import loadingSpinner from 'src/assets/loading-180-v2.svg';
 
 const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, gameplay, spatula1, spatula2, posicionamiento, setPosicionamiento, setData, setSinergias, show, version})=>{
   const [niveles, setNiveles] = useState([posicionamiento]);
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
+  const [imageReady, setImageReady] = useState(false);
   useEffect(()=>{
     const array= Object.keys(boardInfo).filter((level)=>{
       if(level !== "early"){
@@ -14,34 +15,52 @@ const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, gameplay, s
     })
     setNiveles(array)
   },[originalComp])
-  useEffect(()=>{
-    setIsLoading(false)
-  },[posicionamiento])
+
+ useEffect(() => {
+  setImageReady(false); // Siempre reinicia el estado de carga
+  if (posicionamiento === "gameplay") {
+    setIsLoading(false);
+  } else {
+    setIsLoading(true);
+  }
+}, [posicionamiento]);
+
   const url = "https://guiadeparche.com/tftdata/Set12/composiciones/"
 
   return (
     <div className={style.containerPosicionamiento}>
       <div className={style.containerImgPosicionamiento}>
-        {
-          !isLoading &&          
-          <>
-            {posicionamiento !== "gameplay" && posicionamiento !== "spatula1" && posicionamiento !== "spatula2" &&
-            <div className={show ? style.containerImgVideo : style.containerImgVideoOculto}>
-              <img className={show ? style.imgPosicionamiento : style.imgPosicionamientoOculto} src={url+id+"-"+posicionamiento+(version === "pbe" ? "-pbe" : "")+".webp"+"?v="+Date.now()} alt="" loading="lazy"/>
-            </div>
+        <div className={show ? style.containerImgVideo : style.containerImgVideoOculto}>
+          {isLoading && 
+          <img 
+          src={loadingSpinner.src} 
+          alt="Loading..." 
+          style={{ width: '60px', height: '60px', position: 'absolute', justifyContent:'center', alignItems:'center', zIndex: 10 }} 
+          />}
+          {posicionamiento === "gameplay" ? 
+            <Youtube 
+              src={gameplay[0]} 
+              titulo={titulo}
+            />
+            :
+          <img
+            key={posicionamiento}
+            className={show ? style.imgPosicionamiento : style.imgPosicionamientoOculto}
+            src={`${url}${id}-${posicionamiento}${version === "pbe" ? "-pbe" : ""}.webp`}
+            alt=""
+            loading="lazy"
+            onLoad={() => {
+              setImageReady(true);
+              setIsLoading(false);
+            }}
+            onError={() => {
+              setImageReady(false);
+              setIsLoading(false);
+            }}
+            style={{ opacity: isLoading ? 0 : 1, transition: 'opacity 0.3s ease-in-out' }}
+          />
           }
-            {(posicionamiento === "spatula1" || posicionamiento === "spatula2") && 
-            <div className={show ? style.containerImgVideo : style.containerImgVideoOculto}>
-              <img className={show ? style.imgPosicionamiento : style.imgPosicionamientoOculto} src={url+id+"-"+posicionamiento+(version === "pbe" ? "-pbe" : "")+".webp"+"?v="+Date.now()} alt="" loading="lazy"/>
-            </div>
-          }
-          {
-            posicionamiento === "gameplay" &&
-            <Youtube src={gameplay[0]} />
-          }
-          
-          </>
-        }
+        </div>
       </div>
       {show && 
       <div className={style.containerBtnPosicionamiento}>
