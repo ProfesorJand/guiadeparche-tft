@@ -277,9 +277,9 @@ export const Items = ({version})=>{
       combine:[1,2]
     },
     {
-      nombre:"Statikk Shiv",
+      nombre:"Void Staff",
       apiName:"TFT_Item_StatikkShiv",
-      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/statikk_shiv.png",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/tft/icons/items/hexcore/tft_item_voidstaff.tft_tft14_5.png",
       sinergia:"",
       combine:[1,3]
     },
@@ -293,7 +293,7 @@ export const Items = ({version})=>{
     {
       nombre:"Runaan's Hurricane",
       apiName:"TFT_Item_RunaansHurricane",
-      img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/runaans_hurricane.png",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/tft/icons/items/hexcore/tft_item_krakenslayer.tft_tft14_5.png",
       sinergia:"",
       combine:[1,5]
     },
@@ -981,17 +981,18 @@ if(allItemsInfo){
   
             {pestana === 0 &&
               itemsCrafteables.map((dataItem,index)=>{
+                const dataItemInfo = allItemsInfo.find(({apiName})=>{
+                  return dataItem.apiName === apiName
+                })
                 return (
                 <div className={style.itemsDrop} key={index}>
                   <img 
-                    src={dataItem.img}
-                    alt={`Basic Item TFT ${dataItem.nombre}`}
+                    src={`https://raw.communitydragon.org/latest/game/${dataItemInfo.icon.replace(".tex",".png").toLowerCase()}`}
+                    alt={`Basic Item TFT ${dataItemInfo.nombre}`}
                     className={style.imgItems}
                     onDragStart={(e)=>{handleDragStart(e)}}
-                    onClick={()=>{setItemOver(dataItem.apiName)}}
-                    data-item={JSON.stringify(allItemsInfo.find(({apiName})=>{
-                      return apiName === dataItem.apiName
-                    }))}
+                    onClick={()=>{setItemOver(dataItemInfo.apiName)}}
+                    data-item={JSON.stringify(dataItemInfo)}
                     data-from="itemList"
                     draggable="true"
                     >
