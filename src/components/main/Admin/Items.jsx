@@ -757,6 +757,12 @@ export const Items = ({version})=>{
       img:"https://raw.communitydragon.org/latest/game/assets/maps/tft/icons/items/hexcore/tft4_item_ornnanimavisage.tft_set13.png",
     },
     {
+      apiName:"TFT_Item_Artifact_TheIndomitable"
+    },
+    {apiName: "TFT_Item_Artifact_NavoriFlickerblades"},
+    {apiName: "TFT_Item_Artifact_StatikkShiv"},
+    {apiName: "TFT_Item_Artifact_TitanicHydra"},
+    {
       nombre: "Blighting Jewel",
       apiName: "TFT_Item_Artifact_BlightingJewel",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/tft/icons/items/hexcore/tft_item_artifact_blightingjewel.tft_set13.png",
@@ -984,11 +990,13 @@ if(allItemsInfo){
                 const dataItemInfo = allItemsInfo.find(({apiName})=>{
                   return dataItem.apiName === apiName
                 })
+                const img = `https://raw.communitydragon.org/latest/game/${dataItemInfo.icon.replace(".tex",".png").toLowerCase()}`
+                dataItemInfo.img = img
                 return (
                 <div className={style.itemsDrop} key={index}>
                   <img 
-                    src={`https://raw.communitydragon.org/latest/game/${dataItemInfo.icon.replace(".tex",".png").toLowerCase()}`}
-                    alt={`Basic Item TFT ${dataItemInfo.nombre}`}
+                    src={img}
+                    alt={`Basic Item TFT ${dataItemInfo.name}`}
                     className={style.imgItems}
                     onDragStart={(e)=>{handleDragStart(e)}}
                     onClick={()=>{setItemOver(dataItemInfo.apiName)}}
@@ -1080,17 +1088,20 @@ if(allItemsInfo){
           <div className={style.containerItemsHorizontalOtros}>
             {pestana === 4 && 
               ARTEFACTOS.map((dataItem,index)=>{
+                const dataItemInfo = allItemsInfo.find(({apiName})=>{
+                  return dataItem.apiName === apiName
+                })
+                const img = `https://raw.communitydragon.org/latest/game/${dataItemInfo.icon.replace(".tex",".png").toLowerCase()}`
+                dataItemInfo.img = img
                 return ( 
                 <div className={style.itemsDropOtros} key={`otrosItems`+index}>
                   <img 
-                  src={dataItem.img}
-                  alt={`Basic Item TFT ${dataItem.nombre}`}
+                  src={dataItemInfo.img}
+                  alt={`Basic Item TFT ${dataItemInfo.name}`}
                   className={style.imgItems}
                   onDragStart={(e)=>{handleDragStart(e)}}
-                  onClick={()=>{setItemOver(dataItem.apiName)}}
-                  data-item={JSON.stringify(allItemsInfo.find(({apiName})=>{
-                    return apiName === dataItem.apiName
-                  }))}
+                  onClick={()=>{setItemOver(dataItemInfo.apiName)}}
+                  data-item={JSON.stringify(dataItemInfo)}
                   data-from="itemList"
                   draggable="true"></img>
                 </div>)
