@@ -180,6 +180,12 @@
   height: 80%;
 }
 
+.imgSetTFTLogoReduced{
+  display: flex;
+  position: relative;
+  height: 50%;
+}
+
 .tituloPrincipal{
   font-family: ObvioslyWideBoldItalic;
   font-size: 0.8em;

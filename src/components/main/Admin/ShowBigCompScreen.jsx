@@ -9,7 +9,7 @@ import { toPng } from 'html-to-image';
 
 const ShowBigCompScreen = ({id, setShowBigComp}) => {
   const colorDificulty= {Easy:"#008000",Medium:"#ffa500",Hard:"#ff0000"};
-  const [showMovilnetLogo, setShowMovilnetLogo] = useState(false);
+  const [showMovilnetLogo, setShowMovilnetLogo] = useState(true);
   const backgroundRef = useRef(null);
   const composMeta = useStore(compos);
   const version = useStore(MetaCompVersion)
@@ -163,7 +163,7 @@ const ShowBigCompScreen = ({id, setShowBigComp}) => {
                 </div>
                 }
                 <div className={style.divSetTFTLogo}>
-                  <img className={style.imgSetTFTLogo} src="/tft/sets/14/logo.png" alt="TFT LOGO" />
+                  <img className={!showMovilnetLogo ? style.imgSetTFTLogoReduced : style.imgSetTFTLogo} src="/tft/sets/14/logo.png" alt="TFT LOGO" />
                 </div>
                 {/* Mostrar logo según el estado */}
                 

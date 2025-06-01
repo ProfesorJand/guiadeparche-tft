@@ -29,7 +29,7 @@ const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, gameplay, s
 
   return (
     <div className={style.containerPosicionamiento}>
-      <div className={style.containerImgPosicionamiento}>
+      <div className={show ? style.containerImgPosicionamiento : style.containerImgPosicionamientoBS}>
         <div className={show ? style.containerImgVideo : style.containerImgVideoOculto}>
           {isLoading && 
           <img 

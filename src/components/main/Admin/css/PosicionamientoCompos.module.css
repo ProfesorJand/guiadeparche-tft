@@ -10,8 +10,15 @@
 .containerImgPosicionamiento{
   display: flex;
   position: relative;
-  flex:11;
+  width: calc(100%*11/12);
   aspect-ratio: 16/9;
+}
+
+.containerImgPosicionamientoBS{
+  width: 100%;
+  aspect-ratio: 16/9;
+  display: flex;
+  position: relative;
 }
 
 .imgPosicionamiento{
@@ -30,7 +37,7 @@
 .containerBtnPosicionamiento{
   display: flex;
   position: relative;
-  flex:1;
+  width: calc(100%/12);
   flex-direction: column;
   margin: 0 5px;
   gap:20px
@@ -125,6 +132,7 @@
   position: relative;
   width: 100%;
   align-items: center;
+  justify-content: center;
 }
 
 .containerImgVideoOculto{
