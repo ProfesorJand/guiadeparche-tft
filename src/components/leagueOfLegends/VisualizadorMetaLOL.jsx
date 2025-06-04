@@ -101,18 +101,6 @@ const VisualizadorMetaLOL = () => {
         <label className={style.labelVersion}>
           <input type="button" className={style.inputVersion} onClick={onButtonClick} value="Capturar imagen"  />
         </label>
-        {/* <label className={style.labelElo}>
-          Elo:
-          <select className={style.selectElo} value={elo} onChange={(e) => setElo(e.target.value)}>
-            {
-              eloRanks.map((rank, index) => (
-                <option key={index} value={rank}>
-                  {rank.charAt(0).toUpperCase() + rank.slice(1)}
-                </option>
-              ))
-            }
-          </select>
-        </label> */}
       </div>
       <div className={style.containerVisualizadorMetaLOL}  ref={backgroundRef}>
         <img className={style.imgBackground} src={"https://cdn.communitydragon.org/latest/champion/Aatrox/splash-art/centered"} alt={"background de fondo"}></img>
@@ -171,21 +159,10 @@ const VisualizadorMetaLOL = () => {
                               ))}
                             </div>
 
-                            {/* <h4>Runes</h4> */}
-                            {/* {runes.length > 0 && runes.map((rune, idx) => (
-                              <div key={idx} className={ idx === 0 ? style.runePrimary : style.runeSecondary}>
-                                <img src={rune.icon} alt={rune.name} className={style.runeImg}/>
-                              </div>
-                            ))} */}
-
                             {/* <h4>SlotRunes</h4> */}
                             {slotsRunes.length > 0 && slotsRunes.map((rune, idx) => (
                               <div key={idx} className={ idx === 0 ? style.runePrimary : style.runeSecondary}>
                                 <img src={rune.icon} alt={rune.name} className={style.runeImg}/>
-                                {/* <svg width="90" height="90">       
-                                  <image xlink:href={rune.icon} src={rune.icon} width="90" height="90"/>    
-                                </svg> */}
-                                {/* <p>{rune.name}</p> */}
                               </div>
                             ))}
                           </div>

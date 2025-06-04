@@ -9,6 +9,7 @@
   width: 100%;
   box-sizing: border-box;
   aspect-ratio: 4/5; /* Mantiene la relación de aspecto 16:9 */
+
 }
 
 .imgBackground{
@@ -18,7 +19,8 @@
   width: 100%;
   height: 100%;
   object-fit: cover; /* Para simular background-size: cover */
-  filter: blur(5px); /* Difumina el fondo */
+  filter: blur(5px);  /*Difumina el fondo */
+  transform: scale(1.1);
 }
 
 .headerElo{
@@ -202,17 +204,7 @@
 .championImg{
   width: 100%;
   display: flex;
-
   height: auto;
-
-  /* Gradiente para difuminado desde el 50% al 100% */
-  /* -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
-  mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
-  -webkit-mask-size: 100% 100%;
-  mask-size: 100% 100%;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat; */
-
 }
 
 
