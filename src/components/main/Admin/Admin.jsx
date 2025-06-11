@@ -9,6 +9,8 @@ import FormularioMetaLOL from "@components/leagueOfLegends/FormularioMetaLOL.jsx
 import CreateAugmentsTierList from "./CreateAugmentsTierList.jsx";
 import style from "./css/Admin.module.css";
 import StreamersManager from "@components/embed/StreamersManager.jsx";
+import InfografiaTFT from "@components/TFT/InfogragiaTFT.jsx";
+import FormularioTierListValorant from "@components/valorant/FormularioTierListValorant.jsx";
 
 const AdminPanel = ({allAdmins})=>{
     const [isLoged, setIsLoged] = useState(localStorage.getItem("login") || false)
@@ -16,7 +18,7 @@ const AdminPanel = ({allAdmins})=>{
     const [action, setAction] = useState("editar");
     const [pestana, setPestana] = useState(1)
     useEffect(()=>{
-       loadDataTFTFromAPI({version:"latest", idioma:"es", pais:"ar"})
+       loadDataTFTFromAPI({version:"latest", idioma:"en", pais:"us"})
     },[])
 
     function cerrarSesion(){
@@ -46,16 +48,19 @@ const AdminPanel = ({allAdmins})=>{
                         <div slot="hola">
                             <button className={pestana === 1 ? style.btnActive: ""} onClick={()=>{setAction("editar"); setPestana(1)}}>Editar</button>
                         </div>
+                        <div slot="hola">
+                            <button className={pestana === 2 ? style.btnActive: ""} onClick={()=>{setAction("Infografia"); setPestana(2)}}>Infografia</button>
+                        </div>
                     </div>
                 </div>
                 <div className={style.container}>
                     Tier List TFT
                     <div className={style.tierList}>
                         <div slot="hola">
-                            <button className={pestana === 2 ? style.btnActive: ""}onClick={()=>{setAction("itemsTierList"); setPestana(2)}}>Items</button>
+                            <button className={pestana === 3 ? style.btnActive: ""}onClick={()=>{setAction("itemsTierList"); setPestana(3)}}>Items</button>
                         </div>
                         <div slot="hola">
-                            <button className={pestana === 3 ? style.btnActive: ""} onClick={()=>{setAction("augmentsTierList"); setPestana(3)}}>Augments</button>
+                            <button className={pestana === 4 ? style.btnActive: ""} onClick={()=>{setAction("augmentsTierList"); setPestana(4)}}>Augments</button>
                         </div>
                         {/* <div slot="hola">
                             <button className={pestana === 0 ? style.btnActive: ""} onClick={()=>{setAction("champsItemsTierList"); setPestana(0)}}>Champions Items Tier List</button>
@@ -67,7 +72,7 @@ const AdminPanel = ({allAdmins})=>{
                     Streamers
                     <div className={style.tierList}>
                         <div slot="hola">
-                            <button className={pestana === 4 ? style.btnActive: ""}onClick={()=>{setAction("twitch/kick"); setPestana(4)}}>Twitch / Kick</button>
+                            <button className={pestana === 5 ? style.btnActive: ""}onClick={()=>{setAction("twitch/kick"); setPestana(5)}}>Twitch / Kick</button>
                         </div>
                     </div>
                 </div>
@@ -76,7 +81,15 @@ const AdminPanel = ({allAdmins})=>{
                     League of Legends
                     <div className={style.tierList}>
                         <div slot="hola">
-                            <button className={pestana === 5 ? style.btnActive: ""} onClick={()=>{setAction("lol"); setPestana(5)}}>Meta</button>
+                            <button className={pestana === 6 ? style.btnActive: ""} onClick={()=>{setAction("lol"); setPestana(6)}}>Meta</button>
+                        </div>
+                    </div>
+                </div>
+                <div className={style.container}>
+                    Valorant
+                    <div className={style.tierList}>
+                        <div slot="hola">
+                            <button className={pestana === 7 ? style.btnActive: ""} onClick={()=>{setAction("val"); setPestana(7)}}>Meta</button>
                         </div>
                     </div>
                 </div>
@@ -84,10 +97,12 @@ const AdminPanel = ({allAdmins})=>{
             <div>
                 {action === "crear" && <CrearCompoTFT />}
                 {action === "editar" && <EditarCompoTFT />}
+                {action === "Infografia" && <InfografiaTFT/>}
                 {action === "itemsTierList" && <CreateItemsTierList />}
                 {action === "augmentsTierList" && <CreateAugmentsTierList admin={true}/>}
                 {action === "twitch/kick" && <StreamersManager/>}
                 {action === "lol" && <FormularioMetaLOL />}
+                {action === "val" && <FormularioTierListValorant />}
                 {/* {action === "champsItemsTierList" && <CrearTierListChampItem />} */}
             </div>
             <button onClick={()=>cerrarSesion()}>cerrar sesión</button>
