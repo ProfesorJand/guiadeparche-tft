@@ -7,7 +7,7 @@ import react from "@astrojs/react";
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://guiadeparche.com', // para guiadeparche
+  site: 'https://tft.guiadeparche.com', // para guiadeparche
   //site: 'https://profesorjand.github.io', // para github page
   //base: '/guiadeparche-tft', // para github page
   //trailingSlash: "always", //para github page
