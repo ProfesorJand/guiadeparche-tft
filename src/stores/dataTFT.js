@@ -8,16 +8,18 @@ const initialStateDataTFTSets = [];
 const initialStateDataTFTChampions = [];
 const initialStateVersion = "pbe";
 const initialStateTeamPlannerCode = [];
+const initialTFT_SET = "latest";
 
 export const dataTFT = deepMap(initialStateDataTFT)
-export const dataTFTItems = atom(initialStateDataTFTItems);
+export const dataTFTAllItems = atom(initialStateDataTFTItems);
 export const dataTFTSetData = atom(initialStateDataTFTSetData);
 export const dataTFTChampions = atom(initialStateDataTFTChampions);
 export const versionTFT = atom(initialStateVersion);
 export const teamPlannerCode = atom(initialStateTeamPlannerCode);
+export const TFT_SET = atom(initialTFT_SET)
 
 // version: latest / pbe ---- idioma: en / es --- pais: mx /es /gb /us
-export const loadDataTFTFromAPI = ({version=versionTFT.get(), idioma="es", pais="ar"}) =>{
+export const loadDataTFTFromAPI = ({version=versionTFT.get(), idioma="en", pais="us"}) =>{
   task(async()=>{
     const urlDragon = `https://raw.communitydragon.org/${version}/cdragon/tft/${idioma}_${pais}.json`
     const response = await fetch(urlDragon);
@@ -26,11 +28,27 @@ export const loadDataTFTFromAPI = ({version=versionTFT.get(), idioma="es", pais=
   })
 }
 
+export const getMetadataVersionTFTBySet = async (set=TFT_SET.get()) =>{
+const urlDragon = `https://raw.communitydragon.org/${set}/content-metadata.json`;
+const response = await fetch(urlDragon);
+const data = await response.json();
+const [v1, v2, ...rest] = data.version.split(".");
+const version = v1.concat(".",v2);
+return version;
+}
+
 export const updateDataTFT = (data)=>{
   const {items, setData, sets} = data;
   dataTFT.set(data);
-  dataTFTItems.set(items);
+  dataTFTAllItems.set(items);
   dataTFTSetData.set(setData);
+  // const nombreDeSets = setData.map(({name, number, mutator})=>{
+  //   if(number === 10 || number === 14){
+  //     console.log("name", name)
+  //     console.log("number", number)
+  //     console.log("mutator",mutator)
+  //   }
+  // })
   dataTFTChampions.set(sets[versionTFT.get() === "pbe" ? "14": "13"].champions)
 };
 

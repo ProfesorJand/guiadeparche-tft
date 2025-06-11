@@ -13,7 +13,7 @@ const ChampTierList = ({id,isSample,campeonTierList, augmentTierList, champItem,
     "var(--color-hex-cost-5)",
   ];
   const urlDataDragonLatestGame = `https://raw.communitydragon.org/${version}/game/`;
-  const urlDataDragonPBEGame = `https://raw.communitydragon.org/${"15.11"}/game/`;
+  const urlDataDragonPBEGame = `https://raw.communitydragon.org/${version}/game/`;
   const compId = useStore(openCompoId)
   useEffect(()=>{
     scrollToComposicion()

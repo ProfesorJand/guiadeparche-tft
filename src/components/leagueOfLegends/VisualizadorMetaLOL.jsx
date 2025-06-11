@@ -119,7 +119,8 @@ const VisualizadorMetaLOL = () => {
               <img src={urlEloImg(elo)} className={style.eloEmblem}></img>
             </div> */}
             <div className={style.title}>
-              <p>MEJORES CAMPEONES - TIER S</p>
+              {/* <p>MEJORES CAMPEONES - TIER S</p> */}
+               <p>BEST CHAMPIONS TIER LIST  (Gold+)</p> 
             </div>
           </div>
           <div className={style.containerMeta}>
@@ -177,7 +178,7 @@ const VisualizadorMetaLOL = () => {
           </div>
           <div className={style.footer}>
             <img src="/tft/assets/Jupeson_LOGO_Sin_Publicidad.png" alt="logo Jupeson" style={{transform:"scale(0.6)"}}></img>
-            <img src="/tft/assets/logoMovilnet-e-letras-blancas.png" alt="logo Movilnet" ></img>
+            {/* <img src="/tft/assets/logoMovilnet-e-letras-blancas.png" alt="logo Movilnet" ></img> */}
             <img src="/lol/league-logo-blanco.png" style={{transform:"scale(0.6)"}} alt="logo League of Legends"></img>
           </div>
         </div>

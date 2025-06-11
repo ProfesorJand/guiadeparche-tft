@@ -229,7 +229,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
       const rect = element.getBoundingClientRect();
       const width = rect.width;
       const height = rect.height;
-      const pixelRatio = 3;
+      const pixelRatio = 1.5;
       try {
         const blob = await toBlob(element, {
           pixelRatio,
@@ -241,6 +241,8 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           },
           width: width * pixelRatio,
           height: height * pixelRatio,
+          type: 'image/webp',
+          quality: 0.9, // 0.7–0.9 es buen rango para equilibrio calidad/peso
         });
 
         const webpBlob = new Blob([blob], { type: 'image/webp' });
