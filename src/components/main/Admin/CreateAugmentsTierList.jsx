@@ -5,6 +5,7 @@
     import ItemsTierList from "./ItemTierList.jsx";
     import styleAugments from "./css/CreateAugmentsTierList.module.css";
     import AugmentsTierList from "./AugmentsTierList.jsx"
+import { augmentsTierListJSON, crearAugmentsTierListPHP } from "@stores/dataTFT.js";
     
     const CreateAugmentsTierList = ({admin=false})=>{
       const urlDataDragon="https://raw.communitydragon.org/latest/game/";
@@ -20,7 +21,7 @@
     
       useEffect(()=>{
         (async function traerDatos(){
-          const url="https://guiadeparche.com/tftdata/Set12/augmentsTierList.json";
+          const url=augmentsTierListJSON
           const datos = await fetch(url, {cache:"no-cache"});
           const resp = await datos.json();
           setAumentos(resp)
@@ -139,7 +140,7 @@
       }
     
       async function saveTierList(){
-        const url = 'https://guiadeparche.com/tftdata/Set12/crearAugmentsTierList.php';  // Cambia esto por la URL de tu archivo PHP
+        const url = crearAugmentsTierListPHP
         const token = import.meta.env.PUBLIC_TOKEN_META
         try {
             const response = await fetch(url, {

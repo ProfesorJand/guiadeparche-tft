@@ -1,3 +1,5 @@
+import { metaTFTComposicionesJSON } from "@stores/dataTFT";
+
 export async function fetchingDataTFT({version, idioma, pais}){
     try {
         const urlDragon = `https://raw.communitydragon.org/${version}/cdragon/tft/${idioma}_${pais}.json`
@@ -33,6 +35,6 @@ export const datosTFTIngles = await fetchingDataTFT({version:"latest",idioma:"en
 export const championsTFTIngles = await datosTFTIngles.sets[set].champions;
 export const itemsDataIngles = await datosTFTIngles.items;
 
-export const fetchMeta = await fetch(`https://guiadeparche.com/tftdata/Set12/metaTFTComposiciones.json`, {cache:"reload"});
+export const fetchMeta = await fetch(metaTFTComposicionesJSON, {cache:"reload"});
 export const meta = await fetchMeta.json();
 

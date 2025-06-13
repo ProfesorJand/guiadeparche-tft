@@ -156,7 +156,7 @@ useEffect(()=>{
 // Guardar los cambios en el nanostore
 const saveChanges = async () => {
   try {
-    const response = await fetch("https://guiadeparche.com/lol/saveMetaLOL.php", {
+    const response = await fetch("https://api.guiadeparche.com/lol/saveMetaLOL.php", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

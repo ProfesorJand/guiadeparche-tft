@@ -116,7 +116,7 @@ const PlatformStreamer = () => {
 export default PlatformStreamer;
 
 async function getClientIdToken() {
-  const res = await fetch(`https://guiadeparche.com/twitch/get-twitch-token.php`);
+  const res = await fetch(`https://api.guiadeparche.com/twitch/get-twitch-token.php`);
   const data = await res.json();
   return data
 }

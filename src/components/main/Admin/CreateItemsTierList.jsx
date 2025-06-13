@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react"
 import Items from "./Items.jsx"
 import style from "./css/ItemsTierList.module.css";
 import ItemsTierList from "./ItemTierList.jsx";
-import { versionTFT } from "@stores/dataTFT.js";
+import { crearTierListItemPHP, tierListItemJSON, versionTFT } from "@stores/dataTFT.js";
 import { useStore } from "@nanostores/react";
 const CreateItemsTierList = ()=>{
   //localStorage.getItem("login")
@@ -57,7 +57,7 @@ const CreateItemsTierList = ()=>{
 
   useEffect(()=>{
     (async function traerDatos(){
-      const url="https://guiadeparche.com/tftdata/Set12/tierListItem.json";
+      const url=tierListItemJSON;
       const datos = await fetch(url, {cache:"no-cache"});
       const resp = await datos.json();
       setTierList(resp)
@@ -174,7 +174,7 @@ const CreateItemsTierList = ()=>{
   }
 
   async function saveTierList(){
-    const url = 'https://guiadeparche.com/tftdata/Set12/crearTierListItem.php';  // Cambia esto por la URL de tu archivo PHP
+    const url = crearTierListItemPHP
     const token = import.meta.env.PUBLIC_TOKEN_META
     try {
         const response = await fetch(url, {

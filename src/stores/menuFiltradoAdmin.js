@@ -1,6 +1,6 @@
 import {atom, deepMap, task} from "nanostores";
 import backupMeta from "src/json/backupMeta.json" assert { type: 'json' };
-import {versionTFT} from "@stores/dataTFT";
+import {composMetaJSON, composMetaPBEJSON, constantesJSON, versionTFT} from "@stores/dataTFT";
 
 export const defaultAction = atom("crear")
 
@@ -16,9 +16,9 @@ export const loadCompsMeta = async () => {
 
   //const urlMeta = "https://guiadeparche.com/tftdata/Set12/composMeta.json";
   const urlMetaBackend = versionTFT.get() === "pbe" ?
-  "https://guiadeparche.com/tftdata/Set12/composMetaPBE.json"
+  composMetaPBEJSON
   :
-  "https://guiadeparche.com/tftdata/Set12/composMeta.json";
+  composMetaJSON;
   
   try {
     const response = await fetch(urlMetaBackend, { cache: "reload" });
@@ -136,9 +136,8 @@ await loadCompsMeta();
 
 
 export const getConstantsTFT = async () => {
-  const urlMeta = "https://guiadeparche.com/tftdata/Set12/constantes.json";
   try {
-    const response = await fetch(urlMeta, { cache:"no-cache" });
+    const response = await fetch(constantesJSON, { cache:"no-cache" });
     const {MetaCompVersion: version, Streamers} = await response.json();
     MetaCompVersion.set(version)
     STREAMERS.set(Streamers)

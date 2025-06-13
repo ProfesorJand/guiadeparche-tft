@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import style from "./css/CrearTierListChampItem.module.css"
 import { championsTFT } from "src/json/updates/constantesLatest";
-import {CRAFTEABLE_ITEMS, ARTEFACTOS, OTROS_ITEMS} from "src/stores/dataTFT"
+import {CRAFTEABLE_ITEMS, ARTEFACTOS, OTROS_ITEMS, tierListChampionItemJSON, crearTierListChampionItemPHP} from "src/stores/dataTFT"
 import { radiantsItems, emblems, itemsDataIngles, augmentsIDList } from "src/json/updates/itemsTFT";
 import {traitsColors} from "src/functions/campeonestft.js"
 
@@ -19,7 +19,7 @@ useEffect(()=>{
 
   })
   async function fetchingTierListChampionItem(){
-    const url= "https://guiadeparche.com/tftdata/Set12/tierListChampionItem.json"
+    const url= tierListChampionItemJSON
     await fetch(url,{cache:"no-cache"}).then((data)=>data.json()).then((resp)=>setTierList(resp)).catch(err=>console.error(err))
     
   }
@@ -46,7 +46,7 @@ useEffect(()=>{
   if(Object.keys(tierList).length){
     console.log(tierList)
     function addingTierListToBackEnd(tierList){
-      const url= "https://guiadeparche.com/tftdata/Set12/crearTierListChampionItem.php"
+      const url= crearTierListChampionItemPHP
       const token = import.meta.env.PUBLIC_TOKEN_META
       fetch(url, {
         method: 'POST',

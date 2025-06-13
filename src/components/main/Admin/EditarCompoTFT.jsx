@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MetaComps from "./MetaComps.jsx";
 import TierListMetaComps from "@components/TFT/TierListMetaComps.jsx";
-import { versionTFT, swapVersionTFT } from "src/stores/dataTFT.js";
+import { versionTFT, swapVersionTFT, constantesJSON, constantesPHP } from "src/stores/dataTFT.js";
 import { useStore } from "@nanostores/react";
 import style from "./css/EditarCompoTFT.module.css"
 import SelectVersion from "@components/versionTFT/SelectVersion.jsx";
@@ -14,7 +14,7 @@ const EditarCompoTFT = () => {
     // Obtener las constantes actuales
     const fetchConstantes = async () => {
       try {
-        const response = await fetch("https://guiadeparche.com/tftdata/Set12/constantes.json",{cache:"reload"});
+        const response = await fetch(constantesJSON,{cache:"reload"});
         const data = await response.json();
         setConstantes(data);
       } catch (error) {
@@ -32,7 +32,7 @@ const EditarCompoTFT = () => {
     const newValue = element.value.trim(); // Obtiene el valor del input
     const keyToUpdate = inputId.replace("input", ""); // Extrae la clave a actualizar
 
-    const url = "https://guiadeparche.com/tftdata/Set12/constantes.php";
+    const url = constantesPHP;
     const token = import.meta.env.PUBLIC_TOKEN_META;
     const bodyData = {
       key: keyToUpdate,

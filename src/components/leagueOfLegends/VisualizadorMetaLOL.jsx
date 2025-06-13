@@ -10,6 +10,7 @@ import { toPng } from 'html-to-image';
 const VisualizadorMetaLOL = () => {
   const lanersChampionsMetaStore = useStore(lanersChampionsMeta);
   const [versionMeta, setVersionMeta] = useState("25.11");
+  const [tituloMeta, setTituloMeta] = useState("Titulo")
   const [elo, setElo] = useState("emerald");
   const backgroundRef = useRef(null);
   const eloRanks = [
@@ -95,6 +96,10 @@ const VisualizadorMetaLOL = () => {
     <div className={style.visualizadorMetaLOL}>
       <div>
         <label className={style.labelVersion}>
+          Titulo:
+          <input type="text" className={style.inputVersion} value={tituloMeta} onChange={(e) => setTituloMeta(e.target.value)} placeholder="Ingrese Titulo del meta" />
+        </label>
+        <label className={style.labelVersion}>
           Versión del Meta:
           <input type="text" className={style.inputVersion} value={versionMeta} onChange={(e) => setVersionMeta(e.target.value)} placeholder="Ingrese la versión del meta" />
         </label>
@@ -120,7 +125,7 @@ const VisualizadorMetaLOL = () => {
             </div> */}
             <div className={style.title}>
               {/* <p>MEJORES CAMPEONES - TIER S</p> */}
-               <p>BEST CHAMPIONS TIER LIST  (Gold+)</p> 
+               <p>{tituloMeta}</p> 
             </div>
           </div>
           <div className={style.containerMeta}>

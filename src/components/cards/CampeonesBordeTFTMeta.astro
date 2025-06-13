@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import {BorderColorCampeon} from "../../json/updates/constantesCampeones";
+import { assets3Estrellas } from "@stores/dataTFT";
 const {nombreCampeon, titulo, tresEstrellas, IconoSuperior, index, i, imgCampeon, meta, coste, alternativa} = Astro.props;
 const borderColor = BorderColorCampeon[coste];
 ---
@@ -19,7 +20,7 @@ const borderColor = BorderColorCampeon[coste];
       
       />
       {tresEstrellas && <Image
-      src={"https://guiadeparche.com/tftdata/assets/3-estrellas.webp"}
+      src={assets3Estrellas}
       alt={"3-estrella"}
       class="tresEstrellas"
       width={100}

@@ -8,7 +8,7 @@ import AumentosCompos from "./AumentosCompos";
 import PosicionamientoCompos from "./PosicionamientoCompos";
 import CrearCompoTFT from "./CrearCompoTFT";
 //import { championsTFT as otrosChampions} from "src/json/updates/constantesLatest.js";
-import { teamPlannerCode, dataTFTChampions, versionTFT, loadDataTFTFromAPI, getTeamPlannerCodeAPI } from "@stores/dataTFT";
+import { teamPlannerCode, dataTFTChampions, versionTFT, loadDataTFTFromAPI, getTeamPlannerCodeAPI, crearCompoMetaPHP } from "@stores/dataTFT";
 import ShowBigCompScreen from "./ShowBigCompScreen"; 
 import RadiantsItems from "./RadiantsItems";
 import { useStore } from "@nanostores/react";
@@ -157,7 +157,7 @@ const Composicion = ({id, compo, admin=false, show=true, allwaysOpen=false, onTo
         } else {
             token = import.meta.env.PUBLIC_TOKEN_META;
         }
-        fetch('https://guiadeparche.com/tftdata/Set12/crearCompoMeta.php', {
+        fetch(crearCompoMetaPHP, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',

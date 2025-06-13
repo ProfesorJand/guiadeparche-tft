@@ -37,7 +37,7 @@ const FormularioTierListValorant = () => {
 
   const saveChanges = async () => {
     try {
-      const response = await fetch("https://guiadeparche.com/val/saveMetaVal.php", {
+      const response = await fetch("https://api.guiadeparche.com/val/saveMetaVal.php", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

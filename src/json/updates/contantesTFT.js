@@ -1,3 +1,5 @@
+import { metaTFTComposicionesJSON } from "@stores/dataTFT";
+
 export const VERSION_LATEST = "latest";
 export const VERSION_PBE = "pbe";
 export const IDIOMA_DEFAULT = "en"; //en
@@ -78,6 +80,6 @@ export async function championsTFTIngles({version=VERSION_PBE, set=SET_PBE}) {
 export const traitsTFTIngles = (await datosTFTIngles({})).sets[SET_PBE].traits; // SET_LATEST
 export const itemsDataIngles = (await datosTFTIngles({})).items;
 
-export const fetchMeta = await fetch(`https://guiadeparche.com/tftdata/Set12/metaTFTComposiciones.json`, {cache:"reload"});
+export const fetchMeta = await fetch(metaTFTComposicionesJSON, {cache:"reload"});
 export const meta = await fetchMeta.json();
 

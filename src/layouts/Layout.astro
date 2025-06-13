@@ -155,18 +155,31 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
     font-style: normal;
   } */
 
+  html {
+  background: transparent;
+}
+
   body::-webkit-scrollbar {
     width: 12px; /* width of the entire scrollbar */
+    background: transparent;
   }
 
   body::-webkit-scrollbar-track {
-    background: var(--bg-primary); /* color of the tracking area */
+    /* background: var(--bg-primary); */
+    background: transparent;
+    background-image: url("/backgrounds/negro_y_rayas.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    box-shadow: none;
   }
 
   body::-webkit-scrollbar-thumb {
     background-color: blue; /* color of the scroll thumb */
     border-radius: 20px; /* roundness of the scroll thumb */
     border: 2px solid var(--border-color); /* creates padding around scroll thumb */
+    background-clip: padding-box;
   }
   body {
     background-color: var(--bg-primary);

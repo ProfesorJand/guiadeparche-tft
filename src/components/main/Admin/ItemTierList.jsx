@@ -3,7 +3,7 @@ import style from "./css/ItemsTierList.module.css";
 import parse from "html-react-parser";
 import DOMPurify from "dompurify";
 import TooltipItem from "@components/tooltips/items";
-import { versionTFT } from "@stores/dataTFT";
+import { tierListItemJSON, versionTFT } from "@stores/dataTFT";
 import { useStore } from "@nanostores/react"
 
 const ItemTierList = () => {
@@ -15,7 +15,7 @@ const ItemTierList = () => {
   const [rowIndex, setRowIndex] = useState(null);
   useEffect(() => {
     (async function traerDatos() {
-      const url = "https://guiadeparche.com/tftdata/Set12/tierListItem.json";
+      const url = tierListItemJSON;
       const datos = await fetch(url, { cache: "no-cache" });
       const resp = await datos.json();
       setItemsTierList(resp);

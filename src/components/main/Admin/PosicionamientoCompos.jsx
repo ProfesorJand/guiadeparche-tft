@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import style from "./css/PosicionamientoCompos.module.css"
 import Youtube from "@components/youtube/Youtube.jsx";
 import loadingSpinner from 'src/assets/loading-180-v2.svg';
+import { urlComposiciones } from "@stores/dataTFT";
 
 const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, gameplay, spatula1, spatula2, posicionamiento, setPosicionamiento, setData, setSinergias, show, version})=>{
   const [niveles, setNiveles] = useState([posicionamiento]);
@@ -25,7 +26,6 @@ const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, gameplay, s
   }
 }, [posicionamiento]);
 
-  const url = "https://guiadeparche.com/tftdata/Set12/composiciones/"
 
   return (
     <div className={style.containerPosicionamiento}>
@@ -46,7 +46,7 @@ const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, gameplay, s
           <img
             key={posicionamiento}
             className={show ? style.imgPosicionamiento : style.imgPosicionamientoOculto}
-            src={`${url}${id}-${posicionamiento}${version === "pbe" ? "-pbe" : ""}.webp`}
+            src={`${urlComposiciones}${id}-${posicionamiento}${version === "pbe" ? "-pbe" : ""}.webp`}
             alt=""
             loading="lazy"
             onLoad={() => {

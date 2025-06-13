@@ -32,7 +32,7 @@ const CampeonesBordeTFTMeta = ({ titulo, tresEstrellas, IconoSuperior, imgCampeo
         />
         {tresEstrellas && (
           <img
-            src="https://guiadeparche.com/tftdata/assets/3-estrellas.webp"
+            src="/tft/assets/3-estrellas.webp"
             alt="3-estrella"
             className={styles.tresEstrellas}
             width={100}

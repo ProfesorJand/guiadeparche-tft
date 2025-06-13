@@ -6,7 +6,7 @@ import Sinergias from "./Sinergias.jsx"
 import Items from "./Items.jsx";
 import Youtube from "../../youtube/Youtube.jsx";
 import { toBlob } from 'html-to-image';
-import { BASIC_ITEMS, CRAFTEABLE_ITEMS, ARTEFACTOS, ITEMS_CRAFTEABLES_PBE } from "src/stores/dataTFT.js";
+import { BASIC_ITEMS, CRAFTEABLE_ITEMS, ARTEFACTOS, ITEMS_CRAFTEABLES_PBE, uploadImageWebpPHP, crearCompoMetaPHP } from "src/stores/dataTFT.js";
 import { emblems, radiantsItems as listOfRadiantsItems} from "src/json/updates/itemsTFT";
 import CarouselItems from "./CarouselItems.jsx";
 import RadiantsItems from "./RadiantsItems.jsx";
@@ -250,7 +250,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         const formData = new FormData();
         formData.append('file', webpBlob, `${nombreArchivo}-${version}.webp`);
 
-        const response = await fetch('https://guiadeparche.com/tftdata/Set12/uploadImageWebp.php', {
+        const response = await fetch(uploadImageWebpPHP, {
           method: 'POST',
           body: formData,
         });
@@ -505,7 +505,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         }
         if(tier && posicion && dificultad && titulo && shadowCategory && infographicCategory && aumentos.length && Object.keys(carouselItems).length && Object.keys(boardInfo?.early?.data || {}).length && Object.keys(boardInfo).length && Object.keys(campeonTierList).length && Object.keys(boardInfo?.[originalComp]?.data || {}).length){
           const token = import.meta.env.PUBLIC_TOKEN_META
-          fetch('https://guiadeparche.com/tftdata/Set12/crearCompoMeta.php', {
+          fetch(crearCompoMetaPHP, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

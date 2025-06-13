@@ -1,0 +1,70 @@
+.containerTierList{
+  display:flex;
+  flex-direction: column;
+  position:relative;
+  width: 100%;
+}
+
+.containerChampionInfo{
+  display: flex ;
+  flex-direction: row;
+  width: 100%;
+}
+
+.containerImgCampeon{
+  display: flex;
+  width: 20%;
+}
+
+.imgCampeon{
+  display: flex;
+  width: 100%;
+}
+
+.containerItems{
+  display: flex;
+  width: 50%;
+  flex-direction: column;
+}
+
+.containerItemsImg{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.divItemsImg{
+  display: flex;
+  width: 50px;
+  height: 50px;
+}
+.imgItem{
+  width: 100%;
+}
+.containerSinergiaAumento{
+  display: flex;
+  width: 30%;
+  flex-direction: column;
+}
+
+.containerSAImg{
+  display: flex;
+  width: 100%;
+}
+
+.divSAImg{
+  display: flex;
+  width: 50px;
+  height: 50px;
+  background-color: grey;
+}
+
+.input[type=text], .input[type=number]{
+  width: 100% !important;
+  padding: 0;
+  margin:0;
+  box-sizing: border-box;
+  padding-block: 1px;
+  padding-inline: 2px;
+}

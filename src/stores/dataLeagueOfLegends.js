@@ -87,7 +87,7 @@ export const fetchChampionsMeta = async () => {
   try {
     const token = import.meta.env.PUBLIC_TOKEN_META;
     console.log("Fetching champions meta data with token:", token);
-    const url = "https://guiadeparche.com/lol/ChampsMeta.json";
+    const url = "https://api.guiadeparche.com/lol/ChampsMeta.json";
     const response = await fetch(url,{
       headers: {
         "Content-Type": "application/json",

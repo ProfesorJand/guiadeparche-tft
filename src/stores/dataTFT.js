@@ -10,6 +10,23 @@ const initialStateVersion = "pbe";
 const initialStateTeamPlannerCode = [];
 const initialTFT_SET = "latest";
 
+export const apiGPTFT = `https://api.guiadeparche.com/tft/`;
+export const crearCompoMetaPHP = `${apiGPTFT}crearCompoMeta.php`;
+export const uploadImageWebpPHP = `${apiGPTFT}uploadImageWebp.php`;
+export const tierListChampionItemJSON =  `${apiGPTFT}tierListChampionItem.json`;
+export const crearTierListChampionItemPHP = `${apiGPTFT}crearTierListChampionItem.php`;
+export const augmentsTierListJSON = `${apiGPTFT}augmentsTierList.json`
+export const crearAugmentsTierListPHP = `${apiGPTFT}crearAugmentsTierList.php`
+export const tierListItemJSON = `${apiGPTFT}tierListItem.json`;
+export const crearTierListItemPHP = `${apiGPTFT}crearTierListItem.php`;
+export const constantesJSON = `${apiGPTFT}constantes.json`;
+export const constantesPHP = `${apiGPTFT}constantes.php`;
+export const urlComposiciones = `${apiGPTFT}composiciones/`;
+export const metaTFTComposicionesJSON = `${apiGPTFT}metaTFTComposiciones.json`;
+export const composMetaJSON = `${apiGPTFT}composMeta.json`;
+export const composMetaPBEJSON = `${apiGPTFT}composMetaPBE.json`;
+export const assets3Estrellas = `${apiGPTFT}3-estrellas.webp`;
+
 export const dataTFT = deepMap(initialStateDataTFT)
 export const dataTFTAllItems = atom(initialStateDataTFTItems);
 export const dataTFTSetData = atom(initialStateDataTFTSetData);

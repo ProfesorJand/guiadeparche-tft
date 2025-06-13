@@ -2,9 +2,10 @@ import { useStore } from "@nanostores/react";
 import { STREAMERS } from "src/stores/menuFiltradoAdmin";
 import { useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+import { constantesPHP } from "@stores/dataTFT";
 
 const actualizarStreamers = async (updatedStreamers) => {
-  const url = "https://guiadeparche.com/tftdata/Set12/constantes.php";
+  const url = constantesPHP;
   const token = import.meta.env.PUBLIC_TOKEN_META;
 
   const bodyData = {

@@ -73,4 +73,4 @@ export const BorderColorCampeon = {
     5:"#f8af05",
 }
 
-export const urlTresEstrellas = "https://guiadeparche.com/tftdata/assets/3-estrellas.webp"
+export const urlTresEstrellas = "/tft/assets/3-estrellas.webp"
