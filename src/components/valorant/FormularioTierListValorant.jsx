@@ -2,10 +2,14 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import { useStore } from "@nanostores/react";
 import { toPng } from 'html-to-image';
 import TierListValorant from "./TierListValorant";
-import {fetchAgentsMeta, ValorantAgentsMeta} from "@stores/dataValorant"
+import style from "./css/FormularioTierListValorant.module.css"
+import {fetchAgentsMeta, ValorantAgentsMeta, ValorantConstantes} from "@stores/dataValorant"
+
 const FormularioTierListValorant = () => {
   const backgroundRef = useRef(null)
   const [localMetaValorant, setLocalMetaValorant] = useState({})
+  const [version, setVersion] = useState("10.10");
+  const [titulo, setTitulo] = useState("TOP RANKED LINEUPS - TIER S+")
   const numbersOfAgentsInMeta= 5;
    const ValorantAgentsMetaStore = useStore(ValorantAgentsMeta);
    
@@ -21,18 +25,41 @@ const FormularioTierListValorant = () => {
     setLocalMetaValorant(JSON.parse(JSON.stringify(ValorantAgentsMetaStore)))
   },[ValorantAgentsMetaStore])
 
-  const handleAgent = ({agent, map, iAgentSpot})=>{
+  useEffect(()=>{
+console.log({localMetaValorant})
+  },[localMetaValorant])
+
+  const handleAgent = ({agent, map, iAgentSpot, rol})=>{
     console.log("handleAgent")
     console.log({agent})
-    const updateMapAgent = localMetaValorant?.[map] ? localMetaValorant[map] : []
-    updateMapAgent[iAgentSpot] = agent;
-    console.log({updateMapAgent})
-    setLocalMetaValorant((prev)=>{
-      return ({
-        ...prev,
-        [map]:updateMapAgent
-      })
-    })
+   
+    const updateMap = localMetaValorant?.[map] ? {...localMetaValorant[map]} : {};
+    updateMap[rol] = updateMap?.[rol] ? [...updateMap[rol]] : [] 
+    updateMap[rol][iAgentSpot] = agent;
+    console.log({updateMapRol:updateMap[rol]})
+    const sonTodosNulls = updateMap[rol].every((value)=>value === null)
+    if(sonTodosNulls){
+      delete updateMap[rol]
+    }
+    const updateMapTieneKeys = Object.keys(updateMap).length > 0;
+    setLocalMetaValorant(prev => {
+    const newMeta = { ...prev };
+    if (updateMapTieneKeys) {
+      newMeta[map] = updateMap;
+    } else {
+      delete newMeta[map];
+    }
+    return newMeta;
+  });
+     //const updateMapAgent = localMetaValorant?.[map] ? localMetaValorant[map] : [];
+    // updateMapAgent[iAgentSpot] = agent;
+    // console.log({updateMapAgent})
+    // setLocalMetaValorant((prev)=>{
+    //   return ({
+    //     ...prev,
+    //     [map]:updateMapAgent
+    //   })
+    // })
   }
 
   const saveChanges = async () => {
@@ -47,10 +74,10 @@ const FormularioTierListValorant = () => {
       });
   
       if (!response.ok) {
-        throw new Error("Error saving MetaLOL");
+        throw new Error("Error saving MetaValorant");
       }
   
-      console.log("%cMetaLOL saved successfully", "background:green;color:white");
+      console.log("%cMetaValorant saved successfully", "background:green;color:white");
   
       // 🔄 Actualizar el store con la versión más reciente desde el servidor
       const updatedMeta = await fetchAgentsMeta();
@@ -62,6 +89,23 @@ const FormularioTierListValorant = () => {
       console.error("Error saving or updating MetaLOL:", error);
     }
   };
+
+  const saveContantes = async ({key,value})=>{
+    try{
+      const response = await fetch("https://api.guiadeparche.com/val/constantes.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${import.meta.env.PUBLIC_TOKEN_META}`,
+        },
+        body: JSON.stringify({key,value}),
+      });
+      alert(`${key} se ha guardado`)
+    }catch(err){
+      console.error("Error saving or updating constantes Valorant:", err)
+      alert(`${key} NO se ha guardado`)
+    }
+  }
 
   const loadAllImages = (container) => {
     const images = container.querySelectorAll("img");
@@ -115,6 +159,7 @@ const FormularioTierListValorant = () => {
         link.href = dataUrl;
         link.click();
         console.log("📸 Imagen capturada");
+        alert("📸 Imagen capturada")
       })
       .catch((err) => {
         console.error("❌ Error al capturar imagen:", err);
@@ -130,49 +175,63 @@ const FormularioTierListValorant = () => {
             <div key={`ValorantMap${iMap}`}>
               <label>{map}</label>
               <img src={`/valorant/maps/${map}.webp`} style={{width:"30%"}}></img>
-              {Array.from({ length: numbersOfAgentsInMeta}, (_, iAgentSpot)=>{
+              {Object.keys(agentsRols).map((rol)=>{
                 return (
-                  <div key={`inputsAgents${iAgentSpot}`}>
-                    <input
-                      list="agentsList"
-                      placeholder="Find Agent"
-                      value={localMetaValorant[map]?.[iAgentSpot] || ""}
-                      onChange={(e)=>{
-                        const agent = e.target.value;
-                        if(agent===""){
-                          handleAgent({
-                            agent:null,
-                            map,
-                            iAgentSpot
-                          })
-                        }else{
-                          handleAgent({
-                            agent,
-                            map,
-                            iAgentSpot
-                          })
-                        }
-                      }}
-                    />
-                    <datalist id="agentsList">
-                      {agents.map((agent,iAgentOption)=>{
-                        return (
-                          <option key={`agentInputs${iMap}${iAgentSpot}${iAgentOption}`} value={agent}>{agent}</option>
-                        )
-                      })}
-                    </datalist>
+                  <div>
+                    <img src={`/valorant/rols/${rol}.svg`} style={{ filter: "brightness(0) invert(1)" }}></img>
+                    {rol}
+                    {Array.from({ length: 2}, (_, iAgentSpot)=>{
+                      return (
+                        <div key={`inputsAgents${iAgentSpot}`}>
+                          <input
+                            list={`agentsList${rol}`}
+                            placeholder="Find Agent"
+                            value={localMetaValorant[map]?.[rol]?.[iAgentSpot] || ""}
+                            onChange={(e)=>{
+                              const agent = e.target.value;
+                              if(agent===""){
+                                handleAgent({
+                                  agent:null,
+                                  map,
+                                  rol,
+                                  iAgentSpot
+                                })
+                              }else{
+                                handleAgent({
+                                  agent,
+                                  map,
+                                  rol,
+                                  iAgentSpot
+                                })
+                              }
+                            }}
+                          />
+                          <datalist id={`agentsList${rol}`}>
+                            {agentsRols[rol].map((agent,iAgentOption)=>{
+                              return (
+                                <option key={`agentInputs${iMap}${iAgentSpot}${iAgentOption}${rol}`} value={agent}>{agent}</option>
+                              )
+                            })}
+                          </datalist>
+                        </div>
+                      )
+                    })}
                   </div>
-                )
+                  )
               })}
             </div>
           )
         })}
       </div>
-      <div>
+      <div className={style.botones}>
         <input type="button" onClick={()=>{saveChanges()}} defaultValue="Guardar Cambios"/>
+        <input type="text" onChange={(e)=>{setTitulo(e.target.value)}} defaultValue={ValorantConstantes.titulo || titulo} className={style.inputText}/>
+        <input type="button" onClick={(e=>{saveContantes({key:"tituloVisualizadorMeta",value:e.target.value})})} value="Guardar titulo"></input>
+        <input type="text" onChange={(e)=>{setVersion(e.target.value)}} defaultValue={version} className={style.inputText}/>
+         <input type="button" onClick={(e=>{saveContantes({key:"versionVisualizadorMeta",value:e.target.value})})} value="Guardar Version"></input>
         <input type="button" onClick={()=>{onButtonClick()}} defaultValue="Capturar Imagen"/>
       </div>
-      <TierListValorant localMetaValorant={localMetaValorant} backgroundRef={backgroundRef}/>
+      <TierListValorant localMetaValorant={localMetaValorant} backgroundRef={backgroundRef} rols={rols} version={version} titulo={titulo}/>
     </div>
   )
 }
@@ -189,6 +248,21 @@ const maps = [
   "split",
   "sunset"
 ];
+
+const agentsRols = {
+  "controller":["clove","omen","brimstone","viper","astra","harbor"],
+  "duelist":["reyna","jett","raze","pheonix","neon","iso","yoru","waylay"],
+  "initiator":["sova","gekko","fade","breach","skye","kayo","tejo"],
+  "sentinel":["cypher","sage","chamber","killjoy","vyse","deadlock"],
+};
+
+const rols = [
+  "controller",
+  "duelist",
+  "initiator",
+  "sentinel"
+];
+
 const agents = [
   "astra",
   "breach",

@@ -1,0 +1,9 @@
+.botones{
+  display: flex;
+  position: relative;
+  flex-direction: column;
+}
+
+.inputText{
+  width: 50% !important;
+}

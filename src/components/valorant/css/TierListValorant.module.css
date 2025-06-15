@@ -49,7 +49,7 @@
   display: flex;
   position: relative;
   width: 100%;
-  height: 5%;
+  height: 10%;
 }
 
 .cLogoV{
@@ -101,29 +101,94 @@
   align-items: center;
 }
 
+.cRols{
+  display: flex;
+  flex-direction: row;
+  z-index: 9;
+  width: 100%;
+  align-content: end;
+  position: relative;
+  position:relative;
+  height: 8%;
+  align-items: flex-end;
+}
+
+.rols{
+  display: flex;
+  flex-direction: row;
+  z-index: 9;
+  width: calc((100%) / 6 * 4.5);
+  align-content: end;
+  position: relative;
+  right: 0px;
+  height: 80%;
+  position:absolute;
+  gap:5px
+}
+
+.rol{
+  display: flex;
+  position: relative;
+  width: calc(100% / 4 + 5px - (5px / 4));
+  justify-content: center;
+}
+
+.imgRol{
+  filter: invert(19%) sepia(84%) saturate(7490%) hue-rotate(339deg) brightness(80%) contrast(101%);
+}
+
 .body{
   display: flex;
   width: 100%;
   position: relative;
   flex-direction: column;
-  height: 90%;
+  height: 82%;
   gap:var(--gap-maps);
-  padding: 25px 30px 25px;
+  padding: 0px 0px 25px;
   box-sizing: border-box;
+}
+
+.verticalLine{
+  position: absolute;
+  width: calc((100%) / 6 * 4.5);
+  left: calc(((100% ) / 6 * 1.5));
+  height: calc(100% - 25px);
+}
+
+.vline{
+  position: absolute;
+  width: 1px;
+  height: 105%;
+  top:-5%;
+  background-color: rgb(160, 70, 70);
+}
+
+.vleft{
+  left: calc(100% / 4);
+}
+
+.vmid{
+  left: calc(100% / 4 * 2);
+}
+
+.vright{
+  left: calc(100% / 4 * 3);
 }
 
 .bordeIzqDer{
   position: absolute;
-  width: calc((100% - 60px) / 6 * 4.5 );
-  left: calc(((100% + 60px) / 6 * 1.5));
-  height: calc(100% - 50px);
+  width: calc((100%) / 6 * 4.5);
+  left: calc(((100% ) / 6 * 1.5));
+  height: calc(100% - 25px);
   border-left: 1px solid rgb(160, 70, 70);
   border-right: 1px solid rgb(160, 70, 70);
+  /* z-index: 9; */
 }
 
 .cBox {
   display: flex;
   position: absolute;
+
   top:0;
   left:0;
   width: 100%;
@@ -225,6 +290,10 @@
   margin: -10px;
 }
 
+.agente.bgBlurred::before {
+  background-color: #00000071;
+}
+
 .nameInBlur{
   display: flex;
   width: 100%;
@@ -241,24 +310,35 @@
   width: calc(100% / 6 * 4.5);
   display: flex;
   position: relative;
-  /* gap:5px; */
+  gap:5px;
+  padding-left: 5px;
   flex-direction: row;
   /* background-color: #00000073; */
+}
+
+.cRol{
+  display: flex;
+  width: calc((100% / 4) - 5px + (5px / 4));;
+  position: relative;
+  overflow: hidden;
+  border-radius: 5px;
 }
 
 .cAgent{
   display: flex;
   /* width: calc((100% / 5) - 5px + (5px / 5)); */
-  width: calc(100% / 5);
+  width: calc((100% / 2));
   position: relative;
   overflow: hidden;
-  border-radius: 50%;
+  /* border-radius: 50%; */
 }
 
 .imgAgent{
   display: flex;
   width: 100%;
   height: 100%;
+  object-fit: contain;
+  border-radius: 50%;
 }
 
 .footer{
