@@ -26,7 +26,13 @@ const FormularioTierListValorant = () => {
   },[ValorantAgentsMetaStore])
 
   useEffect(()=>{
-console.log({localMetaValorant})
+    console.log({ValorantConstantes:ValorantConstantes.get()})
+    setVersion(ValorantConstantes.get().versionVisualizadorMeta)
+    setTitulo(ValorantConstantes.get().tituloVisualizadorMeta)
+  },[ValorantConstantes])
+
+  useEffect(()=>{
+    console.log({localMetaValorant})
   },[localMetaValorant])
 
   const handleAgent = ({agent, map, iAgentSpot, rol})=>{
@@ -83,7 +89,7 @@ console.log({localMetaValorant})
       const updatedMeta = await fetchAgentsMeta();
       ValorantAgentsMeta.set(updatedMeta);
   
-      console.log("%cMetaLOL updated from server", "background:blue;color:white");
+      console.log("%cMetaValorant updated from server", "background:blue;color:white");
   
     } catch (error) {
       console.error("Error saving or updating MetaLOL:", error);
@@ -91,6 +97,7 @@ console.log({localMetaValorant})
   };
 
   const saveContantes = async ({key,value})=>{
+    console.log({key,value})
     try{
       const response = await fetch("https://api.guiadeparche.com/val/constantes.php", {
         method: "POST",
@@ -225,10 +232,10 @@ console.log({localMetaValorant})
       </div>
       <div className={style.botones}>
         <input type="button" onClick={()=>{saveChanges()}} defaultValue="Guardar Cambios"/>
-        <input type="text" onChange={(e)=>{setTitulo(e.target.value)}} defaultValue={ValorantConstantes.titulo || titulo} className={style.inputText}/>
-        <input type="button" onClick={(e=>{saveContantes({key:"tituloVisualizadorMeta",value:e.target.value})})} value="Guardar titulo"></input>
-        <input type="text" onChange={(e)=>{setVersion(e.target.value)}} defaultValue={version} className={style.inputText}/>
-         <input type="button" onClick={(e=>{saveContantes({key:"versionVisualizadorMeta",value:e.target.value})})} value="Guardar Version"></input>
+        <input type="text"  id={"titulo"} onChange={(e)=>{setTitulo(e.target.value)}} value={titulo} className={style.inputText}/>
+        <input type="button" onClick={(e=>{saveContantes({key:"tituloVisualizadorMeta",value:document.getElementById("titulo").value})})} value={"Guardar Titulo"}></input>
+        <input type="text" id={"version"} onChange={(e)=>{setVersion(e.target.value)}} value={version} className={style.inputText}/>
+         <input type="button" onClick={(e=>{saveContantes({key:"versionVisualizadorMeta",value:document.getElementById("version").value})})} value={"Guardar Version"}></input>
         <input type="button" onClick={()=>{onButtonClick()}} defaultValue="Capturar Imagen"/>
       </div>
       <TierListValorant localMetaValorant={localMetaValorant} backgroundRef={backgroundRef} rols={rols} version={version} titulo={titulo}/>
