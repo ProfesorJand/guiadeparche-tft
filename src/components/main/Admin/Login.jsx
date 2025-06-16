@@ -1,11 +1,13 @@
 import React, {useEffect, useRef, useState} from "react";
 
+
 import style from "./css/Login.module.css"
 
 const Login = ({allAdmins, setIsLoged, setAdminName})=>{
     const [user, setUser] = useState("")
     const [password, setPassword] = useState("")
-    
+    console.log({allAdmins})
+
     function handleChange(e, input){
       
         const value = e.target.value
@@ -40,6 +42,11 @@ const Login = ({allAdmins, setIsLoged, setAdminName})=>{
             inputToShow.type = "password"
         }
     }
+
+    useEffect(()=>{
+        console.log("USEEFFECT")
+
+    },[])
     return (
         <form className={style.containerLogin} onSubmit={(e)=>{handleButton(e)}}>
             <label htmlFor="user">User:&nbsp;
