@@ -5,11 +5,10 @@
   "proxy": "https://localhost:4321",
   "author": "Jorge Andrade profesorjand@gmail.com",
   "scripts": {
-    "dev": "astro dev --remote",
-    "start": "astro dev",
-    "build": "astro build --remote",
+    "dev": "astro dev",
+    "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "deploy": "astro build && npx gh-pages -d dist"
   },
   "dependencies": {
     "@astrojs/check": "^0.6.0",
@@ -35,6 +34,7 @@
   },
   "devDependencies": {
     "@types/jsdom": "^21.1.7",
+    "gh-pages": "^6.3.0",
     "prettier-plugin-astro": "^0.13.0"
   }
 }
