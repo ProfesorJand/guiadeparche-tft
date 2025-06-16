@@ -7,8 +7,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
-    "deploy": "astro build && npx gh-pages -d dist"
+    "preview": "astro preview"
   },
   "dependencies": {
     "@astrojs/check": "^0.6.0",
