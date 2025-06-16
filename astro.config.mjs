@@ -19,9 +19,9 @@ export default defineConfig({
   // adapter: node({
   //   mode: '@astrojs/node',
   // }),
-  // adapter: node({
-  //   mode: 'standalone',
-  // }),
+  adapter: node({
+    mode: 'standalone',
+  }),
   image: {
     // remotePatterns: [{ protocol: "https" }],
     service: squooshImageService(),
