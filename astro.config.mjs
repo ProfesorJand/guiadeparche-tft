@@ -31,9 +31,7 @@ import react from "@astrojs/react";
 // });
 
 export default defineConfig({
-  site: 'https://profesorjand.github.io',
-  base: '/guiadeparche-tft',
-  trailingSlash: 'always',
+  site: 'https://guiadeparche.com',
   output: 'static',
   image: {
     service: squooshImageService(),
