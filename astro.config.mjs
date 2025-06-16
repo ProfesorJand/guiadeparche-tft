@@ -12,7 +12,7 @@ export default defineConfig({
   //base: '/guiadeparche-tft', // para github page
   //trailingSlash: "always", //para github page
   redirects: {
-    '/': '/composiciones-tft/mejores-composiciones-de-teamfight-tactics/' // github page '/guiadeparche-tft/composiciones-tft/mejores-composiciones-de-teamfight-tactics/'
+    '/': '/tft/composiciones-tft/mejores-composiciones-de-teamfight-tactics/' // github page '/guiadeparche-tft/composiciones-tft/mejores-composiciones-de-teamfight-tactics/'
   },
   output: 'static', // Cambiado a 'static' para asegurarse de que se genera contenido estático para deploy
   //output: 'server',
