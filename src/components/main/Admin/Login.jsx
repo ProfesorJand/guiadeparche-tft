@@ -28,6 +28,7 @@ const Login = ({allAdmins, setIsLoged, setAdminName})=>{
             setIsLoged(true);
         }else{
             console.error(`usuario: no encontrado`)
+            alert(`usuario: no encontrado`)
         }
     }
     function showPassword(input){
