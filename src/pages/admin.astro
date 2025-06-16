@@ -9,10 +9,6 @@ import Twitch from '@components/embed/Twitch';
 import FiltroComps from '@components/main/Admin/FiltroComps.jsx';
 import TierListMetaComps from '@components/TFT/TierListMetaComps.jsx';
 const allAdmins = await db.select().from(Admins);
-console.log({allAdmins})
-
-console.log(import.meta.env.ASTRO_STUDIO_APP_TOKEN);
-
 ---
 
 <Layout title='admin'>
