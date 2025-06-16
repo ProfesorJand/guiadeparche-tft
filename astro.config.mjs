@@ -33,7 +33,6 @@ import react from "@astrojs/react";
 export default defineConfig({
   site: 'https://guiadeparche.com',
   base: '/', // muy importante que NO tenga subcarpetas
-  output: 'server',
-  adapter: node({ mode: 'standalone' }),
+  output: 'static', // <-- Muy importante
   integrations: [react(), sitemap(),db()]
 });
