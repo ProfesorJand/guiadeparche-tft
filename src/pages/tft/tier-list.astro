@@ -1,13 +1,13 @@
 ---
-import Layout from "../layouts/Layout.astro"
+import Layout from "@layouts/Layout.astro"
 import Main from "@components/main/Main.astro";
-import Youtube from "src/components/youtube/Youtube.jsx";
-import {crearJSONSchema} from "src/json/schema/crearJSONSchema";
+import Youtube from "@components/youtube/Youtube.jsx";
+import {crearJSONSchema} from "@json/schema/crearJSONSchema";
 import Twitch from "@components/embed/Twitch";
-import {Items as ItemsTable} from "../components/main/Admin/Items";
+import {Items as ItemsTable} from "@components/main/Admin/Items";
 import ItemTierList from "@components/main/Admin/ItemTierList";
 import CreateItemsTierList from "@components/main/Admin/CreateItemsTierList.jsx";
-import {latestVersion} from "../json/updates/contantesTFT";
+import {latestVersion} from "@json/updates/contantesTFT";
 import CreateAugmentsTierList from "@components/main/Admin/CreateAugmentsTierList";
 const title = `▷ Best TFT Items Tier List - Cheat Sheet for Set 13 ${latestVersion}`;
 const description = `Explore all TFT Items Cheat Sheet and Stats including Tier List for Best Radiant, Artifacts & Support options`;

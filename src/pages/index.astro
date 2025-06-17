@@ -1,4 +1,33 @@
 ---
 import MejoresComposicionesDeTeamfightTactics from "./composiciones-tft/mejores-composiciones-de-teamfight-tactics.astro";
+import LayoutMidOnly from "@layouts/LayoutMidOnly.astro";
+import CardPaginas from "@components/cards/Paginas.astro";
+
+const Paginas = [
+  {
+    titulo:"",
+    descripcion:"",
+    img:"/tft/assets/portada.webp",
+    link:"/tft/"
+  },
+  {
+    titulo:"",
+    descripcion:"",
+    img:"/lol/portada.webp",
+    link:"/lol/"
+  },
+  {
+    titulo:"",
+    descripcion:"",
+    img:"/valorant/bgTierList2.webp",
+    link:"/valorant/"
+  }
+]
 ---
-<MejoresComposicionesDeTeamfightTactics />
+<LayoutMidOnly title='Guiadeparche'>
+  {Paginas.map(({titulo, descripcion, img, link})=>{
+    return (
+      <CardPaginas titulo={titulo} descripcion={descripcion} img={img} link={link}/>
+    )
+  })}
+</LayoutMidOnly>

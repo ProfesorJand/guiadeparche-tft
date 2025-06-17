@@ -1,49 +1,4 @@
----
-const currentPath = Astro.url.pathname;
-interface SubMenuItem {
-  nombre: string;
-  link: string;
-}
-interface Props {
-  nombre: string;
-  link: string;
-  submenu?: SubMenuItem[];
-  img?: string;
-}
-
-const { link, nombre, submenus = [], img = "" } = Astro.props;
----
-<div class="menuContainer">
-  <a
-    class:list={['menuItem', currentPath === link ? 'active' : '']}
-    href={currentPath === link ? null : link}
-    target="_self"
-  >
-     {img
-      ? <img src={img} alt={nombre} class="menuImg" />
-      : nombre
-    }
-  </a>
-
-  {submenus.length > 0 &&
-    <ul class="submenu">
-      {submenus.map(item => (
-        <li>
-          <a
-            class:list={['submenuItem', currentPath === item.link ? 'active' : '']}
-            href={currentPath === item.link ? null : item.link}
-          >
-            {item.nombre}
-          </a>
-        </li>
-      ))}
-    </ul>
-  }
-</div>
-
-
-<style>
-  .menuContainer {
+.menuContainer {
   position: relative;
   display: flex;
 }
@@ -62,7 +17,7 @@ const { link, nombre, submenus = [], img = "" } = Astro.props;
 }
 
 .active {
-  background-color: var(--bg-main);
+  background-color: var(--bg-hover);
   cursor: pointer;
 }
 
@@ -107,5 +62,3 @@ const { link, nombre, submenus = [], img = "" } = Astro.props;
   display: block;
   margin: 0 auto;
 }
-
-</style>

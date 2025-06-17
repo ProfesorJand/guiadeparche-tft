@@ -12,8 +12,6 @@ const TierListMetaComps = () => {
   const admin = localStorage.getItem("superAdmin") || false;
   const backgroundRef = useRef(null);
   useEffect(() => {
-    console.log({composMeta})
-    console.log({composMetaSort: composMeta.sort((a,b)=>a.posicion - b.posicion)})
     scrollContainersRef.current.forEach((scrollContainer) => {
       if (!scrollContainer) return;
 

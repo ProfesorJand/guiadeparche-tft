@@ -7,7 +7,7 @@
   flex-direction: column;
   width: 100%;
   padding: 25px 50px;
-  height:100%;
+  height: fit-content;
   aspect-ratio: 4/5;
   box-sizing: border-box;
   overflow: hidden;
@@ -104,7 +104,6 @@
 .cRols{
   display: flex;
   flex-direction: row;
-  z-index: 9;
   width: 100%;
   align-content: end;
   position: relative;
@@ -116,7 +115,6 @@
 .rols{
   display: flex;
   flex-direction: row;
-  z-index: 9;
   width: calc((100%) / 6 * 4.5);
   align-content: end;
   position: relative;

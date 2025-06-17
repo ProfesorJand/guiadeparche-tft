@@ -4,8 +4,8 @@ import Footer from '../components/footer/Footer.astro';
 import Logo from '../components/logo/Logo.astro';
 import Adsense from '../components/adsense/Adsense.jsx';
 import { ViewTransitions } from 'astro:transitions';
-import PageLoader from '@components/PageLoader';
 import Youtube from '@components/youtube/Youtube.jsx';
+import PageLoader from '@components/PageLoader';
 interface Props {
   title: string;
   JSONSchema?: string;
@@ -58,7 +58,7 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
     {JSONSchema && <script type="application/ld+json" set:html={JSONSchema}></script>}
 
     <title>{title}</title>
-    <!-- <ViewTransitions /> -->
+    <ViewTransitions />
   </head>
   <body>
     <PageLoader client:only="react" />
@@ -75,24 +75,20 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
         </aside>
 
         <main class="bodyMain">
-          <aside class="bodyMainAside">
+          <!-- <aside class="bodyMainAside">
             <div class="bodyMainAsideSticky">
               <div class="bodyMainAsideMenu">
                 <slot name="bodyMainAside"></slot>
               </div>
               <div class="bodyMainAsideEmbed">
                 <slot name="bodyMainAsideTwitch"></slot>
-                <!-- <Youtube src={"https://youtu.be/1P-7x6JWNp0?si=Y8K-tCZDWgxnw0gE"} client:only="react"/> -->
                 <Youtube src={"https://www.youtube.com/playlist?list=PLxRnNvReiLMEriFDu0UxXScDabCIX-PWy"} client:only="react"/>
-                <!-- <ads class="bodyMainAsideAds">
-                  <slot name="bodyMainAsideAds"></slot>
-                </ads> -->
               </div>
             </div>
-          </aside>
-          <section class="bodyMainSection">
+          </aside> -->
+          <!-- <section class="bodyMainSection"> -->
             <slot></slot>
-          </section>
+          <!-- </section> -->
         </main>
 
         <aside class="bodyAside">
@@ -114,7 +110,6 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
     --bg-secondary: #0f0b5a;
     --bg-tertiary: #120d69;
     --bg-main: #0c023a;
-    --bg-hover:#1d15aa;
     --color-primary: #cfcfcf;
     --color-white:#cfcfcf;
     --color-black:#1f1f1f;
@@ -158,10 +153,12 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
     font-style: normal;
   } */
 
-  html {
-  background: transparent;
-}
-
+  html, body {
+    background-image: url("/backgrounds/negro_y_rayas.png");
+    background-size: cover;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+  }
   body::-webkit-scrollbar {
     width: 12px; /* width of the entire scrollbar */
     background: transparent;
@@ -169,13 +166,12 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
 
   body::-webkit-scrollbar-track {
     /* background: var(--bg-primary); */
-    background: transparent;
-    background-image: url("/backgrounds/negro_y_rayas.png");
-    background-repeat: no-repeat;
+    /* background-image: url("/backgrounds/negro_y_rayas.png");
     background-size: cover;
-    background-attachment: fixed;
     background-position: center;
-    box-shadow: none;
+    background-repeat: no-repeat; */
+    background-color: var(--bg-primary);
+   
   }
 
   body::-webkit-scrollbar-thumb {
@@ -183,9 +179,10 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
     border-radius: 20px; /* roundness of the scroll thumb */
     border: 2px solid var(--border-color); /* creates padding around scroll thumb */
     background-clip: padding-box;
+     background-clip: content-box;
   }
   body {
-    background-color: var(--bg-primary);
+    /*  background-color: var(--bg-primary); */
     overflow-y: scroll;
     margin: 0;
     padding: 0;
@@ -195,11 +192,7 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
     position: relative;
     flex-direction: column;
     min-height: 100vh;
-    background-image: url(/backgrounds/negro_y_rayas.png);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
-    background-position: center;
+    
   }
   code {
     font-family:
@@ -239,7 +232,9 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
     display: none !important;
   }
   .bodyMain{
-    background-color: var(--bg-main);
+    /* background-color: var(--bg-main); */
+    justify-content: center;
+    align-items: center;
   }
 
 

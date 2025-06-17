@@ -12,6 +12,7 @@ export const lanersChampionsMeta = deepMap(initialLanersChampionsMeta);
 export const lolChampions = atom([]);
 export const lolItems = atom([]);
 export const lolRunes = atom([]);
+export const LeagueOfLegendsConstantes = deepMap({})
 
 const urlChampionsData = "https://ddragon.leagueoflegends.com/cdn/15.10.1/data/en_US/champion.json";
 const championImgUrlPortrait = (championName) => {
@@ -118,3 +119,32 @@ export const fetchMeta = task(async () => {
 
   return;
 });
+
+export const fetchConstantesLOL = async ()=>{
+  task(
+    async ()=>{
+      try{
+        const token = import.meta.env.PUBLIC_TOKEN_META;
+        console.log("Fetching constantes League of Legends data with token:");
+        const url = "https://api.guiadeparche.com/lol/constantes.json";
+        const response = await fetch(url,{
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+            "Cache-Control": "no-cache"
+          }
+        });
+        const data = await response.json();
+        console.log("data constantes lOl")
+        console.log({data})
+        LeagueOfLegendsConstantes.set(data);
+        return data;
+      }catch(err){
+        console.error("Error fetching champions meta data:", err);
+        throw err;
+      }
+    }
+  )
+}
+
+fetchConstantesLOL()

@@ -1,4 +1,4 @@
-import {lanersChampionsMeta, urlPositionLaners} from "@stores/dataLeagueOfLegends.js";
+import {lanersChampionsMeta, urlPositionLaners, LeagueOfLegendsConstantes} from "@stores/dataLeagueOfLegends.js";
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useStore } from "@nanostores/react";
 import style from "./VisualizadorMetaLOL.module.css";
@@ -8,11 +8,14 @@ import { toPng } from 'html-to-image';
 // victory url : https://raw.communitydragon.org/latest/game/en_gb/assets/ux/endofgame/en_us/victory.png
 //https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/images/ranked-emblem/tier/
 const VisualizadorMetaLOL = () => {
+  const constantesLOL = useStore(LeagueOfLegendsConstantes);
+  const [localMetaLOL, setLocalMetaLOL] = useState({})
   const lanersChampionsMetaStore = useStore(lanersChampionsMeta);
   const [versionMeta, setVersionMeta] = useState("25.11");
   const [tituloMeta, setTituloMeta] = useState("Titulo")
-  const [elo, setElo] = useState("emerald");
+  // const [elo, setElo] = useState("emerald");
   const backgroundRef = useRef(null);
+  const admin = localStorage.getItem("superAdmin") || false;
   const eloRanks = [
     "iron",
     "bronze",
@@ -66,6 +69,24 @@ const VisualizadorMetaLOL = () => {
     });
   };
 
+  const saveContantes = async ({key,value})=>{
+    console.log({key,value})
+    try{
+      const response = await fetch("https://api.guiadeparche.com/lol/constantes.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${import.meta.env.PUBLIC_TOKEN_META}`,
+        },
+        body: JSON.stringify({key,value}),
+      });
+      alert(`${key} se ha guardado`)
+    }catch(err){
+      console.error("Error saving or updating constantes League of Legends:", err)
+      alert(`${key} NO se ha guardado`)
+    }
+  }
+
 
   const onButtonClick = useCallback(() => {
     if (backgroundRef.current === null) return;
@@ -90,23 +111,36 @@ const VisualizadorMetaLOL = () => {
   }, [backgroundRef]);
 
   useEffect(() => {
+    setLocalMetaLOL(JSON.parse(JSON.stringify(lanersChampionsMetaStore)))
     console.log("⚠️ lanersChampionsMeta cambió:", lanersChampionsMetaStore);
   }, [lanersChampionsMetaStore]);
+
+   useEffect(()=>{
+  if (constantesLOL) {
+    setVersionMeta(constantesLOL.versionVisualizadorMeta ?? "");
+    setTituloMeta(constantesLOL.tituloVisualizadorMeta ?? "");
+  }
+    },[constantesLOL]);
+
   return (
     <div className={style.visualizadorMetaLOL}>
+      {admin && 
       <div>
         <label className={style.labelVersion}>
           Titulo:
-          <input type="text" className={style.inputVersion} value={tituloMeta} onChange={(e) => setTituloMeta(e.target.value)} placeholder="Ingrese Titulo del meta" />
+          <input type="text" id={"titulo"} className={style.inputVersion} value={tituloMeta ?? ""} onChange={(e) => setTituloMeta(e.target.value)} placeholder="Ingrese Titulo del meta" />
+           <input type="button" onClick={(e=>{saveContantes({key:"tituloVisualizadorMeta",value:document.getElementById("titulo").value})})} value={"Guardar Titulo"}></input>
         </label>
         <label className={style.labelVersion}>
           Versión del Meta:
-          <input type="text" className={style.inputVersion} value={versionMeta} onChange={(e) => setVersionMeta(e.target.value)} placeholder="Ingrese la versión del meta" />
+          <input type="text" id={"version"} className={style.inputVersion} value={versionMeta ?? ""} onChange={(e) => setVersionMeta(e.target.value)} placeholder="Ingrese la versión del meta" />
+          <input type="button" onClick={(e)=>{saveContantes({key:"versionVisualizadorMeta",value:document.getElementById("version").value})}} value={"Guardar Version"}></input>
         </label>
         <label className={style.labelVersion}>
           <input type="button" className={style.inputVersion} onClick={onButtonClick} value="Capturar imagen"  />
         </label>
       </div>
+      }
       <div className={style.containerVisualizadorMetaLOL}  ref={backgroundRef}>
         <img className={style.imgBackground} src={"https://cdn.communitydragon.org/latest/champion/Aatrox/splash-art/centered"} alt={"background de fondo"}></img>
         <div className={style.contenido}>

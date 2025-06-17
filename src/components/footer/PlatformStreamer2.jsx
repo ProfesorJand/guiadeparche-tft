@@ -127,7 +127,6 @@ async function isKickOnline(username) {
   try {
     const res = await fetch(`https://kick.com/api/v2/channels/${username}`);
     const data = await res.json();
-    console.log({kickData:data})
     return data?.livestream !== null;
   } catch {
     return false;

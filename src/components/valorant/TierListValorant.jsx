@@ -3,12 +3,12 @@ const TierListValorant= ({localMetaValorant, backgroundRef, rols, version, titul
   return (
     <div className={style.container} ref={backgroundRef}>
       <div className={style.imgBackgroundWrapper}>
-        <img className={style.imgBackground} src={"valorant/bgTierList2.webp"} alt={"background de fondo"}></img>
+        <img className={style.imgBackground} src={"/valorant/bgTierList2.webp"} alt={"background de fondo"}></img>
       </div>
       <div className={style.header}>
         <div className={style.cLogoV}>
           <img
-            src={"valorant/logos/v.png"}
+            src={"/valorant/logos/v.png"}
             className={style.logoV}
           />
         </div>
@@ -67,7 +67,7 @@ const TierListValorant= ({localMetaValorant, backgroundRef, rols, version, titul
             <div key={`cMetaByMap${iMap}`} className={style.cMetaByMap}>
               <div className={style.cMap}>
               <img
-                 src={`valorant/maps/${map}.webp`}
+                 src={`/valorant/maps/${map}.webp`}
                 className={style.imgMap}
                />
                <div className={style.bgBlurred}>
@@ -82,7 +82,7 @@ const TierListValorant= ({localMetaValorant, backgroundRef, rols, version, titul
                         return (
                           <div key={`agent${iMap}${iAgent}`} className={style.cAgent}>
                             <img 
-                              src={`valorant/agents/${agent}-square.webp`}
+                              src={`/valorant/agents/${agent}-square.webp`}
                               className={style.imgAgent}
                             />
                             <div className={[style.bgBlurred, style.agente].join(" ")}>

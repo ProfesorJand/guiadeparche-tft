@@ -6,10 +6,12 @@ import style from "./css/FormularioTierListValorant.module.css"
 import {fetchAgentsMeta, ValorantAgentsMeta, ValorantConstantes} from "@stores/dataValorant"
 
 const FormularioTierListValorant = () => {
-  const backgroundRef = useRef(null)
+  const backgroundRef = useRef(null);
+  const ConstantesValorant = useStore(ValorantConstantes);
   const [localMetaValorant, setLocalMetaValorant] = useState({})
   const [version, setVersion] = useState("10.10");
   const [titulo, setTitulo] = useState("TOP RANKED LINEUPS - TIER S+")
+  const admin = localStorage.getItem("user") || false;
   const numbersOfAgentsInMeta= 5;
    const ValorantAgentsMetaStore = useStore(ValorantAgentsMeta);
    
@@ -26,10 +28,11 @@ const FormularioTierListValorant = () => {
   },[ValorantAgentsMetaStore])
 
   useEffect(()=>{
-    console.log({ValorantConstantes:ValorantConstantes.get()})
-    setVersion(ValorantConstantes.get().versionVisualizadorMeta)
-    setTitulo(ValorantConstantes.get().tituloVisualizadorMeta)
-  },[ValorantConstantes])
+  if (ConstantesValorant) {
+    setVersion(ConstantesValorant.versionVisualizadorMeta)
+    setTitulo(ConstantesValorant.tituloVisualizadorMeta)
+  }
+  },[ConstantesValorant])
 
   useEffect(()=>{
     console.log({localMetaValorant})
@@ -176,6 +179,9 @@ const FormularioTierListValorant = () => {
 
   return (
     <div>
+      {
+        admin &&
+        <>
       <div>
         {maps.length > 0 && maps.map((map,iMap)=>{
           return (
@@ -225,7 +231,7 @@ const FormularioTierListValorant = () => {
                     })}
                   </div>
                   )
-              })}
+                })}
             </div>
           )
         })}
@@ -233,11 +239,13 @@ const FormularioTierListValorant = () => {
       <div className={style.botones}>
         <input type="button" onClick={()=>{saveChanges()}} defaultValue="Guardar Cambios"/>
         <input type="text"  id={"titulo"} onChange={(e)=>{setTitulo(e.target.value)}} value={titulo} className={style.inputText}/>
-        <input type="button" onClick={(e=>{saveContantes({key:"tituloVisualizadorMeta",value:document.getElementById("titulo").value})})} value={"Guardar Titulo"}></input>
+        <input type="button" onClick={(e)=>{saveContantes({key:"tituloVisualizadorMeta",value:document.getElementById("titulo").value})}} value={"Guardar Titulo"}></input>
         <input type="text" id={"version"} onChange={(e)=>{setVersion(e.target.value)}} value={version} className={style.inputText}/>
-         <input type="button" onClick={(e=>{saveContantes({key:"versionVisualizadorMeta",value:document.getElementById("version").value})})} value={"Guardar Version"}></input>
+         <input type="button" onClick={(e)=>{saveContantes({key:"versionVisualizadorMeta",value:document.getElementById("version").value})}} value={"Guardar Version"}></input>
         <input type="button" onClick={()=>{onButtonClick()}} defaultValue="Capturar Imagen"/>
       </div>
+        </>
+      }
       <TierListValorant localMetaValorant={localMetaValorant} backgroundRef={backgroundRef} rols={rols} version={version} titulo={titulo}/>
     </div>
   )

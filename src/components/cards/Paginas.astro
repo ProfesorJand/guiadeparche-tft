@@ -1,0 +1,56 @@
+---
+
+const { titulo, descripcion, img, link } = Astro.props
+---
+<a class="cardContainer" href={link} rel="noopener noreferrer">
+  <div class="containerImg">
+    <img class="img" src={img} alt={titulo}></img>
+  </div>
+  <div class="containerText">
+    {titulo && <h2 class="titulo">{titulo}</h2>}
+    {descripcion && <p class="descripcion">{descripcion}</p>}
+  </div>
+</a>
+
+<style>
+  a{
+    color:var(--color-white);
+    text-decoration: none;
+  }
+ .cardContainer{
+  display: flex;
+  width: calc(100% / 3);
+  flex-direction: column;
+  position: relative;
+  transition: 1s ;
+  scale: 0.95;
+  height: fit-content;
+  cursor: pointer;
+ }
+
+ .cardContainer:hover{
+  scale: 1;
+ }
+
+ .containerImg{
+  width: 100%;
+  display: flex;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+  position: relative;
+ }
+ .img{
+  width: 100%;
+ }
+ .containerText{
+  display: flex;
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.692);
+  width: 100%;
+  flex-direction: column;
+ }
+ .titulo{
+ padding: 0;   
+ margin:0
+ }
+</style>

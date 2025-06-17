@@ -1,0 +1,11 @@
+---
+import Layout from "@layouts/Layout.astro";
+import FormularioTierListValorant from "@components/valorant/FormularioTierListValorant";
+
+const title="Valorant"
+
+---
+
+<Layout title={title}>
+<FormularioTierListValorant client:only="react">
+</Layout>

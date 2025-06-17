@@ -1,23 +1,33 @@
 ---
-import Menu from './Menu.astro';
+import Menu from './Menu.jsx';
 
 const menus = [
+
   {
-    nombre: 'Meta Comps',
-    link: '/composiciones-tft/mejores-composiciones-de-teamfight-tactics/',
+    nombre:"Teamfight Tactics",
+    link:"/tft/meta-comps-tier-list-teamfight-tactics/",
+    img:"/tft/assets/t-logo.png",
+    // submenus:[
+    //   {nombre:"Patch Dates",link:"/tft/patch-dates/"},
+    //   {nombre:"Tier List",link:"/tft/items/"},
+    //   {nombre:"Items",link:"/tft/tier-list/"},
+    // ]
   },
   {
-    nombre:"Items",
-    link:"/items/"
+    nombre:"League of Legends",
+    link:"/lol/best-champions-tier-list-league-of-legends/",
+    img:"/lol/lol_icon.png"
   },
   {
-    nombre:"Tier List",
-    link:"/tier-list/"
+    nombre:"Valorant",
+    link:"/valorant/meta-agents-maps/",
+    img:"/valorant/logos/v2.png"
   },
-  {
-    nombre:"Patch Dates",
-    link:"/patch-dates/"
-  }
+  // {
+  //   nombre:"Wildrift",
+  //   link:"/wildrift/best-champions-tier-list-wild-rift",
+  //   img:"/wildrift/logo/mini-logo.webp"
+  // },
   
 ];
 
@@ -54,7 +64,7 @@ const menus = [
     <div class="menuContainer">
       {
         menus.map((menu) => {
-          return <Menu link={menu.link} nombre={menu.nombre} />;
+          return <Menu link={menu.link} nombre={menu.nombre} submenus={menu?.submenus} img={menu.img} client:only="react" />;
         })
       }
     </div>
@@ -71,7 +81,7 @@ const menus = [
       </div>
       {
         menus.map((menu) => {
-          return <Menu link={menu.link} nombre={menu.nombre} />;
+          return <Menu link={menu.link} nombre={menu.nombre} img={menu.img}  />;
         })
       }
     </div>
@@ -94,11 +104,11 @@ const menus = [
   nav{
     display: flex;
     position: relative;
-    width:100%;
-
+    width: var(--width-main);
   }
   .menuContainer {
     display: none;
+    
   }
   .sideMenu{
     position:fixed;
@@ -128,21 +138,19 @@ const menus = [
 
   @media only screen and (min-width: 900px) {
 
-  .menuMobile{
-    display:none;
-    position: relative;
-  }
-  .menuContainer {
-    display: flex;
-    flex-direction: row;
-    position: relative;
-    width: 80vw;
-    gap: 10px;
-    align-items: center;
-    justify-content: center;
-    box-sizing: border-box;
-  }
-
-
+    .menuMobile{
+      display:none;
+      position: relative;
+    }
+    .menuContainer {
+      display: flex;
+      flex-direction: row;
+      position: relative;
+      width: 100%;
+      gap: 10px;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+    }
   }
 </style>

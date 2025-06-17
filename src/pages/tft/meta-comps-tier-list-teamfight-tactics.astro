@@ -1,0 +1,228 @@
+---
+import Layout from '@layouts/Layout.astro';
+import MetaComps from "src/components/main/Admin/MetaComps.jsx"
+import Main from '@components/main/Main.astro';
+import {crearJSONSchema} from "src/json/schema/crearJSONSchema";
+// import Kick from "src/components/embed/Kick.astro";
+import TierListMetaComps from '@components/TFT/TierListMetaComps.jsx';;
+import VersionCompo from "@components/TFT/VersionCompo"
+const title = "▷ Best TFT Comps & Builds for Set 14 Cyber City";
+// Example: Construct a canonical URL using your production domain
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+// Example: Construct a URL for SEO meta tags using your current domain
+const socialImageURL = new URL('/images/preview.png', Astro.url);
+const description = "Top TFT Meta Comps for Set 14 Cyber City. Discover the latest Tier List, Augments and Builds for every patch. Mejores Composiciones TFT!";
+const keywords = "TFT Meta, Meta comps, comps TFT, comp TFT, Meta TFT, composiciones TFT, build TFT";
+const thumbnail= "/campeones/set12/ryze.webp"
+const imgPost = "https://i.ytimg.com/vi/5ph-NnCjDSk/maxresdefault.jpg"
+const JSONSchema = crearJSONSchema({title, imgPost, thumbnail, description});
+const admin = typeof window !== "undefined" ? localStorage.getItem("superAdmin") : false;
+
+
+---
+<!-- <link rel="canonical" href={canonicalURL} /> -->
+<!-- <meta property="og:image" content={socialImageURL} /> -->
+<!-- <meta name="description" content={description}>
+<meta name="keywords" content={keywords}>
+<meta property="og:image" content="/campeones/set12/ryze.webp" /> -->
+<Layout title={title} JSONSchema={JSONSchema} description={description} keywords={keywords} image={"/campeones/set12/ryze.webp"} canonical={canonicalURL}>
+  <Fragment slot="bodyMainAside">
+    <!-- <FiltroComps client:only="react"/> -->
+    <TierListMetaComps client:only="react"/>
+    <!-- <Youtube src={"https://www.youtube.com/playlist?list=PLxRnNvReiLMEriFDu0UxXScDabCIX-PWy"} client:only="react"/> -->
+</Fragment>
+<!-- <Fragment slot="bodyMainAsideTwitch">
+  <Kick></Kick>
+  <Twitch client:only="react"/>
+</Fragment>
+<Fragment slot="bodyMainAsideAds">
+  <AdComponent/>
+</Fragment> -->
+  <Main>
+    <h1 id="tituloMetaComps" class="titulo tituloMetaComps">
+      Best TFT Meta Comps & Builds | Mejores Composiciones
+    </h1>
+    <VersionCompo client:only="react"></VersionCompo>
+    <!-- <div class="videosYT">
+      <div class="videoYTAdd">
+        <h2 class="tituloYt">Español</h2>
+        <Youtube src="https://youtube.com/playlist?list=PLxRnNvReiLMEriFDu0UxXScDabCIX-PWy&si=YW7NdSvPfu9dQhx9" client:load></Youtube>
+      </div>
+      <div class="videoYTAdd">
+        <h2 class="tituloYt">English</h2>
+        <Youtube src="https://www.youtube.com/playlist?list=PLxRnNvReiLMHHtPFxG2tCBzNCrIz_-rnq" client:load></Youtube>
+      </div>
+    </div> -->
+    <div id="SelectVersion">
+      <!-- <SelectVersion client:only="react"/> -->
+    </div>
+    <div id="ContainerMetaPBE">
+      <!-- <ContainerMetaPBE version={latestVersion} set={setPBE}/> -->
+      <!-- <ContainerMeta version={latestVersion} set={set} client:load/> -->
+      <div class={"containerMeta"}>
+        <MetaComps showHide={false} admin={admin} client:load/>
+      </div>
+    </div>
+  </Main>
+</Layout>
+
+<style>
+  #SelectVersion{
+    display: flex;
+    width: 100%;
+    position: relative;
+    justify-content: center;
+    align-items: center
+  }
+  #containerSwitch{
+    display: flex;
+    width: 100%;
+    position: relative;
+    justify-content: center;
+    gap: 5px;
+    font-size: small;
+    align-items: center
+  }
+  .videosYT{
+    display: flex;
+    flex-direction: row;
+    gap:5px;
+    margin-bottom:5px;
+  }
+  .switch {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 100px;
+  height: 34px;
+  }
+  .switch input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--bg-secondary);
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 46px;
+    left: 4px;
+    bottom: 4px;
+    background-color: var(--bg-primary);
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  input:checked + .slider {
+    background-color: var(--bg-secondary);
+  }
+  input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+  }
+  input:checked + .slider:before {
+    -webkit-transform: translateX(46px);
+    -ms-transform: translateX(46px);
+    transform: translateX(46px);
+  }
+
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 34px;
+  }
+
+  .slider.round:before {
+    border-radius: 50%;
+  }
+  .hide {
+    display: none;
+  }
+  button{
+    background-color: var(--bg-secondary);
+    color:var(--white);
+    display:flex;
+    flex: 1;
+    justify-content: center;
+    padding: 1rem 0;
+  }
+  button:hover{
+    cursor:pointer;
+    background-color: var(--bg-tertiary);
+  }
+  button.activeBtn{
+    background-color: var(--bg-primary);
+  }
+  #containerPestanas{
+    display: flex;
+    flex-direction: row;
+    gap:5px;
+
+  }
+  .goldText{
+    color:gold
+  }
+  .containerMeta{
+  display: flex;
+  position: relative;
+  gap:10px;
+  flex-direction: column;
+}
+
+.containerMetaTier{
+  display: flex;
+  position: relative;
+  gap:10px;
+  flex-direction: column;
+}
+.tituloMetaComps{
+  margin: 5px 0;
+  font-size: 1.4em;
+}
+.minititulo{
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  margin: 5px 0 10px 0;
+
+}
+.videoYTAdd{
+  display: flex;
+  flex-direction: column;
+  
+}
+.tituloYt{
+  margin: 5px 0;
+  font-size: 1em;
+}
+@media only screen and (max-width:900px){
+  .tituloMetaComps{
+    font-size: 1.1em;
+  }
+  .minititulo{
+    font-size: 0.8em;
+  }
+}
+</style>
+
+<script>
+  document.addEventListener("astro:page-load",()=>{
+    const pantalla = window.innerWidth;
+    const tituloMetaComps = document.getElementById("tituloMetaComps");
+    if(tituloMetaComps && pantalla <= 900){
+      tituloMetaComps.innerHTML = "Best TFT Meta Comps & Builds Mejores Composiciones"
+    }
+    if(tituloMetaComps && pantalla > 900){
+      tituloMetaComps.innerHTML = "Best TFT Meta Comps & Builds | Mejores Composiciones"
+    }
+  })
+</script>

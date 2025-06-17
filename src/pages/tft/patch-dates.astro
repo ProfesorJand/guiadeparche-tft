@@ -1,17 +1,12 @@
 ---
-import Layout from "../layouts/Layout.astro"
+import Layout from "@layouts/Layout.astro"
 import Main from "@components/main/Main.astro";
-import Youtube from "src/components/youtube/Youtube.jsx";
-import {crearJSONSchema} from "src/json/schema/crearJSONSchema";
-import Twitch from "@components/embed/Twitch";
-import {Items as ItemsTable} from "../components/main/Admin/Items";
-import ItemTierList from "@components/main/Admin/ItemTierList";
-import { MetaCompVersion } from '@stores/menuFiltradoAdmin';
-const version = MetaCompVersion.get()
-const title = `▷ Best TFT Items Tier List - Cheat Sheet for Set 14 Patch ${version}`;
-const description = `Explore all TFT Items Cheat Sheet and Stats including Tier List for Best Radiant, Artifacts & Support options`;
+import {crearJSONSchema} from "@json/schema/crearJSONSchema";
+import {Items as ItemsTable} from "@components/main/Admin/Items";
+const title = 'TFT Patch in 2025';
+const description = `Conoce cuando sale las nuevas versiones o parches de Teamfight Tactics "TFT"`;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const keywords = `TFT Tips, TFT Tricks, TFT Guides, TFT Guias, TFT Consejos`;
+const keywords = `Parches, Path, Parche, TFT, Teamfight Tactics, TFT Patch, Parche TFT`;
 const JSONSchema = crearJSONSchema({title, description});
 
 ---
@@ -22,7 +17,9 @@ const JSONSchema = crearJSONSchema({title, description});
 <meta name="keywords" content={keywords}> -->
 <Layout title={title} JSONSchema={JSONSchema} description={description} keywords={keywords} canonical={canonicalURL}>
     <Fragment slot="bodyMainAside">
-      <!-- Publicidad -->
+      <!--
+       Publicidad 
+       -->
     </Fragment>
     <!-- <Fragment slot="bodyMainAsideTwitch">
         <Twitch client:only="react"/>
@@ -31,12 +28,13 @@ const JSONSchema = crearJSONSchema({title, description});
         Publicidad
     </Fragment> -->
     <Main>
-      <h1 class="titulo">TFT Items Cheat Sheet & Stats</h1>
+      <h1 class="titulo">TFT Patch in 2025</h1>
       <!-- <p class="parrafo">Unlock your Teamfight Tactics gameplay with our guide to TFT items. Discover the best items for Set 12, including radiant items and support options. Our TFT items tier list offers insights on the most effective choices.</p> -->
-      <p class="parrafo">Items Tier List for Set 14 TFT  | Patch {version}</p>
+      <p class="parrafo"></p>
       <div class="separador">
-      <ItemsTable client:only="react"/>  
+      <img src="/tft/assets/TFT_parche_2025.jpeg" alt="prueba1"  style={{width:"100%",display:"flex", alingItems:"center"}}/>
         <!-- <ItemTierList client:only="react"/> -->
+        <blockquote class="twitter-tweet"><p lang="en" dir="ltr">Consider this the yearly patch schedule pinned post, since I know I still owe it. It&#39;s close enough and should last us until October at least. So if you&#39;re ever curious when a TFT patch comes out, here ya go! <a href="https://t.co/eDpxoLR9ty">pic.twitter.com/eDpxoLR9ty</a></p>&mdash; Riot Mort (@Mortdog) <a href="https://twitter.com/Mortdog/status/1881727738626863549?ref_src=twsrc%5Etfw">January 21, 2025</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
       </div> 
     </Main>
 </Layout>
@@ -50,6 +48,7 @@ const JSONSchema = crearJSONSchema({title, description});
     display:flex;
     flex-direction: column;
     gap:10px;
+    align-items: center;
   }
 
 </style>
