@@ -1,8 +1,17 @@
 ---
-import Layout from "@layouts/Layout.astro"
+import Layout from "@layouts/LayoutMidOnly.astro"
 import VisualizadorMetaLOL from "@components/leagueOfLegends/VisualizadorMetaLOL"
 ---
 
 <Layout title="Meta League of Legends">
-  <VisualizadorMetaLOL client:only="react"></VisualizadorMetaLOL>
+  <div class="smallContainer">
+    <VisualizadorMetaLOL client:only="react"></VisualizadorMetaLOL>
+  </div>
 </Layout>
+
+<style>
+  .smallContainer{
+    display: flex;
+    padding: 2rem 10rem;
+  }
+</style>

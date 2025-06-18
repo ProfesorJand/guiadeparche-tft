@@ -1,5 +1,5 @@
 ---
-import Layout from "@layouts/Layout.astro";
+import Layout from "@layouts/LayoutMidOnly.astro";
 import FormularioTierListValorant from "@components/valorant/FormularioTierListValorant";
 
 const title="Valorant"
@@ -7,5 +7,14 @@ const title="Valorant"
 ---
 
 <Layout title={title}>
-<FormularioTierListValorant client:only="react">
+  <div class="smallContainer">
+    <FormularioTierListValorant client:only="react">
+</div>
 </Layout>
+
+<style>
+  .smallContainer{
+    display: flex;
+    padding: 2rem 10rem;
+  }
+</style>
