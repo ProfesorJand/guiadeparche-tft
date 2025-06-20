@@ -100,6 +100,21 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
         <Footer></Footer>
       </footer>
     </div>
+    <script>
+      // Detectar Ctrl + Alt + A
+      document.addEventListener('keydown', (e) => {
+        if (e.ctrlKey && e.altKey && e.key.toLowerCase() === 'a') {
+          const isLocalhost = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+          const port = location.port || '4321'; // cambiá este si usás otro puerto
+
+          const adminURL = isLocalhost
+            ? `http://localhost:${port}/admin`
+            : 'https://guiadeparche.com/admin';
+
+          window.location.href = adminURL;
+        }
+      });
+    </script>
   </body>
 </html>
 
