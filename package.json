@@ -5,7 +5,7 @@
   "proxy": "https://localhost:4321",
   "author": "Jorge Andrade profesorjand@gmail.com",
   "scripts": {
-    "dev": "astro db execute db/seed.ts && astro dev",
+    "dev": "astro dev",
     "build": "astro build --remote",
     "preview": "astro preview",
     "start": "astro dev"

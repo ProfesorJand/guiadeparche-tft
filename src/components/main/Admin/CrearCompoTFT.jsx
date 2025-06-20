@@ -471,7 +471,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
 
     function mySubmit(e) { 
       if(edit){
-
+        e.preventDefault(); 
       }else{
         e.preventDefault(); 
       }
@@ -504,7 +504,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           version
         }
         if(tier && posicion && dificultad && titulo && shadowCategory && infographicCategory && aumentos.length && Object.keys(carouselItems).length && Object.keys(boardInfo?.early?.data || {}).length && Object.keys(boardInfo).length && Object.keys(campeonTierList).length && Object.keys(boardInfo?.[originalComp]?.data || {}).length){
-          const token = import.meta.env.PUBLIC_TOKEN_META
+          const token = import.meta.env.PUBLIC_TOKEN_META;
           fetch(crearCompoMetaPHP, {
             method: 'POST',
             headers: {
@@ -519,9 +519,11 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
                 alert('Composicion creada de forma exitosa:', data.message);
             } else {
                 console.error('Error adding data:', data.message);
+                alert('Error adding data:', data.message);
             }
           })
           .catch(error => {
+            alert('Error adding data:', data.message);
               console.error('Error:', error);
           });
         }else{

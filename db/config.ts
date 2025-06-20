@@ -1,6 +1,6 @@
 import { defineDb, defineTable, column } from 'astro:db';
 
-const Meta = defineTable({
+export const Meta = defineTable({
   columns:{
     tier: column.text(),
     titulo: column.text(),
@@ -11,7 +11,7 @@ const Meta = defineTable({
   }
 })
 
-const Evento = defineTable({
+export const Evento = defineTable({
 columns:{
   id: column.number({ primaryKey: true }),
   nombre:column.text()
@@ -19,7 +19,7 @@ columns:{
 
 }); 
 
-const Usuario = defineTable({
+export const Usuario = defineTable({
   columns: {
     puuid: column.text({ primaryKey: true }),
     invocador: column.text(),
@@ -47,7 +47,7 @@ const Usuario = defineTable({
   // ],
 });
 
-const Admin = defineTable({
+export const Admin = defineTable({
   columns:{
     user:column.text({ primaryKey: true }),
     password: column.text(),

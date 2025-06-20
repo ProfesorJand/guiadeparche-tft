@@ -1,5 +1,7 @@
 ---
 import Redirect from "@components/Redirect";
+import LayoutMidOnly from "@layouts/LayoutMidOnly.astro";
 ---
-
-<Redirect client:only="react" to="/tft/meta-comps-tier-list-teamfight-tactics/" />
+<LayoutMidOnly title="Teamfight Tactics">
+  <Redirect client:only="react" to="/tft/meta-comps-tier-list-teamfight-tactics/" />
+</LayoutMidOnly>

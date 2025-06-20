@@ -11,9 +11,10 @@ const FormularioTierListValorant = () => {
   const [localMetaValorant, setLocalMetaValorant] = useState({})
   const [version, setVersion] = useState("10.10");
   const [titulo, setTitulo] = useState("TOP RANKED LINEUPS - TIER S+")
+  const [logoMovilnet, setLogoMovilnet] = useState(false)
   const admin = localStorage.getItem("user") || false;
   const numbersOfAgentsInMeta= 5;
-   const ValorantAgentsMetaStore = useStore(ValorantAgentsMeta);
+  const ValorantAgentsMetaStore = useStore(ValorantAgentsMeta);
    
   useEffect(()=>{
     const fetching = async () =>{
@@ -31,6 +32,7 @@ const FormularioTierListValorant = () => {
   if (ConstantesValorant) {
     setVersion(ConstantesValorant.versionVisualizadorMeta)
     setTitulo(ConstantesValorant.tituloVisualizadorMeta)
+    setLogoMovilnet(ConstantesValorant.logoMovilnet)
   }
   },[ConstantesValorant])
 
@@ -39,13 +41,9 @@ const FormularioTierListValorant = () => {
   },[localMetaValorant])
 
   const handleAgent = ({agent, map, iAgentSpot, rol})=>{
-    console.log("handleAgent")
-    console.log({agent})
-   
     const updateMap = localMetaValorant?.[map] ? {...localMetaValorant[map]} : {};
     updateMap[rol] = updateMap?.[rol] ? [...updateMap[rol]] : [] 
     updateMap[rol][iAgentSpot] = agent;
-    console.log({updateMapRol:updateMap[rol]})
     const sonTodosNulls = updateMap[rol].every((value)=>value === null)
     if(sonTodosNulls){
       delete updateMap[rol]
@@ -60,15 +58,6 @@ const FormularioTierListValorant = () => {
     }
     return newMeta;
   });
-     //const updateMapAgent = localMetaValorant?.[map] ? localMetaValorant[map] : [];
-    // updateMapAgent[iAgentSpot] = agent;
-    // console.log({updateMapAgent})
-    // setLocalMetaValorant((prev)=>{
-    //   return ({
-    //     ...prev,
-    //     [map]:updateMapAgent
-    //   })
-    // })
   }
 
   const saveChanges = async () => {
@@ -241,12 +230,18 @@ const FormularioTierListValorant = () => {
         <input type="text"  id={"titulo"} onChange={(e)=>{setTitulo(e.target.value)}} value={titulo} className={style.inputText}/>
         <input type="button" onClick={(e)=>{saveContantes({key:"tituloVisualizadorMeta",value:document.getElementById("titulo").value})}} value={"Guardar Titulo"}></input>
         <input type="text" id={"version"} onChange={(e)=>{setVersion(e.target.value)}} value={version} className={style.inputText}/>
-         <input type="button" onClick={(e)=>{saveContantes({key:"versionVisualizadorMeta",value:document.getElementById("version").value})}} value={"Guardar Version"}></input>
+        <input type="button" onClick={(e)=>{saveContantes({key:"versionVisualizadorMeta",value:document.getElementById("version").value})}} value={"Guardar Version"}></input>
+        <span>Logo Movilnet ({logoMovilnet ? "activado": "desactivado"})</span>
+        <label className={style.switch}>
+          <input type="checkbox" id={"logoMovilnet"} onChange={(e)=>{setLogoMovilnet(e.target.checked)}} value={logoMovilnet} className={style.inputText} checked={logoMovilnet}/>
+          <span className={style.slider}></span>
+        </label>
+        <input type="button" onClick={(e)=>{saveContantes({key:"logoMovilnet",value:document.getElementById("logoMovilnet").checked})}} value={"Guardar Vista de Logo Movilnet"}></input>
         <input type="button" onClick={()=>{onButtonClick()}} defaultValue="Capturar Imagen"/>
       </div>
         </>
       }
-      <TierListValorant localMetaValorant={localMetaValorant} backgroundRef={backgroundRef} rols={rols} version={version} titulo={titulo}/>
+      <TierListValorant localMetaValorant={localMetaValorant} backgroundRef={backgroundRef} rols={rols} version={version} titulo={titulo} logoMovilnet={logoMovilnet}/>
     </div>
   )
 }

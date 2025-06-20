@@ -1,5 +1,5 @@
 import style from "./css/TierListValorant.module.css";
-const TierListValorant= ({localMetaValorant, backgroundRef, rols, version, titulo})=>{
+const TierListValorant= ({localMetaValorant, backgroundRef, rols, version, titulo, logoMovilnet})=>{
   return (
     <div className={style.container} ref={backgroundRef}>
       <div className={style.imgBackgroundWrapper}>
@@ -130,7 +130,7 @@ const TierListValorant= ({localMetaValorant, backgroundRef, rols, version, titul
         })}
       </div>
       <div className={style.footer}>
-            <img src="/tft/assets/logoMovilnet-e-letras-blancas.png" alt="logo Movilnet" ></img>
+            {logoMovilnet && <img src="/tft/assets/logoMovilnet-e-letras-blancas.png" alt="logo Movilnet" ></img>}
             <img src="/tft/assets/Jupeson_LOGO_Sin_Publicidad.png" alt="logo Jupeson" style={{transform:"scale(0.6)"}}></img>
             <img src="/valorant/logos/text-white.png" style={{transform:"scale(1)"}} alt="logo League of Legends"></img>
       </div>

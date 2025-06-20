@@ -70,9 +70,9 @@
   display: flex;
   flex-direction: row;
   position: absolute;
-  width: 80%;
+  width: 100%;
   color: rgb(255, 255, 255);
-  font-size: 22px;
+  font-size: 0.9vw;
   font-weight: bold;
   text-align: center;
   align-items: center;

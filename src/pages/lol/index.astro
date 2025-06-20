@@ -1,5 +1,7 @@
 ---
 import Redirect from "@components/Redirect";
+import LayoutMidOnly from "@layouts/LayoutMidOnly.astro";
 ---
-
-<Redirect client:only="react" to="/lol/best-champions-tier-list-league-of-legends/" />
+<LayoutMidOnly title="League of Legends">
+  <Redirect client:only="react" to="/lol/best-champions-tier-list-league-of-legends/" />
+</LayoutMidOnly>
