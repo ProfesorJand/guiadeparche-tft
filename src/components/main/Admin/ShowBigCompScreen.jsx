@@ -158,7 +158,7 @@ const ShowBigCompScreen = ({id, setShowBigComp}) => {
                 <div className={style.divWebLogo}>
                   <img className={style.divWebLogo} src="/tft/assets/GP_logo.png" alt="logo Guiadeparche"></img>
                     <span className={style.textoWeb}>
-                      TFT.GUIADEPARCHE.COM
+                      GUIADEPARCHE.COM/TFT
                     </span>
                 </div>
                 }
