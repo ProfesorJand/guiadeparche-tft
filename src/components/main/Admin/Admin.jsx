@@ -11,7 +11,7 @@ import style from "./css/Admin.module.css";
 import StreamersManager from "@components/embed/StreamersManager.jsx";
 import InfografiaTFT from "@components/TFT/InfogragiaTFT.jsx";
 import FormularioTierListValorant from "@components/valorant/FormularioTierListValorant.jsx";
-
+import FormularioMetaWildrift from "@components/wildrift/FormularioMetaWildrift.jsx";
 const AdminPanel = ({allAdmins})=>{
     const [isLoged, setIsLoged] = useState(localStorage.getItem("login") || false)
     const [adminName, setAdminName] = useState(localStorage.getItem("user") || "");
@@ -93,6 +93,14 @@ const AdminPanel = ({allAdmins})=>{
                         </div>
                     </div>
                 </div>
+                <div className={style.container}>
+                    Wildrift
+                    <div className={style.tierList}>
+                        <div slot="hola">
+                            <button className={pestana === 8 ? style.btnActive: ""} onClick={()=>{setAction("wildrift"); setPestana(8)}}>Meta</button>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div>
                 {action === "crear" && <CrearCompoTFT />}
@@ -103,6 +111,7 @@ const AdminPanel = ({allAdmins})=>{
                 {action === "twitch/kick" && <StreamersManager/>}
                 {action === "lol" && <FormularioMetaLOL />}
                 {action === "val" && <FormularioTierListValorant />}
+                {action === "wildrift" && <FormularioMetaWildrift/>}
                 {/* {action === "champsItemsTierList" && <CrearTierListChampItem />} */}
             </div>
             <button onClick={()=>cerrarSesion()}>cerrar sesión</button>

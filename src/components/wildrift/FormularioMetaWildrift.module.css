@@ -1,0 +1,130 @@
+:root{
+    --gap-champions-data: 5px;
+}
+.containerChampionsSelect{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.containerChampionsData{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.containerItems{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.containerRunes{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.containerChampionsImgData {
+  display: flex;
+  justify-content: flex-start;
+  width : calc((100% / 5) -  var(--gap-champions-data) + ( var(--gap-champions-data) / 5));
+  gap:var(--gap-champions-data);
+  position: relative;
+}
+
+.containerChampionData {
+  flex: 1;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.containerChampionImg{
+    display: flex;
+    position: relative;
+    width: 100%;
+}
+.containerImgRunes {
+  display: flex;
+  justify-content: center;
+}
+
+.containerImgRunes > * {
+  position: absolute;
+  left:0
+}
+.containerImgRunes > :nth-child(1) {
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px; /* ajusta tamaño */
+  height: 30px;
+  z-index: 2;
+   background-color: rgba(0, 0, 0, 0.801);
+}
+
+/* Segunda runa - más pequeña y debajo */
+.containerImgRunes > :nth-child(2) {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 15px;
+  height: 15px;
+  margin-left: 15px; /* Mueve desde el centro hacia la derecha */
+  z-index: 5;
+   background-color: rgba(0, 0, 0, 0.801);
+}
+
+.containerSlotsRunes > * {
+  display: flex;
+  position: absolute;
+  width: 100%;
+}
+.containerSlotsRunes > :nth-child(1) {
+  top: 0px;
+  left: 0;
+  /* transform: translateX(-50%); */
+  width: 30px; /* ajusta tamaño */
+  height: 30px;
+  z-index: 2;
+   background-color: rgba(0, 0, 0, 0.801);
+}
+
+/* Segunda runa - más pequeña y debajo */
+.containerSlotsRunes > :nth-child(2) {
+  top: 0;
+  right: 0%;
+  /* transform: translateX(-50%); */
+  width: 30px;
+  height: 30px;
+  margin-left: 15px; /* Mueve desde el centro hacia la derecha */
+  z-index: 5;
+   background-color: rgba(0, 0, 0, 0.801);
+}
+
+
+.containerImgItems {
+  position: absolute;
+  top: 100%; /* ajusta según tamaño de items */
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: center;
+}
+
+.containerImgItem{
+    width: calc(100% / 3);
+    background-size: cover;
+    background-position: center;
+    border-radius: 0.3rem;
+}

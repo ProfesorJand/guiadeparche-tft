@@ -1,0 +1,17 @@
+---
+import Layout from "@layouts/LayoutMidOnly.astro"
+import VisualizadorMetaWildrift from "@components/wildrift/VisualizadorMetaWildrift"
+---
+
+<Layout title="Meta Wildrift">
+  <div class="smallContainer">
+    <VisualizadorMetaWildrift client:only="react"></VisualizadorMetaW>
+  </div>
+</Layout>
+
+<style>
+  .smallContainer{
+    display: flex;
+    width: 50%;
+  }
+</style>
