@@ -1,0 +1,20 @@
+---
+import Layout from "@layouts/LayoutMidOnly.astro";
+import FormularioTierListDota2 from "@components/dota-2/FormularioTierListDota2";
+
+const title="Dota 2"
+
+---
+
+<Layout title={title}>
+  <div class="smallContainer">
+    <FormularioTierListDota2 client:only="react">
+</div>
+</Layout>
+
+<style>
+  .smallContainer{
+    display: flex;
+    width: 50%;
+  }
+</style>

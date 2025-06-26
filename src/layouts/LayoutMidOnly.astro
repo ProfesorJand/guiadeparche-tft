@@ -3,7 +3,7 @@ import Header from '../components/headers/Header.astro';
 import Footer from '../components/footer/Footer.astro';
 import Logo from '../components/logo/Logo.astro';
 import Adsense from '../components/adsense/Adsense.jsx';
-import { ViewTransitions } from 'astro:transitions';
+// import { ViewTransitions } from 'astro:transitions';
 import Youtube from '@components/youtube/Youtube.jsx';
 import PageLoader from '@components/PageLoader';
 interface Props {
@@ -58,7 +58,7 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
     {JSONSchema && <script type="application/ld+json" set:html={JSONSchema}></script>}
 
     <title>{title}</title>
-    <ViewTransitions />
+    <!-- <ViewTransitions /> -->
   </head>
   <body>
     <PageLoader client:only="react" />

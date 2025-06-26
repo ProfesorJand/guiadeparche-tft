@@ -8,26 +8,42 @@ const Paginas = [
     titulo:"",
     descripcion:"",
     img:"/tft/assets/portada.webp",
-    link:"/tft/"
+    link:"/tft/meta-comps-tier-list-teamfight-tactics/"
   },
   {
     titulo:"",
     descripcion:"",
     img:"/lol/portada.webp",
-    link:"/lol/"
+    link:"/lol/best-champions-tier-list-league-of-legends/"
   },
   {
     titulo:"",
     descripcion:"",
-    img:"/valorant/bgTierList2.webp",
-    link:"/valorant/"
+    img:"/valorant/portada.webp",
+    link:"/valorant/meta-agents-maps/"
+  },
+  {
+    titulo:"",
+    descripcion:"",
+    img:"/wildrift/portada.webp",
+    link:"/wildrift/best-champions-tier-list-wild-rift"
   }
 ]
 ---
 <LayoutMidOnly title='Guiadeparche'>
-  {Paginas.map(({titulo, descripcion, img, link})=>{
-    return (
-      <CardPaginas titulo={titulo} descripcion={descripcion} img={img} link={link}/>
-    )
-  })}
+  <div class="container">
+    {Paginas.map(({titulo, descripcion, img, link})=>{
+      return (
+          <CardPaginas titulo={titulo} descripcion={descripcion} img={img} link={link}/>
+        )
+      })}
+  </div>
 </LayoutMidOnly>
+
+<style>
+  .container{
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
