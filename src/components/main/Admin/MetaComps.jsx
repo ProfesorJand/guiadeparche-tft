@@ -110,7 +110,7 @@ const MetaComps = ({ showHide,admin }) => {
   // Mostrar composiciones si ya cargaron
   return (
     <div className={style.containerMeta}>
-      {allFast8.some((innerArray) => innerArray.length > 0) && (
+      {/* {allFast8.some((innerArray) => innerArray.length > 0) && (
         <>
           <h2>{title.fast8}</h2>
           {allFast8.map((tier, index) =>
@@ -190,7 +190,31 @@ const MetaComps = ({ showHide,admin }) => {
             ))
           )}
         </>
-      )}
+      )} */}
+      {
+        composMeta.length > 0 && composMeta.map((tier,iTier)=>
+        tier.map((compo, i) => (
+              <div
+                ref={(el) => (refs.current[compo.id] = el)}
+                key={`augments-${i}`}
+                className={[
+                  style.containerMetaTier,
+                   compo?.isHide === "true" && admin ? "" : compo?.isHide === "true" ? style.isHide : ""
+                ].join(" ")}
+                
+              >
+                <Composicion
+                  compo={compo}
+                  showHide={showHide}
+                  admin={admin}
+                  onToggle={() => toggleCompo(compo.id)}
+                  isOpen={openCompId === compo.id}
+                  id={compo.id}
+                />
+              </div>
+            ))
+        )
+      }
     </div>
   );
 };

@@ -3,6 +3,7 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import { useStore } from "@nanostores/react";
 import style from "./VisualizadorMetaLOL.module.css";
 import { toPng } from 'html-to-image';
+import SliderButtom from "@components/inputs/SliderButtom.jsx";
 
 //usar tile en ves de portrait
 // victory url : https://raw.communitydragon.org/latest/game/en_gb/assets/ux/endofgame/en_us/victory.png
