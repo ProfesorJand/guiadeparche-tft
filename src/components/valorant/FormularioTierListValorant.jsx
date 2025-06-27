@@ -4,6 +4,7 @@ import { toPng } from 'html-to-image';
 import TierListValorant from "./TierListValorant";
 import style from "./css/FormularioTierListValorant.module.css"
 import {fetchAgentsMeta, ValorantAgentsMeta, ValorantConstantes} from "@stores/dataValorant"
+import SliderButtom from "@components/inputs/SliderButtom";
 
 const FormularioTierListValorant = () => {
   const backgroundRef = useRef(null);
@@ -231,11 +232,7 @@ const FormularioTierListValorant = () => {
         <input type="button" onClick={(e)=>{saveContantes({key:"tituloVisualizadorMeta",value:document.getElementById("titulo").value})}} value={"Guardar Titulo"}></input>
         <input type="text" id={"version"} onChange={(e)=>{setVersion(e.target.value)}} value={version} className={style.inputText}/>
         <input type="button" onClick={(e)=>{saveContantes({key:"versionVisualizadorMeta",value:document.getElementById("version").value})}} value={"Guardar Version"}></input>
-        <span>Logo Movilnet ({logoMovilnet ? "activado": "desactivado"})</span>
-        <label className={style.switch}>
-          <input type="checkbox" id={"logoMovilnet"} onChange={(e)=>{setLogoMovilnet(e.target.checked)}} value={logoMovilnet} className={style.inputText} checked={logoMovilnet}/>
-          <span className={style.slider}></span>
-        </label>
+        <SliderButtom setLogoMovilnet={setLogoMovilnet} logoMovilnet={logoMovilnet}/>
         <input type="button" onClick={(e)=>{saveContantes({key:"logoMovilnet",value:document.getElementById("logoMovilnet").checked})}} value={"Guardar Vista de Logo Movilnet"}></input>
         <input type="button" onClick={()=>{onButtonClick()}} defaultValue="Capturar Imagen"/>
       </div>

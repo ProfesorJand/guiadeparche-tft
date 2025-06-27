@@ -9,6 +9,7 @@ import { toPng } from 'html-to-image';
 //https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/images/ranked-emblem/tier/
 const VisualizadorMetaLOL = () => {
   const constantesLOL = useStore(LeagueOfLegendsConstantes);
+  const [logoMovilnet, setLogoMovilnet] = useState(false)
   const [localMetaLOL, setLocalMetaLOL] = useState({})
   const lanersChampionsMetaStore = useStore(lanersChampionsMeta);
   const [versionMeta, setVersionMeta] = useState("25.11");
@@ -119,6 +120,7 @@ const VisualizadorMetaLOL = () => {
   if (constantesLOL) {
     setVersionMeta(constantesLOL.versionVisualizadorMeta ?? "");
     setTituloMeta(constantesLOL.tituloVisualizadorMeta ?? "");
+    setLogoMovilnet(constantesLOL.logoMovilnet)
   }
     },[constantesLOL]);
 
@@ -139,6 +141,7 @@ const VisualizadorMetaLOL = () => {
         <label className={style.labelVersion}>
           <input type="button" className={style.inputVersion} onClick={onButtonClick} value="Capturar imagen"  />
         </label>
+        <SliderButtom setLogoMovilnet={setLogoMovilnet} logoMovilnet={logoMovilnet}/>
       </div>
       }
       <div className={style.containerVisualizadorMetaLOL}  ref={backgroundRef}>
@@ -217,7 +220,7 @@ const VisualizadorMetaLOL = () => {
           </div>
           <div className={style.footer}>
             <img src="/tft/assets/Jupeson_LOGO_Sin_Publicidad.png" alt="logo Jupeson" style={{transform:"scale(0.6)"}}></img>
-            {/* <img src="/tft/assets/logoMovilnet-e-letras-blancas.png" alt="logo Movilnet" ></img> */}
+            {logoMovilnet && <img src="/tft/assets/logoMovilnet-e-letras-blancas.png" alt="logo Movilnet" ></img>}
             <img src="/lol/league-logo-blanco.png" style={{transform:"scale(0.6)"}} alt="logo League of Legends"></img>
           </div>
         </div>

@@ -3,7 +3,7 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import { useStore } from "@nanostores/react";
 import style from "./VisualizadorMetaWildrift.module.css";
 import { toPng } from 'html-to-image';
-
+import SliderButtom from "@components/inputs/SliderButtom";
 //usar tile en ves de portrait
 // victory url : https://raw.communitydragon.org/latest/game/en_gb/assets/ux/endofgame/en_us/victory.png
 //https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/images/ranked-emblem/tier/
@@ -12,7 +12,8 @@ const VisualizadorMetaWildrift = () => {
   const [localMetaWildrift, setLocalMetaWildrift] = useState({})
   const lanersChampionsMetaStore = useStore(lanersChampionsMeta);
   const [versionMeta, setVersionMeta] = useState("25.11");
-  const [tituloMeta, setTituloMeta] = useState("Titulo")
+  const [tituloMeta, setTituloMeta] = useState("Titulo");
+  const [logoMovilnet, setLogoMovilnet] = useState(false);
   // const [elo, setElo] = useState("emerald");
   const backgroundRef = useRef(null);
   const admin = localStorage.getItem("superAdmin") || false;
@@ -119,6 +120,7 @@ const VisualizadorMetaWildrift = () => {
   if (constantesWildrift) {
     setVersionMeta(constantesWildrift.versionVisualizadorMeta ?? "");
     setTituloMeta(constantesWildrift.tituloVisualizadorMeta ?? "");
+    setLogoMovilnet(constantesWildrift.logoMovilnet ?? false);
   }
     },[constantesWildrift]);
 
@@ -139,6 +141,7 @@ const VisualizadorMetaWildrift = () => {
         <label className={style.labelVersion}>
           <input type="button" className={style.inputVersion} onClick={onButtonClick} value="Capturar imagen"  />
         </label>
+        <SliderButtom setLogoMovilnet={setLogoMovilnet} logoMovilnet={logoMovilnet}/>
       </div>
       }
       <div className={style.containerVisualizadorMetaLOL}  ref={backgroundRef}>
@@ -217,8 +220,8 @@ const VisualizadorMetaWildrift = () => {
           </div>
           <div className={style.footer}>
             <img src="/tft/assets/Jupeson_LOGO_Sin_Publicidad.png" alt="logo Jupeson" style={{transform:"scale(0.6)"}}></img>
-            {/* <img src="/tft/assets/logoMovilnet-e-letras-blancas.png" alt="logo Movilnet" ></img> */}
             <img src="/wildrift/logo/League_of_Legends_Wild_Rift_logo.webp" style={{transform:"scale(0.6)"}} alt="logo League of Legends Wildrift"></img>
+            {logoMovilnet &&  <img src="/tft/assets/logoMovilnet-e-letras-blancas.png" alt="logo Movilnet" ></img> }
           </div>
         </div>
       </div>

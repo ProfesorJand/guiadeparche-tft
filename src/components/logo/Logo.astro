@@ -9,15 +9,33 @@ interface ImageMetadata {
 }
 ---
 <div class="containerHeaderLogo">
-  <div class="logoContainer">
+  <a
+    class="logoContainer"
+    href="/"
+    rel="noopener noreferrer"
+    id="logo-link"
+    >
     <Image
     class="logo"
     src={logo}
     alt="Logo Guiadeparche"
     />
     <slot/>
-  </div>
+  </a>
 </div>
+
+<script>
+  if (typeof window !== "undefined") {
+    const link = document.getElementById("logo-link");
+    if (link) {
+      link.addEventListener("click", (e) => {
+        if (window.location.pathname === "/") {
+          e.preventDefault();
+        }
+      });
+    }
+  }
+</script>
 
 <style>
   .logo {
@@ -30,6 +48,8 @@ interface ImageMetadata {
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    text-decoration: none;
+    color: var(--color-white);
   }
 
   @media only screen and (min-width:900px){
