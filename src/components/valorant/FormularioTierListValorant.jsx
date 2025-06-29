@@ -41,25 +41,45 @@ const FormularioTierListValorant = () => {
     console.log({localMetaValorant})
   },[localMetaValorant])
 
-  const handleAgent = ({agent, map, iAgentSpot, rol})=>{
-    const updateMap = localMetaValorant?.[map] ? {...localMetaValorant[map]} : {};
-    updateMap[rol] = updateMap?.[rol] ? [...updateMap[rol]] : [] 
+  const handleAgent = ({ agent, map, iAgentSpot, rol }) => {
+    const updateMap = localMetaValorant?.[map] ? { ...localMetaValorant[map] } : {};
+
+    updateMap[rol] = updateMap?.[rol] ? [...updateMap[rol]] : [];
     updateMap[rol][iAgentSpot] = agent;
-    const sonTodosNulls = updateMap[rol].every((value)=>value === null)
-    if(sonTodosNulls){
-      delete updateMap[rol]
+
+    const sonTodosNulls = updateMap[rol].every(value => value === null);
+    if (sonTodosNulls) {
+      delete updateMap[rol];
     }
+
     const updateMapTieneKeys = Object.keys(updateMap).length > 0;
+
+    // 👉 Ordenamos `updateMap` según `rols`
+    const orderedUpdateMap = Object.keys(updateMap)
+      .sort((a, b) => rols.indexOf(a) - rols.indexOf(b))
+      .reduce((obj, key) => {
+        obj[key] = updateMap[key];
+        return obj;
+      }, {});
+
     setLocalMetaValorant(prev => {
-    const newMeta = { ...prev };
-    if (updateMapTieneKeys) {
-      newMeta[map] = updateMap;
-    } else {
-      delete newMeta[map];
-    }
-    return newMeta;
-  });
-  }
+      const ordered = Object.keys(prev)
+      .sort()
+      .reduce((obj, key) => {
+        obj[key] = prev[key];
+        return obj;
+      }, {});
+      const newMeta = { ...ordered };
+
+      if (updateMapTieneKeys) {
+        newMeta[map] = orderedUpdateMap;
+      } else {
+        delete newMeta[map];
+      }
+
+      return newMeta;
+    });
+  };
 
   const saveChanges = async () => {
     try {
@@ -247,6 +267,7 @@ const maps = [
   "ascent",
   "bind",
   "breeze",
+  "corrode",
   "fracture",
   "heaven",
   "icebox",
@@ -264,8 +285,8 @@ const agentsRols = {
 };
 
 const rols = [
-  "controller",
   "duelist",
+  "controller",
   "initiator",
   "sentinel"
 ];
