@@ -29,8 +29,16 @@ const Paginas = [
     link:"/wildrift/best-champions-tier-list-wild-rift"
   }
 ]
+
+import { crearJSONSchema } from "@json/schema/crearJSONSchema";
+const title="Guiadeparche"
+const description = "Guiadeparche is a comprehensive guide for the latest patches in Riot Games and others. Discover the best champions, agents, and compositions to dominate your games.";
+const imgPost = "/lol/portada.webp"
+const JSONSchema = crearJSONSchema({title, imgPost, description});
+const keywords = "Valorant Meta, Agents Valorant, Maps Valorant, Tier List Valorant, Best Agents Valorant";
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
-<LayoutMidOnly title='Guiadeparche'>
+<LayoutMidOnly title='Guiadeparche' JSONSchema={JSONSchema} description={description} keywords={keywords} image={imgPost} canonical={canonicalURL}>
   <div class="container">
     {Paginas.map(({titulo, descripcion, img, link})=>{
       return (

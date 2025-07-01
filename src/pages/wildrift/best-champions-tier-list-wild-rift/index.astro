@@ -1,9 +1,16 @@
 ---
 import Layout from "@layouts/LayoutMidOnly.astro"
 import VisualizadorMetaWildrift from "@components/wildrift/VisualizadorMetaWildrift"
+import { crearJSONSchema } from "@json/schema/crearJSONSchema";
+const title="Meta Wildrift"
+const description = "Top Wild rift League of Legends Meta. Discover the latest Tier List!";
+const imgPost = "/wildrift/portada.webp"
+const JSONSchema = crearJSONSchema({title, imgPost, description});
+const keywords = "Wild Rift Meta, Wild Rift Champions, Wild Rift Tier List, Best Champions Wild Rift";
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
-<Layout title="Meta Wildrift">
+<Layout title={title}  JSONSchema={JSONSchema} description={description} keywords={keywords} image={imgPost} canonical={canonicalURL}>
   <div class="smallContainer">
     <VisualizadorMetaWildrift client:only="react"></VisualizadorMetaW>
   </div>

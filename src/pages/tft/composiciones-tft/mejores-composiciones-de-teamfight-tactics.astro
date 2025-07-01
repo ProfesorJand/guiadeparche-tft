@@ -18,7 +18,7 @@ const title = "▷ Best TFT Comps & Builds for Set 14 Cyber City";
 // Example: Construct a canonical URL using your production domain
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 // Example: Construct a URL for SEO meta tags using your current domain
-const socialImageURL = new URL('/images/preview.png', Astro.url);
+//const socialImageURL = new URL('/images/preview.png', Astro.url);
 const description = "Top TFT Meta Comps for Set 14 Cyber City. Discover the latest Tier List, Augments and Builds for every patch. Mejores Composiciones TFT!";
 const keywords = "TFT Meta, Meta comps, comps TFT, comp TFT, Meta TFT, composiciones TFT, build TFT";
 const thumbnail= "/campeones/set12/ryze.webp"
@@ -33,7 +33,7 @@ const admin = typeof window !== "undefined" ? localStorage.getItem("superAdmin")
 <!-- <meta name="description" content={description}>
 <meta name="keywords" content={keywords}>
 <meta property="og:image" content="/campeones/set12/ryze.webp" /> -->
-<Layout title={title} JSONSchema={JSONSchema} description={description} keywords={keywords} image={"/campeones/set12/ryze.webp"} canonical={canonicalURL}>
+<Layout title={title} JSONSchema={JSONSchema} description={description} keywords={keywords} image={thumbnail} canonical={canonicalURL}>
   <Fragment slot="bodyMainAside">
     <!-- <FiltroComps client:only="react"/> -->
     <TierListMetaComps client:only="react"/>

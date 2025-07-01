@@ -83,6 +83,11 @@
   transform: translate(-50%, -50%);
   /* text-shadow: 2px 2px 4px rgba(219, 7, 7, 0.5); */
   font-family: ObvioslyWideBold, sans-serif;
+  text-shadow:
+    0 0 5px #000000,
+    0 0 10px #000000,
+    0 0 15px #000000,
+    0 0 20px #000000;
 }
 
 
