@@ -1,6 +1,7 @@
 ---
 import Layout from "@layouts/LayoutMidOnly.astro";
 import FormularioTierListValorant from "@components/valorant/FormularioTierListValorant";
+import Contenedor from "@components/valorant/Contenedor";
 import { crearJSONSchema } from "@json/schema/crearJSONSchema";
 const title="Valorant"
 const description = "Top Agents Meta Valorant. Discover the latest Tier List, Maps for every patch.";
@@ -12,8 +13,11 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 <Layout title={title} JSONSchema={JSONSchema} description={description} keywords={keywords} image={imgPost} canonical={canonicalURL}>
   <div class="smallContainer">
-    <FormularioTierListValorant client:only="react">
-</div>
+
+    <Contenedor client:only="react">
+      <FormularioTierListValorant client:only="react">
+    </Contenedor >
+  </div>
 </Layout>
 
 <style>

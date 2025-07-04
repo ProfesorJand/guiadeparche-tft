@@ -1,0 +1,9 @@
+h1{
+  font-size: 25px;
+}
+
+.btnEditVariables{
+  display: flex;
+  position:relative;
+  justify-self: end;
+}

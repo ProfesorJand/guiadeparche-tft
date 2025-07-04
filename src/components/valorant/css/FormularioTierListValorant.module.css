@@ -67,3 +67,33 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+.container{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cMetaByMap{
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap:5px
+}
+
+.cMetaByMapTitle{
+  display: flex;
+
+}
+
+.cMetaByMapTitle label{
+  display: flex;
+  position: absolute;
+  background-color: #c21919;
+  padding: 5px;
+}
+
+.cMetaByMapAgent{
+  display: flex;
+  flex-direction: row;
+}

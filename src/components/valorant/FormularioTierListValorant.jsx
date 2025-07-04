@@ -192,15 +192,18 @@ const FormularioTierListValorant = () => {
       {
         admin &&
         <>
-      <div>
+      <div className={style.container}>
         {maps.length > 0 && maps.map((map,iMap)=>{
           return (
-            <div key={`ValorantMap${iMap}`}>
+            <div key={`ValorantMap${iMap}`} className={style.cMetaByMap}>
+              <div className={style.cMetaByMapTitle}>
               <label>{map}</label>
               <img src={`/valorant/maps/${map}.webp`} style={{width:"30%"}}></img>
-              {Object.keys(agentsRols).map((rol)=>{
+              </div>
+              <div className={style.cMetaByMapAgent}>
+              {Object.keys(agentsRols).map((rol, iRol)=>{
                 return (
-                  <div>
+                  <div key={map+rol+iRol} >
                     <img src={`/valorant/rols/${rol}.svg`} style={{ filter: "brightness(0) invert(1)" }}></img>
                     {rol}
                     {Array.from({ length: 2}, (_, iAgentSpot)=>{
@@ -242,6 +245,7 @@ const FormularioTierListValorant = () => {
                   </div>
                   )
                 })}
+                </div>
             </div>
           )
         })}
@@ -269,7 +273,7 @@ const maps = [
   "breeze",
   "corrode",
   "fracture",
-  "heaven",
+  "haven",
   "icebox",
   "lotus",
   "pearl",
