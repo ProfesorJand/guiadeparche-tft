@@ -8,7 +8,6 @@ export const ValorantConstantes = deepMap(iniAgentsByMapMeta)
 export const fetchAgentsMeta = async ()=>{
   try{
     const token = import.meta.env.PUBLIC_TOKEN_META;
-    console.log("Fetching agents meta data with token:");
     const url = "https://api.guiadeparche.com/val/AgentsMeta.json";
     const response = await fetch(url,{
       headers: {
@@ -31,7 +30,6 @@ export const fetchConstantesValorant = async ()=>{
     async ()=>{
       try{
         const token = import.meta.env.PUBLIC_TOKEN_META;
-        console.log("Fetching constantes valorant data with token:");
         const url = "https://api.guiadeparche.com/val/constantes.json";
         const response = await fetch(url,{
           headers: {

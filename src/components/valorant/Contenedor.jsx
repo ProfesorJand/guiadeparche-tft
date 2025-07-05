@@ -9,15 +9,18 @@ const Contenedor = ({children})=>{
   const parrafo1 = constantes?.parrafo1;
   // const tipsForAgents = constantes?.tipsForAgents || {};
   const [tipsForAgents, setTipsForAgents] = useState(Tips);
+  const tipsFlags = {};
+
+  Object.values(Tips).forEach(categoria => {
+    categoria.forEach(agente => {
+      tipsFlags[`${agente.agent}Tip`] = false;
+    });
+  });
+  console.log("tipsFlags", tipsFlags)
   const [editarBtn, setEditarBtn] = useState({
     titulo: false,
     parrafo1: false,
-    tips: {
-      "Duelistas": false,
-      "Controladores": false,
-      "Iniciadores": false,
-      "Centinelas": false
-    }
+    ...tipsFlags
   });
   const admin = localStorage.getItem("superAdmin");
 
@@ -86,38 +89,31 @@ const Contenedor = ({children})=>{
             return (
               <div key={iAgente}>
                 <h3>{agente.agent}</h3>
-                <p>{agente.tip || ValorantConstantes[agente.agent+"Tip"] || ""}</p>
-                { admin && 
+                <p>{constantes[agente.agent+"Tip"]}</p>
+                {admin && <input className={style.btnEditVariables} type="button" value={editarBtn[agente.agent+"Tip"] ? "Ocultar Edición" :"Editar Parrafo"} onClick={()=>setEditarBtn((prev)=>({...prev, [agente.agent+"Tip"]: !prev[agente.agent+"Tip"]}))} />}
+                { editarBtn[agente.agent+"Tip"] && 
                 <>
-                  <input
+                  <textarea
+                    className={style.textareaTip}
                     type="text"
-                    value={constantes?.[rol]?.[agente.agent+"Tip"] || ""}
+                    value={constantes?.[agente.agent+"Tip"] || ""}
                     onChange={
                       (e)=>
                         ValorantConstantes.set({
                           ...constantes,
-                          [rol]: constantes[rol]?.map((a) => {
-                            if (a.agent === agente.agent) {
-                              return {...a, tip: e.target.value};
-                            }
-                            return a;
-                          })
+                          [agente.agent+"Tip"]: e.target.value
                     })}
-                        placeholder={`Tip for ${agente.agent}`}
+                    placeholder={`Tip for ${agente.agent}`}
+                    rows={4} // ajusta esto para la altura inicial
+                    style={{ width: "100%", resize: "vertical" }}
                         />
                   <button onClick={()=>saveContantes(
                     {
-                      key:rol,
-                      value:[
-                        ...constante?.[rol] || [],
-                        constantes?.[rol].map((a)=>{
-                          if(a.agent === agente.agent){
-                            return {...a, tip: constantes?.[rol]?.[agente.agent+"Tip"] || ""}
-                          }
-                          return a;
-                        })]
+                      key:agente.agent+"Tip",
+                      value:constantes?.[agente.agent+"Tip"] || ""
                     })}>
-                        {`Guardar ${agente.agent} Tip`}</button>
+                    {`Guardar ${agente.agent} Tip`}
+                  </button>
                 </>
                 }
               </div>
@@ -152,6 +148,18 @@ const Tips = {
       agent: "Iso",
       tip:"Gran presencia en Haven por sus trades y presión constante en duelos. Su ultimate cambia el ritmo de la ronda."
     },
+    {
+      agent: "Yoru",
+      tip:"Versátil y engañoso, Yoru es fuerte en mapas con ángulos cerrados como Split y Ascent. Su ultimate puede cambiar el rumbo de la ronda."
+    },
+    {
+      agent: "Phoenix",
+      tip:"Fuerte en mapas como Bind y Ascent, donde su capacidad de curarse y controlar el espacio lo hacen un duelista sólido."
+    },
+    {
+      agent: "Waylay",
+      tip:"Nuevo duelista con habilidades de movilidad y daño. Aún en desarrollo, pero promete ser fuerte en mapas como Sunset y Lotus."
+    }
   ],
   "Controladores":[
     {
@@ -169,6 +177,14 @@ const Tips = {
     {
       agent: "Viper",
       tip:"Clave en Icebox por su muro y setup defensivo. Excelente control de planta y retake."
+    },
+    {
+      agent: "Harbor",
+      tip:"Fuerte en Lotus y Sunset, donde su muro y habilidades de control de espacio son esenciales."
+    },
+    {
+      agent: "Astra",
+      tip:"Gran control de mapa en Haven y Ascent. Su ultimate puede cambiar el rumbo de la ronda."
     },
   ],
   "Iniciadores":[
@@ -196,6 +212,10 @@ const Tips = {
       agent: "Gekko",
       tip:"Útil en Icebox y Sunset, gracias a su versatilidad, flashes y utilidad de planta/retake."
     },
+    {
+      agent: "Tejo",
+      tip:"Nuevo iniciador con habilidades de control de espacio y info. Aún en desarrollo, pero promete ser fuerte en mapas como Sunset y Lotus."
+    }
   ],
   "Centinelas":[
     {
@@ -218,6 +238,10 @@ const Tips = {
       agent: "Deadlock",
       tip:"Poco frecuente, pero útil en Corrode con setups de control y bloqueo de espacio en zonas estrechas."
     },
+    {
+      agent: "Sage",
+      tip:"Clásica en Valorant. Su curación y muro son esenciales en mapas como Bind y Ascent."
+    }
   ]
 }
 
