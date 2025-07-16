@@ -72,7 +72,7 @@ export const updateDataTFT = async (data)=>{
   dataTFTAllItems.set(items);
   dataTFTSetData.set(setData);
   dataTFTChampions.set(sets[versionTFT.get() === "pbe" ? setNumberPBE: setNumberLatest].champions);
-  dataTFTTraits.set(sets[versionTFT.get() === "pbe" ? setNumberPBE: setNumberLatest].traits)
+  dataTFTTraits.set(sets[versionTFT.get() === "pbe" ? setNumberPBE: setNumberLatest].traits);
 };
 
 export const swapVersionTFT = (data) =>{

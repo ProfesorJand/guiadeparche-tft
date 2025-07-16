@@ -14,7 +14,7 @@ import { championsTFT } from "src/json/updates/constantesLatest.js";
 import { listaCampeones } from "src/functions/campeonestft.js";
 import { itemsDataIngles, getDataTFTBySet, championsTFTIngles  as getAllChampions} from "src/json/updates/contantesTFT.js"
 import ChampTierList from "@components/TFT/ChampTierList.jsx"
-import { versionTFT, setMutatorLatest, setMutatorPBE } from "src/stores/dataTFT.js"
+import { versionTFT, setMutatorLatest, setMutatorPBE, dataTFTChampions } from "src/stores/dataTFT.js"
 import { useStore } from "@nanostores/react"
 
 
@@ -59,7 +59,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
     const [champItem, setChampItem] = useState([{}])
     const [champTrait, setChampTrait] = useState([{}]);
     const [champ3Stars, setChamp3Stars] = useState(false)
-    const [allChampions, setAllChampions] = useState([]);
+    const allChampions = useStore(dataTFTChampions);
     const [loadingPicture, setLoadingPicture] = useState(false)
     
     const championsColor = [
@@ -154,13 +154,6 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
       getAllItems();
     }, [version]);
     
-    useEffect(()=>{
-      const gettingAllChampions = async ()=>{
-        const respuestaGettingAllChampions = await getAllChampions({version,set:version === "pbe" ? "14" : "13"})
-        setAllChampions(respuestaGettingAllChampions)  
-      }
-      gettingAllChampions();
-    },[version])
 
     useEffect(() => {
       // Configurar el listener dragover cuando el componente se monte

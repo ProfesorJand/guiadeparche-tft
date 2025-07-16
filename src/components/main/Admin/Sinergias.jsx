@@ -1,9 +1,11 @@
 import React, { useEffect } from "react";
 import style from "./css/Sinergias.module.css"
 import { traitsColors, imgHex } from "src/functions/campeonestft";
-import sinergiasData from "src/json/updates/sinergiasData";
+//import sinergiasData from "src/json/updates/sinergiasData";
+import { dataTFTTraits } from "@stores/dataTFT";
+import { useStore } from "@nanostores/react";
 const Sinergias = ({sinergias, orientacion, show, version})=>{
-
+  const sinergiasData = useStore(dataTFTTraits)
   function checkColor(hexColor){
     if(hexColor === "hex-prismatic.webp"){
       return colorHex.prismatic

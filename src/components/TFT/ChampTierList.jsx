@@ -2,8 +2,9 @@ import { useEffect } from "react";
 import { useStore } from "@nanostores/react";
 import style from "./css/ChampTierList.module.css";
 import estrellas3 from "../../assets/3-estrellas.webp";
+import { versionTFT } from "@stores/dataTFT";
 import { openCompoId, setOpenCompo, scrollToComposicion } from "src/stores/openCompoById";
-const ChampTierList = ({id,isSample,campeonTierList, augmentTierList, champItem, champTrait,version, champ3Stars})=>{
+const ChampTierList = ({id,isSample,campeonTierList, augmentTierList, champItem, champTrait, champ3Stars})=>{
   const championsColor = [
     "var(--color-hex-cost-default)",
     "var(--color-hex-cost-1)",
@@ -12,9 +13,10 @@ const ChampTierList = ({id,isSample,campeonTierList, augmentTierList, champItem,
     "var(--color-hex-cost-4)",
     "var(--color-hex-cost-5)",
   ];
+  const version = useStore(versionTFT);
   const urlDataDragonLatestGame = `https://raw.communitydragon.org/${version}/game/`;
   const urlDataDragonPBEGame = `https://raw.communitydragon.org/${version}/game/`;
-  const compId = useStore(openCompoId)
+  const compId = useStore(openCompoId);
   useEffect(()=>{
     scrollToComposicion()
   },[compId])
