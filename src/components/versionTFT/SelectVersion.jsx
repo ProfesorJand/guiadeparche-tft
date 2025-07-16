@@ -11,13 +11,13 @@ export default function SelectVersion() {
         className={`btn ${currentVersion === "pbe" ? "active" : ""}`}
         onClick={() => swapVersionTFT("pbe")}
       >
-        Set 14
+        Set 15
       </button>
       <button
         className={`btn ${currentVersion !== "pbe" ? "active" : ""}`}
         onClick={() => swapVersionTFT("latest")}
       >
-        Set 13
+        Set 14
       </button>
     </div>
   );

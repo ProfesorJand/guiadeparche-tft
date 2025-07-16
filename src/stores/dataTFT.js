@@ -37,7 +37,7 @@ export const dataTFTAllItems = atom(initialStateDataTFTItems);
 export const dataTFTSetData = atom(initialStateDataTFTSetData);
 export const dataTFTChampions = atom(initialStateDataTFTChampions);
 export const dataTFTTraits = atom([])
-export const versionTFT = atom(initialStateVersion);
+export const versionTFT = atom(initialTFT_SET);
 export const teamPlannerCode = atom(initialStateTeamPlannerCode);
 export const TFT_SET = atom(initialTFT_SET);
 
