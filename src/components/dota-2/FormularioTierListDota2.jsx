@@ -33,9 +33,9 @@ const FormularioTierListDota2 = () => {
     fetchingHeroes();
   },[])
 
-  useEffect(()=>{
-    setLocalMetaDota2(JSON.parse(JSON.stringify(Dota2MetaStore)))
-  },[Dota2MetaStore])
+  // useEffect(()=>{
+  //   setLocalMetaDota2(JSON.parse(JSON.stringify(Dota2MetaStore)))
+  // },[Dota2MetaStore])
 
   useEffect(()=>{
   if (ConstantesDota2) {
@@ -45,21 +45,25 @@ const FormularioTierListDota2 = () => {
   }
   },[ConstantesDota2])
 
-  useEffect(()=>{
-    console.log({localMetaDota2})
-  },[localMetaDota2])
 
-  const handleHero = ({hero, iHeroeSpot, rol})=>{
+
+  const handleHero = ({ hero, iHeroeSpot, rol }) => {
     const updateRol = localMetaDota2?.[rol] ? [...localMetaDota2[rol]] : [];
-    const findDataHero = listHeroes.find((h)=>h.name === hero);
-    updateRol[iHeroeSpot] = findDataHero || {id:null, name:null, image:null};
 
-    setLocalMetaDota2(prev => {
-    const newMeta = { ...prev };
+    // Si aún no hay selección válida (solo está escribiendo), solo guarda el texto
+    if (!hero || !listHeroes.some(h => h.name === hero)) {
+      updateRol[iHeroeSpot] = { name: hero }; // Solo el texto temporal
+    } else {
+      const findDataHero = listHeroes.find((h) => h.name === hero);
+      updateRol[iHeroeSpot] = findDataHero || { id: null, name: null, image: null };
+    }
+
+    setLocalMetaDota2((prev) => {
+      const newMeta = { ...prev };
       newMeta[rol] = updateRol;
-    return newMeta;
-  });
-  }
+      return newMeta;
+    });
+  };
 
   const saveChanges = async () => {
     try {

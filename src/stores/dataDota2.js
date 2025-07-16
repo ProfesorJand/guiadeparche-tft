@@ -18,7 +18,7 @@ export const fetchHeroes = async()=> {
   return heroes.map(h => ({
     id: h.id,
     name: h.localized_name,
-    image: `https://cdn.cloudflare.steamstatic.com/apps/dota2/images/heroes/${h.name.replace('npc_dota_hero_','')}_full.png`
+    image: `/dota-2/heroes/${h.name.replace('npc_dota_hero_','')}_full.png`
   }));
 }
 

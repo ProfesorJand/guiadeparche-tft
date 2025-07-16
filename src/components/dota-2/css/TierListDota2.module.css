@@ -126,7 +126,16 @@
   display: flex;
   position: relative;
   width: 100%;
-  justify-content: center;
+  justify-content: end;
+  /* background-color: #00000073;  */
+  /* background-image: repeating-linear-gradient(0deg,rgba(0, 0, 0, 0.356),rgba(0, 183, 255, 0.39) 50%,rgba(0, 0, 0, 0.37) 100%); */
+  align-items: center;
+  flex-direction: column;
+}
+
+.rol span{
+  font-family: 'ObvioslyWideBold';
+  font-size: clamp(5px, 0.6vw, 20px);
 }
 
 .imgRol{
@@ -146,16 +155,18 @@
 
 .verticalLine{
   position: absolute;
-  width: calc((100%) / 6 * 4.5);
-  left: calc(((100% ) / 6 * 1.5));
+  width: calc(100%);
   height: calc(100% - 25px);
+  z-index: 9;
+  display: flex;
+  justify-content: space-between;
 }
 
 .vline{
-  position: absolute;
+  position: relative;
   width: 1px;
   height: 105%;
-  top:-5%;
+  top:-8%;
   background-color: rgb(160, 70, 70);
 }
 
@@ -312,7 +323,6 @@
   width: calc(100%);
   display: flex;
   position: relative;
-  gap:5px;
   flex-direction: row;
   height: 100%;
   /* background-color: #00000073; */
@@ -333,7 +343,7 @@
 .cAgent{
   display: flex;
   /* width: calc((100% / 5) - 5px + (5px / 5)); */
-  width: 100%;
+  width: 90%;
   height: calc((100% / 8) - 5px + (5px /8));
   position: relative;
   overflow: hidden;
