@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
 import style from "./css/ChampionsList.module.css";
+import { versionTFT, setNumberLatest, setNumberPBE, dataTFTChampions, dataTFTTraits } from "@stores/dataTFT";
+import { useStore } from "@nanostores/react";
 // import {listaCampeones} from "../../../functions/campeonestft.js";
 // import { fetchingDataTFT } from "src/json/updates/constantesPBE.js";
 import { championsTFTIngles, traitsTFTIngles } from "src/json/updates/contantesTFT.js";
 
-const Champions = ({version = "pbe"})=>{
+const Champions = ()=>{
     const [championsList, setChampionsList]=useState(null);
-    const [sortBy, setSortBy] = useState("coste")
-
+    const [sortBy, setSortBy] = useState("coste");
+    const currentVersion = useStore(versionTFT);
+    const champio = useStore(dataTFTChampions);
+    const tftTraits = useStore(dataTFTTraits)
     function handleDragStart(e){
         e.dataTransfer.setData("campeon", e.target.getAttribute("data-campeon"));
         e.dataTransfer.setData("from", e.target.getAttribute("data-from"));
@@ -34,11 +38,11 @@ const Champions = ({version = "pbe"})=>{
     useEffect(()=>{
         const activador = async ()=>{
             const championsList = [];
-            (await championsTFTIngles({version, set:version === "pbe" ? "14":"13"})).forEach(({ability, apiName, name, cost, characterName, tileIcon, stats, traits})=>{
+            champio.forEach(({ability, apiName, name, cost, characterName, tileIcon, stats, traits})=>{
                 if(traits.length > 0){
                     const traitsData = ()=>{
                         const resp = traits.map((trait)=>{
-                            const data = traitsTFTIngles.find(({name})=>{
+                            const data = tftTraits.find(({name})=>{
                                 return name === trait
                             })
                             return data
@@ -52,13 +56,20 @@ const Champions = ({version = "pbe"})=>{
                         coste:cost,
                         sinergia:traitsData(),
                         stats,
-                        img: `https://raw.communitydragon.org/${version}/game/`+ tileIcon.replace(".tex",".png").toLowerCase(),
+                        img: `https://raw.communitydragon.org/${currentVersion}/game/`+ tileIcon.replace(".tex",".png").toLowerCase(),
                         ability,
                     }
                     championsList.push(data)
                     
                 }
-                if(apiName === "TFT13_JayceSummon" || apiName === "TFT13_Sion" || apiName === "TFT14_SummonLevel4" || apiName === "TFT14_SummonLevel2" || apiName === "TFT_TrainingDummy"){
+                if(
+                    apiName === "TFT13_JayceSummon" || 
+                    apiName === "TFT13_Sion" || 
+                    apiName === "TFT14_SummonLevel4" || 
+                    apiName === "TFT14_SummonLevel2" || 
+                    apiName === "TFT15_Galio" || 
+                    apiName === "TFT_TrainingDummy"
+                ){
                     const data = {
                         apiName,
                         nombre:name,
@@ -66,22 +77,25 @@ const Champions = ({version = "pbe"})=>{
                         coste:cost,
                         sinergia:traits,
                         stats,
-                        img: `https://raw.communitydragon.org/${version}/game/`+ tileIcon.replace(".tex",".png").toLowerCase(),
+                        img: `https://raw.communitydragon.org/${currentVersion}/game/`+ tileIcon.replace(".tex",".png").toLowerCase(),
                         ability,
                     }
                     championsList.push(data)
                 }
             })
-            setChampionsList(championsList.sort((a,b)=>{
-                if(a["coste"] < b["coste"]) {return -1}
-                if(a["coste"] > b["coste"]) {return 1}
+             // Ordenamos por coste
+            const sortedByName = championsList.sort((a,b)=>{
+                if(a.nombre < b.nombre) {return -1}
+                if(a.nombre > b.nombre) {return 1}
                 return 0;
-            }))
-            //setResultado(response)
+                }
+            )
+            const sorted = sortedByName.sort((a, b) => a.coste - b.coste);
+            // Guardamos y luego filtramos
+            setChampionsList(sorted);
         }
         activador();
-        handleFilter("coste")
-    },[version])
+    },[champio])
 
     return(
         <>
@@ -257,6 +271,8 @@ const Champions = ({version = "pbe"})=>{
                 })}
             </div>
             }
+
+            
         </div>
         </>
     )

@@ -10,6 +10,11 @@ const initialStateVersion = "pbe";
 const initialStateTeamPlannerCode = [];
 const initialTFT_SET = "latest";
 
+export const setNumberPBE="15";
+export const setMutatorPBE="TFTSet15";
+export const setNumberLatest="14";
+export const setMutatorLatest="TFTSet14";
+
 export const apiGPTFT = `https://api.guiadeparche.com/tft/`;
 export const crearCompoMetaPHP = `${apiGPTFT}crearCompoMeta.php`;
 export const uploadImageWebpPHP = `${apiGPTFT}uploadImageWebp.php`;
@@ -31,9 +36,12 @@ export const dataTFT = deepMap(initialStateDataTFT)
 export const dataTFTAllItems = atom(initialStateDataTFTItems);
 export const dataTFTSetData = atom(initialStateDataTFTSetData);
 export const dataTFTChampions = atom(initialStateDataTFTChampions);
+export const dataTFTTraits = atom([])
 export const versionTFT = atom(initialStateVersion);
 export const teamPlannerCode = atom(initialStateTeamPlannerCode);
-export const TFT_SET = atom(initialTFT_SET)
+export const TFT_SET = atom(initialTFT_SET);
+
+
 
 // version: latest / pbe ---- idioma: en / es --- pais: mx /es /gb /us
 export const loadDataTFTFromAPI = ({version=versionTFT.get(), idioma="en", pais="us"}) =>{
@@ -45,6 +53,10 @@ export const loadDataTFTFromAPI = ({version=versionTFT.get(), idioma="en", pais=
   })
 }
 
+versionTFT.subscribe((version)=>{
+  loadDataTFTFromAPI({version: version})
+})
+
 export const getMetadataVersionTFTBySet = async (set=TFT_SET.get()) =>{
 const urlDragon = `https://raw.communitydragon.org/${set}/content-metadata.json`;
 const response = await fetch(urlDragon);
@@ -54,19 +66,13 @@ const version = v1.concat(".",v2);
 return version;
 }
 
-export const updateDataTFT = (data)=>{
+export const updateDataTFT = async (data)=>{
   const {items, setData, sets} = data;
   dataTFT.set(data);
   dataTFTAllItems.set(items);
   dataTFTSetData.set(setData);
-  // const nombreDeSets = setData.map(({name, number, mutator})=>{
-  //   if(number === 10 || number === 14){
-  //     console.log("name", name)
-  //     console.log("number", number)
-  //     console.log("mutator",mutator)
-  //   }
-  // })
-  dataTFTChampions.set(sets[versionTFT.get() === "pbe" ? "14": "13"].champions)
+  dataTFTChampions.set(sets[versionTFT.get() === "pbe" ? setNumberPBE: setNumberLatest].champions);
+  dataTFTTraits.set(sets[versionTFT.get() === "pbe" ? setNumberPBE: setNumberLatest].traits)
 };
 
 export const swapVersionTFT = (data) =>{
@@ -78,7 +84,7 @@ export const getTeamPlannerCodeAPI = async () => {
   const response = await fetch(url);
   const data = await response.json();
   
-  const formattedData = Object.values(data?.[versionTFT.get() === "pbe" ? "TFTSet14" : "TFTSet13"] || [])
+  const formattedData = Object.values(data?.[versionTFT.get() === "pbe" ? setMutatorPBE : setMutatorLatest] || [])
     .reduce((acc, { character_id, team_planner_code }) => {
       acc[character_id] = team_planner_code.toString(16);
       return acc;

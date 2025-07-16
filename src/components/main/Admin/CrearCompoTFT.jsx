@@ -14,7 +14,7 @@ import { championsTFT } from "src/json/updates/constantesLatest.js";
 import { listaCampeones } from "src/functions/campeonestft.js";
 import { itemsDataIngles, getDataTFTBySet, championsTFTIngles  as getAllChampions} from "src/json/updates/contantesTFT.js"
 import ChampTierList from "@components/TFT/ChampTierList.jsx"
-import { versionTFT } from "src/stores/dataTFT.js"
+import { versionTFT, setMutatorLatest, setMutatorPBE } from "src/stores/dataTFT.js"
 import { useStore } from "@nanostores/react"
 
 
@@ -77,10 +77,10 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         const items = await fetch(url);
         const itemsDataIngles1 = await items.json();
         const setDataFiltrado = itemsDataIngles1.setData.find(
-          (set) => set.mutator === (version === "pbe" ? "TFTSet14" : "TFTSet13")
+          (set) => set.mutator === (version === "pbe" ? setMutatorPBE : setMutatorLatest)
         );
         if (!setDataFiltrado) {
-          console.warn("No se encontró el set con mutator 'TFTSet14'");
+          console.warn(`No se encontró el set con mutator ${(version === "pbe" ? setMutatorPBE : setMutatorLatest)}`);
           return;
         }
         const dataAumentos = itemsDataIngles1.items.filter(({ apiName }) =>
@@ -571,11 +571,11 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           <select
               name="versions"
               id="versions"
-              onChange={(e)=>setVersion(e.target.value)}
+              onChange={(e)=>versionTFT.set(e.target.value)}
               defaultValue={editVersion || version}
               required
           >
-              <option value="15.10">pbe</option>
+              <option value="pbe">pbe</option>
               <option value="latest">latest</option>
           </select>
       </label>
@@ -831,7 +831,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         
         
       <div className={style.containerSecond}>
-        {infoChampsItems === "campeones" ? <Champions allChampions={allChampions} version={version}/> : <Items version={version}/>}
+        {infoChampsItems === "campeones" ? <Champions/> : <Items version={version}/>}
       </div>
       
       <div className={style.containerCarousel}>
