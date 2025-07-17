@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react"
+import {useEffect, useState} from "react"
 import style from "./css/CrearCompoTFT.module.css"
 import Builder from "./Builder.jsx"
 import Champions from "./ChampionsList.jsx"
@@ -10,8 +10,6 @@ import { BASIC_ITEMS, CRAFTEABLE_ITEMS, ARTEFACTOS, ITEMS_CRAFTEABLES_PBE, uploa
 import { emblems, radiantsItems as listOfRadiantsItems} from "src/json/updates/itemsTFT";
 import CarouselItems from "./CarouselItems.jsx";
 import RadiantsItems from "./RadiantsItems.jsx";
-import { championsTFT } from "src/json/updates/constantesLatest.js";
-import { listaCampeones } from "src/functions/campeonestft.js";
 import { itemsDataIngles, getDataTFTBySet, championsTFTIngles  as getAllChampions} from "src/json/updates/contantesTFT.js"
 import ChampTierList from "@components/TFT/ChampTierList.jsx"
 import { versionTFT, setMutatorLatest, setMutatorPBE, dataTFTChampions } from "src/stores/dataTFT.js"
@@ -824,7 +822,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         
         
       <div className={style.containerSecond}>
-        {infoChampsItems === "campeones" ? <Champions/> : <Items version={version}/>}
+        {infoChampsItems === "campeones" ? <Champions/> : <Items/>}
       </div>
       
       <div className={style.containerCarousel}>

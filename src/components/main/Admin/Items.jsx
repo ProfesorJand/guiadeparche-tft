@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
 import style from "./css/Items.module.css";
-import { radiantsItems, emblems } from "src/json/updates/itemsTFT";
-import {itemsDataIngles} from "src/json/updates/itemsTFT";
-import { getDataTFTBySet, SET_LATEST } from "src/json/updates/contantesTFT";
-export const Items = ({version})=>{
-  
+import { versionTFT, dataTFTSetData, dataTFTItemsBySet, dataTFTAllItems, setNumberPBE, setNumberLatest } from "@stores/dataTFT";
+import { useStore } from "@nanostores/react";
+export const Items = ()=>{
+  const version = useStore(versionTFT);
+
   const primerItem = {
     apiName: "TFT_Item_BFSword",
     associatedTraits: [],
@@ -24,22 +24,141 @@ export const Items = ({version})=>{
   const [itemsCrafteables, setItemsCrafteables] = useState([])
   const [itemOver, setItemOver] = useState(null);
   const [tooltip, setTooltip] = useState(null);
-  const [allItemsApiNames, setAllItemsApiNames] = useState(null);
-  const [allItemsInfo, setAllItemsInfo] = useState(null);
+  const allItemsApiNames = useStore(dataTFTItemsBySet);
+  const allItemsInfo = useStore(dataTFTAllItems) 
   const [allEmblemsItemsApiNames, setAllEmblemsItemsApiName] = useState(null);
   const [allSupportsItems, setAllSupportsItems] = useState(null)
   const [allChemBaronItems, setAllChemBaronItems] = useState(null)
   const [allChemtechItems, setAllChemtechItems] = useState(null)
   const [allGarenModItems, setAllGarenModItems] = useState(null)
+  const [allCraftableItems, setAllCraftableItems] = useState(null)
+  const [MatrixCraftableItems, setMatrixCraftableItems] = useState([])
   useEffect(()=>{
     const getAllItems = async ()=>{
-      const fetchingDataTFTBySet = await getDataTFTBySet({version,set:version==="pbe" ? "14":"13"})
-      setAllItemsApiNames(fetchingDataTFTBySet.setData); //apiName de todos los items del set
-      setAllItemsInfo(fetchingDataTFTBySet.setInfo)
-      setAllEmblemsItemsApiName(fetchingDataTFTBySet.setData.items.filter((apiName)=>{
+      const apiNameOfCraftableItems = [
+        "TFT_Item_Deathblade",
+        "TFT_Item_MadredsBloodrazor",
+        "TFT_Item_HextechGunblade",
+        "TFT_Item_SpearOfShojin",
+        "TFT_Item_GuardianAngel",
+        "TFT_Item_Bloodthirster",
+        "TFT_Item_SteraksGage",
+        "TFT_Item_InfinityEdge",
+        "TFT13_Item_WarbandEmblemItem",// cambiar // sinergia
+        "TFT13_Item_DemolitionistEmblemItem", // cambiar sinergia
+        "TFT_Item_RapidFireCannon",
+        "TFT_Item_GuinsoosRageblade",
+        "TFT_Item_StatikkShiv",
+        "TFT_Item_TitansResolve",
+        "TFT_Item_RunaansHurricane",
+        "TFT_Item_Leviathan",
+        "TFT_Item_LastWhisper",
+        "TFT13_Item_RebelEmblemItem", // cambiar sinergia
+        "TFT13_Item_ChallengerEmblemItem", //cambiar sinergia
+        "TFT_Item_RabadonsDeathcap",
+        "TFT_Item_ArchangelsStaff",
+        "TFT_Item_Crownguard",
+        "TFT_Item_IonicSpark",
+        "TFT_Item_Morellonomicon",
+        "TFT_Item_JeweledGauntlet",
+        "TFT13_Item_CabalEmblemItem", // cambiar
+        "TFT13_Item_SorcererEmblemItem", // cambiar
+        "TFT_Item_BlueBuff",
+        "TFT_Item_FrozenHeart",
+        "TFT_Item_AdaptiveHelm",
+        "TFT_Item_Redemption",
+        "TFT_Item_UnstableConcoction",
+        "TFT13_Item_FamilyEmblemItem", // cambiar
+        "TFT13_Item_InvokerEmblemItem",// 
+        "TFT_Item_BrambleVest",
+        "TFT_Item_GargoyleStoneplate",
+        "TFT_Item_RedBuff",
+        "TFT_Item_NightHarvester",
+        "TFT13_Item_SquadEmblemItem", //
+        "TFT13_Item_TitanEmblemItem", // 
+        "TFT_Item_DragonsClaw",
+        "TFT_Item_SpectralGauntlet",
+        "TFT_Item_Quicksilver",
+        "TFT13_Item_AutomataEmblemItem",//
+        "TFT13_Item_PitFighterEmblemItem", //
+        "TFT_Item_WarmogsArmor",
+        "TFT_Item_PowerGauntlet",
+        "TFT13_Item_ExperimentEmblemItem", //
+        "TFT13_Item_BruiserEmblemItem", // 
+        "TFT_Item_ThiefsGloves",
+        "TFT13_Item_HoverboardEmblemItem", //
+        "TFT13_Item_AmbusherEmblemItem", //
+        "TFT_Item_ForceOfNature",
+        "TFT_Item_TacticiansRing",
+        "TFT_Item_TacticiansScepter",
+      ];
+      const apiNameOfCraftableItemsPBE = [
+        "TFT_Item_Deathblade",
+        "TFT_Item_MadredsBloodrazor",
+        "TFT_Item_HextechGunblade",
+        "TFT_Item_SpearOfShojin",
+        "TFT_Item_GuardianAngel",
+        "TFT_Item_Bloodthirster",
+        "TFT_Item_SteraksGage",
+        "TFT_Item_InfinityEdge",
+        "TFT15_Item_SoulFighterEmblemItem", //TFT15_Item_SoulFighterEmblemItem
+        "TFT15_Item_EdgelordEmblemItem",
+        "TFT_Item_RapidFireCannon",
+        "TFT_Item_GuinsoosRageblade",
+        "TFT_Item_StatikkShiv",
+        "TFT_Item_TitansResolve",
+        "TFT_Item_RunaansHurricane",
+        "TFT_Item_Leviathan",
+        "TFT_Item_LastWhisper",
+        "TFT15_Item_SupremeCellsEmblemItem",
+        "TFT13_Item_ChallengerEmblemItem",
+        "TFT_Item_RabadonsDeathcap",
+        "TFT_Item_ArchangelsStaff",
+        "TFT_Item_Crownguard",
+        "TFT_Item_IonicSpark",
+        "TFT_Item_Morellonomicon",
+        "TFT_Item_JeweledGauntlet",
+        "TFT15_Item_StarGuardianEmblemItem",
+        "TFT15_Item_SpellslingerEmblemItem",
+        "TFT_Item_BlueBuff",
+        "TFT_Item_FrozenHeart",
+        "TFT_Item_AdaptiveHelm",
+        "TFT_Item_Redemption",
+        "TFT_Item_UnstableConcoction",
+        "TFT15_Item_BattleAcademiaEmblemItem",
+        "TFT15_Item_ProdigyEmblemItem",
+        "TFT_Item_BrambleVest",
+        "TFT_Item_GargoyleStoneplate",
+        "TFT_Item_RedBuff",
+        "TFT_Item_NightHarvester",
+        "TFT15_Item_EmpyreanEmblemItem",
+        "TFT15_Item_BastionEmblemItem",
+        "TFT_Item_DragonsClaw",
+        "TFT_Item_SpectralGauntlet",
+        "TFT_Item_Quicksilver",
+        "TFT15_Item_ShotcallerEmblemItem",
+        "TFT15_Item_JuggernautEmblemItem",
+        "TFT_Item_WarmogsArmor",
+        "TFT_Item_PowerGauntlet",
+        "TFT15_Item_CrystalRoseEmblemItem",
+        "TFT15_Item_HeavyweightEmblemItem",
+        "TFT_Item_ThiefsGloves",
+        "TFT15_Item_RingKingsEmblemItem",
+        "TFT15_Item_DestroyerEmblemItem",
+        "TFT_Item_ForceOfNature",
+        "TFT_Item_TacticiansRing",
+        "TFT_Item_TacticiansScepter",
+      ]
+      const apiNames = version === "pbe" ? apiNameOfCraftableItemsPBE : apiNameOfCraftableItems;
+      setAllCraftableItems(
+        apiNames
+          .map(apiName => allItemsInfo.find(item => item.apiName === apiName))
+          .filter(Boolean) // elimina los que no encontró
+      );
+      setAllEmblemsItemsApiName(allItemsApiNames.filter((apiName)=>{
         return apiName.includes("EmblemItem")
       }))
-      setAllSupportsItems(fetchingDataTFTBySet.setInfo.filter(({apiName})=>{
+      setAllSupportsItems(allItemsInfo.filter(({apiName})=>{
         const apiNameOfSupportsItems = [
           "TFT_Item_BansheesVeil",
           "TFT_Item_AegisOfTheLegion",
@@ -61,7 +180,7 @@ export const Items = ({version})=>{
         ]
         return apiNameOfSupportsItems.some((item)=> item.includes(apiName))
       }))
-      setAllChemBaronItems(fetchingDataTFTBySet.setInfo.filter(({apiName})=>{
+      setAllChemBaronItems(allItemsInfo.filter(({apiName})=>{
         const apiNameOfChemBaronItems = [
           "TFT13_Crime_Bronze_ChemGrips",
           "TFT13_Crime_Bronze_MageGuard",
@@ -93,7 +212,7 @@ export const Items = ({version})=>{
         ]
         return apiNameOfChemBaronItems.some((item) => item === apiName);
       }))  
-      setAllChemtechItems(fetchingDataTFTBySet.setInfo.filter(({apiName})=>{
+      setAllChemtechItems(allItemsInfo.filter(({apiName})=>{
         const apiNameOfChemtechItems = [
           "TFT14_JaxCyberneticItem",
           "TFT14_NaafiriCyberneticItem",
@@ -112,12 +231,12 @@ export const Items = ({version})=>{
         ]
         return apiNameOfChemtechItems.some((item) => item === apiName);
       })) 
-      setAllGarenModItems(fetchingDataTFTBySet.setInfo.filter(({apiName})=>{
+      setAllGarenModItems(allItemsInfo.filter(({apiName})=>{
         return apiName.includes("NetGodItem");
       })) 
     }
     getAllItems();
-  },[])
+  },[allItemsApiNames])
 
   useEffect(()=>{
     if(itemOver){
@@ -131,10 +250,6 @@ export const Items = ({version})=>{
       setTooltip(null)
     }
   },[itemOver])
-
-  useEffect(()=>{
-    console.log({itemsCrafteables})
-  },[itemsCrafteables])
   
   function handlePestana(number){
     setPestana(number)
@@ -927,23 +1042,33 @@ export const Items = ({version})=>{
 
   const SUPPORTS_ITEMS = [];
  
-  useEffect(()=>{
-    const resultado = [];
-    const cualMatriz = version === "pbe" ? MATRIZ_ITEMS_CRAFTEABLES_PBE : MATRIZ_ITEMS_CRAFTEABLES;
-    const cualBusqueda =  version === "pbe" ? ITEMS_CRAFTEABLES_PBE  : CRAFTEABLE_ITEMS;
-    cualMatriz.forEach((fila, x)=>{
-      fila.forEach((item, y)=>{
-       const busqueda = cualBusqueda.find(({apiName, nombre})=>{
-          return (version === "pbe" ? (apiName === item) : (nombre === item))
-        })
-        if(busqueda){
-          resultado.push(busqueda)
-        }
-      })
-    })
-    console.log({resultado})
-    setItemsCrafteables(resultado)
-  },[version])
+
+  // Llama esto cuando ya tengas `allCraftableItems` cargado y en el orden correcto
+const createSymmetricFlatArray = (craftItems, componentsCount) => {
+  const result = Array(componentsCount * componentsCount).fill(null);
+  let index = 0;
+
+  for (let i = 0; i < componentsCount; i++) {
+    for (let j = i; j < componentsCount; j++) {
+      const item = craftItems[index++] || null;
+
+      // Set item in flat array at positions [i][j] y [j][i]
+      result[i * componentsCount + j] = item;
+      result[j * componentsCount + i] = item;
+    }
+  }
+
+  return result;
+};
+
+useEffect(() => {
+  if (!allCraftableItems) return;
+  const componentsCount = 10;
+  const matrix = createSymmetricFlatArray(allCraftableItems, componentsCount);
+  setMatrixCraftableItems(matrix);
+}, [allCraftableItems]);
+
+
 
   function handleDragStart(e){
     e.dataTransfer.setData("item", e.target.getAttribute("data-item"));
@@ -986,11 +1111,12 @@ if(allItemsInfo){
             })}
   
             {pestana === 0 &&
-              itemsCrafteables.map((dataItem,index)=>{
+              MatrixCraftableItems.length > 0 && MatrixCraftableItems.map((dataItem,index)=>{
                 const dataItemInfo = allItemsInfo.find(({apiName})=>{
                   return dataItem.apiName === apiName
                 })
-                const img = `https://raw.communitydragon.org/latest/game/${dataItemInfo.icon.replace(".tex",".png").toLowerCase()}`
+                
+                const img = `https://raw.communitydragon.org/${version}/game/${dataItemInfo.icon.replace(".tex",".png").toLowerCase()}`
                 dataItemInfo.img = img
                 return (
                 <div className={style.itemsDrop} key={index}>
