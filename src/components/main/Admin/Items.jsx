@@ -913,6 +913,14 @@ export const Items = ()=>{
       apiName:"TFT4_Item_OrnnZhonyasParadox",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/tft/icons/items/hexcore/tft4_item_ornnzhonyasparadox.tft_set13.png",
     },
+  ];
+  const ARTEFACTOSPBE = [
+    ...ARTEFACTOS,
+    {
+      nombre: "Dawncore",
+      apiName: "TFT_Item_Artifact_Dawncore",
+      img: "https://raw.communitydragon.org/pbe/game/assets/maps/tft/icons/items/hexcore/tft_item_artifact_dawncore.tft_set15.png",
+    }
   ]
 
   const ORDENAMIENTO_RADIANTES = [
@@ -1099,16 +1107,17 @@ if(allItemsInfo){
   
           <div className={style.containerItemsHorizontalOtros}>
             {pestana === 4 && 
-              ARTEFACTOS.map((dataItem,index)=>{
+              (version === "pbe" ? ARTEFACTOSPBE : ARTEFACTOS).map((dataItem,index)=>{
                 const dataItemInfo = allItemsInfo.find(({apiName})=>{
                   return dataItem.apiName === apiName
                 })
-                const img = `https://raw.communitydragon.org/latest/game/${dataItemInfo.icon.replace(".tex",".png").toLowerCase()}`
+                if (!dataItemInfo) return null; // Evita el error
+                const img = `https://raw.communitydragon.org/${version}/game/${dataItemInfo?.icon.replace(".tex",".png").toLowerCase()}`
                 dataItemInfo.img = img
                 return ( 
                 <div className={style.itemsDropOtros} key={`otrosItems`+index}>
                   <img 
-                  src={dataItemInfo.img}
+                  src={dataItemInfo?.img}
                   alt={`Basic Item TFT ${dataItemInfo.name}`}
                   className={style.imgItems}
                   onDragStart={(e)=>{handleDragStart(e)}}
@@ -1126,7 +1135,7 @@ if(allItemsInfo){
                 return ( 
                 <div className={style.itemsDropOtros} key={`otrosItems`+index}>
                   <img 
-                  src={dataItem?.img || "https://raw.communitydragon.org/latest/game/"+dataItem.icon.replace(".tex",".png").toLowerCase()}
+                  src={dataItem?.img || `https://raw.communitydragon.org/${version}/game/`+dataItem.icon.replace(".tex",".png").toLowerCase()}
                   alt={`Support Item TFT ${dataItem.name}`}
                   className={style.imgItems}
                   onDragStart={(e)=>{handleDragStart(e)}}
@@ -1167,7 +1176,7 @@ if(allItemsInfo){
                 return ( 
                 <div className={style.itemsDropOtros} key={`otrosItems`+index}>
                   <img 
-                  src={dataItem?.img || "https://raw.communitydragon.org/latest/game/"+dataItem.icon.replace(".tex",".png").toLowerCase()}
+                  src={dataItem?.img || `https://raw.communitydragon.org/${version}/game/`+dataItem.icon.replace(".tex",".png").toLowerCase()}
                   alt={`Chem Baron Item TFT ${dataItem.name}`}
                   className={style.imgItems}
                   onDragStart={(e)=>{handleDragStart(e)}}
@@ -1183,12 +1192,12 @@ if(allItemsInfo){
             {tooltip ?
               <div className={style.tooltipContainer}>
                 <div className={style.tooltipContainerImg}>
-                  <img className={style.tooltipImg} src={"https://raw.communitydragon.org/latest/game/" + tooltip.icon.toLowerCase().replace(".tex",".png")}></img>
+                  <img className={style.tooltipImg} src={`https://raw.communitydragon.org/${version}/game/` + tooltip.icon.toLowerCase().replace(".tex",".png")}></img>
                   {tooltip.composition.length === 2 && 
                     <div className={style.tooltipContainerComponents}>
-                      <img className={style.tooltipImgComponent} src={"https://raw.communitydragon.org/latest/game/" + allItemsInfo.find(({apiName})=>apiName === tooltip.composition[0]).icon.toLowerCase().replace(".tex",".png")}></img>
+                      <img className={style.tooltipImgComponent} src={`https://raw.communitydragon.org/${version}/game/` + allItemsInfo.find(({apiName})=>apiName === tooltip.composition[0]).icon.toLowerCase().replace(".tex",".png")}></img>
                       +
-                      <img className={style.tooltipImgComponent} src={"https://raw.communitydragon.org/latest/game/" + allItemsInfo.find(({apiName})=>apiName === tooltip.composition[1]).icon.toLowerCase().replace(".tex",".png")}></img>
+                      <img className={style.tooltipImgComponent} src={`https://raw.communitydragon.org/${version}/game/` + allItemsInfo.find(({apiName})=>apiName === tooltip.composition[1]).icon.toLowerCase().replace(".tex",".png")}></img>
                     </div>
                   }
                 </div>
