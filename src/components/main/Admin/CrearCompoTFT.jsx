@@ -10,14 +10,15 @@ import { BASIC_ITEMS, CRAFTEABLE_ITEMS, ARTEFACTOS, ITEMS_CRAFTEABLES_PBE, uploa
 import { emblems, radiantsItems as listOfRadiantsItems} from "src/json/updates/itemsTFT";
 import CarouselItems from "./CarouselItems.jsx";
 import RadiantsItems from "./RadiantsItems.jsx";
-import { itemsDataIngles, getDataTFTBySet, championsTFTIngles  as getAllChampions} from "src/json/updates/contantesTFT.js"
+import {  getDataTFTBySet} from "src/json/updates/contantesTFT.js"
 import ChampTierList from "@components/TFT/ChampTierList.jsx"
-import { versionTFT, setMutatorLatest, setMutatorPBE, dataTFTChampions } from "src/stores/dataTFT.js"
+import { setNumberPBE,setNumberLatest, versionTFT, setMutatorLatest, setMutatorPBE, dataTFTChampions, dataTFTAllItems } from "src/stores/dataTFT.js"
 import { useStore } from "@nanostores/react"
 
 
 const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,edittitulo,editshadowCategory,editinfographicCategory,editaumentos,editgameplay,edittips,editisHide,editboardInfo,editpictureSave,editcarouselItems,editradiantItem,editspatulaItem1,editspatulaItem2,editoriginalComp, editCampeonTierList, editAugmentTierList, editCampeonItemTierList =[{},{},{}], editCampeonTraitTierList = [{}], editChamp3Stars, editVersion=null }) =>{
     const currentVersion= useStore(versionTFT);
+    const itemsDataIngles = useStore(dataTFTAllItems)
     const [version, setVersion] = useState(versionTFT.get())
     const [allItemsInfo, setAllItemsInfo] = useState(null);
     const [allItemsApiNames, setAllItemsApiNames] = useState(null);
@@ -88,12 +89,12 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
       }
       
       const getAllItems = async ()=>{
-        setAllItemsApiNames((await getDataTFTBySet({version,set:version === "pbe" ? "14": "13"})).setData); //apiName de todos los items del set
-        setAllItemsInfo((await getDataTFTBySet({version,set:version === "pbe" ? "14": "13"})).setInfo)
-        setAllEmblemsItemsApiName((await getDataTFTBySet({version,set:version === "pbe" ? "14": "13"})).setData.items.filter((apiName)=>{
+        setAllItemsApiNames((await getDataTFTBySet({version,set:version === "pbe" ? setNumberPBE: setNumberLatest})).setData); //apiName de todos los items del set
+        setAllItemsInfo((await getDataTFTBySet({version,set:version === "pbe" ? setNumberPBE: setNumberLatest})).setInfo)
+        setAllEmblemsItemsApiName((await getDataTFTBySet({version,set:version === "pbe" ? setNumberPBE: setNumberLatest})).setData.items.filter((apiName)=>{
           return apiName.includes("EmblemItem")
         }))
-        setAllSupportsItems((await getDataTFTBySet({version,set:version === "pbe" ? "14": "13"})).setInfo.filter(({apiName})=>{
+        setAllSupportsItems((await getDataTFTBySet({version,set:version === "pbe" ? setNumberPBE: setNumberLatest})).setInfo.filter(({apiName})=>{
           const apiNameOfSupportsItems = [
             "TFT_Item_BansheesVeil",
             "TFT_Item_AegisOfTheLegion",
@@ -115,7 +116,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           ]
           return apiNameOfSupportsItems.some((item)=> item.includes(apiName))
         }))
-        setAllChemBaronItems((await getDataTFTBySet({version,set:version === "pbe" ? "14": "13"})).setInfo.filter(({apiName})=>{
+        setAllChemBaronItems((await getDataTFTBySet({version,set:version === "pbe" ? setNumberPBE: setNumberLatest})).setInfo.filter(({apiName})=>{
           const apiNameOfChemBaronItems = [
             "TFT13_Crime_Bronze_ChemGrips",
             "TFT13_Crime_Bronze_MageGuard",
