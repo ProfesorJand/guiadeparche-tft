@@ -2,7 +2,7 @@
 import Layout from "@layouts/LayoutMidOnly.astro"
 import VisualizadorMetaWildrift from "@components/wildrift/VisualizadorMetaWildrift"
 import { crearJSONSchema } from "@json/schema/crearJSONSchema";
-const title="Meta Wildrift"
+const title="Meta Wild Rift"
 const description = "Top Wild rift League of Legends Meta. Discover the latest Tier List!";
 const imgPost = "/wildrift/portada.webp"
 const JSONSchema = crearJSONSchema({title, imgPost, description});
@@ -12,6 +12,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 <Layout title={title}  JSONSchema={JSONSchema} description={description} keywords={keywords} image={imgPost} canonical={canonicalURL}>
   <div class="smallContainer">
+    <h1>{title}</h1>
     <VisualizadorMetaWildrift client:only="react"></VisualizadorMetaW>
   </div>
 </Layout>
@@ -20,5 +21,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
   .smallContainer{
     display: flex;
     width: 50%;
+    flex-direction: column;
   }
 </style>
