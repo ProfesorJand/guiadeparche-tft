@@ -810,7 +810,6 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
             augmentTierList={augmentTierList}
             champItem={champItem}
             champTrait={champTrait}
-            champPowerUp={champPowerUp}
             isSample={true}
             version={version || "latest"}
             champ3Stars={champ3Stars}
