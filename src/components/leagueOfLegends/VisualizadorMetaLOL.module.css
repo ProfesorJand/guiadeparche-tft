@@ -131,21 +131,24 @@
 }
 
 .title{
-  display: flex;
-  flex-direction: row;
-  position: absolute;
-  width: 100%;
-  color: rgb(255, 255, 255);
-  font-size: 0.9vw;
-  font-weight: bold;
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-  z-index: 3;
-  left:50%;
-  transform: translateX(-50%);
-  /* text-shadow: 2px 2px 4px rgba(219, 7, 7, 0.5); */
-  font-family: ObvioslyWideBold, sans-serif;
+  display: flex
+;
+    flex-direction: row;
+    position: absolute;
+    width: 80%;
+    color: rgb(255, 255, 255);
+    font-size: 0.9vw;
+    font-weight: bold;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* text-shadow: 2px 2px 4px rgba(219, 7, 7, 0.5); */
+    font-family: ObvioslyWideBold, sans-serif;
+    text-shadow: 0 0 5px #000000, 0 0 10px #000000, 0 0 15px #000000, 0 0 20px #000000;
 }
 
 .containerMeta{
