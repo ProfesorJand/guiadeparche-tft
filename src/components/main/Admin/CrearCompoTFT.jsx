@@ -12,11 +12,12 @@ import CarouselItems from "./CarouselItems.jsx";
 import RadiantsItems from "./RadiantsItems.jsx";
 import {  getDataTFTBySet} from "src/json/updates/contantesTFT.js"
 import ChampTierList from "@components/TFT/ChampTierList.jsx"
-import { setNumberPBE,setNumberLatest, versionTFT, setMutatorLatest, setMutatorPBE, dataTFTChampions, dataTFTAllItems } from "src/stores/dataTFT.js"
+import { setNumberPBE,setNumberLatest, versionTFT, setMutatorLatest, setMutatorPBE, dataTFTChampions, dataTFTAllItems, dataTFTTraits } from "src/stores/dataTFT.js"
 import { useStore } from "@nanostores/react"
+import InputPowerUpList from "@components/TFT/InputPowerUpList.jsx"
 
 
-const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,edittitulo,editshadowCategory,editinfographicCategory,editaumentos,editgameplay,edittips,editisHide,editboardInfo,editpictureSave,editcarouselItems,editradiantItem,editspatulaItem1,editspatulaItem2,editoriginalComp, editCampeonTierList, editAugmentTierList, editCampeonItemTierList =[{},{},{}], editCampeonTraitTierList = [{}], editChamp3Stars, editVersion=null }) =>{
+const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,edittitulo,editshadowCategory,editinfographicCategory,editaumentos,editgameplay,edittips,editisHide,editboardInfo,editpictureSave,editcarouselItems,editradiantItem,editspatulaItem1,editspatulaItem2,editoriginalComp, editCampeonTierList, editAugmentTierList, editCampeonItemTierList =[{},{},{}], editCampeonTraitTierList = [{}], editCampeonPowerUpList = [{}],editChamp3Stars, editVersion=null }) =>{
     const currentVersion= useStore(versionTFT);
     const itemsDataIngles = useStore(dataTFTAllItems)
     const [version, setVersion] = useState(versionTFT.get())
@@ -57,10 +58,11 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
     const [augmentTierList, setAugmentTierList] = useState({});
     const [champItem, setChampItem] = useState([{}])
     const [champTrait, setChampTrait] = useState([{}]);
+    const [champPowerUp, setChampPowerUp] = useState([{}])
     const [champ3Stars, setChamp3Stars] = useState(false)
     const allChampions = useStore(dataTFTChampions);
     const [loadingPicture, setLoadingPicture] = useState(false)
-    
+    const traitsList = useStore(dataTFTTraits);
     const championsColor = [
       "var(--color-hex-cost-default)",
       "var(--color-hex-cost-1)",
@@ -69,6 +71,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
       "var(--color-hex-cost-4)",
       "var(--color-hex-cost-5)",
     ];
+
     
     useEffect(()=>{
       const buscarAumentos = async() =>{
@@ -205,6 +208,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         setAugmentTierList(editAugmentTierList)
         setChampItem(editCampeonItemTierList)
         setChampTrait(editCampeonTraitTierList)
+        setChampPowerUp(editCampeonPowerUpList)
         setChamp3Stars(editChamp3Stars)
         setVersion(editVersion)
         setIsHide(editisHide)
@@ -325,6 +329,28 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
       });
     }
 
+    function addChampPowerUp(e, traitNumber){
+      const value = e.target.value;
+    
+      setChampPowerUp((oldValue) => {
+        const newValue = Array.isArray(oldValue) ? [...oldValue] : []; // Garantiza que sea un array
+        
+        if (!value) {
+          newValue[traitNumber] = {}; // Aseguramos que el índice exista
+          return newValue;
+        }
+    
+        const dataList = document.getElementById("dataListPowerUp");
+        const dataValue = dataList.options.namedItem(`datalist-${value}`)?.dataset.value;
+    
+        if (dataValue) {
+          newValue[traitNumber] = JSON.parse(dataValue); // Asignamos el nuevo valor
+        }
+        
+        return newValue;
+      });
+    }
+
     function handleBuilderLevel(e,id){
       e.preventDefault()
       setShowBoard(id)
@@ -358,6 +384,37 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
     function eliminarAumento(apiName){
       setAumentos((oldArray)=> oldArray.filter(data=>data.apiName !== apiName ))
     }
+
+    function agregarPowerUp(e){
+      e.preventDefault();
+      const powerUpInput = document.getElementById("powerUpInput");
+      const value = powerUpInput.value;
+      if(aumentos.length >= 8){
+        alert("Has alcanzado el limite de 8 Power Up.\nElimina un Power Up para añadir uno nuevo.")
+        return
+      }
+      const repetido = aumentos.filter(({apiName})=>{
+        return apiName === value
+      })
+      if(repetido.length === 1){
+        alert(`Power Up: ${value} está repetido, añade otro Power Up`)
+        return
+      }
+
+      const dataList = document.getElementById("dataListPowerUp");
+      const dataValue = dataList.options.namedItem(`datalist-${value}`)?.dataset.value;
+      if(dataValue){
+        setChampPowerUp((oldArray)=>[...oldArray, JSON.parse(dataValue) ]);
+        powerUpInput.value = "";
+      }else{
+        alert("Selecciona o Escribe el nombre completo del campeón")
+      }
+    } 
+
+    function eliminarPowerUp(apiName){
+      setChampPowerUp((oldArray)=> oldArray.filter(data=>data.apiName !== apiName ))
+    }
+
     function agregarGameplay(e){
       e.preventDefault();
       const gameplayURL = document.getElementById("gameplay");
@@ -492,8 +549,9 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           augmentTierList,
           champItem,
           champTrait,
+          champPowerUp,
           champ3Stars,
-          version
+          version:currentVersion
         }
         if(tier && posicion && dificultad && titulo && shadowCategory && infographicCategory && aumentos.length && Object.keys(carouselItems).length && Object.keys(boardInfo?.early?.data || {}).length && Object.keys(boardInfo).length && Object.keys(campeonTierList).length && Object.keys(boardInfo?.[originalComp]?.data || {}).length){
           const token = import.meta.env.PUBLIC_TOKEN_META;
@@ -752,6 +810,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
             augmentTierList={augmentTierList}
             champItem={champItem}
             champTrait={champTrait}
+            champPowerUp={champPowerUp}
             isSample={true}
             version={version || "latest"}
             champ3Stars={champ3Stars}
@@ -904,6 +963,10 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         )
         })}
       </div>
+      {
+        currentVersion === "pbe" &&
+        <InputPowerUpList styles={style} addClickFn={agregarPowerUp} deleteClickFn={eliminarPowerUp} champPowerUp={champPowerUp} defaultValue={editCampeonPowerUpList?.[0]?.name || champPowerUp?.[0]?.name}/>
+      }
         <label htmlFor="gameplay">Gameplay:
             <input type="text" defaultValue={gameplay} id="gameplay" placeholder="YT Video Right Clic - Copy URL - Paste Here"></input>
             <div className={style.btnAgregar} onClick={(e)=>{agregarGameplay(e)}}>Agregar Gameplay</div>

@@ -69,6 +69,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
               default:
                 break;
             }
+            containerImageChampion.classList.toggle(style.powerUp,info[key].powerUp);
      
             /*Crear Imagen del Campeon en el hex */
             const image = document.createElement("img");
@@ -186,6 +187,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
         style.imgItem
       );
       var estrellas = 1;
+      var powerUp = false;
       switch (true) {
         case containerImageChampion[i].classList.contains(style.estrellas4):
           estrellas = 4;
@@ -196,8 +198,12 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
         case containerImageChampion[i].classList.contains(style.estrellas2):
           estrellas = 2;
           break;
+        case containerImageChampion[i].classList.contains(style.powerUp):
+          powerUp = true;
+          break;
         default:
           estrellas = 1;
+          powerUp = false;
           break;
       }
       const hexId = dataCampeon.hexId;
@@ -209,7 +215,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
           sinergias[nombreSinergia.apiName] = (sinergias[nombreSinergia.apiName] || 0) + 1;
         });
       }
-      data[hexId] = { dataCampeon: dataCampeon, estrellas };
+      data[hexId] = { dataCampeon: dataCampeon, estrellas, powerUp };
       let dataItems = [];
       for (let y = 0; y < imgItem.length; y++) {
         dataItems.push(imgItem[y].dataset);

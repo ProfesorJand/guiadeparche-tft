@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import style from "./css/ContextMenuBuilder.module.css";
 import styleBuilder from "./css/Builder.module.css"
 const ContextMenuBuilder = ({hexId, setHexId, updateBoardInfo })=>{
-  const OPTIONS = ["★ 4 stars","★ 3 stars","★ 2 stars","X Remove"];
+  const OPTIONS = ["★ 4 stars","★ 3 stars","★ 2 stars","Power Up","X Remove"];
 
   function handleMenu(opcion){
     const hexagono = document.getElementById(hexId);
@@ -26,10 +26,15 @@ const ContextMenuBuilder = ({hexId, setHexId, updateBoardInfo })=>{
         campeon.classList.toggle(styleBuilder.estrellas2, true)
         updateBoardInfo()
         break;
+      case OPTIONS[3]:
+        campeon.classList.toggle(styleBuilder.powerUp, true)
+        updateBoardInfo()
+        break;
       default:
         campeon.classList.toggle(styleBuilder.estrellas4, false)
         campeon.classList.toggle(styleBuilder.estrellas3, false)
         campeon.classList.toggle(styleBuilder.estrellas2, false)
+        campeon.classList.toggle(styleBuilder.powerUp, false)
         updateBoardInfo()
         break;
     }
