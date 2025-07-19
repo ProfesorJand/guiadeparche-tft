@@ -6,13 +6,13 @@ import Sinergias from "./Sinergias.jsx"
 import Items from "./Items.jsx";
 import Youtube from "../../youtube/Youtube.jsx";
 import { toBlob } from 'html-to-image';
-import { BASIC_ITEMS, CRAFTEABLE_ITEMS, ARTEFACTOS, ITEMS_CRAFTEABLES_PBE, uploadImageWebpPHP, crearCompoMetaPHP } from "src/stores/dataTFT.js";
+import { BASIC_ITEMS, CRAFTEABLE_ITEMS, ARTEFACTOS, ITEMS_CRAFTEABLES_PBE, uploadImageWebpPHP, crearCompoMetaPHP, AllBasicItems } from "src/stores/dataTFT.js";
 import { emblems, radiantsItems as listOfRadiantsItems} from "src/json/updates/itemsTFT";
 import CarouselItems from "./CarouselItems.jsx";
 import RadiantsItems from "./RadiantsItems.jsx";
 import {  getDataTFTBySet} from "src/json/updates/contantesTFT.js"
 import ChampTierList from "@components/TFT/ChampTierList.jsx"
-import { setNumberPBE,setNumberLatest, versionTFT, setMutatorLatest, setMutatorPBE, dataTFTChampions, dataTFTAllItems, dataTFTTraits } from "src/stores/dataTFT.js"
+import { AllCraftableItems, setNumberPBE,setNumberLatest, versionTFT, setMutatorLatest, setMutatorPBE, dataTFTChampions, dataTFTAllItems, dataTFTTraits } from "src/stores/dataTFT.js"
 import { useStore } from "@nanostores/react"
 import InputPowerUpList from "@components/TFT/InputPowerUpList.jsx"
 
@@ -433,44 +433,51 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
 
     function handlerBasicItem(value, item){
       let combineNumber;
+      console.log({value})
       switch (value) {
-        case "BF Sword":
+        case "TFT_Item_BFSword":
           combineNumber = 0
           break;
-        case "Recurve Bow":
+        case "TFT_Item_RecurveBow":
           combineNumber = 1
           break;
-        case "Needlessly Large Rod":
+        case "TFT_Item_NeedlesslyLargeRod":
           combineNumber = 2
           break;
-        case "Tear of the Goddess":
+        case "TFT_Item_TearOfTheGoddess":
           combineNumber = 3
           break;
-        case "Chain Vest":
+        case "TFT_Item_ChainVest":
           combineNumber = 4
           break;
-        case "Negatron Cloak":
+        case "TFT_Item_NegatronCloak":
           combineNumber = 5
           break;
-        case "Gaints Belt":
+        case "TFT_Item_GiantsBelt":
           combineNumber = 6
           break;
-        case "Sparring Gloves":
+        case "TFT_Item_SparringGloves":
         combineNumber = 7
         break;
-        case "Spatula":
+        case "TFT_Item_Spatula":
         combineNumber = 8
         break;
-        case "Frying Pan":
+        case "TFT_Item_FryingPan":
           combineNumber = 9
         break;
         default:
           break;
       }
       setCarouselBasicItems((oldObject)=>{ return {...oldObject, [item]:combineNumber }})
-      const [data] = BASIC_ITEMS.filter((item)=>{
-        return item.nombre === value
+      console.log({combineNumber})
+      const [data] = AllBasicItems().filter(({apiName})=>{
+        console.log({apiName})
+        if(apiName === value){
+          console.log({combine: combineNumber})
+        }
+        return apiName === value
       })
+      console.log({dataVEEEEER:data})
       setCarouselItems((oldObject)=>{ return {...oldObject, [item]:data }})
     }
 
@@ -482,9 +489,11 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
     }
 
     function handlerCompleteItem(value, item){
-      const [data] = (version === "pbe" ? ITEMS_CRAFTEABLES_PBE : CRAFTEABLE_ITEMS).filter((item)=>{
-        return item.nombre === value
+      console.log({valueCompleItem:value})
+      const [data] = AllCraftableItems().filter((item)=>{
+        return item.apiName === value
       })
+      console.log({dataItemCrafteable:data})
       setCarouselItems((oldObject)=>{ return {...oldObject, [item]:data }})
     }
 
@@ -894,8 +903,8 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           <input list="dataListItemsBasicos" name="Carousel_Basic_Item2" id="Carousel_Basic_Item2" onChange={(e)=>{handlerBasicItem(e.target.value, "BasicItem2")}} defaultValue={carouselItems.BasicItem2 ? carouselItems.BasicItem2.nombre : "" }/>
           <input list="dataListItemsBasicos" name="Carousel_Basic_Item3" id="Carousel_Basic_Item3" onChange={(e)=>{handlerBasicItem(e.target.value, "BasicItem3")}} defaultValue={carouselItems.BasicItem3 ? carouselItems.BasicItem3.nombre : "" }/>
           <datalist id="dataListItemsBasicos">
-            {BASIC_ITEMS.map((item, i )=>{
-              return <option key={"ListaDeItemsBasicos"+item.name+i} id={`datalist-${item.apiName}`} value={item.nombre}></option>
+            {AllBasicItems().map((item, i )=>{
+              return <option key={"ListaDeItemsBasicos"+item.name+i} id={`datalist-${item.apiName}`} value={item.apiName}>{item.nombre}</option>
             })}
           </datalist>
         </div>
@@ -905,18 +914,18 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           <input list="dataListItemsCrafteables2" name="Carousel_Complete_Item2" id="Carousel_Complete_Item2" onChange={(e)=>{handlerCompleteItem(e.target.value, "CompleteItem2")}} defaultValue={carouselItems.CompleteItem2 ? carouselItems.CompleteItem2.nombre : "" } disabled={carouselItems["BasicItem2"] !== undefined ? false: true} autoComplete="off"/>
           <input list="dataListItemsCrafteables3" name="Carousel_Complete_Item3" id="Carousel_Complete_Item3" onChange={(e)=>{handlerCompleteItem(e.target.value, "CompleteItem3")}} defaultValue={carouselItems.CompleteItem3 ? carouselItems.CompleteItem3.nombre : "" } disabled={carouselItems["BasicItem3"] !== undefined ? false: true} autoComplete="off"/>
           <datalist id="dataListItemsCrafteables1">
-            {(version === "pbe" ? [...ITEMS_CRAFTEABLES_PBE] : [...CRAFTEABLE_ITEMS]).filter(({combine})=>{return combine[0] === carouselBasicItems["BasicItem1"] || combine[1] === carouselBasicItems["BasicItem1"]}).map((item, i )=>{
-              return <option key={"ListaDeItemsCrafteables"+item.name+i} id={`datalist-${item.apiName}`} value={item.nombre}></option>
+            {AllCraftableItems().filter(({combine})=>{return combine[0] === carouselBasicItems["BasicItem1"] || combine[1] === carouselBasicItems["BasicItem1"]}).map((item, i )=>{
+              return <option key={"ListaDeItemsCrafteables"+item.name+i} id={`datalist-${item.apiName}`} value={item.apiName}>{item.name}</option>
             })}
           </datalist>
           <datalist id="dataListItemsCrafteables2">
-            {(version === "pbe" ? [...ITEMS_CRAFTEABLES_PBE] : [...CRAFTEABLE_ITEMS]).filter(({combine})=>{return combine[0] === carouselBasicItems["BasicItem2"] || combine[1] === carouselBasicItems["BasicItem2"]}).map((item, i )=>{
-              return <option key={"ListaDeItemsCrafteables"+item.name+i} id={`datalist-${item.apiName}`} data-value={JSON.stringify(item)} value={item.nombre}></option>
+             {AllCraftableItems().filter(({combine})=>{return combine[0] === carouselBasicItems["BasicItem2"] || combine[1] === carouselBasicItems["BasicItem1"]}).map((item, i )=>{
+              return <option key={"ListaDeItemsCrafteables"+item.name+i} id={`datalist-${item.apiName}`} value={item.apiName}>{item.name}</option>
             })}
           </datalist>
           <datalist id="dataListItemsCrafteables3">
-            {(version === "pbe" ? [...ITEMS_CRAFTEABLES_PBE] : [...CRAFTEABLE_ITEMS]).filter(({combine})=>{return combine[0] === carouselBasicItems["BasicItem3"] || combine[1] === carouselBasicItems["BasicItem3"]}).map((item, i )=>{
-              return <option key={"ListaDeItemsCrafteables"+item.name+i} id={`datalist-${item.apiName}`} data-value={JSON.stringify(item)} value={item.nombre}></option>
+             {AllCraftableItems().filter(({combine})=>{return combine[0] === carouselBasicItems["BasicItem3"] || combine[1] === carouselBasicItems["BasicItem1"]}).map((item, i )=>{
+              return <option key={"ListaDeItemsCrafteables"+item.name+i} id={`datalist-${item.apiName}`} value={item.apiName}>{item.name}</option>
             })}
           </datalist>
         </div>

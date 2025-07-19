@@ -8,7 +8,7 @@ const initialStateDataTFTSets = [];
 const initialStateDataTFTChampions = [];
 const initialStateVersion = "pbe";
 const initialStateTeamPlannerCode = [];
-const initialTFT_SET = "latest";
+const initialTFT_SET = "pbe";
 
 export const setNumberPBE="15";
 export const setMutatorPBE="TFTSet15";
@@ -42,6 +42,9 @@ export const versionTFT = atom(initialTFT_SET);
 export const teamPlannerCode = atom(initialStateTeamPlannerCode);
 export const TFT_SET = atom(initialTFT_SET);
 
+const urlDragon = ()=>{
+  return `https://raw.communitydragon.org/${versionTFT.get()}/game/`
+} 
 
 
 // version: latest / pbe ---- idioma: en / es --- pais: mx /es /gb /us
@@ -218,57 +221,109 @@ export const apiNameOfCraftableItemsPBE = [
   "TFT_Item_TacticiansScepter",
 ]
 
-export const apiNamesCrafteableItems = versionTFT.get() === "pbe" ? apiNameOfCraftableItemsPBE : apiNameOfCraftableItems;
+export const apiNamesCrafteableItems = ()=>{
+  return versionTFT.get() === "pbe" ? apiNameOfCraftableItemsPBE : apiNameOfCraftableItems;
+}
+  const baseItems = [
+    'TFT_Item_BFSword',           // 0
+    'TFT_Item_RecurveBow',        // 1
+    'TFT_Item_NeedlesslyLargeRod',// 2
+    'TFT_Item_TearOfTheGoddess',  // 3
+    'TFT_Item_ChainVest',         // 4
+    'TFT_Item_NegatronCloak',     // 5
+    'TFT_Item_GiantsBelt',        // 6
+    'TFT_Item_SparringGloves',    // 7
+    'TFT_Item_Spatula',           // 8
+    'TFT_Item_FryingPan'          // 9
+  ];
+
+export const AllCraftableItems = () =>{
+  console.log({dataTFTAllItems:dataTFTAllItems.get()})
+    console.log({versionTFT:versionTFT.get()})
+    console.log({apiNamesCrafteableItems:apiNamesCrafteableItems()})
+      const dataOfCraftableItems = apiNamesCrafteableItems()
+    .map(apiName => {
+      const item = dataTFTAllItems.get().find(item => item.apiName === apiName);
+      if (!item) return null;
+
+      // Si tiene "composition", buscamos los índices
+      const combine = item.composition?.map(comp => baseItems.indexOf(comp)) || [];
+
+      return {
+        ...item,
+        combine,
+        icon:urlDragon() + item.icon.replace(".tex",".png").toLowerCase()
+      };
+    })
+    .filter(Boolean); // elimina los que no encontró
+    return dataOfCraftableItems;
+};
+
+export const AllBasicItems = () =>{
+ 
+  const dataOfBasicItems = baseItems
+    .map(apiName => {
+      const item = dataTFTAllItems.get().find(item => item.apiName === apiName);
+      if (!item) return null;
+
+      return {
+        ...item,
+        icon:urlDragon() + item.icon.replace(".tex",".png").toLowerCase()
+      };
+    })
+    .filter(Boolean); // elimina los que no encontró
+    return dataOfBasicItems;
+}
 
 export const BASIC_ITEMS = [
   {
     nombre:"BF Sword",
-    apiName:"bf_sword",
+    apiName:"TFT_Item_BFSword",
     img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/bf_sword.png",
   },
   {
     nombre:"Recurve Bow",
-    apiName:"recurve_bow",
+    apiName:"TFT_Item_RecurveBow",
     img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/recurve_bow.png",
   },
   {
     nombre:"Needlessly Large Rod",
-    apiName:"needlessly_large_rod",
+    apiName:"TFT_Item_NeedlesslyLargeRod",
     img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/needlessly_large_rod.png",
   },
   {
     nombre:"Tear of the Goddess",
-    apiName:"tear_of_the_goddess",
+    apiName:"TFT_Item_TearOfTheGoddess",
     img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/tear_of_the_goddess.png",
   },
   {
     nombre:"Chain Vest",
-    apiName:"chain_vest",
+    apiName:"TFT_Item_ChainVest",
     img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/chain_vest.png",
   },
   {
     nombre:"Negatron Cloak",
-    apiName:"negatron_cloak",
+    apiName:"TFT_Item_NegatronCloak",
     img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/negatron_cloak.png",
   },
   {
     nombre:"Gaints Belt",
-    apiName:"gaints_belt",
+    apiName:"TFT_Item_GiantsBelt",
     img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/gaints_belt.png",
   },
   {
     nombre:"Sparring Gloves",
-    apiName:"sparring_gloves",
+    apiName:"TFT_Item_SparringGloves",
     img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/sparring_gloves.png",
   },
   {
     nombre:"Spatula",
-    apiName:"spatula",
+    apiName:"TFT_Item_Spatula",
     img:"https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/item_icons/standard/spatula.png",
   },
   {
     nombre:"Frying Pan",
-    apiName:"frying_pan",
+    apiName:"TFT_Item_FryingPan",
     img:"https://raw.communitydragon.org/pbe/game/assets/maps/particles/tft/item_icons/standard/frying_pan.png",
   },
 ]

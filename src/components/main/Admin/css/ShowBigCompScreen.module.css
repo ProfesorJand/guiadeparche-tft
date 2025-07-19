@@ -28,6 +28,23 @@
    background-position-x: right;
    background-size: cover;
 }
+
+.backgroundPBE{
+   /*width: 35%; Ajusta según el diseño deseado */
+   height: 120%;
+   aspect-ratio: 4 / 5;
+   display: flex;
+   align-items: center;
+   justify-content: center; /* Opcional: Centrar contenido */
+
+   flex-direction: column;
+   background-image: url("/tft/assets/backgroundWrapperSet15.webp");
+   background-repeat: no-repeat;
+   box-sizing: border-box;
+   background-position-x: right;
+   background-size: cover;
+}
+
 .aspectWrapper {
    /*width: 35%; Ajusta según el diseño deseado */
   height: 100%;

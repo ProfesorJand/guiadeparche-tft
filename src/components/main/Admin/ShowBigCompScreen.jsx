@@ -4,6 +4,7 @@ import {MetaComps as compos, loadCompsMeta} from "src/stores/menuFiltradoAdmin.j
 import Composicion from "./Composicion.jsx";
 import style from "./css/ShowBigCompScreen.module.css";
 import { MetaCompVersion } from "src/stores/menuFiltradoAdmin.js";
+import { setNumberLatest, setNumberPBE, versionTFT } from "@stores/dataTFT.js";
 import { toPng } from 'html-to-image';
 // import html2canvas from "html2canvas";
 
@@ -12,7 +13,8 @@ const ShowBigCompScreen = ({id, setShowBigComp}) => {
   const [showMovilnetLogo, setShowMovilnetLogo] = useState(true);
   const backgroundRef = useRef(null);
   const composMeta = useStore(compos);
-  const version = useStore(MetaCompVersion)
+  const version = useStore(MetaCompVersion);
+  const currentVersion = useStore(versionTFT);
   function findObjectById(id, composMeta) {
     for (const array of composMeta) {
       const found = array.find(obj => obj.id === id);
@@ -112,7 +114,7 @@ const ShowBigCompScreen = ({id, setShowBigComp}) => {
               {showMovilnetLogo ? "🔁 Mostrar TFT Logo" : "🔁 Mostrar Movilnet Logo"}
             </button>
           </div>
-          <div className={style.background} ref={backgroundRef}>
+          <div className={currentVersion === "pbe" ? style.backgroundPBE : style.background } ref={backgroundRef}>
             <div className={style.aspectWrapper}>
               <div className={style.upperStyle}>
                 <div className={style.containerTierImg}>
@@ -163,7 +165,7 @@ const ShowBigCompScreen = ({id, setShowBigComp}) => {
                 </div>
                 }
                 <div className={style.divSetTFTLogo}>
-                  <img className={!showMovilnetLogo ? style.imgSetTFTLogoReduced : style.imgSetTFTLogo} src="/tft/sets/14/logo.png" alt="TFT LOGO" />
+                  <img className={!showMovilnetLogo ? style.imgSetTFTLogoReduced : style.imgSetTFTLogo} src={`/tft/sets/${currentVersion === "pbe" ? setNumberPBE : setNumberLatest}/logo.${currentVersion === "pbe" ? "webp" : "png" }`} alt="TFT LOGO" />
                 </div>
                 {/* Mostrar logo según el estado */}
                 
