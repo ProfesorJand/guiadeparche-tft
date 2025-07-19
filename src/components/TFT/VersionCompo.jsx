@@ -1,8 +1,28 @@
-// VersionCliente.jsx
-import { MetaCompVersion } from '@stores/menuFiltradoAdmin';
-import Style from "./css/VersionCompo.module.css"
+// VersionCompo.jsx
+import { useEffect, useState } from 'react';
+import { useStore } from '@nanostores/react';
+import { versionTFT, constantesJSON, setNumberLatest, setNumberPBE } from '@stores/dataTFT';
+import Style from './css/VersionCompo.module.css';
 
-export default function VersionCliente() {
-  const version = MetaCompVersion.get(); // o .value si es signal
-  return <span className={Style.minititulo}>Tier List Set 14 / Version {version}</span>;
+export default function VersionCompo() {
+  const version = useStore(versionTFT);
+  const [constantes, setConstantes] = useState(null);
+
+  useEffect(() => {
+    const getConstantes = async () => {
+      const resp = await fetch(constantesJSON, {cache:"reload"});
+      const data = await resp.json();
+      console.log({constantes:data})
+      setConstantes(data);
+    };
+    getConstantes();
+  }, []);
+
+  if (!constantes) return null; // o un loader
+
+  return (
+    <span className={Style.minititulo}>
+      Tier List Set {version === "pbe" ? setNumberPBE : setNumberLatest} / Version {version === "pbe" ? constantes.MetaCompVersionPBE : constantes.MetaCompVersion}
+    </span>
+  );
 }

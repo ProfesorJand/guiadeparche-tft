@@ -30,8 +30,8 @@ const EditarCompoTFT = () => {
     if (!element) return; // Evita errores si el elemento no existe
 
     const newValue = element.value.trim(); // Obtiene el valor del input
-    const keyToUpdate = inputId.replace("input", ""); // Extrae la clave a actualizar
-
+    var keyToUpdate = inputId.replace("input", ""); // Extrae la clave a actualizar
+    keyToUpdate = currentVersion === "pbe" ? keyToUpdate.concat("PBE") : keyToUpdate
     const url = constantesPHP;
     const token = import.meta.env.PUBLIC_TOKEN_META;
     const bodyData = {
@@ -61,7 +61,7 @@ const EditarCompoTFT = () => {
     <>
         <label className={style.containerConstanteUpdate}>
           <span>Label Meta Comps Version:</span>
-          <input id="inputMetaCompVersion" type="text" placeholder={constantes?.MetaCompVersion || ""} />
+          <input id="inputMetaCompVersion" type="text" placeholder={currentVersion === "pbe" ? (constantes?.MetaCompVersionPBE || "") : (constantes?.MetaCompVersion || "")} />
           <input
             type="button"
             value="Update"

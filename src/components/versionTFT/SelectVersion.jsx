@@ -1,4 +1,4 @@
-import { versionTFT, swapVersionTFT } from "@stores/dataTFT.js";
+import { versionTFT, swapVersionTFT, setNumberPBE, setNumberLatest } from "@stores/dataTFT.js";
 import { useStore } from "@nanostores/react";
 import "./SelectVersion.css"; // Archivo CSS externo
 
@@ -11,13 +11,13 @@ export default function SelectVersion() {
         className={`btn ${currentVersion === "pbe" ? "active" : ""}`}
         onClick={() => swapVersionTFT("pbe")}
       >
-        Set 15
+        {`Set ${setNumberPBE}`}
       </button>
       <button
         className={`btn ${currentVersion !== "pbe" ? "active" : ""}`}
         onClick={() => swapVersionTFT("latest")}
       >
-        Set 14
+        {`Set ${setNumberLatest}`}
       </button>
     </div>
   );

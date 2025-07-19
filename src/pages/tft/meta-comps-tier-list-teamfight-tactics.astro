@@ -6,6 +6,7 @@ import {crearJSONSchema} from "src/json/schema/crearJSONSchema";
 // import Kick from "src/components/embed/Kick.astro";
 import TierListMetaComps from '@components/TFT/TierListMetaComps.jsx';;
 import VersionCompo from "@components/TFT/VersionCompo"
+import SelectVersion from '@components/versionTFT/SelectVersion';
 const title = "▷ Best TFT Comps & Builds for Set 14 Cyber City";
 // Example: Construct a canonical URL using your production domain
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -54,7 +55,7 @@ const admin = typeof window !== "undefined" ? localStorage.getItem("superAdmin")
       </div>
     </div> -->
     <div id="SelectVersion">
-      <!-- <SelectVersion client:only="react"/> -->
+      <SelectVersion client:only="react"/>
     </div>
     <div id="ContainerMetaPBE">
       <!-- <ContainerMetaPBE version={latestVersion} set={setPBE}/> -->
