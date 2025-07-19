@@ -88,7 +88,7 @@ export const getTeamPlannerCodeAPI = async () => {
   
   const formattedData = Object.values(data?.[versionTFT.get() === "pbe" ? setMutatorPBE : setMutatorLatest] || [])
     .reduce((acc, { character_id, team_planner_code }) => {
-      acc[character_id] = team_planner_code.toString(16);
+      acc[character_id] = team_planner_code.toString(16).padStart(3, '0');
       return acc;
     }, {});
 

@@ -8,7 +8,7 @@ import AumentosCompos from "./AumentosCompos";
 import PosicionamientoCompos from "./PosicionamientoCompos";
 import CrearCompoTFT from "./CrearCompoTFT";
 //import { championsTFT as otrosChampions} from "src/json/updates/constantesLatest.js";
-import { teamPlannerCode, dataTFTChampions, versionTFT, loadDataTFTFromAPI, getTeamPlannerCodeAPI, crearCompoMetaPHP } from "@stores/dataTFT";
+import { teamPlannerCode, dataTFTChampions, versionTFT, loadDataTFTFromAPI, getTeamPlannerCodeAPI, crearCompoMetaPHP, setMutatorPBE, setMutatorLatest } from "@stores/dataTFT";
 import ShowBigCompScreen from "./ShowBigCompScreen"; 
 import RadiantsItems from "./RadiantsItems";
 import { useStore } from "@nanostores/react";
@@ -133,7 +133,7 @@ const Composicion = ({id, compo, admin=false, show=true, allwaysOpen=false, onTo
     if (espaciosVacios > 0) {
         championsCode = championsCode.concat("000".repeat(espaciosVacios));
     }
-    championsCode = championsCode.concat("TFTSet14")
+    championsCode = championsCode.concat(currentVersion === "pbe" ? setMutatorPBE : setMutatorLatest)
     return championsCode
   }
 
