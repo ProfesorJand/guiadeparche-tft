@@ -470,7 +470,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
       }
       setCarouselBasicItems((oldObject)=>{ return {...oldObject, [item]:combineNumber }})
       console.log({combineNumber})
-      const [data] = AllBasicItems().filter(({apiName})=>{
+      const [data] = AllBasicItems(itemsDataIngles).filter(({apiName})=>{
         console.log({apiName})
         if(apiName === value){
           console.log({combine: combineNumber})
@@ -490,7 +490,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
 
     function handlerCompleteItem(value, item){
       console.log({valueCompleItem:value})
-      const [data] = AllCraftableItems().filter((item)=>{
+      const [data] = AllCraftableItems(itemsDataIngles).filter((item)=>{
         return item.apiName === value
       })
       console.log({dataItemCrafteable:data})
@@ -899,32 +899,32 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         
         <div className={style.containerCarouselFormVertical}>
           Basic Item:
-          <input list="dataListItemsBasicos" name="Carousel_Basic_Item1" id="Carousel_Basic_Item1" onChange={(e)=>{handlerBasicItem(e.target.value, "BasicItem1")}} defaultValue={carouselItems.BasicItem1 ? carouselItems.BasicItem1.nombre : "" }/>
-          <input list="dataListItemsBasicos" name="Carousel_Basic_Item2" id="Carousel_Basic_Item2" onChange={(e)=>{handlerBasicItem(e.target.value, "BasicItem2")}} defaultValue={carouselItems.BasicItem2 ? carouselItems.BasicItem2.nombre : "" }/>
-          <input list="dataListItemsBasicos" name="Carousel_Basic_Item3" id="Carousel_Basic_Item3" onChange={(e)=>{handlerBasicItem(e.target.value, "BasicItem3")}} defaultValue={carouselItems.BasicItem3 ? carouselItems.BasicItem3.nombre : "" }/>
+          <input list="dataListItemsBasicos" name="Carousel_Basic_Item1" id="Carousel_Basic_Item1" onChange={(e)=>{handlerBasicItem(e.target.value, "BasicItem1")}} defaultValue={carouselItems.BasicItem1 ? carouselItems.BasicItem1.apiName : "" }/>
+          <input list="dataListItemsBasicos" name="Carousel_Basic_Item2" id="Carousel_Basic_Item2" onChange={(e)=>{handlerBasicItem(e.target.value, "BasicItem2")}} defaultValue={carouselItems.BasicItem2 ? carouselItems.BasicItem2.apiName : "" }/>
+          <input list="dataListItemsBasicos" name="Carousel_Basic_Item3" id="Carousel_Basic_Item3" onChange={(e)=>{handlerBasicItem(e.target.value, "BasicItem3")}} defaultValue={carouselItems.BasicItem3 ? carouselItems.BasicItem3.apiName : "" }/>
           <datalist id="dataListItemsBasicos">
-            {AllBasicItems().map((item, i )=>{
+            {AllBasicItems(itemsDataIngles).map((item, i )=>{
               return <option key={"ListaDeItemsBasicos"+item.name+i} id={`datalist-${item.apiName}`} value={item.apiName}>{item.nombre}</option>
             })}
           </datalist>
         </div>
         <div className={style.containerCarouselFormVertical}>
           Complete Item:
-          <input list="dataListItemsCrafteables1" name="Carousel_Complete_Item1" id="Carousel_Complete_Item1" onChange={(e)=>{handlerCompleteItem(e.target.value, "CompleteItem1")}} defaultValue={carouselItems.CompleteItem1 ? carouselItems.CompleteItem1.nombre : "" } disabled={carouselItems["BasicItem1"] !== undefined ? false: true} autoComplete="off"/>
-          <input list="dataListItemsCrafteables2" name="Carousel_Complete_Item2" id="Carousel_Complete_Item2" onChange={(e)=>{handlerCompleteItem(e.target.value, "CompleteItem2")}} defaultValue={carouselItems.CompleteItem2 ? carouselItems.CompleteItem2.nombre : "" } disabled={carouselItems["BasicItem2"] !== undefined ? false: true} autoComplete="off"/>
-          <input list="dataListItemsCrafteables3" name="Carousel_Complete_Item3" id="Carousel_Complete_Item3" onChange={(e)=>{handlerCompleteItem(e.target.value, "CompleteItem3")}} defaultValue={carouselItems.CompleteItem3 ? carouselItems.CompleteItem3.nombre : "" } disabled={carouselItems["BasicItem3"] !== undefined ? false: true} autoComplete="off"/>
+          <input list="dataListItemsCrafteables1" name="Carousel_Complete_Item1" id="Carousel_Complete_Item1" onChange={(e)=>{handlerCompleteItem(e.target.value, "CompleteItem1")}} defaultValue={carouselItems.CompleteItem1 ? carouselItems.CompleteItem1.apiName : "" } disabled={carouselItems["BasicItem1"] !== undefined ? false: true} autoComplete="off"/>
+          <input list="dataListItemsCrafteables2" name="Carousel_Complete_Item2" id="Carousel_Complete_Item2" onChange={(e)=>{handlerCompleteItem(e.target.value, "CompleteItem2")}} defaultValue={carouselItems.CompleteItem2 ? carouselItems.CompleteItem2.apiName : "" } disabled={carouselItems["BasicItem2"] !== undefined ? false: true} autoComplete="off"/>
+          <input list="dataListItemsCrafteables3" name="Carousel_Complete_Item3" id="Carousel_Complete_Item3" onChange={(e)=>{handlerCompleteItem(e.target.value, "CompleteItem3")}} defaultValue={carouselItems.CompleteItem3 ? carouselItems.CompleteItem3.apiName : "" } disabled={carouselItems["BasicItem3"] !== undefined ? false: true} autoComplete="off"/>
           <datalist id="dataListItemsCrafteables1">
-            {AllCraftableItems().filter(({combine})=>{return combine[0] === carouselBasicItems["BasicItem1"] || combine[1] === carouselBasicItems["BasicItem1"]}).map((item, i )=>{
+            {AllCraftableItems(itemsDataIngles).filter(({combine})=>{return combine[0] === carouselBasicItems["BasicItem1"] || combine[1] === carouselBasicItems["BasicItem1"]}).map((item, i )=>{
               return <option key={"ListaDeItemsCrafteables"+item.name+i} id={`datalist-${item.apiName}`} value={item.apiName}>{item.name}</option>
             })}
           </datalist>
           <datalist id="dataListItemsCrafteables2">
-             {AllCraftableItems().filter(({combine})=>{return combine[0] === carouselBasicItems["BasicItem2"] || combine[1] === carouselBasicItems["BasicItem2"]}).map((item, i )=>{
+             {AllCraftableItems(itemsDataIngles).filter(({combine})=>{return combine[0] === carouselBasicItems["BasicItem2"] || combine[1] === carouselBasicItems["BasicItem2"]}).map((item, i )=>{
               return <option key={"ListaDeItemsCrafteables"+item.name+i} id={`datalist-${item.apiName}`} value={item.apiName}>{item.name}</option>
             })}
           </datalist>
           <datalist id="dataListItemsCrafteables3">
-             {AllCraftableItems().filter(({combine})=>{return combine[0] === carouselBasicItems["BasicItem3"] || combine[1] === carouselBasicItems["BasicItem3"]}).map((item, i )=>{
+             {AllCraftableItems(itemsDataIngles).filter(({combine})=>{return combine[0] === carouselBasicItems["BasicItem3"] || combine[1] === carouselBasicItems["BasicItem3"]}).map((item, i )=>{
               return <option key={"ListaDeItemsCrafteables"+item.name+i} id={`datalist-${item.apiName}`} value={item.apiName}>{item.name}</option>
             })}
           </datalist>

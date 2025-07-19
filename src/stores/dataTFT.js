@@ -1,4 +1,5 @@
 import {deepMap, atom, task} from "nanostores";
+import { useStore } from "@nanostores/react";
 
 
 const initialStateDataTFT = {};
@@ -237,33 +238,30 @@ export const apiNamesCrafteableItems = ()=>{
     'TFT_Item_FryingPan'          // 9
   ];
 
-export const AllCraftableItems = () =>{
-  console.log({dataTFTAllItems:dataTFTAllItems.get()})
-    console.log({versionTFT:versionTFT.get()})
-    console.log({apiNamesCrafteableItems:apiNamesCrafteableItems()})
-      const dataOfCraftableItems = apiNamesCrafteableItems()
-    .map(apiName => {
-      const item = dataTFTAllItems.get().find(item => item.apiName === apiName);
-      if (!item) return null;
+export const AllCraftableItems = (dataTFTAllItems) => {
+  const apiNames = apiNamesCrafteableItems();
 
-      // Si tiene "composition", buscamos los índices
-      const combine = item.composition?.map(comp => baseItems.indexOf(comp)) || [];
+  if (!dataTFTAllItems.length) return [];
 
-      return {
-        ...item,
-        combine,
-        icon:urlDragon() + item.icon.replace(".tex",".png").toLowerCase()
-      };
-    })
-    .filter(Boolean); // elimina los que no encontró
-    return dataOfCraftableItems;
+  return apiNames.map(apiName => {
+    const item = dataTFTAllItems.find(i => i.apiName === apiName);
+    if (!item) return null;
+
+    const combine = item.composition?.map(comp => baseItems.indexOf(comp)) || [];
+
+    return {
+      ...item,
+      combine,
+      icon: urlDragon() + item.icon.replace(".tex", ".png").toLowerCase()
+    };
+  }).filter(Boolean);
 };
 
-export const AllBasicItems = () =>{
- 
+export const AllBasicItems = (dataTFTAllItems) =>{
+  console.log({LEEEr: dataTFTAllItems})
   const dataOfBasicItems = baseItems
     .map(apiName => {
-      const item = dataTFTAllItems.get().find(item => item.apiName === apiName);
+      const item = dataTFTAllItems.find(item => item.apiName === apiName);
       if (!item) return null;
 
       return {
