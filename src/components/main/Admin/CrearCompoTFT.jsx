@@ -919,12 +919,12 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
             })}
           </datalist>
           <datalist id="dataListItemsCrafteables2">
-             {AllCraftableItems().filter(({combine})=>{return combine[0] === carouselBasicItems["BasicItem2"] || combine[1] === carouselBasicItems["BasicItem1"]}).map((item, i )=>{
+             {AllCraftableItems().filter(({combine})=>{return combine[0] === carouselBasicItems["BasicItem2"] || combine[1] === carouselBasicItems["BasicItem2"]}).map((item, i )=>{
               return <option key={"ListaDeItemsCrafteables"+item.name+i} id={`datalist-${item.apiName}`} value={item.apiName}>{item.name}</option>
             })}
           </datalist>
           <datalist id="dataListItemsCrafteables3">
-             {AllCraftableItems().filter(({combine})=>{return combine[0] === carouselBasicItems["BasicItem3"] || combine[1] === carouselBasicItems["BasicItem1"]}).map((item, i )=>{
+             {AllCraftableItems().filter(({combine})=>{return combine[0] === carouselBasicItems["BasicItem3"] || combine[1] === carouselBasicItems["BasicItem3"]}).map((item, i )=>{
               return <option key={"ListaDeItemsCrafteables"+item.name+i} id={`datalist-${item.apiName}`} value={item.apiName}>{item.name}</option>
             })}
           </datalist>
