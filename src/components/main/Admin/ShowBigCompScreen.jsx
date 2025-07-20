@@ -13,7 +13,6 @@ const ShowBigCompScreen = ({id, setShowBigComp}) => {
   const [showMovilnetLogo, setShowMovilnetLogo] = useState(true);
   const backgroundRef = useRef(null);
   const composMeta = useStore(compos);
-  const version = useStore(MetaCompVersion);
   const [constantes, setConstantes] = useState({});
   const currentVersion = useStore(versionTFT);
   function findObjectById(id, composMeta) {
@@ -169,7 +168,7 @@ useEffect(()=>{
                   </div>
                 }
                 <div className={style.divJupesonLogo}>
-                  <img className={style.imgJupesonLogo} src="/tft/assets/Jupeson_LOGO_Sin_Publicidad.png" alt=""></img>
+                  <img className={style.imgJupesonLogo} src="/tft/assets/Jupeson_LOGO_Sin_Publicidad_Sin_Bordes.png" alt=""></img>
                 </div>
                 {
                   !showMovilnetLogo && 
