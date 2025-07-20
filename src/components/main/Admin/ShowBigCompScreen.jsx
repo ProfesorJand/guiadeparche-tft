@@ -4,7 +4,7 @@ import {MetaComps as compos, loadCompsMeta} from "src/stores/menuFiltradoAdmin.j
 import Composicion from "./Composicion.jsx";
 import style from "./css/ShowBigCompScreen.module.css";
 import { MetaCompVersion } from "src/stores/menuFiltradoAdmin.js";
-import { setNumberLatest, setNumberPBE, versionTFT } from "@stores/dataTFT.js";
+import { setNumberLatest, setNumberPBE, versionTFT, constantesJSON } from "@stores/dataTFT.js";
 import { toPng } from 'html-to-image';
 // import html2canvas from "html2canvas";
 
@@ -14,6 +14,7 @@ const ShowBigCompScreen = ({id, setShowBigComp}) => {
   const backgroundRef = useRef(null);
   const composMeta = useStore(compos);
   const version = useStore(MetaCompVersion);
+  const [constantes, setConstantes] = useState({});
   const currentVersion = useStore(versionTFT);
   function findObjectById(id, composMeta) {
     for (const array of composMeta) {
@@ -103,6 +104,21 @@ const ShowBigCompScreen = ({id, setShowBigComp}) => {
   preload("/tft/sets/14/logo.png");
   preload("/tft/assets/logoMovilnet-e-rojo-con-blanco.png");
 }, [CompToShow]);
+
+useEffect(()=>{
+  const fetchConstantes = async () => {
+    try {
+      const response = await fetch(constantesJSON, {cache:"reload"});
+      const data = await response.json();
+      console.log({constantes:data})
+      setConstantes(data);
+    } catch (error) {
+      console.error("Error obteniendo constantes:", error);
+    }
+  };
+
+  fetchConstantes();
+},[])
   
   if(admin){
     return (
@@ -127,7 +143,7 @@ const ShowBigCompScreen = ({id, setShowBigComp}) => {
                 </div>
                 <div className={style.titulos}>
                   <div className={style.tituloPrincipal}>
-                    {`SET 14 META COMP [${version}]`}
+                    {`SET 14 META COMP [${currentVersion === "pbe" ? constantes.MetaCompVersionPBE : constantes.MetaCompVersion}]`}
                   </div>
                   <div className={style.titutloSecundario}>
                   <span className={[style.titulo, style.tituloComp].join(" ")}>{CompToShow.titulo}</span>
@@ -165,7 +181,7 @@ const ShowBigCompScreen = ({id, setShowBigComp}) => {
                 </div>
                 }
                 <div className={style.divSetTFTLogo}>
-                  <img className={!showMovilnetLogo ? style.imgSetTFTLogoReduced : style.imgSetTFTLogo} src={`/tft/sets/${currentVersion === "pbe" ? setNumberPBE : setNumberLatest}/logo.${currentVersion === "pbe" ? "webp" : "png" }`} alt="TFT LOGO" />
+                  <img className={style.imgSetTFTLogo} src={`/tft/sets/${currentVersion === "pbe" ? setNumberPBE : setNumberLatest}/logo2.png`} alt="TFT LOGO" />
                 </div>
                 {/* Mostrar logo según el estado */}
                 

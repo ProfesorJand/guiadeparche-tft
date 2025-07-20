@@ -194,7 +194,7 @@
 .imgSetTFTLogo{
   display: flex;
   position: relative;
-  height: 80%;
+  height: 100%;
 }
 
 .imgSetTFTLogoReduced{
