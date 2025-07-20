@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import style from "./css/Items.module.css";
-import { versionTFT, dataTFTSetData, dataTFTItemsBySet, dataTFTAllItems, apiNameOfCraftableItems, apiNameOfCraftableItemsPBE, setNumberPBE, setNumberLatest } from "@stores/dataTFT";
+import { versionTFT, dataTFTSetData, dataTFTItemsBySet, dataTFTAllItems, apiNamesCrafteableItems, AllCraftableItems, setNumberPBE, setNumberLatest } from "@stores/dataTFT";
 import { useStore } from "@nanostores/react";
 export const Items = ()=>{
   const version = useStore(versionTFT);
@@ -25,22 +25,18 @@ export const Items = ()=>{
   const [itemOver, setItemOver] = useState(null);
   const [tooltip, setTooltip] = useState(null);
   const allItemsApiNames = useStore(dataTFTItemsBySet);
-  const allItemsInfo = useStore(dataTFTAllItems) 
+  const allItemsInfo = useStore(dataTFTAllItems);
   const [allEmblemsItemsApiNames, setAllEmblemsItemsApiName] = useState(null);
   const [allSupportsItems, setAllSupportsItems] = useState(null)
   const [allChemBaronItems, setAllChemBaronItems] = useState(null)
   const [allChemtechItems, setAllChemtechItems] = useState(null)
   const [allGarenModItems, setAllGarenModItems] = useState(null)
-  const [allCraftableItems, setAllCraftableItems] = useState(null)
+  //const [allCraftableItems, setAllCraftableItems] = useState(null);
   const [MatrixCraftableItems, setMatrixCraftableItems] = useState([])
   useEffect(()=>{
     const getAllItems = async ()=>{
-      const apiNames = version === "pbe" ? apiNameOfCraftableItemsPBE : apiNameOfCraftableItems;
-      setAllCraftableItems(
-        apiNames
-          .map(apiName => allItemsInfo.find(item => item.apiName === apiName))
-          .filter(Boolean) // elimina los que no encontró
-      );
+      const apiNames = apiNamesCrafteableItems();
+
       setAllEmblemsItemsApiName(allItemsApiNames.filter((apiName)=>{
         return apiName.includes("EmblemItem")
       }))
@@ -956,11 +952,10 @@ const createSymmetricFlatArray = (craftItems, componentsCount) => {
 };
 
 useEffect(() => {
-  if (!allCraftableItems) return;
   const componentsCount = 10;
-  const matrix = createSymmetricFlatArray(allCraftableItems, componentsCount);
+  const matrix = createSymmetricFlatArray(AllCraftableItems(allItemsInfo), componentsCount);
   setMatrixCraftableItems(matrix);
-}, [allCraftableItems]);
+}, [allItemsInfo]);
 
 
 

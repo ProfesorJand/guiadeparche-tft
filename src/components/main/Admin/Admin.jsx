@@ -17,9 +17,6 @@ const AdminPanel = ({allAdmins})=>{
     const [adminName, setAdminName] = useState(localStorage.getItem("user") || "");
     const [action, setAction] = useState("editar");
     const [pestana, setPestana] = useState(1)
-    useEffect(()=>{
-       loadDataTFTFromAPI({version:"latest", idioma:"en", pais:"us"})
-    },[])
 
     function cerrarSesion(){
         setIsLoged(false)

@@ -8,6 +8,29 @@ const InputPowerUpList = ({addClickFn, deleteClickFn, champPowerUp, styles, defa
     return traitData?.apiName?.includes("MechanicTrait")
   })
   const url = `https://raw.communitydragon.org/${version}/game/`;
+  function replaceVariables(desc, effects) {
+  return desc.replace(/@([^@]+?)@/g, (_, fullKey) => {
+    // Extraer la parte después del ":" si existe
+    const keyParts = fullKey.split(":");
+    const rawKey = keyParts.length > 1 ? keyParts[1] : keyParts[0];
+
+    // Soportar multiplicador *100
+    const match = rawKey.match(/^(\w+)(\*100)?$/);
+    if (!match) return `@${fullKey}@`;
+
+    const [ , key, multiplier ] = match;
+    let value = effects[key];
+
+    if (value !== undefined) {
+      if (multiplier) {
+        value = Math.round(value * 100);
+      }
+      return value;
+    }
+
+    return `@${fullKey}@`; // Dejar como está si no se encuentra
+  });
+}
   return (
     <>
       <label>
@@ -25,12 +48,13 @@ const InputPowerUpList = ({addClickFn, deleteClickFn, champPowerUp, styles, defa
       </label>
       <div className={styles.btnAgregar} onClick={(e)=>addClickFn(e)}>Agregar Power Up</div>
       <div className={styles.containerAumentos}>    
-        {champPowerUp.map(({icon, apiName, name})=>{
+        {champPowerUp.map(({icon, apiName, name, desc, effects})=>{
           if(icon){
             return (
               <div key={"ImgAumentos"+apiName} className={styles.horizontalWrapper}>
               <button className={styles.btnClose} onClick={()=>deleteClickFn(apiName)}>X</button>
               <p style={{fontSize:"12px"}}>{name}</p>
+              <p style={{fontSize:"12px"}}>{replaceVariables(desc, {...effects, ...effects[0]?.variables})}</p>
               <img src={url+icon.toLowerCase().replace(".tex",".png")} className={styles.imgAumento} loading="lazy"></img>
             </div>
         )

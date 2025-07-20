@@ -50,7 +50,6 @@ const urlDragon = ()=>{
 
 // version: latest / pbe ---- idioma: en / es --- pais: mx /es /gb /us
 export const loadDataTFTFromAPI = ({version=versionTFT.get(), idioma="en", pais="us"}) =>{
-  console.log("ejecutando loadDataTFTFromApi")
   task(async()=>{
     const urlDragon = `https://raw.communitydragon.org/${version}/cdragon/tft/${idioma}_${pais}.json`
     const response = await fetch(urlDragon);
@@ -100,7 +99,6 @@ export const getTeamPlannerCodeAPI = async () => {
 };
 
 versionTFT.subscribe((version) => {
-  console.log("version fue cambiado")
   loadDataTFTFromAPI({version: version})
   getTeamPlannerCodeAPI(); // Llamar automáticamente cuando cambia la versión
 });
@@ -238,13 +236,13 @@ export const apiNamesCrafteableItems = ()=>{
     'TFT_Item_FryingPan'          // 9
   ];
 
-export const AllCraftableItems = (dataTFTAllItems) => {
+export const AllCraftableItems = (todosLosItems) => {
   const apiNames = apiNamesCrafteableItems();
 
-  if (!dataTFTAllItems.length) return [];
+  if (!todosLosItems.length) return [];
 
   return apiNames.map(apiName => {
-    const item = dataTFTAllItems.find(i => i.apiName === apiName);
+    const item = todosLosItems.find(i => i.apiName === apiName);
     if (!item) return null;
 
     const combine = item.composition?.map(comp => baseItems.indexOf(comp)) || [];
@@ -258,7 +256,6 @@ export const AllCraftableItems = (dataTFTAllItems) => {
 };
 
 export const AllBasicItems = (dataTFTAllItems) =>{
-  console.log({LEEEr: dataTFTAllItems})
   const dataOfBasicItems = baseItems
     .map(apiName => {
       const item = dataTFTAllItems.find(item => item.apiName === apiName);
