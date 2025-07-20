@@ -142,7 +142,7 @@ useEffect(()=>{
                 </div>
                 <div className={style.titulos}>
                   <div className={style.tituloPrincipal}>
-                    {`SET 14 META COMP [${currentVersion === "pbe" ? constantes.MetaCompVersionPBE : constantes.MetaCompVersion}]`}
+                    {`SET ${currentVersion === "pbe" ? setNumberPBE : setNumberLatest} META COMP [${currentVersion === "pbe" ? constantes.MetaCompVersionPBE : constantes.MetaCompVersion}]`}
                   </div>
                   <div className={style.titutloSecundario}>
                   <span className={[style.titulo, style.tituloComp].join(" ")}>{CompToShow.titulo}</span>
