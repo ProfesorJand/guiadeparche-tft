@@ -2,36 +2,48 @@ import React, { useEffect } from "react";
 import style from "./css/ContextMenuBuilder.module.css";
 import styleBuilder from "./css/Builder.module.css"
 const ContextMenuBuilder = ({hexId, setHexId, updateBoardInfo })=>{
-  const OPTIONS = ["★ 4 stars","★ 3 stars","★ 2 stars","Power Up","Duelist","Executioner", "Juggernaut","X Remove"];
+  const hexagono = document.getElementById(hexId);
+  const campeon = hexagono.getElementsByClassName(styleBuilder.containerImageChampion)[0];
+  const extraOptions = ["Duelist","Executioner", "Juggernaut"];
+  const OPTIONS_BASE  = ["★ 4 stars","★ 3 stars","★ 2 stars","Power Up","X Remove"];
+  let OPTIONS = [...OPTIONS_BASE];
+  if(JSON.parse(campeon?.dataset?.campeon).sinergia.find(({apiName}) => {
+    return apiName === "TFT15_DragonFist"
+  })){
+    console.log("Tiene DragonFist")
+    OPTIONS?.splice(4, 0 , ...extraOptions)
+  }
+  console.log({OPTIONS})
+  console.log({LEEERRRRRERERERE: JSON.parse(campeon?.dataset?.campeon).sinergia.find(({apiName}) => {
+    return apiName === "TFT15_DragonFist"
+  })})
 
   function handleMenu(opcion){
-    const hexagono = document.getElementById(hexId);
-    const campeon = hexagono.getElementsByClassName(styleBuilder.containerImageChampion)[0];
     switch (opcion) {
-      case OPTIONS[0]:
+      case "★ 4 stars":
         campeon.classList.toggle(styleBuilder.estrellas4, true)
         campeon.classList.toggle(styleBuilder.estrellas3, false)
         campeon.classList.toggle(styleBuilder.estrellas2, false)
         updateBoardInfo()
         break;
-      case OPTIONS[1]:
+      case "★ 3 stars":
         campeon.classList.toggle(styleBuilder.estrellas4, false)
         campeon.classList.toggle(styleBuilder.estrellas3, true)
         campeon.classList.toggle(styleBuilder.estrellas2, false)
         updateBoardInfo()
         break;
-      case OPTIONS[2]:
+      case "★ 2 stars":
         campeon.classList.toggle(styleBuilder.estrellas4, false)
         campeon.classList.toggle(styleBuilder.estrellas3, false)
         campeon.classList.toggle(styleBuilder.estrellas2, true)
         updateBoardInfo()
         break;
-      case OPTIONS[3]:
+      case "Power Up":
         campeon.classList.toggle(styleBuilder.powerUp, true)
         updateBoardInfo()
         break;
-      case OPTIONS[4]: {
-        const oldDataString = campeon.dataset.campeon;
+      case "Duelist": {
+        const oldDataString = campeon?.dataset?.campeon;
         const oldData = JSON.parse(oldDataString);
 
         let sinergia = [...oldData.sinergia];
@@ -49,8 +61,8 @@ const ContextMenuBuilder = ({hexId, setHexId, updateBoardInfo })=>{
         updateBoardInfo();
         break;
       }
-      case OPTIONS[5]: {
-        const oldDataString = campeon.dataset.campeon;
+      case "Executioner": {
+        const oldDataString = campeon?.dataset?.campeon;
         const oldData = JSON.parse(oldDataString);
 
         let sinergia = [...oldData.sinergia];
@@ -68,8 +80,8 @@ const ContextMenuBuilder = ({hexId, setHexId, updateBoardInfo })=>{
         updateBoardInfo();
         break;
       }
-      case OPTIONS[6]: {
-        const oldDataString = campeon.dataset.campeon;
+      case "Juggernaut": {
+        const oldDataString = campeon?.dataset?.campeon;
         const oldData = JSON.parse(oldDataString);
 
         let sinergia = [...oldData.sinergia];
