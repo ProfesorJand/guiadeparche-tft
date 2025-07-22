@@ -10,13 +10,9 @@ const ContextMenuBuilder = ({hexId, setHexId, updateBoardInfo })=>{
   if(JSON.parse(campeon?.dataset?.campeon).sinergia.find(({apiName}) => {
     return apiName === "TFT15_DragonFist"
   })){
-    console.log("Tiene DragonFist")
     OPTIONS?.splice(4, 0 , ...extraOptions)
   }
-  console.log({OPTIONS})
-  console.log({LEEERRRRRERERERE: JSON.parse(campeon?.dataset?.campeon).sinergia.find(({apiName}) => {
-    return apiName === "TFT15_DragonFist"
-  })})
+
 
   function handleMenu(opcion){
     switch (opcion) {
