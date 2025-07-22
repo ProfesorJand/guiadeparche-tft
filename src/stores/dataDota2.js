@@ -49,7 +49,6 @@ export const fetchConstantesDota2 = async ()=>{
     async ()=>{
       try{
         const token = import.meta.env.PUBLIC_TOKEN_META;
-        console.log("Fetching constantes Dota 2 data with token:");
         const url = "https://api.guiadeparche.com/dota-2/constantes.json";
         const response = await fetch(url,{
           headers: {

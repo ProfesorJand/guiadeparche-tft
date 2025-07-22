@@ -87,7 +87,6 @@ export const fetchRunes = async () => {
 export const fetchChampionsMeta = async () => {
   try {
     const token = import.meta.env.PUBLIC_TOKEN_META;
-    console.log("Fetching champions meta data with token:", token);
     const url = "https://api.guiadeparche.com/lol/ChampsMeta.json";
     const response = await fetch(url,{
       headers: {
@@ -125,7 +124,6 @@ export const fetchConstantesLOL = async ()=>{
     async ()=>{
       try{
         const token = import.meta.env.PUBLIC_TOKEN_META;
-        console.log("Fetching constantes League of Legends data with token:");
         const url = "https://api.guiadeparche.com/lol/constantes.json";
         const response = await fetch(url,{
           headers: {

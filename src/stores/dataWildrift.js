@@ -88,7 +88,6 @@ export const fetchRunes = async () => {
 export const fetchChampionsMeta = async () => {
   try {
     const token = import.meta.env.PUBLIC_TOKEN_META;
-    console.log("Fetching champions meta data with token:", token);
     const url = "https://api.guiadeparche.com/wildrift/ChampsMeta.json";
     const response = await fetch(url,{
       headers: {
@@ -126,7 +125,6 @@ export const fetchConstantesWildrift = async ()=>{
     async ()=>{
       try{
         const token = import.meta.env.PUBLIC_TOKEN_META;
-        console.log("Fetching constantes Wildrift data with token:");
         const url = "https://api.guiadeparche.com/wildrift/constantes.json";
         const response = await fetch(url,{
           headers: {

@@ -407,7 +407,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         setChampPowerUp((oldArray)=>[...oldArray, JSON.parse(dataValue) ]);
         powerUpInput.value = "";
       }else{
-        alert("Selecciona o Escribe el nombre completo del campeón")
+        alert("Selecciona o Escribe el nombre completo del Power Up")
       }
     } 
 

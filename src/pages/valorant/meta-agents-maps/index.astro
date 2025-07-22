@@ -3,8 +3,10 @@ import Layout from "@layouts/LayoutMidOnly.astro";
 import FormularioTierListValorant from "@components/valorant/FormularioTierListValorant";
 import Contenedor from "@components/valorant/Contenedor";
 import { crearJSONSchema } from "@json/schema/crearJSONSchema";
-const title="Valorant"
-const description = "Top Agents Meta Valorant. Discover the latest Tier List, Maps for every patch.";
+import { ValorantConstantes } from "@stores/dataValorant";
+const constantes = ValorantConstantes.get();
+const title=constantes.titulo || "Meta Agents for competitive Maps in Valorant";
+const description = constantes.parrafo1 || "Top Agents Meta Valorant. Discover the latest Tier List, Maps for every patch.";
 const imgPost = "/valorant/portada.webp"
 const JSONSchema = crearJSONSchema({title, imgPost, description});
 const keywords = "Valorant Meta, Agents Valorant, Maps Valorant, Tier List Valorant, Best Agents Valorant";

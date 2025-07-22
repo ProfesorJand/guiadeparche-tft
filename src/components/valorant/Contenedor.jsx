@@ -43,7 +43,7 @@ const Contenedor = ({children})=>{
   }
   return (
     <div className="container">
-    <h1>{titulo}</h1>
+    <h1>{titulo || "Meta Tier List Valorant"}</h1>
     {admin && <input className={style.btnEditVariables} type="button" value={editarBtn.titulo ? "Ocultar Edición" :"Editar Título"} onClick={()=>setEditarBtn((prev)=>({...prev, titulo: !prev.titulo}))} />}
     {editarBtn.titulo && (
       <div>

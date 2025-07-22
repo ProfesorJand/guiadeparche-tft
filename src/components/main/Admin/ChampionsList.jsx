@@ -82,6 +82,22 @@ const Champions = ()=>{
                     }
                     championsList.push(data)
                 }
+                if(
+                    apiName === "TFT15_ZyraGraspingPlant" ||
+                    apiName === "TFT15_ZyraThornPlant" 
+                ){
+                    const data = {
+                        apiName,
+                        nombre:name,
+                        characterName,
+                        coste:11,
+                        sinergia:traits,
+                        stats,
+                        img: `/tft/sets/15/${apiName}.webp`,
+                        ability,
+                    }
+                    championsList.push(data)
+                }
             })
              // Ordenamos por coste
             const sortedByName = championsList.sort((a,b)=>{

@@ -143,7 +143,6 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
                 const containerItem = document.createElement("div");
                 containerItem.className = style.containerItem;
                 const imgItem = document.createElement("img");
-                console.log({dataItem})
                 imgItem.className = style.imgItem;
                 imgItem.src = dataItem.img ? dataItem.img :  `https://raw.communitydragon.org/${currentVersion === "pbe" ? "15.10" : currentVersion}/game/`+dataItem.icon.toLowerCase().replace(".tex",".png"); // arreglar a futuro
                 imgItem.alt = dataItem.nombre ? dataItem.nombre : dataItem.name; // arreglar a futuro
@@ -188,6 +187,8 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
       );
       var estrellas = 1;
       var powerUp = false;
+      const sinergiasCampeon = JSON.parse(dataCampeon.campeon).sinergia;
+      const containerSinergias = containerImageChampion[i].getElementsByClassName(style.containerSinergias)
       switch (true) {
         case containerImageChampion[i].classList.contains(style.estrellas4):
           estrellas = 4;
@@ -214,6 +215,30 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
         sinergiasCampeon.forEach((nombreSinergia) => {
           sinergias[nombreSinergia.apiName] = (sinergias[nombreSinergia.apiName] || 0) + 1;
         });
+      }
+      if(sinergiasCampeon.length > containerSinergias.length && sinergiasCampeon.find(({apiName})=>apiName === "TFT15_DragonFist")){
+        const containerTrait = document.createElement("div");
+        containerTrait.className = style.containerTrait;
+        const sinergia = document.createElement("img");
+        sinergia.className = style.sinergia;
+        sinergia.style.filter = "invert(1)";
+        sinergia.src = `https://raw.communitydragon.org/${currentVersion}/game/` + sinergiasCampeon?.[1].icon.toLowerCase().replace(".tex", ".png");
+        sinergia.alt = sinergiasCampeon?.[1].name;
+        const backgroundSinergia = document.createElement("img");
+        backgroundSinergia.classList.add(style.backgroundSinergia);
+        backgroundSinergia.classList.add(sinergiasCampeon?.[1].apiName.replace(" ", ""));
+        backgroundSinergia.src = urlHex + imgHex[0];
+        backgroundSinergia.alt = imgHex[0];
+
+        containerTrait.appendChild(backgroundSinergia);
+        containerTrait.appendChild(sinergia);
+        containerSinergias[0].appendChild(containerTrait);
+      }else if(sinergiasCampeon.length === containerSinergias.length && sinergiasCampeon.find(({apiName})=>apiName === "TFT15_DragonFist")){
+        // eliminar la la ultima sinergia agregada
+        const lastSinergia = containerSinergias[0].children[1];
+        if(lastSinergia){
+          containerSinergias[0].removeChild(lastSinergia)
+        }
       }
       data[hexId] = { dataCampeon: dataCampeon, estrellas, powerUp };
       let dataItems = [];
