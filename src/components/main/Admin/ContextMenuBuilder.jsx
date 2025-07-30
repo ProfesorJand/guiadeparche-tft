@@ -7,7 +7,9 @@ const ContextMenuBuilder = ({hexId, setHexId, updateBoardInfo })=>{
   const extraOptions = ["Duelist","Executioner", "Juggernaut"];
   const OPTIONS_BASE  = ["★ 4 stars","★ 3 stars","★ 2 stars","Power Up","X Remove"];
   let OPTIONS = [...OPTIONS_BASE];
-  if(JSON.parse(campeon?.dataset?.campeon).sinergia.find(({apiName}) => {
+  const dataCampeon = campeon?.dataset?.campeon ? JSON.parse(campeon.dataset.campeon) : null;
+  console.log({dataCampeonEnCONTEXT: dataCampeon})
+  if(dataCampeon?.sinergia.find(({apiName}) => {
     return apiName === "TFT15_DragonFist"
   })){
     OPTIONS?.splice(4, 0 , ...extraOptions)
@@ -52,8 +54,8 @@ const ContextMenuBuilder = ({hexId, setHexId, updateBoardInfo })=>{
           // Si no lo tiene, lo agregamos
           sinergia.push(duelist);
         }
-
-        campeon.setAttribute("data-campeon", JSON.stringify({ sinergia }));
+        const newCampeon = { ...oldData, sinergia };
+        campeon.setAttribute("data-campeon", JSON.stringify(newCampeon));
         updateBoardInfo();
         break;
       }
@@ -72,7 +74,8 @@ const ContextMenuBuilder = ({hexId, setHexId, updateBoardInfo })=>{
           sinergia.push(executioner);
         }
 
-        campeon.setAttribute("data-campeon", JSON.stringify({ sinergia }));
+        const newCampeon = { ...oldData, sinergia };
+        campeon.setAttribute("data-campeon", JSON.stringify(newCampeon));
         updateBoardInfo();
         break;
       }
@@ -91,7 +94,8 @@ const ContextMenuBuilder = ({hexId, setHexId, updateBoardInfo })=>{
           sinergia.push(juggernaut);
         }
 
-        campeon.setAttribute("data-campeon", JSON.stringify({ sinergia }));
+        const newCampeon = { ...oldData, sinergia };
+        campeon.setAttribute("data-campeon", JSON.stringify(newCampeon));
         updateBoardInfo();
         break;
       }
