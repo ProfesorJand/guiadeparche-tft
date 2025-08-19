@@ -50,7 +50,8 @@
   height: 100%;
   z-index: 1;
   flex-direction: column;
-  gap:10px;
+  gap:5px;
+  position:relative;
 }
 
 .header{
@@ -81,7 +82,9 @@
 
 .lolIcon{
   display: flex;
-  height: 100%;
+  position: absolute;
+  height: 130%;
+  top:5px
 }
 
 .headerRight{
@@ -89,7 +92,9 @@
   flex-direction: column;
   align-items: flex-end;
   justify-content: flex-end;
-  right:0;
+  right:20px;
+  font-size: 0.8vw;
+  top:5px;
   position: absolute;
   height: 100%;
   /* background-color: #00000048; */
@@ -121,7 +126,7 @@
   display: flex;
   /* background-color: #0a458a; */
   color: white;
-  font-size: 0.65vw;
+  font-size: 15px;
   font-weight: bold;
   margin: 0;
   position:absolute;
@@ -131,24 +136,23 @@
 }
 
 .title{
-  display: flex
-;
-    flex-direction: row;
-    position: absolute;
-    width: 80%;
-    color: rgb(255, 255, 255);
-    font-size: 0.9vw;
-    font-weight: bold;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-    z-index: 3;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    /* text-shadow: 2px 2px 4px rgba(219, 7, 7, 0.5); */
-    font-family: ObvioslyWideBold, sans-serif;
-    text-shadow: 0 0 5px #000000, 0 0 10px #000000, 0 0 15px #000000, 0 0 20px #000000;
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  width: 80%;
+  color: rgb(255, 255, 255);
+  font-size: 0.9vw;
+  font-weight: bold;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* text-shadow: 2px 2px 4px rgba(219, 7, 7, 0.5); */
+  font-family: ObvioslyWideBold, sans-serif;
+  text-shadow: 0 0 5px #000000, 0 0 10px #000000, 0 0 15px #000000, 0 0 20px #000000;
 }
 
 .containerMeta{
@@ -159,6 +163,161 @@
   height: calc(90% - 40px);
   gap:10px;
   margin-bottom: 20px;
+  margin-top:15px;
+}
+
+.tierContainer{
+  display: flex;
+  flex-direction: row;
+  position: relative;
+}
+.roleSpace{
+  width: calc((100% / 6) - 10px + (10px / 6));
+}
+.tierS{
+  position:absolute;
+  top:0;
+  right: calc((( ((100% / 5) - 10px + (10px / 5) )  * 3) - (5px * 7)));
+  width: calc((( ((100% / 5) - 10px + (10px / 5) )  * 2) - (5px * 4)));
+  text-align: center;
+  font-family: ObvioslyWideBold, sans-serif;
+  font-size: 0.7vw;
+  color:rgb(228, 241, 108);
+  text-shadow: 0 0 5px #000000, 0 0 10px #000000, 0 0 15px #000000, 0 0 20px #000000;
+}
+.tierA{
+  position:absolute;
+  top:0;
+  right: 0;
+  width: calc((( ((100% / 5) - 10px + (10px / 5) )  * 3) - (5px * 7)));
+  font-family: ObvioslyWideBold, sans-serif;
+  text-align: center;
+  font-size: small;
+  font-size: 0.7vw;
+  color:rgb(228, 241, 108);
+  text-shadow: 0 0 5px #000000, 0 0 10px #000000, 0 0 15px #000000, 0 0 20px #000000;
+}
+
+.containerLines{
+  display: flex;
+  position: absolute;
+  right:0%;
+  width:calc((((100% / 5) - 10px + (10px / 5)) * 5) - (10px * 6));
+  height: 85%;
+  /* background-color: rgb(136, 129, 127); */
+}
+
+.linea{
+  position: absolute;
+  width: 1px;
+  height: 100%;
+  top:8%;
+  background-color: rgb(228, 241, 108);
+  z-index: 5;
+}
+.linea1{
+  right: -5px;
+}
+
+.linea2{
+  right: calc(( ((100% / 5) - 10px + (10px / 5) )  * 3) + (5px * 5.25));
+}
+.linea3{
+  right: calc((( ((100% / 5) - 10px + (10px / 5) )  * 5) + (5px * 8)) + 5px);
+}
+
+.containerShadows{
+  display: flex;
+  position: absolute;
+  right:0%;
+  width:87%;
+  height: 100%;
+  bottom:0%;
+  background-color: rgba(255, 99, 71, 0);
+}
+.shadow{
+  position: absolute;
+  width: calc((( ((100% / 5) - 10px + (10px / 5) )  * 5) + (5px * 8)) + 5px);
+  height: calc(((100% / 5) - 10px + (10px / 5)) + 10px);
+  left:0;
+  background-color: #000000;
+  opacity: 0.5;
+}
+.shadow1{
+  top:calc(((100% / 5) - 10px + (10px / 5)) + 5px);
+}
+.shadow2{
+  top:calc(((100% / 5) - 10px + (10px / 5)) * 3 + 25px);
+}
+.lineaHLargaTS{
+  position: absolute;
+  height: 1px;
+  background-color: rgb(228, 241, 108);
+  top:8px;
+}
+.lineaHLargaTA{
+  position: absolute;
+  height: 1px;
+  background-color: rgb(228, 241, 108);
+  top:8px;
+}
+.lineaH1{
+  left: 10px;
+  width: 80px;
+}
+.lineaH2{
+  left: 165px;
+  width: 80px;
+}
+
+.lineaH3{
+  left: 260px;
+  width: 140px;
+}
+.lineaH4{
+  left: 490px;
+  width: 140px;
+}
+
+.lineaH{
+  position: absolute;
+  width: 15px;
+  height: 1px;
+  background-color: rgb(228, 241, 108);
+  z-index: 5;
+}
+
+.lineaHLeft1{
+  left: calc(0%);
+  top: calc(((100% / 5) - 10px + (10px / 5)) + 5px);
+}
+.lineaHLeft2{
+  left: calc(0%);
+  top: calc((((100% / 5) - 10px + (10px / 5)) * 2) + (5px * 3));
+}
+.lineaHLeft3{
+  left: calc(0%);
+  top: calc((((100% / 5) - 10px + (10px / 5)) * 3) + (5px * 5));
+}
+.lineaHLeft4{
+  left: calc(0%);
+  top: calc((((100% / 5) - 10px + (10px / 5)) * 4) + (5px * 7));
+}
+.lineaHRight1{
+  right: -5px;
+  top: calc(((100% / 5) - 10px + (10px / 5)) + 5px);
+}
+.lineaHRight2{
+  right: -5px;
+  top: calc((((100% / 5) - 10px + (10px / 5)) * 2) + (5px * 3));
+}
+.lineaHRight3{
+  right: -5px;
+  top: calc((((100% / 5) - 10px + (10px / 5)) * 3) + (5px * 5));
+}
+.lineaHRight4{
+  right: -5px;
+  top: calc((((100% / 5) - 10px + (10px / 5)) * 4) + (5px * 7));
 }
 .container{
   display: flex;
@@ -176,9 +335,9 @@
 
 .lanerImg{
   display: flex;
-  position:absolute;
-  width: 100%;
-  left: -10px;
+  position: relative;
+  width: calc(100% - 5px);
+  left: -8px;
   top: 50%;
   transform: translatey(-50%);
 }
