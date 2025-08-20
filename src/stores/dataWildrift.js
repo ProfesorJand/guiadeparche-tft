@@ -134,8 +134,6 @@ export const fetchConstantesWildrift = async ()=>{
           }
         });
         const data = await response.json();
-        console.log("data constantes Wildrift")
-        console.log({data})
         WildriftConstantes.set(data);
         return data;
       }catch(err){

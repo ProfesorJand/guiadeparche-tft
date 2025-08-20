@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import {ValorantConstantes} from "@stores/dataValorant";
 import { useStore } from "@nanostores/react";
+import { saveConstantes, URL_CONSTANTES_VALORANT } from "@stores/constantes";
 import style from "./css/Contenedor.module.css";
+import VersionCompo from "@components/Valorant/VersionCompo";
 
 const Contenedor = ({children})=>{
   const constantes = useStore(ValorantConstantes);
@@ -24,26 +26,10 @@ const Contenedor = ({children})=>{
   });
   const admin = localStorage.getItem("superAdmin");
 
-  const saveContantes = async ({key,value})=>{
-    console.log({key,value})
-    try{
-      const response = await fetch("https://api.guiadeparche.com/val/constantes.php", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${import.meta.env.PUBLIC_TOKEN_META}`,
-        },
-        body: JSON.stringify({key,value}),
-      });
-      alert(`${key} se ha guardado`)
-    }catch(err){
-      console.error("Error saving or updating constantes Valorant:", err)
-      alert(`${key} NO se ha guardado`)
-    }
-  }
   return (
     <div className="container">
-    <h1>{titulo || "Meta Tier List Valorant"}</h1>
+    <h1>{titulo || "Best Valorant Agents & Lineups | Mejores Agentes"}</h1>
+    <VersionCompo></VersionCompo>
     {admin && <input className={style.btnEditVariables} type="button" value={editarBtn.titulo ? "Ocultar Edición" :"Editar Título"} onClick={()=>setEditarBtn((prev)=>({...prev, titulo: !prev.titulo}))} />}
     {editarBtn.titulo && (
       <div>
@@ -58,7 +44,7 @@ const Contenedor = ({children})=>{
           rows={4} // ajusta esto para la altura inicial
           style={{ width: "100%", resize: "vertical" }} // podés ajustar el ancho y si se puede redimensionar
         />
-        <button onClick={()=>saveContantes({key:"titulo",value:titulo})}>Guardar Título h1</button>
+        <button onClick={()=>saveConstantes({key:"titulo",value:titulo, url:URL_CONSTANTES_VALORANT})}>Guardar Título h1</button>
       </div>
     )}
     <p>{parrafo1}</p>
@@ -77,7 +63,7 @@ const Contenedor = ({children})=>{
           rows={4} // ajusta esto para la altura inicial
           style={{ width: "100%", resize: "vertical" }} // podés ajustar el ancho y si se puede redimensionar
         />
-        <button onClick={()=>saveContantes({key:"parrafo1",value:parrafo1})}>Guardar Primer Párrafo</button>
+        <button onClick={()=>saveConstantes({key:"parrafo1",value:parrafo1,url:URL_CONSTANTES_VALORANT})}>Guardar Primer Párrafo</button>
       </div>
     )}
     {children}
@@ -107,10 +93,11 @@ const Contenedor = ({children})=>{
                     rows={4} // ajusta esto para la altura inicial
                     style={{ width: "100%", resize: "vertical" }}
                         />
-                  <button onClick={()=>saveContantes(
+                  <button onClick={()=>saveConstantes(
                     {
                       key:agente.agent+"Tip",
-                      value:constantes?.[agente.agent+"Tip"] || ""
+                      value:constantes?.[agente.agent+"Tip"] || "",
+                      url:URL_CONSTANTES_VALORANT
                     })}>
                     {`Guardar ${agente.agent} Tip`}
                   </button>
