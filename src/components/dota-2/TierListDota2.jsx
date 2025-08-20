@@ -3,7 +3,7 @@ const TierListDota2= ({localMetaDota2, backgroundRef, rols, version, titulo, log
   return (
     <div className={style.container} ref={backgroundRef}>
       <div className={style.imgBackgroundWrapper}>
-        <img className={style.imgBackground} src={"/valorant/bgTierList2.webp"} alt={"background de fondo"}></img>
+        <img className={style.imgBackground} src={"/dota-2/background.jpg"} alt={"background de fondo"}></img>
       </div>
       <div className={style.header}>
         <div className={style.cLogoV}>
@@ -24,7 +24,7 @@ const TierListDota2= ({localMetaDota2, backgroundRef, rols, version, titulo, log
           {rols.map((rol)=>{
             return (
               <div key={`rols${rol}`} className={style.rol}>
-                <span>Best</span>
+                {/* <span>Best</span> colocar iconos*/}
                 <span>{rol}</span>
               </div>
             )

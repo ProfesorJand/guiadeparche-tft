@@ -3,7 +3,7 @@ import {ValorantConstantes} from "@stores/dataValorant";
 import { useStore } from "@nanostores/react";
 import { saveConstantes, URL_CONSTANTES_VALORANT } from "@stores/constantes";
 import style from "./css/Contenedor.module.css";
-import VersionCompo from "@components/Valorant/VersionCompo";
+import VersionCompo from "@components/valorant/VersionCompo";
 
 const Contenedor = ({children})=>{
   const constantes = useStore(ValorantConstantes);

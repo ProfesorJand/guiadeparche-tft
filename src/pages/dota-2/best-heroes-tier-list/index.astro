@@ -1,12 +1,18 @@
 ---
 import Layout from "@layouts/LayoutMidOnly.astro";
 import FormularioTierListDota2 from "@components/dota-2/FormularioTierListDota2";
+import {crearJSONSchema} from "src/json/schema/crearJSONSchema";
 
-const title="Dota 2"
-
+const title="Dota 2 Heroes Tier List"
+const canonicalURL = "https://guiadeparche.com/dota-2/best-heroes-tier-list";
+const description = "Top Dota 2 Meta heroes. Discover the latest Tier List by lane for every patch!";
+const keywords = "Dota 2, Dota, heroes, tier list, mejores heroes Dota 2, Meta Dota 2";
+const thumbnail= "/dota-2/logo-dota2.png"
+const imgPost = "https://i.ytimg.com/vi/5ph-NnCjDSk/maxresdefault.jpg"
+const JSONSchema = crearJSONSchema({title, imgPost, thumbnail, description});
 ---
 
-<Layout title={title}>
+<Layout title={title} JSONSchema={JSONSchema} description={description} keywords={keywords} image={thumbnail} canonical={canonicalURL}>
   <div class="smallContainer">
     <FormularioTierListDota2 client:only="react">
 </div>

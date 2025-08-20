@@ -4,6 +4,7 @@ import { useStore } from "@nanostores/react";
 import { toPng } from 'html-to-image';
 import TierListDota2 from "./TierListDota2";
 import style from "./css/FormularioTierListDota2.module.css"
+import VersionCompo from "@components/dota-2/VersionCompo";
 
 const FormularioTierListDota2 = () => {
   const backgroundRef = useRef(null);
@@ -15,7 +16,6 @@ const FormularioTierListDota2 = () => {
   const [logoMovilnet, setLogoMovilnet] = useState(false)
   const admin = localStorage.getItem("user") || false;
   const Dota2MetaStore = useStore(Dota2AgentsMeta);
-   
   useEffect(()=>{
     const fetching = async () =>{
       const uploadMeta = await fetchHeroesMeta();
@@ -177,6 +177,8 @@ const FormularioTierListDota2 = () => {
         admin &&
         <>
       <div>
+        <h1>Dota 2 Heroes Tier List</h1>
+        <VersionCompo/>
       {LaneDota2.map((rol, iRol)=>{
         return (
           <div key={`rols${iRol}`}>
