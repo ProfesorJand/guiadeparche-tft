@@ -1,33 +1,22 @@
 ---
 import Layout from "@layouts/LayoutMidOnly.astro"
 import VisualizadorMetaLOL from "@components/leagueOfLegends/VisualizadorMetaLOL"
+import VersionCompo from "@components/LeagueOfLegends/VersionCompo"
+import {crearJSONSchema} from "src/json/schema/crearJSONSchema";
+const title = "League of Legends Champions Tier List | Mejores campeones LOL";
+const canonicalURL = "https://guiadeparche.com/lol/best-champions-tier-list-league-of-legends";
+const description = "Top League of Legends Meta champions. Discover the latest Tier List and Runes for each champions by lane for every patch. Mejores Campeones LOL!";
+const keywords = "League of Legends, LOL, campeones, tier list, mejores campeones, meta LOL";
+const thumbnail= "/campeones/set12/ryze.webp"
+const imgPost = "https://i.ytimg.com/vi/5ph-NnCjDSk/maxresdefault.jpg"
+const JSONSchema = crearJSONSchema({title, imgPost, thumbnail, description});
 ---
 
-<Layout title="Meta League of Legends">
+<Layout title={title} JSONSchema={JSONSchema} description={description} keywords={keywords} image={thumbnail} canonical={canonicalURL}>
   <div class="smallContainer">
-    <h1>🔥 ¡Los mejores campeones por rol en League of Legends 🔥</h1>
-    <p>(parche 25.14 vigente hasta el 29 de Julio)!</p>
-    <p>¿Quieres escalar en SoloQ de LOL? Aquí te dejamos a los más OP:</p>
-    <VisualizadorMetaLOL client:only="react"></VisualizadorMetaLOL>
-    <p>
-🛡    TOP – Quinn (Electrocute):<br>Una duelista letal con un early game explosivo que borra carries y rota como nadie.
-    </p>
-   <p>
-      🌲 JUNGLA – Warwick (Lethal Tempo):<br>Fácil de usar, curación absurda y gran presencia en 1v1s y gankeos.
-   </p>
-   <p>
-    🧊 MID – Anivia (Electrocute):<br>Zonas, burst, control y escalado. Una maga completa que domina teamfights.
-   </p>
-   <p>
-    🏹 ADC – Vayne (Lethal Tempo):<br>Movilidad, daño verdadero y late imparable. Si sabes kitear, es tu momento.
-   </p>
-   <p>
-    ✨ SUPPORT – Taric (Glacial Augment):<br>Tank, utility, curación y una ulti que gana peleas. El rey oculto del support.
-   </p>
-  
-  
-  
-  
+    <h1>League of Legends Champions Tier List<br>Mejores campeones LOL</h1>
+    <VersionCompo client:only="react"></VersionCompo>
+    <VisualizadorMetaLOL client:only="react"></VisualizadorMetaLOL>  
   </div>
 </Layout>
 

@@ -12,7 +12,6 @@ export default function VersionCompo() {
     const getConstantes = async () => {
       const resp = await fetch(constantesJSON, {cache:"reload"});
       const data = await resp.json();
-      console.log({constantes:data})
       setConstantes(data);
     };
     getConstantes();
