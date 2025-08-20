@@ -169,26 +169,26 @@ const VisualizadorMetaLOL = () => {
           {/*ACA VA LOS TIERS ARRIBA Tier S y Tier A donde los Tier S son los 3 primeros campeones y Tier A son los 2 restantes siendo total 5*/}
           <div className={style.tierContainer}>
             <div className={style.roleSpace}>
-            </div>
-            <div className={style.tierS}>
-              <span>TIER S</span>
+              <div className={style.tierS}>
+                <span>TIER S</span>
+              </div>
+              <div className={style.tierA}>
+                <span>TIER A</span>
+              </div>
               <div className={[style.lineaHLargaTS, style.lineaH1].join(" ")}></div>
               <div className={[style.lineaHLargaTS, style.lineaH2].join(" ")}></div>
               <div className={[style.lineaHLargaTA, style.lineaH3].join(" ")}></div>
               <div className={[style.lineaHLargaTA, style.lineaH4].join(" ")}></div>
             </div>
-            <div className={style.tierA}>
-              <span>TIER A</span>
-            </div>
           </div>
           <div className={style.containerLines}>
-            <div className={[style.linea, style.linea1].join(" ")}></div>
-            <div className={[style.linea, style.linea2].join(" ")}></div>
-            <div className={[style.linea, style.linea3].join(" ")}></div>
             
           </div>
           <div className={style.containerMeta}>
           <div className={style.containerShadows}>
+            <div className={[style.linea, style.linea1].join(" ")}></div>
+            <div className={[style.linea, style.linea2].join(" ")}></div>
+            <div className={[style.linea, style.linea3].join(" ")}></div>
             <div className={[style.shadow, style.shadow1].join(" ")}></div>
             <div className={[style.shadow, style.shadow2].join(" ")}></div>
             <div className={[style.lineaH, style.lineaHLeft1].join(" ")}></div>
@@ -199,6 +199,7 @@ const VisualizadorMetaLOL = () => {
             <div className={[style.lineaH, style.lineaHRight2].join(" ")}></div>
             <div className={[style.lineaH, style.lineaHRight3].join(" ")}></div>
             <div className={[style.lineaH, style.lineaHRight4].join(" ")}></div>
+            
           </div>
           
           {
