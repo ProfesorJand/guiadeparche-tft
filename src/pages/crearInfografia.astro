@@ -1,0 +1,15 @@
+---
+import Main from '@components/main/Main.astro';
+import Layout from 'src/layouts/LayoutMidOnly.astro';
+import AdminPanel from "../components/main/Admin/Admin.jsx";
+import {db, Admin as Admins} from "astro:db";
+import InfografiaTop5 from '@components/Infografias/Top5/InfografiaTop5.jsx';
+
+const allAdmins = await db.select().from(Admins);
+---
+
+<Layout title='admin'>
+    <Main>
+        <InfografiaTop5 client:only="react"/>
+    </Main>
+</Layout>

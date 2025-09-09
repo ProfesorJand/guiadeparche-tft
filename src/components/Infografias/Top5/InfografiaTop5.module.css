@@ -1,0 +1,247 @@
+:root{
+  --TituloHeight:15%;
+  --Top5ContainerHeight:75%;
+  --GapTop5Items:10px;
+  --WidthImageContainer:80%;
+  --FooterHeight:10%;
+}
+.FullContainer{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+.Formulario{
+  display: flex;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  box-sizing: border-box;
+}
+.Pestanas{
+  display: flex;
+  position: relative;
+  flex-direction: row;
+  flex-wrap:wrap;
+  gap:15px;
+  width: 100%;
+  text-align: center;
+}
+.Pestana{
+  flex:1;
+  background-color: rgb(43, 53, 53);
+  padding: 5px 10px;
+}
+.PestanaActiva{
+  flex:1;
+  background-color: rgb(3, 67, 97);
+  padding: 5px 10px;
+}
+.FormularioHeader{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+.InputTitulo{
+  width: 100%;
+  padding: 5px;
+  font-size: medium;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  text-align: center;
+}
+.Container{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    position:relative;
+    aspect-ratio: 4/5;
+    
+}
+.Background{
+  position:absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Para simular background-size: cover */
+  filter: blur(5px);  /*Difumina el fondo */
+  transform: scale(1);
+  background-color: blueviolet;
+}
+.ContainerTituloController{
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+.Titulo{
+    position: relative;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 0px;
+    text-align:center;
+    height: var(--TituloHeight);
+    width: 100%;
+    z-index: 3;
+    display: flex;
+}
+.Top5Container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: var(--Top5ContainerHeight);
+    gap: var(--GapTop5Items);
+    z-index: 3;
+    
+}
+.Top5Form{
+  display: flex;
+  flex-direction: row;
+  width:100%
+}
+.FooterControl{
+  display: flex;
+  flex-direction: row;
+}
+.ContainerLogoController{
+  display: flex;
+  flex-direction: column;
+}
+.Top5FormItem{
+  display: flex;
+  position:relative;
+  flex-direction: column;
+}
+.Top5FormItemData{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 5px;
+}
+.Top5FormItemInputs{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+label{
+  font-size: x-small;
+}
+.Top5Item{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0px;
+    height: calc(100% / 5 - var(--GapTop5Items));
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: visible;
+    position: relative;
+}
+.Info{
+  display: flex;
+  /* background-color: royalblue; */
+  position: absolute;
+  right: 2%;
+  top: 22%;
+  padding: 5px;
+  border-radius: 5px;
+  width: 22%;
+  align-items: center;
+  justify-content: center;
+}
+.Value{
+  display: flex;
+  /* background-color: rgb(65, 225, 164); */
+  position: absolute;
+  right: 2%;
+  top:55%;
+  padding: 5px;
+  border-radius: 5px;
+  width: 22%;
+  align-items: center;
+  justify-content: center;
+}
+.Top5Image{
+  width: var(--WidthImageContainer); /*var(--WidthImageContainer)*/
+  height: 100%;
+  position: relative;
+  object-fit: cover;
+  overflow: hidden;
+  box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.945);
+  border-radius: 5px;
+}
+.image {
+  position: absolute;
+}
+.ImageStyleContainer{
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  gap: 5px;
+}
+.NumberTop{
+  position: absolute;
+  left: 2%;
+  top: 50%;
+  font-size: 48px;
+  font-weight: bold;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  transform: translate(0%, -50%);
+  width: 80px;
+  height: 80px;
+  text-align: center;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.5);
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+.NumberTopEdition{
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  width: 100%;
+  font-size: 48px;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  z-index: 4;
+}
+.Footer{
+    font-size: 24px;
+    text-align: center;
+
+    width: 100%;
+    margin-top: 0px;
+    display: flex;
+    flex-direction: column;
+    z-index: 3;
+    position: relative;
+}
+
+.LogoContainer{
+  display: flex;
+  position: relative;
+
+}
