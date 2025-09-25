@@ -1,8 +1,9 @@
 import InfografiaTFTComps from "@components/TFT/InfografiaTFTComps"
-import { useRef, useCallback } from "react";
+import { useRef, useCallback, useState } from "react";
 import { toPng } from 'html-to-image';
 const InfografiaTFT = ()=>{
   const backgroundRef = useRef(null);
+  const [tituloInfografiaTFT, setTituloInfografiaTFT] = useState("Top 10 Meta Comps");
 
   const loadAllImages = (container) => {
     const images = container.querySelectorAll("img");
@@ -71,9 +72,17 @@ const InfografiaTFT = ()=>{
         <button onClick={()=>{
           onButtonClick()
         }}>Descargar Infografía TFT</button>
+        <input 
+          type="text"
+          placeholder="Cambiar Titulo"
+          value={tituloInfografiaTFT}
+          onChange={(e)=>{setTituloInfografiaTFT(e.target.value)}}
+          >
+
+        </input>
       </div>
 
-      <InfografiaTFTComps backgroundRef={backgroundRef}/>
+      <InfografiaTFTComps backgroundRef={backgroundRef} setTituloInfografiaTFT={setTituloInfografiaTFT} tituloInfografiaTFT={tituloInfografiaTFT}/>
     </div>
   )
 }
