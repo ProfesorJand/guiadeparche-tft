@@ -9,9 +9,11 @@ import FormularioMetaLOL from "@components/leagueOfLegends/FormularioMetaLOL.jsx
 import CreateAugmentsTierList from "./CreateAugmentsTierList.jsx";
 import style from "./css/Admin.module.css";
 import StreamersManager from "@components/embed/StreamersManager.jsx";
-import InfografiaTFT from "@components/TFT/InfogragiaTFT.jsx";
+import InfografiaTFT from "@components/infografias/TopTFT/InfografiaTFT.jsx";
 import FormularioTierListValorant from "@components/valorant/FormularioTierListValorant.jsx";
 import FormularioMetaWildrift from "@components/wildrift/FormularioMetaWildrift.jsx";
+import InfografiaTFTComps from "@components/TFT/InfografiaTFTComps.jsx";
+//import Infografia from "@components/2xko/Infografia.jsx";
 const AdminPanel = ({allAdmins})=>{
     const [isLoged, setIsLoged] = useState(localStorage.getItem("login") || false)
     const [adminName, setAdminName] = useState(localStorage.getItem("user") || "");
@@ -48,6 +50,9 @@ const AdminPanel = ({allAdmins})=>{
                         <div slot="hola">
                             <button className={pestana === 2 ? style.btnActive: ""} onClick={()=>{setAction("Infografia"); setPestana(2)}}>Infografia</button>
                         </div>
+                        {/* <div slot="hola">
+                            <button className={pestana === 2 ? style.btnActive: ""} onClick={()=>{setAction("InfografiaTFTCompo"); setPestana(2)}}>Info... TFT Compo</button>
+                        </div> */}
                     </div>
                 </div>
                 <div className={style.container}>
@@ -98,17 +103,27 @@ const AdminPanel = ({allAdmins})=>{
                         </div>
                     </div>
                 </div>
+                {/* <div className={style.container}>
+                    2XKO
+                    <div className={style.tierList}>
+                        <div slot="hola">
+                            <button className={pestana === 9 ? style.btnActive: ""} onClick={()=>{setAction("2xko"); setPestana(9)}}>Infografia</button>
+                        </div>
+                    </div>
+                </div> */}
             </div>
             <div>
                 {action === "crear" && <CrearCompoTFT />}
                 {action === "editar" && <EditarCompoTFT />}
                 {action === "Infografia" && <InfografiaTFT/>}
+                {/* {action === "InfografiaTFTCompo" && <InfografiaTFTComps/>} */}
                 {action === "itemsTierList" && <CreateItemsTierList />}
                 {action === "augmentsTierList" && <CreateAugmentsTierList admin={true}/>}
                 {action === "twitch/kick" && <StreamersManager/>}
                 {action === "lol" && <FormularioMetaLOL />}
                 {action === "val" && <FormularioTierListValorant />}
                 {action === "wildrift" && <FormularioMetaWildrift/>}
+                {/* {action === "2xko" && <Infografia/>} */}
                 {/* {action === "champsItemsTierList" && <CrearTierListChampItem />} */}
             </div>
             <button onClick={()=>cerrarSesion()}>cerrar sesión</button>

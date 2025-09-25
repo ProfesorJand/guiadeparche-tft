@@ -208,10 +208,9 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
           break;
       }
       const hexId = dataCampeon.hexId;
-      const newCampeon = JSON.parse(dataCampeon.campeon).nombre;
+      const newCampeon = JSON.parse(dataCampeon.campeon)?.nombre || JSON.parse(dataCampeon.campeon)?.name;
       if (!noRepeatChampions.some((campeon) => campeon === newCampeon)) {
         noRepeatChampions.push(newCampeon);
-        const sinergiasCampeon = JSON.parse(dataCampeon.campeon).sinergia;
         sinergiasCampeon.forEach((nombreSinergia) => {
           sinergias[nombreSinergia.apiName] = (sinergias[nombreSinergia.apiName] || 0) + 1;
         });
@@ -235,7 +234,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
         containerSinergias[0].appendChild(containerTrait);
       }else if(sinergiasCampeon.length === containerSinergias.length && sinergiasCampeon.find(({apiName})=>apiName === "TFT15_DragonFist")){
         // eliminar la la ultima sinergia agregada
-        const lastSinergia = containerSinergias[0].children[1];
+        const lastSinergia = containerSinergias?.[0]?.children?.[1];
         if(lastSinergia){
           containerSinergias[0].removeChild(lastSinergia)
         }
