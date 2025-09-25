@@ -1,5 +1,5 @@
 :root{
-  --cantidadCampeonesOriginales: 9;
+  --cantidadCampeonesOriginales: 10;
 }
 .containerCampeon{
   display: flex;
@@ -7,6 +7,7 @@
   position: relative;
   width: calc(100% / var(--cantidadCampeonesOriginales) - 5px + (5px / var(--cantidadCampeonesOriginales)));
   align-items: center;
+  height: 100%;
 }
 .containerCampeonImg{
   display: flex;
@@ -89,6 +90,7 @@
   justify-content: center;
   position: absolute;
   bottom:-3px;
+  height: fit-content;
 }
 
 .containerItem{

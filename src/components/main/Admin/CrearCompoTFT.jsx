@@ -17,7 +17,7 @@ import { useStore } from "@nanostores/react"
 import InputPowerUpList from "@components/TFT/InputPowerUpList.jsx"
 
 
-const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,edittitulo,editshadowCategory,editinfographicCategory,editaumentos,editgameplay,edittips,editisHide,editboardInfo,editpictureSave,editcarouselItems,editradiantItem,editspatulaItem1,editspatulaItem2,editoriginalComp, editCampeonTierList, editAugmentTierList, editCampeonItemTierList =[{},{},{}], editCampeonTraitTierList = [{}], editCampeonPowerUpList = [{}],editChamp3Stars, editVersion=null }) =>{
+const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,edittitulo,editshadowCategory,editinfographicCategory,editaumentos,editgameplay,edittips,editisHide,editboardInfo,editpictureSave,editcarouselItems,editradiantItem,editspatulaItem1,editspatulaItem2,editoriginalComp, editCampeonTierList, editAugmentTierList, editCampeonItemTierList =[{},{},{}], editCampeonTraitTierList = [{}], editCampeonPowerUpList = [{}],editChamp3Stars, editVersion=null, editisInInfographic }) =>{
     const currentVersion= useStore(versionTFT);
     const itemsDataIngles = useStore(dataTFTAllItems)
     const [version, setVersion] = useState(versionTFT.get())
@@ -54,6 +54,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
     const [originalComp, setOriginalComp] = useState("lv8");
     const [id, setId] =useState(generadorID());
     const [isHide, setIsHide] = useState(false);
+    const [isInInfographic, setIsInInfographic] = useState(true);
     const [campeonTierList, setCampeonTierList] = useState({});
     const [augmentTierList, setAugmentTierList] = useState({});
     const [champItem, setChampItem] = useState([{}])
@@ -212,6 +213,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         setChamp3Stars(editChamp3Stars)
         setVersion(editVersion)
         setIsHide(editisHide)
+        setIsInInfographic(editisInInfographic || true)
       }
     },[edit])
 
@@ -554,6 +556,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           spatulaItem2,
           originalComp,
           isHide,
+          isInInfographic,
           campeonTierList,
           augmentTierList,
           champItem,
@@ -625,6 +628,13 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
     return (
     <form className={style.containerCrearCompo} onSubmit={(e)=>mySubmit(e)}>
       <div className={style.containerFirst}>
+        <label>
+          <span>Is In Infographic:</span>
+          <select onChange={(e)=>{setIsInInfographic(e.target.value === "true")}} defaultValue={editisInInfographic ? editisInInfographic : isInInfographic?.toString() || true}>
+            <option value={true}>TRUE</option>
+            <option value={false}>FALSE</option>
+          </select>
+        </label>
       <label htmlFor="version">
         <span>Version:</span>
           <select

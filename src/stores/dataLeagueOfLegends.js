@@ -133,8 +133,8 @@ export const fetchConstantesLOL = async ()=>{
           }
         });
         const data = await response.json();
-        console.log("data constantes lOl")
-        console.log({data})
+        // console.log("data constantes lOl")
+        // console.log({data})
         LeagueOfLegendsConstantes.set(data);
         return data;
       }catch(err){
