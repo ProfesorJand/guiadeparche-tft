@@ -1,10 +1,11 @@
 import InfografiaTFTComps from "@components/TFT/InfografiaTFTComps"
 import { useRef, useCallback, useState } from "react";
 import { toPng } from 'html-to-image';
+import SliderButtom from "@components/inputs/SliderButtom";
 const InfografiaTFT = ()=>{
   const backgroundRef = useRef(null);
   const [tituloInfografiaTFT, setTituloInfografiaTFT] = useState("Top 10 Meta Comps");
-
+  const [logoMovilnet, setLogoMovilnet] = useState(true);
   const loadAllImages = (container) => {
     const images = container.querySelectorAll("img");
     const promises = [];
@@ -77,12 +78,13 @@ const InfografiaTFT = ()=>{
           placeholder="Cambiar Titulo"
           value={tituloInfografiaTFT}
           onChange={(e)=>{setTituloInfografiaTFT(e.target.value)}}
-          >
+          />
+        <SliderButtom setLogoMovilnet={setLogoMovilnet} logoMovilnet={logoMovilnet}/>
 
-        </input>
+        
       </div>
 
-      <InfografiaTFTComps backgroundRef={backgroundRef} setTituloInfografiaTFT={setTituloInfografiaTFT} tituloInfografiaTFT={tituloInfografiaTFT}/>
+      <InfografiaTFTComps backgroundRef={backgroundRef} setTituloInfografiaTFT={setTituloInfografiaTFT} tituloInfografiaTFT={tituloInfografiaTFT} logoMovilnet={logoMovilnet}/>
     </div>
   )
 }
