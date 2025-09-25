@@ -3,7 +3,7 @@ import { useStore  } from "@nanostores/react";
 import { useEffect,useState} from "react";
 import { MetaComps as compos, loadCompsMeta, isLoadingDataTFTFromApi } from "src/stores/menuFiltradoAdmin.js";
 import {constantesJSON} from "@stores/dataTFT.js"
-const InfografiaTFTComps = ({backgroundRef}) =>{
+const InfografiaTFTComps = ({backgroundRef, setTituloInfografiaTFT, tituloInfografiaTFT}) =>{
   const colorDificulty= {Easy:"green",Medium:"orange",Hard:"red"}
   const composMeta = useStore(compos);
   const [composInInfographic, setComposInInfographic] = useState([]);
@@ -45,9 +45,6 @@ const InfografiaTFTComps = ({backgroundRef}) =>{
     setComposInInfographic(filtrado) // maximo 10
   },[composMeta])
 
-  useEffect(()=>{
-    console.log({composInInfographic})
-  },[composInInfographic])
 
       
 
@@ -118,7 +115,7 @@ const InfografiaTFTComps = ({backgroundRef}) =>{
             textTransform: "uppercase",
             textShadow: `0 0 5px #000000, 0 0 10px #000000, 0 0 15px #000000, 0 0 20px #000000`
           }}
-        >Top 10 Meta Comps</span>
+        >{tituloInfografiaTFT}</span>
         {/* version */}
         <span
           style={{
@@ -150,8 +147,8 @@ const InfografiaTFTComps = ({backgroundRef}) =>{
           composInInfographic.map((tier,i)=>{
             return tier.map((compo,j)=>{
               const dataCampeones = Object.keys((compo.boardInfo[compo.originalComp].data)).map((key)=>{
-                const {dataCampeon, dataItem} = compo?.boardInfo?.[compo.originalComp]?.data?.[key];
-                return {dataCampeon:dataCampeon.campeon, dataItem}
+                const {dataCampeon, dataItem, estrellas} = compo?.boardInfo?.[compo.originalComp]?.data?.[key];
+                return {dataCampeon:dataCampeon.campeon, dataItem, estrellas}
               })
               return (
                 <MiniInfoComp
