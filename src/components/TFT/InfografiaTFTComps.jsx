@@ -2,11 +2,27 @@ import MiniInfoComp from "@components/TFT/MiniInfoComp.jsx";
 import { useStore  } from "@nanostores/react";
 import { useEffect,useState} from "react";
 import { MetaComps as compos, loadCompsMeta, isLoadingDataTFTFromApi } from "src/stores/menuFiltradoAdmin.js";
-
+import {constantesJSON} from "@stores/dataTFT.js"
 const InfografiaTFTComps = ({backgroundRef}) =>{
   const colorDificulty= {Easy:"green",Medium:"orange",Hard:"red"}
   const composMeta = useStore(compos);
   const [composInInfographic, setComposInInfographic] = useState([]);
+  const [constantes, setConstantes] = useState({});
+
+  useEffect(() => {
+    // Obtener las constantes actuales
+    const fetchConstantes = async () => {
+      try {
+        const response = await fetch(constantesJSON,{cache:"reload"});
+        const data = await response.json();
+        setConstantes(data);
+      } catch (error) {
+        console.error("Error obteniendo constantes:", error);
+      }
+    };
+
+    fetchConstantes();
+  }, []);
 
   const heightContainers = {
     header: "8%",
@@ -116,7 +132,7 @@ const InfografiaTFTComps = ({backgroundRef}) =>{
             fontWeight:"bold",
             textShadow: `0 0 5px #000000, 0 0 10px #000000, 0 0 15px #000000, 0 0 20px #000000`
           }}
-        >15.4B</span>
+        >{constantes?.MetaCompVersionPBE}</span>
       </div>
 
       {/* compos metas */}
