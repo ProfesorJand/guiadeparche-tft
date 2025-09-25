@@ -9,7 +9,7 @@ import FormularioMetaLOL from "@components/leagueOfLegends/FormularioMetaLOL.jsx
 import CreateAugmentsTierList from "./CreateAugmentsTierList.jsx";
 import style from "./css/Admin.module.css";
 import StreamersManager from "@components/embed/StreamersManager.jsx";
-import InfografiaTFT from "@components/infografias/TopTFT/InfografiaTFT.jsx";
+import InfografiaTFT from "@components/Infografias/TopTFT/InfografiaTFT.jsx";
 import FormularioTierListValorant from "@components/valorant/FormularioTierListValorant.jsx";
 import FormularioMetaWildrift from "@components/wildrift/FormularioMetaWildrift.jsx";
 import InfografiaTFTComps from "@components/TFT/InfografiaTFTComps.jsx";
