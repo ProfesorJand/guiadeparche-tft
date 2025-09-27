@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, } from "react";
 import Login from "./Login.jsx";
 import CrearCompoTFT from "./CrearCompoTFT.jsx";
 import { loadDataTFTFromAPI } from "src/stores/dataTFT.js";
@@ -13,7 +13,7 @@ import InfografiaTFT from "@components/Infografias/TopTFT/InfografiaTFT.jsx";
 import FormularioTierListValorant from "@components/valorant/FormularioTierListValorant.jsx";
 import FormularioMetaWildrift from "@components/wildrift/FormularioMetaWildrift.jsx";
 import InfografiaTFTComps from "@components/TFT/InfografiaTFTComps.jsx";
-//import Infografia from "@components/2xko/Infografia.jsx";
+// import Formulario2XKO from "@components/2xko/Formulario2XKO.jsx";
 const AdminPanel = ({allAdmins})=>{
     const [isLoged, setIsLoged] = useState(localStorage.getItem("login") || false)
     const [adminName, setAdminName] = useState(localStorage.getItem("user") || "");
@@ -50,9 +50,9 @@ const AdminPanel = ({allAdmins})=>{
                         <div slot="hola">
                             <button className={pestana === 2 ? style.btnActive: ""} onClick={()=>{setAction("Infografia"); setPestana(2)}}>Infografia</button>
                         </div>
-                        {/* <div slot="hola">
+                        <div slot="hola">
                             <button className={pestana === 2 ? style.btnActive: ""} onClick={()=>{setAction("InfografiaTFTCompo"); setPestana(2)}}>Info... TFT Compo</button>
-                        </div> */}
+                        </div>
                     </div>
                 </div>
                 <div className={style.container}>
@@ -111,6 +111,14 @@ const AdminPanel = ({allAdmins})=>{
                         </div>
                     </div>
                 </div> */}
+                <div className={style.container}>
+                    Infografia
+                    <div className={style.tierList}>
+                        <div slot="hola">
+                            <button className={pestana === 10 ? style.btnActive: ""} onClick={()=>{window.location.href = "/crearInfografia"}}>Crear</button>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div>
                 {action === "crear" && <CrearCompoTFT />}
@@ -123,7 +131,7 @@ const AdminPanel = ({allAdmins})=>{
                 {action === "lol" && <FormularioMetaLOL />}
                 {action === "val" && <FormularioTierListValorant />}
                 {action === "wildrift" && <FormularioMetaWildrift/>}
-                {/* {action === "2xko" && <Infografia/>} */}
+                {/* {action === "2xko" && <Formulario2XKO/>} */}
                 {/* {action === "champsItemsTierList" && <CrearTierListChampItem />} */}
             </div>
             <button onClick={()=>cerrarSesion()}>cerrar sesión</button>

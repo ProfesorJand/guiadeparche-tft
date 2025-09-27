@@ -154,7 +154,7 @@ const Preview = ({infografia, backgroundRef, setInfografia, containerLogosRef, c
                 color: item.valueColor || item.defaultColorValue, 
                 backgroundColor:item.valueBackgroundColor ||  item.defaultValueBackgroundColor,
               }}>{item.value}</div>
-              <div 
+              {!infografia?.hideNumber && <div 
                 className={Style.NumberTop}
                 style={{
                   fontSize: infografia.fontSizeNumber || "48px",
@@ -165,7 +165,7 @@ const Preview = ({infografia, backgroundRef, setInfografia, containerLogosRef, c
                   borderRadius: infografia.borderRadiusNumber || "50%",
 
                 }}
-              >{index+1}</div>
+              >{index+1}</div>}
             </div>
           ))}
         </div>

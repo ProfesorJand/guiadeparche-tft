@@ -843,13 +843,18 @@ const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
                     max={1}
                     step={0.01}
                     value={item.alphaBorderLogo}
-                    onChange={(e) =>
-                      setInfografia((prev) => ({
-                        ...prev,
-                        alphaBorderLogo: parseFloat(e.target.value),
-                        colorBorderLogo: hexToRgba(prev.colorBorderBaseLogo, parseFloat(e.target.value))
-                      }))
-                    }
+                    onChange={(e) => {
+                      const newAlpha = parseFloat(e.target.value);
+                      setInfografia((prev) => {
+                        const updatedTop5 = [...prev.Top5Data];
+                        updatedTop5[index] = {
+                          ...updatedTop5[index],
+                          alphaBorderLogo: newAlpha,
+                          colorBorderLogo: hexToRgba(updatedTop5[index].colorBorderBaseLogo, newAlpha)
+                        };
+                        return { ...prev, Top5Data: updatedTop5 };
+                      });
+                    }}
                   />
                 </div>
               </div>
@@ -1021,6 +1026,12 @@ const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
         }
 
         {pestana.numero && <div className={Style.NumberTopEdition}>
+          <label>Ocultar Numero {infografia.hideNumber}</label>
+          <input  
+            type="checkbox" 
+            value={infografia.hideNumber} 
+            onClick={(e)=>setInfografia(prev=>({...prev, hideNumber: e.target.checked}))} 
+          />
           <label onClick={()=>setInfografia(prev=>({...prev, fontSizeNumber: "48px"}))}>Tamaño Número: {infografia.fontSizeNumber}</label>
           <input  
             type="range" 
