@@ -28,3 +28,9 @@
   flex-direction: column;
   align-items: center;
 }
+
+.containerPestanaSecundario{
+  display: flex;
+  position: relative;
+  flex-direction: row;
+}
