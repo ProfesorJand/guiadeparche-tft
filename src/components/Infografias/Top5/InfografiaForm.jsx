@@ -856,6 +856,27 @@ const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
                       });
                     }}
                   />
+                  <label>
+                    Brillo Logo
+                  </label>
+                  <input
+                    type="range"
+                    min={0}
+                    max={1}
+                    step={0.01}
+                    value={item.brilloLogo}
+                    onChange={(e) => {
+                      const newAlpha = parseFloat(e.target.value);
+                      setInfografia((prev) => {
+                        const updatedTop5 = [...prev.Top5Data];
+                        updatedTop5[index] = {
+                          ...updatedTop5[index],
+                          brilloLogo: newAlpha,
+                        };
+                        return { ...prev, Top5Data: updatedTop5 };
+                      });
+                    }}
+                  />
                 </div>
               </div>
             </div>

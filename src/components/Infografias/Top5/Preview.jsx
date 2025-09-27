@@ -119,7 +119,7 @@ const Preview = ({infografia, backgroundRef, setInfografia, containerLogosRef, c
                       width: item.widthTop5Logo,
                       // height: item.height,
                       objectFit: item.objectFitTop5Logo,
-                      filter: `drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.5)) drop-shadow(-5px -5px 5px rgba(0, 0, 0, 0.5))`
+                      filter: `drop-shadow(5px 5px 5px rgba(0, 0, 0, 0.5)) drop-shadow(-5px -5px 5px rgba(0, 0, 0, 0.5)) brightness(${item.brilloLogo || 1})`
                       
                     }}
                     onLoad={(e) => {
