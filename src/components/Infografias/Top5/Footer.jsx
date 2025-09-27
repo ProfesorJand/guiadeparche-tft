@@ -58,7 +58,8 @@ return (
                     height: "auto",
                     width: "100%",
                     objectFit: "contain",
-                    opacity: infografia.logoJupesonAlpha
+                    opacity: infografia.logoJupesonAlpha,
+                    filter: `brightness(${infografia.BrilloLogoJupeson || 1})`
                   }}
                 />
             </div>
@@ -82,7 +83,8 @@ return (
                   height: "auto",
                   width: "100%",
                   objectFit: "contain",
-                  opacity: infografia.logoMovilnetAlpha
+                  opacity: infografia.logoMovilnetAlpha,
+                  filter: `brightness(${infografia.BrilloLogoMovilnet || 1})`
                 }}
               />
             </div>

@@ -948,6 +948,16 @@ const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
             value={infografia.logoJupesonAlpha}
             onChange={(e)=>setInfografia(prev=>({...prev, logoJupesonAlpha: e.target.value}))}
             />
+            <label for={"BrilloLogoJupeson"} onClick={()=>setInfografia(prev=>({...prev, BrilloLogoJupeson: 1}))}>Brillo Movilnet: {infografia.BrilloLogoJupeson}</label>
+            <input
+              id={"BrilloLogoJupeson"}
+              type="range"
+              min={0}
+              max={1}
+              step={0.1}
+              value={infografia.BrilloLogoJupeson}
+              onChange={(e)=>setInfografia(prev=>({...prev, BrilloLogoJupeson: e.target.value}))}
+              />
           
           </div>
           <div className={Style.ContainerLogoController}>
@@ -1010,6 +1020,16 @@ const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
             value={infografia.logoMovilnetAlpha}
             onChange={(e)=>setInfografia(prev=>({...prev, logoMovilnetAlpha: e.target.value}))}
             />
+            <label for={"BrilloLogoMovilnet"} onClick={()=>setInfografia(prev=>({...prev, BrilloLogoMovilnet: 1}))}>Brillo Movilnet: {infografia.BrilloLogoMovilnet}</label>
+            <input
+              id={"BrilloLogoMovilnet"}
+              type="range"
+              min={0}
+              max={1}
+              step={0.1}
+              value={infografia.BrilloLogoMovilnet}
+              onChange={(e)=>setInfografia(prev=>({...prev, BrilloLogoMovilnet: e.target.value}))}
+              />
             </div>
             <select
               value={infografia.justifyContentFooter}
