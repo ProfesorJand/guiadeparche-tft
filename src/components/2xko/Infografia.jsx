@@ -1,87 +1,37 @@
-
-const Infografia = ({meta2xko, titulo, version, logoMovilnet})=>{
+import LogoGuiadeparche from "@components/logo/LogoGuiadeparche";
+import style from "./Infografia.module.css"
+const Infografia = ({meta2xko, titulo, version, logoMovilnet, logoGuiadeparche, backgroundRef})=>{
+  const urlImgBackground= "/2xko/fondos/Background_Red.png";
   return (
-    <div
-      style={{
-        width: "100%",
-        display: "flex",
-        flexDirection: "column",
-        gap: "10px",
-        overflow:"hidden",
-        position:"relative",
-        padding:"20px",
-        boxSizing:"border-box",
-        zIndex:0,
-        top:0,
-        left:0,
-        aspectRatio:4/5
-      }}
-    >
+    <div className={style.container} ref={backgroundRef}>
       {/* Imagen Background */}
-      <img 
-      style={{
-        zIndex:-1,
-        display:"flex",
-        position:"absolute",
-        height:"100%",
-        right:"50%",
-        top:0,
-        transform:"translate(50%,0%)",
-        background:"#000000",
-        
-
-
-      }}
-      src={"/2xko/fondos/Background_Red.png"} 
-      alt={""}></img>
+      <img className={style.imgBackground}
+      src={urlImgBackground} 
+      alt={""}/>
 
       {/* Header */}
-      <div
-        style={{
-          display: "flex",
-          height: "8%",
-          position:"relative"
-        }}
-      >
-        <span>{titulo}</span>
-        <span>{version}</span>
+      <div className={style.header}>
+        <img 
+            src="/2xko/logo/2xko-verde.webp" 
+            alt="Logo" 
+            className={style.imgLogo2xko}
+          />
+        <span className={style.titulo}>{titulo}</span>
+        <span className={style.version}>{version}</span>
       </div>
 
       {/* Contenido */}
-      <div
-      style={{
-        height: "82%",
-        gap: "50px",
-        display: "flex",
-        flexDirection: "column",
-      }}
-      >
+      <div className={style.containerInfo}>
 
       {
         Object.keys(meta2xko).map((tier, i)=>{
           return(
-            <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              gap: "30px", 
-              height: `calc((100% / 6) - 30px + (30px / 6))`
-            }}
-            >
+            <div className={[style.infoMetaContianer,  i % 2 === 0 ? style.infoMetaContianerImpar : style.infoMetaContianerPar].join(" ")}>
               {/*imagen tier*/}
-              <div
-                style={{
-                  width:`calc(100% / 6)`,
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-                >
+              <div className={style.containerTier}>
                 <img
                   src={`/tiers/Tier-${tier}.webp`}
-                  style={{
-                    width: "100%"
-                  }}
+                  className={style.imgTier}
                   ></img> 
               </div>
               {
@@ -89,75 +39,46 @@ const Infografia = ({meta2xko, titulo, version, logoMovilnet})=>{
                   return (
                     <div
                     key={`infografia ${tier} ${posicion}`}
+                    className={style.containerInfoChamps}
                     style={{
-                      display: "flex",
-                      gap: "0px",
-                      width:`calc(100% / 6)`,
-                      
+                      alignItems: data.fuse ? "flex-end" : "center"
                     }}
                     >
                       {/* Campeon Principal */}
-                      <div
-                        style={{
-                          // backgroundColor: "red",
-                          height:"auto",
-                          display: "flex",
-                          position: "relative",
-                          flexDirection: "column",
-                        }}
-                        >
+                      <div className={style.containerCampeonPrincipal}>
                         <img 
                           src={data.imagenPrincipal}
-                          style={{
-                            width: "100%"
-                          }}
-                          ></img>
-                        <div
-                          style={{
-                            position: "relative",
-                            width: "100%",
-                            backgroundColor: "rgba(0, 0, 0, 0.5)",
-                            color: "white",
-                            textAlign: "center",
-                            fontFamily: "Fatal Fighter",  
-                            fontSize: "14px",
-                            textShadow: "1px 1px 2px black, 0 0 1px black, 0 0 5px black"
-                          }}
-                        >
+                          className={style.imgCampeonPrincipal}
+                        ></img>
+                        {/* nombre del campeon absoluto debajo con fondo oscuro semitransparente con letras blancas*/}
+                        <div className={style.nombreCampeonPrincipal}>
                           {data.nombrePrincipal === "Blitzcrank" ? "Blitz" : data.nombrePrincipal}
                         </div>
-                          {/* nombre del campeon absoluto debajo con fondo oscuro semitransparente con letras blancas*/}
                       </div>
                       {/* Campeon Secundario */}
-                      <div
-                       style={{
-                        //  backgroundColor: "yellow",
-                         display: "flex",
-                         position: "relative",
-                         flexDirection: "column",
-                        }}
-                        >
-                          <div
-                          style={{
-                            position: "relative",
-                            width: "100%",
-                            backgroundColor: "rgba(0, 0, 0, 0.5)",
-                            color: "white",
-                            textAlign: "center",
-                            fontFamily: "Fatal Fighter",  
-                            fontSize: "14px",
-                            textShadow: "1px 1px 2px black, 0 0 1px black, 0 0 5px black"
-                          }}
-                        >
-                          {data.nombreSecundario  === "Blitzcrank" ? "Blitz" : data.nombreSecundario }
-                        </div>
-                        <img src={data.imagenSecundario}
-                          style={{
-                            width: "100%"
-                          }}
-                          ></img>
+                      <div className={style.containerCampeonPrincipal}>
+                        <img 
+                          src={data.imagenSecundario}
+                          className={style.imgCampeonPrincipal}
+                        ></img>
+                        <div className={style.nombreCampeonPrincipal} >
+                        {data.nombreSecundario  === "Blitzcrank" ? "Blitz" : data.nombreSecundario }
                       </div>
-                      
+                    </div>
+                      {/* Fuse */}
+                      {
+                        data.fuse &&
+                        <div className={style.containerImgFuse}>
+                          <img 
+                            className={style.imgFuse}
+                            src={data.imagenFuse}
+                            style={{
+                              filter: `drop-shadow(1px 1px 5px ${data.fuseColor})`,
+                            }}
+                            > 
+                          </img>
+                        </div>
+                      }
                     </div>
                   )
                 })
@@ -170,14 +91,30 @@ const Infografia = ({meta2xko, titulo, version, logoMovilnet})=>{
       
 
       {/* Footer */}
-      <div
-      style={{
-          display: "flex",
-          height: "10%",
-          position:"relative"
-        }}
-      >
-        
+      <div className={style.footer}>
+        {/* logo jupeson */}
+          <div className={style.containerLogoJupeson}>
+            <img 
+              src="/tft/assets/Jupeson_LOGO_Sin_Publicidad.png" 
+              alt="Logo"
+              className={style.imgLogoJupeson}/>
+          </div>
+        {/* Logo movilnet */}
+        {
+          logoMovilnet && 
+          <div className={style.containerLogoMovilnet}>
+            <img 
+              src="/tft/assets/logoMovilnet-e-letras-blancas.png" 
+              alt="Sponsor" 
+              className={style.imgLogoMovilnet}
+            />
+          </div>}
+          {/* Logo Guiadeparche */}
+        {
+          logoGuiadeparche && 
+          <div className={style.containerLogoMovilnet}>
+            <LogoGuiadeparche/>
+          </div>}
       </div>
     </div>
   )

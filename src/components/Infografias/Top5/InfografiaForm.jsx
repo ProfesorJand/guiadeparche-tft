@@ -948,7 +948,7 @@ const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
             value={infografia.logoJupesonAlpha}
             onChange={(e)=>setInfografia(prev=>({...prev, logoJupesonAlpha: e.target.value}))}
             />
-            <label for={"BrilloLogoJupeson"} onClick={()=>setInfografia(prev=>({...prev, BrilloLogoJupeson: 1}))}>Brillo Movilnet: {infografia.BrilloLogoJupeson}</label>
+            <label for={"BrilloLogoJupeson"} onClick={()=>setInfografia(prev=>({...prev, BrilloLogoJupeson: 1}))}>Brillo Jupeson: {infografia.BrilloLogoJupeson}</label>
             <input
               id={"BrilloLogoJupeson"}
               type="range"

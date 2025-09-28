@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
+import { toPng } from 'html-to-image';
 import {
   fetchCampeones2xkoMeta, 
   ChampsMeta2xko, 
@@ -9,6 +10,8 @@ import {
 
 import { useStore } from "@nanostores/react";
 import Infografia from "./Infografia";
+import SliderButtom from "@components/inputs/SliderButtom";
+import SliderButtomLogoGuiadeparche from "@components/inputs/SliderButtomLogoGuiadeparche";
 
 const Formulario2XKO = ()=>{
   const constantes2xko = useStore(Constantes2xko);
@@ -16,12 +19,22 @@ const Formulario2XKO = ()=>{
   const [titulo, setTitulo] = useState("");
   const [version, setVersion] = useState("");
   const [logoMovilnet, setLogoMovilnet] = useState(true);
+  const [logoGuiadeparche, setLogoGuiadeparche] = useState(false);
   const [tierSeleccionado, setTierSeleccionado] = useState("S");
+  const backgroundRef = useRef(null)
 
   const tiers = ["S", "A+", "A", "A-", "B", "C"];
   const dificultades = ["Easy, Medium, Hard"];
   const campeones = ["Ahri", "Blitzcrank", "Braum","Darius",  "Ekko", "Illaoi","Jinx", "Vi", "Yasuo" ]
-  
+  const fuses = ["2X_Assist","Double_Down", "Freestyle", "Juggernaut", "Sidekick"]
+  const fuseColor= {
+    [fuses[0]]: "#00dde5",
+    [fuses[1]]: "#ffbe00",
+    [fuses[2]]: "#6970ff",
+    [fuses[3]]: "#ff0008",
+    [fuses[4]]: "#fa00e5",
+
+  }
   const [meta2xko, setMeta2xko] = useState({})
 
   const guardarCambiosMeta2xko = ()=>{
@@ -97,6 +110,67 @@ const saveConstantes2xko = async () => {
     setTitulo(constantes2xko.tituloVisualizadorMeta || "2xKO - Guía de Parche");
     setVersion(constantes2xko.versionVisualizadorMeta || "13.12");
   },[constantes2xko])
+
+  const loadAllImages = (container) => {
+      const images = container.querySelectorAll("img");
+      const promises = [];
+  
+      images.forEach((img) => {
+        // ⚠️ Eliminar el lazy loading para forzar la carga inmediata
+        if (img.loading === "lazy") {
+          img.loading = "eager";
+        }
+        if (img.complete && img.naturalWidth === 0) {
+          console.warn("⚠️ Imagen rota:", img, img.src);
+        }
+        if (img.complete) {
+          if (img.naturalWidth === 0) {
+            promises.push(Promise.reject(`❌ Falló imagen: ${img.src}`));
+          }
+        } else {
+          promises.push(
+            new Promise((resolve, reject) => {
+              img.onload = resolve;
+              img.onerror = () =>{
+                reject(`❌ Falló imagen: ${img.src}`)};
+            })
+          );
+        }
+      });
+  
+      return Promise.allSettled(promises).then(results => {
+        const errors = results.filter(r => r.status === "rejected");
+        if (errors.length > 0) {
+          throw new Error(`❌ ${errors.length} imágenes fallaron`);
+        }
+      });
+    };
+  
+  
+    const onButtonClick = useCallback(() => {
+      if (backgroundRef.current === null) return;
+    
+      loadAllImages(backgroundRef.current)
+        .then(() => {
+          return toPng(backgroundRef.current, {
+            cacheBust: true,
+            pixelRatio: 2, // mejora calidad (escala la resolución)
+          });
+        })
+        .then((dataUrl) => {
+          const link = document.createElement('a');
+          link.download = `Mejores-Agentes-Valorant${10.10}.png`;
+          link.href = dataUrl;
+          link.click();
+          console.log("📸 Imagen capturada");
+          alert("📸 Imagen capturada")
+        })
+        .catch((err) => {
+          console.error("❌ Error al capturar imagen:", err);
+        });
+    }, [backgroundRef]);
+  
+
   return (
     <div>
       {/* Seleccionar para editar por tier */}
@@ -168,8 +242,31 @@ const saveConstantes2xko = async () => {
                     )
                   })}
                 </select>
+                <select
+                  key={posicion +"fuses"}
+                  onChange={(e)=>{
+                    console.log({VEEEER:e.target.value})
+                    const nuevoFuse = e.target.value === "remover" ? null : e.target.value ;
+                    const nuevoMeta = {...meta2xko};
+                    nuevoMeta[tierSeleccionado] = nuevoMeta[tierSeleccionado] || []
+                    nuevoMeta[tierSeleccionado][posicion] = nuevoMeta[tierSeleccionado][posicion] || {}
+                    nuevoMeta[tierSeleccionado][posicion].fuse = nuevoFuse;
+                    nuevoMeta[tierSeleccionado][posicion].imagenFuse = `/2xko/fuses/2xko_${nuevoFuse}_fuse.webp`
+                    nuevoMeta[tierSeleccionado][posicion].fuseColor = fuseColor[nuevoFuse];
+                    setMeta2xko(nuevoMeta);
+                  }}
+                >
+                  <option value="" disabled selected hidden>Fuses</option>
+                  {fuses.map((fuse, i)=>{
+                    return (
+                      <option key={`seleccionarFuses ${tierSeleccionado} ${i}`} value={fuse}>{fuse}</option>
+                    )
+                  })}
+                  <option value={"remover"}>remover</option>
+                </select>
                 <img src={meta2xko[tierSeleccionado]?.[posicion]?.imagenPrincipal} alt={""}></img>
                 <img src={meta2xko[tierSeleccionado]?.[posicion]?.imagenSecundario} alt={""}></img>
+                <img src={meta2xko[tierSeleccionado]?.[posicion]?.imagenFuse} alt={""}></img>
               </div>
             )
           })
@@ -208,15 +305,19 @@ const saveConstantes2xko = async () => {
             saveConstantes2xko()
           }}
         ></input>
+        <SliderButtom setLogoMovilnet={setLogoMovilnet} logoMovilnet={logoMovilnet}/>
+        <SliderButtomLogoGuiadeparche setLogoGuiadeparche={setLogoGuiadeparche} logoGuiadeparche={logoGuiadeparche}/>
 
-
+         <input type="button" onClick={()=>{onButtonClick()}} defaultValue="Capturar Imagen"/> 
 
       </div>
       <Infografia
+        backgroundRef={backgroundRef}
         meta2xko={meta2xko}
         titulo={titulo}
         version={version}
         logoMovilnet={logoMovilnet}
+        logoGuiadeparche={logoGuiadeparche}
       ></Infografia>
     </div>
   )

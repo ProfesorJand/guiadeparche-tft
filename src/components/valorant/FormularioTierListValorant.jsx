@@ -5,6 +5,7 @@ import TierListValorant from "./TierListValorant";
 import style from "./css/FormularioTierListValorant.module.css"
 import {fetchAgentsMeta, ValorantAgentsMeta, ValorantConstantes} from "@stores/dataValorant"
 import SliderButtom from "@components/inputs/SliderButtom";
+import SliderButtomLogoGuiadeparche from "@components/inputs/SliderButtomLogoGuiadeparche";
 
 const FormularioTierListValorant = () => {
   const backgroundRef = useRef(null);
@@ -13,6 +14,7 @@ const FormularioTierListValorant = () => {
   const [version, setVersion] = useState("10.10");
   const [titulo, setTitulo] = useState("TOP RANKED LINEUPS - TIER S+")
   const [logoMovilnet, setLogoMovilnet] = useState(false)
+  const [logoGuiadeparche, setLogoGuiadeparche] = useState(false)
   const admin = localStorage.getItem("user") || false;
   const numbersOfAgentsInMeta= 5;
   const ValorantAgentsMetaStore = useStore(ValorantAgentsMeta);
@@ -257,12 +259,13 @@ const FormularioTierListValorant = () => {
         <input type="text" id={"version"} onChange={(e)=>{setVersion(e.target.value)}} value={version} className={style.inputText}/>
         <input type="button" onClick={(e)=>{saveContantes({key:"versionVisualizadorMeta",value:document.getElementById("version").value})}} value={"Guardar Version"}></input>
         <SliderButtom setLogoMovilnet={setLogoMovilnet} logoMovilnet={logoMovilnet}/>
+        <SliderButtomLogoGuiadeparche setLogoGuiadeparche={setLogoGuiadeparche} logoGuiadeparche={logoGuiadeparche}/>
         <input type="button" onClick={(e)=>{saveContantes({key:"logoMovilnet",value:document.getElementById("logoMovilnet").checked})}} value={"Guardar Vista de Logo Movilnet"}></input>
         <input type="button" onClick={()=>{onButtonClick()}} defaultValue="Capturar Imagen"/>
       </div>
         </>
       }
-      <TierListValorant localMetaValorant={localMetaValorant} backgroundRef={backgroundRef} rols={rols} version={version} titulo={titulo} logoMovilnet={logoMovilnet}/>
+      <TierListValorant localMetaValorant={localMetaValorant} backgroundRef={backgroundRef} rols={rols} version={version} titulo={titulo} logoMovilnet={logoMovilnet} logoGuiadeparche={logoGuiadeparche}/>
     </div>
   )
 }

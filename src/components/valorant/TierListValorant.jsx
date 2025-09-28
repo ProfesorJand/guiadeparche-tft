@@ -1,5 +1,6 @@
+import LogoGuiadeparche from "@components/logo/LogoGuiadeparche";
 import style from "./css/TierListValorant.module.css";
-const TierListValorant= ({localMetaValorant, backgroundRef, rols, version, titulo, logoMovilnet})=>{
+const TierListValorant= ({localMetaValorant, backgroundRef, rols, version, titulo, logoMovilnet, logoGuiadeparche})=>{
   return (
     <div className={style.container} ref={backgroundRef}>
       <div className={style.imgBackgroundWrapper}>
@@ -130,9 +131,28 @@ const TierListValorant= ({localMetaValorant, backgroundRef, rols, version, titul
         })}
       </div>
       <div className={style.footer}>
-            {logoMovilnet && <img src="/tft/assets/logoMovilnet-e-letras-blancas.png" alt="logo Movilnet" ></img>}
-            <img src="/tft/assets/Jupeson_LOGO_Sin_Publicidad.png" alt="logo Jupeson" style={{transform:"scale(0.6)"}}></img>
-            <img src="/valorant/logos/text-white.png" style={{transform:"scale(1)"}} alt="logo League of Legends"></img>
+            {
+              logoMovilnet && 
+              <div className={style.containerLogoJupeson}>
+                <img 
+                  className={style.logoValorant}
+                  src="/tft/assets/logoMovilnet-e-letras-blancas.png" 
+                  alt="logo Movilnet" ></img>
+              </div>
+              }
+            {logoGuiadeparche && 
+            <div className={style.containerLogoGuiadeparche}>
+              <LogoGuiadeparche/>
+            </div>
+            }
+            <div className={style.containerLogoJupeson}>
+              <img className={style.logoJupeson} src="/tft/assets/Jupeson_LOGO_Sin_Publicidad.png" alt="logo Jupeson" style={{transform:"scale(0.6)"}}></img>
+            </div>
+            <div>
+              <img 
+              className={style.logoValorant}
+              src="/valorant/logos/text-white.png" style={{transform:"scale(1)"}} alt="logo League of Legends"></img>
+            </div>
       </div>
     </div>
   )

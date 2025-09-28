@@ -4,6 +4,8 @@ import { useStore } from "@nanostores/react";
 import style from "./VisualizadorMetaWildrift.module.css";
 import { toPng } from 'html-to-image';
 import SliderButtom from "@components/inputs/SliderButtom";
+import LogoGuiadeparche from "@components/logo/LogoGuiadeparche";
+import SliderButtomLogoGuiadeparche from "@components/inputs/SliderButtomLogoGuiadeparche";
 //usar tile en ves de portrait
 // victory url : https://raw.communitydragon.org/latest/game/en_gb/assets/ux/endofgame/en_us/victory.png
 //https://raw.communitydragon.org/latest/plugins/rcp-fe-lol-static-assets/global/default/images/ranked-emblem/tier/
@@ -14,6 +16,7 @@ const VisualizadorMetaWildrift = () => {
   const [versionMeta, setVersionMeta] = useState("25.11");
   const [tituloMeta, setTituloMeta] = useState("Titulo");
   const [logoMovilnet, setLogoMovilnet] = useState(false);
+  const [logoGuiadeparche, setLogoGuiadeparche] = useState(false);
   // const [elo, setElo] = useState("emerald");
   const backgroundRef = useRef(null);
   const admin = localStorage.getItem("superAdmin") || false;
@@ -142,6 +145,7 @@ const VisualizadorMetaWildrift = () => {
           <input type="button" className={style.inputVersion} onClick={onButtonClick} value="Capturar imagen"  />
         </label>
         <SliderButtom setLogoMovilnet={setLogoMovilnet} logoMovilnet={logoMovilnet}/>
+        <SliderButtomLogoGuiadeparche setLogoGuiadeparche={setLogoGuiadeparche} logoGuiadeparche={logoGuiadeparche}/>
       </div>
       }
       <div className={style.containerVisualizadorMetaLOL}  ref={backgroundRef}>
@@ -222,6 +226,9 @@ const VisualizadorMetaWildrift = () => {
             <img src="/tft/assets/Jupeson_LOGO_Sin_Publicidad.png" alt="logo Jupeson" style={{transform:"scale(0.6)"}}></img>
             <img src="/wildrift/logo/League_of_Legends_Wild_Rift_logo.webp" style={{transform:"scale(0.6)"}} alt="logo League of Legends Wildrift"></img>
             {logoMovilnet &&  <img src="/tft/assets/logoMovilnet-e-letras-blancas.png" alt="logo Movilnet" ></img> }
+            {logoGuiadeparche && 
+              <LogoGuiadeparche/>
+            }
           </div>
         </div>
       </div>

@@ -1,0 +1,212 @@
+:root{
+  --gapInfografia2koContainer: 15px;
+  --gapContainer2xkoInfo: 5px;
+  --cantidadTiers: 6;
+  --gapEntreDuos: 5px;
+  --gapHorizontalEntreTiers: 15px ;
+  --cantidadColumnas: 6;
+  --cantidadCampeonesDuos: 5;
+}
+
+.container{
+  width:100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow:hidden;
+  position:relative;
+  padding:20px 35px;
+  box-sizing:border-box;
+  z-index:0;
+  top:0;
+  left:0;
+  aspect-ratio:4/5
+}
+
+.imgBackground{
+  z-index:-1;
+  display:flex;
+  position:absolute;
+  height:100%;
+  right:50%;
+  top:0;
+  transform:translate(50%,0%);
+  background: #000000;
+  filter:brightness(0.5)
+}
+
+.header{
+  display: flex;
+  height: 8%;
+  width: 100%;
+  position: relative;
+}
+
+.imgLogo2xko{
+  display: flex;
+  position: absolute;
+  top:50%;
+  left:0%;
+  transform: translate( 0%, -50%);
+  width: 25%;
+  height: auto;
+  object-fit: fill;
+  opacity: 1;
+}
+
+.titulo{
+  display: flex;
+  position: absolute;
+  top:50%;
+  left:30%;
+  transform: translate(0, -50%);
+  font-family: "Fatal Fighter";
+  font-size: 50px;
+  text-shadow: 1px 1px 2px #d2f262, 0 0 1px #d2f262, 0 0 5px #d2f262;
+  color: #1d1f1d;
+}
+
+.version{
+  display: flex;
+  position: absolute;
+  top:50%;
+  right:0;
+  transform: translate(0, -50%);
+  font-family: "Fatal Fighter";
+  text-shadow: 1px 1px 2px #d2f262, 0 0 1px #d2f262, 0 0 5px #d2f262;
+  color: #1d1f1d;
+  font-size: 50px;
+}
+
+.containerInfo{
+  height: 82%;
+  gap: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.infoMetaContianer{
+  display: flex;
+  flex-direction: row;
+  gap: var(--gapInfografia2koContainer);
+  height: calc((100% / var(--cantidadTiers) ) - var(--gapContainer2xkoInfo) + (var(--gapContainer2xkoInfo) / var(--cantidadTiers)));
+}
+
+.infoMetaContianerImpar{
+  background-color: #00000052;
+}
+
+.infoMetaContianerPar{
+  background-color: #000000a9;
+}
+.containerTier{
+  width: calc((100% / var(--cantidadColumnas)) - var(--gapEntreDuos) + (var(--gapEntreDuos) / var(--cantidadColumnas)) );
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.imgTier{
+  width: 100%;
+}
+
+.containerInfoChamps{
+  display: flex;
+  gap: 0px;
+  width:calc(100% * 5 / var(----cantidadColumnas) - var(--gapEntreDuos) + (var(--gapEntreDuos) / var(--cantidadCampeonesDuos)));
+  flex-direction: row;
+  align-items: flex-end;
+  position: relative;
+  padding: 5px 0;
+  box-sizing: border-box;
+  z-index: 1;
+}
+
+
+.containerCampeonPrincipal{
+  height:auto;
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  z-index: 1;
+}
+
+.imgCampeonPrincipal{
+  width: 100%;
+}
+
+.imgCampeonSecundario{
+  width: 100%;
+}
+
+
+.nombreCampeonPrincipal{
+  position: relative;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  text-align: center;
+  font-family: "Fatal Fighter";
+  font-size: 14px;
+  text-shadow: 1px 1px 2px black, 0 0 1px black, 0 0 5px black;
+}
+
+.containerImgFuse{
+  display: flex;
+  position: absolute;
+  top: 5px;
+  left:50%;
+  transform: translate(-50%, 0%) rotate(0deg) skew(-15deg, 0deg);
+  width: calc(100% / 3);
+  z-index: 0;
+}
+
+.imgFuse{
+  display: flex;
+  position: relative;
+  width: 100%;
+  background-color: #0000008d;
+  z-index: -1
+}
+
+.footer{
+  display: flex;
+  height: 10%;
+  position:relative;
+  flex-direction: row;
+  z-index: 1;
+  align-items: center;
+  justify-content:space-evenly;
+}
+
+.containerLogoJupeson{
+  width: 30%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.imgLogoJupeson{
+  transform: scale(1);
+  height: auto;
+  width: 100%;
+  object-fit: contain;
+  opacity: 0.8;
+}
+
+.containerLogoMovilnet{
+  width: 30%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.imgLogoMovilnet{
+  transform: scale(1);
+  height: auto;
+  width: 100%;
+  object-fit: contain;
+  opacity: 0.8;
+}

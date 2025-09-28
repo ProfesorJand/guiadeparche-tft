@@ -4,6 +4,8 @@ import { useStore } from "@nanostores/react";
 import style from "./VisualizadorMetaLOL.module.css";
 import { toPng } from 'html-to-image';
 import SliderButtom from "@components/inputs/SliderButtom.jsx";
+import SliderButtomLogoGuiadeparche from "@components/inputs/SliderButtomLogoGuiadeparche";
+import LogoGuiadeparche from "@components/logo/LogoGuiadeparche";
 
 //usar tile en ves de portrait
 // victory url : https://raw.communitydragon.org/latest/game/en_gb/assets/ux/endofgame/en_us/victory.png
@@ -11,6 +13,7 @@ import SliderButtom from "@components/inputs/SliderButtom.jsx";
 const VisualizadorMetaLOL = () => {
   const constantesLOL = useStore(LeagueOfLegendsConstantes);
   const [logoMovilnet, setLogoMovilnet] = useState(false)
+  const [logoGuiadeparche, setLogoGuiadeparche] = useState(false)
   const [localMetaLOL, setLocalMetaLOL] = useState({})
   const lanersChampionsMetaStore = useStore(lanersChampionsMeta);
   const [versionMeta, setVersionMeta] = useState("25.11");
@@ -143,6 +146,7 @@ const VisualizadorMetaLOL = () => {
           <input type="button" className={style.inputVersion} onClick={onButtonClick} value="Capturar imagen"  />
         </label>
         <SliderButtom setLogoMovilnet={setLogoMovilnet} logoMovilnet={logoMovilnet}/>
+        <SliderButtomLogoGuiadeparche setLogoGuiadeparche={setLogoGuiadeparche} logoGuiadeparche={logoGuiadeparche}/>
       </div>
       }
       <div className={style.containerVisualizadorMetaLOL}  ref={backgroundRef}>
@@ -254,9 +258,13 @@ const VisualizadorMetaLOL = () => {
           }
           </div>
           <div className={style.footer}>
-            <img src="/tft/assets/Jupeson_LOGO_Sin_Publicidad.png" alt="logo Jupeson" style={{transform:"scale(0.6)"}}></img>
+            <img src="/tft/assets/Jupeson_LOGO_Sin_Publicidad.png" alt="logo Jupeson" style={{transform:"scale(0.6)", flex:1}}></img>
             {logoMovilnet && <img src="/tft/assets/logoMovilnet-e-letras-blancas.png" alt="logo Movilnet" ></img>}
-            <img src="/lol/league-logo-blanco.png" style={{transform:"scale(0.6)"}} alt="logo League of Legends"></img>
+            {
+              logoGuiadeparche && 
+              <LogoGuiadeparche/>
+            }
+            <img src="/lol/league-logo-blanco.png" style={{transform:"scale(0.6)", flex:1}} alt="logo League of Legends"></img>
           </div>
         </div>
       </div>

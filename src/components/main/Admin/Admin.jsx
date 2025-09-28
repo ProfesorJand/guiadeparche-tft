@@ -14,35 +14,37 @@ import FormularioTierListValorant from "@components/valorant/FormularioTierListV
 import FormularioMetaWildrift from "@components/wildrift/FormularioMetaWildrift.jsx";
 import InfografiaTFTComps from "@components/TFT/InfografiaTFTComps.jsx";
 import InfografiaTop5 from '@components/Infografias/Top5/InfografiaTop5.jsx';
-
+import Formulario2XKO from "@components/2xko/Formulario2XKO.jsx";
 // import Formulario2XKO from "@components/2xko/Formulario2XKO.jsx";
 const AdminPanel = ({allAdmins})=>{
-  console.log({allAdmins})
     const [isLoged, setIsLoged] = useState(localStorage.getItem("login") || false)
     const [adminName, setAdminName] = useState(localStorage.getItem("user") || "");
-    const [action, setAction] = useState("editar");
     const pestanas = [
-    {
+      {
         primario:"TFT",
         secundario:["Crear","Editar","Infografia Comps", "Tier List Items", "Tier List Augments"],
-    },{
+      },{
         primario:"LOL",
         secundario:["Meta"],
-    },{
+      },{
         primario:"VALORANT",
         secundario:["Meta"],
-    },{
+      },{
         primario:"Wild Rift",
         secundario:["Meta"]
-    },{
+      },{
+        primario:"2XKO",
+        secundario:["Meta"]
+      },{
         primario:"Infografia Zero",
         secundario:["Crear"]
-    },{
+      },{
         primario:"Streamer",
         secundario:["Editar"]
-    }
+      }
     ]
-    const [pestana, setPestana] = useState(pestanas[0].primario);
+    const [pestana, setPestana] = useState(pestanas[4].primario);
+    const [action, setAction] = useState(pestanas[4].primario);
 
     function cerrarSesion(){
         setIsLoged(false)
@@ -50,31 +52,6 @@ const AdminPanel = ({allAdmins})=>{
         localStorage.removeItem("login");
         localStorage.removeItem("superAdmin");
     }
-
-
-    const pestanasPrincipales=["TFT", "LOL", "VAL", "WR", "Crear Infografia Zero","Streamers"];
-    const pestanasTFT=["Crear","Editar","Infografia Comps", "Tier List Items", "Tier List Augments"];
-    const pestanasLOL=["Meta"];
-    const pestanaValorant=["Meta"];
-    const pestanaWildrift=["Meta"];
-    const pestanaInfografia=["Crear"]
-    const pestanasStreamers=["Editar"];
-
-
-  //   useEffect(() => {
-  //   async function fetchAdmins() {
-  //     try {
-  //       const res = await fetch("http://localhost:4321/api/admins");
-  //       const data = await res.json();
-  //       console.log({data})
-  //       setAllAdmins(data);
-  //     } catch (err) {
-  //       console.error(err);
-  //     }
-  //   }
-  //   fetchAdmins();
-  // }, []);
-
 
     if(!isLoged || !adminName){
         return (
@@ -143,12 +120,12 @@ const AdminPanel = ({allAdmins})=>{
                 {/* {action === "InfografiaTFTCompo" && <InfografiaTFTComps/>} */}
                 {action === "TFT-Tier List Items" && <CreateItemsTierList />}
                 {action === "TFT-Tier List Augments" && <CreateAugmentsTierList admin={true}/>}
-                {action === "Streamer-Editar" && <StreamersManager/>}
-                {action === "LOL-Meta" && <FormularioMetaLOL />}
-                {action === "VALORANT-Meta" && <FormularioTierListValorant />}
-                {action === "Wild Rift-Meta" && <FormularioMetaWildrift/>}
-                {action === "Infografia Zero-Crear" && <InfografiaTop5/>}
-                {/* {action === "2xko" && <Formulario2XKO/>} */}
+                {action.includes(pestanas[1].primario) && <FormularioMetaLOL />}
+                {action.includes(pestanas[2].primario) && <FormularioTierListValorant />}
+                {action.includes(pestanas[3].primario) && <FormularioMetaWildrift/>}
+                {action.includes(pestanas[4].primario) && <Formulario2XKO/>}
+                {action.includes(pestanas[5].primario) && <InfografiaTop5/>}
+                {action.includes(pestanas[6].primario) && <StreamersManager/>}
                 {/* {action === "champsItemsTierList" && <CrearTierListChampItem />} */}
             </div>
             <button onClick={()=>cerrarSesion()}>cerrar sesión</button>

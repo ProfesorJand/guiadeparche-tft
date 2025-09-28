@@ -2,10 +2,12 @@ import InfografiaTFTComps from "@components/TFT/InfografiaTFTComps"
 import { useRef, useCallback, useState } from "react";
 import { toPng } from 'html-to-image';
 import SliderButtom from "@components/inputs/SliderButtom";
+import SliderButtomLogoGuiadeparche from "@components/inputs/SliderButtomLogoGuiadeparche";
 const InfografiaTFT = ()=>{
   const backgroundRef = useRef(null);
   const [tituloInfografiaTFT, setTituloInfografiaTFT] = useState("Top 10 Meta Comps");
   const [logoMovilnet, setLogoMovilnet] = useState(true);
+  const [logoGuiadeparche, setLogoGuiadeparche] = useState(false)
   const loadAllImages = (container) => {
     const images = container.querySelectorAll("img");
     const promises = [];
@@ -72,7 +74,7 @@ const InfografiaTFT = ()=>{
         {/*Boton para capturar imagen de la InfografiaTFTComps */}
         <button onClick={()=>{
           onButtonClick()
-        }}>Descargar Infografía TFT</button>
+        }}>Descargar Infografía TFT111</button>
         <input 
           type="text"
           placeholder="Cambiar Titulo"
@@ -80,11 +82,11 @@ const InfografiaTFT = ()=>{
           onChange={(e)=>{setTituloInfografiaTFT(e.target.value)}}
           />
         <SliderButtom setLogoMovilnet={setLogoMovilnet} logoMovilnet={logoMovilnet}/>
-
+        <SliderButtomLogoGuiadeparche setLogoGuiadeparche={setLogoGuiadeparche} logoGuiadeparche={logoGuiadeparche}/>
         
       </div>
 
-      <InfografiaTFTComps backgroundRef={backgroundRef} setTituloInfografiaTFT={setTituloInfografiaTFT} tituloInfografiaTFT={tituloInfografiaTFT} logoMovilnet={logoMovilnet}/>
+      <InfografiaTFTComps backgroundRef={backgroundRef} setTituloInfografiaTFT={setTituloInfografiaTFT} tituloInfografiaTFT={tituloInfografiaTFT} logoMovilnet={logoMovilnet} logoGuiadeparche={logoGuiadeparche}/>
     </div>
   )
 }

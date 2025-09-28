@@ -3,7 +3,8 @@ import { useStore  } from "@nanostores/react";
 import { useEffect,useState} from "react";
 import { MetaComps as compos, loadCompsMeta, isLoadingDataTFTFromApi } from "src/stores/menuFiltradoAdmin.js";
 import {constantesJSON} from "@stores/dataTFT.js"
-const InfografiaTFTComps = ({backgroundRef, setTituloInfografiaTFT, tituloInfografiaTFT, logoMovilnet}) =>{
+import LogoGuiadeparche from "@components/logo/LogoGuiadeparche";
+const InfografiaTFTComps = ({backgroundRef, setTituloInfografiaTFT, tituloInfografiaTFT, logoMovilnet, logoGuiadeparche}) =>{
   const colorDificulty= {Easy:"green",Medium:"orange",Hard:"red"}
   const composMeta = useStore(compos);
   const [composInInfographic, setComposInInfographic] = useState([]);
@@ -230,6 +231,22 @@ const InfografiaTFTComps = ({backgroundRef, setTituloInfografiaTFT, tituloInfogr
             }}
           />
         </div>}
+        {
+          logoGuiadeparche && 
+          <div
+        style={{
+            width: "30%",
+            height:"100%",
+            alignItems: "center",
+            justifyContent: "center",
+            display: "flex",
+          }}
+        >
+        
+          <LogoGuiadeparche/>
+        </div>
+        }
+
         {/* logo ko coliseum tft */}
         <div
         style={{

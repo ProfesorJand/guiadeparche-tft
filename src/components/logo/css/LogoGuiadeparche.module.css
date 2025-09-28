@@ -1,0 +1,29 @@
+.contenedor{
+  height:100%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex: 1
+}
+
+.logoGuiadeparche{
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+  opacity: 0.5;
+  position: absolute;
+  left: 50%;
+  top:50%;
+  transform: translate(-50%, -50%);
+}
+
+.textoGuiadeparche{
+    font-family: ObvioslyWideBold;
+    color: var(--color-primary);
+    text-shadow: 1px 0 #000, -1px 0 #000, 0 1px #000, 0 -1px #000, 1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
+    translate: 0 5px;
+    opacity: 0.8;
+    max-width: 100%;
+    white-space: nowrap;
+    font-size: clamp(5px, 0.6vw, 15px);
+}
