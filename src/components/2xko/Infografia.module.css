@@ -1,12 +1,15 @@
 :root{
   --gapInfografia2koContainer: 15px;
   --gapContainer2xkoInfo: 5px;
-  --cantidadTiers: 6;
+  --cantidadTiers: 4;
   --gapEntreDuos: 5px;
   --gapHorizontalEntreTiers: 15px ;
   --cantidadColumnas: 6;
   --cantidadCampeonesDuos: 5;
   --colorVerde: #d2f262;
+  --heightHeader2xko: calc(100% / 6);
+  --heightBody2xko: calc(100% / 6 * 4);
+  --heightFooter2xko: calc(100% / 6)
 }
 
 .container{
@@ -21,7 +24,7 @@
   z-index:0;
   top:0;
   left:0;
-  aspect-ratio:4/5
+  aspect-ratio:4/4
 }
 
 .imgBackground{
@@ -38,7 +41,7 @@
 
 .header{
   display: flex;
-  height: 8%;
+  height: var(--heightHeader2xko);
   width: 100%;
   position: relative;
 }
@@ -80,7 +83,7 @@
 }
 
 .containerInfo{
-  height: 82%;
+  height: var(--heightBody2xko);
   display: flex;
   flex-direction: column;
 }
@@ -88,7 +91,6 @@
 .infoMetaContianer{
   display: flex;
   flex-direction: row;
-
   height: calc((100% / var(--cantidadTiers) ) - var(--gapContainer2xkoInfo) + (var(--gapContainer2xkoInfo) / var(--cantidadTiers)));
 }
 
@@ -183,7 +185,7 @@
 
 .footer{
   display: flex;
-  height: 10%;
+  height:var(--heightFooter2xko);
   position:relative;
   flex-direction: row;
   z-index: 1;
@@ -228,7 +230,6 @@
   width: 100%;
   height: 100%;
   position: absolute;
-
 }
 
 .vline{
@@ -237,7 +238,6 @@
   height: 100%;
   width: 1px;
   background-color: var(--colorVerde);
-
 }
 
 .vline1{

@@ -23,7 +23,7 @@ const Formulario2XKO = ()=>{
   const [tierSeleccionado, setTierSeleccionado] = useState("S");
   const backgroundRef = useRef(null)
 
-  const tiers = ["S", "A+", "A", "A-", "B", "C"];
+  const tiers = ["S", "A+", "A", "A-"];
   const dificultades = ["Easy, Medium, Hard"];
   const campeones = ["Ahri", "Blitzcrank", "Braum","Darius",  "Ekko", "Illaoi","Jinx", "Vi", "Yasuo" ]
   const fuses = ["2X_Assist","Double_Down", "Freestyle", "Juggernaut", "Sidekick"]
