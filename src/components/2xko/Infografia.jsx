@@ -1,14 +1,16 @@
 import LogoGuiadeparche from "@components/logo/LogoGuiadeparche";
 import style from "./Infografia.module.css"
 const Infografia = ({meta2xko, titulo, version, logoMovilnet, logoGuiadeparche, backgroundRef})=>{
-  const urlImgBackground= "/2xko/fondos/Background_Red.png";
+  const urlImgBackground= "/2xko/fondos/Background_RedV2.png";
+  const urlImgBackground2 = "/2xko/fondos/Background_Red.png";
+  console.log({meta2xko})
   return (
     <div className={style.container} ref={backgroundRef}>
       {/* Imagen Background */}
       <img className={style.imgBackground}
       src={urlImgBackground} 
       alt={""}/>
-
+      
       {/* Header */}
       <div className={style.header}>
         <img 
@@ -34,6 +36,26 @@ const Infografia = ({meta2xko, titulo, version, logoMovilnet, logoGuiadeparche, 
                   className={style.imgTier}
                   ></img> 
               </div>
+              <div 
+                className={[style.containerChamps,  i % 2 === 0 ? style.containerChampsImpar : style.containerChampsPar].join(" ")}
+                style={{
+                      alignItems: meta2xko[tier].fuse ? "flex-end" : "center"
+                }}
+                >
+                {/* Lineas */}
+                <div className={style.verticalLine}>
+                    <span className={[style.vline, style.vline1].join(" ")}></span>
+                    <span className={[style.vline, style.vline2].join(" ")}></span>
+                    <span className={[style.vline, style.vline3].join(" ")}></span>
+                    <span className={[style.vline, style.vline4].join(" ")}></span>
+                    <span className={[style.vline, style.vline5].join(" ")}></span>
+                    <span className={[style.vline, style.vline6].join(" ")}></span>
+                    <span className={[style.hline, style.hline1].join(" ")}></span>
+                    <span className={[style.hline, Object.keys(meta2xko).length === (i+1) && style.hline2].join(" ")}></span>
+                    <span className={[style.hline, style.hline3].join(" ")}></span>
+                    <span className={[style.hline, Object.keys(meta2xko).length === (i+1) && style.hline4].join(" ")}></span>
+
+                </div>
               {
                 meta2xko[tier].map((data, posicion)=>{
                   return (
@@ -49,7 +71,7 @@ const Infografia = ({meta2xko, titulo, version, logoMovilnet, logoGuiadeparche, 
                         <img 
                           src={data.imagenPrincipal}
                           className={style.imgCampeonPrincipal}
-                        ></img>
+                          ></img>
                         {/* nombre del campeon absoluto debajo con fondo oscuro semitransparente con letras blancas*/}
                         <div className={style.nombreCampeonPrincipal}>
                           {data.nombrePrincipal === "Blitzcrank" ? "Blitz" : data.nombrePrincipal}
@@ -60,7 +82,7 @@ const Infografia = ({meta2xko, titulo, version, logoMovilnet, logoGuiadeparche, 
                         <img 
                           src={data.imagenSecundario}
                           className={style.imgCampeonPrincipal}
-                        ></img>
+                          ></img>
                         <div className={style.nombreCampeonPrincipal} >
                         {data.nombreSecundario  === "Blitzcrank" ? "Blitz" : data.nombreSecundario }
                       </div>
@@ -83,6 +105,7 @@ const Infografia = ({meta2xko, titulo, version, logoMovilnet, logoGuiadeparche, 
                   )
                 })
               }
+              </div>
             </div>
           )
         })
