@@ -65,7 +65,6 @@ const MiniInfoComp = ({
           type="checkbox" checked={compo?.isInInfographic} onChange={(e)=>{}} title="esta en la infografia" />
         }
     <div className={show ? style.containerTextoInfoPrimario : ""}>
-      <div className={style.containerTextoInfoPrimarioTier}>
         {show && 
         <div className={style.containerTierImg}>
           <img
@@ -91,12 +90,12 @@ const MiniInfoComp = ({
         </div>
         }
 
-      </div>
     </div>
       
     <div className={show ? style.containerLowerChamps : style.containerLowerChampsOculto}>
       <div className={show ? style.containerInfoChamp: style.containerInfoChampOculto}>
       {dataCampeones.map(({dataCampeon, dataItem, estrellas},i)=>{
+        if(JSON.parse(dataCampeon).nombre === "The Mighty Mech") return null
         return (
           <CampeonOriginal
             key={`OriginalCampeon`+i}

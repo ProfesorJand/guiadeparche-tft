@@ -106,9 +106,9 @@ const CampeonOriginal = ({ dataCampeon, dataItem, estrellas, show, forInfografia
         true && 
         <span
           className={show ? style.nombreCampeon : style.nombreCampeonOculto}
-          style={{
-            top:`${infoChampHeight - 13}px`, // 8 + 5 de padding
-          }}
+          // style={{
+          //   top:`${infoChampHeight - 13}px`, // 8 + 5 de padding
+          // }}
         >
           {dataCampeonParseado.nombre === "The Mighty Mech" ? "Mech" : dataCampeonParseado.nombre}
         </span>
