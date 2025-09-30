@@ -212,7 +212,7 @@ const saveConstantes2xko = async () => {
                     nuevoMeta[tierSeleccionado] = nuevoMeta[tierSeleccionado] || []
                     nuevoMeta[tierSeleccionado][posicion] = nuevoMeta[tierSeleccionado][posicion] || {}
                     nuevoMeta[tierSeleccionado][posicion].nombrePrincipal = nuevoPrimario;
-                    nuevoMeta[tierSeleccionado][posicion].imagenPrincipal = `/2xko/campeones/cuadrados/${nuevoPrimario}-2xko.png`
+                    nuevoMeta[tierSeleccionado][posicion].imagenPrincipal = `https://api.guiadeparche.com/2xko/assets/campeones/cuadrados/${nuevoPrimario}_2xko_v2.webp`
                     setMeta2xko(nuevoMeta);
                   }}
                 >
@@ -231,7 +231,7 @@ const saveConstantes2xko = async () => {
                     nuevoMeta[tierSeleccionado] = nuevoMeta[tierSeleccionado] || []
                     nuevoMeta[tierSeleccionado][posicion] = nuevoMeta[tierSeleccionado][posicion] || {}
                     nuevoMeta[tierSeleccionado][posicion].nombreSecundario = nuevoSecundario;
-                    nuevoMeta[tierSeleccionado][posicion].imagenSecundario = `/2xko/campeones/cuadrados/${nuevoSecundario}-2xko.png`
+                    nuevoMeta[tierSeleccionado][posicion].imagenSecundario = `https://api.guiadeparche.com/2xko/assets/campeones/cuadrados/${nuevoSecundario}_2xko_v2.webp`
                     setMeta2xko(nuevoMeta);
                   }}
                 >
