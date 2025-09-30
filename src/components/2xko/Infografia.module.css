@@ -4,12 +4,13 @@
   --cantidadTiers: 4;
   --gapEntreDuos: 5px;
   --gapHorizontalEntreTiers: 15px ;
-  --cantidadColumnas: 6;
-  --cantidadCampeonesDuos: 5;
+  --cantidadColumnas: 9;
+  --cantidadCampeonesDuos: 4;
   --colorVerde: #d2f262;
   --heightHeader2xko: calc(100% / 6);
   --heightBody2xko: calc(100% / 6 * 4);
-  --heightFooter2xko: calc(100% / 6)
+  --heightFooter2xko: calc(100% / 6);
+  --anchoColumnaDuos: calc((100% - ((var(--cantidadCampeonesDuos) - 1) * var(--gapEntreDuos))) / var(--cantidadCampeonesDuos));
 }
 
 .container{
@@ -115,7 +116,7 @@
 .containerChamps{
   display: flex;
   gap: var(--gapEntreDuos);
-  width:calc(100% * 5 / var(----cantidadColumnas) - var(--gapEntreDuos) + (var(--gapEntreDuos) / var(--cantidadCampeonesDuos)));
+  width:calc((100% * var(--cantidadCampeonesDuos) * 2 / var(--cantidadColumnas)) - var(--gapEntreDuos) + (var(--gapEntreDuos) / (var(--cantidadCampeonesDuos ) * 2 / var(--cantidadColumnas) )));
   flex-direction: row;
   align-items: flex-end;
   position: relative;
@@ -127,7 +128,7 @@
 .containerInfoChamps{
   display: flex;
   gap: 0px;
-  width:calc(100% * 5 / var(----cantidadColumnas) - var(--gapEntreDuos) + (var(--gapEntreDuos) / var(--cantidadCampeonesDuos)));
+  width: calc((100% - ((var(--cantidadCampeonesDuos) - 1) * var(--gapEntreDuos))) / var(--cantidadCampeonesDuos));
   flex-direction: row;
   align-items: flex-end;
   position: relative;
@@ -240,24 +241,11 @@
   background-color: var(--colorVerde);
 }
 
-.vline1{
-  left: calc((100% / 5 * 0) )
-}
-.vline2{
-  left: calc((100% / 5 * 1) - (var(--gapEntreDuos) / 2) )
-}
-.vline3{
-  left: calc((100% / 5 * 2) - (var(--gapEntreDuos) / 2 * 2/3) )
-}
-.vline4{
-  left: calc((100% / 5 * 3) - (var(--gapEntreDuos) / 2 * 3/8) )
-}
-.vline5{
-  right: calc((100% / 5 * 1) - (var(--gapEntreDuos) / 2)  )
-}
-.vline6{
-  left: calc(100% )
-}
+.vline1 { left: 0; }
+.vline2 { left: calc(var(--anchoColumnaDuos) + (var(--gapEntreDuos) / 4 )) }
+.vline3 { left: calc( 2 * var(--anchoColumnaDuos) + (var(--gapEntreDuos) * (1 + 1/2) ) ) }
+.vline4 { right: calc(var(--anchoColumnaDuos) + (var(--gapEntreDuos) / 2 )) }
+.vline5 { left: 100%; }
 
 .hline{
     display: flex;

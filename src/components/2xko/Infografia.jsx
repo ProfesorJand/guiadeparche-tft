@@ -49,7 +49,6 @@ const Infografia = ({meta2xko, titulo, version, logoMovilnet, logoGuiadeparche, 
                     <span className={[style.vline, style.vline3].join(" ")}></span>
                     <span className={[style.vline, style.vline4].join(" ")}></span>
                     <span className={[style.vline, style.vline5].join(" ")}></span>
-                    <span className={[style.vline, style.vline6].join(" ")}></span>
                     <span className={[style.hline, style.hline1].join(" ")}></span>
                     <span className={[style.hline, Object.keys(meta2xko).length === (i+1) && style.hline2].join(" ")}></span>
                     <span className={[style.hline, style.hline3].join(" ")}></span>

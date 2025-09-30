@@ -193,9 +193,9 @@ const saveConstantes2xko = async () => {
       }
       {/*Seleccionar 5 campeones duos por tier Seleccionado */}
       <div>
-        <h2>Selecciona los 5 campeones duos para el tier {tierSeleccionado}</h2>
+        <h2>Selecciona los 4 campeones duos para el tier {tierSeleccionado}</h2>
         {
-          Array(5).fill(0).map((_, posicion)=>{
+          Array(4).fill(0).map((_, posicion)=>{
             return (
               <div 
                 key={tierSeleccionado+posicion}
