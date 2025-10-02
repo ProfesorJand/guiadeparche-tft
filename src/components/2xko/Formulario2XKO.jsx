@@ -25,7 +25,7 @@ const Formulario2XKO = ()=>{
 
   const tiers = ["S", "A+", "A", "A-"];
   const dificultades = ["Easy, Medium, Hard"];
-  const campeones = ["Ahri", "Blitzcrank", "Braum","Darius",  "Ekko", "Illaoi","Jinx", "Vi", "Yasuo" ]
+  const campeones = ["Ahri", "Blitzcrank", "Braum","Darius", "Ekko", "Illaoi","Jinx","Teemo", "Vi", "Yasuo" ]
   const fuses = ["2X_Assist","Double_Down", "Freestyle", "Juggernaut", "Sidekick"]
   const fuseColor= {
     [fuses[0]]: "#00dde5",
