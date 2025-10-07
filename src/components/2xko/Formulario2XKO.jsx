@@ -14,6 +14,7 @@ import SliderButtom from "@components/inputs/SliderButtom";
 import SliderButtomLogoGuiadeparche from "@components/inputs/SliderButtomLogoGuiadeparche";
 
 const Formulario2XKO = ()=>{
+  const admin = localStorage.getItem("user") || false;
   const constantes2xko = useStore(Constantes2xko);
   const champsMeta2xko = useStore(ChampsMeta2xko);
   const [titulo, setTitulo] = useState("");
@@ -21,7 +22,7 @@ const Formulario2XKO = ()=>{
   const [logoMovilnet, setLogoMovilnet] = useState(true);
   const [logoGuiadeparche, setLogoGuiadeparche] = useState(false);
   const [tierSeleccionado, setTierSeleccionado] = useState("S");
-  const backgroundRef = useRef(null)
+  const backgroundRef = useRef(null);
 
   const tiers = ["S", "A+", "A", "A-"];
   const dificultades = ["Easy, Medium, Hard"];
@@ -107,8 +108,8 @@ const saveConstantes2xko = async () => {
     setMeta2xko(champsMeta2xko);
   },[champsMeta2xko])
   useEffect(()=>{
-    setTitulo(constantes2xko.tituloVisualizadorMeta || "2xKO - Guía de Parche");
-    setVersion(constantes2xko.versionVisualizadorMeta || "13.12");
+    setTitulo(constantes2xko.tituloVisualizadorMeta || "Tier List - Meta Teams");
+    setVersion(constantes2xko.versionVisualizadorMeta || "");
   },[constantes2xko])
 
   const loadAllImages = (container) => {
@@ -173,7 +174,9 @@ const saveConstantes2xko = async () => {
 
   return (
     <div>
-      {/* Seleccionar para editar por tier */}
+      {
+        admin && 
+        <div>
       <h2>Selecciona el tier que quieres editar:</h2>
       {
         Object.keys(meta2xko).map((tier, index)=>{
@@ -311,6 +314,8 @@ const saveConstantes2xko = async () => {
          <input type="button" onClick={()=>{onButtonClick()}} defaultValue="Capturar Imagen"/> 
 
       </div>
+      </div>
+       }
       <Infografia
         backgroundRef={backgroundRef}
         meta2xko={meta2xko}
@@ -318,6 +323,7 @@ const saveConstantes2xko = async () => {
         version={version}
         logoMovilnet={logoMovilnet}
         logoGuiadeparche={logoGuiadeparche}
+        admin={admin}
       ></Infografia>
     </div>
   )

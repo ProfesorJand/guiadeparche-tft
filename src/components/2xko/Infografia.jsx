@@ -1,6 +1,6 @@
 import LogoGuiadeparche from "@components/logo/LogoGuiadeparche";
 import style from "./Infografia.module.css"
-const Infografia = ({meta2xko, titulo, version, logoMovilnet, logoGuiadeparche, backgroundRef})=>{
+const Infografia = ({meta2xko, titulo, version, logoMovilnet, logoGuiadeparche, backgroundRef, admin})=>{
   const urlImgBackground= "/2xko/fondos/Background_RedV2.png";
   const urlImgBackground2 = "/2xko/fondos/Background_Red.png";
   console.log({meta2xko})
@@ -123,7 +123,7 @@ const Infografia = ({meta2xko, titulo, version, logoMovilnet, logoGuiadeparche, 
           </div>
         {/* Logo movilnet */}
         {
-          logoMovilnet && 
+          logoMovilnet && admin &&
           <div className={style.containerLogoMovilnet}>
             <img 
               src="/tft/assets/logoMovilnet-e-letras-blancas.png" 
@@ -133,7 +133,7 @@ const Infografia = ({meta2xko, titulo, version, logoMovilnet, logoGuiadeparche, 
           </div>}
           {/* Logo Guiadeparche */}
         {
-          logoGuiadeparche && 
+          logoGuiadeparche || !admin &&  
           <div className={style.containerLogoMovilnet}>
             <LogoGuiadeparche/>
           </div>}

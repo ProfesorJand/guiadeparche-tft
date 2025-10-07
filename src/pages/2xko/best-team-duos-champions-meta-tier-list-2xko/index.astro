@@ -1,0 +1,26 @@
+---
+import Layout from "@layouts/LayoutMidOnly.astro";
+import {crearJSONSchema} from "src/json/schema/crearJSONSchema";
+import Formulario2xko from "@components/2xko/Formulario2xko.jsx";
+
+const title="▷ 2XKO Tier list - Best Duos Champions"
+const canonicalURL = "https://guiadeparche.com/2xko/best-team-duos-champions-meta-tier-list-2xko/";
+const description = "Top 2XKO highest Winrate teams and champions for early access! S and A Tier...";
+const keywords = "2xko, 2xko teams, 2xko champions, 2xko best duos";
+const thumbnail= "/2xko/logo/2xko-icono.png"
+const imgPost = "/2xko/logo/thumbnail-2xko.jpg"
+const JSONSchema = crearJSONSchema({title, imgPost, thumbnail, description});
+---
+
+<Layout title={title} JSONSchema={JSONSchema} description={description} keywords={keywords} image={thumbnail} canonical={canonicalURL}>
+  <div class="smallContainer">
+    <Formulario2xko client:only="react"/>
+</div>
+</Layout>
+
+<style>
+  .smallContainer{
+    display: flex;
+    width: 50%;
+  }
+</style>
