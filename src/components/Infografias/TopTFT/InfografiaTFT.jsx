@@ -74,7 +74,7 @@ const InfografiaTFT = ()=>{
         {/*Boton para capturar imagen de la InfografiaTFTComps */}
         <button onClick={()=>{
           onButtonClick()
-        }}>Descargar Infografía TFT111</button>
+        }}>Descargar Infografía TFT</button>
         <input 
           type="text"
           placeholder="Cambiar Titulo"

@@ -14,7 +14,7 @@ const InfografiaTFTComps = ({backgroundRef, setTituloInfografiaTFT, tituloInfogr
     // Obtener las constantes actuales
     const fetchConstantes = async () => {
       try {
-        const response = await fetch(constantesJSON,{cache:"reload"});
+        const response = await fetch(constantesJSON,{cache:"no-cache"});
         const data = await response.json();
         setConstantes(data);
       } catch (error) {
@@ -31,22 +31,20 @@ const InfografiaTFTComps = ({backgroundRef, setTituloInfografiaTFT, tituloInfogr
     footer: "10%",
   }
 
-  useEffect(()=>{
-    {/* solo tomar los que tengan isInInfographic en True */}
-    const filtrado = composMeta.map((tier, i)=> {
-        const array1 = tier.filter((c, j)=>{
-          if((i+1) + (j+1) > 10) return false; // maximo 10
-          return  c.isInInfographic === true
-        })
-        console.log({array1})
-      return array1
-    }
-  );
-  console.log({filtrado})
-    setComposInInfographic(filtrado) // maximo 10
-  },[composMeta])
+useEffect(() => {
+  if (!composMeta) return;
 
+  // 1️⃣ Aplanamos todos los tiers en un solo array
+  const todos = composMeta.flat();
 
+  // 2️⃣ Filtramos solo los que tengan isInInfographic === true
+  const filtrados = todos.filter(c => c.isInInfographic === true);
+
+  // 3️⃣ Nos quedamos con los primeros 10
+  const soloDiez = filtrados.slice(0, 10);
+
+  setComposInInfographic(soloDiez);
+}, [composMeta]);
       
 
 
@@ -124,7 +122,7 @@ const InfografiaTFTComps = ({backgroundRef, setTituloInfografiaTFT, tituloInfogr
             right:"5px",
             top:"50%",
             transform:"translate(0, -50%)",
-            fontSize:"1.5rem",
+            fontSize:"1rem",
             textAlign:"center",
             fontFamily:"'ObvioslyWideBold', sans-serif",
             fontWeight:"bold",
@@ -145,33 +143,37 @@ const InfografiaTFTComps = ({backgroundRef, setTituloInfografiaTFT, tituloInfogr
       >
         {/* mostrar max 10 compos y que tengan el compo.isInInfographic en true */}
         {
-          composInInfographic.map((tier,i)=>{
-            return tier.map((compo,j)=>{
-              const dataCampeones = Object.keys((compo.boardInfo[compo.originalComp].data)).map((key)=>{
-                const {dataCampeon, dataItem, estrellas} = compo?.boardInfo?.[compo.originalComp]?.data?.[key];
-                return {dataCampeon:dataCampeon.campeon, dataItem, estrellas}
-              })
-              return (
-                <MiniInfoComp
-                  show={true}
-                  open={open}
-                  isOpen={false}
-                  compo={compo}
-                  admin={true}
-                  onToggle={()=>{}}
-                  copyToClipboard={()=>{}}
-                  generatorCodeBuilder={()=>{}}
-                  colorDificulty={colorDificulty}
-                  dataCampeones={dataCampeones}
-                  handleEditID={()=>{}}
-                  ShowBigComp={()=>{}}
-                  deleteId={()=>{}}
-                  forInfografia={true}
-              />
-              )
-            })
-          })
-        }
+  composInInfographic.map((compo, i) => {
+    const dataCampeones = Object.keys(compo.boardInfo[compo.originalComp].data).map((key) => {
+      const { dataCampeon, dataItem, estrellas } = compo.boardInfo[compo.originalComp].data[key];
+      return {
+        dataCampeon: dataCampeon.campeon,
+        dataItem,
+        estrellas
+      };
+    });
+
+    return (
+      <MiniInfoComp
+        key={i}
+        show={true}
+        open={open}
+        isOpen={false}
+        compo={compo}
+        admin={true}
+        onToggle={() => {}}
+        copyToClipboard={() => {}}
+        generatorCodeBuilder={() => {}}
+        colorDificulty={colorDificulty}
+        dataCampeones={dataCampeones}
+        handleEditID={() => {}}
+        ShowBigComp={() => {}}
+        deleteId={() => {}}
+        forInfografia={true}
+      />
+    );
+  })
+}
       </div>
 
       {/* Footer */}
