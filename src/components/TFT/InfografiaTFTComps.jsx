@@ -126,7 +126,7 @@ useEffect(() => {
             textAlign:"center",
             fontFamily:"'ObvioslyWideBold', sans-serif",
             fontWeight:"bold",
-            textShadow: `0 0 5px #000000, 0 0 10px #000000, 0 0 15px #000000, 0 0 20px #000000`
+            // textShadow: `0 0 5px #000000, 0 0 10px #000000, 0 0 15px #000000, 0 0 20px #000000`
           }}
         >{constantes?.MetaCompVersionPBE}</span>
       </div>
