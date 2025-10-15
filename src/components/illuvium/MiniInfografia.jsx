@@ -1,6 +1,7 @@
 import style from "./MiniInfografia.module.css"
 const MiniInfografia = ({data, isOpen, show=true, edit, setEdit})=>{
-  const admin = localStorage.getItem("admin")||false;
+  const admin = localStorage.getItem("user")||false;
+  console.log({admin})
   const colorDificulty= {Easy:"green",Medium:"orange",Hard:"red"}
   return(
     <div className={[style.container, isOpen && style.isOpen].join(" ")} >
