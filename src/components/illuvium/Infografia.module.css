@@ -1,0 +1,258 @@
+:root{
+  --widthImgDroneAugmentAmp: calc(100% / (2 + 4 + 1))
+}
+
+.container{
+  display: flex;
+  flex-direction: column;
+  background-color: #0d081e;
+  width: 100%;
+  aspect-ratio: 1;
+  padding:5px;
+  box-sizing: border-box;
+}
+
+.containerImgPosicionamiento{
+  display: flex;
+  width: 100%;
+
+}
+
+.textoCarries{
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  padding: 15px 0 5px;
+}
+
+.imgPosicionamiento{
+  display: flex;
+  width: 100%;
+}
+
+.containerCarriesItemization{
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  gap:5px;
+  flex-wrap: wrap;
+}
+
+.containerCarriesInfo{
+  display: flex;
+  flex-direction: row;
+  width: calc(50% - 2.5px);
+  border: 1px solid rgb(255, 0, 234);
+  box-sizing: border-box;
+  max-height: 250px;
+}
+
+.containerCarriesAugments{
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+}
+
+.containerAugmentsInfoBasico{
+  display: flex;
+  width: 100%;
+  height: calc(100% / 6);
+  background-color: #271a4f;
+  border: 0.5px double #52408a;
+  box-sizing: border-box;
+}
+
+.containerAugmentsInfoLegendario{
+  display: flex;
+  width: 100%;
+  height: calc(100% / 6);
+  background-color: #452c7d;
+  border: 0.5px double #52408a;
+  box-sizing: border-box;
+}
+
+.containerCarrie{
+  display: flex;
+  width: 50%;
+}
+
+.imgCarrie{
+  display: flex;
+  width: 100%;
+  object-fit: contain;
+  filter: drop-shadow(1px 1px 1px #1ae9e9);
+  z-index: 0;
+}
+
+
+.imgAumentoBasico{
+  display: flex;
+  width: 40%;
+  aspect-ratio: 1;
+  object-fit: cover;
+
+}
+
+.textoAumentoBasico{
+  width: 60%;
+  overflow: hidden;
+  font-size: 12px;
+  text-align: center;
+  align-items: center;
+  display: flex ;
+  color:#acacac;
+  justify-content: center;
+}
+
+.imgAumentoLegendario{
+  display: flex;
+  width: 40%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.textoAumentoLegendario{
+  width: 60%;
+  overflow: hidden;
+  font-size: 12px;
+  text-align: center;
+  align-items: center;
+  display: flex ;
+  color:#acacac;
+  justify-content: center;
+}
+
+.containerSuitsDrones{
+  display: flex;
+  width: 100%;
+  gap:5px;
+  box-sizing: border-box;
+  padding: 5px 0;
+}
+
+.TextoSuitAmplifiers{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  height: 32%;
+  box-sizing: border-box;
+  background-color: #241b44;
+  text-align: center;
+}
+
+.containerSuits{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+
+}
+
+.containerSuit{
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  position: relative;
+}
+
+
+
+.containerSuitAmplifiers{
+  display: flex;
+  position: relative;
+  flex:2;
+  flex-direction: column;
+  border: 1px solid rgb(255, 0, 234);
+  box-sizing: border-box;
+}
+
+.suitAmplifierImg{
+  display: flex;
+  width: 100%;
+}
+
+.textoSuit{
+  display: flex;
+  position: relative;
+  background-color: #0000005e;
+  width: 100%;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.containerDronesAumgents{
+  display: flex;
+  position: relative;
+  flex:4;
+  flex-direction: column;
+  border: 1px solid rgb(255, 0, 234);
+  box-sizing: border-box;
+}
+
+.containerDrones{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap:5px
+}
+
+.containerDroneImg{
+  display: flex;
+  width: calc(100% / 4);
+  position: relative;
+  flex-direction: column;
+}
+
+.droneAugmentImg{
+  display: flex;
+  width: 100%;
+}
+
+.containerWeaponAmplifier{
+  display: flex;
+  position: relative;
+  flex:1;
+  flex-direction: column;
+  border: 1px solid rgb(255, 0, 234);
+  box-sizing: border-box;
+}
+.weaponAmplifierImg{
+  display: flex;
+  width: 100%;
+}
+
+.containerGameplan{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0 0 10px 0;
+}
+
+.TextoGameplan{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  padding: 15px 0 5px;
+}
+
+.containerEarlyMidLate{
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap:10px;
+}
+
+.containerGame{
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  border: 1px solid rgb(255, 0, 234);
+  box-sizing: border-box;
+  padding:5px
+}
