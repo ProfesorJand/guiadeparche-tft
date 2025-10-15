@@ -4,14 +4,14 @@ const MiniInfografia = ({data, isOpen, show=true, edit, setEdit})=>{
   const colorDificulty= {Easy:"green",Medium:"orange",Hard:"red"}
   return(
     <div className={[style.container, isOpen && style.isOpen].join(" ")} >
-      <div className={style.miniMenu}>
+      {admin && <div className={style.miniMenu}>
         <input 
           type="button" 
           value={edit ? "Close":"Editar"}
           onClick={()=>{
           setEdit(edit === data?.id ? null : data.id)
         }}></input>
-      </div>
+      </div>}
       <div className={style.containerTier}>
         <img 
           src={`/tiers/Tier-${data.selectedTier}.webp`}
