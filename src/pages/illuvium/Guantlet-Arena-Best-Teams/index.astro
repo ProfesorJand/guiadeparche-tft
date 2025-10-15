@@ -1,0 +1,27 @@
+---
+import Layout from "@layouts/LayoutMidOnly.astro";
+import MetaCompsIlluvium from "@components/illuvium/MetaCompsIlluvium";
+import {crearJSONSchema} from "src/json/schema/crearJSONSchema";
+const title = "Best Illuvium Arena Gauntlet Meta Team Comps & Builds";
+const canonicalURL = "https://guiadeparche.com/illuvium/Guantlet-Arena-Best-Teams";
+const description = "Tier list with the best team comps for Illuvium Arena Gauntlet with strategy, weapons, augments, amplifiers and positioning";
+const keywords = "illuvium gauntlet, illuvium arena, illuvium comps";
+const thumbnail= ""
+const imgPost = ""
+const JSONSchema = crearJSONSchema({title, imgPost, thumbnail, description});
+---
+
+<Layout title={title} JSONSchema={JSONSchema} description={description} keywords={keywords} image={thumbnail} canonical={canonicalURL}>
+  <div class="smallContainer">
+    <h1>{title || "Best Illuvium Arena Gauntlet Meta Team Comps & Builds"}</h1>
+    <MetaCompsIlluvium client:only="react"></MetaCompsIlluvium> 
+  </div>
+</Layout>
+
+<style>
+  .smallContainer{
+    display: flex;
+    width: 50%;
+    flex-direction: column;
+  }
+</style>

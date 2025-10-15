@@ -55,5 +55,6 @@ Feel free to check [our documentation](https://docs.astro.build) or jump into ou
 
 npm run start
 npx astro db push
-npx astro db execute db/seed.ts --remote
-
+npx astro db execute db/seed.ts --remote (para producción)
+npx astro db execute db/seed.ts (para desarrollo)
+actualizar pagina web

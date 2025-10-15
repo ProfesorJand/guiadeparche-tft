@@ -124,11 +124,12 @@ const Composicion = ({id, compo, admin=false, show=true, allwaysOpen=false, onTo
   }
 
   function codeForPBE(allChampionsApiName){
+
     let sinDuplicados = [...new Set(allChampionsApiName)];
     let championsCode = "02";
     let cantidadDeCampeones = sinDuplicados.length;
     sinDuplicados.forEach(({apiName})=>{
-      championsCode = championsCode.concat(codeOfChampions[apiName])
+      championsCode = championsCode.concat(codeOfChampions[apiName] || "")
     })
     let espaciosVacios = 10 - cantidadDeCampeones;
     if (espaciosVacios > 0) {

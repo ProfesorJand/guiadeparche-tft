@@ -1,0 +1,16 @@
+.container{
+  display: flex;
+  flex-direction: column;
+}
+
+fieldset{
+  display: flex;
+  flex-direction: column;
+}
+
+.bondPartnerImg{
+  display: flex;
+  position: relative;
+  height: 50px;
+  width: 50px;
+}

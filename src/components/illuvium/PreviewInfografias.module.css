@@ -1,0 +1,11 @@
+.container{
+  display: flex;
+  flex-direction: column;
+  gap:15px;
+  
+}
+.containerInfografia{
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
