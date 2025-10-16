@@ -304,7 +304,14 @@ const CrearCompoIlluvium = ({edit=false, data})=>{
             />
         </label>
         { imgPosicionamiento &&
-            <img className={style.bondPartnerImg} src={edit ? "https://api.guiadeparche.com"+imgPosicionamiento:imgPosicionamiento} alt={""}></img>
+            <img 
+              className={style.bondPartnerImg} 
+              src={
+                (typeof imgPosicionamiento === "string" && imgPosicionamiento.startsWith("data:image")) ?
+                imgPosicionamiento : 
+                "https://api.guiadeparche.com"+imgPosicionamiento} 
+                alt={""}>
+            </img>
         }
 
       </fieldset>
@@ -361,7 +368,7 @@ const CrearCompoIlluvium = ({edit=false, data})=>{
       <fieldset>
         <legend>Drones Augments</legend>
         {
-          Array.from({length: 2}, (_null, i)=>{
+          Array.from({length: 4}, (_null, i)=>{
             return (
               <label key={`droneAugment${i}`} htmlFor="inputDronesAugments">Drone #{i+1}:
                 <input 
@@ -394,18 +401,14 @@ const CrearCompoIlluvium = ({edit=false, data})=>{
           })
         }
         {
-          droneAugment[0] &&
-          <img 
-            src={`https://api.guiadeparche.com/illuvium/assets/drones_augments/${droneAugment[0]}`}
-            style={{width:"50px",height:"50px"}}
-          ></img>
-        }
-        {
-          droneAugment[1] &&
-          <img 
-            src={`https://api.guiadeparche.com/illuvium/assets/drones_augments/${droneAugment[1]}`}
-            style={{width:"50px",height:"50px"}}
-          ></img>
+          droneAugment.length > 0 && droneAugment.map((drone)=>{
+            return (
+              <img 
+                src={`https://api.guiadeparche.com/illuvium/assets/drones_augments/${drone}`}
+                style={{width:"50px",height:"50px"}}
+              ></img>
+            )
+          })
         }
       </fieldset>
 
@@ -494,7 +497,7 @@ const CrearCompoIlluvium = ({edit=false, data})=>{
                 {/* Vista previa */}
                 {carriesItemization[i] && (
                   <img
-                    src={edit ? "https://api.guiadeparche.com"+carriesItemization[i] :carriesItemization[i]}
+                    src={ (typeof carriesItemization[i] === "string" && carriesItemization[i].startsWith("data:image")) ? carriesItemization[i]: "https://api.guiadeparche.com"+carriesItemization[i]}
                     alt={`Illuvial #${i + 1}`}
                     style={{ width: 100, height: 100, objectFit: "cover" }}
                   />

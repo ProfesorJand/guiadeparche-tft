@@ -28,8 +28,9 @@ const Infografia = ({data})=>{
               <div className={style.containerCarriesAugments}>
                 {
                   data.basicsAugments[i].map((basicAugment, ba)=>{
-                    return (
-                      <div key={`containerBasicAugments${ba}`} className={style.containerAugmentsInfoBasico}>
+                    if(basicAugment){
+                      return (
+                        <div key={`containerBasicAugments${ba}`} className={style.containerAugmentsInfoBasico}>
                         <img 
                           className={style.imgAumentoBasico}
                           src={`https://api.guiadeparche.com/illuvium/assets/aumentos/basicos/`+basicAugment}></img>
@@ -38,12 +39,14 @@ const Infografia = ({data})=>{
                         </span>
                       </div>
                     )
+                  }
                   })
                 }
                 {
                   data.legendsAugments[i].map((legendAugment, ba)=>{
-                    return (
-                      <div key={`containerLegendAugments${ba}`} className={style.containerAugmentsInfoLegendario}>
+                    if(legendAugment){
+                      return (
+                        <div key={`containerLegendAugments${ba}`} className={style.containerAugmentsInfoLegendario}>
                         <img 
                           className={style.imgAumentoLegendario}
                           src={`https://api.guiadeparche.com/illuvium/assets/aumentos/legendarios/`+legendAugment}></img>
@@ -52,6 +55,7 @@ const Infografia = ({data})=>{
                         </span>
                       </div>
                     )
+                  }
                   })
                 }
               </div>
@@ -74,11 +78,23 @@ const Infografia = ({data})=>{
                   src={`https://api.guiadeparche.com/illuvium/assets/suits_amplifiers/`+suit}
                   >
                   </img>
-                  <span className={style.textoSuit}>{suit.replace("suit_amplifier_","").replace(".PNG","")}</span>
+                  <span className={style.textoSuit}>{suit.replace("suit_amplifier_","").replace(".PNG","").replace("_"," ")}</span>
                 </div>
               )
             })
           }
+          </div>
+        </div>
+        {/* Weapon Amplifier Augments */}
+        <div className={style.containerWeaponAmplifier}>
+          <span className={style.TextoSuitAmplifiers}>Weapon Amplifier</span>
+          <div className={style.containerWeaponAmplifierImg}>
+              <img 
+              className={style.weaponAmplifierImg}
+              src={`https://api.guiadeparche.com/illuvium/assets/weapons_amplifiers/`+data.weaponAmplifier}
+              >
+              </img>
+              <span className={style.textoSuit}>{data.weaponAmplifier.replaceAll("weapon_amplifier_"," ").replace(".webp","")}</span>
           </div>
         </div>
         {/* Drones Augments */}
@@ -99,18 +115,6 @@ const Infografia = ({data})=>{
               )
             })
           }
-          </div>
-        </div>
-        {/* Weapon Amplifier Augments */}
-        <div className={style.containerWeaponAmplifier}>
-          <span className={style.TextoSuitAmplifiers}>Weapon Amplifier</span>
-          <div className={style.containerWeaponAmplifierImg}>
-              <img 
-              className={style.weaponAmplifierImg}
-              src={`https://api.guiadeparche.com/illuvium/assets/weapons_amplifiers/`+data.weaponAmplifier}
-              >
-              </img>
-              <span className={style.textoSuit}>{data.weaponAmplifier.replaceAll("weapon_amplifier_"," ").replace(".webp","")}</span>
           </div>
         </div>
 

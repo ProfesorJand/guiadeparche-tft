@@ -1,18 +1,42 @@
+import { CapturarImagen } from "src/functions/CapturarImagen";
 import style from "./MiniInfografia.module.css"
-const MiniInfografia = ({data, isOpen, show=true, edit, setEdit})=>{
+const MiniInfografia = ({data, isOpen, show=true, edit, setEdit, capturandoImagen, setCapturandoImagen, backgroundRef, index, setOpenInfografia})=>{
   const admin = localStorage.getItem("user")||false;
-  console.log({admin})
   const colorDificulty= {Easy:"green",Medium:"orange",Hard:"red"}
   return(
     <div className={[style.container, isOpen && style.isOpen].join(" ")} >
-      {admin && <div className={style.miniMenu}>
+      {!capturandoImagen  && admin && 
+      <div className={style.miniMenu}>
         <input 
           type="button" 
           value={edit ? "Close":"Editar"}
-          onClick={()=>{
-          setEdit(edit === data?.id ? null : data.id)
+          onClick={(e)=>{
+            e.stopPropagation();
+            setEdit(edit === data?.id ? null : data.id)
         }}></input>
       </div>}
+      {!capturandoImagen  && admin && 
+      <div className={style.miniMenu2}>
+        <input 
+          type="button" 
+          value={"Capturar Image"}
+          onClick={ async (e)=>{
+            e.stopPropagation();
+            setCapturandoImagen(true)
+            setOpenInfografia(index)
+            // Espera a que el DOM se actualice y renderice la infografía
+            await new Promise(r => setTimeout(r, 300));
+
+            await CapturarImagen({
+              backgroundRef,
+              nombre: `Illuvium_${data.nombreCompo}`,
+            });
+
+            setCapturandoImagen(false);
+          CapturarImagen
+        }}></input>
+      </div>}
+
       <div className={style.containerTier}>
         <img 
           src={`/tiers/Tier-${data.selectedTier}.webp`}

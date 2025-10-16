@@ -122,15 +122,14 @@ export const guardarCompo = async(data) => {
     data.carriesItemization.forEach((img, i) => {
       if (!img) return;
 
-      // Normalizar por si viene como array o string
       const imageString = Array.isArray(img) ? img[0] : img;
 
       if (typeof imageString === "string" && imageString.startsWith("data:image")) {
-        const nombre = (data.nombreCompo?.[i] || `carry_${i+1}`).replace(/\s+/g, "_");
+        const nombre = (`carry_${i + 1}`).replace(/\s+/g, "_");
         const file = dataURLtoFile(imageString, `carries_itemization_${nombre}.png`);
-        formData.append("carriesItemization[]", file);
+        formData.append(`carriesItemization[${i}]`, file);
       } else {
-        formData.append("carriesItemizationUrl[]", imageString);
+        formData.append(`carriesItemizationUrl[${i}]`, imageString);
       }
     });
   }
