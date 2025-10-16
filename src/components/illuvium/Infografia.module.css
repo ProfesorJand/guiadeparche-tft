@@ -136,7 +136,7 @@
   align-items: center;
   justify-content: center;
   padding: 5px;
-  height: 32%;
+  height: 25%;
   box-sizing: border-box;
   background-color: #241b44;
   text-align: center;
@@ -156,6 +156,13 @@
   position: relative;
 }
 
+.containerWeaponAmplifierImg{
+    display: flex;
+  flex-direction: column;
+  width: 100%;
+  position: relative;
+  height: 75%;
+}
 
 
 .containerSuitAmplifiers{
@@ -169,6 +176,7 @@
 
 .suitAmplifierImg{
   display: flex;
+  height: 75%;
   width: 100%;
 }
 
@@ -180,6 +188,7 @@
   text-align: center;
   justify-content: center;
   align-items: center;
+  height: 25%;
 }
 
 .containerDronesAumgents{

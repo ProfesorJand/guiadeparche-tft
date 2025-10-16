@@ -16,6 +16,13 @@
   left:100%;
 }
 
+.miniMenu2{
+  display: flex;
+  position: absolute;
+  left:100%;
+  top: 25px;
+}
+
 .container:hover{
   background-color: #0d081e;
   cursor:pointer

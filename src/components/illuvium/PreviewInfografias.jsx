@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState, createRef } from "react";
 import MiniInfografia from "./MiniInfografia";
 import Infografia from "./Infografia";
 import { getMetaComps, metaComps } from "@stores/dataIlluvium";
@@ -9,26 +9,31 @@ const PreviewInfografias = ()=>{
   const ComposMeta = useStore(metaComps);
   const [openInfografia, setOpenInfografia] = useState(null);
   const [edit, setEdit] = useState(null);
+  const [capturandoImagen, setCapturandoImagen] = useState(false)
+  const refs = useRef([]);
   useEffect(()=>{
     const buscarCompos = async()=>{
       await getMetaComps()
     }
     buscarCompos()
   },[])
+    useEffect(() => {
+    refs.current = ComposMeta.map((_, i) => refs.current[i] || createRef());
+  }, [ComposMeta]);
   return (
     <div className={style.container}>
     {
       ComposMeta.length > 0 && 
       ComposMeta.map((data,i)=>{
         return (
-          <div key={`Infografia${i}`} className={style.containerInfografia} onClick={()=>{
+          <div key={`Infografia${i}`} ref={refs.current[i]} className={style.containerInfografia} onClick={()=>{
             if(openInfografia === i){
               setOpenInfografia(null)
             }else{
               setOpenInfografia(i)
             }
           }}>
-            <MiniInfografia data={data} isOpen={openInfografia === i} edit={edit} setEdit={setEdit}/>
+            <MiniInfografia data={data} isOpen={openInfografia === i} edit={edit} setEdit={setEdit} capturandoImagen={capturandoImagen} setCapturandoImagen={setCapturandoImagen} backgroundRef={refs.current[i]} index={i} setOpenInfografia={setOpenInfografia}/>
             {
               edit === data?.id && 
               <CrearCompoIlluvium 
