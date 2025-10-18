@@ -297,7 +297,10 @@ const CrearCompoIlluvium = ({edit=false, data})=>{
               if (!file) return;
               const reader = new FileReader();
               reader.onloadend = () => {
-                setImgPosicionamiento(reader.result);
+                setImgPosicionamiento({
+                  dataURL: reader.result,
+                  name: file.name
+                });
               };
               reader.readAsDataURL(file);
             }} 
@@ -307,8 +310,8 @@ const CrearCompoIlluvium = ({edit=false, data})=>{
             <img 
               className={style.bondPartnerImg} 
               src={
-                (typeof imgPosicionamiento === "string" && imgPosicionamiento.startsWith("data:image")) ?
-                imgPosicionamiento : 
+                (typeof imgPosicionamiento?.dataURL === "string" && imgPosicionamiento?.dataURL.startsWith("data:image")) ?
+                imgPosicionamiento?.dataURL : 
                 "https://api.guiadeparche.com"+imgPosicionamiento} 
                 alt={""}>
             </img>
@@ -456,7 +459,7 @@ const CrearCompoIlluvium = ({edit=false, data})=>{
         {
            Array.from({ length: 4 }, (_null,i)=>{
             return (
-              <fieldset key={`fieldset${i}`}>
+              <fieldset key={`Carriesfieldset${i}`}>
                 <legend>#{i+1}</legend>
                 <label>
                   Imagen Illuvial:
@@ -466,17 +469,22 @@ const CrearCompoIlluvium = ({edit=false, data})=>{
                     onChange={(e) => {
                       const file = e.target.files[0];
                       if (!file) return;
+
                       const reader = new FileReader();
                       reader.onloadend = () => {
-                        setCarriesItemization((oldArray)=>{
+                        setCarriesItemization((oldArray) => {
                           const nuevoArray = [...oldArray];
-                          nuevoArray[i] = reader.result;
-                          return nuevoArray
+                          // guardamos tanto el dataURL como el nombre
+                          nuevoArray[i] = {
+                            dataURL: reader.result,
+                            name: file.name
+                          };
+                          return nuevoArray;
                         });
                       };
                       reader.readAsDataURL(file);
                     }} 
-                    />
+                  />
                 </label>
                 {/* Botón para limpiar */}
                 <input
@@ -486,7 +494,7 @@ const CrearCompoIlluvium = ({edit=false, data})=>{
                     setCarriesItemization((oldArray) => {
                       const nuevoArray = [...oldArray];
                       if (nuevoArray[i]) {
-                        nuevoArray[i] = "";
+                        nuevoArray[i] = {};
                       }
                       return nuevoArray;
                     });
@@ -497,7 +505,18 @@ const CrearCompoIlluvium = ({edit=false, data})=>{
                 {/* Vista previa */}
                 {carriesItemization[i] && (
                   <img
-                    src={ (typeof carriesItemization[i] === "string" && carriesItemization[i].startsWith("data:image")) ? carriesItemization[i]: "https://api.guiadeparche.com"+carriesItemization[i]}
+                    src={
+                      // Caso 1: nuevo formato con objeto { dataURL, name }
+                      typeof carriesItemization[i] === "object" && carriesItemization[i]?.dataURL
+                        ? carriesItemization[i].dataURL
+                        // Caso 2: viejo formato, string base64
+                        : typeof carriesItemization[i] === "string" && carriesItemization[i].startsWith("data:image")
+                        ? carriesItemization[i]
+                        // Caso 3: URL del backend
+                        : typeof carriesItemization[i] === "string"
+                        ? "https://api.guiadeparche.com" + carriesItemization[i]
+                        : ""
+                    }
                     alt={`Illuvial #${i + 1}`}
                     style={{ width: 100, height: 100, objectFit: "cover" }}
                   />
