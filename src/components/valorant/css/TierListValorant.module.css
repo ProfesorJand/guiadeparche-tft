@@ -101,7 +101,7 @@
   position:absolute;
   top: 50%; /*  Empieza a 50% desde la parte superior */
   right: 0; /* Empieza a 50% desde la izquierda */
-  transform: translate(-50%, -50%);
+  transform: translate(0, -50%);
   text-align: center;
   align-items: center;
 }
