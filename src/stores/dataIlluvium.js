@@ -108,28 +108,45 @@ export const guardarCompo = async(data) => {
 
   // --- ImgPosicionamiento ---
   if (data.imgPosicionamiento) {
-    if (typeof data.imgPosicionamiento === "string" && data.imgPosicionamiento.startsWith("data:image")) {
-      const cleanName = (data.nombreCompo || "posicionamiento").replace(/\s+/g, "_");
-      const file = dataURLtoFile(data.imgPosicionamiento, `posicionamiento_${cleanName}.png`);
+    const img = data.imgPosicionamiento;
+
+    // Caso nuevo: objeto { dataURL, name }
+    if (img.dataURL && img.dataURL.startsWith("data:image")) {
+      const filename = `posicionamiento_${(data.nombreCompo || "compo").replace(/\s+/g, "_")}.png`;
+      const file = dataURLtoFile(img.dataURL, filename);
       formData.append("imgPosicionamiento", file);
-    } else {
-      formData.append("imgPosicionamientoUrl", data.imgPosicionamiento);
+      console.log({filename})
+    } 
+    // Caso viejo: string base64
+    else if (typeof img === "string" && img.startsWith("data:image")) {
+      const cleanName = (data.nombreCompo || "posicionamiento").replace(/\s+/g, "_");
+      const file = dataURLtoFile(img, `posicionamiento_${cleanName}.png`);
+      formData.append("imgPosicionamiento", file);
+      console.log({fileName})
+    } 
+    // Caso URL existente
+    else {
+      formData.append("imgPosicionamientoUrl", img);
+      console.log("casoElse")
     }
+  }else{
+    console.log("no hay data ImgPosicionamiento")
   }
+
 
   // --- Carries Itemization ---
   if (Array.isArray(data.carriesItemization)) {
-    data.carriesItemization.forEach((img, i) => {
-      if (!img) return;
+    data.carriesItemization.forEach((item, i) => {
+      if (!item) return;
 
-      const imageString = Array.isArray(img) ? img[0] : img;
-
-      if (typeof imageString === "string" && imageString.startsWith("data:image")) {
-        const nombre = (`carry_${i + 1}`).replace(/\s+/g, "_");
-        const file = dataURLtoFile(imageString, `carries_itemization_${nombre}.png`);
+      // Si es un objeto con dataURL y name (nuevo formato)
+      if (item.dataURL && typeof item.dataURL === "string" && item.dataURL.startsWith("data:image")) {
+        const file = dataURLtoFile(item.dataURL, item.name || `carries_itemization_${i + 1}.png`);
         formData.append(`carriesItemization[${i}]`, file);
-      } else {
-        formData.append(`carriesItemizationUrl[${i}]`, imageString);
+      } 
+      // Si es solo un string (caso anterior o URL)
+      else if (typeof item === "string") {
+        formData.append(`carriesItemizationUrl[${i}]`, item);
       }
     });
   }

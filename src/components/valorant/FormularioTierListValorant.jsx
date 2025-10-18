@@ -271,6 +271,7 @@ const FormularioTierListValorant = () => {
 }
 
 const maps = [
+  "abyss",
   "ascent",
   "bind",
   "breeze",
@@ -288,7 +289,7 @@ const agentsRols = {
   "controller":["clove","omen","brimstone","viper","astra","harbor"],
   "duelist":["reyna","jett","raze","pheonix","neon","iso","yoru","waylay"],
   "initiator":["sova","gekko","fade","breach","skye","kayo","tejo"],
-  "sentinel":["cypher","sage","chamber","killjoy","vyse","deadlock"],
+  "sentinel":["cypher","sage","chamber","killjoy","vyse","deadlock","veto"],
 };
 
 const rols = [
