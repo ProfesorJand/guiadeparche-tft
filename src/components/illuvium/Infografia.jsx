@@ -27,6 +27,7 @@ const Infografia = ({data})=>{
               </div>
               <div className={style.containerCarriesAugments}>
                 {
+                  data.basicsAugments?.[i]?.length > 0 && 
                   data.basicsAugments[i].map((basicAugment, ba)=>{
                     if(basicAugment){
                       return (
@@ -43,7 +44,8 @@ const Infografia = ({data})=>{
                   })
                 }
                 {
-                  data.legendsAugments[i].map((legendAugment, ba)=>{
+                  data.legendsAugments?.[i]?.length > 0 && 
+                  data.legendsAugments?.[i].map((legendAugment, ba)=>{
                     if(legendAugment){
                       return (
                         <div key={`containerLegendAugments${ba}`} className={style.containerAugmentsInfoLegendario}>
