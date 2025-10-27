@@ -93,7 +93,7 @@ export const guardarCompo = async(data) => {
   formData.append("midGame", data.midGame);
   formData.append("lateGame", data.lateGame);
   formData.append("edit", data.edit ? "true" : "false");
-  formData.append("id", data.id ?? "");
+  formData.append("id", data.id ?? Date.now().toString());
 
   // --- BondPartnerImg ---
   if (data.bondPartnerImg) {

@@ -178,7 +178,7 @@ const CrearCompoIlluvium = ({edit=false, data})=>{
         
         </label>
           { bondPartnerImg &&
-            <img className={style.bondPartnerImg} src={edit ? "https://api.guiadeparche.com"+bondPartnerImg : bondPartnerImg} alt={""}></img>
+            <img className={style.bondPartnerImg} src={bondPartnerImg.includes("data:image") ? bondPartnerImg : "https://api.guiadeparche.com"+bondPartnerImg} alt={""}></img>
           }
         {
           elementoPartner && 
@@ -404,7 +404,7 @@ const CrearCompoIlluvium = ({edit=false, data})=>{
           })
         }
         {
-          droneAugment.length > 0 && droneAugment.map((drone)=>{
+          droneAugment?.length > 0 && droneAugment.map((drone)=>{
             return (
               <img 
                 src={`https://api.guiadeparche.com/illuvium/assets/drones_augments/${drone}`}
@@ -590,7 +590,7 @@ const CrearCompoIlluvium = ({edit=false, data})=>{
 
                 {
                   basicsAugments?.[i]?.length > 0 && 
-                  basicsAugments[i].map((aumento, j)=>{
+                  basicsAugments?.[i].map((aumento, j)=>{
                     return (
                       <img 
                         key={`imgAumentosBasicos${i}-${j}`} 
@@ -608,7 +608,7 @@ const CrearCompoIlluvium = ({edit=false, data})=>{
 
                 {
                   legendsAugments?.[i]?.length > 0 && 
-                  legendsAugments[i].map((aumento, j)=>{
+                  legendsAugments?.[i].map((aumento, j)=>{
                     return (
                       <img 
                         key={`imgAumentosLegendarios${i}-${j}`} 
