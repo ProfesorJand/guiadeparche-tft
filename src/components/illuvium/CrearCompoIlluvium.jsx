@@ -46,6 +46,7 @@ const CrearCompoIlluvium = ({edit=false, data})=>{
   const [bondPartnerImg, setBondPartnerImg] = useState(edit ?  data.bondPartnerImg : null);
   const [classWeapon, setClassWeapon] = useState(edit ?  data.classWeapon :"");
   const [elementWeapon, setElementWeapon] = useState(edit ?  data.elementWeapon :"");
+  const [weaponAmplifierName, setWeaponAmplifierName] = useState(edit ?  data.weaponAmplifierName :"");
   const [imgPosicionamiento, setImgPosicionamiento] = useState(edit ?  data.imgPosicionamiento :null);
   const [earlyGame, setEarlyGame] = useState(edit ?  data.earlyGame :"");
   const [midGame, setMidGame] = useState(edit ?  data.midGame :"");
@@ -56,6 +57,7 @@ const CrearCompoIlluvium = ({edit=false, data})=>{
   const [weapon, setWeapon] = useState(edit ?  data.weapon :"");
   const [weaponAmplifier, setWeaponAmplifier] = useState(edit ?  data.weaponAmplifier :"")
   const [suitAmplifier, setSuitAmplifier] = useState(edit ?  data.suitAmplifier :[])
+  const [suitAmplifierName, setSuitAmplifierName] = useState(edit ?  data?.suitAmplifierName || ["",""] : ["",""])
   const [droneAugment, setDroneAugment] = useState(edit ?  data.droneAugment :[])
   const [id, setId] = useState( edit ? data.id : "")
   const [ocultar, setOcultar] = useState( edit ? data.ocultar : "false");
@@ -245,6 +247,15 @@ const CrearCompoIlluvium = ({edit=false, data})=>{
               })}
             </datalist>
           </label>
+          <label htmlFor="inputWeaponAmplifierName">Weapon Amplifier Name:
+            <input 
+              type="text"
+              value={weaponAmplifierName}
+                onChange={(e)=>{
+                setWeaponAmplifierName(e.target.value);
+              }}
+            />
+          </label>
         <label>
           Select Class:
           <select onChange={(e)=>{setClassWeapon(e.target.value)}} value={classWeapon}>
@@ -359,7 +370,21 @@ const CrearCompoIlluvium = ({edit=false, data})=>{
                     )
                   })}
                 </datalist>
+                  <label>Nombre Suit Amplifier:
+                  <input 
+                    type="text"
+                    value={suitAmplifierName?.[i]}
+                    onChange={(e)=>{
+                      setSuitAmplifierName((oldArray)=>{
+                        const nuevoArray = [...oldArray];
+                        nuevoArray[i]= e.target.value;
+                        return nuevoArray;
+                      });
+                    }}
+                  />
+                </label>
               </label>
+              
             )
           })
         }
@@ -659,6 +684,7 @@ const CrearCompoIlluvium = ({edit=false, data})=>{
             rollInLv,
             classWeapon,
             elementWeapon,
+            weaponAmplifierName,
             bondPartnerImg,
             elementoPartner,
             classPartner,
@@ -673,6 +699,7 @@ const CrearCompoIlluvium = ({edit=false, data})=>{
             weapon,
             weaponAmplifier,
             suitAmplifier,
+            suitAmplifierName,
             droneAugment,
             edit,
           })
