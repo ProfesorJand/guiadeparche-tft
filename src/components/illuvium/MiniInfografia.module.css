@@ -85,6 +85,7 @@
   box-sizing: border-box;
   justify-content: center;
   align-items: center;
+  font-size: clamp(1vh, 1vw, 2vw);
 }
 
 .category{
@@ -116,13 +117,16 @@
 }
 
 .textoBond{
+  display: flex;
+  position: relative;
+  width: 10%;
   writing-mode: vertical-lr;
   transform: rotate(180deg);
   align-items: center;
   justify-content: center;
   text-align: center;
   font-size: 14px;
-
+  /* background-color: rgb(42, 75, 104); */
 }
 
 .containerWeaponElement{
@@ -134,20 +138,24 @@
 .containerWeapon{
   display: flex;
   height: 100%;
-  width: fit-content;
+  width: calc(100% / 3);
   flex-direction: column;
   position: relative;
+  align-items: center;
+  overflow: hidden;
 }
 
 .classWeaponImg{
   display: flex;
-  height: 80%;
+  height: 100%;
   width: fit-content;
+  object-fit: fill;
 }
 
 .textoClassWeapon{
   display: flex;
-  position: relative;
+  position: absolute;
+  bottom:0;
   width: 100%;
   height: 20%;
   background-color: rgba(0, 0, 0, 0.4);
@@ -160,28 +168,32 @@
 .containerElement{
   display: flex;
   height: 100%;
-  width: fit-content;
+  width: calc(100% / 3);
   flex-direction: column;
   position: relative;
+  align-items: center;
+  overflow: hidden;
 }
 
 .containerBondPartnerInfo{
   display: flex;
-  width: fit-content;
+  width: calc((90% - 10px)/2);
   border: 1px solid rgb(255, 0, 234);
   box-sizing: border-box;
 }
 
 .elementoPartnerImg{
   display: flex;
-  height: 80%;
-  width: fit-content;
+    height: 100%;
+    width: fit-content;
+    object-fit: fill;
 }
 
 
 .textoElementoPartner{
   display: flex;
-  position: relative;
+  position: absolute;
+  bottom:0;
   width: 100%;
   height: 20%;
   background-color: rgba(0, 0, 0, 0.4);
@@ -193,10 +205,10 @@
 .containerIlluvialBondPartner{
   display: flex;
   flex-direction: column;
-  height: 100%;
-  width: fit-content;
-
+  width: calc(100% / 3);
   position: relative;
+  align-items: center;
+  overflow: clip;
 }
 
 .bondPartnerImg{
