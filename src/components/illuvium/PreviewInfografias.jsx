@@ -11,6 +11,7 @@ const PreviewInfografias = ()=>{
   const [edit, setEdit] = useState(null);
   const [capturandoImagen, setCapturandoImagen] = useState(false)
   const refs = useRef([]);
+  const admin = localStorage.getItem("user")||false;
   useEffect(()=>{
     const buscarCompos = async()=>{
       await getMetaComps()
@@ -25,6 +26,9 @@ const PreviewInfografias = ()=>{
     {
       ComposMeta.length > 0 && 
       ComposMeta.map((data,i)=>{
+        if(data.ocultar === "true" && !admin){
+          return null;
+        }
         return (
           <div key={`Infografia${i}`} ref={refs.current[i]} className={style.containerInfografia} onClick={()=>{
             if(openInfografia === i){
@@ -33,7 +37,7 @@ const PreviewInfografias = ()=>{
               setOpenInfografia(i)
             }
           }}>
-            <MiniInfografia data={data} isOpen={openInfografia === i} edit={edit} setEdit={setEdit} capturandoImagen={capturandoImagen} setCapturandoImagen={setCapturandoImagen} backgroundRef={refs.current[i]} index={i} setOpenInfografia={setOpenInfografia}/>
+            <MiniInfografia data={data} isOpen={openInfografia === i} edit={edit} setEdit={setEdit} capturandoImagen={capturandoImagen} setCapturandoImagen={setCapturandoImagen} backgroundRef={refs.current[i]} index={i} setOpenInfografia={setOpenInfografia} admin={admin}/>
             {
               edit === data?.id && 
               <CrearCompoIlluvium 

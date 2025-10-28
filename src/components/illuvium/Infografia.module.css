@@ -266,3 +266,19 @@
   box-sizing: border-box;
   padding:5px
 }
+
+.gameplayTime{
+  /* text-decoration: underline;
+  text-decoration-color: rgb(255, 0, 234);
+  background-color: rgb(80, 28, 76); */
+}
+
+
+@media only screen and (max-width:900px) {
+  .containerCarriesInfo{
+    width: 100%;
+  }
+  .containerSuitsDrones{
+    flex-wrap: wrap;
+  }
+}

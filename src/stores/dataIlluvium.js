@@ -78,6 +78,7 @@ export const guardarCompo = async(data) => {
   const formData = new FormData();
 
   // Datos simples
+  formData.append("ocultar", data.ocultar);
   formData.append("selectedTier", data.selectedTier);
   formData.append("nombreCompo", data.nombreCompo);
   formData.append("nombreBondPartner", data.nombreBondPartner);
@@ -93,7 +94,7 @@ export const guardarCompo = async(data) => {
   formData.append("midGame", data.midGame);
   formData.append("lateGame", data.lateGame);
   formData.append("edit", data.edit ? "true" : "false");
-  formData.append("id", data.id ?? Date.now().toString());
+  formData.append("id", data.id || Date.now().toString());
 
   // --- BondPartnerImg ---
   if (data.bondPartnerImg) {

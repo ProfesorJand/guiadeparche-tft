@@ -130,18 +130,16 @@ const Infografia = ({data})=>{
         <div className={style.containerEarlyMidLate}>
           { data.earlyGame && 
             <div className={style.containerGame}>
-            <span>EARLY GAME:</span>
-            <span>{data.earlyGame}</span>
+            
+            <span><span className={style.gameplayTime}>EARLY GAME:</span> {data.earlyGame}</span>
           </div>}
           { data.midGame && 
-            <div className={style.containerGame}>
-            <span>MID GAME:</span>
-            <span>{data.midGame}</span>
+            <div className={style.containerGame}>   
+            <span><span className={style.gameplayTime}>MID GAME:</span> {data.midGame}</span>
           </div>}
           { data.lateGame &&
             <div className={style.containerGame}>
-            <span>LATE GAME:</span>
-            <span>{data.lateGame}</span>
+            <span><span className={style.gameplayTime}>LATE GAME:</span> {data.lateGame}</span>
           </div>}
 
         </div>
