@@ -181,14 +181,15 @@
 }
 
 .textoSuit{
-  display: flex;
   position: relative;
   background-color: #0000005e;
   width: 100%;
   text-align: center;
+  display: flex;
+  overflow: hidden;
+  height: calc(2 * 1.4em); /* exactamente 2 líneas */
+  line-height: 1.4em;
   justify-content: center;
-  align-items: center;
-  height: 25%;
 }
 
 .containerDronesAumgents{
