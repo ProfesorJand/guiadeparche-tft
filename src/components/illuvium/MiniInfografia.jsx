@@ -1,10 +1,9 @@
 import { CapturarImagen } from "src/functions/CapturarImagen";
 import style from "./MiniInfografia.module.css"
-const MiniInfografia = ({data, isOpen, show=true, edit, setEdit, capturandoImagen, setCapturandoImagen, backgroundRef, index, setOpenInfografia})=>{
-  const admin = localStorage.getItem("user")||false;
+const MiniInfografia = ({data, isOpen, show=true, edit, setEdit, capturandoImagen, setCapturandoImagen, backgroundRef, index, setOpenInfografia, admin})=>{
   const colorDificulty= {Easy:"green",Medium:"orange",Hard:"red"}
   return(
-    <div className={[style.container, isOpen && style.isOpen].join(" ")} >
+    <div className={[style.container, isOpen && style.isOpen, admin && data.ocultar === "true" && style.isAdminView].join(" ")} >
       {!capturandoImagen  && admin && 
       <div className={style.miniMenu}>
         <input 
@@ -37,15 +36,18 @@ const MiniInfografia = ({data, isOpen, show=true, edit, setEdit, capturandoImage
         }}></input>
       </div>}
 
-      <div className={style.containerTier}>
-        <img 
-          src={`/tiers/Tier-${data.selectedTier}.webp`}
-          className={style.imgTier}
-        ></img>
-      </div>
       <div className={style.containerInfo1}>
+        <div className={style.tierTitulo}>
+
+        <div className={style.containerTier}>
+          <img 
+            src={`/tiers/Tier-${data.selectedTier}.webp`}
+            className={style.imgTier}
+            ></img>
+        </div>
         <div className={style.titulo}>
           {data.nombreCompo || "Sin Titulo"}
+        </div>
         </div>
         <div className={style.containerDificultadRoll}>
           <span
@@ -95,7 +97,7 @@ const MiniInfografia = ({data, isOpen, show=true, edit, setEdit, capturandoImage
               </div>
               <div className={style.containerBondPartnerInfo}>
               {/*Weapon IMG*/}
-              <div className={style.containerElement} >
+              <div className={style.containerBondWeapon} >
                 <img 
                   className={style.elementoPartnerImg}
                   src={"https://api.guiadeparche.com/illuvium/assets/weapons/" + data.weapon}></img>
@@ -106,7 +108,7 @@ const MiniInfografia = ({data, isOpen, show=true, edit, setEdit, capturandoImage
               {/*Elemento Weapon IMG*/}
               <div className={style.containerElement} >
                 <img 
-                  className={style.elementoPartnerImg}
+                  className={style.bondWeaponImg}
                   src={"https://api.guiadeparche.com/illuvium/assets/elementos/" + data.elementWeapon}></img>
                 <span
                   className={style.textoElementoPartner}

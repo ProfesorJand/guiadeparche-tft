@@ -58,6 +58,7 @@ const CrearCompoIlluvium = ({edit=false, data})=>{
   const [suitAmplifier, setSuitAmplifier] = useState(edit ?  data.suitAmplifier :[])
   const [droneAugment, setDroneAugment] = useState(edit ?  data.droneAugment :[])
   const [id, setId] = useState( edit ? data.id : "")
+  const [ocultar, setOcultar] = useState( edit ? data.ocultar : "false");
   useEffect(()=>{
     /*cargando lista de aumentos */
     const cargandoLista = async()=>{
@@ -77,6 +78,16 @@ const CrearCompoIlluvium = ({edit=false, data})=>{
   return (
     <div className={style.container}>
       {/* Encabezado */}
+      <label>
+        Ocultar Compo:
+        <select onChange={(e)=>{setOcultar(e.target.value)}} value={ocultar}>
+
+          <option key={`optionTier-False`} value={"false"}>FALSE</option>
+          <option key={`optionTier-True`} value={"true"}>TRUE</option>
+
+        </select>
+      </label>
+
       <label>
         Seleccionar Tier:
         <select onChange={(e)=>{setSelectedTier(e.target.value)}} value={selectedTier}>
@@ -640,6 +651,8 @@ const CrearCompoIlluvium = ({edit=false, data})=>{
         onClick={()=>{
 
           guardarCompo({
+            id,
+            ocultar,
             selectedTier,
             nombreCompo,
             selectedDificultad,
@@ -662,7 +675,6 @@ const CrearCompoIlluvium = ({edit=false, data})=>{
             suitAmplifier,
             droneAugment,
             edit,
-            id,
           })
         }}></input>
     </div>

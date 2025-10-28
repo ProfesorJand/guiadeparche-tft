@@ -21,7 +21,17 @@ const JSONSchema = crearJSONSchema({title, imgPost, thumbnail, description});
 <style>
   .smallContainer{
     display: flex;
-    width: 50%;
     flex-direction: column;
+  }
+  @media only screen and (max-width:900px) {
+    .smallContainer{
+    width: 90%;
+  }
+}
+  
+  @media only screen and (min-width:900px) {
+    .smallContainer{
+      width: 60%;
+    }
   }
 </style>
