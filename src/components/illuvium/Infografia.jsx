@@ -80,7 +80,7 @@ const Infografia = ({data})=>{
                   src={`https://api.guiadeparche.com/illuvium/assets/suits_amplifiers/`+suit}
                   >
                   </img>
-                  <span className={style.textoSuit}>{suit.replace("suit_amplifier_","").replace(".PNG","").replace("_"," ")}</span>
+                  <span className={style.textoSuit}>{data?.suitAmplifierName?.[k]}</span>
                 </div>
               )
             })
@@ -96,7 +96,7 @@ const Infografia = ({data})=>{
               src={`https://api.guiadeparche.com/illuvium/assets/weapons_amplifiers/`+data.weaponAmplifier}
               >
               </img>
-              <span className={style.textoSuit}>{data.weaponAmplifier.replaceAll("weapon_amplifier_"," ").replace(".webp","")}</span>
+              <span className={style.textoSuit}>{data.weaponAmplifierName}</span>
           </div>
         </div>
         {/* Drones Augments */}

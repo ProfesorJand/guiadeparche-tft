@@ -95,6 +95,8 @@ export const guardarCompo = async(data) => {
   formData.append("lateGame", data.lateGame);
   formData.append("edit", data.edit ? "true" : "false");
   formData.append("id", data.id || Date.now().toString());
+  formData.append("weaponAmplifierName", data.weaponAmplifierName || "");
+  formData.append("suitAmplifierName", JSON.stringify(data.suitAmplifierName || []));
 
   // --- BondPartnerImg ---
   if (data.bondPartnerImg) {
