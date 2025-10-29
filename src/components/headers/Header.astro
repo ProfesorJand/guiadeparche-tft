@@ -104,15 +104,14 @@ const menus = [
 
 
 <script>
-  document.addEventListener("astro:page-load", ()=>{
-    const menuMobile = document.querySelectorAll(".menuMobile");
-    menuMobile.forEach((btn)=>{
-      btn.addEventListener("click",()=>{
-      const sideMenu = document.querySelector(".sideMenu");
-      sideMenu.classList.toggle("hide")
-    })
-    })  
-  })
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".menuMobile").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const sideMenu = document.querySelector(".sideMenu");
+        sideMenu.classList.toggle("hide");
+      });
+    });
+  });
 </script>
 
 <style>
