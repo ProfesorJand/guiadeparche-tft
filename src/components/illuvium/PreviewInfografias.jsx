@@ -5,6 +5,7 @@ import { getMetaComps, metaComps } from "@stores/dataIlluvium";
 import style from "./PreviewInfografias.module.css"
 import { useStore } from "@nanostores/react";
 import CrearCompoIlluvium from "./CrearCompoIlluvium";
+import Youtube from "@components/youtube/Youtube.jsx";
 const PreviewInfografias = ()=>{
   const ComposMeta = useStore(metaComps);
   const [openInfografia, setOpenInfografia] = useState(null);
@@ -23,6 +24,7 @@ const PreviewInfografias = ()=>{
   }, [ComposMeta]);
   return (
     <div className={style.container}>
+      <Youtube src={"https://youtu.be/J6Qto2bOMNA?si=RIrnUVGd4kBA_BBB"}></Youtube>
     {
       ComposMeta.length > 0 && 
       ComposMeta.map((data,i)=>{
