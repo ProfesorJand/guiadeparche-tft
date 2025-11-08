@@ -1,9 +1,24 @@
 import { CapturarImagen } from "src/functions/CapturarImagen";
 import style from "./MiniInfografia.module.css"
-const MiniInfografia = ({data, isOpen, show=true, edit, setEdit, capturandoImagen, setCapturandoImagen, backgroundRef, index, setOpenInfografia, admin})=>{
+const MiniInfografia = ({
+    data, 
+    isOpen, 
+    show=true, 
+    edit, 
+    setEdit, 
+    capturandoImagen, 
+    setCapturandoImagen, 
+    backgroundRef, 
+    miniRef,
+    positionRef,
+    carriesInfoRef,
+    infoRef,
+    index, 
+    setOpenInfografia, 
+    admin})=>{
   const colorDificulty= {Easy:"green",Medium:"orange",Hard:"red"}
   return(
-    <div className={[style.container, isOpen && style.isOpen, admin && data.ocultar === "true" && style.isAdminView].join(" ")} >
+    <div ref={miniRef} className={[style.container, isOpen && style.isOpen, admin && data.ocultar === "true" && style.isAdminView].join(" ")} >
       {!capturandoImagen  && admin && 
       <div className={style.miniMenu}>
         <input 
@@ -34,6 +49,38 @@ const MiniInfografia = ({data, isOpen, show=true, edit, setEdit, capturandoImage
             setCapturandoImagen(false);
           CapturarImagen
         }}></input>
+        <input
+          type="button"
+          value={"Capturar 3 partes"}
+          onClick={async (e) => {
+            e.stopPropagation();
+            setCapturandoImagen(true);
+            setOpenInfografia(index);
+            console.log("Click en Capturar 3 partes");
+
+            // Espera a que el DOM se actualice y renderice la infografía
+            await new Promise(r => setTimeout(r, 300));
+
+            // 📸 Capturar las 3 imágenes una por una
+            await CapturarImagen({
+              backgroundRef: miniRef,
+              nombre: `mini-${data.nombreCompo}`,
+            });
+
+            await CapturarImagen({
+              backgroundRef: positionRef,
+              nombre: `posicionamiento-${data.nombreCompo}`,
+            });
+
+            await CapturarImagen({
+              backgroundRef: carriesInfoRef,
+              nombre: `carriesInfo-${data.nombreCompo}`,
+            });
+
+            setCapturandoImagen(false);
+            alert("✅ Todas las imágenes fueron capturadas correctamente");
+          }}
+        />
       </div>}
 
       <div className={style.containerInfo1}>

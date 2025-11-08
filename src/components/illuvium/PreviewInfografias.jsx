@@ -12,6 +12,9 @@ const PreviewInfografias = ()=>{
   const [edit, setEdit] = useState(null);
   const [capturandoImagen, setCapturandoImagen] = useState(false)
   const refs = useRef([]);
+  const miniRefs = useRef([]);
+  const positionRefs = useRef([]);
+  const carriesInfoRefs = useRef([]);
   const admin = localStorage.getItem("user")||false;
   useEffect(()=>{
     const buscarCompos = async()=>{
@@ -21,6 +24,9 @@ const PreviewInfografias = ()=>{
   },[])
     useEffect(() => {
     refs.current = ComposMeta.map((_, i) => refs.current[i] || createRef());
+    miniRefs.current = ComposMeta.map((_, i) => miniRefs.current[i] || createRef());
+    positionRefs.current = ComposMeta.map((_, i) => positionRefs.current[i] || createRef());
+    carriesInfoRefs.current = ComposMeta.map((_, i) => carriesInfoRefs.current[i] || createRef());
   }, [ComposMeta]);
   return (
     <div className={style.container}>
@@ -39,7 +45,20 @@ const PreviewInfografias = ()=>{
               setOpenInfografia(i)
             }
           }}>
-            <MiniInfografia data={data} isOpen={openInfografia === i} edit={edit} setEdit={setEdit} capturandoImagen={capturandoImagen} setCapturandoImagen={setCapturandoImagen} backgroundRef={refs.current[i]} index={i} setOpenInfografia={setOpenInfografia} admin={admin}/>
+            <MiniInfografia
+              data={data} 
+              isOpen={openInfografia === i}
+              edit={edit} 
+              setEdit={setEdit} 
+              capturandoImagen={capturandoImagen} 
+              setCapturandoImagen={setCapturandoImagen} 
+              backgroundRef={refs.current[i]} 
+              miniRef={miniRefs.current[i]}   //* ✅ agregado */}
+              positionRef={positionRefs.current[i]}   //* ✅ agregado */}
+              carriesInfoRef={carriesInfoRefs.current[i]}   //* ✅ agregado */}
+              index={i} 
+              setOpenInfografia={setOpenInfografia} 
+              admin={admin}/>
             {
               edit === data?.id && 
               <CrearCompoIlluvium 
@@ -49,7 +68,7 @@ const PreviewInfografias = ()=>{
             }
             {
               openInfografia === i &&
-              <Infografia data={data}></Infografia>
+              <Infografia data={data} positionRef={positionRefs.current[i]} carriesInfoRef={carriesInfoRefs.current[i]}></Infografia>
             }
           </div>
           )

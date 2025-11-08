@@ -36,6 +36,7 @@ const loadAllImages = (container) => {
 
 
 export const CapturarImagen = ({backgroundRef, nombre}) => {
+  console.log("📸 Capturando imagen de:", backgroundRef, nombre);
   if (backgroundRef.current === null) return;
 
   loadAllImages(backgroundRef.current)
