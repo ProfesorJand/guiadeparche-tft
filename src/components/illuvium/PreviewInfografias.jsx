@@ -48,12 +48,15 @@ const PreviewInfografias = ()=>{
               setOpenInfografia(i)
             }
           }}>
-            <input 
+            {
+              admin && 
+              <input 
               type="button"
               onClick={()=>{previewInfografiaRedes !== i ? setPreviewInfografiaRedes(i): setPreviewInfografiaRedes(null); console.log("click en preview")}}
               value={"Preview"}>
 
-            </input>
+              </input>
+              }
             
             <MiniInfografia
               data={data} 
@@ -105,7 +108,7 @@ const PreviewInfografias = ()=>{
           setOpenInfografia={setOpenInfografia}
           admin={false}
           setPreviewInfografiaRedes={setPreviewInfografiaRedes}
-          
+
         />
       )
     }
