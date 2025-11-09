@@ -34,7 +34,26 @@ const PreviewInfografiasRedes = ({
         <input 
           type="button"
           value={"Capturar Img #1"}
-          onClick={()=>CapturarImagen({backgroundRef: refInfo1, nombre: `Illuvium_MiniInfografia_${data.nombreCompo}`})}>
+          onClick={()=>CapturarImagen({backgroundRef: refInfo1, nombre: `Illuvium_Info1_${data.nombreCompo}`})}>
+        </input>
+        <input 
+          type="button"
+          value={"Capturar MiniInfo"}
+           onClick={async () => {
+            try {
+              // 🔹 Esperamos un frame para que el cambio se renderice
+              setCapturandoImagen(true)
+              await new Promise((resolve) => requestAnimationFrame(resolve));
+              // 🔹 Capturamos la imagen
+              await CapturarImagen({
+                backgroundRef: miniRef,
+                nombre: `Illuvium_MiniInfografia_${data.nombreCompo}`,
+              });
+            } finally {
+              // 🔹 Restauramos el padding original
+              setCapturandoImagen(false)
+            }
+          }}>
         </input>
         <input 
           type="button"
@@ -82,7 +101,7 @@ const PreviewInfografiasRedes = ({
         <input 
           type="button"
           value={"Capturar Img #2"}
-          onClick={()=>CapturarImagen({backgroundRef: refInfo2, nombre: `Illuvium_CarriesInfo_${data.nombreCompo}`})}>
+          onClick={()=>CapturarImagen({backgroundRef: refInfo2, nombre: `Illuvium_Info2_${data.nombreCompo}`})}>
         </input>
          <input 
           type="button"

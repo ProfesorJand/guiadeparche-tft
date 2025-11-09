@@ -108,7 +108,6 @@ const PreviewInfografias = ()=>{
           setOpenInfografia={setOpenInfografia}
           admin={false}
           setPreviewInfografiaRedes={setPreviewInfografiaRedes}
-
         />
       )
     }

@@ -25,7 +25,7 @@ const MiniInfografia = ({
       className={[style.container, isOpen && style.isOpen, admin && data.ocultar === "true" && style.isAdminView].join(" ")} 
       style={{
         height: previewInfografiaRedes && "160px",
-        paddingBottom: previewInfografiaRedes && "20px"
+        paddingBottom: previewInfografiaRedes && !capturandoImagen ? "20px" : undefined,
       }}
       >
       {!capturandoImagen  && admin && 
@@ -41,6 +41,10 @@ const MiniInfografia = ({
       {!capturandoImagen  && admin && 
       <div className={style.miniMenu2}>
         <input 
+          type="checkbox"
+          onClick={()=>{}}
+        />
+        {/* <input 
           type="button" 
           value={"Capturar Image"}
           onClick={ async (e)=>{
@@ -89,8 +93,9 @@ const MiniInfografia = ({
             setCapturandoImagen(false);
             alert("✅ Todas las imágenes fueron capturadas correctamente");
           }}
-        />
-      </div>}
+        /> */}
+      </div>
+      }
 
       <div className={style.containerInfo1}>
         <div className={style.tierTitulo}
