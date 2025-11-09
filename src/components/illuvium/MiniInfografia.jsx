@@ -25,7 +25,7 @@ const MiniInfografia = ({
       className={[style.container, isOpen && style.isOpen, admin && data.ocultar === "true" && style.isAdminView].join(" ")} 
       style={{
         height: previewInfografiaRedes && "160px",
-        paddingBottom: "20px"
+        paddingBottom: previewInfografiaRedes && "20px"
       }}
       >
       {!capturandoImagen  && admin && 
