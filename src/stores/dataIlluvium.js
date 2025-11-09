@@ -80,6 +80,7 @@ export const guardarCompo = async(data) => {
   // Datos simples
   formData.append("ocultar", data.ocultar);
   formData.append("selectedTier", data.selectedTier);
+  formData.append("positionTier", data.positionTier);
   formData.append("nombreCompo", data.nombreCompo);
   formData.append("nombreBondPartner", data.nombreBondPartner);
   formData.append("selectedDificultad", data.selectedDificultad);
@@ -196,5 +197,18 @@ export const getMetaComps = async()=>{
     
   })
   const data = await res.json();
-  metaComps.set(data)
+  const sortedData = data.sort((a, b) => {
+    const tierHerarquy = { 'S': 1, 'A': 2, 'B': 3, 'C': 4, 'D': 5 };
+    const tierA = tierHerarquy[a.selectedTier] || 99;
+    const tierB = tierHerarquy[b.selectedTier] || 99;
+    //also sort by positionTier this came with numbers when 1 is the first position
+    if (tierA !== tierB) {
+      return tierA - tierB;
+    } else {
+      return (a.positionTier || 99) - (b.positionTier || 99);
+    }
+
+  })
+
+  metaComps.set(sortedData)
 }

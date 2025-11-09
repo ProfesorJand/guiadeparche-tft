@@ -138,11 +138,47 @@
   width: 10%;
   writing-mode: vertical-lr;
   transform: rotate(180deg);
-  align-items: center;
+  /* align-items: center; */
   justify-content: center;
   text-align: center;
   font-size: 14px;
   /* background-color: rgb(42, 75, 104); */
+}
+
+/* .textoBond::before,
+.textoBond::after {
+  content: "";
+  position: absolute;
+  left: 7px;
+  width: 1px;
+  height: 40%;
+  background-color: rgba(255, 255, 255, 0.3);
+  transform: translateX(-50%);
+} */
+
+/* .textoBond::before {
+  top: -10%;
+}
+
+.textoBond::after {
+  bottom: -10%;
+} */
+
+/* Líneas horizontales */
+.lineasHorizontales {
+  position: absolute;
+  width: 40%;
+  height: 1px;
+  background-color: rgb(255, 0, 234);
+  left: 0;
+}
+
+.lineasHorizontales:first-of-type {
+  top: 0;
+}
+
+.lineasHorizontales:last-of-type {
+  bottom: 0;
 }
 
 .containerWeaponElement{

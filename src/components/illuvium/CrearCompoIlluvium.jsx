@@ -37,6 +37,7 @@ const CrearCompoIlluvium = ({edit=false, data})=>{
   const weaponsAmplifiersList = useStore(weaponsAmplifiers);
   const dronesAugmentsList = useStore(dronesAugments)
   const [selectedTier, setSelectedTier] = useState(edit ?  data.selectedTier : tiers[0] );
+  const [positionTier, setPositionTier] = useState(1);
   const [nombreCompo, setNombreCompo] = useState(edit ?  data.nombreCompo :"");
   const [nombreBondPartner, setNombreBondPartner] = useState(edit ?  data.nombreBondPartner : "")
   const [selectedDificultad, setSelectedDificultad] = useState(edit ?  data.selectedDificultad :dificultades[0])
@@ -101,6 +102,17 @@ const CrearCompoIlluvium = ({edit=false, data})=>{
             })
           }
         </select>
+      </label>
+      <label>
+        Seleccionar Posicion en el Tier:
+        <input
+          type="number"
+          min={1}
+          max={99}
+          step={1}
+          value={positionTier}
+          onChange={(e)=>{setPositionTier(e.target.value)}}>
+        </input>
       </label>
 
       <label>
@@ -679,6 +691,7 @@ const CrearCompoIlluvium = ({edit=false, data})=>{
             id,
             ocultar,
             selectedTier,
+            positionTier,
             nombreCompo,
             selectedDificultad,
             rollInLv,

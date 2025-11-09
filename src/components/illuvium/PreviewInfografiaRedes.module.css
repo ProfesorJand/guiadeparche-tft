@@ -1,0 +1,67 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  background-color: #0d081e;
+  top: 0px;
+  left: 0px;
+  padding: 20px;
+  width: 1080px;
+}
+
+.containerBtns {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-direction: row;
+}
+
+.containerPreview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* 🔹 mantiene la relación 4/5 */
+.preview {
+  display: flex;
+  flex-direction: column;
+  aspect-ratio: 4 / 5;
+  width: 100%;
+  max-width: 1080px; /* opcional, para limitar el tamaño */
+  background-color: #0d081e;
+  align-items: center;
+  justify-content: flex-start; /* importante: arriba */
+  overflow: hidden; /* por si algo se sale */
+  position: relative;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.containerLogos {
+  flex-grow: 1;        /* ocupa el resto del espacio dentro del aspect-ratio */
+  min-height: 0;       /* evita que fuerce overflow */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  background-color: #0d081e;
+  overflow: hidden;    /* opcional: evita scroll */
+}
+
+.containerLogo {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.containerLogos img {
+  max-height: 80%;
+  width: auto;
+  object-fit: contain;
+  opacity: 0.8;
+}

@@ -6,6 +6,8 @@ import style from "./PreviewInfografias.module.css"
 import { useStore } from "@nanostores/react";
 import CrearCompoIlluvium from "./CrearCompoIlluvium";
 import Youtube from "@components/youtube/Youtube.jsx";
+import PositionInfografia from "./PositionInfografia.jsx";
+import PreviewInfografiasRedes from "./PreviewInfografiaRedes.jsx";
 const PreviewInfografias = ()=>{
   const ComposMeta = useStore(metaComps);
   const [openInfografia, setOpenInfografia] = useState(null);
@@ -16,6 +18,7 @@ const PreviewInfografias = ()=>{
   const positionRefs = useRef([]);
   const carriesInfoRefs = useRef([]);
   const admin = localStorage.getItem("user")||false;
+  const [previewInfografiaRedes, setPreviewInfografiaRedes] = useState(null);
   useEffect(()=>{
     const buscarCompos = async()=>{
       await getMetaComps()
@@ -45,6 +48,13 @@ const PreviewInfografias = ()=>{
               setOpenInfografia(i)
             }
           }}>
+            <input 
+              type="button"
+              onClick={()=>{previewInfografiaRedes !== i ? setPreviewInfografiaRedes(i): setPreviewInfografiaRedes(null); console.log("click en preview")}}
+              value={"Preview"}>
+
+            </input>
+            
             <MiniInfografia
               data={data} 
               isOpen={openInfografia === i}
@@ -58,7 +68,8 @@ const PreviewInfografias = ()=>{
               carriesInfoRef={carriesInfoRefs.current[i]}   //* ✅ agregado */}
               index={i} 
               setOpenInfografia={setOpenInfografia} 
-              admin={admin}/>
+              admin={admin}
+              />
             {
               edit === data?.id && 
               <CrearCompoIlluvium 
@@ -68,12 +79,36 @@ const PreviewInfografias = ()=>{
             }
             {
               openInfografia === i &&
-              <Infografia data={data} positionRef={positionRefs.current[i]} carriesInfoRef={carriesInfoRefs.current[i]}></Infografia>
+              <>
+              <PositionInfografia positionRef={positionRefs.current[i]} data={data} />
+              <Infografia data={data} carriesInfoRef={carriesInfoRefs.current[i]}></Infografia>
+              </>
             }
           </div>
           )
         })
       }
+    {
+      previewInfografiaRedes !== null && (
+        <PreviewInfografiasRedes
+          data={ComposMeta[previewInfografiaRedes]}
+          isOpen={true}
+          edit={false}
+          setEdit={setEdit}
+          capturandoImagen={capturandoImagen}
+          setCapturandoImagen={setCapturandoImagen}
+          backgroundRef={refs.current[previewInfografiaRedes]}
+          miniRef={miniRefs.current[previewInfografiaRedes]}
+          positionRef={positionRefs.current[previewInfografiaRedes]}
+          carriesInfoRef={carriesInfoRefs.current[previewInfografiaRedes]}
+          index={previewInfografiaRedes}
+          setOpenInfografia={setOpenInfografia}
+          admin={false}
+          setPreviewInfografiaRedes={setPreviewInfografiaRedes}
+          
+        />
+      )
+    }
     </div>
   )
 }

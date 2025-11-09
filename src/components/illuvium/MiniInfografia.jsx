@@ -15,10 +15,19 @@ const MiniInfografia = ({
     infoRef,
     index, 
     setOpenInfografia, 
-    admin})=>{
+    admin,
+    previewInfografiaRedes=false
+  })=>{
   const colorDificulty= {Easy:"green",Medium:"orange",Hard:"red"}
   return(
-    <div ref={miniRef} className={[style.container, isOpen && style.isOpen, admin && data.ocultar === "true" && style.isAdminView].join(" ")} >
+    <div 
+      ref={miniRef} 
+      className={[style.container, isOpen && style.isOpen, admin && data.ocultar === "true" && style.isAdminView].join(" ")} 
+      style={{
+        height: previewInfografiaRedes && "160px",
+        paddingBottom: "20px"
+      }}
+      >
       {!capturandoImagen  && admin && 
       <div className={style.miniMenu}>
         <input 
@@ -84,7 +93,11 @@ const MiniInfografia = ({
       </div>}
 
       <div className={style.containerInfo1}>
-        <div className={style.tierTitulo}>
+        <div className={style.tierTitulo}
+         style={{
+                height: previewInfografiaRedes && "70%"
+              }}
+        >
 
         <div className={style.containerTier}>
           <img 
@@ -92,26 +105,48 @@ const MiniInfografia = ({
             className={style.imgTier}
             ></img>
         </div>
-        <div className={style.titulo}>
+        <div 
+          className={style.titulo}
+          style={{
+                    fontSize: previewInfografiaRedes && "2vw"
+                  }}
+        >
           {data.nombreCompo || "Sin Titulo"}
         </div>
         </div>
-        <div className={style.containerDificultadRoll}>
+        <div className={style.containerDificultadRoll}
+          style={{
+                height: previewInfografiaRedes && "30%"
+              }}
+        >
           <span
             className={style.dificultad}
             style={{
-              borderColor: colorDificulty[data.selectedDificultad] 
+              borderColor: colorDificulty[data.selectedDificultad],
+              fontSize: previewInfografiaRedes && "1.2vw"
             }}
           >{data.selectedDificultad}</span>
-          <span className={style.category}>Roll Lv{data.rollInLv}</span>
+          <span className={style.category}
+            style={{
+                fontSize: previewInfografiaRedes && "1.2vw"
+              }}
+          >Roll Lv{data.rollInLv}</span>
         </div>
       </div>
       <div className={style.containerInfo2}>
             {/*Bond Partner IMG*/}
           <div className={style.contrainerInfo2Separador}>
-            <div className={style.textoBond}>
+
+            <div className={style.textoBond}
+              style={{
+                fontSize: previewInfografiaRedes && "1.2vw"
+              }}
+            >
+               <span className={style.lineasHorizontales}></span>
+               <span className={style.lineasHorizontales}></span>
               BOND
             </div>
+
             <div className={style.containerBondPartnerInfo}>
               <div className={style.containerIlluvialBondPartner}>
                 <img 
@@ -120,6 +155,9 @@ const MiniInfografia = ({
                   ></img>
                 <span
                   className={style.nombreBondPartner}
+                  style={{
+                    fontSize: previewInfografiaRedes && "0.8vw"
+                  }}
                   >{data.nombreBondPartner}</span>
               </div>
               {/*Elemento Bond Partner*/}
@@ -129,6 +167,9 @@ const MiniInfografia = ({
                   src={"https://api.guiadeparche.com/illuvium/assets/elementos/" + data.elementoPartner}></img>
                 <span
                   className={style.textoElementoPartner}
+                  style={{
+                    fontSize: previewInfografiaRedes && "0.8vw"
+                  }}
                   >{data.elementoPartner?.replace(".webp","")}</span>
               </div>
               {/*Clase Bond Partner*/}
@@ -139,6 +180,9 @@ const MiniInfografia = ({
                 </img>
                 <span
                   className={style.textoClassWeapon}
+                  style={{
+                    fontSize: previewInfografiaRedes && "0.8vw"
+                  }}
                   >{data.classPartner?.replace(".png","")}</span>
               </div>
               </div>
@@ -150,6 +194,9 @@ const MiniInfografia = ({
                   src={"https://api.guiadeparche.com/illuvium/assets/weapons/" + data.weapon}></img>
                 <span
                   className={style.textoElementoPartner}
+                  style={{
+                    fontSize: previewInfografiaRedes && "0.8vw"
+                  }}
                   >{data.weapon?.replace(".webp","").slice(0, data.weapon.indexOf('_'))}</span>
               </div>
               {/*Elemento Weapon IMG*/}
@@ -159,6 +206,9 @@ const MiniInfografia = ({
                   src={"https://api.guiadeparche.com/illuvium/assets/elementos/" + data.elementWeapon}></img>
                 <span
                   className={style.textoElementoPartner}
+                  style={{
+                    fontSize: previewInfografiaRedes && "0.8vw"
+                  }}
                   >{data.elementWeapon?.replace(".webp","")}</span>
               </div>
               {/*Clase Weapon IMG*/}
@@ -169,6 +219,9 @@ const MiniInfografia = ({
                 </img>
                 <span
                   className={style.textoClassWeapon}
+                  style={{
+                    fontSize: previewInfografiaRedes && "0.8vw"
+                  }}
                   >{data.classWeapon?.replace(".png","")}</span>
               </div>
             </div>

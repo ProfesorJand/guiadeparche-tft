@@ -1,16 +1,16 @@
 import style from "./Infografia.module.css";
-const Infografia = ({data, positionRef, carriesInfoRef})=>{
+const Infografia = ({data, carriesInfoRef, previewInfografiaRedes})=>{
   return (
     <div className={style.container}>
-      {/* posicionamiento */}
-      <div ref={positionRef} className={style.containerImgPosicionamiento}>
-        <img 
-        className={style.imgPosicionamiento}
-          src={`https://api.guiadeparche.com/`+data.imgPosicionamiento}></img>
-      </div>
       {/* Carries & Augments Itemization */}
       <div ref={carriesInfoRef}>
-        <span className={style.textoCarries}>CARRIES & AUGMENT'S ITEMIZATION</span>
+        <span 
+          className={style.textoCarries}
+          style={{
+            fontSize: previewInfografiaRedes && "2vw",
+            paddingTop: previewInfografiaRedes && "0px"
+          }}
+        >CARRIES & AUGMENT'S ITEMIZATION</span>
         <div className={style.containerCarriesItemization}>
         {
           data.carriesItemization.map((carrie, i)=>{
@@ -113,7 +113,7 @@ const Infografia = ({data, positionRef, carriesInfoRef})=>{
                     src={`https://api.guiadeparche.com/illuvium/assets/drones_augments/`+drone}
                     >
                     </img>
-                    <span className={style.textoSuit}>{drone.replaceAll("_"," ").replace(".png","")}</span>
+                    <span className={style.textoSuit}>{drone.replaceAll("_"," ").replace(".png","").replaceAll(" s ","'s ")}</span>
                   </div>
                 )
               })
@@ -125,22 +125,55 @@ const Infografia = ({data, positionRef, carriesInfoRef})=>{
 
         {/*Gameplan */}
         <div className={style.containerGameplan}>
-          <span className={style.TextoGameplan}>
+          <span 
+            className={style.TextoGameplan}
+            style={{
+            fontSize: previewInfografiaRedes && "1.8vw"
+          }}
+            >
             GAMEPLAN: STRATEGY, CARRY & AUGMENT'S ITEMIZATION
           </span>
           <div className={style.containerEarlyMidLate}>
             { data.earlyGame && 
               <div className={style.containerGame}>
               
-              <span><span className={style.gameplayTime}>EARLY GAME:</span> {data.earlyGame}</span>
+              <span 
+              style={{
+                    fontSize: previewInfografiaRedes && "1.2vw",
+                  }}
+              >
+                <span 
+                  className={style.gameplayTime}
+                  style={{
+                    fontSize: previewInfografiaRedes && "1.2vw",
+                  }}
+              >EARLY GAME:</span> {data.earlyGame}</span>
             </div>}
             { data.midGame && 
               <div className={style.containerGame}>   
-              <span><span className={style.gameplayTime}>MID GAME:</span> {data.midGame}</span>
+              <span 
+              style={{
+                    fontSize: previewInfografiaRedes && "1.2vw",
+                  }}
+              >
+                <span 
+                  className={style.gameplayTime}
+                  style={{
+                    fontSize: previewInfografiaRedes && "1.2vw",
+                  }}>MID GAME:</span> {data.midGame}</span>
             </div>}
             { data.lateGame &&
               <div className={style.containerGame}>
-              <span><span className={style.gameplayTime}>LATE GAME:</span> {data.lateGame}</span>
+              <span 
+              style={{
+                    fontSize: previewInfografiaRedes && "1.2vw",
+                  }}
+              >
+                <span 
+                  className={style.gameplayTime}
+                  style={{
+                    fontSize: previewInfografiaRedes && "1.2vw",
+                  }}>LATE GAME:</span> {data.lateGame}</span>
             </div>}
 
           </div>
