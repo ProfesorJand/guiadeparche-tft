@@ -2,7 +2,7 @@ import Style from './InfografiaTop5.module.css';
 import { useState } from 'react';
 import { hexToRgba, exportInfografia, importInfografia } from './utils';
 import MiniPreviewTop5 from './MiniPreviewTop5';
-const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
+const InfografiaForm = ({infografia, setInfografia, onButtonClick, defaultItemInfo}) => {
   const [pestana, setPestana] = useState({
     titulo:false,
     background:false,
@@ -330,7 +330,35 @@ const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
         {/* 🔹 Formulario Top 5 */}
         {pestana.top5 && 
         <div className={Style.Top5Form}>
-          {infografia.Top5Data.map((item, index) => (
+          <div>Cantidad de Tops</div>
+          <input
+            type="number"
+            min={1} 
+            max={20}
+            value={infografia.TopData.length}
+            onChange={(e)=>{
+              const newCount = parseInt(e.target.value);
+              setInfografia(prev => {
+                const currentCount = prev.TopData.length;
+                let newTopData = [...prev.TopData];
+                if (newCount > currentCount) {
+                  const itemsToAdd = newCount - currentCount;
+                  const newItems = Array.from({ length: itemsToAdd }, () => ({
+                    info: `Info ${newTopData.length + 1}`,
+                    value: `Value ${newTopData.length + 1}`,
+                    ...defaultItemInfo
+                  }));
+
+                  newTopData = [...newTopData, ...newItems];
+                } else {
+                  newTopData = newTopData.slice(0, newCount);
+                }
+                return { ...prev, TopData: newTopData };
+              });
+            }}
+          />
+          <div className={Style.containerTopsInfo} >
+          {infografia.TopData.map((item, index) => (
             <div key={index} className={Style.Top5FormItem}>
               <span>Top {index + 1}</span>
               <div className={Style.Top5FormItemData}>
@@ -341,17 +369,17 @@ const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
                     placeholder="Información" 
                     onChange={(e)=>{
                       setInfografia(prev => {
-                        const newData = [...prev.Top5Data];
+                        const newData = [...prev.TopData];
                         newData[index].info = e.target.value;
-                        return { ...prev, Top5Data: newData };
+                        return { ...prev, TopData: newData };
                       });
                     }}
                   />
                   <label
                     onClick={()=>(setInfografia(prev=>{
-                      const newData = [...prev.Top5Data];
+                      const newData = [...prev.TopData];
                         newData[index].infoSize = prev.defaultTextInfo;
-                        return { ...prev, Top5Data: newData };
+                        return { ...prev, TopData: newData };
                     }))}
                   >
                     Tamaño Info
@@ -364,17 +392,17 @@ const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
                     placeholder={parseInt(item.defaultTextInfo)} 
                     onChange={(e)=>{
                       setInfografia(prev => {
-                        const newData = [...prev.Top5Data];
+                        const newData = [...prev.TopData];
                         newData[index].infoSize = e.target.value +'px';
-                        return { ...prev, Top5Data: newData };
+                        return { ...prev, TopData: newData };
                       });
                     }}
                   />
                   <label
                     onClick={()=>(setInfografia(prev=>{
-                      const newData = [...prev.Top5Data];
+                      const newData = [...prev.TopData];
                         newData[index].infoWeightSize = prev.defaultTextWeightInfo;
-                        return { ...prev, Top5Data: newData };
+                        return { ...prev, TopData: newData };
                     }))}
                   >
                     Font Weight Info
@@ -387,9 +415,9 @@ const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
                     placeholder={parseInt(item.defaultTextWeightInfo)} 
                     onChange={(e)=>{
                       setInfografia(prev => {
-                        const newData = [...prev.Top5Data];
+                        const newData = [...prev.TopData];
                         newData[index].infoWeightSize = e.target.value;
-                        return { ...prev, Top5Data: newData };
+                        return { ...prev, TopData: newData };
                       });
                     }}
                   />
@@ -403,9 +431,9 @@ const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
                     placeholder={"max: "+ parseInt(infografia.heightItemsContainer)} 
                     onChange={(e)=>{
                       setInfografia(prev => {
-                        const newData = [...prev.Top5Data];
+                        const newData = [...prev.TopData];
                         newData[index].infoHorizontal = e.target.value +'px';
-                        return { ...prev, Top5Data: newData };
+                        return { ...prev, TopData: newData };
                       });
                     }}
                   />
@@ -413,9 +441,9 @@ const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
 
                   <label onClick={()=>
                     setInfografia(prev => {
-                        const newData = [...prev.Top5Data];
+                        const newData = [...prev.TopData];
                         newData[index].infoColor = item.defaultColorInfo;
-                        return { ...prev, Top5Data: newData };
+                        return { ...prev, TopData: newData };
                       })
                   }>Color Info</label>
                   <input
@@ -423,17 +451,17 @@ const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
                     value={item.infoColor || item.defaultColorInfo}
                     onChange={(e)=>
                       setInfografia(prev => {
-                        const newData = [...prev.Top5Data];
+                        const newData = [...prev.TopData];
                         newData[index].infoColor = e.target.value;
-                        return { ...prev, Top5Data: newData };
+                        return { ...prev, TopData: newData };
                       })
                     }
                   />
                   <label onClick={()=>
                     setInfografia(prev => {
-                        const newData = [...prev.Top5Data];
+                        const newData = [...prev.TopData];
                         newData[index].backgroundColorInfo = item.defaultInfoBackgroundColor;
-                        return { ...prev, Top5Data: newData };
+                        return { ...prev, TopData: newData };
                       })
                   }>Background Color Info</label>
                   <input
@@ -442,19 +470,19 @@ const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
                     onChange={(e) =>
                     {
                       setInfografia(prev => {
-                        const newData = [...prev.Top5Data];
+                        const newData = [...prev.TopData];
                         newData[index].infoBackgroundColorBase = e.target.value;
                         newData[index].infoBackgroundColor = hexToRgba(e.target.value, item.backgroundColorAlphaInfo || 0.5);
-                        return { ...prev, Top5Data: newData };
+                        return { ...prev, TopData: newData };
                       })
                     }
                     }
                   />
                   <label onClick={()=>
                     setInfografia(prev => {
-                        const newData = [...prev.Top5Data];
+                        const newData = [...prev.TopData];
                         newData[index].backgroundColorAlphaInfo = 1;
-                        return { ...prev, Top5Data: newData };
+                        return { ...prev, TopData: newData };
                       })
                   }
                   >Transparencia Fondo: {item.backgroundColorAlphaInfo}</label>
@@ -466,10 +494,10 @@ const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
                     value={item.backgroundColorAlphaInfo || 1}
                     onChange={(e) =>
                       {setInfografia(prev => {
-                        const newData = [...prev.Top5Data];
+                        const newData = [...prev.TopData];
                         newData[index].backgroundColorAlphaInfo = e.target.value;
                         newData[index].infoBackgroundColor = hexToRgba(item.infoBackgroundColorBase , parseFloat(e.target.value));
-                        return { ...prev, Top5Data: newData };
+                        return { ...prev, TopData: newData };
                       })
                     }}
                   />
@@ -480,17 +508,17 @@ const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
                     placeholder="Valor"
                     onChange={(e)=>{
                       setInfografia(prev => {
-                        const newData = [...prev.Top5Data];
+                        const newData = [...prev.TopData];
                         newData[index].value = e.target.value;
-                        return { ...prev, Top5Data: newData };
+                        return { ...prev, TopData: newData };
                       });
                     }}
                   />
                   <label
                     onClick={()=>(setInfografia(prev=>{
-                      const newData = [...prev.Top5Data];
+                      const newData = [...prev.TopData];
                         newData[index].valueSize = prev.defaultTextSize;
-                        return { ...prev, Top5Data: newData };
+                        return { ...prev, TopData: newData };
                     }))}
                   >
                     Tamaño Value
@@ -503,17 +531,17 @@ const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
                     placeholder={parseInt(item.defaultTextSize)} 
                     onChange={(e)=>{
                       setInfografia(prev => {
-                        const newData = [...prev.Top5Data];
+                        const newData = [...prev.TopData];
                         newData[index].valueSize = e.target.value +'px';
-                        return { ...prev, Top5Data: newData };
+                        return { ...prev, TopData: newData };
                       });
                     }}
                   />
                   <label
                     onClick={()=>(setInfografia(prev=>{
-                      const newData = [...prev.Top5Data];
+                      const newData = [...prev.TopData];
                         newData[index].valueWeightSize = prev.defaultTextWeightSize;
-                        return { ...prev, Top5Data: newData };
+                        return { ...prev, TopData: newData };
                     }))}
                   >
                     Font Weight Value
@@ -526,9 +554,9 @@ const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
                     placeholder={parseInt(item.defaultTextWeightSize)} 
                     onChange={(e)=>{
                       setInfografia(prev => {
-                        const newData = [...prev.Top5Data];
+                        const newData = [...prev.TopData];
                         newData[index].valueWeightSize = e.target.value;
-                        return { ...prev, Top5Data: newData };
+                        return { ...prev, TopData: newData };
                       });
                     }}
                   />
@@ -542,9 +570,9 @@ const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
                     placeholder={"max: "+ parseInt(infografia.heightItemsContainer)} 
                     onChange={(e)=>{
                       setInfografia(prev => {
-                        const newData = [...prev.Top5Data];
+                        const newData = [...prev.TopData];
                         newData[index].valueHorizontal = e.target.value +'px';
-                        return { ...prev, Top5Data: newData };
+                        return { ...prev, TopData: newData };
                       });
                     }}
                   />
@@ -552,9 +580,9 @@ const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
 
                   <label onClick={()=>
                     setInfografia(prev => {
-                        const newData = [...prev.Top5Data];
+                        const newData = [...prev.TopData];
                         newData[index].valueColor = item.defaultColorValue;
-                        return { ...prev, Top5Data: newData };
+                        return { ...prev, TopData: newData };
                       })
                   }>Color Value</label>
                   <input
@@ -562,17 +590,17 @@ const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
                     value={item.valueColor || item.defaultColorValue}
                     onChange={(e)=>
                       setInfografia(prev => {
-                        const newData = [...prev.Top5Data];
+                        const newData = [...prev.TopData];
                         newData[index].valueColor = e.target.value;
-                        return { ...prev, Top5Data: newData };
+                        return { ...prev, TopData: newData };
                       })
                     }
                   />
                   <label onClick={()=>
                     setInfografia(prev => {
-                        const newData = [...prev.Top5Data];
+                        const newData = [...prev.TopData];
                         newData[index].valueColor = item.defaultValueBackgroundColor;
-                        return { ...prev, Top5Data: newData };
+                        return { ...prev, TopData: newData };
                       })
                   }>Background Color Value</label>
                   <input
@@ -581,10 +609,10 @@ const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
                     onChange={(e) =>
                     {
                       setInfografia(prev => {
-                        const newData = [...prev.Top5Data];
+                        const newData = [...prev.TopData];
                         newData[index].valueBackgroundColorBase = e.target.value;
                         newData[index].valueBackgroundColor = hexToRgba(e.target.value, item.backgroundColorAlpha || 0.5);
-                        return { ...prev, Top5Data: newData };
+                        return { ...prev, TopData: newData };
                       })
                     }
                     }
@@ -598,10 +626,10 @@ const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
                     value={item.backgroundColorAlpha || 0.5}
                     onChange={(e) =>
                       {setInfografia(prev => {
-                        const newData = [...prev.Top5Data];
+                        const newData = [...prev.TopData];
                         newData[index].backgroundColorAlpha = e.target.value;
                         newData[index].valueBackgroundColor = hexToRgba(item.valueBackgroundColorBase , parseFloat(e.target.value));
-                        return { ...prev, Top5Data: newData };
+                        return { ...prev, TopData: newData };
                       })
                     }}
                   />
@@ -611,9 +639,9 @@ const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
                     placeholder="URL de la Imagen"
                     onChange={(e)=>{
                       setInfografia(prev => {
-                        const newData = [...prev.Top5Data];
+                        const newData = [...prev.TopData];
                         newData[index].image = e.target.value;
-                        return { ...prev, Top5Data: newData };
+                        return { ...prev, TopData: newData };
                       });
                     }} 
                   />
@@ -626,9 +654,9 @@ const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
                       const reader = new FileReader();
                       reader.onloadend = () => {
                         setInfografia(prev => {
-                          const newData = [...prev.Top5Data];
+                          const newData = [...prev.TopData];
                           newData[index].image = reader.result;
-                          return { ...prev, Top5Data: newData };
+                          return { ...prev, TopData: newData };
                         });
                       };
                       reader.readAsDataURL(file);
@@ -638,7 +666,11 @@ const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
 
                 {/* 🔹 Sliders */}
                 <div className={Style.ImageStyleContainer}>
-                  <label onClick={()=>reset(index, "top",setInfografia)}>Vertical: {item.top}</label>
+                  <label onClick={()=>setInfografia(prev => {
+                        const newData = [...prev.TopData];
+                        newData[index].top = item.defaultValueBackgroundColor;
+                        return { ...prev, TopData: newData };
+                      })}>Vertical: {item.top}</label>
                   <input
                     type="range"
                     min={-item.renderedHeight || -500}
@@ -647,14 +679,18 @@ const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
                     value={parseInt(item.top)|| 0}
                     onChange={(e)=>{
                       setInfografia(prev=>{
-                        const newData = [...prev.Top5Data];
+                        const newData = [...prev.TopData];
                         newData[index].top = e.target.value + "px";
-                        return { ...prev, Top5Data: newData };
+                        return { ...prev, TopData: newData };
                       });
                     }}
                   />
 
-                  <label onClick={()=>reset(index, "left", setInfografia)}>Horizontal: {item.left}</label>
+                  <label onClick={()=>setInfografia(prev => {
+                        const newData = [...prev.TopData];
+                        newData[index].left = defaultItemInfo.left;
+                        return { ...prev, TopData: newData };
+                      })}>Horizontal: {item.left}</label>
                   <input
                     type="range"
                     min={-item.renderedWidth || -500}
@@ -663,14 +699,18 @@ const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
                     value={parseInt(item.left) || 0}
                     onChange={(e)=>{
                       setInfografia(prev=>{
-                        const newData = [...prev.Top5Data];
+                        const newData = [...prev.TopData];
                         newData[index].left = e.target.value + "px";
-                        return { ...prev, Top5Data: newData };
+                        return { ...prev, TopData: newData };
                       });
                     }}
                   />
 
-                  <label onClick={()=>reset(index, "width", setInfografia)}>Ancho: {item.width}</label>
+                  <label onClick={()=>setInfografia(prev => {
+                        const newData = [...prev.TopData];
+                        newData[index].width = defaultItemInfo.width;
+                        return { ...prev, TopData: newData };
+                      })}>Ancho: {item.width}</label>
                   <input
                     type="range"
                     min={0}
@@ -679,14 +719,18 @@ const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
                     value={item.width.replace("%","") || 0}
                     onChange={(e)=>{
                       setInfografia(prev=>{
-                        const newData = [...prev.Top5Data];
+                        const newData = [...prev.TopData];
                         newData[index].width = e.target.value + "%";
-                        return { ...prev, Top5Data: newData };
+                        return { ...prev, TopData: newData };
                       });
                     }}
                   />
 
-                  <label onClick={()=>reset(index, "height", setInfografia)}>Ancho Componente: {item.widthFather}</label>
+                  <label onClick={()=>setInfografia(prev => {
+                        const newData = [...prev.TopData];
+                        newData[index].widthFather = defaultItemInfo.widthFather;
+                        return { ...prev, TopData: newData };
+                      })}>Ancho Componente: {item.widthFather}</label>
                   <input
                     type="range"
                     min={0}
@@ -695,9 +739,9 @@ const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
                     value={item.widthFather.replace("%","") || 0}
                     onChange={(e)=>{
                       setInfografia(prev=>{
-                        const newData = [...prev.Top5Data];
+                        const newData = [...prev.TopData];
                         newData[index].widthFather = e.target.value + "%";
-                        return { ...prev, Top5Data: newData };
+                        return { ...prev, TopData: newData };
                       });
                     }}
                   />
@@ -706,9 +750,9 @@ const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
                     value={item.objectFit} 
                     onChange={(e)=>{
                       setInfografia(prev=>{
-                        const newData = [...prev.Top5Data];
+                        const newData = [...prev.TopData];
                         newData[index].objectFit = e.target.value;
-                        return { ...prev, Top5Data: newData };
+                        return { ...prev, TopData: newData };
                       });
                     }}
                   >
@@ -731,9 +775,9 @@ const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
                     placeholder="URL de la Imagen"
                     onChange={(e)=>{
                       setInfografia(prev => {
-                        const newData = [...prev.Top5Data];
+                        const newData = [...prev.TopData];
                         newData[index].imageLogo = e.target.value;
-                        return { ...prev, Top5Data: newData };
+                        return { ...prev, TopData: newData };
                       });
                     }} 
                   />
@@ -746,9 +790,9 @@ const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
                       const reader = new FileReader();
                       reader.onloadend = () => {
                         setInfografia(prev => {
-                          const newData = [...prev.Top5Data];
+                          const newData = [...prev.TopData];
                           newData[index].imageLogo = reader.result;
-                          return { ...prev, Top5Data: newData };
+                          return { ...prev, TopData: newData };
                         });
                       };
                       reader.readAsDataURL(file);
@@ -757,9 +801,9 @@ const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
                   <label
                    onClick={()=>{
                       setInfografia(prev => {
-                        const newData = [...prev.Top5Data];
+                        const newData = [...prev.TopData];
                         newData[index].horizontalLogo = 0+"px";
-                        return { ...prev, Top5Data: newData };
+                        return { ...prev, TopData: newData };
                       });
                     }}
                   >
@@ -772,18 +816,18 @@ const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
                     value={parseInt(item.horizontalLogo) || 0}
                     onChange={(e)=>{
                       setInfografia(prev => {
-                        const newData = [...prev.Top5Data];
+                        const newData = [...prev.TopData];
                         newData[index].horizontalLogo = e.target.value+"px";
-                        return { ...prev, Top5Data: newData };
+                        return { ...prev, TopData: newData };
                       });
                     }}
                   />
                   <label
                     onClick={()=>{
                       setInfografia(prev => {
-                        const newData = [...prev.Top5Data];
+                        const newData = [...prev.TopData];
                         newData[index].verticalLogo = 0+"px";
-                        return { ...prev, Top5Data: newData };
+                        return { ...prev, TopData: newData };
                       });
                     }}
                   >
@@ -796,9 +840,9 @@ const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
                     value={parseInt(item.verticalLogo) || 1}
                     onChange={(e)=>{
                       setInfografia(prev => {
-                        const newData = [...prev.Top5Data];
+                        const newData = [...prev.TopData];
                         newData[index].verticalLogo = e.target.value+"px";
-                        return { ...prev, Top5Data: newData };
+                        return { ...prev, TopData: newData };
                       });
                     }}
                   />
@@ -813,9 +857,9 @@ const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
                     step={0.1}
                     onChange={(e)=>{
                       setInfografia(prev => {
-                        const newData = [...prev.Top5Data];
+                        const newData = [...prev.TopData];
                         newData[index].scaleLogoContainer = e.target.value;
-                        return { ...prev, Top5Data: newData };
+                        return { ...prev, TopData: newData };
                       });
                     }}
                   />
@@ -827,10 +871,10 @@ const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
                     value={item.colorBorderBaseLogo || 0}
                     onChange={(e)=>{
                       setInfografia(prev => {
-                        const newData = [...prev.Top5Data];
+                        const newData = [...prev.TopData];
                         newData[index].colorBorderBaseLogo = e.target.value;
                         newData[index].colorBorderLogo = hexToRgba(e.target.value, prev.alphaBorderLogo)
-                        return { ...prev, Top5Data: newData };
+                        return { ...prev, TopData: newData };
                       });
                     }}
                   />
@@ -846,13 +890,13 @@ const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
                     onChange={(e) => {
                       const newAlpha = parseFloat(e.target.value);
                       setInfografia((prev) => {
-                        const updatedTop5 = [...prev.Top5Data];
+                        const updatedTop5 = [...prev.TopData];
                         updatedTop5[index] = {
                           ...updatedTop5[index],
                           alphaBorderLogo: newAlpha,
                           colorBorderLogo: hexToRgba(updatedTop5[index].colorBorderBaseLogo, newAlpha)
                         };
-                        return { ...prev, Top5Data: updatedTop5 };
+                        return { ...prev, TopData: updatedTop5 };
                       });
                     }}
                   />
@@ -868,12 +912,12 @@ const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
                     onChange={(e) => {
                       const newAlpha = parseFloat(e.target.value);
                       setInfografia((prev) => {
-                        const updatedTop5 = [...prev.Top5Data];
+                        const updatedTop5 = [...prev.TopData];
                         updatedTop5[index] = {
                           ...updatedTop5[index],
                           brilloLogo: newAlpha,
                         };
-                        return { ...prev, Top5Data: updatedTop5 };
+                        return { ...prev, TopData: updatedTop5 };
                       });
                     }}
                   />
@@ -881,6 +925,7 @@ const InfografiaForm = ({infografia, setInfografia, onButtonClick}) => {
               </div>
             </div>
           ))}
+          </div>
           </div>}
 
           {pestana.footer &&

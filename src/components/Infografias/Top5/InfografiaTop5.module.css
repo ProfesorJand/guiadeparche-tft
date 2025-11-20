@@ -110,9 +110,16 @@
     z-index: 3;
     
 }
-.Top5Form{
+.containerTopsInfo{
   display: flex;
   flex-direction: row;
+  gap: 10px;
+  overflow: scroll;
+  height: 350px;
+}
+.Top5Form{
+  display: flex;
+  flex-direction: column;
   width:100%
 }
 .FooterControl{

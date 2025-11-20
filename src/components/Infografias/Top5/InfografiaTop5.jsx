@@ -11,7 +11,8 @@ const InfografiaTop5 = () => {
   const backgroundRef = useRef(null);
   const containerTituloRef = useRef(null)
   const containerLogosRef = useRef(null);
-  const itemsRefs = useRef(null)
+  const itemsRefs = useRef(null);
+  const defaultItemInfo = {defaultColorInfo:"#000000", defaultInfoBackgroundColor:null, defaultTextInfo:"24px", defaultHorizontalInfo:"30px", defaultTextWeightInfo:400, defaultColorValue:"#ffffff", defaultValueBackgroundColor:null, defaultTextSize:"50px", defaultHorizontalSize:"90px", defaultTextWeightSize:800, image: null, top: "0px", left: "0px", width: "100%", height: "100%", widthFather:"100%", objectFit: "cover", colorBorderBaseLogo: "#000000", colorBorderLogo: "rgba(0,0,0,1)", alphaBorderLogo:1  };
 
   const [infografia, setInfografia] = useState({
     titulo: "Título de la Infografía",
@@ -38,13 +39,16 @@ const InfografiaTop5 = () => {
     widthNumber: "80px",
     heightNumber: "80px",
     borderRadiusNumber: "50%",
-    Top5Data: [
-      { info: "Info 1", defaultColorInfo:"#000000", defaultInfoBackgroundColor:null, defaultTextInfo:"24px", defaultHorizontalInfo:"30px", defaultTextWeightInfo:400, value: "Value 1", defaultColorValue:"#ffffff", defaultValueBackgroundColor:null, defaultTextSize:"50px", defaultHorizontalSize:"90px", defaultTextWeightSize:800, image: null, top: "0px", left: "0px", width: "100%", height: "100%", widthFather:"100%", objectFit: "cover", colorBorderBaseLogo: "#000000", colorBorderLogo: "rgba(0,0,0,1)", alphaBorderLogo:1  },
-      { info: "Info 2", defaultColorInfo:"#000000", defaultInfoBackgroundColor:null, defaultTextInfo:"24px", defaultHorizontalInfo:"30px", defaultTextWeightInfo:400, value: "Value 2", defaultColorValue:"#ffffff", defaultValueBackgroundColor:null, defaultTextSize:"50px", defaultHorizontalSize:"90px", defaultTextWeightSize:800, image: null, top: "0px", left: "0px", width: "100%", height: "100%", widthFather:"100%", objectFit: "cover", colorBorderBaseLogo: "#000000", colorBorderLogo: "rgba(0,0,0,1)", alphaBorderLogo:1 },
-      { info: "Info 3", defaultColorInfo:"#000000", defaultInfoBackgroundColor:null, defaultTextInfo:"12px", defaultHorizontalInfo:"30px", defaultTextWeightInfo:400, value: "Value 3", defaultColorValue:"#ffffff", defaultValueBackgroundColor:null, defaultTextSize:"50px", defaultHorizontalSize:"90px", defaultTextWeightSize:800, image: null, top: "0px", left: "0px", width: "100%", height: "100%", widthFather:"100%", objectFit: "cover", colorBorderBaseLogo: "#000000", colorBorderLogo: "rgba(0,0,0,1)", alphaBorderLogo:1 },
-      { info: "Info 4", defaultColorInfo:"#000000", defaultInfoBackgroundColor:null, defaultTextInfo:"12px", defaultHorizontalInfo:"30px", defaultTextWeightInfo:400, value: "Value 4", defaultColorValue:"#ffffff", defaultValueBackgroundColor:null, defaultTextSize:"50px", defaultHorizontalSize:"90px", defaultTextWeightSize:800, image: null, top: "0px", left: "0px", width: "100%", height: "100%", widthFather:"100%", objectFit: "cover", colorBorderBaseLogo: "#000000", colorBorderLogo: "rgba(0,0,0,1)", alphaBorderLogo:1 },
-      { info: "Info 5", defaultColorInfo:"#000000", defaultInfoBackgroundColor:null, defaultTextInfo:"12px", defaultHorizontalInfo:"30px", defaultTextWeightInfo:400, value: "Value 5", defaultColorValue:"#ffffff", defaultValueBackgroundColor:null, defaultTextSize:"50px", defaultHorizontalSize:"90px", defaultTextWeightSize:800, image: null, top: "0px", left: "0px", width: "100%", height: "100%", widthFather:"100%", objectFit: "cover", colorBorderBaseLogo: "#000000", colorBorderLogo: "rgba(0,0,0,1)", alphaBorderLogo:1 },
-    ],
+    TopData: Array.from({ length: 5 }, (_, i) => (
+      { info: `Info ${i+1}`, value: `Value ${i+1}`, ...defaultItemInfo }
+    )),
+    // Top5Data: [
+    //   { info: "Info 1", defaultColorInfo:"#000000", defaultInfoBackgroundColor:null, defaultTextInfo:"24px", defaultHorizontalInfo:"30px", defaultTextWeightInfo:400, value: "Value 1", defaultColorValue:"#ffffff", defaultValueBackgroundColor:null, defaultTextSize:"50px", defaultHorizontalSize:"90px", defaultTextWeightSize:800, image: null, top: "0px", left: "0px", width: "100%", height: "100%", widthFather:"100%", objectFit: "cover", colorBorderBaseLogo: "#000000", colorBorderLogo: "rgba(0,0,0,1)", alphaBorderLogo:1  },
+    //   { info: "Info 2", defaultColorInfo:"#000000", defaultInfoBackgroundColor:null, defaultTextInfo:"24px", defaultHorizontalInfo:"30px", defaultTextWeightInfo:400, value: "Value 2", defaultColorValue:"#ffffff", defaultValueBackgroundColor:null, defaultTextSize:"50px", defaultHorizontalSize:"90px", defaultTextWeightSize:800, image: null, top: "0px", left: "0px", width: "100%", height: "100%", widthFather:"100%", objectFit: "cover", colorBorderBaseLogo: "#000000", colorBorderLogo: "rgba(0,0,0,1)", alphaBorderLogo:1 },
+    //   { info: "Info 3", defaultColorInfo:"#000000", defaultInfoBackgroundColor:null, defaultTextInfo:"12px", defaultHorizontalInfo:"30px", defaultTextWeightInfo:400, value: "Value 3", defaultColorValue:"#ffffff", defaultValueBackgroundColor:null, defaultTextSize:"50px", defaultHorizontalSize:"90px", defaultTextWeightSize:800, image: null, top: "0px", left: "0px", width: "100%", height: "100%", widthFather:"100%", objectFit: "cover", colorBorderBaseLogo: "#000000", colorBorderLogo: "rgba(0,0,0,1)", alphaBorderLogo:1 },
+    //   { info: "Info 4", defaultColorInfo:"#000000", defaultInfoBackgroundColor:null, defaultTextInfo:"12px", defaultHorizontalInfo:"30px", defaultTextWeightInfo:400, value: "Value 4", defaultColorValue:"#ffffff", defaultValueBackgroundColor:null, defaultTextSize:"50px", defaultHorizontalSize:"90px", defaultTextWeightSize:800, image: null, top: "0px", left: "0px", width: "100%", height: "100%", widthFather:"100%", objectFit: "cover", colorBorderBaseLogo: "#000000", colorBorderLogo: "rgba(0,0,0,1)", alphaBorderLogo:1 },
+    //   { info: "Info 5", defaultColorInfo:"#000000", defaultInfoBackgroundColor:null, defaultTextInfo:"12px", defaultHorizontalInfo:"30px", defaultTextWeightInfo:400, value: "Value 5", defaultColorValue:"#ffffff", defaultValueBackgroundColor:null, defaultTextSize:"50px", defaultHorizontalSize:"90px", defaultTextWeightSize:800, image: null, top: "0px", left: "0px", width: "100%", height: "100%", widthFather:"100%", objectFit: "cover", colorBorderBaseLogo: "#000000", colorBorderLogo: "rgba(0,0,0,1)", alphaBorderLogo:1 },
+    // ],
     // Logos
     defaultScaleLogoJupeson:1,
     defaultScaleLogoMovilnet:1,
@@ -156,7 +160,7 @@ const InfografiaTop5 = () => {
 
   return (
     <div className={Style.FullContainer}>
-      <InfografiaForm infografia={infografia} setInfografia={setInfografia} onButtonClick={onButtonClick} />
+      <InfografiaForm defaultItemInfo={defaultItemInfo} infografia={infografia} setInfografia={setInfografia} onButtonClick={onButtonClick} />
       <Preview infografia={infografia} backgroundRef={backgroundRef} setInfografia={setInfografia} containerLogosRef={containerLogosRef} containerTituloRef={containerTituloRef} itemsRefs={itemsRefs}/>  
     </div>
   );

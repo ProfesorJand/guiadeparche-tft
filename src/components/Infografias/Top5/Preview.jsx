@@ -3,6 +3,9 @@ import Style from './InfografiaTop5.module.css';
 import { Template } from './utils.js';
 
 const Preview = ({infografia, backgroundRef, setInfografia, containerLogosRef, containerTituloRef, itemsRefs})=>{
+   const gapHeightItems = "10px"; // Espacio entre los items
+  const numbersOfItems = infografia.TopData.length;
+  const itemHeight = `calc((100% - (${gapHeightItems} * (${numbersOfItems} - 1))) / ${numbersOfItems})`;
   return (
     <div className={Style.Container} ref={backgroundRef}
     >
@@ -60,9 +63,15 @@ const Preview = ({infografia, backgroundRef, setInfografia, containerLogosRef, c
           {infografia.imgTitulo && <img alt="imagen en titulo" src={infografia.imgTitulo}></img>}
         </div>
         <div className={Style.Top5Container}>
-          {infografia.Top5Data.map((item, index) => (
-            <div key={index} className={[Style.Top5Item, Style[`Top${index + 1}`]].join(" ")}
-            ref={itemsRefs}
+          {infografia.TopData.map((item, index) => (
+            <div 
+              key={index} 
+              className={[Style.Top5Item, Style[`Top${index + 1}`]].join(" ")}
+              ref={itemsRefs}
+              style={{ 
+                height: itemHeight,
+                gap: gapHeightItems,
+              }}
             >
               <div
                 className={Style.Top5Image}
@@ -83,10 +92,10 @@ const Preview = ({infografia, backgroundRef, setInfografia, containerLogosRef, c
                     onLoad={(e) => {
                       const rect = e.target.getBoundingClientRect();
                       setInfografia(prev=>{
-                        const newData = [...prev.Top5Data];
+                        const newData = [...prev.TopData];
                         newData[index].renderedWidth = rect.width;
                         newData[index].renderedHeight = rect.height;
-                        return { ...prev, Top5Data: newData };
+                        return { ...prev, TopData: newData };
                       });
                     }}
                   />
@@ -125,10 +134,10 @@ const Preview = ({infografia, backgroundRef, setInfografia, containerLogosRef, c
                     onLoad={(e) => {
                       const rect = e.target.getBoundingClientRect();
                       setInfografia(prev=>{
-                        const newData = [...prev.Top5Data];
+                        const newData = [...prev.TopData];
                         newData[index].renderedWidth = rect.width;
                         newData[index].renderedHeight = rect.height;
-                        return { ...prev, Top5Data: newData };
+                        return { ...prev, TopData: newData };
                       });
                     }}
                   />
