@@ -7,12 +7,12 @@ import {crearJSONSchema} from "src/json/schema/crearJSONSchema";
 import TierListMetaComps from '@components/TFT/TierListMetaComps.jsx';;
 import VersionCompo from "@components/TFT/VersionCompo"
 import SelectVersion from '@components/versionTFT/SelectVersion';
-const title = "▷ Best TFT Comps & Builds for Set 14/15 Ciber City & K.O. Coliseum.";
+const title = "▷ Best TFT Comps & Builds for Set 15/16 K.O. Coliseum and Lore & Legends.";
 // Example: Construct a canonical URL using your production domain
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 // Example: Construct a URL for SEO meta tags using your current domain
 const socialImageURL = new URL('/images/preview.png', Astro.url);
-const description = "Top TFT Meta Comps for Set 14/15 Cyber City & K.O. Coliseum. Discover the latest Tier List, Augments and Builds for every patch. Mejores Composiciones TFT!";
+const description = "Top TFT Meta Comps for Set 15/16 K.O. Coliseum and Lore & Legends. Discover the latest Tier List, Augments and Builds for every patch. Mejores Composiciones TFT!";
 const keywords = "TFT Meta, Meta comps, comps TFT, comp TFT, Meta TFT, composiciones TFT, build TFT";
 const thumbnail= "/campeones/set12/ryze.webp"
 const imgPost = "https://i.ytimg.com/vi/5ph-NnCjDSk/maxresdefault.jpg"
@@ -55,7 +55,7 @@ const admin = typeof window !== "undefined" ? localStorage.getItem("superAdmin")
       </div>
     </div> -->
     <div id="SelectVersion">
-      <!-- <SelectVersion client:only="react"/> -->
+      <SelectVersion client:only="react"/>
     </div>
     <div id="ContainerMetaPBE">
       <!-- <ContainerMetaPBE version={latestVersion} set={setPBE}/> -->

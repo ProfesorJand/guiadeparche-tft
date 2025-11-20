@@ -9,7 +9,7 @@ const initialStateDataTFTSets = [];
 const initialStateDataTFTChampions = [];
 const initialStateVersion = "pbe";
 const initialStateTeamPlannerCode = [];
-const initialTFT_SET = "pbe";
+const initialTFT_SET = "latest";
 
 export const setNumberPBE="16";
 export const setMutatorPBE="TFTSet16";

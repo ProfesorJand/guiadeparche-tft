@@ -215,6 +215,7 @@ const MetaComps = ({ showHide,admin }) => {
             ))
         )
       }
+      {composMeta.length === 0 && <div>Please wait we are updating</div>}
     </div>
   );
 };
