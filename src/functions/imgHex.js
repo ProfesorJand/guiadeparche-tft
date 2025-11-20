@@ -1,0 +1,1 @@
+export const imgHex = ["hex-bronze.webp", "hex-silver.webp", "hex-gold.webp", "hex-prismatic.webp","hex-default.webp"]

@@ -1,4 +1,5 @@
 import {traitsColorsSet15} from "./traitsColorsSet15"
+import {traitsColorsSet16} from "./traitsColorsSet16"
 export const imgHex = ["hex-bronze.webp", "hex-silver.webp", "hex-gold.webp", "hex-prismatic.webp","hex-default.webp"]
 
 export const traitsColors = {
@@ -128,7 +129,8 @@ export const traitsColors = {
         5:imgHex[2],
     },
     //Set 15
-    ...traitsColorsSet15
+    ...traitsColorsSet15,
+    ...traitsColorsSet16,
 
 
 }

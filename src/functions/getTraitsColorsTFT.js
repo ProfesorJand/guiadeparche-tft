@@ -7,8 +7,8 @@ import fs from 'fs';
 const version = 'pbe'; // o '14.14', '14.15', etc.
 const idioma = 'en';
 const pais = 'us';
-const setNumberPBE = '15';  // 👈 Cambia esto si es otro set
-const setNumberLatest = '14'; // 👈 Igualmente
+const setNumberPBE = '16';  // 👈 Cambia esto si es otro set
+const setNumberLatest = '15'; // 👈 Igualmente
 
 const styleToImgIndex = {
   1: 0, // bronze

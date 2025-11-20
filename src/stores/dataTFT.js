@@ -11,10 +11,10 @@ const initialStateVersion = "pbe";
 const initialStateTeamPlannerCode = [];
 const initialTFT_SET = "pbe";
 
-export const setNumberPBE="15";
-export const setMutatorPBE="TFTSet15";
-export const setNumberLatest="14";
-export const setMutatorLatest="TFTSet14";
+export const setNumberPBE="16";
+export const setMutatorPBE="TFTSet16";
+export const setNumberLatest="15";
+export const setMutatorLatest="TFTSet15";
 
 export const apiGPTFT = `https://api.guiadeparche.com/tft/`;
 export const crearCompoMetaPHP = `${apiGPTFT}crearCompoMeta.php`;
@@ -51,9 +51,12 @@ const urlDragon = ()=>{
 // version: latest / pbe ---- idioma: en / es --- pais: mx /es /gb /us
 export const loadDataTFTFromAPI = ({version=versionTFT.get(), idioma="en", pais="us"}) =>{
   task(async()=>{
+    console.log("loadDataTFTFromAPI")
     const urlDragon = `https://raw.communitydragon.org/${version}/cdragon/tft/${idioma}_${pais}.json`
     const response = await fetch(urlDragon);
     const data = await response.json();
+    console.log("dataTFT loaded from ", urlDragon)
+    console.log({data})
     updateDataTFT(data)
   })
 }
