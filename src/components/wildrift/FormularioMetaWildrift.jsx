@@ -18,8 +18,9 @@ const FormularioMetaWildrift = () =>{
   const [runes, setRunes] = useState([]);
   const [localMeta, setLocalMeta] = useState({});
   const lanersChampionsMetaStore = useStore(lanersChampionsMeta);
+    const [ddragonVersion, setDdragonVersion] = useState("15.23.1");
 
-  const urlChampionsData = "https://ddragon.leagueoflegends.com/cdn/15.10.1/data/en_US/champion.json";
+  
   const championImgUrlPortrait = (championName) => {
     return `https://cdn.communitydragon.org/latest/champion/${championName}/portrait` 
   }
@@ -37,7 +38,24 @@ const FormularioMetaWildrift = () =>{
   const runeImgUrl = (runePath) => {
     return `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/${runePath}`
   }
+
+  useEffect(() => {
+    const fetchVersion = async () => {
+      try {
+        const resp = await fetch("https://ddragon.leagueoflegends.com/api/versions.json");
+        const versions = await resp.json();
+        const latest = versions[0];
+        setDdragonVersion(latest);
+      } catch (err) {
+        console.error("Error fetch ddragon versions", err);
+      }
+    };
+
+    fetchVersion();
+  }, []);
+  
   const fetchChampions = async () => {
+    const urlChampionsData = `https://ddragon.leagueoflegends.com/cdn/${ddragonVersion}/data/en_US/champion.json`;
     const response = await fetch(urlChampionsData);
     const data = await response.json();
     const champions = Object.keys(data.data).map((key) => {
@@ -190,6 +208,7 @@ useEffect(() => {
 return (
   <div>
     <h1>Wildrift Meta</h1>
+    <a href="" target="_blank">url</a>
     {Object.keys(localMeta).map((laner, indexLaner) => {
       return (
         <div key={`laner ${indexLaner}`} className={style.containerLaners}>

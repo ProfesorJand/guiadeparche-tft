@@ -18,8 +18,9 @@ const FormularioMetaLOL = () =>{
   const [runes, setRunes] = useState([]);
   const [localMeta, setLocalMeta] = useState({});
   const lanersChampionsMetaStore = useStore(lanersChampionsMeta);
-
-  const urlChampionsData = "https://ddragon.leagueoflegends.com/cdn/15.10.1/data/en_US/champion.json";
+  const [ddragonVersion, setDdragonVersion] = useState("15.23.1");
+  
+  
   const championImgUrlPortrait = (championName) => {
     return `https://cdn.communitydragon.org/latest/champion/${championName}/portrait` 
   }
@@ -31,13 +32,29 @@ const FormularioMetaLOL = () =>{
     return `https://ddragon.leagueoflegends.com/cdn/15.10.1/img/item/${itemId}`
   }
   // dame una constantes donde pueda obtener las sub runas de las runas
-
+  
   // dame una constante donde pueda obtener las runas de la pagina de runas 
   const urlRunesData = "https://ddragon.leagueoflegends.com/cdn/15.10.1/data/en_US/runesReforged.json";
   const runeImgUrl = (runePath) => {
     return `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/${runePath}`
   }
+  
+    useEffect(() => {
+      const fetchVersion = async () => {
+        try {
+          const resp = await fetch("https://ddragon.leagueoflegends.com/api/versions.json");
+          const versions = await resp.json();
+          const latest = versions[0];
+          setDdragonVersion(latest);
+        } catch (err) {
+          console.error("Error fetch ddragon versions", err);
+        }
+      };
+  
+      fetchVersion();
+    }, []);
   const fetchChampions = async () => {
+     const urlChampionsData = `https://ddragon.leagueoflegends.com/cdn/${ddragonVersion}/data/en_US/champion.json`;
     const response = await fetch(urlChampionsData);
     const data = await response.json();
     const champions = Object.keys(data.data).map((key) => {
