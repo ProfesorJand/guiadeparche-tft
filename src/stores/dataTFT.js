@@ -79,7 +79,21 @@ export const updateDataTFT = async (data)=>{
     return mutator ===( versionTFT.get() === "pbe" ? setMutatorPBE: setMutatorLatest)
   })).items)
   dataTFTSetData.set(setData);
-  dataTFTChampions.set(sets[versionTFT.get() === "pbe" ? setNumberPBE: setNumberLatest].champions);
+  dataTFTChampions.set((sets[versionTFT.get() === "pbe" ? setNumberPBE: setNumberLatest].champions)
+  .sort(
+    (a, b) => {
+      const nameA = a.name.toUpperCase(); // Ignore case for consistent sorting
+      const nameB = b.name.toUpperCase();
+
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+      return 0; // names must be equal
+    })
+  );
   dataTFTTraits.set(sets[versionTFT.get() === "pbe" ? setNumberPBE: setNumberLatest].traits);
 };
 
