@@ -68,6 +68,7 @@ const Champions = ()=>{
                     apiName === "TFT14_SummonLevel4" || 
                     apiName === "TFT14_SummonLevel2" || 
                     apiName === "TFT15_Galio" || 
+                    apiName === "TFT16_FreljordProp" ||
                     apiName === "TFT_TrainingDummy"
                 ){
                     const data = {
