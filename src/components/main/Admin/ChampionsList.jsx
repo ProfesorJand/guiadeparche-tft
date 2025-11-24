@@ -38,7 +38,7 @@ const Champions = ()=>{
     useEffect(()=>{
         const activador = async ()=>{
             const championsList = [];
-            champio.forEach(({ability, apiName, name, cost, characterName, tileIcon, stats, traits})=>{
+            champio.forEach(({ability, apiName, name, cost, characterName, tileIcon, stats, traits, squareIcon})=>{
                 if(traits.length > 0){
                     const traitsData = ()=>{
                         const resp = traits.map((trait)=>{
@@ -69,8 +69,14 @@ const Champions = ()=>{
                     apiName === "TFT14_SummonLevel2" || 
                     apiName === "TFT15_Galio" || 
                     apiName === "TFT16_FreljordProp" ||
+                    apiName === "TFT16_LuxLightChaser" ||
+                    apiName === "TFT16_AzirSoldier" ||
                     apiName === "TFT_TrainingDummy"
                 ){
+                    let img = `https://raw.communitydragon.org/${currentVersion}/game/`+ tileIcon.replace(".tex",".png").toLowerCase();
+                    if(apiName === "TFT16_AzirSoldier"){
+                        img = `https://raw.communitydragon.org/${currentVersion}/game/`+ squareIcon.replace(".tex",".png").toLowerCase();
+                    }
                     const data = {
                         apiName,
                         nombre:name,
@@ -78,7 +84,7 @@ const Champions = ()=>{
                         coste:cost,
                         sinergia:traits,
                         stats,
-                        img: `https://raw.communitydragon.org/${currentVersion}/game/`+ tileIcon.replace(".tex",".png").toLowerCase(),
+                        img: img,
                         ability,
                     }
                     championsList.push(data)
