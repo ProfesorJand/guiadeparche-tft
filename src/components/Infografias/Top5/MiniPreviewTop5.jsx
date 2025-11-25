@@ -25,10 +25,10 @@ const MiniPreviewTop5 = ({index, item, setInfografia})=>{
               onLoad={(e) => {
                 const rect = e.target.getBoundingClientRect();
                 setInfografia(prev=>{
-                  const newData = [...prev.Top5Data];
+                  const newData = [...prev.TopData];
                   newData[index].miniPreviewRenderedWidth = rect.width;
                   newData[index].miniPreviewRenderedHeight = rect.height;
-                  return { ...prev, Top5Data: newData };
+                  return { ...prev, TopData: newData };
                 });
               }}
             />

@@ -1,12 +1,12 @@
 // 🔹 Reset valores individuales
 export function reset(index, type, setInfografia) {
   setInfografia((prev) => {
-    const newData = [...prev.Top5Data];
+    const newData = [...prev.TopData];
     if (type === "top") newData[index].top = "0px";
     if (type === "left") newData[index].left = "0px";
     if (type === "width") newData[index].width = "100%";
     if (type === "height") newData[index].height = "100%";
-    return { ...prev, Top5Data: newData };
+    return { ...prev, TopData: newData };
   });
 }
 
