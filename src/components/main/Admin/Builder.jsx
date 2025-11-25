@@ -188,6 +188,11 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
       var estrellas = 1;
       var powerUp = false;
       const sinergiasCampeon = JSON.parse(dataCampeon.campeon).sinergia;
+      if(JSON.parse(dataCampeon.campeon).apiName === "TFT16_BaronNashor"){
+        sinergiasCampeon.push( 
+          {apiName: 'TFT16_Void', desc: 'Gain Mutations that only Void champions can use. V…champion removes their&nbsp;Mutation.</rules><br>', effects: Array(4), icon: 'ASSETS/UX/TraitIcons/Trait_Icon_16_Void.TFT_Set16.tex', name: 'Void'});
+      }
+      //console.log({sinergiasCampeon})
       const containerSinergias = containerImageChampion[i].getElementsByClassName(style.containerSinergias)
       switch (true) {
         case containerImageChampion[i].classList.contains(style.estrellas4):
