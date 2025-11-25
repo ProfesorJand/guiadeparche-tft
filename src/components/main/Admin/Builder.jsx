@@ -144,7 +144,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
                 containerItem.className = style.containerItem;
                 const imgItem = document.createElement("img");
                 imgItem.className = style.imgItem;
-                imgItem.src = dataItem.img ? dataItem.img :  `https://raw.communitydragon.org/${currentVersion === "pbe" ? "15.10" : currentVersion}/game/`+dataItem.icon.toLowerCase().replace(".tex",".png"); // arreglar a futuro
+                imgItem.src = dataItem.img ? dataItem.img :  `https://raw.communitydragon.org/${currentVersion === "pbe" ? "15.21.1" : currentVersion}/game/`+dataItem.icon.toLowerCase().replace(".tex",".png"); // arreglar a futuro
                 imgItem.alt = dataItem.nombre ? dataItem.nombre : dataItem.name; // arreglar a futuro
                 imgItem.setAttribute("draggable", true);
                 imgItem.dataset.item = JSON.stringify(dataItem);
@@ -428,7 +428,8 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
     const imgItem = document.createElement("img");
     console.log({dataItem})
     imgItem.className = style.imgItem;
-    imgItem.src = dataItem.img ? dataItem.img : `https://raw.communitydragon.org/${currentVersion === "pbe" ? "15.10" : currentVersion}/game/`+dataItem.icon.toLowerCase().replace(".tex",".png"); // arreglar a futuro
+    console.log({dataItem,currentVersion})
+    imgItem.src = dataItem.img ? dataItem.img : `https://raw.communitydragon.org/${currentVersion}/game/`+dataItem.icon.toLowerCase().replace(".tex",".png"); // arreglar a futuro
     imgItem.alt = dataItem.nombre;
     imgItem.setAttribute("draggable", true);
     imgItem.dataset.item = JSON.stringify(dataItem);

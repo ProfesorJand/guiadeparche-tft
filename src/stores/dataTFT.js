@@ -17,6 +17,7 @@ export const setNumberLatest="15";
 export const setMutatorLatest="TFTSet15";
 
 export const apiGPTFT = `https://api.guiadeparche.com/tft/`;
+export const urlVersionTFT = "https://ddragon.leagueoflegends.com/api/versions.json";
 export const crearCompoMetaPHP = `${apiGPTFT}crearCompoMeta.php`;
 export const uploadImageWebpPHP = `${apiGPTFT}uploadImageWebp.php`;
 export const tierListChampionItemJSON =  `${apiGPTFT}tierListChampionItem.json`;
@@ -42,6 +43,7 @@ export const dataTFTItemsBySet = atom([]);
 export const versionTFT = atom(initialTFT_SET);
 export const teamPlannerCode = atom(initialStateTeamPlannerCode);
 export const TFT_SET = atom(initialTFT_SET);
+export const numberOfVersionTFT = atom("15.23.1");
 
 const urlDragon = ()=>{
   return `https://raw.communitydragon.org/${versionTFT.get()}/game/`
@@ -120,7 +122,15 @@ versionTFT.subscribe((version) => {
   getTeamPlannerCodeAPI(); // Llamar automáticamente cuando cambia la versión
 });
 
+const updateVersionNumberTFT = async () =>{
+  const resp = await fetch(urlVersionTFT);
+  const versions = await resp.json();
+  const latest = versions[0];
+  numberOfVersionTFT.set(latest);
+}
+
 loadDataTFTFromAPI({})
+
 
 export const apiNameOfCraftableItems = [
   "TFT_Item_Deathblade",
