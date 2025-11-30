@@ -505,7 +505,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
       if(option){
         const data  = JSON.parse(option);
         let imgUrl;
-        const url = "https://raw.communitydragon.org/latest/game/"
+        const url = `https://raw.communitydragon.org/${version}/game/`
         if(data.img){
           imgUrl = data.img
         }else if(data.icon && data.tileIcon){
