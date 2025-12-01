@@ -1,7 +1,7 @@
 :root{
-  --gap-sinergias: 15px;
+  --gap-sinergias: 5px; /*15*/
   --gap-sinergias-mobile: 5px;
-  --division-sinergias: 6;
+  --division-sinergias: 9; /*6*/
   --gap-sinergias-oculto: 12px;
   --division-sinergias-oculto: 9;
 }

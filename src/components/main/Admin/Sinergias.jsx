@@ -5,6 +5,7 @@ import { traitsColors, imgHex } from "src/functions/campeonestft";
 import { dataTFTTraits } from "@stores/dataTFT";
 import { useStore } from "@nanostores/react";
 const Sinergias = ({sinergias, orientacion, show, version})=>{
+  console.log("cantidad de sinergias:",Object.keys(sinergias).length)
   const sinergiasData = useStore(dataTFTTraits)
   function checkColor(hexColor){
     if(hexColor === "hex-prismatic.webp"){
@@ -107,7 +108,7 @@ const Sinergias = ({sinergias, orientacion, show, version})=>{
 
       <div className={show ? [style.containerSinergia, orientacion==="horizontal" ? style.containerSinergiaHorizontal: ""].join(" ") : style.containerSinergiaOculto }>
     {Object.keys(sinergias).length > 0 && getMinMaxTraits(sortable).map((key,i)=>{
-      if(show ? i < 6 : i < 9){
+      if(show ? i < 9 : i < 9){
         if(key.hexColor !== "hex-default.webp"){
           return (
             <div key={i} className={show ? style.containerSinergiaHex : style.containerSinergiaHexOculto} style={window.innerWidth < 900 ? checkColor(key.hexColor) : {}}>
