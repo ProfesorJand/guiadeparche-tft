@@ -260,10 +260,10 @@ useEffect(() => {
           }}
         >
           <img 
-            src="/tft/sets/15/logo2.webp" 
+            src="/tft/sets/16/logo2.png" 
             alt="Logo" 
             style={{
-              transform: `scale(1)`,
+              transform: `scale(0.6)`,
               height: "auto",
               width: "100%",
               objectFit: "fit",
