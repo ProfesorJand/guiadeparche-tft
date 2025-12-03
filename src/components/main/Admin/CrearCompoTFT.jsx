@@ -73,7 +73,6 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
       "var(--color-hex-cost-5)",
     ];
 
-    
     useEffect(()=>{
       const buscarAumentos = async() =>{
         const url= `https://raw.communitydragon.org/${version}/cdragon/tft/en_us.json`;
@@ -868,7 +867,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         }
       </div>}
       <datalist id="dataListSpatulaItems">
-        {emblems.map((dataItem, i )=>{
+        {itemsDataIngles.map((dataItem, i )=>{
           return <option key={"ListaDeEmblemas"+dataItem.nombre+i} id={`datalist-${dataItem.name}`} value={dataItem.name} data-value={JSON.stringify(dataItem)}></option>
         })}
         {allChampions.map((dataItem, i )=>{
