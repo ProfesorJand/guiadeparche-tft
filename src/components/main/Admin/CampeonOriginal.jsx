@@ -93,7 +93,7 @@ const CampeonOriginal = ({ dataCampeon, dataItem, estrellas, show, forInfografia
                   img
                     ? img
                     : `https://raw.communitydragon.org/${
-                        currentVersion === "pbe" ? "15.10" : currentVersion
+                        currentVersion
                       }/game/` + icon.toLowerCase().replace(".tex", ".png")
                 }
                 alt={nombre}
