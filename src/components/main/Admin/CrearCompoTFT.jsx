@@ -24,6 +24,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
     const [allItemsInfo, setAllItemsInfo] = useState(null);
     const [allItemsApiNames, setAllItemsApiNames] = useState(null);
     const [allEmblemsItemsApiNames, setAllEmblemsItemsApiName] = useState(null)
+    const [allRadiantsItemsApiNames, setAllRadiantsItemsApiNames] = useState(null)
     const [allSupportsItems, setAllSupportsItems] = useState(null)
     const [allChemBaronItems, setAllChemBaronItems] = useState(null)
     const urlImgAum = "https://raw.communitydragon.org/pbe/game/";
@@ -97,6 +98,14 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         setAllEmblemsItemsApiName((await getDataTFTBySet({version,set:version === "pbe" ? setNumberPBE: setNumberLatest})).setData.items.filter((apiName)=>{
           return apiName.includes("EmblemItem")
         }))
+        setAllRadiantsItemsApiNames(()=>{
+          const listaRadiantes = itemsDataIngles.filter(({apiName})=>{
+            return apiName.includes("Radiant")
+          })
+          return itemsDataIngles.filter(({apiName})=>{
+            return apiName.includes("Radiant")
+          })
+        })
         setAllSupportsItems((await getDataTFTBySet({version,set:version === "pbe" ? setNumberPBE: setNumberLatest})).setInfo.filter(({apiName})=>{
           const apiNameOfSupportsItems = [
             "TFT_Item_BansheesVeil",
@@ -483,7 +492,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
     }
 
     function handlerRadiantItem(value, item){
-      const [data] = listOfRadiantsItems.filter((item)=>{
+      const [data] = allRadiantsItemsApiNames.filter((item)=>{
         return item.name === value
       })
       setRadiantsItems((oldObject)=>{ return {...oldObject, [item]:data }})
@@ -953,7 +962,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           {/* <input list="dataListItemsRadiants" name="Radiant_Item2" id="Radiant_Item2" onChange={(e)=>{handlerRadiantItem(e.target.value, "RadiantItem2")}} defaultValue={radiantsItems.RadiantItem2 ? radiantsItems.RadiantItem2.nombre : "" } autoComplete="off"/>
           <input list="dataListItemsRadiants" name="Radiant_Item3" id="Radiant_Item3" onChange={(e)=>{handlerRadiantItem(e.target.value, "RadiantItem3")}} defaultValue={radiantsItems.RadiantItem3 ? radiantsItems.RadiantItem3.nombre : "" } autoComplete="off"/> */}
           <datalist id="dataListItemsRadiants">
-            {listOfRadiantsItems.map((item, i )=>{
+            {allRadiantsItemsApiNames?.map((item, i )=>{
               return <option key={"ListaDeItemsRadiantes"+item.name+i} id={`datalist-${item.apiName}`} value={item.name}></option>
             })}
           </datalist>

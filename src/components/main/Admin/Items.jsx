@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import style from "./css/Items.module.css";
 import { versionTFT, dataTFTSetData, dataTFTItemsBySet, dataTFTAllItems, apiNamesCrafteableItems, AllCraftableItems, setNumberPBE, setNumberLatest } from "@stores/dataTFT";
 import { useStore } from "@nanostores/react";
+import { set } from "astro:schema";
 export const Items = ()=>{
   const version = useStore(versionTFT);
 
@@ -30,15 +31,50 @@ export const Items = ()=>{
   const [allSupportsItems, setAllSupportsItems] = useState(null)
   const [allChemBaronItems, setAllChemBaronItems] = useState(null)
   const [allChemtechItems, setAllChemtechItems] = useState(null)
-  const [allGarenModItems, setAllGarenModItems] = useState(null)
+  const [allGarenModItems, setAllGarenModItems] = useState(null);
+  const [allBilgewaterItems, setAllBilgewaterItems] = useState(null);
+  const [allVoidItems, setAllVoidItems] = useState(null);
   //const [allCraftableItems, setAllCraftableItems] = useState(null);
-  const [MatrixCraftableItems, setMatrixCraftableItems] = useState([])
+  const [MatrixCraftableItems, setMatrixCraftableItems] = useState([]);
   useEffect(()=>{
     const getAllItems = async ()=>{
       const apiNames = apiNamesCrafteableItems();
 
       setAllEmblemsItemsApiName(allItemsApiNames.filter((apiName)=>{
         return apiName.includes("EmblemItem")
+      }))
+      setAllBilgewaterItems(allItemsApiNames.filter((apiName)=>{
+        const listaBilgewaterItemsBaneados = [
+          "TFT16_Item_Bilgewater_HealthTier1",
+          "TFT16_Item_Bilgewater_HealthTier2",
+          "TFT16_Item_Bilgewater_HealthTier3",
+          "TFT16_Item_Bilgewater_ADAPTier1",
+          "TFT16_Item_Bilgewater_ADAPTier2",
+          "TFT16_Item_Bilgewater_ADAPTier3",
+          "TFT16_Item_Bilgewater_APTier1",
+          "TFT16_Item_Bilgewater_APTier2",
+          "TFT16_Item_Bilgewater_APTier3",
+          "TFT16_Item_Bilgewater_ASTier1",
+          "TFT16_Item_Bilgewater_ASTier2",
+          "TFT16_Item_Bilgewater_ASTier3",
+          "TFT16_Item_Bilgewater_ADTier1",
+          "TFT16_Item_Bilgewater_ADTier2",
+          "TFT16_Item_Bilgewater_ADTier3",
+          "TFT16_Item_Bilgewater_ArmorMRTier1",
+          "TFT16_Item_Bilgewater_ArmorMRTier2",  
+          "TFT16_Item_Bilgewater_ArmorMRTier3",
+          "TFT16_Item_Bilgewater_FirstFreeADAP",
+          "TFT16_Item_Bilgewater_FirstFreeArmorMR",
+          "TFT16_Item_Bilgewater_FirstFreeAS",
+          "TFT16_Item_Bilgewater_FirstFreeHealth",
+        ]
+        if(listaBilgewaterItemsBaneados.includes(apiName)){
+          return false;
+        }
+        return apiName.includes("TFT16_Item_Bilgewater_");
+      }))
+      setAllVoidItems(allItemsInfo.filter(({apiName})=>{
+        return apiName.includes("TFT16_Consumable_Void_");
       }))
       setAllSupportsItems(allItemsInfo.filter(({apiName})=>{
         const apiNameOfSupportsItems = [
@@ -974,7 +1010,7 @@ if(allItemsInfo){
         <button onClick={(e)=>{e.preventDefault();handlePestana(0)}} className={style.btn}>Craftable</button>
         <button onClick={(e)=>{e.preventDefault();handlePestana(1)}} className={style.btn}>Radiants</button>
         <button onClick={(e)=>{e.preventDefault();handlePestana(2)}} className={style.btn}>Emblems</button>
-        <button onClick={(e)=>{e.preventDefault();handlePestana(3)}} className={style.btn}>{version === "pbe"? "Chemtech" : "Faerie"}</button>
+        <button onClick={(e)=>{e.preventDefault();handlePestana(3)}} className={style.btn}>{version === "pbe"? "Bilgewater" : "Bilgewater"}</button>
         <button onClick={(e)=>{e.preventDefault();handlePestana(4)}} className={style.btn}>Artefacts</button>
         <button onClick={(e)=>{e.preventDefault();handlePestana(5)}} className={style.btn}>Supports</button>
         <button onClick={(e)=>{e.preventDefault();handlePestana(6)}} className={style.btn}>{version === "pbe"? "Garen Mod" : "ChemBaron"}</button>
@@ -1063,6 +1099,18 @@ if(allItemsInfo){
             }
           </div>
           <div className={style.containerItemsHorizontal}>
+            {pestana === 3 &&
+              allBilgewaterItems.map((dataItem,index)=>{
+                const resultado = allItemsInfo.find(({apiName})=> apiName === dataItem)
+                return (
+                  <div className={style.itemsDropOtros} key={index}>
+                    <img  src={`https://raw.communitydragon.org/${version}/game/`+resultado.icon.replace(".tex",".png").toLowerCase()} alt={`Basic Item TFT ${resultado.name}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} onClick={()=>{setItemOver(resultado.apiName)}} data-item={JSON.stringify(resultado)} data-from="itemList" draggable="true"></img>
+                  </div>
+                )
+              })
+            }
+          </div>
+          {/* <div className={style.containerItemsHorizontal}>
             {pestana === 3 && (version === "pbe" ? 
               allChemtechItems.sort(function(a, b){
                 if(a.apiName < b.apiName) { return -1; }
@@ -1098,7 +1146,7 @@ if(allItemsInfo){
                 </div>)
               }))
             }
-          </div>
+          </div> */}
   
           <div className={style.containerItemsHorizontalOtros}>
             {pestana === 4 && 
