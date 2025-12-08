@@ -95,7 +95,7 @@ const MiniInfoComp = ({
     <div className={show ? style.containerLowerChamps : style.containerLowerChampsOculto}>
       <div className={show ? style.containerInfoChamp: style.containerInfoChampOculto}>
       {dataCampeones.map(({dataCampeon, dataItem, estrellas},i)=>{
-        if(JSON.parse(dataCampeon).nombre === "The Mighty Mech") return null
+        if(JSON.parse(dataCampeon).nombre === "The Mighty Mech" || JSON.parse(dataCampeon).nombre === "Frozen Tower") return null
         return (
           <CampeonOriginal
             key={`OriginalCampeon`+i}

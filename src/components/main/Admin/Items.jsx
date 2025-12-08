@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import style from "./css/Items.module.css";
 import { versionTFT, dataTFTSetData, dataTFTItemsBySet, dataTFTAllItems, apiNamesCrafteableItems, AllCraftableItems, setNumberPBE, setNumberLatest } from "@stores/dataTFT";
 import { useStore } from "@nanostores/react";
-import { set } from "astro:schema";
 export const Items = ()=>{
   const version = useStore(versionTFT);
 

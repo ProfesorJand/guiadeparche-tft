@@ -53,12 +53,9 @@ const urlDragon = ()=>{
 // version: latest / pbe ---- idioma: en / es --- pais: mx /es /gb /us
 export const loadDataTFTFromAPI = ({version=versionTFT.get(), idioma="en", pais="us"}) =>{
   task(async()=>{
-    console.log("loadDataTFTFromAPI")
     const urlDragon = `https://raw.communitydragon.org/${version}/cdragon/tft/${idioma}_${pais}.json`
     const response = await fetch(urlDragon);
     const data = await response.json();
-    console.log("dataTFT loaded from ", urlDragon)
-    console.log({data})
     updateDataTFT(data)
   })
 }
