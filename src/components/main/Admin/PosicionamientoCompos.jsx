@@ -4,10 +4,9 @@ import Youtube from "@components/youtube/Youtube.jsx";
 import loadingSpinner from 'src/assets/loading-180-v2.svg';
 import { urlComposiciones } from "@stores/dataTFT";
 
-const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, gameplay, spatula1, spatula2, posicionamiento, setPosicionamiento, setData, setSinergias, show, version})=>{
+const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, setImagePosicionamientoReady, gameplay, spatula1, spatula2, posicionamiento, setPosicionamiento, setData, setSinergias, show, version})=>{
   const [niveles, setNiveles] = useState([posicionamiento]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [imageReady, setImageReady] = useState(false);
+  const admin = localStorage.getItem("user") || false;
   useEffect(()=>{
     const array= Object.keys(boardInfo).filter((level)=>{
       if(level !== "early"){
@@ -17,26 +16,25 @@ const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, gameplay, s
     setNiveles(array)
   },[originalComp])
 
- useEffect(() => {
-  setImageReady(false); // Siempre reinicia el estado de carga
-  if (posicionamiento === "gameplay") {
-    setIsLoading(false);
-  } else {
-    setIsLoading(true);
-  }
+  useEffect(() => {
+  setImagePosicionamientoReady(false);
 }, [posicionamiento]);
+
+
+//  useEffect(() => {
+//   setImageReady(false); // Siempre reinicia el estado de carga
+//   if (posicionamiento === "gameplay") {
+//     setIsLoading(false);
+//   } else {
+//     setIsLoading(true);
+//   }
+// }, [posicionamiento]);
 
 
   return (
     <div className={style.containerPosicionamiento}>
-      <div className={show ? style.containerImgPosicionamiento : style.containerImgPosicionamientoBS}>
-        <div className={show ? style.containerImgVideo : style.containerImgVideoOculto}>
-          {isLoading && 
-          <img 
-          src={loadingSpinner.src} 
-          alt="Loading..." 
-          style={{ width: '60px', height: '60px', position: 'absolute', justifyContent:'center', alignItems:'center', zIndex: 10 }} 
-          />}
+      <div className={style.containerImgPosicionamiento }>
+        <div className={style.containerImgVideo}>
           {posicionamiento === "gameplay" ? 
             <Youtube 
               src={gameplay[0]} 
@@ -44,31 +42,39 @@ const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, gameplay, s
             />
             :
           <img
-            key={posicionamiento}
-            className={show ? style.imgPosicionamiento : style.imgPosicionamientoOculto}
+            className={style.imgPosicionamiento}
             src={`${urlComposiciones}${id}-${posicionamiento}${version === "pbe" ? "-pbe" : ""}.webp`}
             alt=""
-            loading="lazy"
             onLoad={() => {
-              setImageReady(true);
-              setIsLoading(false);
+              console.log("✅ Imagen lista para captura");
+              setImagePosicionamientoReady(true);
             }}
             onError={() => {
-              setImageReady(false);
-              setIsLoading(false);
+              console.error("❌ Error imagen");
+              setImagePosicionamientoReady(false);
             }}
-            style={{ opacity: isLoading ? 0 : 1, transition: 'opacity 0.3s ease-in-out' }}
           />
           }
         </div>
       </div>
-      {show && 
+      {/* {show && admin && 
       <div className={style.containerBtnPosicionamiento}>
         <div className={style.containerLevels}>
         {niveles.map((nivel,i)=>{
           if(nivel === "lv7" || nivel === "lv8" || nivel == "lv9" || nivel == "lv10"){
             return (
-              <div key={i} className={[style.btnLv, posicionamiento === nivel ? style.btnActive : ""].join(" ")} onClick={()=>{setPosicionamiento(nivel);setData(boardInfo[nivel].data);setSinergias(boardInfo[nivel].sinergias);setIsLoading(true)}}>{nivel[0].toUpperCase()+nivel.slice(1)}</div>
+              <div
+                key={i} 
+                className={[style.btnLv, posicionamiento === nivel ? style.btnActive : ""].join(" ")} 
+                onClick={() => {
+                setIsLoading(true);
+                setPosicionamiento(nivel);
+                setData(boardInfo[nivel].data);
+                setSinergias(boardInfo[nivel].sinergias);
+              }}
+              >
+                {nivel[0].toUpperCase()+nivel.slice(1)}
+              </div>
             )
           }
         })}
@@ -78,14 +84,24 @@ const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, gameplay, s
           {(spatula1) &&
            <div className={[style.btnSpat,posicionamiento === "spatula1" ? style.btnActive : ""].join(" ")}>
             {spatula1 && 
-              <img className={[style.imgSpat].join(" ")} src={spatula1} onClick={()=>{setPosicionamiento("spatula1");setData(boardInfo["spatula1"].data);setSinergias(boardInfo["spatula1"].sinergias);setIsLoading(true)}} loading="lazy"></img>
+              <img 
+                className={[style.imgSpat].join(" ")} 
+                src={spatula1} 
+                onClick={()=>{setIsLoading(true);setPosicionamiento("spatula1");setData(boardInfo["spatula1"].data);setSinergias(boardInfo["spatula1"].sinergias)}} 
+              >  
+              </img>
             }
           </div>
           }
           {(spatula2) &&
            <div className={[style.btnSpat,posicionamiento === "spatula2" ? style.btnActive : ""].join(" ")}>
             {spatula2 && 
-              <img className={[style.imgSpat].join(" ")} src={spatula2} onClick={()=>{setPosicionamiento("spatula2");setData(boardInfo["spatula2"].data);setSinergias(boardInfo["spatula2"].sinergias);setIsLoading(true)}} loading="lazy"></img>
+              <img 
+                className={[style.imgSpat].join(" ")} 
+                src={spatula2} 
+                onClick={()=>{setIsLoading(true);setPosicionamiento("spatula2");setData(boardInfo["spatula2"].data);setSinergias(boardInfo["spatula2"].sinergias)}} 
+              >
+              </img>
             }  
           </div>
           }
@@ -93,12 +109,12 @@ const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, gameplay, s
 
         <div className={style.containerYoutube}>
           {gameplay.length > 0 && 
-          <img className={style.ytIcon} src="/redes/youtube.webp" alt="logo Youtube" onClick={()=>{setPosicionamiento("gameplay")}} loading="lazy"></img>
+          <img className={style.ytIcon} src="/redes/youtube.webp" alt="logo Youtube" onClick={()=>{setPosicionamiento("gameplay")}} ></img>
           }
         </div>
   
       </div>
-      }
+      } */}
     </div>
   )
 }

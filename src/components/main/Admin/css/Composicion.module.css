@@ -1,10 +1,51 @@
+:root{
+  --numberDefaultForHeadersElements: 12;
+  --widthForTierImg: 1;
+  --widthForTags:1.5;
+  --widthForAdminOptions: 0.3;
+  --widthForTittleComp: calc(var(--numberDefaultForHeadersElements) - var(--widthForTierImg) - var(--widthForTags) - var(--widthForAdminOptions));
+  --gapInHeadersElements: 5px;
+}
+
 .containerInfoGlobal{
   display: flex;
   flex-direction: column;
   position: relative;
   box-sizing: border-box;
+  /* aspect-ratio: 4/5; */
+  aspect-ratio: 4/0.8;
   border: 1px solid var(--border-color);
   padding: 0px 0px 0px 0px;
+}
+
+.background{
+   /*width: 35%; Ajusta según el diseño deseado */
+   height: 120%;
+   aspect-ratio: 4 / 5;
+   display: flex;
+   align-items: center;
+   justify-content: center; /* Opcional: Centrar contenido */
+
+   flex-direction: column;
+   background-image: url("/tft/assets/backgroundWrapper.avif");
+   background-repeat: no-repeat;
+   box-sizing: border-box;
+   background-position-x: right;
+   background-size: cover;
+   overflow: hidden;
+   white-space: nowrap;
+}
+
+.backgroundPBE{
+   /*width: 35%; Ajusta según el diseño deseado */
+   height: 120%;
+   display: flex;
+   flex-direction: column;
+   background-image: url("/tft/assets/backgroundWrapperSet16.avif");
+   background-repeat: no-repeat;
+   box-sizing: border-box;
+   background-position-x: left;
+   /* background-size: cover; */
 }
 
 .containerInfoGlobalOculto{
@@ -26,10 +67,12 @@
 
 .containerInfoPrincipal{
   display: flex;
-  position: relative;
   flex-direction: row;
-  background-color: var(--bg-primary); /*var(--bg-primary)*/
-  padding: 0;
+  align-items: center;
+  width: 100%;
+  gap:5px;
+  /* padding: 5px 0; */
+  box-sizing: border-box;
 }
 
 .containerInfoPrincipal:hover{
@@ -43,7 +86,10 @@
 .containerTextoInfoPrimario{
   display: flex;
   flex-direction: column;
-  width: 40%;
+  position:relative;
+  justify-content: space-around;
+  height: 100%;
+  width: calc(100% / var(--numberDefaultForHeadersElements) * var(--widthForTittleComp) );
 }
 .containerLowerChampsOculto{
   display: flex;
@@ -63,14 +109,16 @@
   font-size: 10px;
   text-align: center;
   align-items: center;
-  color:blueviolet;
+  color:var(--color-primary);
+  cursor: pointer;
 }
 
 .containerTierImg{
   display: flex;
   position: relative;
-  flex:3;
-  align-items: center;
+  align-items: flex-start;
+  /* añadir en el width el gapInHeaders*/
+    width: calc(100% / var(--numberDefaultForHeadersElements) * var(--widthForTierImg) - var(--gapInHeadersElements));
 }
 
 .tierImg{
@@ -85,9 +133,7 @@
     display: flex;
     position: relative;
     flex-direction: row;
-    flex: 9;
     align-items: flex-start;
-    padding-left: 5px;
     justify-content: center;
     flex-wrap: wrap;
 }
@@ -108,7 +154,15 @@
   align-items: flex-start;
   flex:18;
   gap:5px;
-  justify-content: flex-end;
+  justify-content: flex-start;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-gray-color);
+  box-sizing: border-box;
+  padding: 5px;
+}
+
+.containerChampsCenter{
+  justify-content: center;
 }
 
 .containerInfoChampOculto{
@@ -123,7 +177,7 @@
 
 .containerFlecha{
   display: flex;
-  flex: 1;
+  width: calc( 100% / var(--numberDefaultForHeadersElements) * var(--widthForAdminOptions) - var(--gapInHeadersElements) );
   align-items: flex-start;
   flex-direction: row;
   justify-content: center;
@@ -134,38 +188,53 @@
   display: none;
 }
 
-.dificultad{
+.tags{
   display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap:5px;
+  width: calc( 100% / var(--numberDefaultForHeadersElements) * var(--widthForTags) - var(--gapInHeadersElements) );
+  align-items: stretch;
   box-sizing: border-box;
-  padding: 0px 5px;
-  font-size: smaller;
-  order:2;
-  width: 50%;
-  justify-content: center;
-  align-items: center;
+}
+
+.dificultad{
+  text-align: center;
+  box-sizing: border-box;
+  background-color: var(--bg-primary);
+  font-size: 20px;
 }
 
 .tituloComp{
   display: flex;
   order:1;
   width: 100%;
+  font-family: ObvioslyWideBold, sans-serif;
 }
 
 .titulo{
-  font-size: smaller;
   font-weight: 700;
   padding: 0;
   margin:0;
   color: var(--color-primary);
 }
 
-.category{
+.tituloSecundario{
+  font-weight: 700;
+  padding: 0;
+  margin:0;
+  color: var(--color-primary);
   font-size: smaller;
-  font-style: italic;
-  order:3;
-  width: 40%;
-  border:1px solid grey;
+}
+
+.category{
+  order: 3;
+  width: 100%;
+  border: 1px solid grey;
   text-align: center;
+  box-sizing: border-box;
+  background-color: var(--bg-primary);
+  font-size: 20px;
 }
 
 .btn{
@@ -180,6 +249,9 @@
   position: relative;
   width: 100%;
   box-sizing: border-box;
+  background-color: rgb(from var(--bg-primary) r g b / 0.8);
+  padding:0 5px 5px 5px;
+  gap:5px
 }
 
 .containerInfoSecundarioOculto{
@@ -188,7 +260,8 @@
   position: relative;
   width: 100%;
   box-sizing: border-box;
-  gap:15px
+  gap:15px;
+
 }
 
 .upBorder{
@@ -198,13 +271,10 @@
   display: flex;
   position: relative;
   flex-direction: row;
-  margin: 5px 0 0 0;
   box-sizing: border-box;
-  border: 0.5px solid gray;
-  padding: 0 0 0 0;
-  border-left: none;
-  border-right: none;
-
+  border: 1px solid gray;
+  padding: 0 5px;
+  background-color: var(--bg-primary);
 }
 
 .containerECTOculto{
@@ -223,9 +293,9 @@
   position: relative;
   flex:1;
   gap:5px;
+  padding: 5px 0;
   align-items: center;
-  padding: 5px 15px 15px 15px;
-
+  border-right: 0.25px solid var(--border-gray-color);
 }
 
 .containerE{
@@ -234,7 +304,7 @@
   position: relative;
   flex:1;
   width: 100%;
-  gap:5px
+  gap:5px;
 }
 
 
@@ -245,8 +315,9 @@
   flex:0.8;
   align-items: center;
   gap:5px;
-  padding: 5px 0 0 0;
-  border-left: 0.5px solid var(--border-gray-color);
+  border-left: 0.25px solid var(--border-gray-color);
+  border-right: 0.25px solid var(--border-gray-color);
+  padding: 5px 0;
 }
 
 .containerR{
@@ -255,16 +326,15 @@
   position: relative;
   flex: 0.4;
   align-items: center;
+  padding: 5px 0;
   gap: 5px;
-  padding: 5px 0 0;
-  border-left: .5px solid var(--border-gray-color);
+  border-left: 0.25px solid var(--border-gray-color);
 }
 
 .containerT{
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   flex: 1;
-  padding: 0 0 0 5px;
 }
 
 .containerTOculto{
@@ -279,17 +349,15 @@
 
 .containerAP{
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: wrap;
   width: 100%;
   justify-content: center;
   border: 0.5px solid var(--border-gray-color);
   margin: 0;
   box-sizing: border-box;
-  border-top:none;
-  border-left: none;
-  border-right: none;
   padding-top: 5px;
+  background-color: var(--bg-primary);
 }
 
 .containerAPOculto{
@@ -312,10 +380,8 @@
   justify-content: space-between;
   /* padding: 5px 5px 7px 5px; */
   border: 0.5px solid grey;
-  border-left: none;
-  border-right: none;
-  border-top: none;
   box-sizing: border-box;
+  background-color: var(--bg-primary);
 }
 
 .containerAumentosOculto{
@@ -395,7 +461,123 @@
 .containerLowerChamps{
   display: flex;
   position:relative;
+  cursor:pointer;
+}
 
+.miniInfoComp{
+  display: flex;
+  position: relative;
+  padding: 5px;
+  gap:5px;
+  flex-direction: column;
+  background-color: rgb(from var(--bg-primary) r g b / 0.8);
+}
+
+.tituloPrincipal{
+  font-family: ObvioslyWideBoldItalic;
+  font-size:  clamp(0.2rem, 0.6vw, 1rem);
+  color:gold;
+  text-shadow: 1px 0 #000, -1px 0 #000, 0 1px #000, 0 -1px #000,
+  1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
+  translate: 0 4px;
+}
+
+.footer{
+  display: flex;
+  position: relative;
+  width: 100%;
+  height: 50px;
+  /* aspect-ratio: 4 / 0.2; */
+  justify-content: space-around;
+}
+
+.divWebMovilnetLogo{
+  display: flex;
+  position: relative;
+  width: calc(100% / 3 - 20px);
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+
+}
+
+.imgMovilnetLogo{
+  display: flex;
+  position: relative;
+  /* height: 30px; */
+  width: 100%;
+  filter: brightness(0.8);
+}
+
+.divJupesonLogo{
+  display: flex;
+  position: relative;
+  width: calc(100% / 3 - 20px);
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  /* object-fit: cover; */
+  height: 100%;
+}
+
+.imgJupesonLogo{
+  display: flex;
+  position: relative;
+  height: 100%;
+  filter: brightness(0.8);
+}
+
+.divWebLogo{
+  display: flex;
+  position: relative;
+  width: calc(100% / 3 - 20px);
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  /* object-fit: cover; */
+  height: 100%;
+  filter: brightness(0.8);
+}
+.imgWebLogo{
+  display: flex;
+  position: relative;
+  height: 100%;
+  pointer-events: none;
+}
+
+.divWebLogo img,
+.divWebLogo span {
+  pointer-events: none;
+}
+
+.textoWeb{
+  font-family: ObvioslyWideBold, sans-serif;
+  display: flex;
+  position: relative;
+  font-size: small;
+  color: var(--color-primary);
+  font-weight: bold;
+  margin-left: 5px;
+  color: var(--color-primary);
+  text-shadow: 1px 0 #000, -1px 0 #000, 0 1px #000, 0 -1px #000, 1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
+  translate: 0 5px;
+  pointer-events: none;
+}
+
+.divSetTFTLogo{
+  display: flex;
+  position: relative;
+  width: calc(100% / 3 - 20px);
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.imgSetTFTLogo{
+  display: flex;
+  position: relative;
+  height: 100%;
+  filter: brightness(0.8);
 }
 
 @media only screen and (max-width: 900px){
@@ -414,11 +596,8 @@
   box-sizing: border-box;
   align-items: center;
 }
-.containerTextoInfoPrimario{
-  width: 100%;
-}
 .containerInfoComp{
-  width: 90%;
+  width: 100%;
   flex:none;
   box-sizing: border-box;
   justify-content:space-between;
@@ -480,7 +659,7 @@
     display: none;
   }
   .containerInfoPrincipal{
-    padding:5px 5px 5px 5px;
+    /* padding:5px 5px 5px 5px; */
     /* margin-bottom: 7px; */
   }
   .containerInfoPrincipalOculto{
@@ -491,11 +670,6 @@
     padding: 5px 5px 10px 5px;
     border: 0.5px solid gray
   }
-  .containerTextoInfoPrimario{
-    justify-content: center;
-    flex: 2;
-    flex-direction: row;
-  } 
   .containerTextoInfoPrimarioCode{
     font-size: clamp(0.2rem, 0.5vw, 1rem); /* Mínimo: 1rem, Fluido: 2vw, Máximo: 2.5rem */
     overflow: hidden;    /* Oculta el texto desbordado */
@@ -508,9 +682,8 @@
     display: flex;
     position: relative;
     flex-direction: column;
-    width: 75%;
+    width: 100%;
     align-items: flex-start;
-    padding-left: 5px;
     justify-content: space-between;
     flex-wrap: wrap;
     /* gap: 3px; */
@@ -518,12 +691,6 @@
   }
   .containerInfoChamp{
     flex: 12
-  }
-  .containerFlecha{
-    flex: 0.6
-  }
-  .containerTierImg{
-    width: 25%;
   }
 
 
@@ -534,16 +701,17 @@
   padding: 0px 5px;
   font-size: smaller;
   order:2;
-  width: 40%;
   justify-content: center;
 }
 .tituloComp{
   display: flex;
   order:1;
   width: 100%;
-  font-size: clamp(0.2rem, 0.7vw, 1rem); /* Mínimo: 1rem, Fluido: 0.8vw, Máximo: 1rem */
+  font-size: clamp(0.2rem, 1.4vw, 2rem); /* Mínimo: 1rem, Fluido: 0.8vw, Máximo: 1rem */
   white-space: nowrap; /* Evita los saltos de línea */
   overflow: hidden;    /* Oculta el texto desbordado */
+  text-shadow: 1px 0 #000, -1px 0 #000, 0 1px #000, 0 -1px #000,
+  1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
 }
 .category{
   font-size: smaller;

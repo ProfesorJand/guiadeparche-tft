@@ -7,6 +7,10 @@
   width: 100%;
 }
 
+.containerCrearCompo{
+  background-color: rgb(from var(--bg-primary) r g b / 1);
+}
+
 .containerOptionsChampTierList{
   display: flex;
   width: 70%;

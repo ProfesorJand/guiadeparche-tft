@@ -41,6 +41,7 @@ const ShowBigCompScreen = ({id, setShowBigComp}) => {
       // ⚠️ Eliminar el lazy loading para forzar la carga inmediata
       if (img.loading === "lazy") {
         img.loading = "eager";
+        img.src = img.src; // 🔥 fuerza recarga
       }
       if (img.complete && img.naturalWidth === 0) {
         console.warn("⚠️ Imagen rota:", img, img.src);

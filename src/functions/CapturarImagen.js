@@ -1,59 +1,59 @@
 import { toPng } from 'html-to-image';
-const loadAllImages = (container) => {
-  const images = container.querySelectorAll("img");
-  const promises = [];
+const loadAllImages = async (container) => {
+  const images = Array.from(container.querySelectorAll("img"));
 
-  images.forEach((img) => {
-    // ⚠️ Eliminar el lazy loading para forzar la carga inmediata
+  const promises = images.map((img) => {
+    // Forzar carga de lazy images
     if (img.loading === "lazy") {
       img.loading = "eager";
+      img.src = img.src; // fuerza carga
     }
-    if (img.complete && img.naturalWidth === 0) {
-      console.warn("⚠️ Imagen rota:", img, img.src);
+
+    // Ya cargada correctamente
+    if (img.complete && img.naturalWidth > 0) {
+      return Promise.resolve();
     }
-    if (img.complete) {
-      if (img.naturalWidth === 0) {
-        promises.push(Promise.reject(`❌ Falló imagen: ${img.src}`));
-      }
-    } else {
-      promises.push(
-        new Promise((resolve, reject) => {
-          img.onload = resolve;
-          img.onerror = () =>{
-            reject(`❌ Falló imagen: ${img.src}`)};
-        })
-      );
-    }
+
+    // Esperar carga
+    return new Promise((resolve, reject) => {
+      img.onload = () => {
+        resolve();
+      };
+
+      img.onerror = () => {
+        reject(new Error(`Falló imagen: ${img.src}`));
+      };
+    });
   });
 
-  return Promise.allSettled(promises).then(results => {
-    const errors = results.filter(r => r.status === "rejected");
-    if (errors.length > 0) {
-      throw new Error(`❌ ${errors.length} imágenes fallaron`);
-    }
-  });
+  try {
+    await Promise.all(promises);
+  } catch (e) {
+    throw e;
+  }
+
+  // Esperar render real
+  await new Promise(requestAnimationFrame);
+  await new Promise(requestAnimationFrame);
 };
 
 
-export const CapturarImagen = ({backgroundRef, nombre}) => {
-  console.log("📸 Capturando imagen de:", backgroundRef, nombre);
-  if (backgroundRef.current === null) return;
-
+export const CapturarImagen = ({ backgroundRef, nombre}) => {
+  if (!backgroundRef.current) return;
   loadAllImages(backgroundRef.current)
     .then(() => {
       return toPng(backgroundRef.current, {
         cacheBust: true,
-        pixelRatio: 2, // mejora calidad (escala la resolución)
+        pixelRatio: 2,
       });
     })
     .then((dataUrl) => {
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.download = `${nombre}.png`;
       link.href = dataUrl;
       link.click();
-      alert("📸 Imagen capturada")
     })
     .catch((err) => {
-        alert(`❌ Error al capturar imagen: ${err.message}`)
+      alert(`❌ Error al capturar imagen: ${err.message}`);
     });
 };

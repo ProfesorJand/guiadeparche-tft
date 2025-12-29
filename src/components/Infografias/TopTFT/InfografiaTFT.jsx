@@ -5,7 +5,7 @@ import SliderButtom from "@components/inputs/SliderButtom";
 import SliderButtomLogoGuiadeparche from "@components/inputs/SliderButtomLogoGuiadeparche";
 const InfografiaTFT = ()=>{
   const backgroundRef = useRef(null);
-  const [tituloInfografiaTFT, setTituloInfografiaTFT] = useState("Top 10 Meta Comps");
+  const [tituloInfografiaTFT, setTituloInfografiaTFT] = useState("Top 4 Meta Comps");
   const [logoMovilnet, setLogoMovilnet] = useState(true);
   const [logoGuiadeparche, setLogoGuiadeparche] = useState(false)
   const loadAllImages = (container) => {

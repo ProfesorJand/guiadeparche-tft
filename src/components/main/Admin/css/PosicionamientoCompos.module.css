@@ -10,7 +10,7 @@
 .containerImgPosicionamiento{
   display: flex;
   position: relative;
-  width: calc(100%*11/12);
+  width: 100%;
   aspect-ratio: 16/9;
 }
 

@@ -1,5 +1,5 @@
 :root{
-  --cantidadCampeonesOriginales: 9;
+  --cantidadCampeonesOriginales: 10;
 }
 .containerCampeon{
   display: flex;

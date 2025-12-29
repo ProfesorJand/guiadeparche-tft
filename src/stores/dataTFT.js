@@ -44,6 +44,7 @@ export const versionTFT = atom(initialTFT_SET);
 export const teamPlannerCode = atom(initialStateTeamPlannerCode);
 export const TFT_SET = atom(initialTFT_SET);
 export const numberOfVersionTFT = atom("15.23.1");
+export const constantesTFT = atom({});
 
 const urlDragon = ()=>{
   return `https://raw.communitydragon.org/${versionTFT.get()}/game/`
@@ -57,6 +58,7 @@ export const loadDataTFTFromAPI = ({version=versionTFT.get(), idioma="en", pais=
     const response = await fetch(urlDragon);
     const data = await response.json();
     updateDataTFT(data)
+    loadConstantes();
   })
 }
 
@@ -124,6 +126,12 @@ const updateVersionNumberTFT = async () =>{
   const versions = await resp.json();
   const latest = versions[0];
   numberOfVersionTFT.set(latest);
+}
+
+const loadConstantes = async () =>{
+  const response = await fetch(constantesJSON, {cache:"reload"});
+  const data = await response.json();
+  constantesTFT.set(data);
 }
 
 loadDataTFTFromAPI({})

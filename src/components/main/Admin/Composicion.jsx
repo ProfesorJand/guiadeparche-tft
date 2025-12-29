@@ -8,7 +8,7 @@ import AumentosCompos from "./AumentosCompos";
 import PosicionamientoCompos from "./PosicionamientoCompos";
 import CrearCompoTFT from "./CrearCompoTFT";
 //import { championsTFT as otrosChampions} from "src/json/updates/constantesLatest.js";
-import { teamPlannerCode, dataTFTChampions, versionTFT, loadDataTFTFromAPI, getTeamPlannerCodeAPI, crearCompoMetaPHP, setMutatorPBE, setMutatorLatest } from "@stores/dataTFT";
+import { teamPlannerCode, dataTFTChampions, versionTFT, setNumberLatest, setNumberPBE, loadDataTFTFromAPI, getTeamPlannerCodeAPI, crearCompoMetaPHP, setMutatorPBE, setMutatorLatest } from "@stores/dataTFT";
 import ShowBigCompScreen from "./ShowBigCompScreen"; 
 import RadiantsItems from "./RadiantsItems";
 import { useStore } from "@nanostores/react";
@@ -26,6 +26,9 @@ const Composicion = ({id, compo, admin=false, show=true, allwaysOpen=false, onTo
   const [sinergias, setSinergias] = useState(compo.boardInfo[compo.originalComp].sinergias);
   const [showBigComp, setShowBigComp] = useState(false);
   const [bigCompId, setBigCompId] = useState(null);
+  const [imagePosicionamientoReady, setImagePosicionamientoReady] = useState(false);
+  const backgroundRef = React.useRef(null);
+  
   const textoPosicionamiento = (texto)=>{
     if(texto === "spatula1"){
     
@@ -199,11 +202,14 @@ const Composicion = ({id, compo, admin=false, show=true, allwaysOpen=false, onTo
   }
 
   return (
-    <div id={id} className={[show ? style.containerInfoGlobal: style.containerInfoGlobalOculto].join(" ")}>
+    <div id={id} ref={backgroundRef} className={[show ? style.containerInfoGlobal: style.containerInfoGlobalOculto].join(" ")}>
+      <div className={currentVersion === "pbe" ? style.backgroundPBE : style.background }>
+
       <MiniInfoComp
         show={show}
         open={open}
         isOpen={isOpen}
+        setOpen={setOpen}
         compo={compo}
         admin={admin}
         onToggle={onToggle}
@@ -215,11 +221,16 @@ const Composicion = ({id, compo, admin=false, show=true, allwaysOpen=false, onTo
         ShowBigComp={ShowBigComp}
         deleteId={deleteId}
         forInfografia={false}
+        backgroundRef={backgroundRef}
+        imagePosicionamientoReady={imagePosicionamientoReady}
       />
+      {
+        isOpen && 
+     
     <div className={[show ? style.containerInfoSecundario : style.containerInfoSecundarioOculto, (open || isOpen) ? "": style.hide, (open || isOpen) && style.upBorder].join(" ")}>
       <div className={[show ? style.containerECT : style.containerECTOculto].join(" ")}>
         <div className={style.containerEGlobal}>
-          <h3 className={style.titulo}>Early Game</h3>
+          <h3 className={style.tituloSecundario}>Early Game</h3>
           <div className={style.containerE}>
           {earlyComp.map(({dataCampeon, dataItem, estrellas},i)=>{
             return (
@@ -229,12 +240,12 @@ const Composicion = ({id, compo, admin=false, show=true, allwaysOpen=false, onTo
           </div>
         </div>
         <div className={style.containerC}>
-        <h3 className={style.titulo}>Items Prio</h3>
+        <h3 className={style.tituloSecundario}>Items Prio</h3>
           <CarouselItems carouselItems={compo.carouselItems}/>    
         </div>
         {compo.radiantsItems && 
         <div className={style.containerR}>
-        <h3 className={style.titulo}>Best Radiant</h3>
+        <h3 className={style.tituloSecundario}>Best Radiant</h3>
           <RadiantsItems radiantsItems={compo?.radiantsItems}/>    
         </div>
         }
@@ -244,35 +255,30 @@ const Composicion = ({id, compo, admin=false, show=true, allwaysOpen=false, onTo
           </div> */}
       </div>
       <div className={[show ? style.containerAP: style.containerAPOculto].join(" ")}> 
-        {show ?
-        <>
-        <h3 className={[style.titulo, style.tituloCentrado].join(" ")}>Late Game - {textoPosicionamiento(posicionamiento)}</h3>     
+
+        {/* <h3 className={[style.titulo, style.tituloCentrado].join(" ")}>Late Game - {textoPosicionamiento(posicionamiento)}</h3>      */}
         <div className={style.containerT}>
           <Sinergias sinergias={sinergias} posicionamiento={posicionamiento} show={show} version={compo?.version || "latest"}/>
         </div>
-        </>
-         :
-          <div className={style.containerTOculto}>
-          {/* <h3 className={show ? [style.titulo, style.tituloCentrado].join(" ") : style.tituloCentradoOculto}>Late Game - {textoPosicionamiento(posicionamiento)}</h3>     */}
-          <Sinergias sinergias={sinergias} posicionamiento={posicionamiento} show={show} version={compo?.version || "latest"}/> 
-          </div>
-        }
+        
         <div className={style.containerPosicionamiento}>
-          <PosicionamientoCompos id={compo.id} boardInfo={compo.boardInfo} titulo={compo.titulo}  originalComp={compo.originalComp} gameplay={compo.gameplay} spatula1={compo.spatulaItem1.icon} spatula2={compo.spatulaItem2.icon} setPosicionamiento={setPosicionamiento} posicionamiento={posicionamiento} setData={setData} setSinergias={setSinergias} show={show} version={compo.version}/>
+          <PosicionamientoCompos id={compo.id} setImagePosicionamientoReady={setImagePosicionamientoReady} boardInfo={compo.boardInfo} titulo={compo.titulo}  originalComp={compo.originalComp} gameplay={compo.gameplay} spatula1={compo.spatulaItem1.icon} spatula2={compo.spatulaItem2.icon} setPosicionamiento={setPosicionamiento} posicionamiento={posicionamiento} setData={setData} setSinergias={setSinergias} show={show} version={compo.version}/>
         </div>
       </div>
       <div className={[show ? style.containerAumentos : style.containerAumentosOculto].join(" ")}>
         {/*<h3 className={style.titulo}>Augments</h3>*/}
         <AumentosCompos aumentos={compo.aumentos}/>
       </div>
-      {show && 
+      {/* {show && 
       <div className={style.containerTips}>
         <div className={style.containerTextoInfoPrimarioCode} onClick={(e)=>copyToClipboard(e,(currentVersion === "pbe" ? codeForPBE(allChampionsApiName) : generatorCodeBuilder(allChampionsApiName)))}>
           {"COPY TEAM CODE: " + (currentVersion === "pbe" ? codeForPBE(allChampionsApiName) : generatorCodeBuilder(allChampionsApiName)) + " 📋"}
         </div>
       </div>
-      }
+      } */}
+      <FooterTFT/>
     </div>
+     }
     {editId === compo.id && 
     <CrearCompoTFT
       edit={true}
@@ -310,7 +316,48 @@ const Composicion = ({id, compo, admin=false, show=true, allwaysOpen=false, onTo
       />
     }
     </div>
+    </div>
     
+  )
+}
+
+function FooterTFT (){
+   const [showMovilnetLogo, setShowMovilnetLogo] = useState(false);
+   const currentVersion = useStore(versionTFT);
+   const admin = localStorage.getItem("user") || false;
+  return (
+    <div className={style.footer} 
+      onClick={(e) => {
+        e.stopPropagation(); // 🔥 evita conflictos
+        admin && setShowMovilnetLogo(v => !v);
+      }}>
+      {showMovilnetLogo && 
+        <div className={style.divWebMovilnetLogo}>
+          <img className={style.imgMovilnetLogo} src="/tft/assets/logoMovilnet-e-letras-blancas.png" alt="logo Guiadeparche" />
+        </div>
+      }
+      <div className={style.divJupesonLogo}>
+        <img className={style.imgJupesonLogo} src="/tft/assets/logo-jupe-sin-publicidad.png" alt=""></img>
+      </div>
+      {
+        !showMovilnetLogo && 
+      <div className={style.divWebLogo} 
+        onClick={(e) => {
+          e.stopPropagation(); // 🔥 evita conflictos
+          admin && setShowMovilnetLogo(v => !v);
+        }}>
+        <img className={style.imgWebLogo} src="/tft/assets/GP_logo.png" alt="logo Guiadeparche"></img>
+          <span className={style.textoWeb}>
+            GUIADEPARCHE.COM/TFT
+          </span>
+      </div>
+      }
+      <div className={style.divSetTFTLogo}>
+        <img className={style.imgSetTFTLogo} src={`/tft/sets/${currentVersion === "pbe" ? setNumberPBE : setNumberLatest}/logo2.png`} alt="TFT LOGO" />
+      </div>
+      {/* Mostrar logo según el estado */}
+      
+    </div>
   )
 }
 

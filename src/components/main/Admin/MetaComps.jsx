@@ -41,26 +41,6 @@ const MetaComps = ({ showHide,admin }) => {
     scrollToComposicion();
   },[openCompoId])
 
-
-  
-
-  // const scrollToComposicion = (id) => {
-  //   const element = refs.current[id];
-  //   if (element) {
-  //     const offsetTop = element.offsetTop;
-  //     setTimeout(() => {
-  //       window.scrollTo({
-  //         top: offsetTop,
-  //         behavior: "smooth",
-  //       });
-  //     }, 150);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   loadCompsMeta();
-  // }, []);
-
   useEffect(() => {
     isLoadingDataTFTFromApi.set(true);
     if (composMeta.length > 0) {

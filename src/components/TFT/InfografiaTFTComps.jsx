@@ -41,9 +41,9 @@ useEffect(() => {
   const filtrados = todos.filter(c => c.isInInfographic === true);
 
   // 3️⃣ Nos quedamos con los primeros 10
-  const soloDiez = filtrados.slice(0, 10);
+  const cantidadDeCompos = filtrados.slice(0, 4);
 
-  setComposInInfographic(soloDiez);
+  setComposInInfographic(cantidadDeCompos);
 }, [composMeta]);
       
 

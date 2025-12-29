@@ -8,13 +8,11 @@
 
 .containerSinergia{
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   width: 100%;
   flex-wrap: wrap;
   justify-content: center;
   gap:var(--gap-sinergias);
-  flex: 1;
-  padding: 20px 0;
   box-sizing: border-box;
   flex:1
 }
