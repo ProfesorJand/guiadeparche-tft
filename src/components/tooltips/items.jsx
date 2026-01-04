@@ -1,11 +1,29 @@
 import { SanitizedComponent, replaceVariables } from "./functions.jsx";
+import { useEffect, useRef } from "react";
 import style from "./tooltips.module.css"
 const TooltipItem = ({desc = null, effects, name, nombre, isVisible}) => {
+  const tooltipRef = useRef(null);
+
+  useEffect(() => {
+    if (!isVisible || !tooltipRef.current) return;
+
+    const tooltip = tooltipRef.current;
+    const rect = tooltip.getBoundingClientRect();
+
+    if (rect.right > window.innerWidth) {
+      tooltip.classList.add(style.left);
+    } else {
+      tooltip.classList.remove(style.left);
+    }
+  }, [isVisible]);
+
   return (
     <div
+      ref={tooltipRef}
       className={`${style.tooltip} ${
         isVisible ? style.visible : style.hidden
-      }`}>
+      }`}
+    >
       <div className={style.tooltipTitle}>
         {name || nombre}
       </div>

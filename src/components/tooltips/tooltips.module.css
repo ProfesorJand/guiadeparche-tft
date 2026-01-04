@@ -18,6 +18,12 @@
   overflow:scroll
 }
 
+/* Cuando no entra, se va para la izquierda */
+.tooltip.left {
+  left: auto;
+  right: 0;
+}
+
 .tooltip.visible {
   opacity: 1;
   visibility: visible;
