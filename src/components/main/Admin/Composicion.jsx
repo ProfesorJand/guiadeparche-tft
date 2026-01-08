@@ -203,8 +203,18 @@ const Composicion = ({id, compo, admin=false, show=true, allwaysOpen=false, onTo
 
   return (
     <div id={id} ref={backgroundRef} className={[show ? style.containerInfoGlobal: style.containerInfoGlobalOculto].join(" ")}>
-      <div className={currentVersion === "pbe" ? style.backgroundPBE : style.background }>
-
+      <div className={style.backgroundWrapper}>
+       <img
+        src={
+          currentVersion === "pbe"
+            ? "/tft/assets/backgroundWrapperSet16.avif"
+            : "/tft/assets/backgroundWrapper.avif"
+        }
+        className={style.backgroundImage}
+        alt=""
+        aria-hidden
+      />
+      </div>
       <MiniInfoComp
         show={show}
         open={open}
@@ -315,7 +325,6 @@ const Composicion = ({id, compo, admin=false, show=true, allwaysOpen=false, onTo
         setShowBigComp={setShowBigComp}
       />
     }
-    </div>
     </div>
     
   )

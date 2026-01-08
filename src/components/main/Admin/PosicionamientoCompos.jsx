@@ -20,20 +20,9 @@ const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, setImagePos
   setImagePosicionamientoReady(false);
 }, [posicionamiento]);
 
-
-//  useEffect(() => {
-//   setImageReady(false); // Siempre reinicia el estado de carga
-//   if (posicionamiento === "gameplay") {
-//     setIsLoading(false);
-//   } else {
-//     setIsLoading(true);
-//   }
-// }, [posicionamiento]);
-
-
   return (
     <div className={style.containerPosicionamiento}>
-      <div className={style.containerImgPosicionamiento }>
+      <div className={`${style.containerImgPosicionamiento} capturarPosicionamientoTFT`}>
         <div className={style.containerImgVideo}>
           {posicionamiento === "gameplay" ? 
             <Youtube 
@@ -44,8 +33,9 @@ const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, setImagePos
           <img
             className={style.imgPosicionamiento}
             src={`${urlComposiciones}${id}-${posicionamiento}${version === "pbe" ? "-pbe" : ""}.webp`}
-            alt=""
-            onLoad={() => {
+            alt="Posicionamionto Compo TFT"
+            crossOrigin="anonymous"
+            onLoad={() => { 
               console.log("✅ Imagen lista para captura");
               setImagePosicionamientoReady(true);
             }}
@@ -57,7 +47,24 @@ const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, setImagePos
           }
         </div>
       </div>
-      {/* {show && admin && 
+      
+    </div>
+  )
+}
+
+export default PosicionamientoCompos;
+
+
+//  useEffect(() => {
+//   setImageReady(false); // Siempre reinicia el estado de carga
+//   if (posicionamiento === "gameplay") {
+//     setIsLoading(false);
+//   } else {
+//     setIsLoading(true);
+//   }
+// }, [posicionamiento]);
+
+{/* {show && admin && 
       <div className={style.containerBtnPosicionamiento}>
         <div className={style.containerLevels}>
         {niveles.map((nivel,i)=>{
@@ -115,8 +122,3 @@ const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, setImagePos
   
       </div>
       } */}
-    </div>
-  )
-}
-
-export default PosicionamientoCompos;

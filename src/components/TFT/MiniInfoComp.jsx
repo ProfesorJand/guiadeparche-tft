@@ -115,7 +115,7 @@ const MiniInfoComp = ({
 function AdminOptions ({compo,admin,show,handleEditID, imagePosicionamientoReady, isOpen, backgroundRef,forInfografia}) {
   if (forInfografia) return null;
   return (
-    <div className={show ? style.containerFlecha : style.containerFlechaOculto}>
+    <div className={`${show ? style.containerFlecha : style.containerFlechaOculto} adminOptions`}>
       {
         admin && 
         <div className={style.btn} onClick={(e)=>{handleEditID(e,compo.id)}}>

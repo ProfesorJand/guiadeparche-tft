@@ -8,11 +8,11 @@
 }
 
 .containerImgPosicionamiento{
-  display: flex;
-  position: relative;
   width: 100%;
-  aspect-ratio: 16/9;
+  height: auto;
+  display: flex;
 }
+
 
 .containerImgPosicionamientoBS{
   width: 100%;
@@ -128,12 +128,13 @@
 }
 
 .containerImgVideo{
-  display: flex;
-  position: relative;
   width: 100%;
+  display: flex;
   align-items: center;
   justify-content: center;
 }
+
+
 
 .containerImgVideoOculto{
   display: flex;
@@ -144,6 +145,10 @@
   align-items: center;
   padding: 0 10px;
   box-sizing: border-box;
+}
+
+:global(.capturarPosicionamientoTFT){
+  width: 100%;
 }
 
 @media only screen and (max-width:900px){

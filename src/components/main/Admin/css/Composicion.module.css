@@ -20,6 +20,11 @@
   padding: 0px 0px 0px 0px;
 }
 
+.containerInfoGlobal > *:not(.backgroundWrapper) {
+  position: relative;
+  z-index: 1;
+}
+
 .background{
    /*width: 35%; Ajusta según el diseño deseado */
    height: 120%;
@@ -38,16 +43,24 @@
    white-space: nowrap;
 }
 
-.backgroundPBE{
-   /*width: 35%; Ajusta según el diseño deseado */
-   height: 120%;
-   display: flex;
-   flex-direction: column;
-   background-image: url("/tft/assets/backgroundWrapperSet16.avif");
-   background-repeat: no-repeat;
-   box-sizing: border-box;
-   background-position-x: left;
-   /* background-size: cover; */
+.backgroundWrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;       /* 🔒 depende SOLO del contenedor */
+
+  overflow: hidden;
+  z-index: 0;
+}
+
+.backgroundImage {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  pointer-events: none;
 }
 
 .containerInfoGlobalOculto{
@@ -362,6 +375,7 @@
   box-sizing: border-box;
   padding-top: 5px;
   background-color: var(--bg-primary);
+  gap:20px;
 }
 
 .containerAPOculto{
@@ -583,6 +597,14 @@
   height: 100%;
   filter: brightness(0.8);
 }
+
+:global(.captura-img .btnLv),
+:global(.captura-img .btnSpat),
+:global(.captura-img .ytIcon) {
+  scale: 1 !important;
+  transform: none !important;
+}
+
 
 @media only screen and (max-width: 900px){
   .containerInfoPrincipal{
