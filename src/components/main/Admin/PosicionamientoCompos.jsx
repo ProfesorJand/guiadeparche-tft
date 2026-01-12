@@ -1,24 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import style from "./css/PosicionamientoCompos.module.css"
 import Youtube from "@components/youtube/Youtube.jsx";
-import loadingSpinner from 'src/assets/loading-180-v2.svg';
 import { urlComposiciones } from "@stores/dataTFT";
 
 const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, setImagePosicionamientoReady, gameplay, spatula1, spatula2, posicionamiento, setPosicionamiento, setData, setSinergias, show, version})=>{
   const [niveles, setNiveles] = useState([posicionamiento]);
   const admin = localStorage.getItem("user") || false;
-  useEffect(()=>{
-    const array= Object.keys(boardInfo).filter((level)=>{
-      if(level !== "early"){
-        return level
-      }
-    })
-    setNiveles(array)
-  },[originalComp])
+//   useEffect(()=>{
+//     const array= Object.keys(boardInfo).filter((level)=>{
+//       if(level !== "early"){
+//         return level
+//       }
+//     })
+//     setNiveles(array)
+//   },[originalComp])
 
-  useEffect(() => {
-  setImagePosicionamientoReady(false);
-}, [posicionamiento]);
+//   useEffect(() => {
+//   setImagePosicionamientoReady(false);
+// }, [posicionamiento]);
 
   return (
     <div className={style.containerPosicionamiento}>
@@ -31,7 +30,7 @@ const PosicionamientoCompos = ({id, titulo, originalComp, boardInfo, setImagePos
             />
             :
           <img
-            className={style.imgPosicionamiento}
+            className={`${style.imgPosicionamiento} imgPosicionamiento`}
             src={`${urlComposiciones}${id}-${posicionamiento}${version === "pbe" ? "-pbe" : ""}.webp`}
             alt="Posicionamionto Compo TFT"
             crossOrigin="anonymous"

@@ -367,7 +367,6 @@
 .containerAP{
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
   width: 100%;
   justify-content: center;
   border: 0.5px solid var(--border-gray-color);

@@ -10,6 +10,7 @@
       "@stores/*": ["src/stores/*"],
       "@layouts/*":["src/layouts/*"],
       "@json/*":["src/json/*"],
+      "@functions/*":["src/functions/*"],
     }
   }
 }

@@ -264,16 +264,15 @@ const Composicion = ({id, compo, admin=false, show=true, allwaysOpen=false, onTo
           <Sinergias sinergias={sinergias} posicionamiento={posicionamiento}/>
           </div> */}
       </div>
-      <div className={[show ? style.containerAP: style.containerAPOculto].join(" ")}> 
+      <div className={style.containerAP}> 
 
         {/* <h3 className={[style.titulo, style.tituloCentrado].join(" ")}>Late Game - {textoPosicionamiento(posicionamiento)}</h3>      */}
         <div className={style.containerT}>
           <Sinergias sinergias={sinergias} posicionamiento={posicionamiento} show={show} version={compo?.version || "latest"}/>
         </div>
         
-        <div className={style.containerPosicionamiento}>
           <PosicionamientoCompos id={compo.id} setImagePosicionamientoReady={setImagePosicionamientoReady} boardInfo={compo.boardInfo} titulo={compo.titulo}  originalComp={compo.originalComp} gameplay={compo.gameplay} spatula1={compo.spatulaItem1.icon} spatula2={compo.spatulaItem2.icon} setPosicionamiento={setPosicionamiento} posicionamiento={posicionamiento} setData={setData} setSinergias={setSinergias} show={show} version={compo.version}/>
-        </div>
+
       </div>
       <div className={[show ? style.containerAumentos : style.containerAumentosOculto].join(" ")}>
         {/*<h3 className={style.titulo}>Augments</h3>*/}

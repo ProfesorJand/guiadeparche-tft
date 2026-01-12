@@ -3,7 +3,7 @@ import CampeonOriginal from "@components/main/Admin/CampeonOriginal";
 import {useRef, useState, useEffect} from "react";
 import { setNumberLatest, setNumberPBE, versionTFT, constantesTFT } from "@stores/dataTFT.js";
 import { useStore } from "@nanostores/react";
-import { CapturarImagen } from "src/functions/CapturarImagen";
+import { CapturarImagen } from "@functions/CapturarImagen";
 
 
 const MiniInfoComp = ({
@@ -64,6 +64,7 @@ const MiniInfoComp = ({
           admin={admin} 
           show={show} 
           forInfografia={forInfografia}
+          imagePosicionamientoReady={imagePosicionamientoReady}
         />
         <TierImg 
           compo={compo} 
@@ -193,6 +194,7 @@ function CheckboxIsInInfographic ({compo, admin, show, forInfografia}) {
   if(show && admin && compo?.isInInfographic && admin && !forInfografia){
     return(  
       <input 
+        className="checkBoxIsInInfographic"
         style={{
           display:"flex",
           position:"absolute",
