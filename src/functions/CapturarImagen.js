@@ -1,6 +1,7 @@
 import { toPng } from "html-to-image";
 /**
  * Espera a que todas las <img> dentro del nodo estén cargadas
+ * NUNCA bloquea la captura
  */
 export const waitForImages = async (node) => {
   const images = Array.from(node.querySelectorAll("img"));
@@ -13,24 +14,43 @@ export const waitForImages = async (node) => {
   console.log(`🖼 Esperando ${images.length} imágenes...`);
 
   await Promise.all(
-    images.map((img) => {
-      if (img.complete && img.naturalWidth !== 0) {
-        return Promise.resolve();
-      }
-
+    images.map((img, index) => {
       return new Promise((resolve) => {
-        img.onload = resolve;
-        img.onerror = resolve;
+
+        // ✅ Ya cargada
+        if (img.complete && img.naturalWidth !== 0) {
+          console.log(`✅ Img ${index} ya lista`);
+          return resolve();
+        }
+
+        // ⏱️ Timeout de seguridad (CRÍTICO)
+        const timeout = setTimeout(() => {
+          console.warn(`⚠️ Img ${index} timeout, continúo`);
+          resolve();
+        }, 3000);
+
+        img.onload = () => {
+          clearTimeout(timeout);
+          console.log(`✅ Img ${index} onload`);
+          resolve();
+        };
+
+        img.onerror = () => {
+          clearTimeout(timeout);
+          console.warn(`❌ Img ${index} error`);
+          resolve();
+        };
       });
     })
   );
 
-  // Esperar layout real (MUY IMPORTANTE)
+  // ⏳ Esperar layout real
   await new Promise(requestAnimationFrame);
   await new Promise(requestAnimationFrame);
 
-  console.log("✅ Todas las imágenes listas");
+  console.log("✅ Imágenes procesadas (sin bloqueo)");
 };
+
 
 
 export const CapturarImagen = async ({ backgroundRef, nombre }) => {
