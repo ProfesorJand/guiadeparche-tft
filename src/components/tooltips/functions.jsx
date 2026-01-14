@@ -18,7 +18,7 @@ export const replaceVariables = (desc, effects) => {
       return value; // Devuelve el valor final
     }
 
-    return `@${key}${multiplier || ""}@`; // Si no encuentra el valor, deja el marcador.
+    return ``; // Si no encuentra el valor, deja el marcador (vacio).
   });
 }
 

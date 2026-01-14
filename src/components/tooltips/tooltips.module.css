@@ -48,3 +48,10 @@
     display: none;
   }
 }
+
+.tooltipDesc,
+.effects {
+  word-break: break-word;        /* fallback */
+  overflow-wrap: anywhere;       /* moderno, ideal */
+  word-wrap: break-word;         /* Safari viejo */
+}
