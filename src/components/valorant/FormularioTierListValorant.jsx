@@ -18,7 +18,7 @@ const FormularioTierListValorant = () => {
   const admin = localStorage.getItem("user") || false;
   const numbersOfAgentsInMeta= 5;
   const ValorantAgentsMetaStore = useStore(ValorantAgentsMeta);
-   
+  //  console.log({info:"www.vstats.gg/agents"})
   useEffect(()=>{
     const fetching = async () =>{
       const uploadMeta = await fetchAgentsMeta();

@@ -202,7 +202,7 @@ const Composicion = ({id, compo, admin=false, show=true, allwaysOpen=false, onTo
   }
 
   return (
-    <div id={id} ref={backgroundRef} className={[show ? style.containerInfoGlobal: style.containerInfoGlobalOculto].join(" ")}>
+    <div id={id} ref={backgroundRef} className={style.containerInfoGlobal}>
       <div className={style.backgroundWrapper}>
        <img
         src={

@@ -21,7 +21,7 @@
     font-family: ObvioslyWideBold;
     color: var(--color-primary);
     text-shadow: 1px 0 #000, -1px 0 #000, 0 1px #000, 0 -1px #000, 1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
-    translate: 0 5px;
+    transform: translate(0, 5px);
     opacity: 0.8;
     max-width: 100%;
     white-space: nowrap;

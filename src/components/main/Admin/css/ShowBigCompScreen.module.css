@@ -52,7 +52,7 @@
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  background-color: rgb(from var(--bg-primary) r g b / 0.6);
+  background-color: rgb(var(--bg-primary-rgb) / 0.6);
   flex-direction: column;
   box-sizing: border-box;
   padding: 0 15px;
@@ -107,7 +107,7 @@
   flex-wrap: wrap;
   gap: 5px;
   box-sizing: border-box;
-  translate: 0 5px;
+  transform: translate(0, 5px);
 }
 
 .tags{
@@ -209,7 +209,7 @@
   color:gold;
   text-shadow: 1px 0 #000, -1px 0 #000, 0 1px #000, 0 -1px #000,
   1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
-  translate: 0 4px;
+  transform: translate(0, 4px);
 }
 
 .titutloSecundario{
@@ -226,6 +226,6 @@
   color: var(--color-primary);
   text-shadow: 1px 0 #000, -1px 0 #000, 0 1px #000, 0 -1px #000,
   1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
-  translate: 0 5px;
+  transform: translate(0, 5px);
 }
 

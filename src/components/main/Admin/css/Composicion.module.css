@@ -15,6 +15,7 @@
   position: relative;
   box-sizing: border-box;
   /* aspect-ratio: 4/5; */
+  
   aspect-ratio: 4/0.8;
   border: 1px solid var(--border-color);
   padding: 0px 0px 0px 0px;
@@ -32,7 +33,7 @@
    display: flex;
    align-items: center;
    justify-content: center; /* Opcional: Centrar contenido */
-
+    min-height: 120px;
    flex-direction: column;
    background-image: url("/tft/assets/backgroundWrapper.avif");
    background-repeat: no-repeat;
@@ -53,6 +54,7 @@
 
   overflow: hidden;
   z-index: 0;
+  pointer-events: none; /* ⬅️ evita interferir con clicks */
 }
 
 .backgroundImage {
@@ -140,6 +142,7 @@
   display: flex;
   position: relative;
   width: 100%;
+  height: auto;
   aspect-ratio: 1/1;
   filter: brightness(90%);
 }
@@ -266,7 +269,7 @@
   position: relative;
   width: 100%;
   box-sizing: border-box;
-  background-color: rgb(from var(--bg-primary) r g b / 0.8);
+  background-color: rgb(var(--bg-primary-rgb) / 0.8);
   padding:0 5px 5px 5px;
   gap:5px
 }
@@ -360,7 +363,7 @@
   flex: 1;
   padding: 20px 50px 20px 50px;
   align-items: center;
-  translate: 0px 10px;
+  transform: translate(0, 10px);
 }
 
 
@@ -487,7 +490,7 @@
   padding: 5px;
   gap:5px;
   flex-direction: column;
-  background-color: rgb(from var(--bg-primary) r g b / 0.8);
+  background-color: rgb(var(--bg-primary-rgb) / 0.8);
 }
 
 .tituloPrincipal{
@@ -496,7 +499,7 @@
   color:gold;
   text-shadow: 1px 0 #000, -1px 0 #000, 0 1px #000, 0 -1px #000,
   1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
-  translate: 0 4px;
+  transform: translate(0, 4px);
 }
 
 .footer{
@@ -577,7 +580,7 @@
   margin-left: 5px;
   color: var(--color-primary);
   text-shadow: 1px 0 #000, -1px 0 #000, 0 1px #000, 0 -1px #000, 1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
-  translate: 0 5px;
+  transform: translate(0, 5px);
   pointer-events: none;
 }
 

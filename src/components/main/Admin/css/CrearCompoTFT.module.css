@@ -8,7 +8,7 @@
 }
 
 .containerCrearCompo{
-  background-color: rgb(from var(--bg-primary) r g b / 1);
+  background-color: rgb(var(--bg-primary-rgb) / 1);
 }
 
 .containerOptionsChampTierList{
@@ -133,7 +133,8 @@
   flex-direction: row;
   position:relative;
   left: 50%;
-  translate: -50%;
+  transform: translate(-50%, 0);
+
   width: calc(5*100%/8.5);
 }
 
@@ -250,7 +251,8 @@ form > label{
   gap:5px;
   position: relative;
   left: 50%;
-  translate: -50%;
+  transform: translate(-50%, 0);
+
 }
 
 .containerFirst > label > *{

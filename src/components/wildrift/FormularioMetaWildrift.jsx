@@ -208,7 +208,7 @@ useEffect(() => {
 return (
   <div>
     <h1>Wildrift Meta</h1>
-    <a href="" target="_blank">url</a>
+    <a href="https://www.wildriftfire.com/tier-list" target="_blank">url</a>
     {Object.keys(localMeta).map((laner, indexLaner) => {
       return (
         <div key={`laner ${indexLaner}`} className={style.containerLaners}>

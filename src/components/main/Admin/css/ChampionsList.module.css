@@ -43,7 +43,7 @@
     position:absolute;
     bottom:0;
     left:50%;
-    translate: -50% 0%;
+    transform: translate(-50%, 0);
     font-size: xx-small;
     text-shadow: var(--text-shadow);
     pointer-events: none; /* Standard syntax */
