@@ -46,15 +46,13 @@
 
 .backgroundWrapper {
   position: absolute;
-  top: 0;
-  left: 0;
-
-  width: 100%;
-  height: 100%;       /* 🔒 depende SOLO del contenedor */
-
-  overflow: hidden;
+  inset: 0;
+  background-image: url("/tft/assets/backgroundWrapperSet16.avif");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  pointer-events: none;
   z-index: 0;
-  pointer-events: none; /* ⬅️ evita interferir con clicks */
 }
 
 .backgroundImage {
