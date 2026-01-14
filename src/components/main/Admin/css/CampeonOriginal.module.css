@@ -90,12 +90,13 @@
   position: absolute;
   bottom:-3px;
   height: fit-content;
+  overflow: visible;
 }
 
 .containerItem{
   display: flex;
   width: calc(100%/3);
-
+  overflow: visible;
 }
 
 .imgItem{

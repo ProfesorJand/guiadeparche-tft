@@ -1,6 +1,5 @@
 import React, {useEffect, useState, version} from "react";
 import style from "./css/Composicion.module.css";
-import CampeonOriginal from "./CampeonOriginal";
 import CampeonEarly from "./CampeonEarly";
 import CarouselItems from "./CarouselItems";
 import Sinergias from "./Sinergias";

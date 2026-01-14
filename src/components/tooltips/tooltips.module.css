@@ -1,21 +1,12 @@
 /* Tooltip oculto por defecto */
 .tooltip {
-  display: flex;
-  position: absolute;
-  top:100%;
   background-color: var(--bg-main);
   border: 1px solid grey;
-  visibility: hidden;
-  opacity: 0;
-  flex-direction: column;
   padding: 5px;
-  width: 100%;
   min-width: 350px;
-  left:0;
-  box-sizing: border-box;
-  transition: opacity 0.5s ease, visibility 0.5s ease;
-  z-index: 1000;
-  overflow:scroll
+  max-width: 420px;
+  z-index: 99999;
+  pointer-events: none;
 }
 
 /* Cuando no entra, se va para la izquierda */
