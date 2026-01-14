@@ -15,8 +15,6 @@
   position: relative;
   box-sizing: border-box;
   /* aspect-ratio: 4/5; */
-  
-  aspect-ratio: 4/0.8;
   border: 1px solid var(--border-color);
   padding: 0px 0px 0px 0px;
 }

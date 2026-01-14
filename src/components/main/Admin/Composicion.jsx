@@ -202,8 +202,8 @@ const Composicion = ({id, compo, admin=false, show=true, allwaysOpen=false, onTo
 
   return (
     <div id={id} ref={backgroundRef} className={style.containerInfoGlobal}>
-      {/* <div className={style.backgroundWrapper}>
-       <img
+      <div className={style.backgroundWrapper}>
+       {/* <img
         src={
           currentVersion === "pbe"
             ? "/tft/assets/backgroundWrapperSet16.avif"
@@ -212,8 +212,8 @@ const Composicion = ({id, compo, admin=false, show=true, allwaysOpen=false, onTo
         className={style.backgroundImage}
         alt=""
         aria-hidden
-      />
-      </div> */}
+      /> */}
+      </div>
       <MiniInfoComp
         show={show}
         open={open}
