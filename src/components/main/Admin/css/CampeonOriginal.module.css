@@ -5,8 +5,17 @@
   display: flex;
   flex-direction: column;
   position: relative;
-   flex: 0 0 calc(100% / var(--cantidadCampeonesOriginales));
-  max-width: calc(100% / var(--cantidadCampeonesOriginales));
+
+  flex: 0 0 calc(
+    (100% - (var(--cantidadCampeonesOriginales) - 1) * 5px)
+    / var(--cantidadCampeonesOriginales)
+  );
+
+  max-width: calc(
+    (100% - (var(--cantidadCampeonesOriginales) - 1) * 5px)
+    / var(--cantidadCampeonesOriginales)
+  );
+
   box-sizing: border-box;
   align-items: center;
   height: 100%;

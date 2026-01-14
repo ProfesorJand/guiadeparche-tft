@@ -166,7 +166,7 @@
   flex-direction: row;
   position: relative;
   align-items: flex-start;
-  flex:18;
+  width: 100%;
   gap:5px;
   justify-content: flex-start;
   background: var(--bg-primary);
