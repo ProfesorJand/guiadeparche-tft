@@ -61,6 +61,10 @@
   pointer-events: none;
 }
 
+.containerInfoGlobalOpen {
+  aspect-ratio: 4 / 5;
+}
+
 .containerInfoGlobalOculto{
   display: flex;
   flex-direction: column;
@@ -267,7 +271,8 @@
   box-sizing: border-box;
   background-color: rgb(var(--bg-primary-rgb) / 0.8);
   padding:0 5px 5px 5px;
-  gap:5px
+  gap:5px;
+  height: 100%;
 }
 
 .containerInfoSecundarioOculto{
@@ -374,6 +379,7 @@
   padding-top: 5px;
   background-color: var(--bg-primary);
   gap:20px;
+  padding-bottom: 20px;
 }
 
 .containerAPOculto{
@@ -502,9 +508,11 @@
   display: flex;
   position: relative;
   width: 100%;
-  height: 50px;
-  /* aspect-ratio: 4 / 0.2; */
+  /* height: 50px; */
+  flex-grow: 1;        /* ← CLAVE */
+  min-height: 50px;    /* ← tu altura mínima */
   justify-content: space-around;
+  margin-top: auto;
 }
 
 .divWebMovilnetLogo{
@@ -533,13 +541,14 @@
   justify-content: center;
   box-sizing: border-box;
   /* object-fit: cover; */
-  height: 100%;
+  /* height: 100%; */
 }
 
 .imgJupesonLogo{
   display: flex;
   position: relative;
-  height: 100%;
+  /* height: 100%; */
+  width: 60%;
   filter: brightness(0.8);
 }
 
@@ -551,13 +560,15 @@
   justify-content: center;
   box-sizing: border-box;
   /* object-fit: cover; */
-  height: 100%;
+  /* height: 100%; */
+
   filter: brightness(0.8);
 }
 .imgWebLogo{
   display: flex;
   position: relative;
-  height: 100%;
+  height: 50%;
+  /* width: 100%; */
   pointer-events: none;
 }
 
@@ -592,7 +603,8 @@
 .imgSetTFTLogo{
   display: flex;
   position: relative;
-  height: 100%;
+  /* height: 100%; */
+  width: 60%;
   filter: brightness(0.8);
 }
 
@@ -745,6 +757,10 @@
   font-style: italic;
   order:3;
 
+}
+
+.containerT{
+  padding-top: 5px;
 }
 
 }
