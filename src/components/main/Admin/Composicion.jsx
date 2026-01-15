@@ -353,7 +353,7 @@ function FooterTFT (){
           e.stopPropagation(); // 🔥 evita conflictos
           admin && setShowMovilnetLogo(v => !v);
         }}>
-        <img className={style.imgWebLogo} src="/tft/assets/GP_logo.png" alt="logo Guiadeparche"></img>
+        {/* <img className={style.imgWebLogo} src="/tft/assets/GP_logo.png" alt="logo Guiadeparche"></img> */}
           <span className={style.textoWeb}>
             GUIADEPARCHE.COM/TFT
           </span>
