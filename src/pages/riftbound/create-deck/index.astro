@@ -1,0 +1,17 @@
+---
+import Layout from "@layouts/LayoutFullWidth.astro";
+import {crearJSONSchema} from "src/json/schema/crearJSONSchema";
+import DeckBuilder from "@components/riftbound/DeckBuilder.jsx";
+
+const title="▷ Crear Deck Riftbound"
+const canonicalURL = "https://guiadeparche.com/riftbound/create-deck";
+const description = "Create Riftbound Deck";
+const keywords = "Riftbound Cards, Riftbound, Create Deck Riftbound";
+const thumbnail= "/2xko/logo/2xko-icono.png"
+const imgPost = "/2xko/logo/thumbnail-2xko.jpg"
+const JSONSchema = crearJSONSchema({title, imgPost, thumbnail, description});
+---
+
+<Layout title={title} JSONSchema={JSONSchema} description={description} keywords={keywords} image={thumbnail} canonical={canonicalURL}>
+    <DeckBuilder client:only="react"/>
+</Layout>

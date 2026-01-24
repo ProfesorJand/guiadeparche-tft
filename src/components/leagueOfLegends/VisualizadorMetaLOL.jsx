@@ -117,7 +117,6 @@ const VisualizadorMetaLOL = () => {
 
   useEffect(() => {
     setLocalMetaLOL(JSON.parse(JSON.stringify(lanersChampionsMetaStore)))
-    console.log("⚠️ lanersChampionsMeta cambió:", lanersChampionsMetaStore);
   }, [lanersChampionsMetaStore]);
 
    useEffect(()=>{

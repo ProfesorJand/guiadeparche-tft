@@ -1,0 +1,35 @@
+.containerNomberOfCards{
+  display: flex;
+  position: absolute;
+  right: 50%;
+  top:0;
+  transform: translate(50%, 0);
+  background-color: rgba(0, 0, 0, 0.8);
+  color:white;
+  width: 30px;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  outline: 1px solid grey;
+  outline-offset: -2px; 
+  z-index: 1;
+  opacity: 1;
+}
+
+.containerNomberOfCardsInMainDeck{
+  width: 30%;
+  height:auto;
+  aspect-ratio: 1/1;
+  top:-5px;
+}
+
+.numbersOfCards{
+  display: flex;
+  position: relative;
+  text-align: center;
+}
+
+.resizeNombersOfCards{
+  font-size: small;
+}

@@ -1,0 +1,503 @@
+---
+import Header from '../components/headers/Header.astro';
+import Footer from '../components/footer/Footer.astro';
+import Logo from '../components/logo/Logo.astro';
+import Adsense from '../components/adsense/Adsense.jsx';
+import { ViewTransitions } from 'astro:transitions';
+import PageLoader from '@components/PageLoader';
+import Youtube from '@components/youtube/Youtube.jsx';
+const admin = typeof window !== "undefined" ? window.localStorage.getItem("user") : false;
+console.log({admin})
+interface Props {
+  title: string;
+  JSONSchema?: string;
+  description?: string;
+  keywords?: string;
+  image?: string;
+  canonical?: URL;
+  hide?:boolean;
+}
+const { title, JSONSchema, description, keywords, image, canonical, hide=false } = Astro.props;
+
+console.log({admin})
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <!-- google search console -->
+    {!admin && <meta name="google-site-verification" content="VXzuc6CSTiTOeduk03n_uh0IUkgaBHkJAhQdtam2md0" />}
+    <!-- google analitics -->
+    {!admin && 
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-69PWGWV8LZ"></script>
+    <script>
+      declare global {
+        interface Window {
+          dataLayer: any[];
+          gtag: (...args: any[]) => void; 
+        }
+      }
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function gtag(){window.dataLayer.push(arguments);}  // Añadir gtag a window
+      window.gtag('js', new Date());
+
+      window.gtag('config', 'G-69PWGWV8LZ');
+    </script>
+    }
+    <!-- google ads mobile -->
+   {!admin && <script async custom-element="amp-ad" src="https://cdn.ampproject.org/v0/amp-ad-0.1.js" is:inline></script>}
+    <!-- google ads -->
+   {!admin && <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6116944495372863"
+    crossorigin="anonymous" is:inline></script>}
+    <link rel="icon" type="image/png" href={(await import("/src/assets/GP_logo.png")).default.src} />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta name="author" content="Jupeson, Profesorjand"/>
+    {description && <meta name="description" content={description}/>}
+    {keywords && <meta name="keywords" content={keywords} />}
+    {image && <meta property="og:image" content={image} />}
+    {canonical && <link rel="canonical" href={canonical} />}
+
+     <!-- Schema Script -->
+    {JSONSchema && <script type="application/ld+json" set:html={JSONSchema}></script>}
+
+    <title>{title}</title>
+    <!-- <ViewTransitions /> -->
+  </head>
+  <body>
+    <PageLoader client:only="react" />
+    <div class="bodyLayout">
+      
+      <header class="bodyHeader">
+        <Logo>Guiadeparche</Logo>
+        <Header transition:persist/>
+      </header> 
+
+      <div class="bodyInfo">
+        {!admin && <aside class="bodyAside">
+          <Adsense direction='left' dimension="vertical-izquierda" numeracion={0} client:only="react"/>
+        </aside>}
+
+        <main class="bodyMain">
+          {
+            !admin &&
+            <aside class="bodyMainAside">
+            <div class="bodyMainAsideSticky">
+              <div class="bodyMainAsideMenu">
+                <slot name="bodyMainAside"></slot>
+              </div>
+              <div class="bodyMainAsideEmbed">
+                <slot name="bodyMainAsideTwitch"></slot>
+                <!-- <Youtube src={"https://youtu.be/1P-7x6JWNp0?si=Y8K-tCZDWgxnw0gE"} client:only="react"/> -->
+                {!hide && <Youtube src={"https://www.youtube.com/playlist?list=PLxRnNvReiLMEriFDu0UxXScDabCIX-PWy"} client:only="react"/>}
+                {!hide && <Youtube src={"https://www.youtube.com/playlist?list=PLxRnNvReiLMHdvfB7WSMuSilnvdS1IUc-"} client:only="react"/>}
+                <!-- <ads class="bodyMainAsideAds">
+                  <slot name="bodyMainAsideAds"></slot>
+                </ads> -->
+              </div>
+            </div>
+          </aside>
+          }
+          <section class="bodyMainSection">
+            <slot></slot>
+          </section>
+        </main>
+
+        {!admin && <aside class="bodyAside">
+          <Adsense direction='right' dimension="vertical-derecha" numeracion={1} client:only="react" />
+        </aside>}
+      </div>
+
+      <footer class="bodyFooter">
+        <Footer></Footer>
+      </footer>
+    </div>
+    <script>
+      // Detectar Ctrl + Alt + A
+      document.addEventListener('keydown', (e) => {
+        if (e.ctrlKey && e.altKey && e.key.toLowerCase() === 'a') {
+          const isLocalhost = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+          const port = location.port || '4321'; // cambiá este si usás otro puerto
+
+          const adminURL = isLocalhost
+            ? `http://localhost:${port}/admin`
+            : 'https://guiadeparche.com/admin';
+
+          window.location.href = adminURL;
+        }
+      });
+    </script>
+  </body>
+</html>
+
+<script>
+  // Client-side: localStorage is available
+  const admin = localStorage.getItem("user");
+  if (admin) {
+    (document.getElementsByClassName("bodyAside")[0] as HTMLElement).style.display = "none";
+    (document.getElementsByClassName("bodyAside")[1] as HTMLElement).style.display = "none";
+    //bodyMainAside
+     (document.getElementsByClassName("bodyMainAside")[0] as HTMLElement).style.display = "none";
+ }
+</script>
+
+<style is:global>
+
+  :root {
+    --bg-primary-rgb: 14 3 65;
+    --bg-primary: #0e0341;
+    --bg-secondary: #0f0b5a;
+    --bg-tertiary: #120d69;
+    --bg-main: #0c023a;
+    --bg-hover:#1d15aa;
+    --color-primary: #cfcfcf;
+    --color-white:#cfcfcf;
+    --color-black:#1f1f1f;
+    --border-color: grey;
+    --border-gray-color: grey;
+    --text-color-white-primary: #e5e5e5;
+    --text-color-white-secondary: #e5e5e5;
+    --link-color-primary:brown;
+    --link-color-secondary:rgb(105, 27, 27);
+    --width-main: 100%;
+    --height-header: 8vh;
+    --height-footer: 20vh;
+    --number-champ-meta: calc(100%/6);
+    --accent: 136, 58, 234;
+    --accent-light: 224, 204, 250;
+    --accent-dark: 49, 10, 101;
+    --accent-gradient: linear-gradient(
+      45deg,
+      rgb(var(--accent)),
+      rgb(var(--accent-light)) 30%,
+      white 60%
+    );
+    font-family: Sans-serif;
+    color: var(--text-color-white-primary);
+  }
+
+  @font-face {
+    font-family: 'ObvioslyWideBoldItalic'; /* Name your font family */
+    src: url('/fonts/ObviouslyWide-BoldItalic.otf') format("opentype"); /* Locate the .ttf file within your directory*/
+  }
+
+  @font-face {
+    font-family: 'ObvioslyWideBold'; /* Name your font family */
+    src: url('/fonts/ObviouslyWide-Bold.otf') format("opentype"); /* Locate the .ttf file within your directory*/
+  }
+
+  @font-face {
+  font-family: "Fatal Fighter";
+  src: url("/fonts/Fatal Fighter.otf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* 
+  @font-face {
+    font-family: 'MiFuente';
+    src: url('/fonts/MiFuente.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+  } */
+
+  html {
+  background: transparent;
+}
+
+  body::-webkit-scrollbar {
+    width: 12px; /* width of the entire scrollbar */
+    background: transparent;
+  }
+
+  body::-webkit-scrollbar-track {
+    /* background: var(--bg-primary); */
+    background: transparent;
+    background-image: url("/backgrounds/negro_y_rayas.avif");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    box-shadow: none;
+  }
+
+  body::-webkit-scrollbar-thumb {
+    background-color: blue; /* color of the scroll thumb */
+    border-radius: 20px; /* roundness of the scroll thumb */
+    border: 2px solid var(--border-color); /* creates padding around scroll thumb */
+    background-clip: padding-box;
+  }
+  body {
+    background-color: var(--bg-primary);
+    overflow-y: scroll;
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    max-width: 100%;
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    min-height: 100vh;
+    background-image: url(/backgrounds/negro_y_rayas.avif);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+  }
+  code {
+    font-family:
+      Menlo,
+      Monaco,
+      Lucida Console,
+      Liberation Mono,
+      DejaVu Sans Mono,
+      Bitstream Vera Sans Mono,
+      Courier New,
+      monospace;
+  }
+  .midSection{
+    display:flex;
+    position: relative;
+    flex-direction: row;
+    width: 100%;
+  }
+  .hide {
+    display: none;
+  }
+  h1{
+    text-align: center;
+    text-decoration: underline var(--border-color);
+    font-size: 2rem;
+  }
+  h2{
+    text-align: center;
+  }
+  .adsbygoogle{
+    z-index: 1 !important;
+  }
+  #google-anno-sa{
+    display: none;
+  }
+  html body .google-anno-skip.google-anno-sc {
+    display: none !important;
+  }
+  .bodyMain{
+    background-color: var(--bg-main);
+  }
+
+
+  @media only screen and (max-width: 900px) {
+    .bodyLayout{
+      display: flex;
+      position: relative;
+      width: 100%;
+      flex-direction: column;
+    }
+    .bodyHeader{
+      display: flex;
+      position: sticky;
+      z-index: 9;
+      top:0;
+      width: 100%;
+      max-width: 100%;
+      height: var(--height-header);
+      background-color: var(--bg-primary);
+      flex-direction: row;
+    }
+    .bodyInfo{
+      display: flex;
+      width: 100vw;
+      max-width: 100%;
+      position: relative;
+      flex-direction: column;
+      height: 100%;
+      min-height: 92vh;
+    }
+    .bodyAside{
+      display: none;
+      width: 100%;
+      height: 100vh !important;
+      overflow: hidden;
+      /* background-color: aqua; */
+    }
+    .bodyMain{
+      display: flex;
+      width: 100%;
+      position: relative;
+      flex-direction: column;
+    }
+    .bodyMainAside{
+      display: flex;
+      position: relative;
+      flex-direction: column;
+      width: 100%;
+      order:2
+    }
+    .bodyMainAsideSticky{
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      background-color: var(--bg-secondary);
+      width: 100%;
+      box-sizing: border-box;
+      justify-content: flex-start;
+    }
+    .bodyMainAsideMenu{
+      display: flex;
+      position: relative;
+      flex-direction: column;
+      box-sizing: border-box;
+    }
+    .bodyMainAsideEmbed{
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      box-sizing: border-box;
+      gap:5px;
+    }
+    .bodyMainAsideAds{
+      display: flex;
+      position:relative;
+      width: 100%;
+    }
+    .bodyMainSection{
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      width: 100%;
+      background-color: var(--bg-main);
+
+    }
+    .bodyFooter{
+      display: flex;
+      position: relative;
+      justify-content: center;
+      width: 100vw;
+      max-width: 100%;
+      /* height: var(--height-footer); */
+      /* bottom:0; */
+    }
+    main{
+      width: 100%;
+    }
+    .midSection{
+      display:flex;
+      position: relative;
+      flex-direction: column;
+    }
+    h1, h2, h3, h4{
+      font-size: 1rem;
+    }
+  }
+
+  @media only screen and (min-width:900px) {
+    .bodyLayout{
+      display: flex;
+      position: relative;
+      margin:0;
+      padding: 0;
+      width: 100%;
+      max-width: 100%;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      /* padding-bottom: var(--height-footer); */
+    }
+    .bodyHeader{
+      display: flex;
+      position: sticky;
+      z-index: 9;
+      top:0;
+      width: 100%;
+      max-width: 100%;
+      height: var(--height-header);
+      background-color: var(--bg-primary);
+      flex-direction: row;
+    }
+    .bodyInfo{
+      display: flex;
+      width: 100%;
+      max-width: 100%;
+      position: relative;
+      flex-direction: row;
+      height: 100%;
+      min-height: 92vh;
+      /* background-color: #ffd700; */
+    }
+    .bodyAside{
+      display: flex;
+      width: calc((100% - var(--width-main)) / 2);
+      position: sticky;
+      top: calc(var(--height-header));
+      padding: 5px;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+    .bodyMain{
+      display: flex;
+      width: var(--width-main);
+      position: relative;
+      flex-direction: row;
+    }
+    .bodyMainAside{
+      display: flex;
+      position: relative;
+      flex-direction: column;
+      width: calc(100%/3);
+      /* background-color: var(--bg-secondary); */
+    }
+
+    .bodyMainAsideSticky{
+      display: flex;
+      flex-direction: column;
+      position: -webkit-sticky;
+      position: sticky;
+      top:var(--height-header);
+      background-color: var(--bg-secondary);
+      width: 100%;
+      box-sizing: border-box;
+      height:max-content;
+      justify-content: flex-start;
+    }
+
+    .bodyMainAsideMenu{
+      display: flex;
+      position: relative;
+      flex-direction: column;
+      box-sizing: border-box;
+    }
+
+    .bodyMainAsideEmbed{
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      box-sizing: border-box;
+      gap:5px;
+    }
+    .bodyMainAsideAds{
+      display: flex;
+      position:relative;
+      width: 100%;
+      aspect-ratio: 16/9;
+    }
+
+    .bodyMainSection{
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      width: 100%;
+      background-color: var(--bg-main);
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .bodyFooter{
+      display: flex;
+      position: relative;
+      justify-content: center;
+      width: 100%;
+      max-width: 100%;
+    }
+  }
+</style>

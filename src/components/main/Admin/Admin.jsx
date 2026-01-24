@@ -15,6 +15,7 @@ import FormularioMetaWildrift from "@components/wildrift/FormularioMetaWildrift.
 import InfografiaTFTComps from "@components/TFT/InfografiaTFTComps.jsx";
 import InfografiaTop5 from '@components/Infografias/Top5/InfografiaTop5.jsx';
 import Formulario2XKO from "@components/2xko/Formulario2XKO.jsx";
+import DeckBuilder from "@components/riftbound/DeckBuilder.jsx"
 // import Formulario2XKO from "@components/2xko/Formulario2XKO.jsx";
 const AdminPanel = ({allAdmins})=>{
     const [isLoged, setIsLoged] = useState(localStorage.getItem("login") || false)
@@ -41,10 +42,13 @@ const AdminPanel = ({allAdmins})=>{
       },{
         primario:"Streamer",
         secundario:["Editar"]
+      },{
+        primario:"Riftbound",
+        secundario:["Redes Deck"]
       }
     ]
-    const [pestana, setPestana] = useState(pestanas[4].primario);
-    const [action, setAction] = useState(pestanas[4].primario);
+    const [pestana, setPestana] = useState(pestanas[1].primario);
+    const [action, setAction] = useState(pestanas[1].primario);
 
     function cerrarSesion(){
         setIsLoged(false)
@@ -72,11 +76,14 @@ const AdminPanel = ({allAdmins})=>{
                           type="button"
                           value={primario}
                           onClick={()=>{
-                            if(primario !== "Infografia Zero"){
+                            if(primario !== "Infografia Zero" && primario !== "Riftbound"){
                               setPestana(primario)
                             }
-                            else{
+                            else if(primario === "Infografia Zero"){
                               window.location.href = "/crearInfografia"
+                            }
+                             else if(primario === "Riftbound"){
+                              window.location.href = "/riftbound/create-deck"
                             }
                           }}
                           className={pestana.includes(primario) ? style.btnActive: ""}
@@ -126,6 +133,7 @@ const AdminPanel = ({allAdmins})=>{
                 {action.includes(pestanas[4].primario) && <Formulario2XKO/>}
                 {action.includes(pestanas[5].primario) && <InfografiaTop5/>}
                 {action.includes(pestanas[6].primario) && <StreamersManager/>}
+                {action.includes(pestanas[7].primario) && <DeckBuilder/>}
                 {/* {action === "champsItemsTierList" && <CrearTierListChampItem />} */}
             </div>
             <button onClick={()=>cerrarSesion()}>cerrar sesión</button>

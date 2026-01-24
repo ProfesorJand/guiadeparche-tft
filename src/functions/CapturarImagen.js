@@ -4,6 +4,12 @@ export const waitForImages = async (node) => {
   const images = Array.from(node.querySelectorAll("img"));
   if (!images.length) return;
 
+  images.forEach(img => {
+  img.addEventListener("error", () => {
+    console.log("❌ Imagen falló:", img.src);
+  });
+});
+
   await Promise.all(
     images.map(img =>
       new Promise(resolve => {
@@ -30,6 +36,14 @@ export const CapturarImagen = async ({ backgroundRef, nombre }) => {
   const imgs = node.querySelectorAll("img");
   const originalOnError = new Map();
 
+  console.log({imgs})
+
+  imgs.forEach(img => {
+  img.addEventListener("error", () => {
+    console.log("❌ Imagen falló:", img.src);
+  });
+});
+
   try {
     console.log("📸 Iniciando captura");
 
@@ -48,15 +62,17 @@ export const CapturarImagen = async ({ backgroundRef, nombre }) => {
     });
 
     await waitForImages(node);
-
+    console.log("entre")
+    console.log({node})
     // Forzar repaint real
     node.style.transform = "translateZ(0)";
     await new Promise(r => setTimeout(r, 50));
-
+    console.log("promesa")
     const dataUrl = await toPng(node, {
       pixelRatio: 2,
       cacheBust: false,
     });
+    console.log({dataUrl})
 
     const link = document.createElement("a");
     link.download = `${nombre}.png`;
@@ -65,7 +81,12 @@ export const CapturarImagen = async ({ backgroundRef, nombre }) => {
 
     console.log("✅ Captura completada");
   } catch (err) {
-    console.error("❌ Error en captura", err);
+    if (err instanceof Error) {
+      console.error("❌ Error en captura:", err.message);
+      console.error(err.stack);
+    } else {
+      console.error("❌ Error en captura (no-Error):", err);
+    };
   } finally {
     // Restaurar todo
     node.classList.remove("captura-img");
