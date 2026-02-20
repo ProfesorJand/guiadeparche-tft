@@ -1,0 +1,14 @@
+---
+import Layout from "@layouts/LayoutMidOnly.astro"
+import InfografiaTopVideoJuegos from "@components/topVideojuegos/InfografiaTopVideoJuegos.jsx"
+
+---
+
+<Layout title="Infografia Top Videojuegos">
+  <div style={{display:"flex", flexDirection:"column", width:"100%"}}>
+    <InfografiaTopVideoJuegos client:only="react"/>
+    <InfografiaTopVideoJuegos type={"febrero"} client:only="react"/>
+    <InfografiaTopVideoJuegos type={"marzo"} client:only="react"/>
+
+  </div>
+</Layout>

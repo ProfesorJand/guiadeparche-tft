@@ -4,18 +4,31 @@ export const waitForImages = async (node) => {
   const images = Array.from(node.querySelectorAll("img"));
   if (!images.length) return;
 
-  images.forEach(img => {
-  img.addEventListener("error", () => {
-    console.log("❌ Imagen falló:", img.src);
-  });
-});
-
   await Promise.all(
     images.map(img =>
       new Promise(resolve => {
-        if (img.complete && img.naturalWidth !== 0) return resolve();
-        img.onload = img.onerror = resolve;
-        setTimeout(resolve, 3000);
+
+        // ✅ Detectar error inmediatamente si ya falló
+        if (img.complete && img.naturalWidth === 0) {
+          console.error("❌ Imagen ya fallida:", img.src);
+          return resolve();
+        }
+
+        if (img.complete && img.naturalWidth !== 0) {
+          return resolve();
+        }
+
+        img.onload = () => resolve();
+
+        img.onerror = () => {
+          console.error("❌ Imagen falló al cargar:", img.src);
+          resolve();
+        };
+
+        setTimeout(() => {
+          console.warn("⏳ Timeout esperando imagen:", img.src);
+          resolve();
+        }, 3000);
       })
     )
   );
@@ -23,6 +36,7 @@ export const waitForImages = async (node) => {
   await new Promise(requestAnimationFrame);
   await new Promise(requestAnimationFrame);
 };
+
 
 export const CapturarImagen = async ({ backgroundRef, nombre }) => {
   const node = backgroundRef?.current;
@@ -55,19 +69,32 @@ export const CapturarImagen = async ({ backgroundRef, nombre }) => {
       el.style.display = "none";
     });
 
+    
+    await waitForImages(node);
+
     // 🔥 DESACTIVAR onerror (CLAVE)
     imgs.forEach(img => {
       originalOnError.set(img, img.onerror);
       img.onerror = null;
     });
 
-    await waitForImages(node);
     console.log("entre")
     console.log({node})
     // Forzar repaint real
     node.style.transform = "translateZ(0)";
     await new Promise(r => setTimeout(r, 50));
-    console.log("promesa")
+    const images = node.querySelectorAll("img");
+
+    images.forEach(img => {
+      console.log("🖼 Imagen detectada:", {
+        src: img.src,
+        crossOrigin: img.crossOrigin,
+        complete: img.complete,
+        naturalWidth: img.naturalWidth
+      });
+    });
+
+
     const dataUrl = await toPng(node, {
       pixelRatio: 2,
       cacheBust: false,

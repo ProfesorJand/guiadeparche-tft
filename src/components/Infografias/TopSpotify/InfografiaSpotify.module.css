@@ -1,0 +1,178 @@
+.infografiaContainer{
+  width: 100%;
+  display: flex;
+  position:relative;
+  flex-direction: column;
+  aspect-ratio: 4 / 5;
+  width: 100%;
+  background-color: #000000;
+}
+
+.header{
+  height: 15%;
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  justify-content: center;
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+.titulo{
+  font-size: 2.8vw;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  font-family: fantasy;
+  white-space: pre-line;
+}
+
+.titulo2{
+  font-size: 2.8vw;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  font-family: fantasy;
+  white-space: pre-line;
+}
+
+.fecha{
+  display: flex;
+  background-color: #527476;
+  color:#ffffff;
+  padding: 5px;
+  box-sizing: border-box;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+
+.containerAllArtist{
+  height: 72%;
+  display: flex;
+  position: relative;
+  box-sizing: border-box;
+  flex-wrap: wrap;
+}
+
+.containerArtista{
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  border: 1px solid white;
+  box-sizing: border-box;
+  overflow: hidden; 
+  z-index: 1;
+  position: relative; 
+  width: 50%;
+}
+
+.containerNumeracion{
+  /* background-color:white;
+  background-clip: text; */
+  display: flex;
+  position:absolute;
+  top:0;
+  left:0;
+  width: 10%;
+  height: auto;
+  aspect-ratio: 1/1;
+  align-items: center;
+  justify-content: center;
+  color:rgb(252, 252, 252);
+  border-radius: 50%;
+  font-size: clamp(12px, 1.5em, 120px);
+  /* opacity: 0.5; */
+}
+
+.containerPerfilArtista{
+  width: 35%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 10px 10px 10px 20px; /* 🔥 margen interno alrededor del círculo */
+  box-sizing: border-box;
+}
+
+.circle{
+  width: 100%;
+  aspect-ratio: 1 / 1;   /* 🔥 mantiene cuadrado */
+  border-radius: 50%;    /* 🔥 círculo */
+  overflow: hidden;      /* 🔥 recorte perfecto */
+}
+
+.perfilArtista{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;     /* 🔥 rellena sin deformar */
+}
+
+
+.backgroundArtista{
+ position: absolute;
+
+  top: 50%;
+  left: 0%;
+
+  width: 100%;
+  height: auto;
+
+  min-height: 120%; /* 🔥 clave */
+  transform: translate(0, -50%);
+  object-fit: cover;
+
+  z-index: 0;
+}
+
+.containerInfoArtista{
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+  width: 65%;
+  justify-content: center;
+}
+
+.nameOfArtist{
+  white-space: nowrap;      /* 🔥 siempre 1 línea */
+  overflow: hidden;         /* 🔥 evita que se salga */
+  text-overflow: ellipsis;  /* 🔥 agrega ... si no entra */
+
+  font-weight: 600;
+  text-align: center;
+  font-family: 'Open Sans Condensed', sans-serif;
+  font-size: clamp(12px, 2em, 28px);
+  text-wrap: "wrap";
+}
+
+.monthlyListener{
+  font-size: 5vw;
+}
+
+.footer{
+  height: 13%;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  padding: 15px 5px;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.containerLogo{
+  display: flex;
+  position: relative;
+  height: 100%;
+  justify-content: center;
+}
+
+.logo{
+  display: flex;
+  position: relative;
+  width: 80%;
+  object-fit: contain;
+
+}

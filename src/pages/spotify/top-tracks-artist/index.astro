@@ -1,0 +1,9 @@
+---
+import Layout from "@layouts/LayoutMidOnly.astro"
+import TopCancionesArtista from "@components/Infografias/TopSpotify/TopCancionesArtista.jsx"
+
+---
+
+<Layout title="Crear Top Canciones Spotify">
+  <TopCancionesArtista client:only="react"/>
+</Layout>

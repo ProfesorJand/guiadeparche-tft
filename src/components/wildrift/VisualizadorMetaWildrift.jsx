@@ -116,7 +116,6 @@ const VisualizadorMetaWildrift = () => {
 
   useEffect(() => {
     setLocalMetaWildrift(JSON.parse(JSON.stringify(lanersChampionsMetaStore)))
-    console.log("⚠️ lanersChampionsMeta cambió:", lanersChampionsMetaStore);
   }, [lanersChampionsMetaStore]);
 
    useEffect(()=>{

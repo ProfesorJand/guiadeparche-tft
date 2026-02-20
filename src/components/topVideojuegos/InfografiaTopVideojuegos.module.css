@@ -1,0 +1,185 @@
+.container{
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  width: 100%;
+  background-color: rgb(202, 141, 62);
+}
+
+.containerInfografia{
+  display: flex;
+  position: relative;
+  box-sizing: border-box;
+  aspect-ratio: 4/5;
+  background-color: black;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  font-family: fantasy;
+}
+
+.header{
+  display: flex;
+  position: relative;
+  height: 10%;
+  width: 100%;
+  background-color: rgb(0, 0, 0);
+  flex-direction: column;
+  container-type: size;
+  align-items: center;
+  justify-content: center;
+}
+
+.titulo{
+  font-size: 35cqh;
+  text-align: center;
+  font-family: "Good timing";
+  /* filter: drop-shadow(0 0 10px rgba(177, 22, 197, 0.7)); */
+}
+
+.titulo2{
+  text-align: center;
+  font-size: 35cqh;
+  font-family: "Good timing";
+  /* filter: drop-shadow(0 0 10px rgba(177, 22, 197, 0.7)); */
+}
+
+.body{
+  display: flex;
+  position: relative;
+  height: 80%;
+  width: 100%;
+
+  flex-direction: row;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  padding: 1vh 1vw;
+
+  gap: 5px;
+}
+
+.card{
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  width: calc(50% - 5px);
+  box-shadow:  0px 0px 2px rgb(253, 253, 253);
+  align-items: center;
+  box-sizing: border-box;
+  height: calc(100% / 5 - 5px );
+  overflow: hidden;
+  border-radius: 8px;
+  container-type: size;
+}
+
+.containerImgGame{
+  display: flex;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+
+}
+
+.imgGame{
+  display: flex;
+  height: auto;
+  width: 100%;
+
+  flex-shrink: 0;
+  object-fit: fill;
+}
+
+.gameContent{
+  display: flex;
+  position: absolute;
+  padding: 5px;
+  box-sizing: border-box;
+  background-color: rgb(253, 253, 253);
+  margin-block-start: 0;
+  margin-block-end: 0;
+  border-radius: 5px;
+  font-size: 8.5cqh;
+
+  font-weight:200;
+  font-family: sans-serif;
+}
+
+.gameName{
+  bottom: 8px;
+  left:8px;
+  color:black;
+  box-shadow:  0px 0px 2px rgb(0, 0, 0);
+  font-size: 10cqh;
+  font-weight: 600;
+}
+
+.relaseDate{
+  left: 0;
+  top:0;
+  background-color: rgb(157, 19, 248);
+  font-weight: 800;
+}
+
+.platformContainer{
+  height: 20%;
+  top:0;
+  right:0;
+  gap:1cqw;
+  background-color: rgba(255, 255, 255, 0.507);
+  justify-content: flex-end;
+}
+
+
+.imgPlatformContainer{
+  height: 100%;
+  width: auto;
+
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  align-items: center;
+}
+
+.platform{
+  display: flex;
+  position: relative;
+  height: 100%;
+  width: auto;
+  object-fit: contain;
+  background-color: rgba(167, 88, 88, 0);
+}
+
+.platformPS5{
+  height: 60%;
+}
+
+
+.footer{
+  display: flex;
+  position: relative;
+  height: 10%;
+  width: 100%;
+  justify-content: space-around;
+  padding: 10px 15%;
+  box-sizing: border-box;
+}
+
+.containerLogo{
+  display: flex;
+  position: relative;
+  width: calc(100% / 2);
+  padding: 5px;
+  box-sizing: border-box;
+  justify-content: center;
+}
+
+.logo{
+  width: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 10px rgba(177, 22, 197, 0.7));
+  opacity: 85%;
+}
+
+.logoMovilnet{
+  height: 100%;
+}

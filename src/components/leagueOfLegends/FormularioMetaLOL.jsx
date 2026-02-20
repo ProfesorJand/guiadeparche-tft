@@ -166,7 +166,7 @@ const handleChampionSelect = ({ laner, index, champion, item, indexItem, rune, i
 };
 
 useEffect(()=>{
-  console.log({runes})
+
 },[runes])
 
 
