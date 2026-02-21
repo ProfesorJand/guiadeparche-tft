@@ -1,0 +1,25 @@
+---
+import Layout from "@layouts/LayoutMidOnly.astro";
+import TopVideoJuegos from "@components/topVideojuegos/TopVideoJuegos.jsx";
+import {crearJSONSchema} from "src/json/schema/crearJSONSchema";
+import MejoresMazosRiftbound from "@components/riftbound/MejoresMazosRiftbound.jsx"
+const fechaActual = new Date(); // Fecha actual (ej. Marzo)
+let proximoMes = new Date(fechaActual.getFullYear(), fechaActual.getMonth() + 1, 1);
+const nombreMesActual = fechaActual.toLocaleString('es-ES', { month: 'long' });
+const nombreMesProximo = proximoMes.toLocaleString('es-ES', { month: 'long' });
+const anoActual = fechaActual.toLocaleString('es-ES', { year: 'numeric' });
+const anoProximo = proximoMes.toLocaleString('es-ES', { year: 'numeric' });
+const mesActual = nombreMesActual.slice(0,1).toUpperCase() + nombreMesActual.slice(1);
+const mesProximo = nombreMesProximo.slice(0,1).toUpperCase() + nombreMesProximo.slice(1);
+const title = `Tier List Mazos de Riftbound`; //slug
+const canonicalURL = "https://guiadeparche.com/mejores-lanzamientos-de-videojuegos";
+const description = "Conoce los mazos que estan rompiendo el meta de Riftbound";
+const keywords = "Juego de Cartas, Riftbound, Riot, Cartas de Riot, Cartas de League of Legends";
+const thumbnail= "https://guiadeparche.com/"; // mejorar
+const imgPost = "https://guiadeparche.com/gamer/control-gamer.png"; // mejorar
+const JSONSchema = crearJSONSchema({title, imgPost, thumbnail, description});
+---
+
+<Layout title={title} canonical={canonicalURL} description={description} keywords={keywords} JSONSchema={JSONSchema}>
+    <MejoresMazosRiftbound client:only="react"/>
+</Layout>

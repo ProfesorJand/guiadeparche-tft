@@ -50,8 +50,6 @@ export const CapturarImagen = async ({ backgroundRef, nombre }) => {
   const imgs = node.querySelectorAll("img");
   const originalOnError = new Map();
 
-  console.log({imgs})
-
   imgs.forEach(img => {
   img.addEventListener("error", () => {
     console.log("❌ Imagen falló:", img.src);

@@ -17,9 +17,10 @@ import InfografiaTop5 from '@components/Infografias/Top5/InfografiaTop5.jsx';
 import Formulario2XKO from "@components/2xko/Formulario2XKO.jsx";
 import DeckBuilder from "@components/riftbound/DeckBuilder.jsx"
 // import Formulario2XKO from "@components/2xko/Formulario2XKO.jsx";
-const AdminPanel = ({allAdmins})=>{
+const AdminPanel = ()=>{
     const [isLoged, setIsLoged] = useState(localStorage.getItem("login") || false)
-    const [adminName, setAdminName] = useState(localStorage.getItem("user") || "");
+    const [adminName, setAdminName] = useState("");
+    const [admins, setAdmins] = useState([])
     const pestanas = [
       {
         primario:"TFT",
@@ -57,13 +58,14 @@ const AdminPanel = ({allAdmins})=>{
         localStorage.removeItem("superAdmin");
     }
 
-    if(!isLoged || !adminName){
+
+    if(!isLoged || !admins){
         return (
             <>
-            <Login allAdmins={allAdmins} setIsLoged={setIsLoged} setAdminName={setAdminName}/>
+            <Login setIsLoged={setIsLoged} setAdmins={setAdmins}/>
             </>
         )
-    }else if(isLoged && adminName){
+    }else if(isLoged && admins){
         return (
             <>
             <div>{adminName}</div>
@@ -71,7 +73,7 @@ const AdminPanel = ({allAdmins})=>{
                 {
                   pestanas.map(({primario,secundario},index)=>{
                     return (
-                      <div className={style.container}>
+                      <div key={index} className={style.container}>
                         <input 
                           type="button"
                           value={primario}
@@ -98,11 +100,11 @@ const AdminPanel = ({allAdmins})=>{
             { pestanas.map(({primario,secundario},index)=>{
               if(pestana?.includes(primario))
               return (
-                <div className={style.containerPestanaSecundario}>
+                <div key={index} className={style.containerPestanaSecundario}>
                   {
                     secundario.map((value,j)=>{
                       return (
-                        <div className={style.compos}>
+                        <div key={j} className={style.compos}>
                             <button 
                               className={pestana === primario.concat(value) ? style.btnActive: ""} 
                               onClick={()=>{

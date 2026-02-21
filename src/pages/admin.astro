@@ -8,7 +8,6 @@ import MainAside from "@components/main/MainAside";
 import Twitch from '@components/embed/Twitch';
 import FiltroComps from '@components/main/Admin/FiltroComps.jsx';
 import TierListMetaComps from '@components/TFT/TierListMetaComps.jsx';
-const allAdmins = await db.select().from(Admins);
 ---
 
 <Layout title='admin'>
@@ -23,6 +22,6 @@ const allAdmins = await db.select().from(Admins);
         Publicidad
     </Fragment> -->
     <Main>
-        <AdminPanel allAdmins={allAdmins} client:only="react"/>
+        <AdminPanel client:only="react"/>
     </Main>
 </Layout>

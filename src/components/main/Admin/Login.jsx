@@ -3,9 +3,10 @@ import React, {useEffect, useRef, useState} from "react";
 
 import style from "./css/Login.module.css"
 
-const Login = ({allAdmins, setIsLoged, setAdminName})=>{
+const Login = ({setIsLoged, setAdmins})=>{
     const [user, setUser] = useState("")
     const [password, setPassword] = useState("")
+
     function handleChange(e, input){
       
         const value = e.target.value
@@ -15,22 +16,41 @@ const Login = ({allAdmins, setIsLoged, setAdminName})=>{
             setPassword(value)
         }
     }
-    function handleButton(e){
+
+    async function handleButton(e){
         e.preventDefault();
-        const usuario = allAdmins.find((admin)=>{
-            return admin.user === user && admin.password === password;
-        })
-        if(usuario){
-            localStorage.setItem("user",usuario.user);
-            localStorage.setItem("login",true)
-            localStorage.setItem("superAdmin",usuario.superAdmin)
-            setAdminName(usuario.user)
-            setIsLoged(true);
-        }else{
-            console.error(`usuario: no encontrado`)
-            alert(`usuario: no encontrado`)
+
+        try{
+            const res = await fetch("https://api.guiadeparche.com/login.php", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    username: user,
+                    password: password
+                })
+            });
+
+            const data = await res.json();
+
+            if(data.success){
+                localStorage.setItem("token", data.token);
+                localStorage.setItem("user", true);
+                localStorage.setItem("login", "true");
+
+                setAdmins(user);
+                setIsLoged(true);
+            }else{
+                alert("Credenciales incorrectas");
+            }
+
+        }catch(error){
+            console.error(error);
+            alert("Error de conexión con el servidor");
         }
     }
+
     function showPassword(input){
         const $ = (html)=>document.querySelector(html);
         let inputToShow = $(`#${input}`);
