@@ -1,6 +1,5 @@
 import { defineConfig, squooshImageService } from 'astro/config';
 import node from '@astrojs/node';
-import db from "@astrojs/db";
 import sitemap from '@astrojs/sitemap';
 
 import react from "@astrojs/react";
@@ -34,5 +33,5 @@ export default defineConfig({
   site: 'https://guiadeparche.com',
   base: '/', // muy importante que NO tenga subcarpetas
   output: 'static', // <-- Muy importante
-  integrations: [react(), sitemap(),db()]
+  integrations: [react(), sitemap()]
 });
