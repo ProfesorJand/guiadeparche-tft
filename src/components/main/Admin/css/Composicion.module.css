@@ -79,7 +79,8 @@
   display: none;
 }
 .isHideForAdmin{
-  opacity: 0.2;
+  opacity: 0.8;
+  background-color: black !important;
 }
 
 .containerInfoPrincipal{

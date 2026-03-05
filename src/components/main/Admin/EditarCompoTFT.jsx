@@ -9,7 +9,7 @@ import SelectVersion from "@components/versionTFT/SelectVersion.jsx";
 const EditarCompoTFT = () => {
   const currentVersion = useStore(versionTFT);
   const [constantes, setConstantes] = useState({});
-  const admin = localStorage.getItem("superAdmin") || false;
+  const admin = localStorage.getItem("user") || false;
   useEffect(() => {
     // Obtener las constantes actuales
     const fetchConstantes = async () => {

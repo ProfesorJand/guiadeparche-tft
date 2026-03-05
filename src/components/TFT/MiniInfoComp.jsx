@@ -45,11 +45,15 @@ const MiniInfoComp = ({
     };
   }, []);
   return (
-    <div className={style.miniInfoComp}
+    <div 
+      className={[style.miniInfoComp, compo?.isHide && admin ? style.isHideForAdmin : compo?.isHide === "true" ? style.isHide : "" ].join(" ")}
       ref={containerInfoChampRef}
     >
       <div 
-        className={[show ? style.containerInfoPrincipal : style.containerInfoPrincipalOculto , (open || isOpen) ? style.downBorder: "", compo?.isHide === "true" && admin ? "" : compo?.isHide === "true" ? style.isHide : "" ].join(" ")} onClick={()=>{onToggle()}}
+        className={[
+          show ? style.containerInfoPrincipal : style.containerInfoPrincipalOculto,
+          (open || isOpen) ? style.downBorder : "",].join(" ")} 
+          onClick={()=>{onToggle()}}
         // style={{
         //   border: !forInfografia ? "none": "2px solid #38bdbd",
         //   // backgroundImage: forInfografia ? "url(http://localhost:4321/tft/assets/backgroundWrapperSet15.webp)" : null,

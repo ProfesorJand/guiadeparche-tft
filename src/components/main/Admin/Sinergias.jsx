@@ -5,7 +5,6 @@ import { traitsColors, imgHex } from "src/functions/campeonestft";
 import { dataTFTTraits } from "@stores/dataTFT";
 import { useStore } from "@nanostores/react";
 const Sinergias = ({sinergias, orientacion, show, version})=>{
-  console.log("cantidad de sinergias:",Object.keys(sinergias).length)
   const sinergiasData = useStore(dataTFTTraits)
   function checkColor(hexColor){
     if(hexColor === "hex-prismatic.webp"){

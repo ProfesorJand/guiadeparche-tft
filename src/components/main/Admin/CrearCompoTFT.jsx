@@ -55,7 +55,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
     const [originalComp, setOriginalComp] = useState("lv8");
     const [id, setId] =useState(generadorID());
     const [isHide, setIsHide] = useState(false);
-    const [isInInfographic, setIsInInfographic] = useState(true);
+    const [isInInfographic, setIsInInfographic] = useState(false);
     const [campeonTierList, setCampeonTierList] = useState({});
     const [augmentTierList, setAugmentTierList] = useState({});
     const [champItem, setChampItem] = useState([{}])
@@ -221,10 +221,9 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         setChamp3Stars(editChamp3Stars)
         setVersion(editVersion)
         setIsHide(editisHide)
-        setIsInInfographic(editisInInfographic || true)
+        setIsInInfographic(editisInInfographic)
       }
     },[edit])
-
 
  useEffect(() => {
   if (takePicture) {
@@ -638,9 +637,12 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
       <div className={style.containerFirst}>
         <label>
           <span>Is In Infographic:</span>
-          <select onChange={(e)=>{setIsInInfographic(e.target.value === "true")}} defaultValue={editisInInfographic ? editisInInfographic : isInInfographic?.toString() || true}>
-            <option value={true}>TRUE</option>
-            <option value={false}>FALSE</option>
+          <select 
+            onChange={(e)=>{setIsInInfographic(e.target.value === "true")}} 
+            value={isInInfographic.toString()}
+          >
+            <option value={"true"} >TRUE</option>
+            <option value={"false"} >FALSE</option>
           </select>
         </label>
       <label htmlFor="version">
@@ -752,7 +754,9 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
 
       <label>
         <span>Hide Comp:</span>
-        <select onChange={(e)=>{setIsHide(e.target.value)}} defaultValue={editisHide ? editisHide : isHide.toString()}>
+        <select 
+          onChange={(e)=>{setIsHide(e.target.value)}} 
+          value={isHide.toString()}>
           <option value={false}>FALSE</option>
           <option value={true}>TRUE</option>
         </select>
