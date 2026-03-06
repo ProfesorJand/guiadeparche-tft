@@ -2,17 +2,11 @@
 import Main from '@components/main/Main.astro';
 import Layout from 'src/layouts/Layout.astro';
 import AdminPanel from "../components/main/Admin/Admin.jsx";
-import {db, Admin as Admins} from "astro:db";
-import MainSection from '@components/main/MainSection';
-import MainAside from "@components/main/MainAside";
-import Twitch from '@components/embed/Twitch';
-import FiltroComps from '@components/main/Admin/FiltroComps.jsx';
 import TierListMetaComps from '@components/TFT/TierListMetaComps.jsx';
 ---
 
 <Layout title='admin'>
     <Fragment slot="bodyMainAside">
-        <!-- <FiltroComps client:only="react"/> -->
         <TierListMetaComps client:only="react"/>
     </Fragment>
     <!-- <Fragment slot="bodyMainAsideTwitch">

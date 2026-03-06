@@ -1,0 +1,47 @@
+.container{
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(170, 65, 65);
+  margin-top:50px;
+  color:black;
+  font-weight: bold;
+}
+
+label{
+  display: flex;
+  flex-direction: column;
+}
+
+.btnVerde{
+  background-color: #2ecc71;
+  color: rgb(0, 0, 0);
+  /* text-shadow: 1px 1px 1px black; */
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.btnVerde:hover{
+  background-color: #27ae60;
+}
+
+.btnAmarillo{
+  background-color: #f1c40f;
+  color: rgb(0, 0, 0);
+  /* text-shadow: 1px 1px 1px black; */
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.btnAmarillo:hover{
+  background-color: #e67e22;
+}

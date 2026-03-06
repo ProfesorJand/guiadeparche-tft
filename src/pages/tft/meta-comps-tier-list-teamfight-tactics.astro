@@ -28,7 +28,6 @@ const admin = typeof window !== "undefined" ? localStorage.getItem("superAdmin")
 <meta property="og:image" content="/campeones/set12/ryze.webp" /> -->
 <Layout title={title} JSONSchema={JSONSchema} description={description} keywords={keywords} image={"/campeones/set12/ryze.webp"} canonical={canonicalURL}>
   <Fragment slot="bodyMainAside">
-    <!-- <FiltroComps client:only="react"/> -->
     <TierListMetaComps client:only="react"/>
     <!-- <Youtube src={"https://www.youtube.com/playlist?list=PLxRnNvReiLMEriFDu0UxXScDabCIX-PWy"} client:only="react"/> -->
 </Fragment>

@@ -118,7 +118,6 @@ const MiniInfoComp = ({
 }
 
 function AdminOptions ({compo,admin,show,handleEditID, imagePosicionamientoReady, isOpen, backgroundRef,forInfografia}) {
-  if (forInfografia) return null;
   return (
     <div className={`${show ? style.containerFlecha : style.containerFlechaOculto} adminOptions`}>
       {
@@ -157,8 +156,7 @@ function AdminOptions ({compo,admin,show,handleEditID, imagePosicionamientoReady
     </div>
   )
 }
-function TierImg ({compo, show}){
-  if (!show) return null;
+function TierImg ({compo}){
   return (
     <div className={style.containerTierImg}>
       <img

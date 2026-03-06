@@ -36,9 +36,11 @@
 .containerChampionsImgData {
   display: flex;
   justify-content: flex-start;
-  width : calc((100% / 5) -  var(--gap-champions-data) + ( var(--gap-champions-data) / 5));
+  width : 100%;
   gap:var(--gap-champions-data);
   position: relative;
+  box-sizing: border-box;
+  margin-top: 20px;
 }
 
 .containerChampionData {

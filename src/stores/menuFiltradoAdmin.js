@@ -13,38 +13,31 @@ const hierarchyShadowCategory = ["Fast 8","3 Stars","Specifics Augments"];
 export const isLoadingDataTFTFromApi = atom(true)
 
 export const loadCompsMeta = async () => {
-
-  //const urlMeta = "https://guiadeparche.com/tftdata/Set12/composMeta.json";
-  const urlMetaBackend = versionTFT.get() === "pbe" ?
-  composMetaPBEJSON
-  :
-  composMetaJSON;
+  const urlMetaBackend = versionTFT.get() === "pbe" ? composMetaPBEJSON : composMetaJSON;
   
+  const processData = (data) => {
+    return Object.keys(data)
+      .sort((a, b) => hierarchy.indexOf(a) - hierarchy.indexOf(b))
+      .map((tier) => [...data[tier]].sort((a, b) => {
+        // En una sola pasada ordenamos por categoría y caso de empate, por posición
+        const catDiff = hierarchyShadowCategory.indexOf(a?.shadowCategory) - hierarchyShadowCategory.indexOf(b?.shadowCategory);
+        if (catDiff !== 0) return catDiff;
+        return a.posicion - b.posicion;
+      }));
+  };
+
   try {
     const response = await fetch(urlMetaBackend, { cache: "reload" });
     const data = await response.json();
-    const sortableArray = Object.keys(data).sort((a,b)=> hierarchy.indexOf(a) - hierarchy.indexOf(b))
-      .map((tier) => data[tier].sort((a, b) => a.posicion - b.posicion)
-      .sort((a, b) => hierarchyShadowCategory.indexOf(a?.shadowCategory) - hierarchyShadowCategory.indexOf(b?.shadowCategory)))
-    // const filteredArray = [...sortableArray]
-    // Actualiza el estado global
+    const sortableArray = processData(data);
+    
     initialStateMetaComps.set(sortableArray);
     MetaComps.set(sortableArray);
-
-    return sortableArray; // También retorna los datos
+    return sortableArray;
   } catch (err) {
     console.error(err);
-    const data = backupMeta;
-    const sortableArray =Object.keys(data).sort((a,b)=> hierarchy.indexOf(a) - hierarchy.indexOf(b))
-    .map((tier) => data[tier].sort((a, b) => a.posicion - b.posicion)
-    .sort((a, b) => hierarchyShadowCategory.indexOf(a?.shadowCategory) - hierarchyShadowCategory.indexOf(b?.shadowCategory)))
-
-    // const filteredArray = sortableArray.map((tier) =>
-    //   tier.filter(({ tier: compoTier }) => compoTier === "S" || compoTier === "A")
-    // );
-    // const filteredArray = [...sortableArray]
-
-    // Actualiza el estado global en caso de error
+    const sortableArray = processData(backupMeta);
+    
     initialStateMetaComps.set(sortableArray);
     MetaComps.set(sortableArray);
     return sortableArray;
@@ -75,62 +68,40 @@ export const initialStateMetaCompFilter = deepMap({
   ["Tier MEME"]:true,
 })
 
-export const filterByCategory = (e)=>{
-  e.stopPropagation();
-  const oldMeta = JSON.parse(JSON.stringify(initialStateMetaComps.get())); 
-  const newMeta = oldMeta.map((tier)=>{
-    const filters = tier.filter(({shadowCategory, dificultad})=>{
+export const filterByCategory = (e) => {
+  e?.stopPropagation?.();
+  
+  const filtersState = initialStateMetaCompFilter.get();
+  const oldMeta = initialStateMetaComps.get(); // filter() crea un nuevo array, no necesitamos un JSON deep copy
+  
+  const newMeta = oldMeta.map((tier) => {
+    return tier.filter((compo) => {
+      // 1. Filtro por Categoría
+      const validCategory = (filtersState["Fast 8"] && compo.shadowCategory === "Fast 8") ||
+                            (filtersState["3 Stars"] && compo.shadowCategory === "3 Stars") ||
+                            (filtersState["Specifics Augments"] && compo.shadowCategory === "Specifics Augments");
+      if (!validCategory) return false;
+
+      // 2. Filtro por Dificultad
+      const validDifficulty = (filtersState["Easy"] && compo.dificultad === "Easy") ||
+                              (filtersState["Medium"] && compo.dificultad === "Medium") ||
+                              (filtersState["Hard"] && compo.dificultad === "Hard");
+      if (!validDifficulty) return false;
+
+      // 3. Filtro por Tier
+      const validTier = (filtersState["Tier S"] && compo.tier === "S") ||
+                        (filtersState["Tier A"] && compo.tier === "A") ||
+                        (filtersState["Tier B"] && compo.tier === "B") ||
+                        (filtersState["Tier C"] && compo.tier === "C") ||
+                        (filtersState["Tier D"] && compo.tier === "D") ||
+                        (filtersState["Tier MEME"] && compo.tier === "MEME");
       
-      if(initialStateMetaCompFilter.get()["Fast 8"] && shadowCategory === "Fast 8" ){
-        return true
-      }
-      if(initialStateMetaCompFilter.get()["3 Stars"] && shadowCategory === "3 Stars" ){
-        return true
-      }
-      if(initialStateMetaCompFilter.get()["Specifics Augments"] && shadowCategory === "Specifics Augments" ){
-        return true
-      }
-      return false
-    })
-    const filtersDificulty = filters.filter(({dificultad})=>{
-      if(initialStateMetaCompFilter.get()["Easy"] && dificultad === "Easy" ){
-        return true
-      }
-      if(initialStateMetaCompFilter.get()["Medium"] && dificultad === "Medium" ){
-        return true
-      }
-      if(initialStateMetaCompFilter.get()["Hard"] && dificultad === "Hard" ){
-        return true
-      }
-      return false
-    })
-   
-    const filtersTier = filtersDificulty.filter(({tier})=>{
-      if(initialStateMetaCompFilter.get()["Tier S"] && tier === "S" ){
-        return true
-      }
-      if(initialStateMetaCompFilter.get()["Tier A"] && tier === "A" ){
-        return true
-      }
-      if(initialStateMetaCompFilter.get()["Tier B"] && tier === "B" ){
-        return true
-      }
-      if(initialStateMetaCompFilter.get()["Tier C"] && tier === "C" ){
-        return true
-      }
-      if(initialStateMetaCompFilter.get()["Tier D"] && tier === "D" ){
-        return true
-      }
-      if(initialStateMetaCompFilter.get()["Tier MEME"] && tier === "MEME" ){
-        return true
-      }
-      return false
-    })
-    
-    return filtersTier
-  })
-  MetaComps.set(newMeta)
-}
+      return validTier;
+    });
+  });
+
+  MetaComps.set(newMeta);
+};
 
 await loadCompsMeta();
 

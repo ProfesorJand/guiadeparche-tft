@@ -59,7 +59,7 @@ export const buscarArtistas = async ({datosArtistas, setArtistasInfo}) => {
 
     const data = await response.json();
 
-    console.log(data);
+    console.log({data});
 
     if (data.artists) {
       const nuevoEstado = {};

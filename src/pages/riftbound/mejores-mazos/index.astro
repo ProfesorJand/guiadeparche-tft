@@ -1,8 +1,9 @@
 ---
 import Layout from "@layouts/LayoutMidOnly.astro";
+import Main from '@components/main/Main.astro';
 import TopVideoJuegos from "@components/topVideojuegos/TopVideoJuegos.jsx";
 import {crearJSONSchema} from "src/json/schema/crearJSONSchema";
-import MejoresMazosRiftbound from "@components/riftbound/MejoresMazosRiftbound.jsx"
+import MejoresMazosRiftbound from "@components/riftbound/mejores-mazos/MejoresMazosRiftbound.jsx"
 const fechaActual = new Date(); // Fecha actual (ej. Marzo)
 let proximoMes = new Date(fechaActual.getFullYear(), fechaActual.getMonth() + 1, 1);
 const nombreMesActual = fechaActual.toLocaleString('es-ES', { month: 'long' });

@@ -1,3 +1,9 @@
+.container{
+  display: flex;
+  position: relative;
+  flex-direction: column;
+}
+
 .infografiaContainer{
   width: 100%;
   display: flex;
@@ -14,38 +20,51 @@
   position: relative;
   flex-direction: column;
   justify-content: center;
-  padding: 5px;
+  padding: 5px 0 0 0;
   box-sizing: border-box;
+  container-type:size;
 }
 
 .titulo{
-  font-size: 2.8vw;
+  font-size: 30cqh;
   text-align: center;
   align-items: center;
   justify-content: center;
   font-family: fantasy;
   white-space: pre-line;
+  height: 40%;
 }
 
 .titulo2{
-  font-size: 2.8vw;
+  font-size: 30cqh;
   text-align: center;
   align-items: center;
   justify-content: center;
   font-family: fantasy;
   white-space: pre-line;
+  height: 40%;
 }
 
-.fecha{
+.containerFecha{
   display: flex;
   background-color: #527476;
   color:#ffffff;
-  padding: 5px;
+  padding: 0;
   box-sizing: border-box;
   text-align: center;
   align-items: center;
   justify-content: center;
   font-weight: 600;
+  container-type:size;
+  height: 20%;
+}
+
+.fecha{
+  display: flex;
+  color:#ffffff;
+  text-align: center;
+  font-weight: 600;
+  font-size: 60cqh;
 }
 
 .containerAllArtist{
@@ -65,7 +84,7 @@
   overflow: hidden; 
   z-index: 1;
   position: relative; 
-  width: 50%;
+  flex: 0 0 50%;
 }
 
 .containerNumeracion{
@@ -82,8 +101,12 @@
   justify-content: center;
   color:rgb(252, 252, 252);
   border-radius: 50%;
-  font-size: clamp(12px, 1.5em, 120px);
+  container-type: inline-size;
   /* opacity: 0.5; */
+}
+
+.numeracion{
+  font-size: clamp(12px, 50cqw, 120px);
 }
 
 .containerPerfilArtista{
@@ -133,6 +156,7 @@
   align-items: center;
   width: 65%;
   justify-content: center;
+  container-type: inline-size;
 }
 
 .nameOfArtist{
@@ -143,12 +167,17 @@
   font-weight: 600;
   text-align: center;
   font-family: 'Open Sans Condensed', sans-serif;
-  font-size: clamp(12px, 2em, 28px);
+  font-size: 7cqw;
   text-wrap: "wrap";
+  height: 40%;
+  align-items: flex-end;
+  display: flex;
 }
 
 .monthlyListener{
-  font-size: 5vw;
+  height: 60%;
+  font-size: 20cqw;
+  align-items: flex-start;
 }
 
 .footer{
@@ -172,7 +201,7 @@
 .logo{
   display: flex;
   position: relative;
-  width: 80%;
+  width: 100%;
   object-fit: contain;
 
 }

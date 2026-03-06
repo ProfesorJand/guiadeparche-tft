@@ -6,16 +6,18 @@ import styles from "./FormularioSpotify.module.css"
 const FormularioSpotify = ({
   datos,
   setDatos,
-  numberOfArtist,
-  setNumberOfArtist,
+  numberOfTopArtist,
+  startNumberOfArtist,
+  setStartNumberOfArtist,
   datosArtistas,
   setDatosArtistas,
+  artistasInfo,
   setArtistasInfo,
   monthlyListener,
   setMonthlyListener,
   backgroundRef
 })=>{
-
+  console.log({artistasInfo})
   const [inputSeleccionado, setInputSeleccionado] = useState(0)
 
   return (
@@ -50,37 +52,61 @@ const FormularioSpotify = ({
         />
       </label>
 
-      <label>Cantidad de Artistas:
+      <label>Empieza en el numero:
         <input
           type="number"
-          value={numberOfArtist}
+          value={startNumberOfArtist}
           onChange={(e)=>{
-            setNumberOfArtist(Number(e.target.value))
+            setStartNumberOfArtist(Number(e.target.value))
           }}  
+          placeholder={"1 o 10"}
         />
       </label>
       
-      {/* {
-        Array.from({ length:numberOfArtist }, (_, i) => i + 1).map((elemento, key)=>{
-          return (
-          <input 
-            key={`seleccion-artista-${key}`} 
-            type="button"
-            value={elemento}
-            onClick={()=>{
-              setInputSeleccionado(key)
-            }}
-          />
-        )
-        })
-      } */}
-
       {
-        Array.from({ length:numberOfArtist }, (_, i) => i + 1).map((elemento, key)=>{
+        Array.from({ length:numberOfTopArtist }, (_, i) => i + 1).map((elemento, key)=>{
           return (
           <div 
             key={`formulario-artista-${key}`} 
           >
+            {
+              artistasInfo?.[0]?.images.length && 
+              <input 
+              placeholder="imagen url"
+              type="text"
+              value={artistasInfo?.[key]?.nuevaImagen}
+              onChange={(e) => {
+                const value = e.target.value;
+
+                setArtistasInfo((prev) => ({
+                  ...prev,
+                  [key]: {
+                    ...(prev[key] || {}),
+                    nuevaImagen: value,
+                  },
+                }));
+              }} 
+               />
+            }
+            {
+              artistasInfo?.[0]?.href && 
+              <input 
+              placeholder="Nombre Artista"
+              type="text"
+              value={artistasInfo?.[key]?.name}
+              onChange={(e) => {
+                const value = e.target.value;
+
+                setArtistasInfo((prev) => ({
+                  ...prev,
+                  [key]: {
+                    ...(prev[key] || {}),
+                    name: value,
+                  },
+                }));
+              }} 
+               />
+            }
             <input 
               placeholder="perfilUrl"
               type="text"
