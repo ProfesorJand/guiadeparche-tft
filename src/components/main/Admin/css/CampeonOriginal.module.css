@@ -19,6 +19,7 @@
   box-sizing: border-box;
   align-items: center;
   height: 100%;
+  container-type: inline-size;
 }
 .containerCampeonImg{
   display: flex;
@@ -76,7 +77,7 @@
 .nombreCampeon{
   display: flex;
   position: relative;
-  font-size: xx-small;
+  font-size: 15cqw;
   justify-content: center;
   text-align: center;
   text-overflow: ellipsis;

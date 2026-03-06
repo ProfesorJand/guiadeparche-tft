@@ -107,7 +107,9 @@
   position:relative;
   justify-content: space-around;
   height: 100%;
-  width: calc(100% / var(--numberDefaultForHeadersElements) * var(--widthForTittleComp) );
+  /* width: calc(100% / var(--numberDefaultForHeadersElements) * var(--widthForTittleComp) ); */
+  flex: 6;
+  container-type: inline-size;
 }
 .containerLowerChampsOculto{
   display: flex;
@@ -136,7 +138,8 @@
   position: relative;
   align-items: flex-start;
   /* añadir en el width el gapInHeaders*/
-    width: calc(100% / var(--numberDefaultForHeadersElements) * var(--widthForTierImg) - var(--gapInHeadersElements));
+    /* width: calc(100% / var(--numberDefaultForHeadersElements) * var(--widthForTierImg) - var(--gapInHeadersElements)); */
+  flex: 1;
 }
 
 .tierImg{
@@ -155,6 +158,7 @@
     align-items: flex-start;
     justify-content: center;
     flex-wrap: wrap;
+    container-type: inline-size;
 }
 
 .containerDificultadCategory{
@@ -212,16 +216,18 @@
   flex-direction: column;
   justify-content: flex-start;
   gap:5px;
-  width: calc( 100% / var(--numberDefaultForHeadersElements) * var(--widthForTags) - var(--gapInHeadersElements) );
+  /* width: calc( 100% / var(--numberDefaultForHeadersElements) * var(--widthForTags) - var(--gapInHeadersElements) ); */
+  flex:2;
   align-items: stretch;
   box-sizing: border-box;
+  container-type: inline-size;
 }
 
 .dificultad{
   text-align: center;
   box-sizing: border-box;
   background-color: var(--bg-primary);
-  font-size: clamp(0.5em, 20px, 20px);
+  font-size: 10cqw;
   display: flex;
   padding: 0px 5px;
   justify-content: center;
@@ -232,6 +238,7 @@
   order:1;
   width: 100%;
   font-family: ObvioslyWideBold, sans-serif;
+  font-size: 5cqw;
 }
 
 .titulo{
@@ -255,7 +262,7 @@
   text-align: center;
   box-sizing: border-box;
   background-color: var(--bg-primary);
-  font-size: 20px;
+  font-size: 10cqw;
 }
 
 .btn{
@@ -498,7 +505,7 @@
 
 .tituloPrincipal{
   font-family: ObvioslyWideBoldItalic;
-  font-size:  clamp(0.4rem, 0.6vw, 1rem);
+  font-size: 3cqw;
   color:gold;
   text-shadow: 1px 0 #000, -1px 0 #000, 0 1px #000, 0 -1px #000,
   1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
@@ -627,23 +634,7 @@
   .containerTextoInfoPrimarioCode{
     display: none;
   }
-  .containerTextoInfoPrimario{
-    height: auto;
-    width: calc(100% / var(--numberDefaultForHeadersElements) * var(--widthForTittleCompMobile) );
-  }
-  .containerInfoComp{
-    width: 100%;
-    flex:none;
-    box-sizing: border-box;
-    justify-content:space-between;
-    align-items: center;
-    flex-direction: row;
-  }
 
-  .tags{
-    flex-direction: row;
-    width: calc( 100% / var(--numberDefaultForHeadersElements) * var(--widthForTagsMobile) - var(--gapInHeadersElements));
-  }
   .containerDificultadCategory{
     width: 50%;
     justify-content: right;
@@ -653,19 +644,7 @@
   .containerEGlobal{
     padding: 5px 5px 5px 5px;
   }
-  .dificultad{
-    font-size: small;
-    width: calc(100% / 2 - 5px);
-  }
 
-  .category{
-    font-size: small;
-    width: calc(100% / 2 - 5px);
-  }
-
-  .titulo{
-    font-size: x-small;
-  }
 
   .containerE{
     justify-content: center;
@@ -718,17 +697,7 @@
   .containerLowerChamps{
     flex:4
   }
-  .containerInfoComp{
-    display: flex;
-    position: relative;
-    flex-direction: column;
-    width: 100%;
-    align-items: flex-start;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    /* gap: 3px; */
-    box-sizing: border-box;
-  }
+
   .containerInfoChamp{
     flex: 12
   }
@@ -743,16 +712,7 @@
   order:2;
   justify-content: center;
 }
-.tituloComp{
-  display: flex;
-  order:1;
-  width: 100%;
-  font-size: clamp(0.2rem, 1.4vw, 2rem); /* Mínimo: 1rem, Fluido: 0.8vw, Máximo: 1rem */
-  white-space: nowrap; /* Evita los saltos de línea */
-  overflow: hidden;    /* Oculta el texto desbordado */
-  text-shadow: 1px 0 #000, -1px 0 #000, 0 1px #000, 0 -1px #000,
-  1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
-}
+
 .category{
   font-size: smaller;
   font-style: italic;
