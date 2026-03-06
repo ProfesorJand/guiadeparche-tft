@@ -17,7 +17,7 @@ const CampeonEarly = ({dataCampeon, dataItem, estrellas}) =>{
       {itemsCampeon.map(({nombre,img, icon}, index)=>{
         return (
           <div className={style.containerItem} key={index}>
-            <img className={style.imgItem} src={img ? img : `https://raw.communitydragon.org/${currentVersion === "pbe" ? "15.10" : currentVersion}/game/`+icon.toLowerCase().replace(".tex",".png")} alt={nombre}></img>
+            <img className={style.imgItem} loading="lazy" src={img ? img : `https://raw.communitydragon.org/${currentVersion === "pbe" ? "15.10" : currentVersion}/game/`+icon.toLowerCase().replace(".tex",".png")} alt={nombre}></img>
           </div>
         )
       })}

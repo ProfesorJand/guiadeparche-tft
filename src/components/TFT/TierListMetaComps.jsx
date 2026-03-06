@@ -120,6 +120,7 @@ const TierListMetaComps = () => {
               <div className={style.containerImgTier}>
                 <img
                   className={style.imgTier}
+                  loading="lazy"
                   src={`/tiers/Tier-${comps?.[0]?.tier}.webp`}
                   alt={`Tier-${comps?.[0]?.tier}`}
                   />
