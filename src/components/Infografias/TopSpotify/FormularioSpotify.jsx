@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {buscarArtistas} from "@stores/dataSpotify"
+import {buscarArtistas, buscarArtista, buscarCanciones} from "@stores/dataSpotify"
 import { CapturarImagen } from "@functions/CapturarImagen";
 import styles from "./FormularioSpotify.module.css"
 
@@ -13,12 +13,13 @@ const FormularioSpotify = ({
   setDatosArtistas,
   artistasInfo,
   setArtistasInfo,
+  musicInfo,
+  setMusicInfo,
   monthlyListener,
   setMonthlyListener,
   backgroundRef
 })=>{
-  console.log({artistasInfo})
-  const [inputSeleccionado, setInputSeleccionado] = useState(0)
+  console.log({datosArtistas, artistasInfo, datos, urlArtista: Object.values(datosArtistas).map(item => item?.urlArtista),musicInfo})
 
   return (
     <div className={styles.containerFormulario}>
@@ -26,7 +27,7 @@ const FormularioSpotify = ({
         Titulo:
         <textarea
           placeholder="Escribe el título..."
-          value={datos.titulo || "TOP 10 ARTISTAS VENEZOLANOS"}
+          value={datos.titulo}
           rows={3}
           onChange={(e) => {
             setDatos((prev) => ({
@@ -41,12 +42,27 @@ const FormularioSpotify = ({
         Titulo2:
         <textarea
           placeholder="Escribe el título2..."
-          value={datos.titulo2 || "MÁS ESCUCHADOS EN SPOTIFY"}
+          value={datos.titulo2}
           rows={3}
           onChange={(e) => {
             setDatos((prev) => ({
               ...prev,
               titulo2: e.target.value
+            }));
+          }}
+        />
+      </label>
+
+      <label>
+        Fecha:
+        <textarea
+          placeholder="Escribe la Fecha..."
+          value={datos.fecha}
+          rows={3}
+          onChange={(e) => {
+            setDatos((prev) => ({
+              ...prev,
+              fecha: e.target.value
             }));
           }}
         />
@@ -61,6 +77,20 @@ const FormularioSpotify = ({
           }}  
           placeholder={"1 o 10"}
         />
+      </label>
+      <label>
+        es Top Musica de Artistas?
+        <select 
+          onChange={(e) => {
+            setDatos((prev) => ({
+              ...prev,
+              topMusic: e.target.value === "true"
+            }));
+          }}
+          >
+          <option value="true">True</option>
+          <option value="false">False</option>
+        </select>
       </label>
       
       {
@@ -124,6 +154,25 @@ const FormularioSpotify = ({
               }} 
                />
 
+              {
+                datos?.topMusic &&
+                <input 
+                  placeholder="MusicUrl"
+                  type="text"
+                  value={datosArtistas?.[key]?.urlMusic}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setDatosArtistas((prev) => ({
+                      ...prev,
+                      [key]: {
+                        ...(prev[key] || {}),
+                        urlMusic: value,
+                      },
+                    }));
+                  }} 
+                />
+              }
+
               <input 
                 type="text"
                 value={monthlyListener[key]}
@@ -138,6 +187,37 @@ const FormularioSpotify = ({
                     })
                   }}
               />
+
+
+
+          </div>
+        )
+        })
+      }
+
+      <button type="button" onClick={()=>{
+        buscarArtista({urlArtista: Object.values(datosArtistas).map(item => item?.urlArtista), setArtistasInfo})
+        buscarCanciones({urlCanciones: Object.values(datosArtistas).map(item => item?.urlMusic), setMusicInfo})
+        }}>
+        Buscar artista
+      </button>
+
+      <button type="button" onClick={()=>buscarArtistas({datosArtistas, setArtistasInfo})}>
+        Buscar artistas
+      </button>
+
+      <button type="button" onClick={()=>CapturarImagen({backgroundRef,nombre:"Top10MusicaSpotify"})}>
+        Capturar
+      </button>
+
+
+    </div>
+
+
+  )
+}
+
+export default FormularioSpotify
 
               {/* <input 
               placeholder="bannerUrl"
@@ -241,25 +321,3 @@ const FormularioSpotify = ({
               >
                 zoom -
               </button> */}
-
-          </div>
-        )
-        })
-      }
-
-      <button type="button" onClick={()=>buscarArtistas({datosArtistas, setArtistasInfo})}>
-        Buscar artistas
-      </button>
-
-      <button type="button" onClick={()=>CapturarImagen({backgroundRef,nombre:"Top10MusicaSpotify"})}>
-        Capturar
-      </button>
-
-
-    </div>
-
-
-  )
-}
-
-export default FormularioSpotify

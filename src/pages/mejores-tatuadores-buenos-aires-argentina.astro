@@ -1,0 +1,213 @@
+---
+// Importamos el layout principal de la aplicación y componentes necesarios
+import LayoutMidOnly from '@layouts/LayoutMidOnly.astro';
+import Main from '@components/main/Main.astro';
+
+// ==========================================
+// 1. CONFIGURACIÓN SEO (Meta tags, Título, etc.)
+// ==========================================
+// Título de la página, optimizado para SEO
+// Corregido a "Top 5" ya que se listan 5 artistas.
+const title = "Top 5 Mejores Tatuadores en Buenos Aires 2026";
+
+// Meta descripción (Snippet) para los resultados de búsqueda
+const description = "¿Buscás arte en tu piel? Descubrí a los 5 mejores tatuadores de Buenos Aires. Del realismo de Henry Anglas al biomecánico de Javier Obregón. ¡Conocelos acá!";
+
+// Palabras clave relevantes para posicionamiento indexado por arañas de búsqueda
+const keywords = "mejores tatuadores buenos aires, tatuadores argentina 2026, tatuaje realismo buenos aires, henry anglas, walter montero, javier obregon, yeyo tattoos, martin agua y sol, tatuajes buenos aires";
+
+// URL canónica para evitar contenido duplicado en los motores de búsqueda
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://guiadeparche.com');
+
+// ==========================================
+// 2. IMPLEMENTACIÓN DEL SCHEMA (JSON-LD)
+// ==========================================
+// Schema.org estructurado para mejorar los Rich Snippets de Google.
+// Utilizamos 'ItemList' para que Google entienda que es un Top o Lista.
+const schemaData = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": title,
+  "description": description,
+  "author": {
+    "@type": "Organization",
+    "name": "Guía de Parche"
+  },
+  "mainEntity": {
+    "@type": "ItemList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@type": "Person",
+          "name": "Walter Montero",
+          "description": "Estilo: Realismo, Surrealismo y Color."
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "item": {
+          "@type": "Person",
+          "name": "Martin Agua y Sol",
+          "description": "Estilo: Blackwork, Fine Line y Neotradicional con tintes esotéricos."
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@type": "Person",
+          "name": "Javier Obregón",
+          "description": "Estilo: Biomecánico, Dark y Black & Grey de gran escala."
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 4,
+        "item": {
+          "@type": "Person",
+          "name": "Yeyo (Yeyo Tattoos)",
+          "description": "Estilo: Realismo en Color y Retratos."
+        }
+      },
+      {
+        "@type": "ListItem",
+        "position": 5,
+        "item": {
+          "@type": "Person",
+          "name": "Henry Anglas",
+          "description": "Estilo: Realismo, Surrealismo y 'Mímesis'."
+        }
+      }
+    ]
+  }
+};
+
+// Convertimos el objeto schemaData a un string para pasarlo al Layout de Astro
+const JSONSchema = JSON.stringify(schemaData);
+---
+
+<LayoutMidOnly 
+  title={title} 
+  JSONSchema={JSONSchema} 
+  description={description} 
+  keywords={keywords} 
+  canonical={canonicalURL}
+>
+  <Main backgroundColor="#000000b8">
+    <!-- ========================================== -->
+    <!-- 3. CONTENIDO SEMÁNTICO DE LA PÁGINA (HTML)   -->
+    <!-- ========================================== -->
+
+    <div class="tatuadores-container">
+      <!-- H1 único por página, con la etiqueta correcta para accesibilidad y SEO -->
+      <h1 class="titulo-principal">Top 5 Mejores Tatuadores en Buenos Aires 2026</h1>
+      
+      <!-- Párrafo introductorio, da contexto a los usuarios y buscadores -->
+      <p class="introduccion">
+        Buenos Aires no solo es tango y fútbol; es un epicentro de tinta. Presentamos a los cinco artistas que han llevado el tatuaje argentino a las convenciones más prestigiosas del mundo.
+      </p>
+
+      <div class="lista-tatuadores">
+        <!-- Uso de la etiqueta <article> para elementos independientes y con sentido propio -->
+        
+        <article class="tatuador-card">
+          <!-- H2 estructurado de forma jerárquica luego del H1 -->
+          <h2>5 - Walter Montero</h2>
+          <p><strong>Estilo:</strong> Realismo, Surrealismo y Color.</p>
+          <p><strong>Reseña:</strong> Walter es un artista que desafía los límites del color. Sus trabajos se caracterizan por una vibrancia increíble y composiciones que mezclan la realidad con elementos oníricos o surrealistas. Su capacidad para manejar las sombras y las luces le otorga a sus piezas una profundidad tridimensional que lo ha posicionado como uno de los grandes exponentes de la escena actual.</p>
+          <p><strong>Premios:</strong> Ha sido galardonado en múltiples convenciones internacionales y es reconocido mundialmente por su técnica de saturación y degradado de colores.</p>
+        </article>
+
+        <article class="tatuador-card">
+          <h2>4 - Martin Agua y Sol</h2>
+          <p><strong>Estilo:</strong> Blackwork, Fine Line y Neotradicional con tintes esotéricos.</p>
+          <p><strong>Reseña:</strong> Martin se destaca por una estética única que mezcla la elegancia de las líneas finas con composiciones sólidas. Sus diseños suelen tener una carga simbólica y orgánica muy fuerte, lo que lo hace el favorito de quienes buscan piezas con "alma" y mucha fluidez en el cuerpo.</p>
+          <p><strong>Premios:</strong> Referente en los estudios boutique de Palermo, con participaciones destacadas en seminarios de arte visual y convenciones de diseño.</p>
+        </article>
+
+        <article class="tatuador-card">
+          <h2>3 - Javier Obregón</h2>
+          <p><strong>Estilo:</strong> Biomecánico, Dark y Black & Grey de gran escala.</p>
+          <p><strong>Reseña:</strong> Un maestro de la anatomía. Javier no solo tatúa; "modifica" visualmente el cuerpo. Sus piezas biomecánicas son famosas por la profundidad y el uso del negro sólido para crear contrastes tridimensionales. Es un referente mundial que ha editado libros de arte para otros profesionales.</p>
+          <p><strong>Premios:</strong> Ganador de múltiples premios en convenciones internacionales (Barcelona, Londres) y jurado habitual en eventos de élite.</p>
+        </article>
+
+        <article class="tatuador-card">
+          <h2>2 - Yeyo (Yeyo Tattoos)</h2>
+          <p><strong>Estilo:</strong> Realismo en Color y Retratos.</p>
+          <p><strong>Reseña:</strong> Conocido como "el tatuador de los futbolistas", Yeyo ha perfeccionado la técnica de la saturación del color. Sus retratos parecen fotografías impresas en la piel. Es famoso por su capacidad para captar texturas (piel, ojos, telas) con una precisión casi imposible.</p>
+          <p><strong>Premios:</strong> Sus piezas de "Mejor del Día" en convenciones son incontables. Es embajador de las marcas de tintas y máquinas más importantes del mundo.</p>
+        </article>
+
+        <article class="tatuador-card">
+          <h2>1 - Henry Anglas</h2>
+          <p><strong>Estilo:</strong> Realismo, Surrealismo y "Mímesis".</p>
+          <p><strong>Reseña:</strong> Henry Anglas es, para muchos, el máximo exponente del realismo en el país. Su estilo evoluciona hacia lo que él llama Mímesis, una fusión de técnicas que logra un realismo pictórico profundo. Sus obras suelen ser piezas de gran formato que cuentan historias complejas con un nivel de detalle nivel museo.</p>
+          <p><strong>Premios:</strong> Ganador del "Best of Show" en las convenciones más exigentes de Europa y EE.UU. Autor del libro formativo <em>Anyone Can Tattoo</em>.</p>
+        </article>
+      </div>
+    </div>
+  </Main>
+</LayoutMidOnly>
+
+<style>
+  /* ========================================== */
+  /* 4. ESTILOS DE LA PÁGINA                    */
+  /* ========================================== */
+  
+  .tatuadores-container {
+    padding: 2rem 1rem;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .titulo-principal {
+    margin-top: 1rem;
+    color: var(--color-white);
+    font-size: 2.2rem;
+    text-align: center;
+  }
+  
+  .introduccion {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    text-align: center;
+    color: var(--text-color-white-secondary);
+  }
+
+  .lista-tatuadores {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .tatuador-card {
+    background-color: #0f0f0f;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 0px 6px var(--bg-tertiary);
+  }
+
+  .tatuador-card h2 {
+    color: var(--color-primary);
+    margin-top: 0;
+    margin-bottom: 1rem;
+    text-align: left;
+    font-size: 1.8rem;
+    border-bottom: 1px solid var(--bg-tertiary);
+    padding-bottom: 0.5rem;
+  }
+
+  .tatuador-card p {
+    margin-bottom: 0.8rem;
+    line-height: 1.5;
+  }
+
+  .tatuador-card strong {
+    color: var(--color-white);
+  }
+</style>

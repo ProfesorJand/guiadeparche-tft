@@ -72,7 +72,7 @@ export const buscarArtistas = async ({datosArtistas, setArtistasInfo}) => {
     }
 
   } catch (error) {
-    console.error("Error:", error);
+    console.error("Error:", error.message);
   }
 };
 
@@ -132,6 +132,7 @@ export const getTopTracksArtist = async ({id, setTopTracksArtist})=>{
     }
   );
   const data = await response.json();
+  console.log({data})
   setTopTracksArtist(data)
 } 
 
@@ -140,6 +141,66 @@ export const getSpotifyArtistId = (url) => {
   return match ? match[1] : null;
 }
 
-export const getAvailableGenreSeeds= ()=>{
-  
+export const buscarArtista = async ({ urlArtista, setArtistasInfo }) => {
+
+  const ids = urlArtista
+    .map(url => {
+      const match = url.match(/artist\/([a-zA-Z0-9]+)/)
+      return match ? match[1] : null
+    })
+    .filter(Boolean)
+
+    console.log({ids})
+
+  const response = await fetch(
+    "https://api.guiadeparche.com/spotify/getArtist.php",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        artists: ids
+      })
+    }
+  )
+
+  const text = await response.text()
+  console.log("RAW RESPONSE:", text)
+
+  const data = JSON.parse(text)
+
+  setArtistasInfo(data)
+}
+
+export const buscarCanciones = async ({ urlCanciones, setMusicInfo }) => {
+
+  const ids = urlCanciones
+    .map(url => {
+      const match = url.match(/track\/([a-zA-Z0-9]+)/)
+      return match ? match[1] : null
+    })
+    .filter(Boolean)
+
+    console.log({idsCanciones:ids})
+
+  const response = await fetch(
+    "https://api.guiadeparche.com/spotify/getTracks.php",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        music: ids
+      })
+    }
+  )
+
+  const text = await response.text()
+  console.log("RAW RESPONSE:", text)
+
+  const data = JSON.parse(text)
+
+  setMusicInfo(data)
 }

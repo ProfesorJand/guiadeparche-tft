@@ -1,13 +1,19 @@
 import styles from "./InfografiaSpotify.module.css"
-const InfografiasSpotifyTopArtistas = ({backgroundRef, datos,numberOfTopArtist, startNumberOfArtist, datosArtistas, artistasInfo, monthlyListener}) =>{
+const InfografiasSpotifyTopArtistas = ({backgroundRef, datos,numberOfTopArtist, startNumberOfArtist, datosArtistas, artistasInfo, monthlyListener, musicInfo}) =>{
 const cantidadDeLogos = `calc(100% / 3)`;
+const fecha = new Date();
+const mes = fecha.toLocaleDateString('es-ES', { month: 'long' }); // Ejemplo: "marzo"
+const dia = fecha.getDate();
+const año = fecha.getFullYear();
   return (
     <div ref={backgroundRef} className={styles.infografiaContainer}>
       <div className={styles.header}>
-        <span className={styles.titulo }>{datos.titulo || "TOP 10 ARTISTAS VENEZOLANOS"}</span>
-        <span className={styles.titulo2 }>{datos.titulo2 || "MÁS ESCUCHADOS EN SPOTIFY"}</span>
+        <div className={styles.containerTitulo}>
+          <span className={styles.titulo }>{datos.titulo}</span>
+          <span className={styles.titulo2 }>{datos.titulo2}</span>
+        </div>
         <div className={styles.containerFecha}>
-          <span className={styles.fecha}>{"OYENTES MENSUALES EN LOS ÚLTIMOS 30 DÍAS EN SPOTIFY 🟢"}</span>
+          <span className={styles.fecha}>{datos.fecha} {" "} <img className={styles.spotifyMiniLogo} src="/redes/Spotify_Primary_Green.png"></img></span>
         </div>
       </div>
       <div className={styles.containerAllArtist}>
@@ -34,9 +40,28 @@ const cantidadDeLogos = `calc(100% / 3)`;
                     />
                   </div>
                 </div>
-                <div className={styles.containerInfoArtista}>
-                  <span className={styles.nameOfArtist}>{(value?.name).toUpperCase()}</span>
-                  <span className={styles.monthlyListener}>{monthlyListener?.[index]}</span>
+                <div className={`${styles.containerInfoArtista} ${musicInfo.length > 0 ? styles.containerInfoArtistaMusic : ""}`}>
+                  <div className={styles.containerNameOfArtist}>
+                    <span 
+                      className={`${styles.nameOfArtist} ${musicInfo.length > 0 ? styles.nameOfArtistMusic : ""}`}
+                    >
+                      {(value?.name).toUpperCase()}
+                    </span>
+                  </div>
+                  {
+                    musicInfo.length > 0 &&
+                    <div className={styles.containerNameOfSong}>
+                      <span className={styles.nameOfSong}>
+                        {musicInfo?.[index]?.name}
+                      </span>
+                    </div>
+                    }
+
+                  <div className={styles.containerMonthlyListener}>
+                    <span className={`${styles.monthlyListener} ${musicInfo.length > 0 ? styles.monthlyListenerMusic : ""}`}>
+                      {monthlyListener?.[index]}
+                    </span>
+                  </div>
                 </div>
               </div>
             )
