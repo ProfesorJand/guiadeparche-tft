@@ -56,7 +56,11 @@ const Mazo = ({urlCarta, mazo, backgroundRefCrear})=>{
                     return (
                       <div className={styles.containerRunesIndividual} key={index}>
                         <div className={styles.containerCardRune}>
-                          <img src={rune.art?.thumbnailURL} className={styles.imgRunes}></img>  
+                          <img 
+                            src={rune.art?.thumbnailURL} 
+                            className={styles.imgRunes}
+                            crossOrigin="anonymous"
+                          ></img>  
                           <div className={styles.containerNumberOfRunes}>
                             <span className={styles.numberOfRunes}>
                               {`x${rune?.quantity}`}
@@ -94,7 +98,10 @@ const Mazo = ({urlCarta, mazo, backgroundRefCrear})=>{
             {/* Legend */}
             <div className={[styles.containerVerticalText].join(" ")}>
               <div className={styles.containerGoldLines}>
-                <img className={styles.goldLines} src="/riftbound/logo/bordes-dorados.png"></img>
+                <img 
+                  className={styles.goldLines} 
+                  src="/riftbound/logo/bordes-dorados.png"
+                ></img>
               </div>
               <div className={styles.containerGoldLines}>
                 <img className={styles.goldLines} src="/riftbound/logo/bordes-dorados.png"></img>
@@ -121,7 +128,9 @@ const Mazo = ({urlCarta, mazo, backgroundRefCrear})=>{
             {/* Champion Unit */}
             <div className={[styles.containerVerticalText].join(" ")}>
               <div className={[styles.containerGoldLines, styles.containerGoldLinesChampion].join(" ")}>
-                <img className={styles.goldLines} src="/riftbound/logo/bordes-dorados.png"></img>
+                <img 
+                  className={styles.goldLines} 
+                  src="/riftbound/logo/bordes-dorados.png"></img>
               </div>
               <div className={[styles.containerGoldLines, styles.containerGoldLinesChampion].join(" ")}>
                 <img className={styles.goldLines} src="/riftbound/logo/bordes-dorados.png"></img>

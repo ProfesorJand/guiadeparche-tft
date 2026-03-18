@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import styles from "./AddCard.module.css"
-const AddCard = ({setRefrescar, cartasNoEncontradas, urlCarta})=>{
+const AddCard = ({setRefrescar, cartasNoEncontradas, urlCarta, handleParseDeckText})=>{
   const [infoCarta, setInfoCarta] = useState({
     art:{}, 
     stats:{},
@@ -26,7 +26,7 @@ const AddCard = ({setRefrescar, cartasNoEncontradas, urlCarta})=>{
     });
 
     const data = await response.json();
-
+    console.log({data})
     if (data.success) {
       alert("Carta guardada correctamente 🔥");
       setRefrescar((prev)=>!prev);
@@ -191,10 +191,10 @@ const handleChangeOption = ({ option, value }) => {
       </label>
       {/*STATS */}
 
-      <input type="text" value={infoCarta?.stats?.energy} placeholder="Energy"/>
-      <input type="text" value={infoCarta?.stats?.might} placeholder="Might"/>
-      <input type="text" value={infoCarta?.stats?.cost} placeholder="Cost"/>
-      <input type="text" value={infoCarta?.stats?.power} placeholder="Power"/>
+      <input type="text" value={infoCarta?.stats?.energy} onChange={(e)=>{handleChangeOption({option:"stats.energy",value:Number(e.target.value)})}} placeholder="Energy"/>
+      <input type="text" value={infoCarta?.stats?.power} onChange={(e)=>{handleChangeOption({option:"stats.power",value:Number(e.target.value)})}} placeholder="Power"/>
+      <input type="text" value={infoCarta?.stats?.might} onChange={(e)=>{handleChangeOption({option:"stats.might",value:Number(e.target.value)})}} placeholder="Might"/>
+      <input type="text" value={infoCarta?.stats?.cost} onChange={(e)=>{handleChangeOption({option:"stats.cost",value:Number(e.target.value)})}} placeholder="Cost (Dinero)"/>
       
       
 
@@ -202,7 +202,10 @@ const handleChangeOption = ({ option, value }) => {
       <input 
         type="button" 
         value="Guardar Carta"
-        onClick={()=>añadirCarta(infoCarta)}
+        onClick={async ()=>{
+          await añadirCarta(infoCarta);
+          await handleParseDeckText();
+        }}
         className={styles.btnVerde}
         />
     </div>

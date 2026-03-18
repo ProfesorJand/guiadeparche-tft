@@ -40,6 +40,7 @@ const CrearEditarMazo = ({setRefrescar, urlCarta, mazo, setMazo, allCards, backg
     };
 
     let currentSection = null;
+    const noEncontradas = [];
 
     for (let line of lines) {
 
@@ -103,16 +104,12 @@ const CrearEditarMazo = ({setRefrescar, urlCarta, mazo, setMazo, allCards, backg
       }else{
         console.log("Carta no encontrada en la base de datos")
         console.log({name, fullName})
-        setCartasNoEncontradas((prev) => {
-          const newArray = [...prev];
-          if (!newArray.includes(name)) {
-            newArray.push(fullName);
-          }
-          return newArray;
-        });
+        if (!noEncontradas.includes(fullName)) {
+          noEncontradas.push(fullName);
+        }
       }
     }
-
+    setCartasNoEncontradas(noEncontradas);
     setMazo(()=>({...result, tier: mazo.tier}));
   };
 
@@ -176,7 +173,7 @@ const CrearEditarMazo = ({setRefrescar, urlCarta, mazo, setMazo, allCards, backg
         value="Capturar Imagen"
         className={styles.btnAmarillo}
       />
-      <AddCard setRefrescar={setRefrescar}cartasNoEncontradas={cartasNoEncontradas} urlCarta={urlCarta}></AddCard>
+      <AddCard setRefrescar={setRefrescar}cartasNoEncontradas={cartasNoEncontradas} urlCarta={urlCarta} handleParseDeckText={handleParseDeckText}></AddCard>
     </div>
   )
 }
