@@ -42,7 +42,8 @@ const schemaData = {
         "item": {
           "@type": "Person",
           "name": "Walter Montero",
-          "description": "Estilo: Realismo, Surrealismo y Color."
+          "description": "Estilo: Realismo, Surrealismo y Color.",
+          "image":"https://guiadeparche.com/tatuador/walter-montero.jpg",
         }
       },
       {
@@ -51,7 +52,8 @@ const schemaData = {
         "item": {
           "@type": "Person",
           "name": "Martin Aguaisol",
-          "description": "Estilo: Blackwork, Fine Line y Neotradicional con tintes esotéricos."
+          "description": "Estilo: Blackwork, Fine Line y Neotradicional con tintes esotéricos.",
+          "image":"https://guiadeparche.com/tatuador/martin-aguaisol.jpg",
         }
       },
       {
@@ -60,7 +62,8 @@ const schemaData = {
         "item": {
           "@type": "Person",
           "name": "Javier Obregón",
-          "description": "Estilo: Biomecánico, Dark y Black & Grey de gran escala."
+          "description": "Estilo: Biomecánico, Dark y Black & Grey de gran escala.",
+          "image":"https://guiadeparche.com/tatuador/javier-Obregón.jpg",
         }
       },
       {
@@ -69,7 +72,8 @@ const schemaData = {
         "item": {
           "@type": "Person",
           "name": "Yeyo (Yeyo Tattoos)",
-          "description": "Estilo: Realismo en Color y Retratos."
+          "description": "Estilo: Realismo en Color y Retratos.",
+          "image":"https://guiadeparche.com/tatuador/yeyo.jpg",
         }
       },
       {
@@ -78,7 +82,8 @@ const schemaData = {
         "item": {
           "@type": "Person",
           "name": "Henry Anglas",
-          "description": "Estilo: Realismo, Surrealismo y 'Mímesis'."
+          "description": "Estilo: Realismo, Surrealismo y 'Mímesis'.",
+          "image":"https://guiadeparche.com/tatuador/henry-anglas.jpeg",
         }
       }
     ]
@@ -116,6 +121,10 @@ const JSONSchema = JSON.stringify(schemaData);
         <article class="tatuador-card">
           <!-- H2 estructurado de forma jerárquica luego del H1 -->
           <h2>5 - Walter Montero</h2>
+          <div class="containerImgTatuador">
+            <img class="imgTatuador" src={"https://guiadeparche.com/tatuador/walter-montero.jpg"} alt={"Tattoo Artist Walter Montero"}/>
+            <img class="imgTatuador" src={"https://guiadeparche.com/tatuador/tatuaje-walter-montero.jpg"} alt={"Tatuaje Walter Montero"}/>
+          </div>
           <p><strong>Estilo:</strong> Realismo, Surrealismo y Color.</p>
           <p><strong>Reseña:</strong> Walter es un artista que desafía los límites del color. Sus trabajos se caracterizan por una vibrancia increíble y composiciones que mezclan la realidad con elementos oníricos o surrealistas. Su capacidad para manejar las sombras y las luces le otorga a sus piezas una profundidad tridimensional que lo ha posicionado como uno de los grandes exponentes de la escena actual.</p>
           <p><strong>Premios:</strong> Ha sido galardonado en múltiples convenciones internacionales y es reconocido mundialmente por su técnica de saturación y degradado de colores.</p>
@@ -123,6 +132,10 @@ const JSONSchema = JSON.stringify(schemaData);
 
         <article class="tatuador-card">
           <h2>4 - Martin Aguaisol</h2>
+          <div class="containerImgTatuador">
+            <img class="imgTatuador" src={"https://guiadeparche.com/tatuador/martin-aguaisol.jpg"} alt={"Tattoo Artist Martin Aguaisol"}/>
+            <img class="imgTatuador" src={"https://guiadeparche.com/tatuador/tatuaje-matin-aguaisol.jpg"} alt={"Tatuaje Martin Aguaisol"}/>
+          </div>
           <p><strong>Estilo:</strong> Blackwork, Fine Line y Neotradicional con tintes esotéricos.</p>
           <p><strong>Reseña:</strong> Martin se destaca por una estética única que mezcla la elegancia de las líneas finas con composiciones sólidas. Sus diseños suelen tener una carga simbólica y orgánica muy fuerte, lo que lo hace el favorito de quienes buscan piezas con "alma" y mucha fluidez en el cuerpo.</p>
           <p><strong>Premios:</strong> Referente en los estudios boutique de Palermo, con participaciones destacadas en seminarios de arte visual y convenciones de diseño.</p>
@@ -130,23 +143,41 @@ const JSONSchema = JSON.stringify(schemaData);
 
         <article class="tatuador-card">
           <h2>3 - Javier Obregón</h2>
-          <p><strong>Estilo:</strong> Biomecánico, Dark y Black & Grey de gran escala.</p>
-          <p><strong>Reseña:</strong> Un maestro de la anatomía. Javier no solo tatúa; "modifica" visualmente el cuerpo. Sus piezas biomecánicas son famosas por la profundidad y el uso del negro sólido para crear contrastes tridimensionales. Es un referente mundial que ha editado libros de arte para otros profesionales.</p>
-          <p><strong>Premios:</strong> Ganador de múltiples premios en convenciones internacionales (Barcelona, Londres) y jurado habitual en eventos de élite.</p>
+          <div class="containerImgTatuador">
+            <img class="imgTatuador" src={"https://guiadeparche.com/tatuador/javier-Obregón.jpg"} alt={"Tattoo Artist Javier Obregón"}/>
+            <img class="imgTatuador" src={"https://guiadeparche.com/tatuador/tatuaje-javier-obregon.jpg"} alt={"Tatuaje Javier Obregón"}/>
+          </div>
+          <div class="containerTexto">
+            <p><strong>Estilo:</strong> Biomecánico, Dark y Black & Grey de gran escala.</p>
+            <p><strong>Reseña:</strong> Un maestro de la anatomía. Javier no solo tatúa; "modifica" visualmente el cuerpo. Sus piezas biomecánicas son famosas por la profundidad y el uso del negro sólido para crear contrastes tridimensionales. Es un referente mundial que ha editado libros de arte para otros profesionales.</p>
+            <p><strong>Premios:</strong> Ganador de múltiples premios en convenciones internacionales (Barcelona, Londres) y jurado habitual en eventos de élite.</p>
+          </div>
         </article>
 
         <article class="tatuador-card">
           <h2>2 - Yeyo (Yeyo Tattoos)</h2>
-          <p><strong>Estilo:</strong> Realismo en Color y Retratos.</p>
-          <p><strong>Reseña:</strong> Conocido como "el tatuador de los futbolistas", Yeyo ha perfeccionado la técnica de la saturación del color. Sus retratos parecen fotografías impresas en la piel. Es famoso por su capacidad para captar texturas (piel, ojos, telas) con una precisión casi imposible.</p>
-          <p><strong>Premios:</strong> Sus piezas de "Mejor del Día" en convenciones son incontables. Es embajador de las marcas de tintas y máquinas más importantes del mundo.</p>
+          <div class="containerImgTatuador">
+            <img class="imgTatuador" src={"https://guiadeparche.com/tatuador/yeyo.jpg"} alt={"Tattoo Artist Yeyo"}/>
+            <img class="imgTatuador" src={"https://guiadeparche.com/tatuador/tatuaje-yeyo.jpg"} alt={"Tatuaje Yeyo"}/>
+          </div>
+          <div class="containerTexto">  
+            <p><strong>Estilo:</strong> Realismo en Color y Retratos.</p>
+            <p><strong>Reseña:</strong> Conocido como "el tatuador de los futbolistas", Yeyo ha perfeccionado la técnica de la saturación del color. Sus retratos parecen fotografías impresas en la piel. Es famoso por su capacidad para captar texturas (piel, ojos, telas) con una precisión casi imposible.</p>
+            <p><strong>Premios:</strong> Sus piezas de "Mejor del Día" en convenciones son incontables. Es embajador de las marcas de tintas y máquinas más importantes del mundo.</p>
+          </div>
         </article>
 
         <article class="tatuador-card">
           <h2>1 - Henry Anglas</h2>
-          <p><strong>Estilo:</strong> Realismo, Surrealismo y "Mímesis".</p>
-          <p><strong>Reseña:</strong> Henry Anglas es, para muchos, el máximo exponente del realismo en el país. Su estilo evoluciona hacia lo que él llama Mímesis, una fusión de técnicas que logra un realismo pictórico profundo. Sus obras suelen ser piezas de gran formato que cuentan historias complejas con un nivel de detalle nivel museo.</p>
-          <p><strong>Premios:</strong> Ganador del "Best of Show" en las convenciones más exigentes de Europa y EE.UU. Autor del libro formativo <em>Anyone Can Tattoo</em>.</p>
+          <div class="containerImgTatuador">
+            <img class="imgTatuador" src={"https://guiadeparche.com/tatuador/henry-anglas.jpeg"} alt={"Tattoo Artist Henry Anglas"}/>
+            <img class="imgTatuador" src={"https://guiadeparche.com/tatuador/tatuaje-henry-anglas.jpg"} alt={"Tatuaje Henry Anglas"}/>
+          </div>
+          <div class="containerTexto">
+            <p><strong>Estilo:</strong> Realismo, Surrealismo y "Mímesis".</p>
+            <p><strong>Reseña:</strong> Henry Anglas es, para muchos, el máximo exponente del realismo en el país. Su estilo evoluciona hacia lo que él llama Mímesis, una fusión de técnicas que logra un realismo pictórico profundo. Sus obras suelen ser piezas de gran formato que cuentan historias complejas con un nivel de detalle nivel museo.</p>
+            <p><strong>Premios:</strong> Ganador del "Best of Show" en las convenciones más exigentes de Europa y EE.UU. Autor del libro formativo <em>Anyone Can Tattoo</em>.</p>
+          </div>
         </article>
       </div>
     </div>
@@ -209,5 +240,70 @@ const JSONSchema = JSON.stringify(schemaData);
 
   .tatuador-card strong {
     color: var(--color-white);
+  }
+
+  .containerImgTatuador{
+    display:flex;
+    width: 100%;
+    max-height: 250px;
+  }
+
+  .imgTatuador{
+    float: left; /* Alinea a la izquierda (o 'right') */
+    margin-right: 15px; /* Espacio entre imagen y texto */
+    margin-bottom: 10px; /* Espacio inferior si el texto es corto */
+    max-width: 50%; /* Ajusta el tamaño de la imagen */
+    object-fit: cover;
+    border-radius: 10px;
+  }
+
+
+  .imgTatuador:nth-child(2){
+    width: 30%;
+  }
+
+  /* ========================================== */
+  /* Ejemplos de modificación individual por posicion */
+  /* ========================================== */
+
+  /* 5 - Walter Montero (Primer card: nth-child(1)) */
+  .tatuador-card:nth-child(1) .imgTatuador:first-child { /* Su foto (cara) */
+    object-position: 10% 20%;
+  }
+  .tatuador-card:nth-child(1) .imgTatuador:nth-child(2) { /* Su tatuaje */
+    object-position: center;
+  }
+
+  /* 4 - Martin Aguaisol (Segundo card: nth-child(2)) */
+  .tatuador-card:nth-child(2) .imgTatuador:first-child {
+    object-position: center top;
+  }
+
+  /* 3 - Javier Obregón (Tercer card: nth-child(3)) */
+  .tatuador-card:nth-child(3) .imgTatuador:first-child {
+    object-position: center 10%;
+  }
+
+  /* 2 - Yeyo (Cuarto card: nth-child(4)) */
+  .tatuador-card:nth-child(4) .imgTatuador:first-child {
+    object-position: center 35%;
+  }
+
+
+
+  /* 1 - Henry Anglas (Quinto card: nth-child(5)) */
+  .tatuador-card:nth-child(5) .imgTatuador:first-child {
+    object-position: center 25%;
+  }
+
+    /* 1 - Henry Anglas (Quinto card: nth-child(5)) */
+  .tatuador-card:nth-child(5) .imgTatuador:nth-child(2) {
+    object-position: center 25%;
+  }
+
+
+  .containerTexto{
+    display: flex;
+    flex-direction: column;
   }
 </style>
