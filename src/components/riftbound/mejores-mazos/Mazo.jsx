@@ -12,7 +12,7 @@ const Mazo = ({urlCarta, mazo, backgroundRefCrear})=>{
     "Chaos Rune":"purple",
     "Calm Rune":"green",
     "Order Rune":"yellow",
-    "Body Rune":"orange",
+    "Body Rune":"#ff8c00",
     "Mind Rune":"blue",
     "Fury Rune":"red",
     
@@ -178,21 +178,21 @@ const Mazo = ({urlCarta, mazo, backgroundRefCrear})=>{
                 </div>
               ))
             }
-          {/* Batlefields */}
           </div>
+          {/* Batlefields */}
           <div className={styles.containerBattlefields}>
 
             {
               mazo?.battlefields?.length > 0 && mazo?.battlefields.map((card, index) => (
-                <div key={index} className={[styles.containerCard, styles.containerBattlefieldCard].join(" ")}>
+                // <div key={index} className={[styles.containerCard, styles.containerBattlefieldCard].join(" ")}>
                   <img 
                     src={card.art.nuevaThumbnailURL + "?rotate=90"} 
                     onError={ (e) => {e.currentTarget.onerror = null; e.currentTarget.src = card.art.thumbnailURL + "?rotate=90"} }
-                    className={styles.imgCard} 
+                    className={`${styles.imgCard} ${styles.imgCardBattlefield}`} 
                     alt={card.name}
                     crossOrigin="anonymous"
                     ></img>
-                </div>
+                // </div>
               ))
             }
           </div>
