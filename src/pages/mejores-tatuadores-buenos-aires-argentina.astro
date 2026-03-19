@@ -306,4 +306,14 @@ const JSONSchema = JSON.stringify(schemaData);
     display: flex;
     flex-direction: column;
   }
+
+  @media (max-width: 1200px) {
+    .imgTatuador:nth-child(2){
+      width: 50%;
+    }
+
+    .tatuador-card:nth-child(1) .imgTatuador:first-child { /* Su foto (cara) */
+      object-position: 0% 00%;
+    }
+  }
 </style>
