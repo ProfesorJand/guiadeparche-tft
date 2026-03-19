@@ -306,7 +306,7 @@ const Composicion = ({id, compo, admin=false, show=true, allwaysOpen=false, onTo
       editspatulaItem1={compo.spatulaItem1}
       editspatulaItem2={compo.spatulaItem2}
       editoriginalComp={compo.originalComp}
-      editisHide={compo.isHide}
+      editisHide={compo?.isHide === "true" ? true : false}
       editisInInfographic={compo.isInInfographic}
       editCampeonTierList={compo.campeonTierList}
       editAugmentTierList={compo.augmentTierList}

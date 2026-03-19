@@ -46,7 +46,7 @@ const MiniInfoComp = ({
   }, []);
   return (
     <div 
-      className={[style.miniInfoComp, compo?.isHide && admin ? style.isHideForAdmin : compo?.isHide === "true" ? style.isHide : "" ].join(" ")}
+      className={[style.miniInfoComp, compo?.isHide === "true" && admin ? style.isHideForAdmin : compo?.isHide === "true" ? style.isHide : "" ].join(" ")}
       ref={containerInfoChampRef}
     >
       <div 
