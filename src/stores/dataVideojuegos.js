@@ -248,3 +248,86 @@ export const TOP10MARZO = [
     imageUrl: "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3288210/a3f20345958a4e032041b9de5d514cb3457fc7cd/capsule_616x353.jpg?t=1769186349"
   }
 ];
+
+export const TOP10ABRIL = [
+  {
+    title: "Pragmata",
+    releaseDate: "2026-04-03",
+    platforms: ["PS5", "Xbox Series X/S", "PC"],
+    description: "Aventura sci-fi de Capcom ambientada en un futuro distópico en la Luna, combinando exploración, narrativa y acción.",
+    trailerUrl: "https://www.youtube.com/watch?v=xoxCboik0Is",
+    imageUrl: "https://pbs.twimg.com/media/G24vko7W4AACJ7P.jpg"
+  },
+  {
+    title: "Hades II (Full Release)",
+    releaseDate: "2026-04-05",
+    platforms: ["PC", "PS5", "Xbox Series X/S", "Switch"],
+    description: "Secuela del exitoso roguelike donde controlas a Melinoë en una nueva historia con combates rápidos y estilo artístico único.",
+    trailerUrl: "https://www.youtube.com/watch?v=l-iHDj3EwdI",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/en/0/0c/Hades_2_cover_art.jpeg"
+  },
+  {
+    title: "Ark 2",
+    releaseDate: "2026-04-08",
+    platforms: ["Xbox Series X/S", "PC"],
+    description: "Supervivencia en mundo abierto con dinosaurios, narrativa protagonizada por Vin Diesel y mejoras en combate y crafting.",
+    trailerUrl: "https://www.youtube.com/watch?v=D8KbX6cK6u8",
+    imageUrl: "https://m.media-amazon.com/images/M/MV5BYjQwYWJmMDMtMzFlOC00OGMyLTkzNjUtNGFkOTVlZTYzODFiXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg"
+  },
+  {
+    title: "Avowed",
+    releaseDate: "2026-04-10",
+    platforms: ["Xbox Series X/S", "PC"],
+    description: "RPG en primera persona de Obsidian ambientado en el mundo de Pillars of Eternity, con decisiones narrativas profundas.",
+    trailerUrl: "https://www.youtube.com/watch?v=W3QkO8fy3tg",
+    imageUrl: "https://m.media-amazon.com/images/M/MV5BM2U2MWY3NmItMjUwYy00OGMxLWJlZjYtMDI1MGE3ODk2ZjkyXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg"
+  },
+  {
+    title: "Dragon Quest XII: The Flames of Fate",
+    releaseDate: "2026-04-12",
+    platforms: ["PS5", "Xbox Series X/S", "PC", "Switch 2"],
+    description: "Nueva entrega de la legendaria saga JRPG con tono más oscuro y cambios en el sistema de combate.",
+    trailerUrl: "https://www.youtube.com/watch?v=FmfiqydPjVk",
+    imageUrl: "https://static0.gamerantimages.com/wordpress/wp-content/uploads/wm/2024/08/dragon-quest-12-logo-with-dragon-quest-11-hero.jpg?w=1600&h=900&fit=crop"
+  },
+  {
+    title: "Stellar Blade: Ascension",
+    releaseDate: "2026-04-15",
+    platforms: ["PS5", "PC"],
+    description: "Expansión/secuela con combates rápidos estilo hack-and-slash y una historia sci-fi más profunda.",
+    trailerUrl: "https://www.youtube.com/watch?v=ayek3ZzWb1E",
+    imageUrl: "https://i.ebayimg.com/images/g/HGIAAOSw~shmXOeQ/s-l1200.jpg"
+  },
+  {
+    title: "The Wolf Among Us 2",
+    releaseDate: "2026-04-18",
+    platforms: ["PS5", "Xbox Series X/S", "PC"],
+    description: "Aventura narrativa basada en el cómic Fables, con decisiones que afectan la historia y estilo noir.",
+    trailerUrl: "https://www.youtube.com/watch?v=UkXwW5H28m0",
+    imageUrl: "https://cdn.myportfolio.com/ec8975de-70c4-409c-8b3e-1510b5166e84/20e1f70d-ba1e-4f58-a5c1-680360354cc2_rw_600.jpg?h=b40b879a48b6ef9344be7c86dedc79f8"
+  },
+  {
+    title: "Fable",
+    releaseDate: "2026-04-22",
+    platforms: ["Xbox Series X/S", "PC"],
+    description: "Reinicio de la saga RPG con humor británico, mundo abierto y decisiones morales que afectan el juego.",
+    trailerUrl: "https://www.youtube.com/watch?v=j6uOIHlE5xI",
+    imageUrl: "https://m.media-amazon.com/images/M/MV5BYzBmMjMwOGYtMmRkMC00ZTBiLWI5MzgtNjAyMDliOGYxM2NhXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg"
+  },
+  {
+    title: "Silksong",
+    releaseDate: "2026-04-25",
+    platforms: ["PC", "Switch", "PS5", "Xbox Series X/S"],
+    description: "Secuela de Hollow Knight con nuevas habilidades, enemigos y un mundo vertical desafiante.",
+    trailerUrl: "https://www.youtube.com/watch?v=yQxwbZsL14Y",
+    imageUrl: "https://m.media-amazon.com/images/M/MV5BMjA4NWE1YWMtNjQ4ZC00Y2Q3LWFjMGEtNGVhM2FmYzJjMzM1XkEyXkFqcGc@._V1_.jpg"
+  },
+  {
+    title: "Star Wars: Outlaws",
+    releaseDate: "2026-04-29",
+    platforms: ["PS5", "Xbox Series X/S", "PC"],
+    description: "Aventura de mundo abierto en el universo Star Wars donde encarnas a una forajida en el borde de la galaxia.",
+    trailerUrl: "https://www.youtube.com/watch?v=ymcpwq1ltQc",
+    imageUrl: "https://myhotposters.com/cdn/shop/files/mL7308_4b7b86db-9f88-412d-8666-050ecf3869b0_1024x1024.jpg?v=1748531093"
+  }
+]

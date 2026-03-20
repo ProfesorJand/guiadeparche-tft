@@ -1,5 +1,5 @@
 import React from "react";
-import { TOP10ANUAL, TOP10FEBRERO, TOP10MARZO } from "@stores/dataVideojuegos.js";
+import { TOP10ANUAL, TOP10FEBRERO, TOP10MARZO, TOP10ABRIL } from "@stores/dataVideojuegos.js";
 
 const VideoGameTopList = ({ type = "anual" }) => {
   const data =
@@ -7,6 +7,8 @@ const VideoGameTopList = ({ type = "anual" }) => {
       ? TOP10FEBRERO
       : type === "marzo"
       ? TOP10MARZO
+      : type === "abril"
+      ? TOP10ABRIL
       : TOP10ANUAL;
 
   const sortedData = [...data].sort(
@@ -17,6 +19,7 @@ const VideoGameTopList = ({ type = "anual" }) => {
     anual: "Top 10 Mejores Videojuegos 2026",
     febrero: "Top 10 Lanzamientos Videojuegos Febrero 2026",
     marzo: "Top 10 Lanzamientos Videojuegos Marzo 2026",
+    abril: "Top 10 Lanzamientos Videojuegos Abril 2026",
   };
 
   const pageTitle = titleMap[type];

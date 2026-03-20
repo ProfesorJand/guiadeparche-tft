@@ -1,5 +1,5 @@
 import styles from "./InfografiaTopVideojuegos.module.css"
-import { TOP10ANUAL, TOP10FEBRERO, TOP10MARZO } from "@stores/dataVideojuegos";
+import { TOP10ANUAL, TOP10FEBRERO, TOP10MARZO, TOP10ABRIL } from "@stores/dataVideojuegos";
 import { useRef, useState } from "react";
 import { CapturarImagen } from "@functions/CapturarImagen";
 const InfografiaTopVideoJuegos = ({type="anual"})=>{
@@ -18,6 +18,10 @@ const InfografiaTopVideoJuegos = ({type="anual"})=>{
       titulo1:"Top 10 Lanzamientos",
       titulo2: "Videojuegos Marzo 2026"
     },
+    abril: {
+      titulo1:"Top 10 Lanzamientos",
+      titulo2: "Videojuegos Abril 2026"
+    },
   };
   const [titulo1, setTitulo1] = useState(titleMap[type]["titulo1"]);
   const [titulo2, setTitulo2] = useState(titleMap[type]["titulo2"]);
@@ -33,6 +37,8 @@ const InfografiaTopVideoJuegos = ({type="anual"})=>{
       ? TOP10FEBRERO
       : type === "marzo"
       ? TOP10MARZO
+      : type === "abril"
+      ? TOP10ABRIL
       : TOP10ANUAL;
 
   const sortedData = [...data].sort(
@@ -65,6 +71,13 @@ const InfografiaTopVideoJuegos = ({type="anual"})=>{
           />
       </div>
       <div ref={backgroundRef} className={styles.containerInfografia}>
+        {/* <div className={styles.background}>
+          <img 
+            crossOrigin="anonymous" 
+            className={styles.imgBackground} 
+            src="https://t3.ftcdn.net/jpg/04/98/04/58/360_F_498045890_KdYplJs6N6YfGNu0qr9MYwY4jVj4rd5M.jpg" 
+            alt="" />
+        </div> */}
         <div className={styles.header}>
           <span className={styles.titulo}>
             {titulo1.toUpperCase()}
@@ -87,12 +100,12 @@ const InfografiaTopVideoJuegos = ({type="anual"})=>{
                       crossOrigin="anonymous"
                       ></img>
                     </div>
-                      <p className={[styles.gameName, styles.gameContent].join(" ") }>{game.title}</p>
+                      <p className={[styles.gameName, styles.gameContent, game.title.length > 28 && styles.gameName2].join(" ") }>{game.title}</p>
 
                       {/* <p className={styles.gameDescription}>{game.description}</p> */}
                       <p className={[styles.relaseDate, styles.gameContent].join(" ")}>{game.releaseDate.slice(8,10) +" de " + meses[(Number(game.releaseDate.slice(5,7)) - 1)]}</p>
                       <div 
-                        className={[styles.platformContainer, styles.gameContent].join(" ")} 
+                        className={[styles.platformContainer, styles.gameContent, game.title.length > 28 && styles.platformContainer2].join(" ")} 
                         >{game.platforms.map((platform, iP)=>{
                           if(consolas[platform]){
 
