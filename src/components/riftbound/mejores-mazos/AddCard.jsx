@@ -11,7 +11,8 @@ const AddCard = ({setRefrescar, cartasNoEncontradas, urlCarta, handleParseDeckTe
   const setNames = {
     ogs:"Proving Grounds",
     ogn:"Origins",
-    sfd:"Spiritforge"
+    sfd:"Spiritforged",
+    unl:"Unleashed"
   }
   
  const añadirCarta = async (infoCarta) => {

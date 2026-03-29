@@ -3,22 +3,34 @@ import { CapturarImagen } from "@functions/CapturarImagen";
 import AddCard from "./AddCard";
 const CrearEditarMazo = ({setRefrescar, urlCarta, mazo, setMazo, allCards, backgroundRefCrear, setCartasNoEncontradas, cartasNoEncontradas})=>{
 
-
-
-  const guardarMazo = async (mazo)=>{
-    try{
-      await fetch("https://api.guiadeparche.com/riftbound/guardarMazo.php",{
+  const guardarMazo = async (mazo) => {
+    try {
+      const response = await fetch("https://api.guiadeparche.com/riftbound/guardarMazo.php", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(mazo),
       });
-    }catch(error){
-      console.log(error);
+
+      const data = await response.json();
+
+      if (data.success) {
+        // 🔥 Guardamos el ID en el estado (MUY IMPORTANTE)
+        setMazo((prev) => ({
+          ...prev,
+          id: data.id,
+        }));
+
+        alert("Guardado: " + data.message);
+      } else {
+        alert("Error al guardarse: " + data.message);
+      }
+
+    } catch (error) {
+      alert("Error al guardarse: " + error);
     }
-  
-  }
+  };
 
   const handleParseDeckText = async () => {
     const element = document.getElementById("codigo");
@@ -110,7 +122,7 @@ const CrearEditarMazo = ({setRefrescar, urlCarta, mazo, setMazo, allCards, backg
       }
     }
     setCartasNoEncontradas(noEncontradas);
-    setMazo(()=>({...result, tier: mazo.tier}));
+    setMazo((prev)=>({...result, tier: prev.tier, id: prev.id, nombre: prev.nombre, coste: prev.coste}));
   };
 
   return (
@@ -118,9 +130,9 @@ const CrearEditarMazo = ({setRefrescar, urlCarta, mazo, setMazo, allCards, backg
       <textarea
         placeholder="Pega aquí el Export Text"
         rows={12}
-        
         id="codigo"
-        value={mazo.value}
+        value={mazo?.code || ""}
+        onChange={(e) => setMazo((prev) => ({ ...prev, code: e.target.value }))}
       />
       <input 
         type={"button"} 
@@ -131,6 +143,7 @@ const CrearEditarMazo = ({setRefrescar, urlCarta, mazo, setMazo, allCards, backg
       <select
         name="tiers" 
         id="tiers"
+        value={mazo?.tier || "S"}
         onChange={(e)=>{
           setMazo((oldData)=>{return {...oldData, tier: e.target.value }})
         }}
