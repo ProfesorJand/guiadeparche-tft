@@ -96,3 +96,9 @@ return JSON.stringify({ legendary, mainDeck, sideDeck, battlefields });
 export function importDeck(json) {
 return JSON.parse(json);
 }
+
+export async function getMazosMeta(){
+	const response = await fetch(`https://api.guiadeparche.com/riftbound/mazosMeta.json?t=${Date.now()}`, { cache: 'no-store' })
+	const data = await response.json()
+	return data
+}
