@@ -1,0 +1,53 @@
+---
+import Layout from "@layouts/Layout.astro"
+import Main from "@components/main/Main.astro";
+import {crearJSONSchema} from "@json/schema/crearJSONSchema";
+const data = {
+  set:"Set 17",
+  name:"Dioses del Espacio",
+  nameEN:"Space Gods",
+  fechaLanzamiento:"15 de Abril 2026",
+  fechaLanzamientoPBE:"31 de Marzo 2026",
+
+}
+const title = `${data.set} ${data.name}`;
+const description = `El nuevo ${data.set} llamado "${data.name}" tambien llamado en ingles "${data.nameEN}" llega a TFT el ${data.fechaLanzamientoPBE} para PBE, y el ${data.fechaLanzamiento} para servidores oficiales.`;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const keywords = `Nuevo Set, Set, TFT, Teamfight Tactics, TFT Nuevo Set, Nuevo Set TFT, ${data.set}, ${data.name}, ${data.nameEN}, ${data.fechaLanzamientoPBE}, ${data.fechaLanzamiento}`;
+const JSONSchema = crearJSONSchema({title, description});
+
+---
+
+<link rel="canonical" href={canonicalURL} />
+<!-- <meta property="og:image" content={socialImageURL} /> -->
+<meta name="description" content={description}>
+<meta name="keywords" content={keywords}>
+<Layout title={title} JSONSchema={JSONSchema} description={description} keywords={keywords} canonical={canonicalURL} image="/tft/sets/17/cuando-sale-tft-set-17.webp">
+    <!-- <Fragment slot="bodyMainAside">
+       Publicidad 
+    </Fragment>
+    <Fragment slot="bodyMainAsideTwitch">
+        <Twitch client:only="react"/>
+    </Fragment>
+    <Fragment slot="bodyMainAsideAds">
+        Publicidad
+    </Fragment> -->
+    <Main>
+      <h1 class="titulo">Nuevo Set de Teamfight Tactics</h1>
+      <p class="parrafo">El nuevo {data.set} llamado "{data.name}" tambien llamado en ingles "{data.nameEN}" llega a TFT el {data.fechaLanzamientoPBE} para PBE, y el {data.fechaLanzamiento} para servidores oficiales.</p>
+      <img src="/tft/sets/17/cuando-sale-tft-set-17.webp" alt="Información de cuando sale Set 17 de TFT"  style={{width:"100%",display:"flex", alingItems:"center"}}/>
+    </Main>
+</Layout>
+
+<style>
+  .parrafo{
+    text-align: justify;
+  }
+  .separador{
+    display:flex;
+    flex-direction: column;
+    gap:10px;
+    align-items: center;
+  }
+
+</style>
