@@ -1,34 +1,30 @@
 import React from "react";
-import { TOP10ANUAL, TOP10FEBRERO, TOP10MARZO, TOP10ABRIL } from "@stores/dataVideojuegos.js";
+import { TOP10ANUAL, TOP10MES } from "@stores/dataVideojuegos.js";
 
 const VideoGameTopList = ({ type = "anual" }) => {
   const data =
-    type === "febrero"
-      ? TOP10FEBRERO
-      : type === "marzo"
-      ? TOP10MARZO
-      : type === "abril"
-      ? TOP10ABRIL
-      : TOP10ANUAL;
+    type === "anual" ? TOP10ANUAL : TOP10MES;
 
   const sortedData = [...data].sort(
     (a, b) => new Date(a.releaseDate) - new Date(b.releaseDate)
   );
 
-  const titleMap = {
-    anual: "Top 10 Mejores Videojuegos 2026",
-    febrero: "Top 10 Lanzamientos Videojuegos Febrero 2026",
-    marzo: "Top 10 Lanzamientos Videojuegos Marzo 2026",
-    abril: "Top 10 Lanzamientos Videojuegos Abril 2026",
+  const transformDate = (date) => {
+    const dateObj = new Date(date);
+    const day = dateObj.getDate();
+    const month = dateObj.toLocaleString('es-ES', { month: 'long' });
+    const year = dateObj.getFullYear();
+    return (
+      <>
+        {day} de <span style={{ color: "#cfe509ff" }}>{month.charAt(0).toUpperCase() + month.slice(1)}</span> de {year}
+      </>
+    );
   };
-
-  const pageTitle = titleMap[type];
 
   return (
     <>
       {/* SEO META */}
       <main className="videogame-container">
-        <h1>{pageTitle}</h1>
 
         <section className="games-grid">
           {sortedData.map((game, index) => (
@@ -39,6 +35,7 @@ const VideoGameTopList = ({ type = "anual" }) => {
               itemType="https://schema.org/VideoGame"
             >
 
+
               <img
                 src={game.imageUrl}
                 alt={`${game.title} portada oficial 2026`}
@@ -48,9 +45,9 @@ const VideoGameTopList = ({ type = "anual" }) => {
 
 
               <div className="game-content">
-                <h2 itemProp="name">
+                <h3 itemProp="name">
                 {game.title}
-                </h2>
+                </h3>
                 <p itemProp="description">{game.description}</p>
 
               </div>
@@ -62,7 +59,7 @@ const VideoGameTopList = ({ type = "anual" }) => {
                   dateTime={game.releaseDate}
                   itemProp="datePublished"
                 >
-                  {game.releaseDate}
+                  {transformDate(game.releaseDate)}
                 </time>
               </p>
 
@@ -94,14 +91,15 @@ const VideoGameTopList = ({ type = "anual" }) => {
           padding: 2rem;
         }
 
-        h1 {
+        h2 {
           font-size: 2.2rem;
           margin-bottom: 2rem;
           text-align: center;
         }
 
-        h2 {
+        h3 {
           text-align:left;
+          margin-top: 0;
         }
 
         .games-grid {
