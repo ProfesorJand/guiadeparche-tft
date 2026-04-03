@@ -1,6 +1,7 @@
 export const TOP10ANUAL = [
   {
     title: "Grand Theft Auto VI",
+    popularity: 10,
     releaseDate: "2026-05-26",
     platforms: ["PS5", "Xbox Series X/S", "PC"],
     description: "Nueva entrega de la saga GTA con mundo abierto masivo, múltiples protagonistas y una narrativa más cinematográfica ambientada en Vice City.",
@@ -9,6 +10,7 @@ export const TOP10ANUAL = [
   },
   {
     title: "Resident Evil Requiem",
+    popularity: 9,
     releaseDate: "2026-02-27",
     platforms: ["PS5", "Xbox Series X/S", "PC"],
     description: "Nueva entrega principal de Resident Evil que regresa al survival horror clásico con una historia oscura y ambientación opresiva.",
@@ -17,6 +19,7 @@ export const TOP10ANUAL = [
   },
   {
     title: "Crimson Desert",
+    popularity: 8,
     releaseDate: "2026-03-19",
     platforms: ["PS5", "Xbox Series X/S", "PC", "macOS"],
     description: "RPG de acción en mundo abierto con combate dinámico y narrativa profunda desarrollado por Pearl Abyss.",
@@ -25,6 +28,7 @@ export const TOP10ANUAL = [
   },
   {
     title: "007 First Light",
+    popularity: 8,
     releaseDate: "2026-03-27",
     platforms: ["PS5", "Xbox Series X/S", "PC"],
     description: "Juego de acción y sigilo protagonizado por un joven James Bond en una historia original.",
@@ -33,6 +37,7 @@ export const TOP10ANUAL = [
   },
   {
     title: "Monster Hunter Stories 3: Twisted Reflection",
+    popularity: 7,
     releaseDate: "2026-03-13",
     platforms: ["PS5", "Xbox Series X/S", "PC", "Nintendo Switch 2"],
     description: "Nueva entrega RPG por turnos dentro del universo Monster Hunter con nuevas criaturas y sistema de vínculos.",
@@ -41,6 +46,7 @@ export const TOP10ANUAL = [
   },
   {
     title: "Dragon Quest VII Reimagined",
+    popularity: 7,
     releaseDate: "2026-02-05",
     platforms: ["PS5", "Xbox Series X/S", "PC", "Nintendo Switch 2"],
     description: "Reimaginación moderna del clásico JRPG con gráficos renovados y mejoras jugables.",
@@ -49,6 +55,7 @@ export const TOP10ANUAL = [
   },
   {
     title: "High on Life 2",
+    popularity: 7,
     releaseDate: "2026-02-13",
     platforms: ["PS5", "Xbox Series X/S", "PC"],
     description: "Secuela del shooter cómico con armas parlantes y estilo irreverente.",
@@ -57,6 +64,7 @@ export const TOP10ANUAL = [
   },
   {
     title: "Fable",
+    popularity: 9,
     releaseDate: "2026-10-01",
     platforms: ["Xbox Series X/S", "PC"],
     description: "Reboot del icónico RPG de fantasía con humor británico y decisiones morales.",
@@ -65,6 +73,7 @@ export const TOP10ANUAL = [
   },
   {
     title: "Screamer",
+    popularity: 6,
     releaseDate: "2026-03-26",
     platforms: ["PS5", "Xbox Series X/S", "PC"],
     description: "Juego de carreras arcade con estética futurista y estilo anime.",
@@ -73,11 +82,105 @@ export const TOP10ANUAL = [
   },
   {
     title: "Final Fantasy VII Remake Intergrade",
+    popularity: 9,
     releaseDate: "2026-01-22",
     platforms: ["Xbox Series X/S", "Nintendo Switch 2"],
     description: "Versión expandida de Final Fantasy VII Remake llegando a nuevas plataformas.",
     trailerUrl: "https://www.youtube.com/results?search_query=FF7+Remake+Intergrade+trailer",
     imageUrl: "https://cdn1.epicgames.com/offer/6f43ab8025ad42d18510aa91e9eb688b/EGS_FINALFANTASYVIIREMAKEINTERGRADE_SquareEnix_S1_2560x1440-85f829541a833442eaace75d02e0f07d"
+  }
+];
+
+export const TOP10MES = [
+  {
+    title: "Pragmata",
+    popularity: 8,
+    releaseDate: "2026-04-03",
+    platforms: ["PS5", "Xbox Series X/S", "PC"],
+    description: "Aventura sci-fi de Capcom ambientada en un futuro distópico en la Luna, combinando exploración, narrativa y acción.",
+    trailerUrl: "https://www.youtube.com/watch?v=xoxCboik0Is",
+    imageUrl: "https://pbs.twimg.com/media/G24vko7W4AACJ7P.jpg"
+  },
+  {
+    title: "Hades II (Full Release)",
+    popularity: 9,
+    releaseDate: "2026-04-05",
+    platforms: ["PC", "PS5", "Xbox Series X/S", "Switch"],
+    description: "Secuela del exitoso roguelike donde controlas a Melinoë en una nueva historia con combates rápidos y estilo artístico único.",
+    trailerUrl: "https://www.youtube.com/watch?v=l-iHDj3EwdI",
+    imageUrl: "https://upload.wikimedia.org/wikipedia/en/0/0c/Hades_2_cover_art.jpeg"
+  },
+  {
+    title: "Ark 2",
+    popularity: 8,
+    releaseDate: "2026-04-08",
+    platforms: ["Xbox Series X/S", "PC"],
+    description: "Supervivencia en mundo abierto con dinosaurios, narrativa protagonizada por Vin Diesel y mejoras en combate y crafting.",
+    trailerUrl: "https://www.youtube.com/watch?v=D8KbX6cK6u8",
+    imageUrl: "https://m.media-amazon.com/images/M/MV5BYjQwYWJmMDMtMzFlOC00OGMyLTkzNjUtNGFkOTVlZTYzODFiXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg"
+  },
+  {
+    title: "Avowed",
+    popularity: 8,
+    releaseDate: "2026-04-10",
+    platforms: ["Xbox Series X/S", "PC"],
+    description: "RPG en primera persona de Obsidian ambientado en el mundo de Pillars of Eternity, con decisiones narrativas profundas.",
+    trailerUrl: "https://www.youtube.com/watch?v=W3QkO8fy3tg",
+    imageUrl: "https://m.media-amazon.com/images/M/MV5BM2U2MWY3NmItMjUwYy00OGMxLWJlZjYtMDI1MGE3ODk2ZjkyXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg"
+  },
+  {
+    title: "Dragon Quest XII: The Flames of Fate",
+    popularity: 9,
+    releaseDate: "2026-04-12",
+    platforms: ["PS5", "Xbox Series X/S", "PC", "Switch 2"],
+    description: "Nueva entrega de la legendaria saga JRPG con tono más oscuro y cambios en el sistema de combate.",
+    trailerUrl: "https://www.youtube.com/watch?v=FmfiqydPjVk",
+    imageUrl: "https://static0.gamerantimages.com/wordpress/wp-content/uploads/wm/2024/08/dragon-quest-12-logo-with-dragon-quest-11-hero.jpg?w=1600&h=900&fit=crop"
+  },
+  {
+    title: "Stellar Blade: Ascension",
+    popularity: 8,
+    releaseDate: "2026-04-15",
+    platforms: ["PS5", "PC"],
+    description: "Expansión/secuela con combates rápidos estilo hack-and-slash y una historia sci-fi más profunda.",
+    trailerUrl: "https://www.youtube.com/watch?v=ayek3ZzWb1E",
+    imageUrl: "https://i.ebayimg.com/images/g/HGIAAOSw~shmXOeQ/s-l1200.jpg"
+  },
+  {
+    title: "The Wolf Among Us 2",
+    popularity: 9,
+    releaseDate: "2026-04-18",
+    platforms: ["PS5", "Xbox Series X/S", "PC"],
+    description: "Aventura narrativa basada en el cómic Fables, con decisiones que afectan la historia y estilo noir.",
+    trailerUrl: "https://www.youtube.com/watch?v=UkXwW5H28m0",
+    imageUrl: "https://cdn.myportfolio.com/ec8975de-70c4-409c-8b3e-1510b5166e84/20e1f70d-ba1e-4f58-a5c1-680360354cc2_rw_600.jpg?h=b40b879a48b6ef9344be7c86dedc79f8"
+  },
+  {
+    title: "Fable",
+    popularity: 9,
+    releaseDate: "2026-04-22",
+    platforms: ["Xbox Series X/S", "PC"],
+    description: "Reinicio de la saga RPG con humor británico, mundo abierto y decisiones morales que afectan el juego.",
+    trailerUrl: "https://www.youtube.com/watch?v=j6uOIHlE5xI",
+    imageUrl: "https://m.media-amazon.com/images/M/MV5BYzBmMjMwOGYtMmRkMC00ZTBiLWI5MzgtNjAyMDliOGYxM2NhXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg"
+  },
+  {
+    title: "Silksong",
+    popularity: 10,
+    releaseDate: "2026-04-25",
+    platforms: ["PC", "Switch", "PS5", "Xbox Series X/S"],
+    description: "Secuela de Hollow Knight con nuevas habilidades, enemigos y un mundo vertical desafiante.",
+    trailerUrl: "https://www.youtube.com/watch?v=yQxwbZsL14Y",
+    imageUrl: "https://m.media-amazon.com/images/M/MV5BMjA4NWE1YWMtNjQ4ZC00Y2Q3LWFjMGEtNGVhM2FmYzJjMzM1XkEyXkFqcGc@._V1_.jpg"
+  },
+  {
+    title: "Star Wars: Outlaws",
+    popularity: 9,
+    releaseDate: "2026-04-29",
+    platforms: ["PS5", "Xbox Series X/S", "PC"],
+    description: "Aventura de mundo abierto en el universo Star Wars donde encarnas a una forajida en el borde de la galaxia.",
+    trailerUrl: "https://www.youtube.com/watch?v=ymcpwq1ltQc",
+    imageUrl: "https://myhotposters.com/cdn/shop/files/mL7308_4b7b86db-9f88-412d-8666-050ecf3869b0_1024x1024.jpg?v=1748531093"
   }
 ];
 
