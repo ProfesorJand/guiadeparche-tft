@@ -16,7 +16,8 @@ const TopArtistaSpotify = ()=>{
   const numberOfTopArtist = 10;
   const [startNumberOfArtist, setStartNumberOfArtist] = useState(1);
   const [datosArtistas, setDatosArtistas] = useState([])
-  const [artistasInfo, setArtistasInfo] = useState({}); 
+  const [artistasInfo, setArtistasInfo] = useState({});
+  const [topMusic, setTopMusic] = useState(true);
   const [musicInfo, setMusicInfo] = useState([])
   const [monthlyListener, setMonthlyListener] = useState([]) //[]
   const backgroundRef = useRef(null)
@@ -33,6 +34,8 @@ const TopArtistaSpotify = ()=>{
         setDatosArtistas={setDatosArtistas}
         artistasInfo={artistasInfo}
         setArtistasInfo={setArtistasInfo}
+        topMusic={topMusic}
+        setTopMusic={setTopMusic}
         musicInfo={musicInfo}
         setMusicInfo={setMusicInfo}
         setMonthlyListener={setMonthlyListener}
@@ -46,8 +49,9 @@ const TopArtistaSpotify = ()=>{
         startNumberOfArtist={startNumberOfArtist} 
         datosArtistas={datosArtistas}
         artistasInfo={artistasInfo}
-        monthlyListener={monthlyListener}
+        topMusic={topMusic}
         musicInfo={musicInfo}
+        monthlyListener={monthlyListener}
         />
     </div>
   )

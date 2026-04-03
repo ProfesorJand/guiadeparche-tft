@@ -1,5 +1,5 @@
 import styles from "./InfografiaSpotify.module.css"
-const InfografiasSpotifyTopArtistas = ({backgroundRef, datos,numberOfTopArtist, startNumberOfArtist, datosArtistas, artistasInfo, monthlyListener, musicInfo}) =>{
+const InfografiasSpotifyTopArtistas = ({backgroundRef, datos,numberOfTopArtist, startNumberOfArtist, datosArtistas, artistasInfo, monthlyListener, musicInfo, topMusic}) =>{
 const cantidadDeLogos = `calc(100% / 3)`;
 const fecha = new Date();
 const mes = fecha.toLocaleDateString('es-ES', { month: 'long' }); // Ejemplo: "marzo"
@@ -7,12 +7,16 @@ const dia = fecha.getDate();
 const año = fecha.getFullYear();
   return (
     <div ref={backgroundRef} className={styles.infografiaContainer}>
+      <div className={styles.containerFondo}>
+        <img className={styles.fondo} src="/indus3/fondo-de-artistas-venezolanos-spotify.png"></img>
+      </div>
       <div className={styles.header}>
         <div className={styles.containerTitulo}>
           <span className={styles.titulo }>{datos.titulo}</span>
           <span className={styles.titulo2 }>{datos.titulo2}</span>
         </div>
         <div className={styles.containerFecha}>
+          <div className={styles.blurryBackgroundFecha}></div>
           <span className={styles.fecha}>{datos.fecha} {" "} <img className={styles.spotifyMiniLogo} src="/redes/Spotify_Primary_Green.png"></img></span>
         </div>
       </div>
@@ -24,8 +28,10 @@ const año = fecha.getFullYear();
                 <div 
                 key={`Elemento-${index}`} 
                 className={styles.containerArtista} 
-                style={{ height: `calc(100% / ${numberOfTopArtist} * 2)`, background: `linear-gradient(#737373, #171717)` }}
+                style={{ height: `calc(100% / ${numberOfTopArtist} * 2)` }}
                 >
+                  <div className={styles.blurryBackgroundArtist}>
+                  </div>
                 <div className={styles.containerNumeracion}>
                   <span className={styles.numeracion}>
                     {Number(key) + startNumberOfArtist}
@@ -40,25 +46,39 @@ const año = fecha.getFullYear();
                     />
                   </div>
                 </div>
-                <div className={`${styles.containerInfoArtista} ${musicInfo.length > 0 ? styles.containerInfoArtistaMusic : ""}`}>
-                  <div className={styles.containerNameOfArtist}>
-                    <span 
-                      className={`${styles.nameOfArtist} ${musicInfo.length > 0 ? styles.nameOfArtistMusic : ""}`}
-                    >
-                      {(value?.name).toUpperCase()}
-                    </span>
-                  </div>
+                <div className={`${styles.containerInfoArtista} ${topMusic ? styles.containerInfoArtistaMusic : ""}`}>
                   {
-                    musicInfo.length > 0 &&
-                    <div className={styles.containerNameOfSong}>
-                      <span className={styles.nameOfSong}>
-                        {musicInfo?.[index]?.name}
-                      </span>
-                    </div>
-                    }
+                    topMusic ? (
+                      <>
+                        <div className={styles.containerNameOfSong}>
+                          <span 
+                            className={styles.nameOfSong}
+                            style={{ 
+                              fontSize: musicInfo?.[index]?.name?.length < 22 ? '55cqh' : 
+                                        musicInfo?.[index]?.name?.length < 35 ? '40cqh' : 
+                                        '40cqh' 
+                            }}
+                          >
+                            {musicInfo?.[index]?.name.toUpperCase()}
+                          </span>
+                        </div>
+                        <div className={styles.containerNameOfArtistMusic}>
+                          <span className={`${styles.nameOfArtist} ${styles.nameOfArtistMusic}`}>
+                            {(value?.name).toUpperCase()}
+                          </span>
+                        </div>
+                      </>
+                    ) : (
+                      <div className={`${styles.containerNameOfArtist}`}>
+                        <span className={styles.nameOfArtist}>
+                          {(value?.name).toUpperCase()}
+                        </span>
+                      </div>
+                    )
+                  }
 
                   <div className={styles.containerMonthlyListener}>
-                    <span className={`${styles.monthlyListener} ${musicInfo.length > 0 ? styles.monthlyListenerMusic : ""}`}>
+                    <span className={`${styles.monthlyListener} ${topMusic ? styles.monthlyListenerMusic : ""}`}>
                       {monthlyListener?.[index]}
                     </span>
                   </div>
@@ -74,7 +94,7 @@ const año = fecha.getFullYear();
          <img className={styles.logo} src="/redes/Spotify_logo.png" alt=""></img>
         </div>
          <div className={styles.containerLogo} style={{width: cantidadDeLogos}}>
-          <img className={styles.logo} src="/redes/indus3Pro_logo.png" alt=""></img>
+          <img className={styles.logo} src="/indus3/indus3-logo.png" alt=""></img>
         </div>
         {/* <div className={styles.containerLogo} style={{width: cantidadDeLogos}}>
          <img className={styles.logo} src="/redes/La_Mega_recortado.png" alt=""></img>

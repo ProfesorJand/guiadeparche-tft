@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import {buscarArtistas, buscarArtista, buscarCanciones} from "@stores/dataSpotify"
 import { CapturarImagen } from "@functions/CapturarImagen";
 import styles from "./FormularioSpotify.module.css"
@@ -15,14 +15,75 @@ const FormularioSpotify = ({
   setArtistasInfo,
   musicInfo,
   setMusicInfo,
+  topMusic,
+  setTopMusic,
   monthlyListener,
   setMonthlyListener,
   backgroundRef
 })=>{
   console.log({datosArtistas, artistasInfo, datos, urlArtista: Object.values(datosArtistas).map(item => item?.urlArtista),musicInfo})
 
+  const fileInputRef = useRef(null);
+
+  const exportarDatos = () => {
+    const infoToExport = {
+      datos,
+      startNumberOfArtist,
+      topMusic,
+      datosArtistas,
+      artistasInfo,
+      musicInfo,
+      monthlyListener
+    };
+    const blob = new Blob([JSON.stringify(infoToExport, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `formulario_spotify_${new Date().getTime()}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const importarDatos = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const result = JSON.parse(e.target.result);
+        if (result.datos) setDatos(result.datos);
+        if (result.startNumberOfArtist !== undefined) setStartNumberOfArtist(result.startNumberOfArtist);
+        if (result.topMusic !== undefined) setTopMusic(result.topMusic);
+        if (result.datosArtistas) setDatosArtistas(result.datosArtistas);
+        if (result.artistasInfo) setArtistasInfo(result.artistasInfo);
+        if (result.musicInfo) setMusicInfo(result.musicInfo);
+        if (result.monthlyListener) setMonthlyListener(result.monthlyListener);
+      } catch (error) {
+        alert("Error al intentar procesar el archivo. Asegúrese de que sea un JSON válido.");
+      }
+    };
+    reader.readAsText(file);
+    event.target.value = null; // Reiniciar el input
+  };
+
   return (
     <div className={styles.containerFormulario}>
+      <div style={{ display: 'flex', gap: '10px', marginBottom: '15px' }}>
+        <button type="button" onClick={exportarDatos}>
+          Exportar Configuración
+        </button>
+        <button type="button" onClick={() => fileInputRef.current?.click()}>
+          Importar Configuración
+        </button>
+        <input 
+          type="file" 
+          accept=".json" 
+          ref={fileInputRef} 
+          style={{ display: 'none' }} 
+          onChange={importarDatos} 
+        />
+      </div>
       <label>
         Titulo:
         <textarea
@@ -82,11 +143,9 @@ const FormularioSpotify = ({
         es Top Musica de Artistas?
         <select 
           onChange={(e) => {
-            setDatos((prev) => ({
-              ...prev,
-              topMusic: e.target.value === "true"
-            }));
+            setTopMusic(e.target.value === "true")
           }}
+          value={topMusic.toString()}
           >
           <option value="true">True</option>
           <option value="false">False</option>
@@ -155,7 +214,7 @@ const FormularioSpotify = ({
                />
 
               {
-                datos?.topMusic &&
+                topMusic &&
                 <input 
                   placeholder="MusicUrl"
                   type="text"
