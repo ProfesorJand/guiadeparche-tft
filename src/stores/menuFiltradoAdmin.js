@@ -9,7 +9,7 @@ export const updateAction = (action)=>{
 }
 
 const hierarchy = ["S","A","B","C","D","MEME"];
-const hierarchyShadowCategory = ["Fast 8","3 Stars","Specifics Augments"];
+const hierarchyShadowCategory = ["Fast 8","Fast 9", "3 Stars","Situacional"];
 export const isLoadingDataTFTFromApi = atom(true)
 
 export const loadCompsMeta = async () => {
@@ -120,5 +120,15 @@ export const getConstantsTFT = async () => {
 
 export const MetaCompVersion = atom("")
 export const STREAMERS = deepMap([{ name: "", platform: "" },])
+
+// Store for managing which composition is open across islands
+export const activeCompId = atom(null);
+export const toggleActiveComp = (id) => {
+  if (activeCompId.get() === id) {
+    activeCompId.set(null);
+  } else {
+    activeCompId.set(id);
+  }
+};
 
 await getConstantsTFT()

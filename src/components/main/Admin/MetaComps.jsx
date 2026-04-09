@@ -8,7 +8,7 @@ import { scrollToComposicion, setOpenCompo, openCompoId } from "src/stores/openC
 import { versionTFT } from "src/stores/dataTFT.js";
 
 
-const MetaComps = ({ showHide,admin }) => {
+const MetaComps = ({ showHide, admin }) => {
   const composMeta = useStore(compos);
   const currentVersion = useStore(versionTFT);
   const [isLoading, setIsLoading] = useState(true)
@@ -21,13 +21,13 @@ const MetaComps = ({ showHide,admin }) => {
 
   useEffect(() => {
     let isMounted = true;
-    (async function() {
+    (async function () {
       if (versionTFT.get()) {
         isLoadingDataTFTFromApi.set(true);
         setIsLoading(true);
-        
+
         await loadCompsMeta();
-        
+
         if (isMounted) {
           isLoadingDataTFTFromApi.set(false);
           setIsLoading(false);
@@ -57,27 +57,27 @@ const MetaComps = ({ showHide,admin }) => {
     <div className={style.containerMeta}>
 
       {
-        composMeta.length > 0 && composMeta.map((tier,iTier)=>
-        tier.map((compo, i) => (
-              <div
-                ref={(el) => (refs.current[compo.id] = el)}
-                key={`augments-${i}`}
-                className={[
-                  style.containerMetaTier,
-                   compo?.isHide === "true" && admin ? "" : compo?.isHide === "true" ? style.isHide : ""
-                ].join(" ")}
-                
-              >
-                <Composicion
-                  compo={compo}
-                  showHide={showHide}
-                  admin={admin}
-                  onToggle={() => toggleCompo(compo.id)}
-                  isOpen={openCompId === compo.id}
-                  id={compo.id}
-                />
-              </div>
-            ))
+        composMeta.length > 0 && composMeta.map((tier, iTier) =>
+          tier.map((compo, i) => (
+            <div
+              ref={(el) => (refs.current[compo.id] = el)}
+              key={`augments-${i}`}
+              className={[
+                style.containerMetaTier,
+                compo?.isHide === "true" && admin ? "" : compo?.isHide === "true" ? style.isHide : ""
+              ].join(" ")}
+
+            >
+              <Composicion
+                compo={compo}
+                showHide={showHide}
+                admin={admin}
+                onToggle={() => toggleCompo(compo.id)}
+                isOpen={openCompId === compo.id}
+                id={compo.id}
+              />
+            </div>
+          ))
         )
       }
       {composMeta.length === 0 && <div>Please wait we are updating</div>}

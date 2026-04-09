@@ -1,37 +1,104 @@
 ---
-import Layout from '@layouts/Layout.astro';
-import MetaComps from "src/components/main/Admin/MetaComps.jsx"
-import Main from '@components/main/Main.astro';
-import {crearJSONSchema} from "src/json/schema/crearJSONSchema";
+import Layout from "@layouts/Layout.astro";
+import MetaComps from "src/components/main/Admin/MetaComps.jsx";
+import Main from "@components/main/Main.astro";
+import { crearJSONSchema } from "src/json/schema/crearJSONSchema";
 // import Kick from "src/components/embed/Kick.astro";
-import TierListMetaComps from '@components/TFT/TierListMetaComps.jsx';;
-import VersionCompo from "@components/TFT/VersionCompo"
-import SelectVersion from '@components/versionTFT/SelectVersion';
-const title = "▷ Best TFT Comps & Builds for 16 Lore & Legends.";
+import TierListMetaComps from "@components/TFT/TierListMetaComps.jsx";
+import VersionCompo from "@components/TFT/VersionCompo";
+import SelectVersion from "@components/versionTFT/SelectVersion";
+import { composMetaJSON } from "@stores/dataTFT";
+import Composicion from "@components/main/Admin/Composicion.jsx";
+
+const title = "▷ Best TFT Comps & Builds Set 16 Lore & Legends.";
 // Example: Construct a canonical URL using your production domain
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 // Example: Construct a URL for SEO meta tags using your current domain
-const socialImageURL = new URL('/images/preview.png', Astro.url);
-const description = "Top TFT Meta Comps for 16 Lore & Legends. Discover the latest Tier List, Augments and Builds for every patch. Mejores Composiciones TFT!";
-const keywords = "TFT Meta, Meta comps, comps TFT, comp TFT, Meta TFT, composiciones TFT, build TFT";
-const thumbnail= "/campeones/set12/ryze.webp"
-const imgPost = "https://i.ytimg.com/vi/5ph-NnCjDSk/maxresdefault.jpg"
-const JSONSchema = crearJSONSchema({title, imgPost, thumbnail, description});
-const admin = typeof window !== "undefined" ? localStorage.getItem("superAdmin") : false;
+const socialImageURL = new URL("/images/preview.png", Astro.url);
+const description =
+  "Top TFT Meta Comps Set 16 Lore & Legends. Discover the latest Tier List, Augments and Builds for every patch. Mejores Composiciones TFT!";
+const keywords =
+  "TFT Meta, Meta comps, comps TFT, comp TFT, Meta TFT, composiciones TFT, build TFT";
+const thumbnail = "/campeones/set12/ryze.webp";
+const imgPost = "https://i.ytimg.com/vi/5ph-NnCjDSk/maxresdefault.jpg";
+
+// SEO: Fetch Compositions Server-Side only for Schema
+let top10Comps = [];
+let todasLasComps = [];
+try {
+  const response = await fetch(composMetaJSON, { cache: "no-cache" });
+  const data = await response.json();
+  const hierarchy = ["S", "A", "B", "C", "D", "MEME"];
+  const allSorted = [];
+  
+  hierarchy.forEach(tier => {
+    if (data[tier]) {
+      const tierComps = [...data[tier]].sort((a, b) => (a.posicion || 0) - (b.posicion || 0));
+      allSorted.push(...tierComps);
+    }
+  });
+  
+  top10Comps = allSorted.slice(0, 10);
+  todasLasComps = allSorted;
+} catch (e) {
+  console.error("Error fetching comps for Schema:", e);
+}
+console.log({top10Comps})
+const baseSchema = JSON.parse(crearJSONSchema({ title, imgPost, thumbnail, description }));
 
 
+const dificultadEspañol = {
+  "Easy": "Fácil",
+  "Medium": "Medio",
+  "Hard": "Difícil"
+}
+
+const infographicCategoriesEspañol = {
+  "Roll Lv5": "Rolear Lv5",
+  "Roll Lv6": "Rolear Lv6",
+  "Roll Lv7": "Rolear Lv7",
+  "Roll Lv8": "Rolear Lv8",
+  "Roll Lv8 y Lv9": "Rolear Lv8 y Lv9",
+  "Roll Lv9": "Rolear Lv9",
+  "Roll Lv10": "Rolear Lv10"
+}
+
+// Add ItemList Schema for "Top 10"
+const itemListSchema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Top 10 Mejores Composiciones de TFT",
+  "description": "Listado de las 10 mejores composiciones del meta actual de Teamfight Tactics",
+  "itemListElement": top10Comps.map((comp, index) => ({
+    "@type": "ListItem",
+    "position": index + 1,
+    "name": "Composición de " + (comp as any).title,
+    "description": `Tier ${(comp as any).tier} - Dificultad: ${dificultadEspañol[(comp as any).dificultad]} - ${infographicCategoriesEspañol[(comp as any).infographicCategory]}`
+  }))
+};
+
+const JSONSchema = JSON.stringify([baseSchema, itemListSchema]);
+
+const admin =
+  typeof window !== "undefined" ? localStorage.getItem("user") : false;
 ---
-<!-- <link rel="canonical" href={canonicalURL} /> -->
-<!-- <meta property="og:image" content={socialImageURL} /> -->
-<!-- <meta name="description" content={description}>
+
+<!-- <link rel="canonical" href={canonicalURL} /> --><!-- <meta property="og:image" content={socialImageURL} /> --><!-- <meta name="description" content={description}>
 <meta name="keywords" content={keywords}>
 <meta property="og:image" content="/campeones/set12/ryze.webp" /> -->
-<Layout title={title} JSONSchema={JSONSchema} description={description} keywords={keywords} image={"/campeones/set12/ryze.webp"} canonical={canonicalURL}>
+<Layout
+  title={title}
+  JSONSchema={JSONSchema}
+  description={description}
+  keywords={keywords}
+  image={"/campeones/set12/ryze.webp"}
+  canonical={canonicalURL}
+>
   <Fragment slot="bodyMainAside">
-    <TierListMetaComps client:only="react"/>
+    <TierListMetaComps client:only="react" />
     <!-- <Youtube src={"https://www.youtube.com/playlist?list=PLxRnNvReiLMEriFDu0UxXScDabCIX-PWy"} client:only="react"/> -->
-</Fragment>
-<!-- <Fragment slot="bodyMainAsideTwitch">
+  </Fragment>
+  <!-- <Fragment slot="bodyMainAsideTwitch">
   <Kick></Kick>
   <Twitch client:only="react"/>
 </Fragment>
@@ -42,7 +109,7 @@ const admin = typeof window !== "undefined" ? localStorage.getItem("superAdmin")
     <h1 id="tituloMetaComps" class="titulo tituloMetaComps">
       Best TFT Meta Comps & Builds | Mejores Composiciones
     </h1>
-    <VersionCompo client:only="react"></VersionCompo>
+    <VersionCompo client:only="react" />
     <!-- <div class="videosYT">
       <div class="videoYTAdd">
         <h2 class="tituloYt">Español</h2>
@@ -59,44 +126,69 @@ const admin = typeof window !== "undefined" ? localStorage.getItem("superAdmin")
     <div id="ContainerMetaPBE">
       <!-- <ContainerMetaPBE version={latestVersion} set={setPBE}/> -->
       <!-- <ContainerMeta version={latestVersion} set={set} client:load/> -->
-      <div class={"containerMeta"}>
-        <MetaComps showHide={false} admin={admin} client:load/>
+      <div class="containerMeta">
+        {
+          todasLasComps.map((comp, index) => (
+            <div class="ranking-item-container">
+              <div class="ranking-header-seo" onclick={`if(window.toggleActiveComp) window.toggleActiveComp('${comp.id}')`}>
+                <span class="ranking-number"># {index + 1}</span>
+                {/* debajo del ranking-title colocar como una descripción */}
+                {/* <div class="ranking-title-container"> */}
+                  <h2 class="ranking-title">Composicion de {(comp as any).titulo}</h2>
+                  <p class="ranking-description">Tier {(comp as any).tier} - Dificultad: {dificultadEspañol[(comp as any).dificultad]} - {infographicCategoriesEspañol[(comp as any).infographicCategory]}</p>
+                {/* </div> */}
+                <span class="ranking-icon">▼</span>
+              </div>
+              
+              <div class="containerMetaTier">
+                <Composicion
+                  id={comp.id}
+                  compo={comp}
+                  admin={admin}
+                  client:load
+                />
+              </div>
+            </div>
+          ))
+        }
+        <!-- <MetaComps showHide={false} admin={admin} client:load />  -->
       </div>
+
     </div>
   </Main>
 </Layout>
 
 <style>
-  #SelectVersion{
+  #SelectVersion {
     display: flex;
     width: 100%;
     position: relative;
     justify-content: center;
-    align-items: center
+    align-items: center;
   }
-  #containerSwitch{
+  #containerSwitch {
     display: flex;
     width: 100%;
     position: relative;
     justify-content: center;
     gap: 5px;
     font-size: small;
-    align-items: center
+    align-items: center;
   }
-  .videosYT{
+  .videosYT {
     display: flex;
     flex-direction: row;
-    gap:5px;
-    margin-bottom:5px;
+    gap: 5px;
+    margin-bottom: 5px;
   }
   .switch {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  width: 100px;
-  height: 34px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    width: 100px;
+    height: 34px;
   }
-  .switch input { 
+  .switch input {
     opacity: 0;
     width: 0;
     height: 0;
@@ -109,8 +201,8 @@ const admin = typeof window !== "undefined" ? localStorage.getItem("superAdmin")
     right: 0;
     bottom: 0;
     background-color: var(--bg-secondary);
-    -webkit-transition: .4s;
-    transition: .4s;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
   }
   .slider:before {
     position: absolute;
@@ -120,14 +212,14 @@ const admin = typeof window !== "undefined" ? localStorage.getItem("superAdmin")
     left: 4px;
     bottom: 4px;
     background-color: var(--bg-primary);
-    -webkit-transition: .4s;
-    transition: .4s;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
   }
   input:checked + .slider {
     background-color: var(--bg-secondary);
   }
   input:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
+    box-shadow: 0 0 1px #2196f3;
   }
   input:checked + .slider:before {
     -webkit-transform: translateX(46px);
@@ -146,83 +238,144 @@ const admin = typeof window !== "undefined" ? localStorage.getItem("superAdmin")
   .hide {
     display: none;
   }
-  button{
+  button {
     background-color: var(--bg-secondary);
-    color:var(--white);
-    display:flex;
+    color: var(--white);
+    display: flex;
     flex: 1;
     justify-content: center;
     padding: 1rem 0;
   }
-  button:hover{
-    cursor:pointer;
+  button:hover {
+    cursor: pointer;
     background-color: var(--bg-tertiary);
   }
-  button.activeBtn{
+  button.activeBtn {
     background-color: var(--bg-primary);
   }
-  #containerPestanas{
+  #containerPestanas {
     display: flex;
     flex-direction: row;
-    gap:5px;
+    gap: 5px;
+  }
+  .goldText {
+    color: gold;
+  }
+  .containerMeta {
+    display: flex;
+    position: relative;
+    gap: 10px;
+    flex-direction: column;
+  }
+  .ranking-item-container {
+    margin-bottom: 20px;
+  }
+  .ranking-header-seo {
+    display: flex;
+    align-items: center;
+    background: var(--bg-secondary);
+    padding: 12px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    cursor: pointer;
+    gap: 15px;
+    transition: background 0.3s;
+    margin-bottom: 8px;
+  }
+  .ranking-header-seo:hover {
+    background: var(--bg-tertiary);
+  }
+  .ranking-number {
+    font-family: 'ObvioslyWideBold', sans-serif;
+    font-size: 1.2rem;
+    min-width: 40px;
+  }
+  /* .ranking-title-container {
+    display: flex;
+    gap: 5px;
+  } */
+  .ranking-title {
+    flex: 1;
+    font-weight: bold;
+    color: #fff;
+    font-size: 0.95rem;
+  }
+  .ranking-description {
+    font-size: 0.8rem;
+    color: #aaa;
+    padding: 2px 8px;
+    border: 1px solid #444;
+    border-radius: 4px;
+  }
+  .ranking-difficulty {
+    font-size: 0.8rem;
+    color: #aaa;
+    padding: 2px 8px;
+    border: 1px solid #444;
+    border-radius: 4px;
+  }
+  .ranking-icon {
+    font-size: 0.7rem;
+    color: #666;
+  }
 
+  .containerMetaTier {
+    display: flex;
+    position: relative;
+    gap: 10px;
+    flex-direction: column;
   }
-  .goldText{
-    color:gold
+  .tituloMetaComps {
+    margin: 5px 0;
+    font-size: 1.4em;
   }
-  .containerMeta{
-  display: flex;
-  position: relative;
-  gap:10px;
-  flex-direction: column;
-}
-
-.containerMetaTier{
-  display: flex;
-  position: relative;
-  gap:10px;
-  flex-direction: column;
-}
-.tituloMetaComps{
-  margin: 5px 0;
-  font-size: 1.4em;
-}
-.minititulo{
-  display: flex;
-  position: relative;
-  justify-content: center;
-  align-items: center;
-  margin: 5px 0 10px 0;
-
-}
-.videoYTAdd{
-  display: flex;
-  flex-direction: column;
-  
-}
-.tituloYt{
-  margin: 5px 0;
-  font-size: 1em;
-}
-@media only screen and (max-width:900px){
-  .tituloMetaComps{
-    font-size: 1.1em;
+  .minititulo {
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    margin: 5px 0 10px 0;
   }
-  .minititulo{
-    font-size: 0.8em;
+  .videoYTAdd {
+    display: flex;
+    flex-direction: column;
   }
-}
+  .tituloYt {
+    margin: 5px 0;
+    font-size: 1em;
+  }
+  h2{
+    margin-block-start: 0;
+    margin-block-end: 0;
+    text-align: left;
+  }
+  @media only screen and (max-width: 900px) {
+    .tituloMetaComps {
+      font-size: 1.1em;
+    }
+    .minititulo {
+      font-size: 0.8em;
+    }
+  }
 </style>
 
 <script>
-  document.addEventListener("astro:page-load",()=>{
+  document.addEventListener("astro:page-load", () => {
     const pantalla = window.innerWidth;
     const tituloMetaComps = document.getElementById("tituloMetaComps");
-    if(tituloMetaComps && pantalla <= 900){
-      tituloMetaComps.innerHTML = "Best TFT Meta Comps & Builds Mejores Composiciones"
+    if (tituloMetaComps && pantalla <= 900) {
+      tituloMetaComps.innerHTML =
+        "Best TFT Meta Comps & Builds Mejores Composiciones";
     }
-    if(tituloMetaComps && pantalla > 900){
-      tituloMetaComps.innerHTML = "Best TFT Meta Comps & Builds | Mejores Composiciones"
+    if (tituloMetaComps && pantalla > 900) {
+      tituloMetaComps.innerHTML =
+        "Best TFT Meta Comps & Builds | Mejores Composiciones";
     }
-  })
+  });
+</script>
+
+<script>
+  import { toggleActiveComp } from "src/stores/menuFiltradoAdmin";
+  // Expose to window for onclick handlers in static HTML
+  (window as any).toggleActiveComp = toggleActiveComp;
 </script>

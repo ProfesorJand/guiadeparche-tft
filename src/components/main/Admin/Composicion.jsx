@@ -1,4 +1,4 @@
-import React, {useEffect, useState, version} from "react";
+import React, { useEffect, useState, version } from "react";
 import style from "./css/Composicion.module.css";
 import CampeonEarly from "./CampeonEarly";
 import CarouselItems from "./CarouselItems";
@@ -8,18 +8,22 @@ import PosicionamientoCompos from "./PosicionamientoCompos";
 import CrearCompoTFT from "./CrearCompoTFT";
 //import { championsTFT as otrosChampions} from "src/json/updates/constantesLatest.js";
 import { teamPlannerCode, dataTFTChampions, versionTFT, setNumberLatest, setNumberPBE, loadDataTFTFromAPI, getTeamPlannerCodeAPI, crearCompoMetaPHP, setMutatorPBE, setMutatorLatest } from "@stores/dataTFT";
-import ShowBigCompScreen from "./ShowBigCompScreen"; 
+import ShowBigCompScreen from "./ShowBigCompScreen";
 import RadiantsItems from "./RadiantsItems";
 import { useStore } from "@nanostores/react";
 import MiniInfoComp from "@components/TFT/MiniInfoComp";
+import { activeCompId, toggleActiveComp } from "@stores/menuFiltradoAdmin";
 
-const Composicion = ({id, compo, admin=false, show=true, allwaysOpen=false, onToggle, isOpen})=>{
+const Composicion = ({ id, compo, admin = false, show = true, allwaysOpen = false, onToggle: propOnToggle, isOpen: propIsOpen }) => {
+  const storeOpenId = useStore(activeCompId);
+  const isOpen = propIsOpen !== undefined ? propIsOpen : storeOpenId === id;
+  const onToggle = propOnToggle || (() => toggleActiveComp(id));
   const championsTFT = useStore(dataTFTChampions);
   const currentVersion = useStore(versionTFT);
   const codeOfChampions = useStore(teamPlannerCode);
-  const [open,setOpen]=useState(allwaysOpen);
+  const [open, setOpen] = useState(allwaysOpen);
   const [editId, setEditId] = useState(null)
-  const colorDificulty= {Easy:"green",Medium:"orange",Hard:"red"}
+  const colorDificulty = { Easy: "green", Medium: "orange", Hard: "red" }
   const [posicionamiento, setPosicionamiento] = useState(compo.originalComp)
   const [data, setData] = useState(compo.boardInfo[compo.originalComp].data);
   const [sinergias, setSinergias] = useState(compo.boardInfo[compo.originalComp].sinergias);
@@ -27,55 +31,55 @@ const Composicion = ({id, compo, admin=false, show=true, allwaysOpen=false, onTo
   const [bigCompId, setBigCompId] = useState(null);
   const [imagePosicionamientoReady, setImagePosicionamientoReady] = useState(false);
   const backgroundRef = React.useRef(null);
-  
-  const textoPosicionamiento = (texto)=>{
-    if(texto === "spatula1"){
-    
+
+  const textoPosicionamiento = (texto) => {
+    if (texto === "spatula1") {
+
       texto = compo.spatulaItem1.name;
       return texto?.[0]?.toUpperCase() + texto?.slice(1)
     }
-    if(texto === "spatula2"){
+    if (texto === "spatula2") {
       texto = compo.spatulaItem2.name;
       return texto?.[0]?.toUpperCase() + texto?.slice(1)
     }
     return texto?.[0]?.toUpperCase() + texto?.slice(1)
   }
-  useEffect(()=>{
+  useEffect(() => {
     setPosicionamiento(compo.originalComp)
     setData(compo.boardInfo[compo.originalComp].data)
     setSinergias(compo.boardInfo[compo.originalComp].sinergias)
-  },[compo])
-  const earlyComp = Object.keys(compo.boardInfo.early.data).map((key)=>{
-    const {dataCampeon, dataItem} = compo?.boardInfo?.early?.data?.[key]
-    return {dataCampeon:dataCampeon.campeon, dataItem}
+  }, [compo])
+  const earlyComp = Object.keys(compo.boardInfo.early.data).map((key) => {
+    const { dataCampeon, dataItem } = compo?.boardInfo?.early?.data?.[key]
+    return { dataCampeon: dataCampeon.campeon, dataItem }
   })
-  var dataCampeones = Object.keys(data).map((key)=>{
-    const {dataCampeon, dataItem} = data[key];
-    return {dataCampeon:dataCampeon.campeon, dataItem, estrellas:data[key]?.estrellas ? data[key].estrellas : 1}
+  var dataCampeones = Object.keys(data).map((key) => {
+    const { dataCampeon, dataItem } = data[key];
+    return { dataCampeon: dataCampeon.campeon, dataItem, estrellas: data[key]?.estrellas ? data[key].estrellas : 1 }
   })
-  const allChampionsApiName = dataCampeones.map(({dataCampeon})=>{
-    return {apiName:JSON.parse(dataCampeon).apiName}
+  const allChampionsApiName = dataCampeones.map(({ dataCampeon }) => {
+    return { apiName: JSON.parse(dataCampeon).apiName }
   })
-  
-  function championsCodeBuilder(allChampions){
+
+  function championsCodeBuilder(allChampions) {
     // Ordena el array por apiName en orden ascendente
     const priorityNames = ['TFT13_MissMage', 'TFT13_Viktor', 'TFT13_Warwick'];
     const sortedArray = allChampions.sort((a, b) => {
       // Si ambos están en la lista de prioridad
       if (priorityNames.includes(a.apiName) && priorityNames.includes(b.apiName)) {
-          return priorityNames.indexOf(a.apiName) - priorityNames.indexOf(b.apiName);
+        return priorityNames.indexOf(a.apiName) - priorityNames.indexOf(b.apiName);
       }
       // Si 'a' está en la lista de prioridad, lo mueve al final
       if (priorityNames.includes(a.apiName)) {
-          return 1;
+        return 1;
       }
       // Si 'b' está en la lista de prioridad, lo mueve al final
       if (priorityNames.includes(b.apiName)) {
-          return -1;
+        return -1;
       }
       // De lo contrario, ordena alfabéticamente
       return a.apiName.localeCompare(b.apiName);
-  });
+    });
     // Define el objeto resultado y la primera clave
     const result = { "empty_slot": "00" };
 
@@ -83,41 +87,41 @@ const Composicion = ({id, compo, admin=false, show=true, allwaysOpen=false, onTo
     const sequence = [];
     let i = 0;
     while (sequence.length <= sortedArray.length) {
-        // Convertimos i a hexadecimal y lo formateamos a dos caracteres
-        let hex = i.toString(16).padStart(2, "0");
-        // Solo agregamos a la secuencia si es un valor válido
-        sequence.push(hex);
+      // Convertimos i a hexadecimal y lo formateamos a dos caracteres
+      let hex = i.toString(16).padStart(2, "0");
+      // Solo agregamos a la secuencia si es un valor válido
+      sequence.push(hex);
 
-        // Incrementamos i
-        i++;
+      // Incrementamos i
+      i++;
     }
 
     // Asigna cada apiName como clave en el objeto resultado, con su valor correspondiente en la secuencia
     sortedArray.forEach((item, index) => {
-      if(item.apiName !=="TFT13_Rammus"){
+      if (item.apiName !== "TFT13_Rammus") {
         result[item.apiName] = sequence[index + 1]; // +1 para empezar después de "empty_slot"
       }
     });
     return result;
   }
 
-  function generatorCodeBuilder(allChampionsApiName){
+  function generatorCodeBuilder(allChampionsApiName) {
     let sinDuplicados = [...new Set(allChampionsApiName)];
     const championsList = [];
-    championsTFT.forEach(({apiName, traits})=>{
-        if(traits.length > 0){
-            const allChampions = {
-                apiName,
-            }
-            championsList.push(allChampions)
+    championsTFT.forEach(({ apiName, traits }) => {
+      if (traits.length > 0) {
+        const allChampions = {
+          apiName,
         }
+        championsList.push(allChampions)
+      }
     })
-    const RulesChampionsCode = championsCodeBuilder(championsList);   
+    const RulesChampionsCode = championsCodeBuilder(championsList);
     let championsCode = "01"
     for (let i = 0; i < 10; i++) {
-      if(sinDuplicados[i]){
+      if (sinDuplicados[i]) {
         championsCode = championsCode.concat(RulesChampionsCode[sinDuplicados[i].apiName]);
-      }else{
+      } else {
         championsCode = championsCode.concat("00")
       }
     }
@@ -125,29 +129,29 @@ const Composicion = ({id, compo, admin=false, show=true, allwaysOpen=false, onTo
     return championsCode;
   }
 
-  function codeForPBE(allChampionsApiName){
+  function codeForPBE(allChampionsApiName) {
 
     let sinDuplicados = [...new Set(allChampionsApiName)];
     let championsCode = "02";
     let cantidadDeCampeones = sinDuplicados.length;
-    sinDuplicados.forEach(({apiName})=>{
+    sinDuplicados.forEach(({ apiName }) => {
       championsCode = championsCode.concat(codeOfChampions[apiName] || "")
     })
     let espaciosVacios = 10 - cantidadDeCampeones;
     if (espaciosVacios > 0) {
-        championsCode = championsCode.concat("000".repeat(espaciosVacios));
+      championsCode = championsCode.concat("000".repeat(espaciosVacios));
     }
     championsCode = championsCode.concat(currentVersion === "pbe" ? setMutatorPBE : setMutatorLatest)
     return championsCode
   }
 
-  
 
-  function handleEditID(e,id){
+
+  function handleEditID(e, id) {
     e.stopPropagation()
-    if(id === editId){
+    if (id === editId) {
       setEditId(null)
-    }else{
+    } else {
       setEditId(id)
     }
   }
@@ -155,44 +159,44 @@ const Composicion = ({id, compo, admin=false, show=true, allwaysOpen=false, onTo
   function deleteId(id, tier, version = "latest") { // Agregamos version por defecto
     let password = prompt('Write DELETE to continue');
     if (password === "DELETE") {
-        let token;
-        if (import.meta.env.SSR) {
-            token = import.meta.env.TOKEN_META;
-        } else {
-            token = import.meta.env.PUBLIC_TOKEN_META;
-        }
-        fetch(crearCompoMetaPHP, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Authorization': `Bearer ${token}`
-            },
-            body: `id=${id}&tier=${tier}&version=${version}`, // Se envía la versión
-        })
+      let token;
+      if (import.meta.env.SSR) {
+        token = import.meta.env.TOKEN_META;
+      } else {
+        token = import.meta.env.PUBLIC_TOKEN_META;
+      }
+      fetch(crearCompoMetaPHP, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': `Bearer ${token}`
+        },
+        body: `id=${id}&tier=${tier}&version=${version}`, // Se envía la versión
+      })
         .then(response => response.json())
         .then(data => {
-            if (data.status === 'success') {
-                alert(`ID: ${id} eliminado correctamente`);
-                console.log('ID eliminado correctamente:', data.message);
-            } else {
-                console.error('Error al eliminar el ID:', data.message);
-            }
+          if (data.status === 'success') {
+            alert(`ID: ${id} eliminado correctamente`);
+            console.log('ID eliminado correctamente:', data.message);
+          } else {
+            console.error('Error al eliminar el ID:', data.message);
+          }
         })
         .catch(error => {
-            console.error('Error:', error);
+          console.error('Error:', error);
         });
     }
-}
+  }
 
-  function copyToClipboard(e,codigo) {
+  function copyToClipboard(e, codigo) {
     e.stopPropagation();
     navigator.clipboard.writeText(codigo);
     alert("Copied Code: " + codigo);
   }
 
-  function ShowBigComp(e,id){
+  function ShowBigComp(e, id) {
     e.stopPropagation();
-    setShowBigComp((valor)=>!valor);
+    setShowBigComp((valor) => !valor);
     setBigCompId(id);
   }
 
@@ -203,7 +207,7 @@ const Composicion = ({id, compo, admin=false, show=true, allwaysOpen=false, onTo
   return (
     <div id={id} ref={backgroundRef} className={[style.containerInfoGlobal, isOpen ? style.containerInfoGlobalOpen : ""].join(" ")}>
       <div className={style.backgroundWrapper}>
-       {/* <img
+        {/* <img
         src={
           currentVersion === "pbe"
             ? "/tft/assets/backgroundWrapperSet16.avif"
@@ -234,111 +238,111 @@ const Composicion = ({id, compo, admin=false, show=true, allwaysOpen=false, onTo
         imagePosicionamientoReady={imagePosicionamientoReady}
       />
       {
-        isOpen && 
-     
-    <div className={[show ? style.containerInfoSecundario : style.containerInfoSecundarioOculto, (open || isOpen) ? "": style.hide, (open || isOpen) && style.upBorder].join(" ")}>
-      <div className={[show ? style.containerECT : style.containerECTOculto].join(" ")}>
-        <div className={style.containerEGlobal}>
-          <h3 className={style.tituloSecundario}>Early Game</h3>
-          <div className={style.containerE}>
-          {earlyComp.map(({dataCampeon, dataItem, estrellas},i)=>{
-            return (
-              <CampeonEarly key={`earlyCampeon`+i} dataCampeon={dataCampeon} dataItem={dataItem} estrellas={estrellas}/>
-            )
-          })}
-          </div>
-        </div>
-        <div className={style.containerC}>
-        <h3 className={style.tituloSecundario}>Items Prio</h3>
-          <CarouselItems carouselItems={compo.carouselItems}/>    
-        </div>
-        {compo.radiantsItems && 
-        <div className={style.containerR}>
-        <h3 className={style.tituloSecundario}>Best Radiant</h3>
-          <RadiantsItems radiantsItems={compo?.radiantsItems}/>    
-        </div>
-        }
-        {/* <div className={style.containerT}>
+        isOpen &&
+
+        <div className={[show ? style.containerInfoSecundario : style.containerInfoSecundarioOculto, (open || isOpen) ? "" : style.hide, (open || isOpen) && style.upBorder].join(" ")}>
+          <div className={[show ? style.containerECT : style.containerECTOculto].join(" ")}>
+            <div className={style.containerEGlobal}>
+              <h3 className={style.tituloSecundario}>Early Game</h3>
+              <div className={style.containerE}>
+                {earlyComp.map(({ dataCampeon, dataItem, estrellas }, i) => {
+                  return (
+                    <CampeonEarly key={`earlyCampeon` + i} dataCampeon={dataCampeon} dataItem={dataItem} estrellas={estrellas} />
+                  )
+                })}
+              </div>
+            </div>
+            <div className={style.containerC}>
+              <h3 className={style.tituloSecundario}>Items Prio</h3>
+              <CarouselItems carouselItems={compo.carouselItems} />
+            </div>
+            {compo.radiantsItems &&
+              <div className={style.containerR}>
+                <h3 className={style.tituloSecundario}>Best Radiant</h3>
+                <RadiantsItems radiantsItems={compo?.radiantsItems} />
+              </div>
+            }
+            {/* <div className={style.containerT}>
         <h3 className={style.titulo}>Traits</h3>
           <Sinergias sinergias={sinergias} posicionamiento={posicionamiento}/>
           </div> */}
-      </div>
-      <div className={style.containerAP}> 
+          </div>
+          <div className={style.containerAP}>
 
-        {/* <h3 className={[style.titulo, style.tituloCentrado].join(" ")}>Late Game - {textoPosicionamiento(posicionamiento)}</h3>      */}
-        <div className={style.containerT}>
-          <Sinergias sinergias={sinergias} posicionamiento={posicionamiento} show={show} version={compo?.version || "latest"}/>
-        </div>
-        
-          <PosicionamientoCompos id={compo.id} setImagePosicionamientoReady={setImagePosicionamientoReady} boardInfo={compo.boardInfo} titulo={compo.titulo}  originalComp={compo.originalComp} gameplay={compo.gameplay} spatula1={compo.spatulaItem1.icon} spatula2={compo.spatulaItem2.icon} setPosicionamiento={setPosicionamiento} posicionamiento={posicionamiento} setData={setData} setSinergias={setSinergias} show={show} version={compo.version}/>
+            {/* <h3 className={[style.titulo, style.tituloCentrado].join(" ")}>Late Game - {textoPosicionamiento(posicionamiento)}</h3>      */}
+            <div className={style.containerT}>
+              <Sinergias sinergias={sinergias} posicionamiento={posicionamiento} show={show} version={compo?.version || "latest"} />
+            </div>
 
-      </div>
-      <div className={[show ? style.containerAumentos : style.containerAumentosOculto].join(" ")}>
-        {/*<h3 className={style.titulo}>Augments</h3>*/}
-        <AumentosCompos aumentos={compo.aumentos}/>
-      </div>
-      {/* {show && 
+            <PosicionamientoCompos id={compo.id} setImagePosicionamientoReady={setImagePosicionamientoReady} boardInfo={compo.boardInfo} titulo={compo.titulo} originalComp={compo.originalComp} gameplay={compo.gameplay} spatula1={compo.spatulaItem1.icon} spatula2={compo.spatulaItem2.icon} setPosicionamiento={setPosicionamiento} posicionamiento={posicionamiento} setData={setData} setSinergias={setSinergias} show={show} version={compo.version} />
+
+          </div>
+          <div className={[show ? style.containerAumentos : style.containerAumentosOculto].join(" ")}>
+            {/*<h3 className={style.titulo}>Augments</h3>*/}
+            <AumentosCompos aumentos={compo.aumentos} />
+          </div>
+          {/* {show && 
       <div className={style.containerTips}>
         <div className={style.containerTextoInfoPrimarioCode} onClick={(e)=>copyToClipboard(e,(currentVersion === "pbe" ? codeForPBE(allChampionsApiName) : generatorCodeBuilder(allChampionsApiName)))}>
           {"COPY TEAM CODE: " + (currentVersion === "pbe" ? codeForPBE(allChampionsApiName) : generatorCodeBuilder(allChampionsApiName)) + " 📋"}
         </div>
       </div>
       } */}
-      <FooterTFT/>
+          <FooterTFT />
+        </div>
+      }
+      {editId === compo.id &&
+        <CrearCompoTFT
+          edit={true}
+          editId={compo.id}
+          edittier={compo.tier}
+          editposicion={compo.posicion}
+          editdificultad={compo.dificultad}
+          edittitulo={compo.titulo}
+          editshadowCategory={compo.shadowCategory}
+          editinfographicCategory={compo.infographicCategory}
+          editaumentos={compo.aumentos}
+          editgameplay={compo.gameplay}
+          edittips={compo.tips}
+          editboardInfo={compo.boardInfo}
+          editpictureSave={compo.pictureSave}
+          editcarouselItems={compo.carouselItems}
+          editspatulaItem1={compo.spatulaItem1}
+          editspatulaItem2={compo.spatulaItem2}
+          editoriginalComp={compo.originalComp}
+          editisHide={compo?.isHide === "true" ? true : false}
+          editisInInfographic={compo.isInInfographic}
+          editCampeonTierList={compo.campeonTierList}
+          editAugmentTierList={compo.augmentTierList}
+          editCampeonItemTierList={compo.champItem}
+          editCampeonTraitTierList={compo.champTrait}
+          editChamp3Stars={compo?.champ3Stars}
+          editVersion={compo.version}
+          editradiantItem={compo?.radiantsItems || []}
+        />}
+      {
+        showBigComp &&
+        <ShowBigCompScreen
+          id={bigCompId}
+          setShowBigComp={setShowBigComp}
+        />
+      }
     </div>
-     }
-    {editId === compo.id && 
-    <CrearCompoTFT
-      edit={true}
-      editId={compo.id}
-      edittier={compo.tier}
-      editposicion={compo.posicion}
-      editdificultad={compo.dificultad}
-      edittitulo={compo.titulo}
-      editshadowCategory={compo.shadowCategory}
-      editinfographicCategory={compo.infographicCategory}
-      editaumentos={compo.aumentos}
-      editgameplay={compo.gameplay}
-      edittips={compo.tips}
-      editboardInfo={compo.boardInfo}
-      editpictureSave={compo.pictureSave}
-      editcarouselItems={compo.carouselItems}
-      editspatulaItem1={compo.spatulaItem1}
-      editspatulaItem2={compo.spatulaItem2}
-      editoriginalComp={compo.originalComp}
-      editisHide={compo?.isHide === "true" ? true : false}
-      editisInInfographic={compo.isInInfographic}
-      editCampeonTierList={compo.campeonTierList}
-      editAugmentTierList={compo.augmentTierList}
-      editCampeonItemTierList={compo.champItem}
-      editCampeonTraitTierList={compo.champTrait}
-      editChamp3Stars={compo?.champ3Stars}
-      editVersion={compo.version}
-      editradiantItem={compo?.radiantsItems || []}
-    />}
-    {
-      showBigComp &&
-      <ShowBigCompScreen 
-        id={bigCompId}
-        setShowBigComp={setShowBigComp}
-      />
-    }
-    </div>
-    
+
   )
 }
 
-function FooterTFT (){
-   const [showMovilnetLogo, setShowMovilnetLogo] = useState(false);
-   const currentVersion = useStore(versionTFT);
-   const admin = localStorage.getItem("user") || false;
+function FooterTFT() {
+  const [showMovilnetLogo, setShowMovilnetLogo] = useState(false);
+  const currentVersion = useStore(versionTFT);
+  const admin = localStorage.getItem("user") || false;
   return (
-    <div className={style.footer} 
+    <div className={style.footer}
       onClick={(e) => {
         e.stopPropagation(); // 🔥 evita conflictos
         admin && setShowMovilnetLogo(v => !v);
       }}>
-      {showMovilnetLogo && 
+      {showMovilnetLogo &&
         <div className={style.divWebMovilnetLogo}>
           <img className={style.imgMovilnetLogo} src="/tft/assets/logoMovilnet-e-letras-blancas.png" alt="logo Guiadeparche" />
         </div>
@@ -347,23 +351,23 @@ function FooterTFT (){
         <img className={style.imgJupesonLogo} src="/tft/assets/logo-jupe-sin-publicidad.png" alt=""></img>
       </div>
       {
-        !showMovilnetLogo && 
-      <div className={style.divWebLogo} 
-        onClick={(e) => {
-          e.stopPropagation(); // 🔥 evita conflictos
-          admin && setShowMovilnetLogo(v => !v);
-        }}>
-        {/* <img className={style.imgWebLogo} src="/tft/assets/GP_logo.png" alt="logo Guiadeparche"></img> */}
+        !showMovilnetLogo &&
+        <div className={style.divWebLogo}
+          onClick={(e) => {
+            e.stopPropagation(); // 🔥 evita conflictos
+            admin && setShowMovilnetLogo(v => !v);
+          }}>
+          {/* <img className={style.imgWebLogo} src="/tft/assets/GP_logo.png" alt="logo Guiadeparche"></img> */}
           <span className={style.textoWeb}>
             GUIADEPARCHE.COM/TFT
           </span>
-      </div>
+        </div>
       }
       <div className={style.divSetTFTLogo}>
         <img className={style.imgSetTFTLogo} src={`/tft/sets/${currentVersion === "pbe" ? setNumberPBE : setNumberLatest}/logo2.png`} alt="TFT LOGO" />
       </div>
       {/* Mostrar logo según el estado */}
-      
+
     </div>
   )
 }

@@ -67,7 +67,6 @@ const Twitch = () => {
         embed.setMuted(false);
         divTwitch.classList.remove("hide");
         divTwitch.classList.add("show");
-        console.log("handleOnline")
         currentStreamer.set({ name: streamerName, platform: "twitch" });
       };
 
@@ -82,14 +81,9 @@ const Twitch = () => {
   }, [pass, currentStreamerIndex, twitchStreamers]);
 
   const checkNextStreamer = () => {
-    console.log("checkNextStreamer")
-    console.log({currentStreamerIndex})
-    console.log({twitchStreamers})
     setCurrentStreamerIndex((prevIndex) => {
       const newIndex = (prevIndex + 1) % twitchStreamers.length;
-      console.log({newIndex})
       if (newIndex === 0) {
-        console.log("llego al 0")
         setCheckedAll(true);
       }
       return newIndex;
@@ -97,10 +91,8 @@ const Twitch = () => {
   };
 
   useEffect(() => {
-    console.log({pass, embedRef})
     if (!pass || !embedRef.current) return;
     if (checkedAll) {
-      console.log({checkedAll})
       embedRef.current.setChannel("jupeson");
       // currentStreamer.set({ name: "jupeson", platform: "twitch" });
       return;

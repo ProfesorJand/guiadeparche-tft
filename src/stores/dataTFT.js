@@ -11,10 +11,10 @@ const initialStateVersion = "pbe";
 const initialStateTeamPlannerCode = [];
 const initialTFT_SET = "pbe";
 
-export const setNumberPBE="17";
-export const setMutatorPBE="TFTSet17";
-export const setNumberLatest="16";
-export const setMutatorLatest="TFTSet16";
+export const setNumberPBE="16";
+export const setMutatorPBE="TFTSet16";
+export const setNumberLatest="15";
+export const setMutatorLatest="TFTSet15";
 
 const orderedBaseItems = [
   'TFT_Item_BFSword',           // 0
@@ -70,7 +70,6 @@ export const loadDataTFTFromAPI = ({version=versionTFT.get(), idioma="en", pais=
     const urlDragon = `https://raw.communitydragon.org/${version}/cdragon/tft/${idioma}_${pais}.json`
     const response = await fetch(urlDragon);
     const data = await response.json();
-    console.log({data})
     updateDataTFT(data)
     loadConstantes();
   })

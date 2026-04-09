@@ -30,7 +30,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
     const urlImgAum = "https://raw.communitydragon.org/pbe/game/";
     const urlDataDragonLatestGame = "https://raw.communitydragon.org/latest/game/";
     const shadowCategories = ["Fast 8","Specifics Augments","3 Stars"]
-    const infographicCategories = ["Roll Lv5","Roll Lv6","Roll Lv7","Roll Lv8","Roll Lv9","Roll Lv10"]
+    const infographicCategories = ["Roll Lv5","Roll Lv6","Roll Lv7","Roll Lv8","Roll Lv8 y Lv9", "Roll Lv9","Roll Lv10"]
     const [tier, setTier] = useState("S")
     const [posicion, setPosicion] = useState(1)
     const [dificultad, setDificultad] = useState("Easy")

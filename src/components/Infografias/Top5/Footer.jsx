@@ -1,8 +1,6 @@
 import Style from './InfografiaTop5.module.css';
 import { Template } from './utils';
 const Footer = ({infografia, containerLogosRef})=>{
-  console.log(Template.Top5.FooterHeight)
-  console.log(infografia.heightContainerFooter)
 return (
   <div 
     className={Style.Footer}
