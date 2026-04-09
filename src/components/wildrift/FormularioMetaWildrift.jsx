@@ -22,9 +22,15 @@ const FormularioMetaWildrift = () =>{
 
   
   const championImgUrlPortrait = (championName) => {
+    if(championName === "Norra"){
+      return "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyqrn2qvdWorQNmyEVL-SGPpp4oiIzwB1MMQ&s"
+    }
     return `https://cdn.communitydragon.org/latest/champion/${championName}/portrait` 
   }
   const championImgUrlSquare = (championName) => {
+    if(championName === "Norra"){
+      return "https://www.wildriftfire.com/images/champion/icon/norra.png"
+    }
     return `https://cdn.communitydragon.org/latest/champion/${championName}/square`
   }
   const urlItemsData = "https://ddragon.leagueoflegends.com/cdn/15.10.1/data/en_US/item.json";
@@ -68,6 +74,14 @@ const FormularioMetaWildrift = () =>{
       };
     }
     );
+    champions.push({
+      id: "Norra",
+      name: "Norra",
+      title: "La Arquitecta Arcana",
+      imagePortrait: championImgUrlPortrait("Norra"),
+      imageSquare: championImgUrlSquare("Norra"),
+    });
+    console.log({champions})
     return champions;
   }
   const fetchItems = async () => {

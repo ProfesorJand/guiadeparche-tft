@@ -86,7 +86,7 @@ const InfografiaTFT = ()=>{
         
       </div>
 
-      <InfografiaTFTComps backgroundRef={backgroundRef} setTituloInfografiaTFT={setTituloInfografiaTFT} tituloInfografiaTFT={tituloInfografiaTFT} logoMovilnet={logoMovilnet} logoGuiadeparche={logoGuiadeparche}/>
+      <InfografiaTFTComps backgroundRef={backgroundRef} setTituloInfografiaTFT={setTituloInfografiaTFT} tituloInfografiaTFT={tituloInfografiaTFT} logoMovilnet={logoMovilnet} logoGuiadeparche={logoGuiadeparche} webInfografia={true}/>
     </div>
   )
 }

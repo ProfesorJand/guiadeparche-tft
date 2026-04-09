@@ -4,7 +4,7 @@ import { useEffect,useState} from "react";
 import { MetaComps as compos, loadCompsMeta, isLoadingDataTFTFromApi } from "src/stores/menuFiltradoAdmin.js";
 import {constantesJSON} from "@stores/dataTFT.js"
 import LogoGuiadeparche from "@components/logo/LogoGuiadeparche";
-const InfografiaTFTComps = ({backgroundRef, setTituloInfografiaTFT, tituloInfografiaTFT, logoMovilnet, logoGuiadeparche}) =>{
+const InfografiaTFTComps = ({backgroundRef, setTituloInfografiaTFT, tituloInfografiaTFT, logoMovilnet, logoGuiadeparche, webInfografia = false}) =>{
   const colorDificulty= {Easy:"green",Medium:"orange",Hard:"red"}
   const composMeta = useStore(compos);
   const [composInInfographic, setComposInInfographic] = useState([]);
@@ -170,6 +170,7 @@ useEffect(() => {
         ShowBigComp={() => {}}
         deleteId={() => {}}
         forInfografia={true}
+        webInfografia={webInfografia}
       />
     );
   })

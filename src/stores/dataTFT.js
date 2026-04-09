@@ -11,10 +11,23 @@ const initialStateVersion = "pbe";
 const initialStateTeamPlannerCode = [];
 const initialTFT_SET = "pbe";
 
-export const setNumberPBE="16";
-export const setMutatorPBE="TFTSet16";
-export const setNumberLatest="15";
-export const setMutatorLatest="TFTSet15";
+export const setNumberPBE="17";
+export const setMutatorPBE="TFTSet17";
+export const setNumberLatest="16";
+export const setMutatorLatest="TFTSet16";
+
+const orderedBaseItems = [
+  'TFT_Item_BFSword',           // 0
+  'TFT_Item_RecurveBow',        // 1
+  'TFT_Item_NeedlesslyLargeRod',// 2
+  'TFT_Item_TearOfTheGoddess',  // 3
+  'TFT_Item_ChainVest',         // 4
+  'TFT_Item_NegatronCloak',     // 5
+  'TFT_Item_GiantsBelt',        // 6
+  'TFT_Item_SparringGloves',    // 7
+  'TFT_Item_Spatula',           // 8
+  'TFT_Item_FryingPan'          // 9
+];
 
 export const apiGPTFT = `https://api.guiadeparche.com/tft/`;
 export const urlVersionTFT = "https://ddragon.leagueoflegends.com/api/versions.json";
@@ -57,6 +70,7 @@ export const loadDataTFTFromAPI = ({version=versionTFT.get(), idioma="en", pais=
     const urlDragon = `https://raw.communitydragon.org/${version}/cdragon/tft/${idioma}_${pais}.json`
     const response = await fetch(urlDragon);
     const data = await response.json();
+    console.log({data})
     updateDataTFT(data)
     loadConstantes();
   })
@@ -72,10 +86,62 @@ const version = v1.concat(".",v2);
 return version;
 }
 
+export const apiNameOfCraftableItems = atom([]);
+export const apiNameOfCraftableItemsPBE = atom([]);
+
+const findCraftableItem = (b1, b2, allItems, setItemNames, setNumber) => {
+    const candidates = allItems.filter(item => {
+        if (!setItemNames.includes(item.apiName)) return false;
+        if (!item.composition || item.composition.length !== 2) return false;
+        
+        const sortedComp = [...item.composition].sort();
+        const sortedBases = [b1, b2].sort();
+        
+        return sortedComp[0] === sortedBases[0] && sortedComp[1] === sortedBases[1];
+    });
+
+    if (candidates.length === 0) return null;
+    if (candidates.length === 1) return candidates[0].apiName;
+
+    // For emblems
+    const isEmblem = b1 === 'TFT_Item_Spatula' || b1 === 'TFT_Item_FryingPan' || b2 === 'TFT_Item_Spatula' || b2 === 'TFT_Item_FryingPan';
+    
+    if (isEmblem) {
+        const emblemPrefix = `TFT${setNumber}_ITEM_`;
+        const exactEmblem = candidates.find(c => c.apiName.includes(emblemPrefix));
+        if (exactEmblem) return exactEmblem.apiName;
+    }
+
+    return candidates[0].apiName;
+};
+
+const generateCraftableList = (allItems, setItemNames, setNumber) => {
+    const list = [];
+    for (let i = 0; i < orderedBaseItems.length; i++) {
+        for (let j = 0; j < orderedBaseItems.length; j++) {
+            list.push(findCraftableItem(orderedBaseItems[i], orderedBaseItems[j], allItems, setItemNames, setNumber));
+        }
+    }
+    return list;
+};
+
 export const updateDataTFT = async (data)=>{
   const {items, setData, sets} = data;
   dataTFT.set(data);
   dataTFTAllItems.set(items);
+  
+  const setLatest = setData.find(({mutator})=> mutator === setMutatorLatest);
+  const setPBE = setData.find(({mutator})=> mutator === setMutatorPBE);
+
+  if (setLatest) {
+    const list = generateCraftableList(items, setLatest.items, setNumberLatest);
+    apiNameOfCraftableItems.set(list);
+  }
+  if (setPBE) {
+    const list = generateCraftableList(items, setPBE.items, setNumberPBE);
+    apiNameOfCraftableItemsPBE.set(list);
+  }
+
   dataTFTItemsBySet.set((setData.find(({mutator})=>{
     return mutator ===( versionTFT.get() === "pbe" ? setMutatorPBE: setMutatorLatest)
   })).items)
@@ -137,139 +203,14 @@ const loadConstantes = async () =>{
 loadDataTFTFromAPI({})
 
 
-export const apiNameOfCraftableItems = [
-  "TFT_Item_Deathblade",
-  "TFT_Item_MadredsBloodrazor",
-  "TFT_Item_HextechGunblade",
-  "TFT_Item_SpearOfShojin",
-  "TFT_Item_GuardianAngel",
-  "TFT_Item_Bloodthirster",
-  "TFT_Item_SteraksGage",
-  "TFT_Item_InfinityEdge",
-  "TFT13_Item_WarbandEmblemItem",// cambiar // sinergia
-  "TFT13_Item_DemolitionistEmblemItem", // cambiar sinergia
-  "TFT_Item_RapidFireCannon",
-  "TFT_Item_GuinsoosRageblade",
-  "TFT_Item_StatikkShiv",
-  "TFT_Item_TitansResolve",
-  "TFT_Item_RunaansHurricane",
-  "TFT_Item_Leviathan",
-  "TFT_Item_LastWhisper",
-  "TFT13_Item_RebelEmblemItem", // cambiar sinergia
-  "TFT13_Item_ChallengerEmblemItem", //cambiar sinergia
-  "TFT_Item_RabadonsDeathcap",
-  "TFT_Item_ArchangelsStaff",
-  "TFT_Item_Crownguard",
-  "TFT_Item_IonicSpark",
-  "TFT_Item_Morellonomicon",
-  "TFT_Item_JeweledGauntlet",
-  "TFT13_Item_CabalEmblemItem", // cambiar
-  "TFT13_Item_SorcererEmblemItem", // cambiar
-  "TFT_Item_BlueBuff",
-  "TFT_Item_FrozenHeart",
-  "TFT_Item_AdaptiveHelm",
-  "TFT_Item_Redemption",
-  "TFT_Item_UnstableConcoction",
-  "TFT13_Item_FamilyEmblemItem", // cambiar
-  "TFT13_Item_InvokerEmblemItem",// 
-  "TFT_Item_BrambleVest",
-  "TFT_Item_GargoyleStoneplate",
-  "TFT_Item_RedBuff",
-  "TFT_Item_NightHarvester",
-  "TFT13_Item_SquadEmblemItem", //
-  "TFT13_Item_TitanEmblemItem", // 
-  "TFT_Item_DragonsClaw",
-  "TFT_Item_SpectralGauntlet",
-  "TFT_Item_Quicksilver",
-  "TFT13_Item_AutomataEmblemItem",//
-  "TFT13_Item_PitFighterEmblemItem", //
-  "TFT_Item_WarmogsArmor",
-  "TFT_Item_PowerGauntlet",
-  "TFT13_Item_ExperimentEmblemItem", //
-  "TFT13_Item_BruiserEmblemItem", // 
-  "TFT_Item_ThiefsGloves",
-  "TFT13_Item_HoverboardEmblemItem", //
-  "TFT13_Item_AmbusherEmblemItem", //
-  "TFT_Item_ForceOfNature",
-  "TFT_Item_TacticiansRing",
-  "TFT_Item_TacticiansScepter",
-];
-export const apiNameOfCraftableItemsPBE = [
-  "TFT_Item_Deathblade",
-  "TFT_Item_MadredsBloodrazor",
-  "TFT_Item_HextechGunblade",
-  "TFT_Item_SpearOfShojin",
-  "TFT_Item_GuardianAngel",
-  "TFT_Item_Bloodthirster",
-  "TFT_Item_SteraksGage",
-  "TFT_Item_InfinityEdge",
-  "TFT15_Item_SoulFighterEmblemItem",
-  "TFT15_Item_EdgelordEmblemItem",
-  "TFT_Item_RapidFireCannon",
-  "TFT_Item_GuinsoosRageblade",
-  "TFT_Item_StatikkShiv",
-  "TFT_Item_TitansResolve",
-  "TFT_Item_RunaansHurricane",
-  "TFT_Item_Leviathan",
-  "TFT_Item_LastWhisper",
-  "TFT15_Item_SupremeCellsEmblemItem",
-  "TFT13_Item_ChallengerEmblemItem",
-  "TFT_Item_RabadonsDeathcap",
-  "TFT_Item_ArchangelsStaff",
-  "TFT_Item_Crownguard",
-  "TFT_Item_IonicSpark",
-  "TFT_Item_Morellonomicon",
-  "TFT_Item_JeweledGauntlet",
-  "TFT15_Item_StarGuardianEmblemItem",
-  "TFT15_Item_SpellslingerEmblemItem",
-  "TFT_Item_BlueBuff",
-  "TFT_Item_FrozenHeart",
-  "TFT_Item_AdaptiveHelm",
-  "TFT_Item_Redemption",
-  "TFT_Item_UnstableConcoction",
-  "TFT15_Item_BattleAcademiaEmblemItem",
-  "TFT15_Item_ProdigyEmblemItem",
-  "TFT_Item_BrambleVest",
-  "TFT_Item_GargoyleStoneplate",
-  "TFT_Item_RedBuff",
-  "TFT_Item_NightHarvester",
-  "TFT15_Item_EmpyreanEmblemItem",
-  "TFT15_Item_BastionEmblemItem",
-  "TFT_Item_DragonsClaw",
-  "TFT_Item_SpectralGauntlet",
-  "TFT_Item_Quicksilver",
-  "TFT15_Item_ShotcallerEmblemItem",
-  "TFT15_Item_JuggernautEmblemItem",
-  "TFT_Item_WarmogsArmor",
-  "TFT_Item_PowerGauntlet",
-  "TFT15_Item_CrystalRoseEmblemItem",
-  "TFT15_Item_HeavyweightEmblemItem",
-  "TFT_Item_ThiefsGloves",
-  "TFT15_Item_RingKingsEmblemItem",
-  "TFT15_Item_DestroyerEmblemItem",
-  "TFT_Item_ForceOfNature",
-  "TFT_Item_TacticiansRing",
-  "TFT_Item_TacticiansScepter",
-]
-
 export const apiNamesCrafteableItems = ()=>{
-  return versionTFT.get() === "pbe" ? apiNameOfCraftableItemsPBE : apiNameOfCraftableItems;
+  return versionTFT.get() === "pbe" ? apiNameOfCraftableItemsPBE.get() : apiNameOfCraftableItems.get();
 }
-  const baseItems = [
-    'TFT_Item_BFSword',           // 0
-    'TFT_Item_RecurveBow',        // 1
-    'TFT_Item_NeedlesslyLargeRod',// 2
-    'TFT_Item_TearOfTheGoddess',  // 3
-    'TFT_Item_ChainVest',         // 4
-    'TFT_Item_NegatronCloak',     // 5
-    'TFT_Item_GiantsBelt',        // 6
-    'TFT_Item_SparringGloves',    // 7
-    'TFT_Item_Spatula',           // 8
-    'TFT_Item_FryingPan'          // 9
-  ];
 
 export const AllCraftableItems = (todosLosItems) => {
   const apiNames = apiNamesCrafteableItems();
+  console.log({todosLosItems})
+  console.log({apiNames})
 
   if (!todosLosItems.length) return [];
 
@@ -277,18 +218,18 @@ export const AllCraftableItems = (todosLosItems) => {
     const item = todosLosItems.find(i => i.apiName === apiName);
     if (!item) return null;
 
-    const combine = item.composition?.map(comp => baseItems.indexOf(comp)) || [];
+    const combine = item.composition?.map(comp => orderedBaseItems.indexOf(comp)) || [];
 
     return {
       ...item,
       combine,
       icon: urlDragon() + item.icon.replace(".tex", ".png").toLowerCase()
     };
-  }).filter(Boolean);
+  });
 };
 
 export const AllBasicItems = (dataTFTAllItems) =>{
-  const dataOfBasicItems = baseItems
+  const dataOfBasicItems = orderedBaseItems
     .map(apiName => {
       const item = dataTFTAllItems.find(item => item.apiName === apiName);
       if (!item) return null;

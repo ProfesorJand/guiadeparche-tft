@@ -1,0 +1,60 @@
+---
+import Layout from '../layouts/LayoutMidOnly.astro';
+import LoginForm from '../components/auth/LoginForm.jsx';
+import Main from '@components/main/Main.astro';
+
+// Since we are in a static Astro site, we can try to get the client ID from environment
+// In Astro, public variables must be prefixed with PUBLIC_
+const GOOGLE_CLIENT_ID = import.meta.env.PUBLIC_ID_CLIENT_GOOGLE_CLOUD_OAUTH;
+---
+
+<Layout title="Iniciar Sesión | Guia de Parche">
+  <!-- Metatags and scripts moved directly into the layout's slot -->
+  <meta name="google-signin-client_id" content={GOOGLE_CLIENT_ID}>
+  <script src="https://apis.google.com/js/api.js" is:inline></script>
+  <script src="https://accounts.google.com/gsi/client" async defer is:inline></script>
+
+  <Main backgroundColor="none">
+    <div class="login-wrapper">
+      <!-- <div class="login-header">
+        <h1>Inscríbete en Guía de Parche</h1>
+        <p>Únete a la mejor comunidad de TFT y videojuegos</p>
+      </div> -->
+      
+      <div class="login-content">
+        <LoginForm client:only="react" />
+      </div>
+
+    </div>
+  </Main>
+</Layout>
+
+<style>
+  .login-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+    padding: 20px;
+  }
+  .login-header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  .login-header h1 {
+    font-family: 'ObvioslyWideBold', sans-serif;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    margin-bottom: 10px;
+  }
+  .login-header p {
+    color: #e5e5e5;
+    font-size: 1.1rem;
+    opacity: 0.8;
+  }
+  .login-content {
+    width: 100%;
+    max-width: 500px;
+  }
+</style>

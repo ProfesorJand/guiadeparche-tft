@@ -19,7 +19,7 @@ const VisualizadorMetaWildrift = () => {
   const [logoGuiadeparche, setLogoGuiadeparche] = useState(false);
   // const [elo, setElo] = useState("emerald");
   const backgroundRef = useRef(null);
-  const admin = localStorage.getItem("superAdmin") || false;
+  const admin = localStorage.getItem("user") || false;
   const eloRanks = [
     "iron",
     "bronze",

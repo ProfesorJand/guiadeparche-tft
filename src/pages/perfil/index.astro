@@ -1,0 +1,8 @@
+---
+import LayoutMidOnly from "@layouts/LayoutMidOnly.astro";
+import PerfilUsuario from "@components/auth/PerfilUsuario.jsx";
+---
+
+<LayoutMidOnly title="Perfil">
+    <PerfilUsuario client:only="react"/>
+</LayoutMidOnly>

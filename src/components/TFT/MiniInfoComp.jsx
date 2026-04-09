@@ -22,7 +22,8 @@ const MiniInfoComp = ({
   deleteId,
   forInfografia,
   backgroundRef,
-  imagePosicionamientoReady
+  imagePosicionamientoReady,
+  webInfografia = false
 })=>{
   const containerInfoChampRef = useRef(null);
   const [infoChampHeight, setInfoChampHeight] = useState(0);
@@ -73,6 +74,7 @@ const MiniInfoComp = ({
         <TierImg 
           compo={compo} 
           show={show}
+          webInfografia={webInfografia}
         />
         <TextoInfoPrimario 
           show={show} 
@@ -91,6 +93,7 @@ const MiniInfoComp = ({
           backgroundRef={backgroundRef}
           forInfografia={forInfografia}
           imagePosicionamientoReady={imagePosicionamientoReady}
+          webInfografia={webInfografia}
         />
       </div>
       
@@ -117,7 +120,10 @@ const MiniInfoComp = ({
   )
 }
 
-function AdminOptions ({compo,admin,show,handleEditID, imagePosicionamientoReady, isOpen, backgroundRef,forInfografia}) {
+function AdminOptions ({compo,admin,show,handleEditID, imagePosicionamientoReady, isOpen, backgroundRef,forInfografia, webInfografia}) {
+  if(webInfografia){
+    return null
+  }
   return (
     <div className={`${show ? style.containerFlecha : style.containerFlechaOculto} adminOptions`}>
       {
@@ -156,7 +162,7 @@ function AdminOptions ({compo,admin,show,handleEditID, imagePosicionamientoReady
     </div>
   )
 }
-function TierImg ({compo}){
+function TierImg ({compo, webInfografia}){
   return (
     <div className={style.containerTierImg}>
       <img
@@ -164,6 +170,9 @@ function TierImg ({compo}){
         src={`/tiers/Tier-${compo.tier}.webp`}
         alt="Tier TFT" 
         loading="lazy"
+        style={{
+          flex: webInfografia ? 0.8 : 1
+        }}
         />
     </div>
   )
