@@ -3,6 +3,7 @@ import FormularioSpotify from "./FormularioSpotify"
 import InfografiasSpotifyTopArtistas from "./InfografiasSpotifyTopArtistas";
 import styles from "./InfografiaSpotify.module.css"
 
+
 const TopArtistaSpotify = ()=>{
   const fecha = new Date();
   const mes = fecha.toLocaleDateString('es-ES', { month: 'long' }); // Ejemplo: "marzo"
@@ -20,7 +21,8 @@ const TopArtistaSpotify = ()=>{
   const [topMusic, setTopMusic] = useState(true);
   const [musicInfo, setMusicInfo] = useState([])
   const [monthlyListener, setMonthlyListener] = useState([]) //[]
-  const backgroundRef = useRef(null)
+  const backgroundRef = useRef(null);
+  const [sourceType, setSourceType] = useState("venezolanos");
 
   return (
     <div className={styles.container}>
@@ -41,6 +43,8 @@ const TopArtistaSpotify = ()=>{
         setMonthlyListener={setMonthlyListener}
         monthlyListener={monthlyListener}
         backgroundRef={backgroundRef}
+        sourceType={sourceType}
+        setSourceType={setSourceType}
       />
       <InfografiasSpotifyTopArtistas 
         backgroundRef={backgroundRef}
@@ -52,6 +56,7 @@ const TopArtistaSpotify = ()=>{
         topMusic={topMusic}
         musicInfo={musicInfo}
         monthlyListener={monthlyListener}
+        sourceType={sourceType}
         />
     </div>
   )

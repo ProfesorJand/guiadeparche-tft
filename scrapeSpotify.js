@@ -73,6 +73,7 @@ const ARTISTS = [
   "https://open.spotify.com/artist/0lO6av16Xf5O2O39jHdyHx",
 ];
 
+
 const BATCH_SIZE = 2;
 const DELAY_BETWEEN_BATCHES = 3000;
 

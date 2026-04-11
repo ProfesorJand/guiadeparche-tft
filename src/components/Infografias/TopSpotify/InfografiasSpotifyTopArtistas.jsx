@@ -1,5 +1,5 @@
 import styles from "./InfografiaSpotify.module.css"
-const InfografiasSpotifyTopArtistas = ({backgroundRef, datos,numberOfTopArtist, startNumberOfArtist, datosArtistas, artistasInfo, monthlyListener, musicInfo, topMusic}) =>{
+const InfografiasSpotifyTopArtistas = ({sourceType, backgroundRef, datos,numberOfTopArtist, startNumberOfArtist, datosArtistas, artistasInfo, monthlyListener, musicInfo, topMusic}) =>{
 const cantidadDeLogos = `calc(100% / 3)`;
 const fecha = new Date();
 const mes = fecha.toLocaleDateString('es-ES', { month: 'long' }); // Ejemplo: "marzo"
@@ -8,7 +8,13 @@ const año = fecha.getFullYear();
   return (
     <div ref={backgroundRef} className={styles.infografiaContainer}>
       <div className={styles.containerFondo}>
-        <img className={styles.fondo} src="/indus3/fondo-de-artistas-venezolanos-spotify.png"></img>
+        {
+          sourceType === "venezolanos" ? (
+            <img className={styles.fondo} src="/indus3/fondo-de-artistas-venezolanos-spotify.png"></img>
+          ) : (
+            <img className={styles.fondo} src="/indus3/fondo-global.webp"></img>
+          )
+        }
       </div>
       <div className={styles.header}>
         <div className={styles.containerTitulo}>
@@ -89,7 +95,11 @@ const año = fecha.getFullYear();
         })
        }
       </div>
-      <div className={styles.footer}>
+      <div className={styles.footer} style={{ padding: sourceType !== "venezolanos" ? "3.5rem 5px" : "" }}>
+        {
+          sourceType !== "venezolanos" && 
+          <span className={styles.footerText}>(*) con al menos un tema en el top 50 global de Spotify</span>
+        }
         <div className={styles.containerLogo} style={{width: cantidadDeLogos}}>
          <img className={styles.logo} src="/redes/Spotify_logo.png" alt=""></img>
         </div>

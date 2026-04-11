@@ -1,0 +1,33 @@
+name: Scraping Spotify Mensual
+
+on:
+  schedule:
+    - cron: "0 0 1 * *"   # día 1 de cada mes
+    - cron: "0 0 11 * *"  # día 11 de cada mes
+  workflow_dispatch:
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clonar repo
+        uses: actions/checkout@v4
+
+      - name: Instalar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Instalar dependencias
+        run: npm install
+
+      # 🟢 Script día 1
+      - name: Ejecutar scrapeSpotify.js
+        if: github.event.schedule == '0 0 1 * *'
+        run: node scrapeSpotify.js
+
+      # 🔵 Script día 11
+      - name: Ejecutar scrapeSpotifyGlobal.js
+        if: github.event.schedule == '0 0 11 * *'
+        run: node scrapeSpotifyGlobal.js

@@ -11,6 +11,8 @@
       "@layouts/*":["src/layouts/*"],
       "@json/*":["src/json/*"],
       "@functions/*":["src/functions/*"],
+      "@spotify-data":["spotify-data.json"],
+      "@spotify-data-global":["spotify-data-global.json"],
     }
   }
 }
