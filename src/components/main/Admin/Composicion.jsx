@@ -365,7 +365,7 @@ const admin = useStore($admin);
         </div>
       }
       <div className={style.divSetTFTLogo}>
-        <img className={style.imgSetTFTLogo} src={`/tft/sets/${currentVersion === "pbe" ? setNumberPBE : setNumberLatest}/logo2.png`} alt="TFT LOGO" />
+        <img className={style.imgSetTFTLogo} src={`/tft/sets/${currentVersion === "pbe" ? setNumberPBE : setNumberLatest}/logo2.${currentVersion === "pbe" ? "webp" : "png"}`} alt="TFT LOGO" />
       </div>
       {/* Mostrar logo según el estado */}
 
