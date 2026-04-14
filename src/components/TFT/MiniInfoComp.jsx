@@ -100,7 +100,7 @@ const MiniInfoComp = ({
       <div className={show ? style.containerLowerChamps : style.containerLowerChampsOculto} onClick={() => { onToggle() }}>
         <div className={[style.containerInfoChamp, forInfografia ? style.containerChampsCenter : ""].join(" ")}>
           {dataCampeones.map(({ dataCampeon, dataItem, estrellas }, i) => {
-            if (JSON.parse(dataCampeon).nombre === "The Mighty Mech" || JSON.parse(dataCampeon).nombre === "Frozen Tower" || JSON.parse(dataCampeon).nombre === "Sand Soldier") return null
+            if (JSON.parse(dataCampeon).nombre === "Frozen Tower" || JSON.parse(dataCampeon).nombre === "Sand Soldier") return null
             return (
               <CampeonOriginal
                 key={`OriginalCampeon` + i}
