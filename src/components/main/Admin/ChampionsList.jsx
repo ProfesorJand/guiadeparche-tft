@@ -93,6 +93,18 @@ const Champions = ()=>{
                     championsList.push(data)
                 }
             })
+            // agregamos la espada de shen 
+            const data = {
+                apiName: "TFT15_ShenSword",
+                nombre: "Shen's Sword",
+                characterName: "Shen's Sword",
+                coste: 1,
+                sinergia: [],
+                stats: {},
+                img: `https://raw.communitydragon.org/pbe/game/assets/characters/shen/hud/icons2d/shen_q.png`,
+                ability: {},
+            }
+            championsList.push(data)
              // Ordenamos por coste
             const sortedByName = championsList.sort((a,b)=>{
                 if(a.nombre < b.nombre) {return -1}
