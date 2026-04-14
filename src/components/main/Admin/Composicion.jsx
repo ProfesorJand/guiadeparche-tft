@@ -13,6 +13,7 @@ import RadiantsItems from "./RadiantsItems";
 import { useStore } from "@nanostores/react";
 import MiniInfoComp from "@components/TFT/MiniInfoComp";
 import { activeCompId, toggleActiveComp } from "@stores/menuFiltradoAdmin";
+import { $admin } from "@stores/auth";
 
 const Composicion = ({ id, compo, admin = false, show = true, allwaysOpen = false, onToggle: propOnToggle, isOpen: propIsOpen }) => {
   const storeOpenId = useStore(activeCompId);
@@ -335,7 +336,7 @@ const Composicion = ({ id, compo, admin = false, show = true, allwaysOpen = fals
 function FooterTFT() {
   const [showMovilnetLogo, setShowMovilnetLogo] = useState(false);
   const currentVersion = useStore(versionTFT);
-  const admin = localStorage.getItem("user") || false;
+const admin = useStore($admin);
   return (
     <div className={style.footer}
       onClick={(e) => {

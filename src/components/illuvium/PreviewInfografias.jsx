@@ -8,6 +8,7 @@ import CrearCompoIlluvium from "./CrearCompoIlluvium";
 import Youtube from "@components/youtube/Youtube.jsx";
 import PositionInfografia from "./PositionInfografia.jsx";
 import PreviewInfografiasRedes from "./PreviewInfografiaRedes.jsx";
+import { $admin } from "@stores/auth";
 const PreviewInfografias = ()=>{
   const ComposMeta = useStore(metaComps);
   const [openInfografia, setOpenInfografia] = useState(null);
@@ -17,7 +18,7 @@ const PreviewInfografias = ()=>{
   const miniRefs = useRef([]);
   const positionRefs = useRef([]);
   const carriesInfoRefs = useRef([]);
-  const admin = localStorage.getItem("user")||false;
+  const admin = useStore($admin);
   const [previewInfografiaRedes, setPreviewInfografiaRedes] = useState(null);
   useEffect(()=>{
     const buscarCompos = async()=>{

@@ -1,10 +1,12 @@
 import { useState } from "react"
 import CrearCompoIlluvium from "./CrearCompoIlluvium";
 import PreviewInfografias from "./PreviewInfografias";
+import { $admin } from "@stores/auth";
+import { useStore } from "@nanostores/react";
 const MetaCompsIlluvium = ()=>{
   const pestanas = ["crear", "meta"]
   const [selectedPestana, setSelectedPestana] = useState(pestanas[1]);
-  const admin = localStorage.getItem("user") || false;
+  const admin = useStore($admin);
   return (
     <div>
       {

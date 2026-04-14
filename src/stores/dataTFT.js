@@ -11,10 +11,10 @@ const initialStateVersion = "pbe";
 const initialStateTeamPlannerCode = [];
 const initialTFT_SET = "pbe";
 
-export const setNumberPBE="16";
-export const setMutatorPBE="TFTSet16";
-export const setNumberLatest="15";
-export const setMutatorLatest="TFTSet15";
+export const setNumberPBE="17";
+export const setMutatorPBE="TFTSet17";
+export const setNumberLatest="16";
+export const setMutatorLatest="TFTSet16";
 
 const orderedBaseItems = [
   'TFT_Item_BFSword',           // 0
@@ -1019,3 +1019,27 @@ export  const ARTEFACTOS = [
 ]
 
 export const RADIANTS_ITEMS = []
+
+export const findTraitsStyles = (apiName) => {
+  const traits = dataTFTTraits.get();
+  const trait = traits.find((trait) => trait.apiName === apiName);
+  
+  if (!trait || !trait.effects) return {};
+
+  const styleMapping = {
+    1: "hex-bronze.webp",
+    2: "hex-bronze.webp",
+    3: "hex-silver.webp",
+    4: "hex-prismatic.webp",
+    5: "hex-gold.webp",
+    6: "hex-prismatic.webp",
+    7: "hex-prismatic.webp",
+  };
+
+  const traitStyles = {};
+  trait.effects.forEach((effect) => {
+    traitStyles[effect.minUnits] = styleMapping[effect.style] || "hex-default.webp";
+  });
+
+  return traitStyles;
+};

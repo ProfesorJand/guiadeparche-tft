@@ -1,7 +1,9 @@
 .navegador{
   display: flex;
   flex-direction: row;
-
+  gap:5px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
 }
 
 .compos{
@@ -26,11 +28,24 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex:1;
+  flex:0 0 1;
+}
+
+.container > input[type="button"] {
+  padding:5px 10px
 }
 
 .containerPestanaSecundario{
   display: flex;
   position: relative;
-  flex-direction: row;
+  flex-direction: column;
+}
+
+.btnCerrarSesion{
+  background-color: var(--color-hex-cost-2);
+  color:white;
+  padding:5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
 }

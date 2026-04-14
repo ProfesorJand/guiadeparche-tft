@@ -7,14 +7,14 @@ import {
   urlSaveConstantes2xko, 
   urlSaveMeta2xko,
 } from "@stores/data2xko";
-
+import { $admin } from "@stores/auth";
 import { useStore } from "@nanostores/react";
 import Infografia from "./Infografia";
 import SliderButtom from "@components/inputs/SliderButtom";
 import SliderButtomLogoGuiadeparche from "@components/inputs/SliderButtomLogoGuiadeparche";
 
 const Formulario2XKO = ()=>{
-  const admin = localStorage.getItem("user") || false;
+  const admin = useStore($admin);
   const constantes2xko = useStore(Constantes2xko);
   const champsMeta2xko = useStore(ChampsMeta2xko);
   const [titulo, setTitulo] = useState("");

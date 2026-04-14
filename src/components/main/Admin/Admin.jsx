@@ -16,9 +16,11 @@ import InfografiaTFTComps from "@components/TFT/InfografiaTFTComps.jsx";
 import InfografiaTop5 from '@components/Infografias/Top5/InfografiaTop5.jsx';
 import Formulario2XKO from "@components/2xko/Formulario2XKO.jsx";
 import DeckBuilder from "@components/riftbound/DeckBuilder.jsx"
+import { $admin, logOut } from "@stores/auth";
+import {useStore} from "@nanostores/react";
 // import Formulario2XKO from "@components/2xko/Formulario2XKO.jsx";
 const AdminPanel = ()=>{
-    const [isLoged, setIsLoged] = useState(localStorage.getItem("login") || false)
+    const admin = useStore($admin);
     const [adminName, setAdminName] = useState("");
     const [admins, setAdmins] = useState([])
     const pestanas = [
@@ -46,26 +48,21 @@ const AdminPanel = ()=>{
       },{
         primario:"Riftbound",
         secundario:["Redes Deck"]
+      },
+      {
+        primario:"Guias",
+        secundario:["Crear", "Editar"]
       }
     ]
-    const [pestana, setPestana] = useState(pestanas[1].primario);
-    const [action, setAction] = useState(pestanas[1].primario);
+    const [pestana, setPestana] = useState(null);
+    const [action, setAction] = useState(null);
+    const [action2, setAction2] = useState(null);
 
     function cerrarSesion(){
-        setIsLoged(false)
-        localStorage.removeItem("user");
-        localStorage.removeItem("login");
-        localStorage.removeItem("superAdmin");
+        logOut()
     }
 
-
-    if(!isLoged || !admins){
-        return (
-            <>
-            <Login setIsLoged={setIsLoged} setAdmins={setAdmins}/>
-            </>
-        )
-    }else if(isLoged && admins){
+    if(admin){
         return (
             <>
             <div>{adminName}</div>
@@ -88,7 +85,7 @@ const AdminPanel = ()=>{
                               window.location.href = "/riftbound/create-deck"
                             }
                           }}
-                          className={pestana.includes(primario) ? style.btnActive: ""}
+                          className={pestana?.includes(primario) ? style.btnActive: ""}
                           ></input>
                         
                       </div>
@@ -101,6 +98,7 @@ const AdminPanel = ()=>{
               if(pestana?.includes(primario))
               return (
                 <div key={index} className={style.containerPestanaSecundario}>
+                  <div className={style.titlePestanaSecundario}>¿Qué quieres hacer en {primario}?</div>
                   {
                     secundario.map((value,j)=>{
                       return (
@@ -129,16 +127,18 @@ const AdminPanel = ()=>{
                 {/* {action === "InfografiaTFTCompo" && <InfografiaTFTComps/>} */}
                 {action === "TFT-Tier List Items" && <CreateItemsTierList />}
                 {action === "TFT-Tier List Augments" && <CreateAugmentsTierList admin={true}/>}
-                {action.includes(pestanas[1].primario) && <FormularioMetaLOL />}
-                {action.includes(pestanas[2].primario) && <FormularioTierListValorant />}
-                {action.includes(pestanas[3].primario) && <FormularioMetaWildrift/>}
-                {action.includes(pestanas[4].primario) && <Formulario2XKO/>}
-                {action.includes(pestanas[5].primario) && <InfografiaTop5/>}
-                {action.includes(pestanas[6].primario) && <StreamersManager/>}
-                {action.includes(pestanas[7].primario) && <DeckBuilder/>}
+                {action === "Guias-Crear" && <CrearGuiasPDF />}
+                {action === "Guias-Editar" && <EditarGuiasPDF />}
+                {action?.includes(pestanas[1].primario) && <FormularioMetaLOL />}
+                {action?.includes(pestanas[2].primario) && <FormularioTierListValorant />}
+                {action?.includes(pestanas[3].primario) && <FormularioMetaWildrift/>}
+                {action?.includes(pestanas[4].primario) && <Formulario2XKO/>}
+                {action?.includes(pestanas[5].primario) && <InfografiaTop5/>}
+                {action?.includes(pestanas[6].primario) && <StreamersManager/>}
+                {action?.includes(pestanas[7].primario) && <DeckBuilder/>}
                 {/* {action === "champsItemsTierList" && <CrearTierListChampItem />} */}
             </div>
-            <button onClick={()=>cerrarSesion()}>cerrar sesión</button>
+            <button className={style.btnCerrarSesion} onClick={()=>cerrarSesion()}>cerrar sesión</button>
             </>
         )
     }

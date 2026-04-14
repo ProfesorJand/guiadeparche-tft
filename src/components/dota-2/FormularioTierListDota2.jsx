@@ -5,6 +5,7 @@ import { toPng } from 'html-to-image';
 import TierListDota2 from "./TierListDota2";
 import style from "./css/FormularioTierListDota2.module.css"
 import VersionCompo from "@components/dota-2/VersionCompo";
+import { $admin } from "@stores/auth";
 
 const FormularioTierListDota2 = () => {
   const backgroundRef = useRef(null);
@@ -14,7 +15,7 @@ const FormularioTierListDota2 = () => {
   const [version, setVersion] = useState("10.10");
   const [titulo, setTitulo] = useState("TOP RANKED HEROES - TIER S+")
   const [logoMovilnet, setLogoMovilnet] = useState(false)
-  const admin = localStorage.getItem("user") || false;
+  const admin = useStore($admin);
   const Dota2MetaStore = useStore(Dota2AgentsMeta);
   useEffect(()=>{
     const fetching = async () =>{

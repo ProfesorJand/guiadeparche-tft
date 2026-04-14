@@ -6,6 +6,7 @@ import { toPng } from 'html-to-image';
 import SliderButtom from "@components/inputs/SliderButtom.jsx";
 import SliderButtomLogoGuiadeparche from "@components/inputs/SliderButtomLogoGuiadeparche";
 import LogoGuiadeparche from "@components/logo/LogoGuiadeparche";
+import { $admin } from "@stores/auth";
 
 //usar tile en ves de portrait
 // victory url : https://raw.communitydragon.org/latest/game/en_gb/assets/ux/endofgame/en_us/victory.png
@@ -20,7 +21,7 @@ const VisualizadorMetaLOL = () => {
   const [tituloMeta, setTituloMeta] = useState("Titulo")
   // const [elo, setElo] = useState("emerald");
   const backgroundRef = useRef(null);
-  const admin = localStorage.getItem("superAdmin") || false;
+  const admin = useStore($admin);
   const eloRanks = [
     "iron",
     "bronze",

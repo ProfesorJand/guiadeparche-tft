@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import style from "./css/Builder.module.css";
 import ContextMenuBuilder from "./ContextMenuBuilder.jsx";
 import { traitsColors, imgHex } from "../../../functions/campeonestft.js";
-import { versionTFT } from "src/stores/dataTFT.js";
+import { versionTFT, findTraitsStyles } from "src/stores/dataTFT.js";
 import { useStore } from "@nanostores/react"
 
 const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
@@ -144,7 +144,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
                 containerItem.className = style.containerItem;
                 const imgItem = document.createElement("img");
                 imgItem.className = style.imgItem;
-                imgItem.src = dataItem.img ? dataItem.img :  `https://raw.communitydragon.org/${currentVersion === "pbe" ? "15.21.1" : currentVersion}/game/`+dataItem.icon.toLowerCase().replace(".tex",".png"); // arreglar a futuro
+                imgItem.src = dataItem.icon
                 imgItem.alt = dataItem.nombre ? dataItem.nombre : dataItem.name; // arreglar a futuro
                 imgItem.setAttribute("draggable", true);
                 imgItem.dataset.item = JSON.stringify(dataItem);
@@ -277,6 +277,20 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
   }
 
   function findClosestTraitImage(traitType, traitLevel) {
+    // Primero intentamos obtener los estilos dinámicamente desde la data de TFT
+    const dynamicStyles = findTraitsStyles(traitType);
+    if (Object.keys(dynamicStyles).length > 0) {
+      const thresholds = Object.keys(dynamicStyles)
+        .map(Number)
+        .sort((a, b) => b - a);
+      for (const threshold of thresholds) {
+        if (traitLevel >= threshold) {
+          return dynamicStyles[threshold];
+        }
+      }
+    }
+
+    // Si no se encuentra en la data dinámica, usamos el mapeo manual (fallback)
     if(traitType === "BlackRose"){
       traitType = "Black Rose"
     }
@@ -429,7 +443,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
     console.log({dataItem})
     imgItem.className = style.imgItem;
     console.log({dataItem,currentVersion})
-    imgItem.src = dataItem.img ? dataItem.img : `https://raw.communitydragon.org/${currentVersion}/game/`+dataItem.icon.toLowerCase().replace(".tex",".png"); // arreglar a futuro
+    imgItem.src = dataItem.icon
     imgItem.alt = dataItem.nombre;
     imgItem.setAttribute("draggable", true);
     imgItem.dataset.item = JSON.stringify(dataItem);

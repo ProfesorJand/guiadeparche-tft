@@ -152,7 +152,7 @@
 .nombreCampeon{
     display: flex;
     position:absolute;
-    bottom:25%;
+    bottom:calc(100% / 3.4);
     left:50%;
     transform: translate(-50%, 0);
     font-size: 12cqw;

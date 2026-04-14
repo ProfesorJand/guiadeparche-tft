@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { $user, setUser } from '../../stores/auth';
 import { useStore } from '@nanostores/react';
 import styles from './LoginForm.module.css';
@@ -8,6 +8,7 @@ const GOOGLE_CLIENT_ID = import.meta.env.PUBLIC_ID_CLIENT_GOOGLE_CLOUD_OAUTH;
 
 const LoginForm = () => {
   const user = useStore($user);
+  const googleBtnContainerRef = useRef(null);
   const [step, setStep] = useState('choice'); // choice, email-input, verify-code, profile-complete, success
   const [email, setEmail] = useState('');
   const [sameEmail, setSameEmail] = useState('');
@@ -23,20 +24,35 @@ const LoginForm = () => {
   });
 
   useEffect(() => {
-    // Load Google script if not present
-    if (!window.google) {
-      const script = document.createElement('script');
-      script.src = "https://accounts.google.com/gsi/client";
-      script.async = true;
-      script.defer = true;
-      document.body.appendChild(script);
-      script.onload = () => {
-        initializeGoogleSignIn();
+    // Only run if we are in the 'choice' step
+    if (step === 'choice') {
+      const init = () => {
+        if (window.google) {
+          initializeGoogleSignIn();
+        }
       };
-    } else {
-      initializeGoogleSignIn();
+
+      if (!window.google) {
+        // Avoid duplicate script insertion
+        const existingScript = document.querySelector('script[src*="accounts.google.com/gsi/client"]');
+        if (!existingScript) {
+          const script = document.createElement('script');
+          script.src = "https://accounts.google.com/gsi/client";
+          script.async = true;
+          script.defer = true;
+          script.onload = init;
+          document.body.appendChild(script);
+        } else {
+          // If script already exists but hasn't loaded yet
+          existingScript.addEventListener('load', init);
+          // Also call init in case it's already loaded but window.google was just set
+          if (window.google) init();
+        }
+      } else {
+        init();
+      }
     }
-  }, []);
+  }, [step]);
 
     useEffect(() => {
     // Exit early when timer reaches 0
@@ -51,8 +67,14 @@ const LoginForm = () => {
     return () => clearInterval(timer);
   }, [codeTimer]);
 
-  
-  const verifyUser = async (email, typeLogin) => {
+  useEffect(()=>{
+    console.log({user})
+    if(!user){
+      setStep('choice');
+    }
+  },[user])
+
+  const verifyUser = async (email, typeLogin, googleData = null) => {
     const verifyRes = await fetch('https://api.guiadeparche.com/verify-user.php', {
           method: 'POST',
           headers: { 
@@ -73,20 +95,26 @@ const LoginForm = () => {
             surname: datosUsuario.apellido, 
             country: datosUsuario.pais, 
             dob: datosUsuario.fecha_nacimiento, 
-            loginType: typeLogin
+            loginType: typeLogin,
+            isAdmin: result.isAdmin
           });
           setEmail(datosUsuario.email);
           setStep('success');
-          return;
         } else {
-          // Si el usuario no existe en la DB pero sí logueó con Google
+          // User not found in DB
           console.log("User not found in DB, proceeding to profile completion");
-          setFormData({
-            ...formData,
-            name: decoded.given_name || '',
-            surname: decoded.family_name || ''
-          });
-          setEmail(decoded.email);
+          
+          if (typeLogin === 'google' && googleData) {
+            setFormData({
+              ...formData,
+              name: googleData.given_name || '',
+              surname: googleData.family_name || ''
+            });
+            setEmail(googleData.email);
+          } else {
+            setEmail(email);
+          }
+          
           setStep('profile-complete');
         }
   }
@@ -102,7 +130,7 @@ const LoginForm = () => {
       
       if (decoded.email) {
         console.log("Verifying user with email:", decoded.email);
-        verifyUser(decoded.email, 'google')
+        await verifyUser(decoded.email, 'google', decoded)
       } else {
         throw new Error("No se pudo obtener el email de la cuenta Google.");
       }
@@ -124,7 +152,7 @@ const LoginForm = () => {
         auto_select: false
       });
 
-      const googleBtnContainer = document.getElementById('google-btn-container');
+      const googleBtnContainer = googleBtnContainerRef.current;
       if (googleBtnContainer) {
         window.google.accounts.id.renderButton(
           googleBtnContainer,
@@ -198,7 +226,7 @@ const LoginForm = () => {
       const result = await response.json();
 
       if (result.status === 'success') {
-        verifyUser(email, 'email')
+        await verifyUser(email, 'email')
       } else {
         setError(result.message || 'El código es incorrecto');
       }
@@ -294,7 +322,7 @@ const LoginForm = () => {
       <h2>Iniciar Sesión</h2>
       
       {/* Container for the official Google button */}
-      <div id="google-btn-container" className={styles.google_btn_container}></div>
+      <div ref={googleBtnContainerRef} className={styles.google_btn_container}></div>
       
       <div className={styles.divider}>o</div>
       <button onClick={() => setStep('email-input')} className={styles.email_btn_choice}>

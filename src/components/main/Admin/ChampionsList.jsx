@@ -62,21 +62,8 @@ const Champions = ()=>{
                     championsList.push(data)
                     
                 }
-                if(
-                    apiName === "TFT13_JayceSummon" || 
-                    apiName === "TFT13_Sion" || 
-                    apiName === "TFT14_SummonLevel4" || 
-                    apiName === "TFT14_SummonLevel2" || 
-                    apiName === "TFT15_Galio" || 
-                    apiName === "TFT16_FreljordProp" ||
-                    apiName === "TFT16_LuxLightChaser" ||
-                    apiName === "TFT16_AzirSoldier" ||
-                    apiName === "TFT_TrainingDummy"
-                ){
-                    let img = `https://raw.communitydragon.org/${currentVersion}/game/`+ tileIcon.replace(".tex",".png").toLowerCase();
-                    if(apiName === "TFT16_AzirSoldier"){
-                        img = `https://raw.communitydragon.org/${currentVersion}/game/`+ squareIcon.replace(".tex",".png").toLowerCase();
-                    }
+                else{
+                    const img = `https://raw.communitydragon.org/${currentVersion}/game/`+ (squareIcon || tileIcon)?.replace(".tex",".png").toLowerCase();
                     const data = {
                         apiName,
                         nombre:name,
