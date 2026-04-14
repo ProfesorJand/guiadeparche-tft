@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import style from "./css/Items.module.css";
-import { versionTFT, dataTFTSetData, dataTFTItemsBySet, dataTFTAllItems, apiNamesCrafteableItems, AllCraftableItems, setNumberPBE, setNumberLatest, AllBasicItems } from "@stores/dataTFT";
+import {urlDragon, versionTFT, dataTFTSetData, dataTFTItemsBySet, dataTFTAllItems, apiNamesCrafteableItems, AllCraftableItems, setNumberPBE, setNumberLatest, AllBasicItems } from "@stores/dataTFT";
 import { useStore } from "@nanostores/react";
 export const Items = ()=>{
   const version = useStore(versionTFT);
@@ -43,7 +43,8 @@ export const Items = ()=>{
       })})
       setAllEmblemsItemsApiName(allItemsApiNames.filter((apiName)=>{
         return apiName.includes("EmblemItem")
-      }))
+        })
+      )
       setAllBilgewaterItems(allItemsApiNames.filter((apiName)=>{
         const listaBilgewaterItemsBaneados = [
           "TFT16_Item_Bilgewater_HealthTier1",
@@ -476,9 +477,17 @@ export const Items = ()=>{
             {pestana === 2 &&
               allEmblemsItemsApiNames.map((dataItem,index)=>{
                 const resultado = allItemsInfo.find(({apiName})=> apiName === dataItem)
+                const icono = urlDragon() + resultado.icon.replace(".tex",".png").toLowerCase();
                 return (
                   <div className={style.itemsDropOtros} key={index}>
-                    <img  src={`https://raw.communitydragon.org/${version}/game/`+resultado.icon.replace(".tex",".png").toLowerCase()} alt={`Basic Item TFT ${resultado.name}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} onClick={()=>{setItemOver(resultado.apiName)}} data-item={JSON.stringify(resultado)} data-from="itemList" draggable="true"></img>
+                    <img  
+                      src={icono} 
+                      alt={`Basic Item TFT ${resultado.name}`} className={style.imgItems} 
+                      onDragStart={(e)=>{handleDragStart(e)}} 
+                      onClick={()=>{setItemOver(resultado.apiName)}} 
+                      data-item={JSON.stringify(resultado)} 
+                      data-from="itemList" 
+                      draggable="true"></img>
                   </div>
                 )
               })

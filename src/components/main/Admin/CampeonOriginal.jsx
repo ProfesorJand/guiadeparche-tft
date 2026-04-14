@@ -92,9 +92,7 @@ const CampeonOriginal = ({ dataCampeon, dataItem, estrellas, show, forInfografia
                 src={
                   img
                     ? img
-                    : `https://raw.communitydragon.org/${
-                        currentVersion
-                      }/game/` + icon.toLowerCase().replace(".tex", ".png")
+                    : icon.toLowerCase().replace(".tex", ".png")
                 }
                 alt={nombre}
               />

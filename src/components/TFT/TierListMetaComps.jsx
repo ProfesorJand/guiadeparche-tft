@@ -1,15 +1,26 @@
-import { MetaComps as compos } from "src/stores/menuFiltradoAdmin.js";
+import React, { useEffect, useRef, useCallback, useMemo } from "react";
 import { useStore } from "@nanostores/react";
 import style from "./css/TierListMetaComps.module.css";
 import ChampTierList from "./ChampTierList.jsx";
-import { useEffect, useRef, useCallback } from "react";
 import { toPng } from 'html-to-image';
+import { $admin } from "@stores/auth.js";
+import { versionTFT } from "@stores/dataTFT.js";
 
-const TierListMetaComps = () => {
-  const composMeta = useStore(compos);
+const TierListMetaComps = ({todasLasComps = [], todasLasCompsPBE = []}) => {
+  const currentVersion = useStore(versionTFT);
+  const activeComps = currentVersion === "pbe" ? todasLasCompsPBE : todasLasComps;
+
+  // Agrupar por tier para mantener la estructura visual
+  const groupedComps = useMemo(() => {
+    const hierarchy = ["S", "A", "B", "C", "D", "MEME"];
+    return hierarchy.map(tierName => 
+      activeComps.filter(c => c.tier === tierName)
+    ).filter(group => group.length > 0);
+  }, [activeComps]);
+
   const scrollContainersRef = useRef([]);
-  const numberOfChampsInTierList = 6; // Puedes modificar este valor según necesites
-  const admin = localStorage.getItem("superAdmin") || false;
+  const numberOfChampsInTierList = 6;
+  const admin = useStore($admin);
   const backgroundRef = useRef(null);
   useEffect(() => {
     scrollContainersRef.current.forEach((scrollContainer) => {
@@ -26,7 +37,7 @@ const TierListMetaComps = () => {
         scrollContainer.removeEventListener("wheel", handleWheelScroll);
       };
     });
-  }, [composMeta]);
+  }, [groupedComps]);
 
   const loadAllImages = (container) => {
     const images = container.querySelectorAll("img");
@@ -104,8 +115,8 @@ const TierListMetaComps = () => {
     <>
     {admin && <button onClick={(e)=>{onButtonClick(e)}}>Guardar Meta</button>}
     <div className={style.containerTierListMetaComps} ref={backgroundRef}>
-      {composMeta.length > 0 ? (
-        composMeta.map((comps, index) => {
+      {groupedComps.length > 0 ? (
+        groupedComps.map((comps, index) => {
           // Filtrar los campeones donde isHide es false
           const visibleComps = comps.sort((a,b)=>a.posicion - b.posicion).filter((comp) => comp.isHide !== "true");
           

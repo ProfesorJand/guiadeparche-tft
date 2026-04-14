@@ -1,17 +1,23 @@
 import React, { useEffect } from "react";
 import style from "./css/ContextMenuBuilder.module.css";
-import styleBuilder from "./css/Builder.module.css"
+import styleBuilder from "./css/Builder.module.css";
+import {dataTFTTraits} from "@stores/dataTFT.js"
 const ContextMenuBuilder = ({hexId, setHexId, updateBoardInfo })=>{
   const hexagono = document.getElementById(hexId);
   const campeon = hexagono.getElementsByClassName(styleBuilder.containerImageChampion)[0];
-  const extraOptions = ["Duelist","Executioner", "Juggernaut"];
+  const traits = dataTFTTraits.get();
+  const extraOptions = ["Conduit","Challenger", "Replicator"];
+  const findExtraOptions = extraOptions.flatMap((trait)=>{
+    return traits.filter(({name}) => {
+      return name === trait
+    })
+  })
+
   const OPTIONS_BASE  = ["★ 4 stars","★ 3 stars","★ 2 stars","Power Up","X Remove"];
   let OPTIONS = [...OPTIONS_BASE];
   const dataCampeon = campeon?.dataset?.campeon ? JSON.parse(campeon.dataset.campeon) : null;
   console.log({dataCampeonEnCONTEXT: dataCampeon})
-  if(dataCampeon?.sinergia.find(({apiName}) => {
-    return apiName === "TFT15_DragonFist"
-  })){
+  if(dataCampeon?.apiName === "TFT17_MissFortune"){
     OPTIONS?.splice(4, 0 , ...extraOptions)
   }
 
@@ -40,38 +46,38 @@ const ContextMenuBuilder = ({hexId, setHexId, updateBoardInfo })=>{
         campeon.classList.toggle(styleBuilder.powerUp, true)
         updateBoardInfo()
         break;
-      case "Duelist": {
+      case findExtraOptions[0].name: {
         const oldDataString = campeon?.dataset?.campeon;
         const oldData = JSON.parse(oldDataString);
 
-        let sinergia = [...oldData.sinergia];
+        let sinergia = [oldData.sinergia[0]];
 
-        if (sinergia.find(({apiName})=> apiName === duelist.apiName)) {
+        if (sinergia.find(({apiName})=> apiName === findExtraOptions[0].apiName)) {
           // Si ya tiene Duelist, lo quitamos
           sinergia = sinergia.filter(s => {
-            return s.apiName !== duelist.apiName});
+            return s.apiName !== findExtraOptions[0].apiName});
         } else {
           // Si no lo tiene, lo agregamos
-          sinergia.push(duelist);
+          sinergia.push(findExtraOptions[0]);
         }
         const newCampeon = { ...oldData, sinergia };
         campeon.setAttribute("data-campeon", JSON.stringify(newCampeon));
         updateBoardInfo();
         break;
       }
-      case "Executioner": {
+      case findExtraOptions[1].name: {
         const oldDataString = campeon?.dataset?.campeon;
         const oldData = JSON.parse(oldDataString);
 
-        let sinergia = [...oldData.sinergia];
+        let sinergia = [oldData.sinergia[0]];
 
-        if (sinergia.find(({apiName})=> apiName === executioner.apiName)) {
+        if (sinergia.find(({apiName})=> apiName === findExtraOptions[1].apiName)) {
           // Si ya tiene executioner, lo quitamos
           sinergia = sinergia.filter(s => {
-            return s.apiName !== executioner.apiName});
+            return s.apiName !== findExtraOptions[1].apiName});
         } else {
           // Si no lo tiene, lo agregamos
-          sinergia.push(executioner);
+          sinergia.push(findExtraOptions[1]);
         }
 
         const newCampeon = { ...oldData, sinergia };
@@ -79,19 +85,19 @@ const ContextMenuBuilder = ({hexId, setHexId, updateBoardInfo })=>{
         updateBoardInfo();
         break;
       }
-      case "Juggernaut": {
+      case findExtraOptions[2].name: {
         const oldDataString = campeon?.dataset?.campeon;
         const oldData = JSON.parse(oldDataString);
 
-        let sinergia = [...oldData.sinergia];
+        let sinergia = [oldData.sinergia[0]];
 
-        if (sinergia.find(({apiName})=> apiName === juggernaut.apiName)) {
+        if (sinergia.find(({apiName})=> apiName === findExtraOptions[2].apiName)) {
           // Si ya tiene juggernaut, lo quitamos
           sinergia = sinergia.filter(s => {
-            return s.apiName !== juggernaut.apiName});
+            return s.apiName !== findExtraOptions[2].apiName});
         } else {
           // Si no lo tiene, lo agregamos
-          sinergia.push(juggernaut);
+          sinergia.push(findExtraOptions[2]);
         }
 
         const newCampeon = { ...oldData, sinergia };

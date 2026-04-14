@@ -15,6 +15,10 @@ export const setNumberPBE="17";
 export const setMutatorPBE="TFTSet17";
 export const setNumberLatest="16";
 export const setMutatorLatest="TFTSet16";
+export const nameOfSet = {
+  "pbe": "Space Gods",
+  "latest": "Lore & Legends"
+}
 
 const orderedBaseItems = [
   'TFT_Item_BFSword',           // 0
@@ -59,7 +63,7 @@ export const TFT_SET = atom(initialTFT_SET);
 export const numberOfVersionTFT = atom("15.23.1");
 export const constantesTFT = atom({});
 
-const urlDragon = ()=>{
+export const urlDragon = ()=>{
   return `https://raw.communitydragon.org/${versionTFT.get()}/game/`
 } 
 
@@ -1042,4 +1046,4 @@ export const findTraitsStyles = (apiName) => {
   });
 
   return traitStyles;
-};
+};

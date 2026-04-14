@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import style from "./css/Builder.module.css";
 import ContextMenuBuilder from "./ContextMenuBuilder.jsx";
 import { traitsColors, imgHex } from "../../../functions/campeonestft.js";
-import { versionTFT, findTraitsStyles } from "src/stores/dataTFT.js";
+import { versionTFT, findTraitsStyles, urlDragon } from "src/stores/dataTFT.js";
 import { useStore } from "@nanostores/react"
 
 const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
@@ -144,7 +144,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
                 containerItem.className = style.containerItem;
                 const imgItem = document.createElement("img");
                 imgItem.className = style.imgItem;
-                imgItem.src = dataItem.icon
+                imgItem.src = urlDragon() + dataItem.icon.replace(".tex",".png").toLowerCase();
                 imgItem.alt = dataItem.nombre ? dataItem.nombre : dataItem.name; // arreglar a futuro
                 imgItem.setAttribute("draggable", true);
                 imgItem.dataset.item = JSON.stringify(dataItem);
@@ -207,6 +207,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
         case containerImageChampion[i].classList.contains(style.powerUp):
           powerUp = true;
           break;
+
         default:
           estrellas = 1;
           powerUp = false;
@@ -220,7 +221,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
           sinergias[nombreSinergia.apiName] = (sinergias[nombreSinergia.apiName] || 0) + 1;
         });
       }
-      if(sinergiasCampeon.length > containerSinergias.length && sinergiasCampeon.find(({apiName})=>apiName === "TFT15_DragonFist")){
+      if(sinergiasCampeon.length > containerSinergias.length && sinergiasCampeon.find(({apiName})=>apiName === "TFT17_ManaTrait" || apiName === "TFT17_ASTrait" || apiName === "TFT17_APTrait")){
         const containerTrait = document.createElement("div");
         containerTrait.className = style.containerTrait;
         const sinergia = document.createElement("img");
@@ -233,11 +234,12 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
         backgroundSinergia.classList.add(sinergiasCampeon?.[1].apiName.replace(" ", ""));
         backgroundSinergia.src = urlHex + imgHex[0];
         backgroundSinergia.alt = imgHex[0];
-
         containerTrait.appendChild(backgroundSinergia);
         containerTrait.appendChild(sinergia);
+        containerSinergias[0].removeChild(containerSinergias[0].children[1]);
         containerSinergias[0].appendChild(containerTrait);
-      }else if(sinergiasCampeon.length === containerSinergias.length && sinergiasCampeon.find(({apiName})=>apiName === "TFT15_DragonFist")){
+      }else if(sinergiasCampeon.length === containerSinergias.length && sinergiasCampeon.find(({apiName})=>apiName === "TFT17_ManaTrait" || apiName === "TFT17_ASTrait" || apiName === "TFT17_APTrait")){
+
         // eliminar la la ultima sinergia agregada
         const lastSinergia = containerSinergias?.[0]?.children?.[1];
         if(lastSinergia){
@@ -443,7 +445,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
     console.log({dataItem})
     imgItem.className = style.imgItem;
     console.log({dataItem,currentVersion})
-    imgItem.src = dataItem.icon
+    imgItem.src = urlDragon() + dataItem.icon.replace(".tex",".png").toLowerCase();
     imgItem.alt = dataItem.nombre;
     imgItem.setAttribute("draggable", true);
     imgItem.dataset.item = JSON.stringify(dataItem);

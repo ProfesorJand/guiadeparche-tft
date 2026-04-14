@@ -7,43 +7,48 @@ import { crearJSONSchema } from "src/json/schema/crearJSONSchema";
 import TierListMetaComps from "@components/TFT/TierListMetaComps.jsx";
 import VersionCompo from "@components/TFT/VersionCompo";
 import SelectVersion from "@components/versionTFT/SelectVersion";
-import { composMetaJSON } from "@stores/dataTFT";
+import { composMetaJSON, versionTFT, composMetaPBEJSON, setNumberPBE, setNumberLatest, nameOfSet } from "@stores/dataTFT";
 import Composicion from "@components/main/Admin/Composicion.jsx";
 
-const title = "▷ Best TFT Comps & Builds Set 16 Lore & Legends.";
+const version = versionTFT.get();
+const setNumber = version === "pbe" ? setNumberPBE : setNumberLatest;
+const nameDelSet = nameOfSet[version];
+const title = `▷ Best TFT Comps & Builds Set ${setNumber} ${nameDelSet}.`;
 // Example: Construct a canonical URL using your production domain
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 // Example: Construct a URL for SEO meta tags using your current domain
 const socialImageURL = new URL("/images/preview.png", Astro.url);
 const description =
-  "Top TFT Meta Comps Set 16 Lore & Legends. Discover the latest Tier List, Augments and Builds for every patch. Mejores Composiciones TFT!";
+  `Top TFT Meta Comps Set ${setNumber} ${nameDelSet}. Discover the latest Tier List, Augments and Builds for every patch. Mejores Composiciones TFT!`
 const keywords =
   "TFT Meta, Meta comps, comps TFT, comp TFT, Meta TFT, composiciones TFT, build TFT";
 const thumbnail = "/campeones/set12/ryze.webp";
 const imgPost = "https://i.ytimg.com/vi/5ph-NnCjDSk/maxresdefault.jpg";
 
-// SEO: Fetch Compositions Server-Side only for Schema
-let top10Comps = [];
-let todasLasComps = [];
-try {
-  const response = await fetch(composMetaJSON, { cache: "no-cache" });
-  const data = await response.json();
-  const hierarchy = ["S", "A", "B", "C", "D", "MEME"];
-  const allSorted = [];
-  
-  hierarchy.forEach(tier => {
-    if (data[tier]) {
-      const tierComps = [...data[tier]].sort((a, b) => (a.posicion || 0) - (b.posicion || 0));
-      allSorted.push(...tierComps);
-    }
-  });
-  
-  top10Comps = allSorted.slice(0, 10);
-  todasLasComps = allSorted;
-} catch (e) {
-  console.error("Error fetching comps for Schema:", e);
+// SEO: Fetch Compositions Server-Side for Schema and initial render
+async function fetchAndSortComps(url) {
+  try {
+    const response = await fetch(url, { cache: "no-cache" });
+    const data = await response.json();
+    const hierarchy = ["S", "A", "B", "C", "D", "MEME"];
+    const allSorted = [];
+    
+    hierarchy.forEach(tier => {
+      if (data[tier]) {
+        const tierComps = [...data[tier]].sort((a, b) => (a.posicion || 0) - (b.posicion || 0));
+        allSorted.push(...tierComps);
+      }
+    });
+    return allSorted;
+  } catch (e) {
+    console.error(`Error fetching from ${url}:`, e);
+    return [];
+  }
 }
-console.log({top10Comps})
+
+const todasLasComps = await fetchAndSortComps(composMetaJSON);
+const todasLasCompsPBE = await fetchAndSortComps(composMetaPBEJSON);
+const top10Comps = version === "pbe" ? todasLasCompsPBE.slice(0, 10) : todasLasComps.slice(0, 10);
 const baseSchema = JSON.parse(crearJSONSchema({ title, imgPost, thumbnail, description }));
 
 
@@ -95,7 +100,7 @@ const admin =
   canonical={canonicalURL}
 >
   <Fragment slot="bodyMainAside">
-    <TierListMetaComps client:only="react" />
+    <TierListMetaComps todasLasComps={todasLasComps} todasLasCompsPBE={todasLasCompsPBE} client:only="react" />
     <!-- <Youtube src={"https://www.youtube.com/playlist?list=PLxRnNvReiLMEriFDu0UxXScDabCIX-PWy"} client:only="react"/> -->
   </Fragment>
   <!-- <Fragment slot="bodyMainAsideTwitch">
@@ -120,18 +125,15 @@ const admin =
         <Youtube src="https://www.youtube.com/playlist?list=PLxRnNvReiLMHHtPFxG2tCBzNCrIz_-rnq" client:load></Youtube>
       </div>
     </div> -->
-    <!-- <div id="SelectVersion">
+    <div id="SelectVersion">
       <SelectVersion client:only="react"/>
-    </div> -->
-    <div id="ContainerMetaPBE">
-      <!-- <ContainerMetaPBE version={latestVersion} set={setPBE}/> -->
-      <!-- <ContainerMeta version={latestVersion} set={set} client:load/> -->
+    </div>
+    <div id="ContainerCompsLive" class={version === "pbe" ? "hide" : ""}>
       <div class="containerMeta">
         {
           todasLasComps.map((comp, index) => (
             <div class="ranking-item-container">
               <div class="ranking-header-seo" onclick={`if(window.toggleActiveComp) window.toggleActiveComp('${comp.id}')`}>
-                {/* debajo del ranking-title colocar como una descripción */}
                 <div class="ranking-title-container">
                   <h2 class="ranking-title">{index + 1}. Composicion de {(comp as any).titulo}</h2>
                   <p class="ranking-description">Tier {(comp as any).tier} - Dificultad: {dificultadEspañol[(comp as any).dificultad]} - {infographicCategoriesEspañol[(comp as any).infographicCategory]}</p>
@@ -150,9 +152,34 @@ const admin =
             </div>
           ))
         }
-        <!-- <MetaComps showHide={false} admin={admin} client:load />  -->
       </div>
+    </div>
 
+    <div id="ContainerCompsPBE" class={version === "pbe" ? "" : "hide"}>
+      <div class="containerMeta">
+        {
+          todasLasCompsPBE.map((comp, index) => (
+            <div class="ranking-item-container">
+              <div class="ranking-header-seo" onclick={`if(window.toggleActiveComp) window.toggleActiveComp('${comp.id}')`}>
+                <div class="ranking-title-container">
+                  <h2 class="ranking-title">{index + 1}. Composicion de {(comp as any).titulo}</h2>
+                  <p class="ranking-description">Tier {(comp as any).tier} - Dificultad: {dificultadEspañol[(comp as any).dificultad]} - {infographicCategoriesEspañol[(comp as any).infographicCategory]}</p>
+                </div>
+                <span class="ranking-icon">▼</span>
+              </div>
+              
+              <div class="containerMetaTier">
+                <Composicion
+                  id={comp.id}
+                  compo={comp}
+                  admin={admin}
+                  client:load
+                />
+              </div>
+            </div>
+          ))
+        }
+      </div>
     </div>
   </Main>
 </Layout>
@@ -379,6 +406,26 @@ const admin =
 
 <script>
   import { toggleActiveComp } from "src/stores/menuFiltradoAdmin";
+  import { versionTFT, swapVersionTFT } from "@stores/dataTFT";
+
   // Expose to window for onclick handlers in static HTML
   (window as any).toggleActiveComp = toggleActiveComp;
+
+  // React to version changes
+  versionTFT.subscribe((v) => {
+    const live = document.getElementById("ContainerCompsLive");
+    const pbe = document.getElementById("ContainerCompsPBE");
+    if (live && pbe) {
+      if (v === "pbe") {
+        live.classList.add("hide");
+        pbe.classList.remove("hide");
+        swapVersionTFT("pbe");
+      } else {
+        live.classList.remove("hide");
+        pbe.classList.add("hide");
+        swapVersionTFT("latest");
+      }
+    }
+  });
+
 </script>
