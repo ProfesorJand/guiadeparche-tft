@@ -26,7 +26,7 @@ const AdminPanel = ()=>{
     const pestanas = [
       {
         primario:"TFT",
-        secundario:["Crear","Editar","Infografia Comps", "Tier List Items", "Tier List Augments"],
+        secundario:["Crear","Editar","Infografia Comps", "Tier List Items", "Tier List Augments", "Deploy"],
       },{
         primario:"LOL",
         secundario:["Meta"],
@@ -61,6 +61,21 @@ const AdminPanel = ()=>{
     function cerrarSesion(){
         logOut()
     }
+
+    const handleDeploy = async (mensaje) => {
+      const message = prompt("Mensaje del despliegue:", mensaje);
+      if (!message) return;
+      try {
+        const response = await fetch('https://api.guiadeparche.com/tft/trigger-deploy.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message })
+        });
+        alert("¡Despliegue iniciado! En 2-3 minutos los cambios serán visibles para el SEO.");
+      } catch (e) {
+        alert("Error al solicitar el despliegue.");
+      }
+    };
 
     if(admin){
         return (
@@ -129,6 +144,7 @@ const AdminPanel = ()=>{
                 {action === "TFT-Tier List Augments" && <CreateAugmentsTierList admin={true}/>}
                 {action === "Guias-Crear" && <CrearGuiasPDF />}
                 {action === "Guias-Editar" && <EditarGuiasPDF />}
+                {action === "TFT-Deploy" && <button onClick={() => handleDeploy("Añadí compos nuevas de TFT")}>Desplegar Cambios</button>}
                 {action?.includes(pestanas[1].primario) && <FormularioMetaLOL />}
                 {action?.includes(pestanas[2].primario) && <FormularioTierListValorant />}
                 {action?.includes(pestanas[3].primario) && <FormularioMetaWildrift/>}

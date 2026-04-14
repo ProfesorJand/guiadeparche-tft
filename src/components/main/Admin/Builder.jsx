@@ -144,7 +144,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
                 containerItem.className = style.containerItem;
                 const imgItem = document.createElement("img");
                 imgItem.className = style.imgItem;
-                imgItem.src = urlDragon() + dataItem.icon.replace(".tex",".png").toLowerCase();
+                imgItem.src =  dataItem.icon.startsWith("http") ? dataItem.icon.replace(".tex",".png").toLowerCase() : urlDragon() + dataItem.icon.replace(".tex",".png").toLowerCase();
                 imgItem.alt = dataItem.nombre ? dataItem.nombre : dataItem.name; // arreglar a futuro
                 imgItem.setAttribute("draggable", true);
                 imgItem.dataset.item = JSON.stringify(dataItem);
@@ -445,7 +445,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
     console.log({dataItem})
     imgItem.className = style.imgItem;
     console.log({dataItem,currentVersion})
-    imgItem.src = urlDragon() + dataItem.icon.replace(".tex",".png").toLowerCase();
+    imgItem.src = dataItem.icon.startsWith("http") ? dataItem.icon.replace(".tex",".png").toLowerCase() : urlDragon() + dataItem.icon.replace(".tex",".png").toLowerCase();
     imgItem.alt = dataItem.nombre;
     imgItem.setAttribute("draggable", true);
     imgItem.dataset.item = JSON.stringify(dataItem);
