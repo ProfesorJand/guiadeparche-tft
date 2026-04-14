@@ -88,7 +88,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
                 const containerSinergias =
                   document.createElement("div"); /* contenedor de todas sinergias*/
                 containerSinergias.className = style.containerSinergias;
-          
+
                 JSON.parse(info[key].dataCampeon.campeon).sinergia.forEach((siner) => {
                   const containerTrait =
                     document.createElement(
@@ -192,7 +192,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
         sinergiasCampeon.push( 
           {apiName: 'TFT16_Void', desc: 'Gain Mutations that only Void champions can use. V…champion removes their&nbsp;Mutation.</rules><br>', effects: Array(4), icon: 'ASSETS/UX/TraitIcons/Trait_Icon_16_Void.TFT_Set16.tex', name: 'Void'});
       }
-      //console.log({sinergiasCampeon})
+      const nombreCampeonDebug = JSON.parse(dataCampeon.campeon).nombre || JSON.parse(dataCampeon.campeon).name;
       const containerSinergias = containerImageChampion[i].getElementsByClassName(style.containerSinergias)
       switch (true) {
         case containerImageChampion[i].classList.contains(style.estrellas4):
@@ -221,7 +221,9 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
           sinergias[nombreSinergia.apiName] = (sinergias[nombreSinergia.apiName] || 0) + 1;
         });
       }
-      if(sinergiasCampeon.length > containerSinergias.length && sinergiasCampeon.find(({apiName})=>apiName === "TFT17_ManaTrait" || apiName === "TFT17_ASTrait" || apiName === "TFT17_APTrait")){
+      const tieneTraitEspecial = sinergiasCampeon.find(({apiName})=>(apiName === "TFT17_ManaTrait" || apiName === "TFT17_ASTrait" || apiName === "TFT17_APTrait") && JSON.parse(dataCampeon.campeon).apiName === "TFT17_MissFortune");
+      
+      if(sinergiasCampeon.length > containerSinergias.length && tieneTraitEspecial){
         const containerTrait = document.createElement("div");
         containerTrait.className = style.containerTrait;
         const sinergia = document.createElement("img");
@@ -236,10 +238,11 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
         backgroundSinergia.alt = imgHex[0];
         containerTrait.appendChild(backgroundSinergia);
         containerTrait.appendChild(sinergia);
-        containerSinergias[0].removeChild(containerSinergias[0].children[1]);
+        if (containerSinergias[0] && containerSinergias[0].children[1]) {
+           containerSinergias[0].removeChild(containerSinergias[0].children[1]);
+        }
         containerSinergias[0].appendChild(containerTrait);
-      }else if(sinergiasCampeon.length === containerSinergias.length && sinergiasCampeon.find(({apiName})=>apiName === "TFT17_ManaTrait" || apiName === "TFT17_ASTrait" || apiName === "TFT17_APTrait")){
-
+      }else if(sinergiasCampeon.length === containerSinergias.length && tieneTraitEspecial){
         // eliminar la la ultima sinergia agregada
         const lastSinergia = containerSinergias?.[0]?.children?.[1];
         if(lastSinergia){
