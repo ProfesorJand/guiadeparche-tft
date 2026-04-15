@@ -221,6 +221,11 @@
   box-shadow: 0 4px 15px rgba(209, 54, 57, 0.4);
 }
 
+.menuItemDisabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 @media (max-width: 900px) {
   .profileContainer {
     flex-direction: column;

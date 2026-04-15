@@ -100,7 +100,9 @@ const MiniInfoComp = ({
       <div className={show ? style.containerLowerChamps : style.containerLowerChampsOculto} onClick={() => { onToggle() }}>
         <div className={[style.containerInfoChamp, forInfografia ? style.containerChampsCenter : ""].join(" ")}>
           {dataCampeones.map(({ dataCampeon, dataItem, estrellas }, i) => {
-            if (JSON.parse(dataCampeon).nombre === "Frozen Tower" || JSON.parse(dataCampeon).nombre === "Sand Soldier") return null
+            const nombre = JSON.parse(dataCampeon).nombre;
+            const apiName = JSON.parse(dataCampeon).apiName
+            if (nombre === "Frozen Tower" || nombre === "Sand Soldier" || apiName === "TFT15_ShenSword") return null
             return (
               <CampeonOriginal
                 key={`OriginalCampeon` + i}

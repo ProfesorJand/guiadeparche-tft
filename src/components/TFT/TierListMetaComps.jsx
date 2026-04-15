@@ -8,7 +8,7 @@ import { versionTFT } from "@stores/dataTFT.js";
 
 const TierListMetaComps = ({todasLasComps = [], todasLasCompsPBE = []}) => {
   const currentVersion = useStore(versionTFT);
-  const activeComps = currentVersion === "pbe" ? todasLasCompsPBE : todasLasComps;
+  const activeComps = todasLasCompsPBE; // currentVersion === "pbe" ? todasLasCompsPBE : todasLasComps;
 
   // Agrupar por tier para mantener la estructura visual
   const groupedComps = useMemo(() => {

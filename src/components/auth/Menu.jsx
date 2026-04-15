@@ -5,32 +5,37 @@ const Menu = ({activeTab, setActiveTab, styles, admin}) =>{
       name: "Mis Datos",
       icon: "",
       tab: "data",
-      admin: false
+      admin: false,
+      available:true
     },
     {
       name: "Guías PDF",
       icon: "",
       tab: "guides",
-      admin: false
+      admin: false,
+      available:false
     },
     {
       name: "Cuenta de Riot",
       icon: "",
       tab: "riot",
-      admin: false
+      admin: false,
+      available:false
     },
     {
       name: "Admin",
       icon: "",
       tab: "admin",
-      admin: true
+      admin: true,
+      available:true
     },
     {
       name: "Cerrar Sesión",
       icon: "",
       tab: "logout",
       admin: false,
-      color: "red"
+      color: "red",
+      available:true
     }
   ]
   return (
@@ -40,12 +45,12 @@ const Menu = ({activeTab, setActiveTab, styles, admin}) =>{
         (!menu.admin || (menu.admin && admin)) &&
         <div 
           key={index}
-          className={`${styles.menuItem} ${activeTab === menu.tab ? styles.menuItemActive : ''}`}
-          onClick={() => setActiveTab(menu.tab)}
+          className={`${styles.menuItem} ${activeTab === menu.tab ? styles.menuItemActive : ''} ${!menu.available ? styles.menuItemDisabled : ''}`}
+          onClick={() => (menu.available || admin) && setActiveTab(menu.tab)}
           style={{color: menu.color || ""}}
       >
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          {menu.name}
+          {menu.name} {!menu.available && " (Proximamente)"}
       </div>
       ))
     }

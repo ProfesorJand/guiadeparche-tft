@@ -22,8 +22,8 @@ const description =
   `Top TFT Meta Comps Set ${setNumber} ${nameDelSet}. Discover the latest Tier List, Augments and Builds for every patch. Mejores Composiciones TFT!`
 const keywords =
   "TFT Meta, Meta comps, comps TFT, comp TFT, Meta TFT, composiciones TFT, build TFT";
-const thumbnail = "/campeones/set12/ryze.webp";
-const imgPost = "https://i.ytimg.com/vi/5ph-NnCjDSk/maxresdefault.jpg";
+const thumbnail = "https://guiadeparche.com/tft/set17/backgroundWrapperSet17.webp";
+const imgPost = "https://guiadeparche.com/tft/assets/GP_logo.png";
 
 // SEO: Fetch Compositions Server-Side for Schema and initial render
 async function fetchAndSortComps(url) {
@@ -46,9 +46,9 @@ async function fetchAndSortComps(url) {
   }
 }
 
-const todasLasComps = await fetchAndSortComps(composMetaJSON);
+// const todasLasComps = await fetchAndSortComps(composMetaJSON);
 const todasLasCompsPBE = await fetchAndSortComps(composMetaPBEJSON);
-const top10Comps = version === "pbe" ? todasLasCompsPBE.slice(0, 10) : todasLasComps.slice(0, 10);
+const top10Comps = todasLasCompsPBE.slice(0, 10) ; // version === "pbe" ? todasLasCompsPBE.slice(0, 10) : todasLasComps.slice(0, 10)
 const baseSchema = JSON.parse(crearJSONSchema({ title, imgPost, thumbnail, description }));
 
 
@@ -100,7 +100,7 @@ const admin =
   canonical={canonicalURL}
 >
   <Fragment slot="bodyMainAside">
-    <TierListMetaComps todasLasComps={todasLasComps} todasLasCompsPBE={todasLasCompsPBE} client:only="react" />
+    <TierListMetaComps todasLasCompsPBE={todasLasCompsPBE} client:only="react" /> <!--     <TierListMetaComps todasLasComps={todasLasComps} todasLasCompsPBE={todasLasCompsPBE} client:only="react" /> -->
     <!-- <Youtube src={"https://www.youtube.com/playlist?list=PLxRnNvReiLMEriFDu0UxXScDabCIX-PWy"} client:only="react"/> -->
   </Fragment>
   <!-- <Fragment slot="bodyMainAsideTwitch">
@@ -125,10 +125,10 @@ const admin =
         <Youtube src="https://www.youtube.com/playlist?list=PLxRnNvReiLMHHtPFxG2tCBzNCrIz_-rnq" client:load></Youtube>
       </div>
     </div> -->
-    <div id="SelectVersion">
+    <!-- <div id="SelectVersion">
       <SelectVersion client:only="react"/>
-    </div>
-    <div id="ContainerCompsLive" class={version === "pbe" ? "hide" : ""}>
+    </div> -->
+    <!-- <div id="ContainerCompsLive" class={version === "pbe" ? "hide" : ""}>
       <div class="containerMeta">
         {
           todasLasComps.map((comp, index) => (
@@ -153,7 +153,7 @@ const admin =
           ))
         }
       </div>
-    </div>
+    </div> -->
 
     <div id="ContainerCompsPBE" class={version === "pbe" ? "" : "hide"}>
       <div class="containerMeta">

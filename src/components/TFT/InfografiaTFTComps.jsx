@@ -2,13 +2,14 @@ import MiniInfoComp from "@components/TFT/MiniInfoComp.jsx";
 import { useStore  } from "@nanostores/react";
 import { useEffect,useState} from "react";
 import { MetaComps as compos, loadCompsMeta, isLoadingDataTFTFromApi } from "src/stores/menuFiltradoAdmin.js";
-import {constantesJSON} from "@stores/dataTFT.js"
+import {constantesJSON, versionTFT, setNumberPBE, setNumberLatest} from "@stores/dataTFT.js"
 import LogoGuiadeparche from "@components/logo/LogoGuiadeparche";
 const InfografiaTFTComps = ({backgroundRef, setTituloInfografiaTFT, tituloInfografiaTFT, logoMovilnet, logoGuiadeparche, webInfografia = false}) =>{
   const colorDificulty= {Easy:"green",Medium:"orange",Hard:"red"}
   const composMeta = useStore(compos);
   const [composInInfographic, setComposInInfographic] = useState([]);
   const [constantes, setConstantes] = useState({});
+  const currentVersion = useStore(versionTFT);
 
   useEffect(() => {
     // Obtener las constantes actuales
@@ -80,7 +81,7 @@ useEffect(() => {
             opacity: 0.5,
             filter: "blur(4px)"
           }}
-          src="/tft/assets/backgroundWrapperSet15.webp" 
+          src="/tft/sets/17/backgroundWrapperSet17.webp" 
           alt="Fondo Infografía TFT" 
           loading="lazy"/>
       </div>
@@ -261,7 +262,7 @@ useEffect(() => {
           }}
         >
           <img 
-            src="/tft/sets/16/logo2.png" 
+            src={`/tft/sets/${currentVersion === "pbe" ? setNumberPBE : setNumberLatest}/logo2.${currentVersion === "pbe" ? "webp" : "png"}`}
             alt="Logo" 
             style={{
               transform: `scale(0.6)`,
