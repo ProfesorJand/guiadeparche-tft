@@ -265,7 +265,7 @@ useEffect(() => {
             src={`/tft/sets/${currentVersion === "pbe" ? setNumberPBE : setNumberLatest}/logo2.${currentVersion === "pbe" ? "webp" : "png"}`}
             alt="Logo" 
             style={{
-              transform: `scale(0.6)`,
+              transform: `scale(1)`,
               height: "auto",
               width: "100%",
               objectFit: "fit",
