@@ -103,7 +103,7 @@ const MiniInfoComp = ({
           {dataCampeones.map(({ dataCampeon, dataItem, estrellas }, i) => {
             const nombre = JSON.parse(dataCampeon).nombre;
             const apiName = JSON.parse(dataCampeon).apiName
-            if (nombre === "Frozen Tower" || nombre === "Sand Soldier" || apiName === "TFT15_ShenSword") return null
+            if (nombre === "Frozen Tower" || nombre === "Sand Soldier" || apiName === "TFT15_ShenSword" || nombre === "Bia & Bayin") return null
             return (
               <CampeonOriginal
                 key={`OriginalCampeon` + i}
