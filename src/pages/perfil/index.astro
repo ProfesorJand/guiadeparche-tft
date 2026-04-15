@@ -4,5 +4,9 @@ import PerfilUsuario from "@components/auth/PerfilUsuario.jsx";
 ---
 
 <LayoutMidOnly title="Perfil">
-    <PerfilUsuario client:only="react"/>
+    <PerfilUsuario client:only="react">
+        <div slot="fallback" style="height: 500px; display: flex; align-items: center; justify-content: center; background: rgba(15, 11, 90, 0.4); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1);">
+            <div style="color: #94a3b8; font-family: sans-serif;">Cargando perfil...</div>
+        </div>
+    </PerfilUsuario>
 </LayoutMidOnly>

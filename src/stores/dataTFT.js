@@ -92,37 +92,39 @@ return version;
 export const apiNameOfCraftableItems = atom([]);
 export const apiNameOfCraftableItemsPBE = atom([]);
 
-const findCraftableItem = (b1, b2, allItems, setItemNames, setNumber) => {
-    const candidates = allItems.filter(item => {
-        if (!setItemNames.includes(item.apiName)) return false;
-        if (!item.composition || item.composition.length !== 2) return false;
-        
-        const sortedComp = [...item.composition].sort();
-        const sortedBases = [b1, b2].sort();
-        
-        return sortedComp[0] === sortedBases[0] && sortedComp[1] === sortedBases[1];
-    });
+const findCraftableItem = (b1, b2, compositionMap, setNumber) => {
+    const sortedBases = [b1, b2].sort();
+    const key = sortedBases.join('+');
+    const candidates = compositionMap[key] || [];
 
     if (candidates.length === 0) return null;
     if (candidates.length === 1) return candidates[0].apiName;
 
     // For emblems
-    const isEmblem = b1 === 'TFT_Item_Spatula' || b1 === 'TFT_Item_FryingPan' || b2 === 'TFT_Item_Spatula' || b2 === 'TFT_Item_FryingPan';
-    
-    if (isEmblem) {
-        const emblemPrefix = `TFT${setNumber}_ITEM_`;
-        const exactEmblem = candidates.find(c => c.apiName.includes(emblemPrefix));
-        if (exactEmblem) return exactEmblem.apiName;
-    }
+    const emblemPrefix = `TFT${setNumber}_ITEM_`;
+    const exactEmblem = candidates.find(c => c.apiName.includes(emblemPrefix));
+    if (exactEmblem) return exactEmblem.apiName;
 
     return candidates[0].apiName;
 };
 
 const generateCraftableList = (allItems, setItemNames, setNumber) => {
+    // Pre-index items by composition for O(1) lookup
+    const compositionMap = {};
+    allItems.forEach(item => {
+        if (!setItemNames.includes(item.apiName)) return;
+        if (!item.composition || item.composition.length !== 2) return;
+        
+        const sortedComp = [...item.composition].sort();
+        const key = sortedComp.join('+');
+        if (!compositionMap[key]) compositionMap[key] = [];
+        compositionMap[key].push(item);
+    });
+
     const list = [];
     for (let i = 0; i < orderedBaseItems.length; i++) {
         for (let j = 0; j < orderedBaseItems.length; j++) {
-            list.push(findCraftableItem(orderedBaseItems[i], orderedBaseItems[j], allItems, setItemNames, setNumber));
+            list.push(findCraftableItem(orderedBaseItems[i], orderedBaseItems[j], compositionMap, setNumber));
         }
     }
     return list;
@@ -212,8 +214,6 @@ export const apiNamesCrafteableItems = ()=>{
 
 export const AllCraftableItems = (todosLosItems) => {
   const apiNames = apiNamesCrafteableItems();
-  console.log({todosLosItems})
-  console.log({apiNames})
 
   if (!todosLosItems.length) return [];
 

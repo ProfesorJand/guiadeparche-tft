@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { $user, $admin, logOut } from "@stores/auth";
 import { useStore } from "@nanostores/react";
 import styles from './PerfilUsuario.module.css';
 import Menu from './Menu';
 import ProfileSummary from './ProfileSummary';
-import AdminPanel from "@components/main/Admin/Admin.jsx"
+
+const AdminPanel = lazy(() => import("@components/main/Admin/Admin.jsx"));
 
 const PerfilUsuario = () => {
     const user = useStore($user);
@@ -140,7 +141,11 @@ const PerfilUsuario = () => {
                 {activeTab === 'data' && renderUserData()}
                 {activeTab === 'guides' && renderGuides()}
                 {activeTab === 'riot' && renderRiotAccount()}
-                {activeTab === 'admin' && <AdminPanel/>}
+                {activeTab === 'admin' && (
+                    <Suspense fallback={<div className={styles.loadingSpinner}>Cargando panel de administración...</div>}>
+                        <AdminPanel/>
+                    </Suspense>
+                )}
                 {activeTab === 'logout' && <p>Cerrando sesión...</p>}
             </main>
         </div>

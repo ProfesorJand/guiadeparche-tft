@@ -5,7 +5,6 @@
 
 .menuItem {
   display: flex;
-  background-color: var(--bg-secondary);
   color: var(--color-primary);
   text-decoration: none;
   padding: 1rem;

@@ -201,7 +201,6 @@ const { title, JSONSchema, description, keywords, image, canonical, hide=false }
   body::-webkit-scrollbar-track {
     /* background: var(--bg-primary); */
     background: transparent;
-    background-image: url("/backgrounds/negro_y_rayas.avif");
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
@@ -226,11 +225,10 @@ const { title, JSONSchema, description, keywords, image, canonical, hide=false }
     position: relative;
     flex-direction: column;
     min-height: 100vh;
-    background-image: url(/backgrounds/negro_y_rayas.avif);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
-    background-position: center;
+    background-color: #191f32;
+    background-image: radial-gradient(circle, #000000 1px, transparent 1px);
+    background-size: 4px 4px;
+    opacity: 1;
   }
   code {
     font-family:
@@ -269,9 +267,7 @@ const { title, JSONSchema, description, keywords, image, canonical, hide=false }
   html body .google-anno-skip.google-anno-sc {
     display: none !important;
   }
-  .bodyMain{
-    background-color: var(--bg-main);
-  }
+
 
 
   @media only screen and (max-width: 900px) {
@@ -289,8 +285,11 @@ const { title, JSONSchema, description, keywords, image, canonical, hide=false }
       width: 100%;
       max-width: 100%;
       height: var(--height-header);
-      background-color: var(--bg-primary);
       flex-direction: row;
+      background-color: #191f32;
+      background-image: radial-gradient(circle, #000000 1px, transparent 1px);
+      background-size: 4px 4px;
+      opacity: 1;
     }
     .bodyInfo{
       display: flex;
@@ -313,6 +312,10 @@ const { title, JSONSchema, description, keywords, image, canonical, hide=false }
       width: 100%;
       position: relative;
       flex-direction: column;
+      background-color: #101525;
+      background-image: radial-gradient(circle, #000000 1px, transparent 1px);
+      background-size: 4px 4px;
+      opacity: 1;
     }
     .bodyMainAside{
       display: flex;
@@ -325,7 +328,6 @@ const { title, JSONSchema, description, keywords, image, canonical, hide=false }
       display: flex;
       flex-direction: column;
       position: relative;
-      background-color: var(--bg-secondary);
       width: 100%;
       box-sizing: border-box;
       justify-content: flex-start;
@@ -353,7 +355,6 @@ const { title, JSONSchema, description, keywords, image, canonical, hide=false }
       flex-direction: column;
       position: relative;
       width: 100%;
-      background-color: var(--bg-main);
     }
     .bodyFooter{
       display: flex;
@@ -398,8 +399,11 @@ const { title, JSONSchema, description, keywords, image, canonical, hide=false }
       width: 100%;
       max-width: 100%;
       height: var(--height-header);
-      background-color: var(--bg-primary);
       flex-direction: row;
+      background-color: #191f32;
+      background-image: radial-gradient(circle, #000000 1px, transparent 1px);
+      background-size: 4px 4px;
+      opacity: 1;
     }
     .bodyInfo{
       display: flex;
@@ -425,6 +429,10 @@ const { title, JSONSchema, description, keywords, image, canonical, hide=false }
       width: var(--width-main);
       position: relative;
       flex-direction: row;
+      background-color: #101525;
+      background-image: radial-gradient(circle, #000000 1px, transparent 1px);
+      background-size: 4px 4px;
+      opacity: 1;
     }
     .bodyMainAside{
       display: flex;
@@ -440,7 +448,6 @@ const { title, JSONSchema, description, keywords, image, canonical, hide=false }
       position: -webkit-sticky;
       position: sticky;
       top:var(--height-header);
-      background-color: var(--bg-secondary);
       width: 100%;
       box-sizing: border-box;
       height:max-content;
@@ -473,7 +480,6 @@ const { title, JSONSchema, description, keywords, image, canonical, hide=false }
       flex-direction: column;
       position: relative;
       width: calc(100%*2/3);
-      background-color: var(--bg-main);
     }
 
     .bodyFooter{

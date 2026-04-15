@@ -219,7 +219,6 @@ console.log({admin})
   body::-webkit-scrollbar-track {
     /* background: var(--bg-primary); */
     background: transparent;
-    background-image: url("/backgrounds/negro_y_rayas.avif");
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
@@ -244,11 +243,10 @@ console.log({admin})
     position: relative;
     flex-direction: column;
     min-height: 100vh;
-    background-image: url(/backgrounds/negro_y_rayas.avif);
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
-    background-position: center;
+    background-color: #191f32;
+    background-image: radial-gradient(circle, #000000 1px, transparent 1px);
+    background-size: 4px 4px;
+    opacity: 1;
   }
   code {
     font-family:
@@ -287,9 +285,6 @@ console.log({admin})
   html body .google-anno-skip.google-anno-sc {
     display: none !important;
   }
-  .bodyMain{
-    background-color: var(--bg-main);
-  }
 
 
   @media only screen and (max-width: 900px) {
@@ -307,8 +302,11 @@ console.log({admin})
       width: 100%;
       max-width: 100%;
       height: var(--height-header);
-      background-color: var(--bg-primary);
       flex-direction: row;
+      background-color: #191f32;
+      background-image: radial-gradient(circle, #000000 1px, transparent 1px);
+      background-size: 4px 4px;
+      opacity: 1;
     }
     .bodyInfo{
       display: flex;
@@ -331,6 +329,10 @@ console.log({admin})
       width: 100%;
       position: relative;
       flex-direction: column;
+      background-color: #101525;
+      background-image: radial-gradient(circle, #000000 1px, transparent 1px);
+      background-size: 4px 4px;
+      opacity: 1;
     }
     .bodyMainAside{
       display: flex;
@@ -343,7 +345,6 @@ console.log({admin})
       display: flex;
       flex-direction: column;
       position: relative;
-      background-color: var(--bg-secondary);
       width: 100%;
       box-sizing: border-box;
       justify-content: flex-start;
@@ -371,7 +372,6 @@ console.log({admin})
       flex-direction: column;
       position: relative;
       width: 100%;
-      background-color: var(--bg-main);
 
     }
     .bodyFooter{
@@ -417,8 +417,11 @@ console.log({admin})
       width: 100%;
       max-width: 100%;
       height: var(--height-header);
-      background-color: var(--bg-primary);
       flex-direction: row;
+      background-color: #191f32;
+      background-image: radial-gradient(circle, #000000 1px, transparent 1px);
+      background-size: 4px 4px;
+      opacity: 1;
     }
     .bodyInfo{
       display: flex;
@@ -444,6 +447,10 @@ console.log({admin})
       width: var(--width-main);
       position: relative;
       flex-direction: row;
+      background-color: #101525;
+      background-image: radial-gradient(circle, #000000 1px, transparent 1px);
+      background-size: 4px 4px;
+      opacity: 1;
     }
     .bodyMainAside{
       display: flex;
@@ -459,7 +466,6 @@ console.log({admin})
       position: -webkit-sticky;
       position: sticky;
       top:var(--height-header);
-      background-color: var(--bg-secondary);
       width: 100%;
       box-sizing: border-box;
       height:max-content;
@@ -492,7 +498,6 @@ console.log({admin})
       flex-direction: column;
       position: relative;
       width: 100%;
-      background-color: var(--bg-main);
       padding: 20px;
       box-sizing: border-box;
     }

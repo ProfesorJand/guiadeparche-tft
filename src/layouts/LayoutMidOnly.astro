@@ -182,10 +182,10 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
   } */
 
   html, body {
-    background-image: url("/backgrounds/negro_y_rayas.avif");
-    background-size: cover;
-    background-attachment: fixed;
-    background-repeat: no-repeat;
+    background-color: #191f32;
+    background-image: radial-gradient(circle, #000000 1px, transparent 1px);
+    background-size: 4px 4px;
+    opacity: 1;
   }
   body::-webkit-scrollbar {
     width: 12px; /* width of the entire scrollbar */
@@ -194,12 +194,10 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
 
   body::-webkit-scrollbar-track {
     /* background: var(--bg-primary); */
-    /* background-image: url("/backgrounds/negro_y_rayas.png");
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat; */
-    background-color: var(--bg-primary);
-   
+    background-repeat: no-repeat;
+    background-color: #191f32;
   }
 
   body::-webkit-scrollbar-thumb {
@@ -260,7 +258,6 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
     display: none !important;
   }
   .bodyMain{
-    /* background-color: var(--bg-main); */
     justify-content: center;
     align-items: center;
   }
@@ -281,8 +278,11 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
       width: 100%;
       max-width: 100%;
       height: var(--height-header);
-      background-color: var(--bg-primary);
       flex-direction: row;
+      background-color: #191f32;
+      background-image: radial-gradient(circle, #000000 1px, transparent 1px);
+      background-size: 4px 4px;
+      opacity: 1;
     }
     .bodyInfo{
       display: flex;
@@ -304,6 +304,10 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
       width: 100%;
       position: relative;
       flex-direction: column;
+      background-color: #101525;
+      background-image: radial-gradient(circle, #000000 1px, transparent 1px);
+      background-size: 4px 4px;
+      opacity: 1;
     }
     .bodyMainAside{
       display: flex;
@@ -316,7 +320,6 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
       display: flex;
       flex-direction: column;
       position: relative;
-      background-color: var(--bg-secondary);
       width: 100%;
       box-sizing: border-box;
       justify-content: flex-start;
@@ -344,7 +347,6 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
       flex-direction: column;
       position: relative;
       width: 100%;
-      background-color: var(--bg-main);
     }
     .bodyFooter{
       display: flex;
@@ -354,9 +356,6 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
       max-width: 100%;
       /* height: var(--height-footer); */
       /* bottom:0; */
-    }
-    main{
-      width: 100%;
     }
     .midSection{
       display:flex;
@@ -389,8 +388,11 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
       width: 100%;
       max-width: 100%;
       height: var(--height-header);
-      background-color: var(--bg-primary);
       flex-direction: row;
+      background-color: #191f32;
+      background-image: radial-gradient(circle, #000000 1px, transparent 1px);
+      background-size: 4px 4px;
+      opacity: 1;
     }
     .bodyInfo{
       display: flex;
@@ -415,6 +417,10 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
       width: var(--width-main);
       position: relative;
       flex-direction: row;
+      background-color: #101525;
+      background-image: radial-gradient(circle, #000000 1px, transparent 1px);
+      background-size: 4px 4px;
+      opacity: 1;
     }
     .bodyMainAside{
       display: flex;
@@ -430,7 +436,6 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
       position: -webkit-sticky;
       position: sticky;
       top:var(--height-header);
-      background-color: var(--bg-secondary);
       width: 100%;
       box-sizing: border-box;
       height:max-content;
@@ -463,7 +468,6 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
       flex-direction: column;
       position: relative;
       width: calc(100%*2/3);
-      background-color: var(--bg-main);
     }
 
     .bodyFooter{

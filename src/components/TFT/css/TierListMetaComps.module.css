@@ -9,7 +9,7 @@
 .containerMetaCompByTier{
   display: flex;
   flex-direction: row;
-  background-color: var(--bg-tertiary);
+  background-color: #120d697d;
   width: 100%;
 }
 
