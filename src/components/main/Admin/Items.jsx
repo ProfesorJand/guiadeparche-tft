@@ -27,12 +27,15 @@ export const Items = ()=>{
   const allItemsApiNames = useStore(dataTFTItemsBySet);
   const allItemsInfo = useStore(dataTFTAllItems);
   const [allEmblemsItemsApiNames, setAllEmblemsItemsApiName] = useState(null);
-  const [allSupportsItems, setAllSupportsItems] = useState(null)
-  const [allChemBaronItems, setAllChemBaronItems] = useState(null)
-  const [allChemtechItems, setAllChemtechItems] = useState(null)
+  const [allSupportsItems, setAllSupportsItems] = useState(null);
+  const [allChemBaronItems, setAllChemBaronItems] = useState(null);
+  const [allChemtechItems, setAllChemtechItems] = useState(null);
   const [allGarenModItems, setAllGarenModItems] = useState(null);
   const [allBilgewaterItems, setAllBilgewaterItems] = useState(null);
   const [allVoidItems, setAllVoidItems] = useState(null);
+  //set 17 items
+  const [allPsionicItems, setAllPsionicItems] = useState(null);
+  const [allGodsArtifacts, setAllGodsArtifacts] = useState(null);
   //const [allCraftableItems, setAllCraftableItems] = useState(null);
   const [MatrixCraftableItems, setMatrixCraftableItems] = useState([]);
   useEffect(()=>{
@@ -45,6 +48,13 @@ export const Items = ()=>{
         return apiName.includes("EmblemItem")
         })
       )
+
+      setAllPsionicItems(allItemsApiNames.filter((apiName)=>{
+        return apiName.includes("TFT17_Item_PsyOps_") && !apiName.includes("_Radiant") // not Include apiname que tenga _Radiant
+      }))
+      setAllGodsArtifacts(allItemsApiNames.filter((apiName)=>{
+        return apiName.includes("TFT17_Item_Artifact_");
+      }))
       setAllBilgewaterItems(allItemsApiNames.filter((apiName)=>{
         const listaBilgewaterItemsBaneados = [
           "TFT16_Item_Bilgewater_HealthTier1",
@@ -401,10 +411,11 @@ export const Items = ()=>{
           <button onClick={(e) => { e.preventDefault(); handlePestana(0) }} className={style.btn}>Craftable</button>
           <button onClick={(e) => { e.preventDefault(); handlePestana(1) }} className={style.btn}>Radiants</button>
           <button onClick={(e) => { e.preventDefault(); handlePestana(2) }} className={style.btn}>Emblems</button>
-          <button onClick={(e) => { e.preventDefault(); handlePestana(3) }} className={style.btn}>{version === "pbe" ? "Bilgewater" : "Bilgewater"}</button>
+          <button onClick={(e) => { e.preventDefault(); handlePestana(3) }} className={style.btn}>{version === "pbe" ? "Psionic" : "Bilgewater"}</button>
+          <button onClick={(e) => { e.preventDefault(); handlePestana(6) }} className={style.btn}>{version === "pbe" ? "God Artifacts" : "ChemBaron"}</button>
+          
           <button onClick={(e) => { e.preventDefault(); handlePestana(4) }} className={style.btn}>Artefacts</button>
           <button onClick={(e) => { e.preventDefault(); handlePestana(5) }} className={style.btn}>Supports</button>
-          <button onClick={(e) => { e.preventDefault(); handlePestana(6) }} className={style.btn}>{version === "pbe" ? "Garen Mod" : "ChemBaron"}</button>
         </div>
 
         <div className={style.containerItemsInfo}>
@@ -495,11 +506,27 @@ export const Items = ()=>{
           </div>
           <div className={style.containerItemsHorizontal}>
             {pestana === 3 &&
-              allBilgewaterItems.map((dataItem,index)=>{
+              // allBilgewaterItems.map((dataItem,index)=>{
+              //   const resultado = allItemsInfo.find(({apiName})=> apiName === dataItem)
+              //   return (
+              //     <div className={style.itemsDropOtros} key={index}>
+              //       <img  src={`https://raw.communitydragon.org/${version}/game/`+resultado.icon.replace(".tex",".png").toLowerCase()} alt={`Basic Item TFT ${resultado.name}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} onClick={()=>{setItemOver(resultado.apiName)}} data-item={JSON.stringify(resultado)} data-from="itemList" draggable="true"></img>
+              //     </div>
+              //   )
+              // })
+              allPsionicItems.map((dataItem,index)=>{
                 const resultado = allItemsInfo.find(({apiName})=> apiName === dataItem)
+                const icono = urlDragon() + resultado.icon.replace(".tex",".png").toLowerCase();
                 return (
                   <div className={style.itemsDropOtros} key={index}>
-                    <img  src={`https://raw.communitydragon.org/${version}/game/`+resultado.icon.replace(".tex",".png").toLowerCase()} alt={`Basic Item TFT ${resultado.name}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} onClick={()=>{setItemOver(resultado.apiName)}} data-item={JSON.stringify(resultado)} data-from="itemList" draggable="true"></img>
+                    <img  
+                      src={icono} 
+                      alt={`Basic Item TFT ${resultado.name}`} className={style.imgItems} 
+                      onDragStart={(e)=>{handleDragStart(e)}} 
+                      onClick={()=>{setItemOver(resultado.apiName)}} 
+                      data-item={JSON.stringify(resultado)} 
+                      data-from="itemList" 
+                      draggable="true"></img>
                   </div>
                 )
               })
@@ -587,24 +614,40 @@ export const Items = ()=>{
           </div>
           <div className={style.containerItemsHorizontalOtros}>
             {pestana === 6 && (version === "pbe" ? 
-              allGarenModItems.sort(function(a, b){
-                if(a.apiName < b.apiName) { return -1; }
-                if(a.apiName > b.apiName) { return 1; }
-                return 0;
-              }).map((dataItem,index)=>{
-                return ( 
-                <div className={style.itemsDropOtros} key={`otrosItems`+index}>
-                  <img 
-                  src={dataItem?.img || `https://raw.communitydragon.org/${version}/game/`+dataItem.icon.replace(".tex",".png").toLowerCase()}
-                  alt={`Chem Baron Item TFT ${dataItem.name}`}
-                  className={style.imgItems}
-                  onDragStart={(e)=>{handleDragStart(e)}}
-                  onClick={()=>{setItemOver(dataItem.apiName)}}
-                  data-item={JSON.stringify(dataItem)} //allItemsInfo.find(({apiName})=>apiName === dataItem.apiName)
-                  data-from="itemList"
-                  draggable="true"></img>
-                </div>)
+              allGodsArtifacts.map((dataItem,index)=>{
+                const resultado = allItemsInfo.find(({apiName})=> apiName === dataItem)
+                const icono = urlDragon() + resultado.icon.replace(".tex",".png").toLowerCase();
+                return (
+                  <div className={style.itemsDropOtros} key={index}>
+                    <img  
+                      src={icono} 
+                      alt={`Basic Item TFT ${resultado.name}`} className={style.imgItems} 
+                      onDragStart={(e)=>{handleDragStart(e)}} 
+                      onClick={()=>{setItemOver(resultado.apiName)}} 
+                      data-item={JSON.stringify(resultado)} 
+                      data-from="itemList" 
+                      draggable="true"></img>
+                  </div>
+                )
               })
+              // allGarenModItems.sort(function(a, b){
+              //   if(a.apiName < b.apiName) { return -1; }
+              //   if(a.apiName > b.apiName) { return 1; }
+              //   return 0;
+              // }).map((dataItem,index)=>{
+              //   return ( 
+              //   <div className={style.itemsDropOtros} key={`otrosItems`+index}>
+              //     <img 
+              //     src={dataItem?.img || `https://raw.communitydragon.org/${version}/game/`+dataItem.icon.replace(".tex",".png").toLowerCase()}
+              //     alt={`Chem Baron Item TFT ${dataItem.name}`}
+              //     className={style.imgItems}
+              //     onDragStart={(e)=>{handleDragStart(e)}}
+              //     onClick={()=>{setItemOver(dataItem.apiName)}}
+              //     data-item={JSON.stringify(dataItem)} //allItemsInfo.find(({apiName})=>apiName === dataItem.apiName)
+              //     data-from="itemList"
+              //     draggable="true"></img>
+              //   </div>)
+              // })
             :
               allChemBaronItems.sort(function(a, b){
                 if(a.apiName < b.apiName) { return -1; }

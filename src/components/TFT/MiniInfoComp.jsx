@@ -94,6 +94,7 @@ const MiniInfoComp = ({
           forInfografia={forInfografia}
           imagePosicionamientoReady={imagePosicionamientoReady}
           webInfografia={webInfografia}
+          deleteId={deleteId}
         />
       </div>
 
@@ -122,7 +123,7 @@ const MiniInfoComp = ({
   )
 }
 
-function AdminOptions({ compo, admin, show, handleEditID, imagePosicionamientoReady, isOpen, backgroundRef, forInfografia, webInfografia }) {
+function AdminOptions({ compo, admin, show, handleEditID, imagePosicionamientoReady, isOpen, backgroundRef, forInfografia, webInfografia, deleteId }) {
   if (webInfografia) {
     return null
   }
@@ -153,7 +154,13 @@ function AdminOptions({ compo, admin, show, handleEditID, imagePosicionamientoRe
       }
       {
         admin &&
-        <div className={[style.btn, style.btnDelete].join(" ")} onClick={() => { deleteId(compo.id, compo.tier, compo?.version || "latest") }}>
+        <div 
+          className={[style.btn, style.btnDelete].join(" ")}
+          onClick={(e) => { 
+            e.stopPropagation();
+            console.log("click en eliminar")
+            deleteId(compo.id, compo.tier, compo?.version || "latest") }}
+        >
         </div>
       }
       {show && !admin &&

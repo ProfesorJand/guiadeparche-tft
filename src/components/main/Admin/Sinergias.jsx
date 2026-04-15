@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import style from "./css/Sinergias.module.css"
 import { traitsColors, imgHex } from "src/functions/campeonestft";
 //import sinergiasData from "src/json/updates/sinergiasData";
-import { dataTFTTraits } from "@stores/dataTFT";
+import { dataTFTTraits, findTraitsStyles } from "@stores/dataTFT";
 import { useStore } from "@nanostores/react";
 const Sinergias = ({sinergias, orientacion, show, version})=>{
   const sinergiasData = useStore(dataTFTTraits)
@@ -26,36 +26,15 @@ const Sinergias = ({sinergias, orientacion, show, version})=>{
     .sort(([,a],[,b]) => b-a)
     .reduce((r, [k, v]) => ({ ...r, [k]: v }), {});
 
-  // Función que busca el nivel más cercano por debajo del valor actual
-  function findClosestLower(trait, value) {
-    const traitData = traitsColors[trait];
-    if (!traitData) return null;
-
-    const levels = Object.keys(traitData)
-      .map(Number)
-      .sort((a, b) => a - b);
-
-    // Busca el nivel más bajo o igual al valor actual
-    let closest = levels[0];
-    for (let i = 0; i < levels.length; i++) {
-      if (levels[i] <= value) {
-        closest = levels[i];
-      } else {
-        break;
-      }
-    }
-
-    return traitData[closest];
-  }
 
   function getMinMaxTraits(traits) {
     const result = [];
     Object.entries(traits).forEach(([trait, value]) => {
-      const traitData = traitsColors[trait];
+      const traitData = findTraitsStyles(trait);
       const data = sinergiasData.find(({apiName})=>{
         return apiName === trait
       })
-      if (traitData) {
+      if (traitData) { 
         const levels = Object.keys(traitData).map(Number).sort((a, b) => a - b);
         let maxLevel = levels[levels.length -1];
         let minLevel = levels[0]; // El nivel más bajo disponible
@@ -99,7 +78,6 @@ const Sinergias = ({sinergias, orientacion, show, version})=>{
         });
       }
     });
-  
     return result;
   }
 
