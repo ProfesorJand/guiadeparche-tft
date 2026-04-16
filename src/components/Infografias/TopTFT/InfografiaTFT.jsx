@@ -46,8 +46,8 @@ const InfografiaTFT = ()=>{
   
   const onButtonClick = useCallback(() => {
     if (backgroundRef.current === null) return;
-  
-    loadAllImages(backgroundRef.current)
+    document.fonts.ready.then(() => {
+      loadAllImages(backgroundRef.current)
       .then(() => {
         return toPng(backgroundRef.current, {
           cacheBust: true,
@@ -64,6 +64,7 @@ const InfografiaTFT = ()=>{
       .catch((err) => {
         console.error("❌ Error al capturar imagen:", err);
       });
+    })
   }, [backgroundRef]);
 
 

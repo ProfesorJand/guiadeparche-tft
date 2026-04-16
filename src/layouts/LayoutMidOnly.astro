@@ -13,8 +13,13 @@ interface Props {
   keywords?: string;
   image?: string;
   canonical?: string;
+  mainBackground?: string;
 }
-const { title, JSONSchema, description, keywords, image, canonical } = Astro.props;
+const { title, JSONSchema, description, keywords, image, canonical, mainBackground } = Astro.props;
+
+const mainBgImage = mainBackground === "solid" ? "none" : "radial-gradient(circle, #000000 1px, transparent 1px)";
+const mainBgSize = mainBackground === "solid" ? "none" : "4px 4px";
+
 
 
 ---
@@ -118,7 +123,7 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
   </body>
 </html>
 
-<style is:global>
+<style is:global define:vars={{ mainBgImage, mainBgSize }}>
 
   :root {
     --bg-primary-rgb: 14 3 65;
@@ -158,8 +163,11 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
   }
 
   @font-face {
-    font-family: 'ObvioslyWideBoldItalic'; /* Name your font family */
-    src: url('/fonts/ObviouslyWide-BoldItalic.otf') format("opentype"); /* Locate the .ttf file within your directory*/
+     font-family: 'ObviouslyWideBoldItalic'; /* Nombre corregido */
+      src: url('/fonts/ObviouslyWide-BoldItalic.otf') format("opentype");
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap; /* Ayuda a que se cargue mejor para capturas */
   }
 
   @font-face {
@@ -305,8 +313,8 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
       position: relative;
       flex-direction: column;
       background-color: #101525;
-      background-image: radial-gradient(circle, #000000 1px, transparent 1px);
-      background-size: 4px 4px;
+      background-image: var(--mainBgImage);
+      background-size: var(--mainBgSize);
       opacity: 1;
     }
     .bodyMainAside{
@@ -418,8 +426,8 @@ const { title, JSONSchema, description, keywords, image, canonical } = Astro.pro
       position: relative;
       flex-direction: row;
       background-color: #101525;
-      background-image: radial-gradient(circle, #000000 1px, transparent 1px);
-      background-size: 4px 4px;
+      background-image: var(--mainBgImage);
+      background-size: var(--mainBgSize);
       opacity: 1;
     }
     .bodyMainAside{
