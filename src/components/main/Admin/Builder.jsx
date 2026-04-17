@@ -253,7 +253,6 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
       let dataItems = [];
       for (let y = 0; y < imgItem.length; y++) {
         dataItems.push(imgItem[y].dataset);
-        console.log(imgItem[y].dataset)
         const sinergiasItem = JSON.parse(imgItem[y].dataset.item);
         const getSinergia = sinergiasItem?.sinergia ? sinergiasItem.sinergia : sinergiasItem?.incompatibleTraits ? sinergiasItem.incompatibleTraits[0] : false; //arreglar a futuro
         if (getSinergia) {
@@ -445,9 +444,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
     const containerItem = document.createElement("div");
     containerItem.className = style.containerItem;
     const imgItem = document.createElement("img");
-    console.log({dataItem})
     imgItem.className = style.imgItem;
-    console.log({dataItem,currentVersion})
     imgItem.src = dataItem.icon.startsWith("http") ? dataItem.icon.replace(".tex",".png").toLowerCase() : urlDragon() + dataItem.icon.replace(".tex",".png").toLowerCase();
     imgItem.alt = dataItem.nombre;
     imgItem.setAttribute("draggable", true);

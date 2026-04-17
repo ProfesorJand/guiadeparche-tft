@@ -1,0 +1,420 @@
+---
+import LayoutMidOnly from "@layouts/LayoutMidOnly.astro";
+const title = "Cómo jugar TFT en 2026: Guía Principiantes (Set 17)";
+const description = "Aprende cómo jugar Teamfight Tactics desde cero. Descubre las mecánicas del Set 17, objetos, economía y la guía de los Dioses para subir de rango.";
+
+const JSONSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿Qué es Teamfight Tactics?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "TFT es un juego de estrategia tipo auto-battler donde reclutas campeones, los equipas con objetos y los posicionas en un tablero."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cómo se gana en TFT?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sobrevive a 7 jugadores. Los últimos 4 quedan en la partida. El objetivo es quedar en Top 4 para ganar."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué es un Carry en TFT?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Es el campeón principal que lleva los objetos y hace la mayor parte del daño. Debe estar protegido por la frontline."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué es el Slow Roll?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Estrategia de economía donde mantienes 50 de oro y gastas solo el excedente para subir de nivel o buscar campeones."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué es el Fast 8?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Estrategia donde subes a nivel 8 rápido (rondas 4-1 o 4-2) para buscar campeones de coste 4 y 5."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué es el Hyperoll?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Estrategia donde gastas todo tu oro en niveles bajos (3-1 o 3-2) para subir campeones de coste 1 y 2 a 3 estrellas."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué es un Pivot en TFT?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Cambiar de composición a mitad de partida porque no te salen los campeones que buscabas."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué es BiS en TFT?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Best in Slot. Los mejores objetos posibles para un campeón específico."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué es Econ en TFT?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ahorrar oro para obtener intereses. Cada 10 de oro te da 1 de interés extra (máximo 5 de interés)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué son los Dioses del Espacio en Set 17?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Mecánica exclusiva del Set 17 donde eliges un 'Dios' al inicio que te da habilidades pasivas únicas para toda la partida."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cómo se descargan TFT?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Puedes descargarlo gratis desde Riot Client (PC) o desde la Google Play Store / Apple App Store (Móvil)."
+      }
+    }
+  ]
+};
+---
+
+<LayoutMidOnly title={title} description={description} JSONSchema={JSON.stringify(JSONSchema)} mainBackground={"solid"}>
+<section class="guia-tft">
+  <header class="guide-intro">
+    <h1 id="como-jugar-tft">{title}</h1>
+    <p>{description}</p>
+    
+    <div class="intro-text">
+        <p>
+            Aprender a jugar Teamfight Tactics puede parecer abrumador al principio,
+            pero en realidad es más sencillo de lo que crees.
+        </p>
+        <p>
+            Ya sea que nunca hayas jugado un Auto-Battler o que estés regresando para el Set 17...
+            en esta guía te enseñamos paso a paso desde cómo manejar tu oro hasta cómo dominar
+            la nueva mecánica de los Dioses.
+        </p>
+        <p><strong>Haz clic en cada sección para expandir la información:</strong></p>
+    </div>
+  </header>
+
+  <!-- SECCIÓN 1: QUÉ ES TFT -->
+  <article class="guide-item" id="que-es-tft-como-empezar-descargar">
+    <h2 class="guide-header">
+      ¿Qué es Teamfight Tactics y cómo empezar?
+    </h2>
+    <div class="guide-content">
+        <p>
+            Teamfight Tactics (mejor conocido como TFT) es un juego de estrategia de tipo "Auto-battler". 
+            Imagina un tablero de ajedrez donde tú eres el entrenador: tu misión es reclutar a los mejores campeones de League of Legends, 
+            equiparlos con objetos poderosos y posicionarlos estratégicamente. Una vez que empieza la ronda, ellos pelean solos por ti.
+        </p>
+    
+        <h3>¿Dónde descargar TFT? (PC y Mobile)</h3>
+        <ul>
+            <li>TFT es totalmente gratuito y cuenta con Cross-Play, lo que significa que puedes empezar una partida en tu computadora y terminarla en tu celular con la misma cuenta.</li>
+            <li>En PC y Mac: Debes descargar el Cliente de Riot Games o buscarlo en la Epic Games Store. Si ya juegas League of Legends, ¡ya tienes TFT instalado!</li>
+            <li>En Mobile (iOS y Android): Búscalo directamente como Teamfight Tactics en la App Store o Google Play Store.</li>
+        </ul>
+    
+        <h3>El objetivo del juego: Cómo ganar tu primera partida.</h3>
+        <p>En cada partida te enfrentas a otros 7 jugadores en una batalla de todos contra todos.</p>
+        <ol>
+            <li>Sobrevive a los demás: Todos empiezan con 100 puntos de vida. Si pierdes una batalla, tu vida baja. El objetivo es ser el último sobreviviente.</li>
+            <li>Top 4 es ganar: En el mundo competitivo de TFT, quedar entre los mejores 4 jugadores se considera una victoria, ya que te otorga puntos (LP) para subir de rango (ELO).</li>
+            <li>No necesitas reflejos, solo cerebro: A diferencia de otros juegos, aquí no importa qué tan rápido presiones las teclas, sino qué tan bien planeas tu economía y tus sinergias.</li>
+        </ol>
+    
+        <h3>Cómo armar tu primera Composición (Meta Comps)</h3>
+        <ul>
+            <li>Sinergias y Rasgos (Traits): Entendiendo el tablero.</li>
+            <li>¿Qué es un "Carry" y cómo protegerlo?</li>
+        </ul>
+    </div>
+  </article>
+
+  <!-- SECCIÓN 2: OBJETOS -->
+  <article class="guide-item" id="objetos-componentes-y-combinaciones">
+    <h2 class="guide-header">
+      Guía de Objetos en TFT: Recetas y Combinaciones
+    </h2>
+    <div class="guide-content">
+        <p>Cómo combinar componentes y qué hacen.</p>
+        <p>Qué significan las estadísticas en TFT" (AD, AP, Armor, MR).</p>
+        <p>Cómo funcionan los objetos radiantes/artefactos". (opcional)</p>
+        <h3>Componentes básicos y Objetos Completos (Spatulas, Sword, Bow).</h3>
+        <h3>Objetos de Daño Físico (AD) vs. Daño Mágico (AP).</h3>
+        <h3>La Frontline: Objetos de Tanque y Utilidad.</h3>
+    </div>
+  </article>
+
+  <!-- SECCIÓN 3: ECONOMIA -->
+  <article class="guide-item" id="economia-oro">
+    <h2 class="guide-header">
+      Conceptos Básicos: Economia / Oro, Niveles y tienda, Aumentos & Posicinamiento
+    </h2>
+    <div class="guide-content">
+        <p>Aprende cuándo ahorrar, cuándo hacer roll y cuándo subir de nivel. También la importancia de los Aumentos y cómo posicionar a tus campeones para ganar.</p>
+    </div>
+  </article>
+
+  <!-- SECCIÓN 4: SET 17 -->
+  <article class="guide-item" id="set-actual">
+    <h2 class="guide-header">
+      Dominando el Set 17 (ACTUAL): La Bendición de los Dioses del Espacio
+    </h2>
+    <div class="guide-content">
+        <ul>
+            <li>Qué es la mecánica de los Dioses</li>
+            <li>Lista de Dioses</li>
+            <li>Cómo elegir el mejor</li>
+        </ul>
+    </div>
+  </article>
+
+  <!-- SECCIÓN 5: DICCIONARIO -->
+  <article class="guide-item" id="diccionario-que-significa">
+    <h2 class="guide-header">
+      Diccionario para Principiantes: Términos que debes conocer
+    </h2>
+    <div class="guide-content">
+        <ul>
+            <li>Slow Roll, Fast 8, Hyperoll</li>
+            <li>Pivot, BiS, Econ</li>
+        </ul>
+    </div>
+  </article>
+
+  <!-- SECCIÓN 6: ESTRATEGIAS -->
+  <article class="guide-item" id="tips-consejos-para-mejorar-y-ganar-elo">
+    <h2 class="guide-header">
+      Estrategias Intermedias para subir de ELO
+    </h2>
+    <div class="guide-content">
+        <ul>
+            <li>Win/Loss streak</li>
+            <li>Scouting</li>
+            <li>Mejores augments</li>
+        </ul>
+    </div>
+  </article>
+
+  <!-- SECCIÓN 7: CONSEJOS JUPESON -->
+  <article class="guide-item" id="tips">
+    <h2 class="guide-header">
+      Consejos de Jupeson para ganar en el Set 17
+    </h2>
+    <div class="guide-content">
+        <h3>Los mejores aumentos (Augments) para este Set.</h3>
+        <h3>Errores comunes que debes evitar con los Dioses.</h3>
+        <h3>El "Tempo" del Set 17: ¿Cuándo es mejor subir de nivel?</h3>
+    
+        <p><strong>Si quieres dominar todo esto entra al TFT Master Plan...</strong></p>
+    </div>
+  </article>
+
+  <!-- SECCIÓN 8: MASTER PLAN -->
+  <article class="guide-item" id="tft-master-plan">
+    <h2 class="guide-header">
+      Domina el juego con el TFT Master Plan (para subir a Maestro)
+    </h2>
+    <div class="guide-content">
+        <ul>
+            <li>Comparativa rápida de qué es lo más fuerte.</li>
+            <li>Qué jugar para ganar hoy mismo.</li>
+        </ul>
+        <h3>
+            Por qué una guía estática no es suficiente para llegar a Maestro.
+        </h3>
+    
+        <h3>
+            Únete a la comunidad de Jupeson y optimiza tu aprendizaje.
+        </h3>
+    </div>
+  </article>
+</section>
+
+<script>
+  function initCollapsibles() {
+    const items = document.querySelectorAll('.guide-item');
+    
+    function updateFromHash() {
+      const hash = window.location.hash.replace('#', '');
+      if (!hash) return;
+
+      let found = false;
+      items.forEach(item => {
+        if (item.id === hash) {
+          item.classList.add('is-active');
+          found = true;
+          // Scroll suave después de un pequeño delay
+          setTimeout(() => {
+            item.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 150);
+        } else {
+          item.classList.remove('is-active');
+        }
+      });
+    }
+
+    items.forEach(item => {
+      const header = item.querySelector('.guide-header');
+      header.addEventListener('click', () => {
+        const isActive = item.classList.contains('is-active');
+        
+        // Cerrar todos los demás
+        items.forEach(i => i.classList.remove('is-active'));
+        
+        if (!isActive) {
+          item.classList.add('is-active');
+          // Cambiar URL sin recargar
+          history.pushState(null, null, `#${item.id}`);
+        } else {
+          // Si lo cerramos, quitamos el hash de la URL
+          history.pushState(null, null, window.location.pathname);
+        }
+      });
+    });
+
+    // Detectar cambios en el hash (botones de navegación)
+    window.addEventListener('hashchange', updateFromHash);
+    
+    // Al cargar la página
+    updateFromHash();
+  }
+
+  // Ejecutar inicialización
+  initCollapsibles();
+</script>
+
+<style>
+  .guia-tft {
+    max-width: 900px;
+    padding: 0 2rem;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .guide-intro {
+    margin-bottom: 2rem;
+  }
+
+  h1 {
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+  }
+
+  .intro-text {
+    margin-bottom: 2rem;
+    opacity: 0.9;
+  }
+
+  .guide-item {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background 0.3s ease;
+  }
+
+  .guide-header {
+    margin: 0;
+    padding: 1.5rem 0;
+    font-size: 1.6rem;
+    text-align: left;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.3s ease;
+  }
+
+  .guide-header:hover {
+    color: #ffd700;
+  }
+
+  .guide-header::before {
+    content: "→";
+    font-size: 1.2rem;
+    color: #ffd700;
+    transition: transform 0.3s ease;
+    opacity: 0.5;
+  }
+
+  .guide-item.is-active .guide-header::before {
+    transform: rotate(90deg);
+    opacity: 1;
+  }
+
+  .guide-header::after {
+    content: "";
+    height: 1px;
+    flex-grow: 1;
+    background: linear-gradient(90deg, rgba(255,255,255,0.2), transparent);
+    opacity: 0.3;
+  }
+
+  .guide-content {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.4s cubic-bezier(0, 1, 0, 1), opacity 0.3s ease;
+  }
+
+  .guide-item.is-active .guide-content {
+    max-height: 5000px; /* Valor alto para permitir contenido largo */
+    opacity: 1;
+    padding-bottom: 2rem;
+    transition: max-height 0.6s ease-in-out, opacity 0.4s ease;
+  }
+
+  h3 {
+    margin-top: 1.5rem;
+    font-size: 1.2rem;
+    color: #ffd700;
+  }
+
+  ul, ol {
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  li {
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin-bottom: 1rem;
+  }
+
+  strong {
+      color: #ffd700;
+  }
+
+  @media only screen and (max-width: 600px) {
+    .guide-header {
+      font-size: 1.2rem;
+    }
+  }
+</style>
+</LayoutMidOnly>
