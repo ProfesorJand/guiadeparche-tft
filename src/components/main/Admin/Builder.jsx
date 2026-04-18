@@ -35,141 +35,158 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
  
   useEffect(() => {
     function llenarBoard(info) {
-      info &&
-        Object.keys(info).forEach((key) => {
-          const hexagono = document.getElementById(key);
-          hexagono.firstChild.style.backgroundColor = championsColor[JSON.parse(info[key].dataCampeon.campeon).coste];
-          if (!hexagono.firstChild.nextSibling) {
-            const containerImageChampion = document.createElement("div");
-            containerImageChampion.setAttribute("draggable", true);
-            containerImageChampion.dataset.campeon =
-              info[key].dataCampeon.campeon;
-            containerImageChampion.dataset.from = "Board";
-            containerImageChampion.dataset.hexId = key;
-            containerImageChampion.ondrop = function (e) {
-              handleDrop(e);
-            };
-            containerImageChampion.ondragstart = function (e) {
-              handleDragStart(e);
-            };
-            containerImageChampion.ondragend = function (e) {
-              handleDropOutside(e, "campeon");
-            };
-            containerImageChampion.className = style.containerImageChampion;
-            switch (info[key].estrellas) {
-              case 4:
-                containerImageChampion.classList.toggle(style.estrellas4,true);
-                break;
-              case 3:
-                containerImageChampion.classList.toggle(style.estrellas3,true);
-                break;
-              case 2:
-                containerImageChampion.classList.toggle(style.estrellas2,true);
-                break;
-              default:
-                break;
-            }
-            containerImageChampion.classList.toggle(style.powerUp,info[key].powerUp);
-     
-            /*Crear Imagen del Campeon en el hex */
-            const image = document.createElement("img");
-            image.className = style.imageCampeonBuilder;
-            image.src = JSON.parse(info[key].dataCampeon.campeon).img;
-            image.alt = JSON.parse(info[key].dataCampeon.campeon).nombre;
+      if (!info) return;
+      const containerBuilder = document.getElementById(id);
+      if (!containerBuilder) return;
 
-            containerImageChampion.appendChild(image);
-            hexagono.appendChild(containerImageChampion);
-            containerImageChampion.onclick = function () {
-                crearContextMenu(containerImageChampion.dataset.hexId);
-            };
+      Object.keys(info).forEach((key) => {
+        const hexagono = containerBuilder.querySelector(`#\\${id}-${key}`);
+        if (!hexagono) return;
+        
+        // Cleanup existing champion container to prevent duplicates or stale images
+        const existingChampion = hexagono.querySelector(`.${style.containerImageChampion}`);
+        if (existingChampion) existingChampion.remove();
 
-            /*sinergias*/
-            if (JSON.parse(info[key].dataCampeon.campeon).sinergia.length > 0) {
-                const containerSinergias =
-                  document.createElement("div"); /* contenedor de todas sinergias*/
-                containerSinergias.className = style.containerSinergias;
+        // Ensure info[key].dataCampeon exists and is valid
+        if (!info[key]?.dataCampeon?.campeon) return;
 
-                JSON.parse(info[key].dataCampeon.campeon).sinergia.forEach((siner) => {
-                  const containerTrait =
-                    document.createElement(
-                      "div"
-                    ); /* contenedor de 1 sinergia con su background*/
-                  containerTrait.className = style.containerTrait;
+        try {
+          const campeonData = JSON.parse(info[key].dataCampeon.campeon);
+          hexagono.firstChild.style.backgroundColor = championsColor[campeonData.coste];
           
-                  const sinergia = document.createElement("img"); /* img de la sinergia*/
-                  sinergia.className = style.sinergia;
-                  sinergia.style.filter = "invert(1)";
-                  sinergia.src = "https://raw.communitydragon.org/pbe/game/"+siner.icon.toLowerCase().replace(".tex",".png");
-                  sinergia.alt = siner.name;
-          
-                  /* background de la sinergia*/
-                  const backgroundSinergia = document.createElement("img");
-                  backgroundSinergia.classList.add(style.backgroundSinergia);
-                  backgroundSinergia.classList.add(siner.apiName);
-                  backgroundSinergia.src = urlHex + imgHex[0];
-                  backgroundSinergia.alt = imgHex[0];
-          
-                  containerTrait.appendChild(backgroundSinergia);
-                  containerTrait.appendChild(sinergia);
-                  containerSinergias.appendChild(containerTrait);
-                });
-                containerImageChampion.appendChild(containerSinergias);
-                Object.keys(boardInfo[id]?.sinergias).forEach((sinergia) => {
-                    const allTraits = document.querySelectorAll(`.${sinergia}`);
-                    allTraits.forEach((element) => {
-                      const traitSVG = findClosestTraitImage(sinergia, boardInfo[id]?.sinergias[sinergia]);
-                      element.src = urlHex + traitSVG;
-                      element.nextElementSibling.style.filter = "invert(1)";
-                      if (traitSVG !== "hex-default.webp") {
-                        element.style.filter = "";
-                        element.nextElementSibling.style.filter = "";
-                      }
-                    });
-                  });
-              }
+          const containerImageChampion = document.createElement("div");
+          containerImageChampion.setAttribute("draggable", true);
+          containerImageChampion.dataset.campeon = info[key].dataCampeon.campeon;
+          containerImageChampion.dataset.from = "Board";
+          containerImageChampion.dataset.hexId = `${id}-${key}`;
+          containerImageChampion.ondrop = function (e) {
+            handleDrop(e);
+          };
+          containerImageChampion.ondragstart = function (e) {
+            handleDragStart(e);
+          };
+          containerImageChampion.ondragend = function (e) {
+            handleDropOutside(e, "campeon");
+          };
+          containerImageChampion.className = style.containerImageChampion;
+          switch (info[key].estrellas) {
+            case 4:
+              containerImageChampion.classList.toggle(style.estrellas4, true);
+              break;
+            case 3:
+              containerImageChampion.classList.toggle(style.estrellas3, true);
+              break;
+            case 2:
+              containerImageChampion.classList.toggle(style.estrellas2, true);
+              break;
+            default:
+              break;
+          }
+          containerImageChampion.classList.toggle(style.powerUp, info[key].powerUp);
 
-              /*Nombre del campeon */
-              const nombreCampeon = document.createElement("span");
-              nombreCampeon.classList.add(style.nombreCampeon);
-              nombreCampeon.classList.toggle(style.hideNombreCampeon, showName);
-              nombreCampeon.innerHTML = JSON.parse(info[key].dataCampeon.campeon).nombre;
-              containerImageChampion.appendChild(nombreCampeon);
+          /*Crear Imagen del Campeon en el hex */
+          const image = document.createElement("img");
+          image.className = style.imageCampeonBuilder;
+          image.src = campeonData.img;
+          image.alt = campeonData.nombre;
 
-              /* Crear Items */
-              const containerItems = document.createElement("div");
-              containerItems.className = style.containerItems;
-              info[key].dataItem.forEach((data)=>{
-                const dataItem = JSON.parse(data.item);
-                const containerItem = document.createElement("div");
-                containerItem.className = style.containerItem;
-                const imgItem = document.createElement("img");
-                imgItem.className = style.imgItem;
-                imgItem.src =  dataItem.icon.startsWith("http") ? dataItem.icon.replace(".tex",".png").toLowerCase() : urlDragon() + dataItem.icon.replace(".tex",".png").toLowerCase();
-                imgItem.alt = dataItem.nombre ? dataItem.nombre : dataItem.name; // arreglar a futuro
-                imgItem.setAttribute("draggable", true);
-                imgItem.dataset.item = JSON.stringify(dataItem);
-                imgItem.dataset.from = "itemBoard";
-                imgItem.dataset.hexId = key;
-                imgItem.ondrop = function (e) {
-                  handleDrop(e);
-                };
-                imgItem.ondragstart = function (e) {
-                  handleDragStart(e);
-                };
-                imgItem.ondragend = function (e) {
-                  handleDropOutside(e, "item");
-                };
-                containerItem.appendChild(imgItem);
-                containerItems.appendChild(containerItem);
-              })
-              containerImageChampion.appendChild(containerItems);
-              
+          containerImageChampion.appendChild(image);
+          hexagono.appendChild(containerImageChampion);
+          containerImageChampion.onclick = function () {
+            crearContextMenu(containerImageChampion.dataset.hexId);
+          };
+
+          /*sinergias*/
+          if (campeonData.sinergia && campeonData.sinergia.length > 0) {
+            const containerSinergias = document.createElement("div");
+            containerSinergias.className = style.containerSinergias;
+
+            campeonData.sinergia.forEach((siner) => {
+              const containerTrait = document.createElement("div");
+              containerTrait.className = style.containerTrait;
+
+              const sinergiaImg = document.createElement("img");
+              sinergiaImg.className = style.sinergia;
+              sinergiaImg.style.filter = "invert(1)";
+              sinergiaImg.src = "https://raw.communitydragon.org/pbe/game/" + siner.icon.toLowerCase().replace(".tex", ".png");
+              sinergiaImg.alt = siner.name;
+
+              const backgroundSinergia = document.createElement("img");
+              backgroundSinergia.classList.add(style.backgroundSinergia);
+              backgroundSinergia.classList.add(siner.apiName);
+              backgroundSinergia.src = urlHex + imgHex[0];
+              backgroundSinergia.alt = imgHex[0];
+
+              containerTrait.appendChild(backgroundSinergia);
+              containerTrait.appendChild(sinergiaImg);
+              containerSinergias.appendChild(containerTrait);
+            });
+            containerImageChampion.appendChild(containerSinergias);
+          }
+
+          /*Nombre del campeon */
+          const nombreCampeon = document.createElement("span");
+          nombreCampeon.classList.add(style.nombreCampeon);
+          nombreCampeon.classList.toggle(style.hideNombreCampeon, showName);
+          nombreCampeon.innerHTML = campeonData.nombre;
+          containerImageChampion.appendChild(nombreCampeon);
+
+          /* Crear Items */
+          const containerItems = document.createElement("div");
+          containerItems.className = style.containerItems;
+          if (info[key].dataItem) {
+            info[key].dataItem.forEach((data) => {
+              const dataItem = JSON.parse(data.item);
+              const containerItem = document.createElement("div");
+              containerItem.className = style.containerItem;
+              const imgItem = document.createElement("img");
+              imgItem.className = style.imgItem;
+              imgItem.src = dataItem.icon.startsWith("http") ? dataItem.icon.replace(".tex", ".png").toLowerCase() : urlDragon() + dataItem.icon.replace(".tex", ".png").toLowerCase();
+              imgItem.alt = dataItem.nombre ? dataItem.nombre : dataItem.name;
+              imgItem.setAttribute("draggable", true);
+              imgItem.dataset.item = JSON.stringify(dataItem);
+              imgItem.dataset.from = "itemBoard";
+              imgItem.dataset.hexId = `${id}-${key}`;
+              imgItem.ondrop = function (e) {
+                handleDrop(e);
+              };
+              imgItem.ondragstart = function (e) {
+                handleDragStart(e);
+              };
+              imgItem.ondragend = function (e) {
+                handleDropOutside(e, "item");
+              };
+              containerItem.appendChild(imgItem);
+              containerItems.appendChild(containerItem);
+            });
+          }
+          containerImageChampion.appendChild(containerItems);
+
+        } catch (e) {
+          console.error("Error parsing champion data in llenarBoard", e);
+        }
+      });
+
+      // Update sinergias after filling champions
+      if (boardInfo[id]?.sinergias) {
+        Object.keys(boardInfo[id].sinergias).forEach((sinergia) => {
+          const allTraits = containerBuilder.querySelectorAll(`.${sinergia.replace(" ", "")}`);
+          allTraits.forEach((element) => {
+            const traitLevel = boardInfo[id].sinergias[sinergia];
+            const traitSVG = findClosestTraitImage(sinergia.replace(" ", ""), traitLevel);
+            element.src = urlHex + traitSVG;
+            element.nextElementSibling.style.filter = "invert(1)";
+            if (traitSVG !== "hex-default.webp") {
+              element.style.filter = "";
+              element.nextElementSibling.style.filter = "";
             }
           });
+        });
       }
+    }
 
     llenarBoard(boardInfo[id]?.data);
-  }, [boardInfo]);
+  }, [boardInfo, id, currentVersion]);
   
 
   function updateBoardInfo(from = "null") {
@@ -213,7 +230,8 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
           powerUp = false;
           break;
       }
-      const hexId = dataCampeon.hexId;
+      const hexIdRaw = dataCampeon.hexId;
+      const hexId = hexIdRaw.startsWith(`${id}-`) ? hexIdRaw.slice(id.length + 1) : hexIdRaw;
       const newCampeon = JSON.parse(dataCampeon.campeon)?.nombre || JSON.parse(dataCampeon.campeon)?.name;
       if (!noRepeatChampions.some((campeon) => campeon === newCampeon)) {
         noRepeatChampions.push(newCampeon);
@@ -264,7 +282,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
     if (Object.keys(data).length) {
       setBoardInfo({ ...boardInfo, [id]: {data,sinergias} });
       Object.keys(sinergias).forEach((sinergia) => {
-        const allTraits = document.querySelectorAll(`.${sinergia.replace(" ","")}`);
+        const allTraits = containerBuilder.querySelectorAll(`.${sinergia.replace(" ","")}`);
         allTraits.forEach((element) => {
           const traitSVG = findClosestTraitImage(sinergia.replace(" ",""), sinergias[sinergia.replace(" ","")]);
           element.src = urlHex + traitSVG;
@@ -587,7 +605,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
       <div id={id} className={style.containerBuilder}>
         <div className={style.hexRow}>
           <div
-            id="hex11"
+            id={`${id}-hex11`}
             className={style.containerPoligon}
             onDrop={(e) => {
               handleDrop(e);
@@ -597,12 +615,12 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
             }}
           >
             <div className={style.poligon}></div>
-            {hexId === "hex11" && (
+            {hexId === `${id}-hex11` && (
               <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
             )}
           </div>
           <div
-            id="hex12"
+            id={`${id}-hex12`}
             className={style.containerPoligon}
             onDrop={(e) => {
               handleDrop(e);
@@ -612,12 +630,12 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
             }}
           >
             <div className={style.poligon}></div>
-            {hexId === "hex12" && (
+            {hexId === `${id}-hex12` && (
               <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
             )}
           </div>
           <div
-            id="hex13"
+            id={`${id}-hex13`}
             className={style.containerPoligon}
             onDrop={(e) => {
               handleDrop(e);
@@ -627,12 +645,12 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
             }}
           >
             <div className={style.poligon}></div>
-            {hexId === "hex13" && (
+            {hexId === `${id}-hex13` && (
               <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
             )}
           </div>
           <div
-            id="hex14"
+            id={`${id}-hex14`}
             className={style.containerPoligon}
             onDrop={(e) => {
               handleDrop(e);
@@ -642,12 +660,12 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
             }}
           >
             <div className={style.poligon}></div>
-            {hexId === "hex14" && (
+            {hexId === `${id}-hex14` && (
               <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
             )}
           </div>
           <div
-            id="hex15"
+            id={`${id}-hex15`}
             className={style.containerPoligon}
             onDrop={(e) => {
               handleDrop(e);
@@ -657,14 +675,14 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
             }}
           >
             <div className={style.poligon}></div>
-            {hexId === "hex15" && (
+            {hexId === `${id}-hex15` && (
               <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
             )}
           </div>
           {id !== "early" && (
             <>
               <div
-                id="hex16"
+                id={`${id}-hex16`}
                 className={style.containerPoligon}
                 onDrop={(e) => {
                   handleDrop(e);
@@ -674,12 +692,12 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
                 }}
               >
                 <div className={style.poligon}></div>
-                {hexId === "hex16" && (
+                {hexId === `${id}-hex16` && (
                   <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
               <div
-                id="hex17"
+                id={`${id}-hex17`}
                 className={style.containerPoligon}
                 onDrop={(e) => {
                   handleDrop(e);
@@ -689,7 +707,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
                 }}
               >
                 <div className={style.poligon}></div>
-                {hexId === "hex17" && (
+                {hexId === `${id}-hex17` && (
                   <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
@@ -702,7 +720,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
             <div className={style.hexRow}>
               <div className={style.halfPoligon}></div>
               <div
-                id="hex21"
+                id={`${id}-hex21`}
                 className={style.containerPoligon}
                 onDrop={(e) => {
                   handleDrop(e);
@@ -712,12 +730,12 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
                 }}
               >
                 <div className={style.poligon}></div>
-                {hexId === "hex21" && (
+                {hexId === `${id}-hex21` && (
                   <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
               <div
-                id="hex22"
+                id={`${id}-hex22`}
                 className={style.containerPoligon}
                 onDrop={(e) => {
                   handleDrop(e);
@@ -727,12 +745,12 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
                 }}
               >
                 <div className={style.poligon}></div>
-                {hexId === "hex22" && (
+                {hexId === `${id}-hex22` && (
                   <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
               <div
-                id="hex23"
+                id={`${id}-hex23`}
                 className={style.containerPoligon}
                 onDrop={(e) => {
                   handleDrop(e);
@@ -742,12 +760,12 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
                 }}
               >
                 <div className={style.poligon}></div>
-                {hexId === "hex23" && (
+                {hexId === `${id}-hex23` && (
                   <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
               <div
-                id="hex24"
+                id={`${id}-hex24`}
                 className={style.containerPoligon}
                 onDrop={(e) => {
                   handleDrop(e);
@@ -757,12 +775,12 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
                 }}
               >
                 <div className={style.poligon}></div>
-                {hexId === "hex24" && (
+                {hexId === `${id}-hex24` && (
                   <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
               <div
-                id="hex25"
+                id={`${id}-hex25`}
                 className={style.containerPoligon}
                 onDrop={(e) => {
                   handleDrop(e);
@@ -772,12 +790,12 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
                 }}
               >
                 <div className={style.poligon}></div>
-                {hexId === "hex25" && (
+                {hexId === `${id}-hex25` && (
                   <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
               <div
-                id="hex26"
+                id={`${id}-hex26`}
                 className={style.containerPoligon}
                 onDrop={(e) => {
                   handleDrop(e);
@@ -787,12 +805,12 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
                 }}
               >
                 <div className={style.poligon}></div>
-                {hexId === "hex26" && (
+                {hexId === `${id}-hex26` && (
                   <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
               <div
-                id="hex27"
+                id={`${id}-hex27`}
                 className={style.containerPoligon}
                 onDrop={(e) => {
                   handleDrop(e);

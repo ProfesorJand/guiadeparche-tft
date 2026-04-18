@@ -1,0 +1,24 @@
+---
+import BeginnerGuide from "@components/TFT/Guides/BeginnerGuide.astro";
+
+export async function getStaticPaths() {
+  const ids = [
+    'que-es-tft-como-empezar-descargar',
+    'objetos-componentes-y-combinaciones',
+    'economia-oro',
+    'set-actual',
+    'diccionario-que-significa',
+    'tips-consejos-para-mejorar-y-ganar-elo',
+    'tips',
+    'tft-master-plan'
+  ];
+  
+  return ids.map(id => ({
+    params: { id }
+  }));
+}
+
+const { id } = Astro.params;
+---
+
+<BeginnerGuide initialId={id} />
