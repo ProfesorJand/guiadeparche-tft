@@ -17,9 +17,7 @@ const ChampTierList = ({id,isSample,campeonTierList, augmentTierList, champItem,
   const urlDataDragonLatestGame = `https://raw.communitydragon.org/${version}/game/`;
   const urlDataDragonPBEGame = `https://raw.communitydragon.org/${version}/game/`;
   const compId = useStore(openCompoId);
-  useEffect(()=>{
-    scrollToComposicion()
-  },[compId])
+
   return (
     <div className={[isSample ? style.containerSampleChampTierList : style.containerChampTierList, (compId === id && !isSample)? style.isActive : ""].join(" ")} onClick={()=>setOpenCompo(id)}>
       {

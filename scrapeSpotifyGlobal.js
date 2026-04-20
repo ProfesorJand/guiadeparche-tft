@@ -163,18 +163,19 @@ async function scrapeArtist(browser, url) {
       console.log("⚠️ Imagen artista no encontrada");
     }
 
-    // 🖼️ Imagen perfil artista (Cargamos esta fuera del loop de tracks para ahorrar tiempo)
-    try {
-      // Intentar obtener la imagen circular de perfil (la más común)
-      artistImage = await page.locator('img[data-testid="entity-image"]').first().getAttribute("src");
-    } catch (e) {
-      console.log("⚠️ Imagen de perfil no encontrada directly");
-    }
 
     // 🎵 Tracks
     try {
-      //await page.locator('.sL0wneoReggMaCXb').click();
+      await page.locator('.sL0wneoReggMaCXb').click();
       const tracks = await page.locator('[data-testid="tracklist-row"]').all();
+      if(!artistImage){
+        try{
+          artistImage = await scraptArtistImageFromMusic(link); // solo se debe hacer 1 sola vez esta peticion
+        }catch(e){
+          console.log("⚠️ Imagen artista no encontrada")
+        }
+
+      }
       for (let i = 0; i < Math.min(10, tracks.length); i++) {
         const track = tracks[i];
 
@@ -241,6 +242,24 @@ async function scrapeArtist(browser, url) {
   };
 }
 
+async function scraptArtistImageFromMusic(url){
+  const browser = await chromium.launch({ headless: true });
+  const page = await browser.newPage();
+  await page.goto(url, { waitUntil: "networkidle", timeout: 6000 });
+  const parentOfStyleValue = await page.locator('.S9MGX4rjHQQhXDFm')
+  const styleValue = await parentOfStyleValue.locator('img').all();
+  let getSRC = [];
+  for(const style of styleValue){
+    getSRC.push({
+      img: await style.getAttribute("src"),
+      name: await style.getAttribute("alt")
+    });
+  }
+  await browser.close();
+  return getSRC;
+}
+
+
 // Se eliminó la función getArtistImageFromTrackPage por ser ineficiente
 
 // 🔹 batches
@@ -288,7 +307,7 @@ async function run() {
 
 // 💾 guardar JSON seguro
 function saveResults(data) {
-  const filePath = "./spotify-data-global.json";
+  const filePath = "./spotify-data-global-music.json";
 
   let existingData = [];
 

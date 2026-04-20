@@ -13,6 +13,7 @@
       "@functions/*":["src/functions/*"],
       "@spotify-data":["spotify-data.json"],
       "@spotify-data-global":["spotify-data-global.json"],
+      "@spotify-data-global-music":["spotify-data-global-music.json"],
     }
   }
 }

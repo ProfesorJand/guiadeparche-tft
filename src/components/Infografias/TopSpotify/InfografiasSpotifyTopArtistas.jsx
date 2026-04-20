@@ -45,17 +45,37 @@ const año = fecha.getFullYear();
                 </div>
                 <div className={styles.containerPerfilArtista}>
                   <div className={styles.circle}>
-                    <img 
-                      src={value?.nuevaImagen || value?.images?.[0]?.url} 
-                      className={styles.perfilArtista}
-                      crossOrigin="anonymous"
-                    />
+                    {
+                      value.artistImages && value.artistImages.length > 1 ? (
+                        <div className={styles.multiProfileContainer}>
+                          {value.artistImages.slice(0, 2).map((img, i) => (
+                            <img 
+                              key={i} 
+                              src={img} 
+                              className={styles.perfilArtistaHalf} 
+                              crossOrigin="anonymous" 
+                            />
+                          ))}
+                        </div>
+                      ) : (
+                        <img 
+                          src={value?.nuevaImagen || value?.images?.[0]?.url} 
+                          className={styles.perfilArtista}
+                          crossOrigin="anonymous"
+                        />
+                      )
+                    }
                   </div>
                 </div>
                 <div className={`${styles.containerInfoArtista} ${topMusic ? styles.containerInfoArtistaMusic : ""}`}>
                   {
                     topMusic ? (
                       <>
+                        <div className={`${styles.containerNameOfArtistMusic} ${styles.containerNameOfArtistMusicTop}`}>
+                          <span className={`${styles.nameOfArtist} ${styles.nameOfArtistMusic}`}>
+                            {(value?.name).toUpperCase()}
+                          </span>
+                        </div>
                         <div className={styles.containerNameOfSong}>
                           <span 
                             className={styles.nameOfSong}
@@ -66,11 +86,6 @@ const año = fecha.getFullYear();
                             }}
                           >
                             {musicInfo?.[index]?.name.toUpperCase()}
-                          </span>
-                        </div>
-                        <div className={styles.containerNameOfArtistMusic}>
-                          <span className={`${styles.nameOfArtist} ${styles.nameOfArtistMusic}`}>
-                            {(value?.name).toUpperCase()}
                           </span>
                         </div>
                       </>

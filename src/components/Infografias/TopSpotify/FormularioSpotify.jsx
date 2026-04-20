@@ -2,7 +2,8 @@ import { useState, useRef } from "react";
 import { buscarArtistas, buscarArtista, buscarCanciones } from "@stores/dataSpotify"
 import { CapturarImagen } from "@functions/CapturarImagen";
 import styles from "./FormularioSpotify.module.css";
-import spotifyDataGlobal from "@spotify-data-global"
+import spotifyDataGlobal from "@spotify-data-global";
+import spotifyDataGlobalMusic from "@spotify-data-global-music";
 import spotifyData from "@spotify-data"
 
 const FormularioSpotify = ({
@@ -27,55 +28,140 @@ const FormularioSpotify = ({
 }) => {
 
   const cargarDatosAuto = () => {
-    const dataToUse = sourceType === "venezolanos" ? spotifyData : spotifyDataGlobal;
+    let sortedData = [];
+    
+    if (sourceType === "globalesMusic") {
+      // Agrupar canciones por link para evitar duplicados y capturar colaboraciones
+      const tracksMap = new Map();
+      
+      spotifyDataGlobalMusic.forEach(artist => {
+        if (artist.topTracks && Array.isArray(artist.topTracks)) {
+          artist.topTracks.forEach(track => {
+            const artistInfo = {
+              name: artist.name,
+              image: artist.artistImage || artist.artistImageHistory || "",
+              url: artist.url,
+              background: artist.backgroundArtistImage || ""
+            };
 
-    // 1. Ordenar por listeners de mayor a menor
-    const sortedData = [...dataToUse].sort((a, b) => (b.listeners || 0) - (a.listeners || 0));
+            if (tracksMap.has(track.link)) {
+              const existingTrack = tracksMap.get(track.link);
+              // Evitar duplicar el mismo artista en la misma canción
+              if (!existingTrack.artists.some(a => a.name === artist.name)) {
+                existingTrack.artists.push(artistInfo);
+              }
+            } else {
+              tracksMap.set(track.link, {
+                ...track,
+                artists: [artistInfo]
+              });
+            }
+          });
+        }
+      });
 
-    // 2. Tomar los artistas según el inicio y el total permitido
+      // Convertir el mapa a un array y procesar nombres/imágenes combinados
+      const allTracks = Array.from(tracksMap.values()).map(track => {
+        const names = track.artists.map(a => a.name).join(" & ");
+        const images = track.artists.map(a => a.image).filter(img => img);
+        
+        return {
+          ...track,
+          artistName: names,
+          artistImages: images,
+          artistUrl: track.artists[0]?.url || "",
+          backgroundArtistImage: track.artists.find(a => a.background)?.background || ""
+        };
+      });
+
+      // Ordenar canciones por plays de mayor a menor
+      sortedData = allTracks.sort((a, b) => (b.plays || 0) - (a.plays || 0));
+      setTopMusic(true);
+    } else {
+      const dataToUse = sourceType === "venezolanos" ? spotifyData : sourceType === "globales" ? spotifyDataGlobal : spotifyDataGlobalMusic;
+      // Ordenar por listeners de mayor a menor (por artista)
+      sortedData = [...dataToUse].sort((a, b) => (b.listeners || 0) - (a.listeners || 0));
+    }
+
+    // 2. Tomar los elementos según el inicio y el total permitido
     const startIndex = (startNumberOfArtist || 1) - 1;
-    const selectedArtists = sortedData.slice(startIndex, startIndex + numberOfTopArtist);
+    const selectedItems = sortedData.slice(startIndex, startIndex + numberOfTopArtist);
 
     const newDatosArtistas = {};
     const newArtistasInfo = {};
     const newMusicInfo = {};
     const newMonthlyListener = [];
 
-    selectedArtists.forEach((artist, index) => {
-      newDatosArtistas[index] = {
-        urlArtista: artist.url,
-        urlMusic: artist.topTracks?.[0]?.link || "",
-        bannerUrl: artist.backgroundArtistImage || "",
-        offsetY: 0,
-        offsetX: 0,
-        zoom: 1
-      };
-
-      newArtistasInfo[index] = {
-        nuevaImagen: artist.artistImage || artist.artistImageHistory || "",
-        name: artist.name,
-        href: artist.url,
-        images: [{ url: artist.artistImage }]
-      };
-
-      if (artist.topTracks?.[0]) {
-        newMusicInfo[index] = {
-          name: artist.topTracks[0].title || "Unknown",
-          album: { images: [{ url: artist.topTracks[0].image }] }
+    selectedItems.forEach((item, index) => {
+      if (sourceType === "globalesMusic") {
+        // Caso de canciones (tracks)
+        newDatosArtistas[index] = {
+          urlArtista: item.artistUrl,
+          urlMusic: item.link || "",
+          bannerUrl: item.backgroundArtistImage || "",
+          offsetY: 0,
+          offsetX: 0,
+          zoom: 1
         };
+
+        newArtistasInfo[index] = {
+          nuevaImagen: item.artistImages?.[0] || "",
+          artistImages: item.artistImages || [],
+          name: item.artistName,
+          href: item.artistUrl,
+          images: (item.artistImages || []).map(url => ({ url }))
+        };
+
+        newMusicInfo[index] = {
+          name: item.title || "Unknown",
+          album: { images: [{ url: item.image }] }
+        };
+
+        const plays = item.plays || 0;
+        const formattedPlays = plays >= 1000000000
+          ? (plays / 1000000000).toLocaleString('en-US', { maximumFractionDigits: 1 }) + "B"
+          : plays >= 1000000
+            ? (plays / 1000000).toLocaleString('en-US', { maximumFractionDigits: 1 }) + "M"
+            : plays >= 1000
+              ? (plays / 1000).toLocaleString('en-US', { maximumFractionDigits: 1 }) + "K"
+              : plays.toString();
+
+        newMonthlyListener[index] = formattedPlays;
+      } else {
+        // Caso de artistas
+        const artist = item;
+        newDatosArtistas[index] = {
+          urlArtista: artist.url,
+          urlMusic: artist.topTracks?.[0]?.link || "",
+          bannerUrl: artist.backgroundArtistImage || "",
+          offsetY: 0,
+          offsetX: 0,
+          zoom: 1
+        };
+
+        newArtistasInfo[index] = {
+          nuevaImagen: artist.artistImage || artist.artistImageHistory || "",
+          name: artist.name,
+          href: artist.url,
+          images: [{ url: artist.artistImage }]
+        };
+
+        if (artist.topTracks?.[0]) {
+          newMusicInfo[index] = {
+            name: artist.topTracks[0].title || "Unknown",
+            album: { images: [{ url: artist.topTracks[0].image }] }
+          };
+        }
+
+        const listeners = artist.listeners || 0;
+        const formattedListeners = listeners >= 1000000
+          ? (listeners / 1000000).toLocaleString('en-US', { maximumFractionDigits: 1 }) + "M"
+          : listeners >= 1000
+            ? (listeners / 1000).toLocaleString('en-US', { maximumFractionDigits: 1 }) + "K"
+            : listeners.toString();
+
+        newMonthlyListener[index] = formattedListeners;
       }
-
-      // Formatear listeners: 14671882 -> 14.671.882 o dejarlo en string si prefieres
-      // El componente parece esperar un string que ya tiene el formato M o K tal vez?
-      // En spotify-data.js hay strings como "47M", "6.7M".
-      // Vamos a convertir el numero a un formato similar (M o K)
-      const formattedListeners = artist.listeners >= 1000000
-        ? (artist.listeners / 1000000).toLocaleString('en-US', { maximumFractionDigits: 1 }) + "M"
-        : artist.listeners >= 1000
-          ? (artist.listeners / 1000).toLocaleString('en-US', { maximumFractionDigits: 1 }) + "K"
-          : artist.listeners.toString();
-
-      newMonthlyListener[index] = formattedListeners;
     });
 
     setDatosArtistas(newDatosArtistas);
@@ -155,6 +241,7 @@ const FormularioSpotify = ({
           >
             <option value="venezolanos">Venezolanos</option>
             <option value="globales">Globales</option>
+            <option value="globalesMusic">Globales Music</option>
           </select>
           <button type="button" onClick={cargarDatosAuto} style={{ padding: '2px 10px', background: '#1db954', color: 'white', border: 'none', borderRadius: '3px', cursor: 'pointer' }}>
             Autocargar desde Repo

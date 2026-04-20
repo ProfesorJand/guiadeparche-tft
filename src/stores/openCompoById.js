@@ -1,4 +1,5 @@
 import { atom } from "nanostores";
+import { activeCompId } from "./menuFiltradoAdmin";
 
 export const openCompoId = atom(null);
 
@@ -15,17 +16,27 @@ export const selectedComposicion = atom(null);
 export const scrollToComposicion = () => {
   openCompoId.subscribe((id, oldId) => {
     if (id) {
+      // Abrir la composición después de terminar el scroll 
+      setTimeout(() => {
+        activeCompId.set(id);
+      }, 150);
       setTimeout(() => {
         const element = document.getElementById(id);
         if (element) {
           const headerHtml = document.getElementsByClassName("bodyHeader");
-          const headerHeight = headerHtml[0].clientHeight
+          const headerHeight = headerHtml[0].clientHeight;
+          
           window.scrollTo({
-            top: element.getBoundingClientRect().y + scrollY - headerHeight, //+ element.getBoundingClientRect().y - headerHeight,
+            top: element.getBoundingClientRect().y + scrollY - headerHeight,
             behavior: "smooth",
           });
+
+          
         }
-      }, 150);
+      }, 550);
+      
     }
   });
 };
+
+scrollToComposicion();
