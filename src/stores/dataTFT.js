@@ -246,6 +246,27 @@ export const AllBasicItems = (dataTFTAllItems) =>{
     return dataOfBasicItems;
 }
 
+// SEO: Fetch Compositions Server-Side for Schema and initial render
+export const fetchAndSortComps = async (url) => {
+  try {
+    const response = await fetch(url, { cache: "no-cache" });
+    const data = await response.json();
+    const hierarchy = ["S", "A", "B", "C", "D", "MEME"];
+    const allSorted = [];
+    
+    hierarchy.forEach(tier => {
+      if (data[tier]) {
+        const tierComps = [...data[tier]].sort((a, b) => (a.posicion || 0) - (b.posicion || 0));
+        allSorted.push(...tierComps);
+      }
+    });
+    return allSorted;
+  } catch (e) {
+    console.error(`Error fetching from ${url}:`, e);
+    return [];
+  }
+}
+
 export const BASIC_ITEMS = [
   {
     nombre:"BF Sword",

@@ -3,11 +3,13 @@ import Main from '@components/main/Main.astro';
 import Layout from 'src/layouts/Layout.astro';
 import AdminPanel from "../components/main/Admin/Admin.jsx";
 import TierListMetaComps from '@components/TFT/TierListMetaComps.jsx';
+import {composMetaPBEJSON, fetchAndSortComps} from "@stores/dataTFT";
+const todasLasCompsPBE = await fetchAndSortComps(composMetaPBEJSON);
 ---
 
 <Layout title='admin'>
     <Fragment slot="bodyMainAside">
-        <TierListMetaComps client:only="react"/>
+        <TierListMetaComps todasLasCompsPBE={todasLasCompsPBE} client:only="react"/>
     </Fragment>
     <!-- <Fragment slot="bodyMainAsideTwitch">
         <Twitch client:only="react"/>

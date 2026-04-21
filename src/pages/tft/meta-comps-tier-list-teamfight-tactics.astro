@@ -7,7 +7,7 @@ import { crearJSONSchema } from "src/json/schema/crearJSONSchema";
 import TierListMetaComps from "@components/TFT/TierListMetaComps.jsx";
 import VersionCompo from "@components/TFT/VersionCompo";
 import SelectVersion from "@components/versionTFT/SelectVersion";
-import { composMetaJSON, versionTFT, composMetaPBEJSON, setNumberPBE, setNumberLatest, nameOfSet } from "@stores/dataTFT";
+import { composMetaJSON, versionTFT,fetchAndSortComps, composMetaPBEJSON, setNumberPBE, setNumberLatest, nameOfSet } from "@stores/dataTFT";
 import Composicion from "@components/main/Admin/Composicion.jsx";
 
 const version = versionTFT.get();
@@ -25,26 +25,6 @@ const keywords =
 const thumbnail = "https://guiadeparche.com/tft/set17/backgroundWrapperSet17.webp";
 const imgPost = "https://guiadeparche.com/tft/assets/GP_logo.png";
 
-// SEO: Fetch Compositions Server-Side for Schema and initial render
-async function fetchAndSortComps(url) {
-  try {
-    const response = await fetch(url, { cache: "no-cache" });
-    const data = await response.json();
-    const hierarchy = ["S", "A", "B", "C", "D", "MEME"];
-    const allSorted = [];
-    
-    hierarchy.forEach(tier => {
-      if (data[tier]) {
-        const tierComps = [...data[tier]].sort((a, b) => (a.posicion || 0) - (b.posicion || 0));
-        allSorted.push(...tierComps);
-      }
-    });
-    return allSorted;
-  } catch (e) {
-    console.error(`Error fetching from ${url}:`, e);
-    return [];
-  }
-}
 
 // const todasLasComps = await fetchAndSortComps(composMetaJSON);
 const todasLasCompsPBE = await fetchAndSortComps(composMetaPBEJSON);

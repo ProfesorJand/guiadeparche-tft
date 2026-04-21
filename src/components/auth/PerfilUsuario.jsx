@@ -4,6 +4,8 @@ import { useStore } from "@nanostores/react";
 import styles from './PerfilUsuario.module.css';
 import Menu from './Menu';
 import ProfileSummary from './ProfileSummary';
+import {composMetaPBEJSON, fetchAndSortComps} from "@stores/dataTFT";
+import TierListMetaComps from "@components/TFT/TierListMetaComps.jsx";
 
 const AdminPanel = lazy(() => import("@components/main/Admin/Admin.jsx"));
 
@@ -11,6 +13,15 @@ const PerfilUsuario = () => {
     const user = useStore($user);
     const admin = useStore($admin)
     const [activeTab, setActiveTab] = useState('data');
+    const [todasLasCompsPBE, setTodasLasCompsPBE] = useState([]); 
+
+    useEffect(() => {
+        const loadData = async () => {
+            const data = await fetchAndSortComps(composMetaPBEJSON);
+            setTodasLasCompsPBE(data);
+        };
+        loadData();
+    }, []);
 
     if (!user) {
         return (
@@ -134,6 +145,9 @@ const PerfilUsuario = () => {
                 <ProfileSummary user={user} styles={styles}/>
 
                 <Menu activeTab={activeTab} setActiveTab={setActiveTab} styles={styles} admin={admin}/>
+                {activeTab==="admin" &&
+                 <TierListMetaComps todasLasCompsPBE={todasLasCompsPBE} />
+                }
             </aside>
 
             {/* Columna Derecha: Contenido */}
