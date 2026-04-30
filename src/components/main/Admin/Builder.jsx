@@ -40,7 +40,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
       if (!containerBuilder) return;
 
       Object.keys(info).forEach((key) => {
-        const hexagono = containerBuilder.querySelector(`#\\${id}-${key}`);
+        const hexagono = document.getElementById(`${id}-${key}`);
         if (!hexagono) return;
         
         // Cleanup existing champion container to prevent duplicates or stale images
@@ -198,7 +198,12 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
     const sinergias = {};
     const noRepeatChampions = [];
     for (let i = 0; i < containerImageChampion.length; i++) {
-      const dataCampeon = containerImageChampion[i].dataset;
+      const dataCampeonRaw = containerImageChampion[i].dataset;
+      const dataCampeon = {
+        campeon: dataCampeonRaw.campeon,
+        from: dataCampeonRaw.from,
+        hexId: dataCampeonRaw.hexId
+      };
       const imgItem = containerImageChampion[i].getElementsByClassName(
         style.imgItem
       );
@@ -270,8 +275,13 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
       data[hexId] = { dataCampeon: dataCampeon, estrellas, powerUp };
       let dataItems = [];
       for (let y = 0; y < imgItem.length; y++) {
-        dataItems.push(imgItem[y].dataset);
-        const sinergiasItem = JSON.parse(imgItem[y].dataset.item);
+        const itemDataset = imgItem[y].dataset;
+        dataItems.push({
+          item: itemDataset.item,
+          from: itemDataset.from,
+          hexId: itemDataset.hexId
+        });
+        const sinergiasItem = JSON.parse(itemDataset.item);
         const getSinergia = sinergiasItem?.sinergia ? sinergiasItem.sinergia : sinergiasItem?.incompatibleTraits ? sinergiasItem.incompatibleTraits[0] : false; //arreglar a futuro
         if (getSinergia) {
           sinergias[getSinergia] = (sinergias[getSinergia] || 0) + 1;
@@ -280,7 +290,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
       data[hexId].dataItem = dataItems;
     }
     if (Object.keys(data).length) {
-      setBoardInfo({ ...boardInfo, [id]: {data,sinergias} });
+      setBoardInfo(prev => ({ ...prev, [id]: {data,sinergias} }));
       Object.keys(sinergias).forEach((sinergia) => {
         const allTraits = containerBuilder.querySelectorAll(`.${sinergia.replace(" ","")}`);
         allTraits.forEach((element) => {

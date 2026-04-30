@@ -32,6 +32,7 @@ const top10Comps = todasLasCompsPBE.slice(0, 10) ; // version === "pbe" ? todasL
 const baseSchema = JSON.parse(crearJSONSchema({ title, imgPost, thumbnail, description }));
 
 
+
 const dificultadEspañol = {
   "Easy": "Fácil",
   "Medium": "Medio",
@@ -66,6 +67,7 @@ const JSONSchema = JSON.stringify([baseSchema, itemListSchema]);
 
 const admin =
   typeof window !== "undefined" ? localStorage.getItem("user") : false;
+
 ---
 
 <!-- <link rel="canonical" href={canonicalURL} /> --><!-- <meta property="og:image" content={socialImageURL} /> --><!-- <meta name="description" content={description}>
@@ -113,7 +115,7 @@ const admin =
         {
           todasLasComps.map((comp, index) => (
             <div class="ranking-item-container">
-              <div class="ranking-header-seo" onclick={`if(window.toggleActiveComp) window.toggleActiveComp('${comp.id}')`}>
+              <div class="ranking-header-seo" data-comp-id={comp.id} onclick={`if(window.toggleActiveComp) window.toggleActiveComp('${comp.id}')`}>
                 <div class="ranking-title-container">
                   <h2 class="ranking-title">{index + 1}. Composicion de {(comp as any).titulo}</h2>
                   <p class="ranking-description">Tier {(comp as any).tier} - Dificultad: {dificultadEspañol[(comp as any).dificultad]} - {infographicCategoriesEspañol[(comp as any).infographicCategory]}</p>
@@ -121,7 +123,7 @@ const admin =
                 <span class="ranking-icon">▼</span>
               </div>
               
-              <div class="containerMetaTier">
+              <div class="containerMetaTier hide" data-comp-id={comp.id}>
                 <Composicion
                   id={comp.id}
                   compo={comp}
@@ -140,15 +142,40 @@ const admin =
         {
           todasLasCompsPBE.map((comp, index) => (
             <div class="ranking-item-container">
-              <div class="ranking-header-seo" onclick={`if(window.toggleActiveComp) window.toggleActiveComp('${comp.id}')`}>
+              <div class="ranking-header-seo" data-comp-id={comp.id} onclick={`if(window.toggleActiveComp) window.toggleActiveComp('${comp.id}')`}>
                 <div class="ranking-title-container">
-                  <h2 class="ranking-title">{index + 1}. Composicion de {(comp as any).titulo}</h2>
+                  <h2 class="ranking-title">{(index + 1).toString().toUpperCase()}. COMPOSICION DE {(comp as any).titulo.toUpperCase()}</h2>
                   <p class="ranking-description">Tier {(comp as any).tier} - Dificultad: {dificultadEspañol[(comp as any).dificultad]} - {infographicCategoriesEspañol[(comp as any).infographicCategory]}</p>
+                  <div class="container-champs">
+                    {
+                      Object.values(comp.boardInfo[comp.originalComp].data).map((info) => {
+                        const nombre = JSON.parse(info.dataCampeon.campeon).nombre;
+                        const apiName = JSON.parse(info.dataCampeon.campeon).apiName;
+                        if (nombre === "Frozen Tower" || nombre === "Sand Soldier" || apiName === "TFT15_ShenSword" || nombre === "Bia & Bayin") return null
+                        return (
+                        <div class={`container-champ container-champ-color-${JSON.parse(info.dataCampeon.campeon).coste}`} >
+                          <img class="champ-img" src={JSON.parse(info.dataCampeon.campeon).img} alt={JSON.parse(info.dataCampeon.campeon).nombre} />
+                          {info.estrellas === 3 &&
+                            <span class="star">★★★</span>
+                          }
+                          <div class="container-items">
+                            {
+                              info.dataItem.map((item) => (
+
+                                <img class="item-img" src={JSON.parse(item.item).icon.includes("https") ? JSON.parse(item.item).icon : `https://raw.communitydragon.org/latest/game/${JSON.parse(item.item).icon.replace(".tex", ".png").toLowerCase()}` } alt={JSON.parse(item.item).name} />
+                              ))
+                            }
+                          </div>
+                          <p class="champ-name">{JSON.parse(info.dataCampeon.campeon).nombre}</p>
+                        </div>
+                      )})
+                    }
+                  </div>
                 </div>
                 <span class="ranking-icon">▼</span>
               </div>
               
-              <div class="containerMetaTier">
+              <div class="containerMetaTier hide" data-comp-id={comp.id}>
                 <Composicion
                   id={comp.id}
                   compo={comp}
@@ -165,6 +192,69 @@ const admin =
 </Layout>
 
 <style>
+  .container-champs{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content:space-between;
+  }
+  .container-champ-color-1{
+    border:2px solid var(--color-hex-cost-1);
+  }
+  .container-champ-color-2{
+    border:2px solid var(--color-hex-cost-2);
+  }
+  .container-champ-color-3{
+    border:2px solid var(--color-hex-cost-3);
+  }
+  .container-champ-color-4{
+    border:2px solid var(--color-hex-cost-4);
+  }
+  .container-champ-color-5{
+    border:2px solid var(--color-hex-cost-5);
+  }
+  .champ-img{
+    width: 100%;
+    height: auto;
+  }
+  .champ-name{
+    position: absolute;
+    z-index: 2;
+    top: 100%;
+    font-size: 12px;
+    text-align: center;
+    margin-block-end: 0;
+    margin-block-start: 0;
+  }
+  .container-champ{
+    position: relative;
+    width: calc(100% / 10);
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .container-items{
+    display: flex;
+    flex-direction: row;
+    width:90%;
+    justify-content:center;
+    position: absolute;
+    bottom: 0;
+  }
+  .item-img{
+    display:flex;
+    width: calc(100% / 3);
+    height: auto;
+  }
+  .star{
+    position: absolute;
+    z-index: 2;
+    font-size: 15px;
+    color: #e0f007;
+    text-shadow: var(--text-shadow);
+    top: 2px;
+  }
   #SelectVersion {
     display: flex;
     width: 100%;
@@ -241,9 +331,7 @@ const admin =
   .slider.round:before {
     border-radius: 50%;
   }
-  .hide {
-    display: none;
-  }
+
   button {
     background-color: var(--bg-secondary);
     color: var(--white);
@@ -281,7 +369,7 @@ const admin =
     align-items: center;
     justify-content: space-between;
     background: var(--bg-secondary);
-    padding: 12px 20px;
+    padding: 12px 20px 24px 20px;
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 8px;
     cursor: pointer;
@@ -309,7 +397,6 @@ const admin =
   }
   .ranking-description {
     font-size: 0.8rem;
-    color: #aaa;
     margin-block-start: 0;
     margin-block-end: 0;
   }
@@ -355,6 +442,9 @@ const admin =
     margin-block-end: 0;
     text-align: left;
   }
+  .hide {
+    display: none;
+  }
   @media only screen and (max-width: 1200px) {
     .tituloMetaComps {
       font-size: 1em;
@@ -365,7 +455,16 @@ const admin =
     .minititulo {
       font-size: 0.8em;
     }
-
+    .champ-name{
+      display: none;
+    }
+    .star{
+      top:0px;
+      font-size: 10px;
+    }
+    .ranking-header-seo{
+      padding: 12px 20px 12px 20px;
+    }
   }
 </style>
 
@@ -385,11 +484,29 @@ const admin =
 </script>
 
 <script>
-  import { toggleActiveComp } from "src/stores/menuFiltradoAdmin";
+  import { toggleActiveComp, activeCompId } from "src/stores/menuFiltradoAdmin";
   import { versionTFT, swapVersionTFT } from "@stores/dataTFT";
 
   // Expose to window for onclick handlers in static HTML
   (window as any).toggleActiveComp = toggleActiveComp;
+
+  activeCompId.subscribe((id) => {
+    document.querySelectorAll('.containerMetaTier').forEach(el => {
+      if (el.getAttribute('data-comp-id') === id) {
+        el.classList.remove('hide');
+      } else {
+        el.classList.add('hide');
+      }
+    });
+
+    document.querySelectorAll('.ranking-header-seo').forEach(el => {
+      if (el.getAttribute('data-comp-id') === id) {
+        el.classList.add('hide');
+      } else {
+        el.classList.remove('hide');
+      }
+    });
+  });
 
   // React to version changes
   versionTFT.subscribe((v) => {

@@ -106,7 +106,7 @@ useEffect(() => {
             left:"50%",
             top:"50%",
             transform:"translate(-50%, -44%)",
-            fontSize:"2rem",
+            fontSize:"1.5rem",
             textAlign:"center",
             fontFamily:"'ObvioslyWideBold', sans-serif",
             fontWeight:"bold",
