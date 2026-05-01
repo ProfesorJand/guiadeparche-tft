@@ -28,6 +28,7 @@ const imgPost = "https://guiadeparche.com/tft/assets/GP_logo.png";
 
 // const todasLasComps = await fetchAndSortComps(composMetaJSON);
 const todasLasCompsPBE = await fetchAndSortComps(composMetaPBEJSON);
+console.log({todasLasCompsPBE})
 const top10Comps = todasLasCompsPBE.slice(0, 10) ; // version === "pbe" ? todasLasCompsPBE.slice(0, 10) : todasLasComps.slice(0, 10)
 const baseSchema = JSON.parse(crearJSONSchema({ title, imgPost, thumbnail, description }));
 
@@ -148,7 +149,15 @@ const admin =
                   <p class="ranking-description">Tier {(comp as any).tier} - Dificultad: {dificultadEspañol[(comp as any).dificultad]} - {infographicCategoriesEspañol[(comp as any).infographicCategory]}</p>
                   <div class="container-champs">
                     {
-                      Object.values(comp.boardInfo[comp.originalComp].data).map((info) => {
+                      Object.values(comp.boardInfo[comp.originalComp].data)
+                        .sort((a, b) => {
+                          try {
+                            return JSON.parse(a.dataCampeon.campeon).coste - JSON.parse(b.dataCampeon.campeon).coste;
+                          } catch (e) {
+                            return 0;
+                          }
+                        })
+                        .map((info) => {
                         const nombre = JSON.parse(info.dataCampeon.campeon).nombre;
                         const apiName = JSON.parse(info.dataCampeon.campeon).apiName;
                         if (nombre === "Frozen Tower" || nombre === "Sand Soldier" || apiName === "TFT15_ShenSword" || nombre === "Bia & Bayin") return null
