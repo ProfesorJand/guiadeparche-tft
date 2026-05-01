@@ -107,7 +107,7 @@ async function scrapeArtist(browser, url) {
     // 🎤 Nombre
     try {
       // 1. Get the full title string from the page
-      const fullTitle = await page.title(); 
+      const fullTitle = await page.title();
 
       // 2. Split by the pipe character and take the first part
       name = fullTitle.split('|')[0].trim();
@@ -131,21 +131,21 @@ async function scrapeArtist(browser, url) {
     // 🖼️ Imagen artista Historia (mejor selector)
     try {
       const styleValue = await page
-        .locator('.J8g7rZ2MDknxmiYP.GUhu8mqqIMM0sZzG') 
+        .locator('.J8g7rZ2MDknxmiYP.GUhu8mqqIMM0sZzG')
         .getAttribute("style");
-      
+
       const match = styleValue.match(/url\("(.*?)"\)/);
       artistImageHistory = match ? match[1] : null;
     } catch (e) {
-      console.log("⚠️ Imagen artista no encontrada");
+      console.log("⚠️ Imagen artista History no encontrada");
     }
 
     // 🖼️ background Imagen artista (mejor selector)
     try {
       const styleValue = await page
-        .locator('.jiWxWueoicolJZnS.jX9OuHoZE8EC2SYi') 
+        .locator('.jiWxWueoicolJZnS.jX9OuHoZE8EC2SYi')
         .getAttribute("style");
-      
+
       const match = styleValue.match(/url\("(.*?)"\)/);
       backgroundArtistImage = match ? match[1] : null;
     } catch (e) {
@@ -176,8 +176,12 @@ async function scrapeArtist(browser, url) {
           const href = await track.locator("a").first().getAttribute("href");
           link = href ? "https://open.spotify.com" + href : null;
           /* hacer un scraper con este link primero para obtener la imagen del artista con class = obD7rdENNc2n3fC0 eaeL4RTunr0p3ojT qIwhHcbG780QDz68 */
-          if(!artistImage){
-            artistImage = await scraptArtistImageFromMusic(link); // solo se debe hacer 1 sola vez esta peticion
+          if (!artistImage && link && i === 0) {
+            try {
+              artistImage = await scraptArtistImageFromMusic(browser, link);
+            } catch (e) {
+              console.log("⚠️ Falló obtención de imagen desde track");
+            }
           }
 
         } catch {
@@ -193,8 +197,8 @@ async function scrapeArtist(browser, url) {
         try {
           const div = await track.locator(".F_VvNCRKZ2cKj1a9 > div").textContent();
           plays = parseNumber(div);
-          console.log({plays})
-        } catch {}
+          console.log({ plays })
+        } catch { }
 
         songs.push({ title, link, image, plays });
       }
@@ -208,7 +212,9 @@ async function scrapeArtist(browser, url) {
     console.error("❌ Error cargando página:", url);
   }
 
-  await page.close();
+  try {
+    await page.close();
+  } catch (e) {}
 
   return {
     name,
@@ -222,15 +228,39 @@ async function scrapeArtist(browser, url) {
   };
 }
 
-async function scraptArtistImageFromMusic(url){
-  const browser = await chromium.launch({ headless: true });
+async function scraptArtistImageFromMusic(browser, url) {
+  // Reutilizamos el navegador, solo creamos una nueva página
+  console.log("scraptArtistImageFromMusic")
   const page = await browser.newPage();
-  await page.goto(url, { waitUntil: "networkidle", timeout: 60000 });
-  const styleValue = await page
-    .locator('.obD7rdENNc2n3fC0.eaeL4RTunr0p3ojT.qIwhHcbG780QDz68')
-    .first().getAttribute("src");
-  await browser.close();
-  return styleValue;
+  try {
+    await page.goto(url, { waitUntil: "domcontentloaded", timeout: 15000 });
+
+    const seeAllButton = page.locator('button:has-text("See all artists")');
+    if (await seeAllButton.isVisible({ timeout: 3000 })) {
+      await seeAllButton.click();
+      await page.waitForTimeout(1000);
+    }
+
+    await page.waitForSelector('[data-testid="track-artist-link-card"] img', { timeout: 5000 }).catch(() => {});
+
+    const imgs = await page.locator('[data-testid="track-artist-link-card"] img').all();
+    let getSRC = [];
+    for (const img of imgs) {
+      getSRC.push({
+        img: await img.getAttribute("src"),
+        name: await img.getAttribute("alt")
+      });
+    }
+    console.log({ getSRC })
+    return getSRC;
+  } catch (e) {
+    console.log("no se encontro la imagen del artista")
+    return null;
+  } finally {
+    try {
+      await page.close();
+    } catch (e) {}
+  }
 }
 
 // 🔹 batches

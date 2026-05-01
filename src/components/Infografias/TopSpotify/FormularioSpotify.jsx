@@ -37,9 +37,13 @@ const FormularioSpotify = ({
       spotifyDataGlobalMusic.forEach(artist => {
         if (artist.topTracks && Array.isArray(artist.topTracks)) {
           artist.topTracks.forEach(track => {
+            const correctImage = Array.isArray(artist.artistImage)
+              ? (artist.artistImage.find(imgObj => imgObj.name?.toLowerCase() === artist.name?.toLowerCase())?.img || artist.artistImage[0]?.img || artist.artistImageHistory || "")
+              : (artist.artistImage || artist.artistImageHistory || "");
+
             const artistInfo = {
               name: artist.name,
-              image: artist.artistImage || artist.artistImageHistory || "",
+              image: correctImage,
               url: artist.url,
               background: artist.backgroundArtistImage || ""
             };
@@ -79,8 +83,10 @@ const FormularioSpotify = ({
       setTopMusic(true);
     } else {
       const dataToUse = sourceType === "venezolanos" ? spotifyData : sourceType === "globales" ? spotifyDataGlobal : spotifyDataGlobalMusic;
+      // necesito que solo tome los que tengan el mes de hoy en el campo month 
       // Ordenar por listeners de mayor a menor (por artista)
-      sortedData = [...dataToUse].sort((a, b) => (b.listeners || 0) - (a.listeners || 0));
+      
+      sortedData = [...dataToUse.filter(item => item.month === "2026-05-01")].sort((a, b) => (b.listeners || 0) - (a.listeners || 0));
     }
 
     // 2. Tomar los elementos según el inicio y el total permitido
@@ -139,11 +145,15 @@ const FormularioSpotify = ({
           zoom: 1
         };
 
+        const correctImage = Array.isArray(artist.artistImage)
+          ? (artist.artistImage.find(imgObj => imgObj.name?.toLowerCase() === artist.name?.toLowerCase())?.img || artist.artistImage[0]?.img || artist.artistImageHistory || "")
+          : (artist.artistImage || artist.artistImageHistory || "");
+
         newArtistasInfo[index] = {
-          nuevaImagen: artist.artistImage || artist.artistImageHistory || "",
+          nuevaImagen: correctImage,
           name: artist.name,
           href: artist.url,
-          images: [{ url: artist.artistImage }]
+          images: [{ url: correctImage }]
         };
 
         if (artist.topTracks?.[0]) {
