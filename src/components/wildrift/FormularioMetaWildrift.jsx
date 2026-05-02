@@ -33,17 +33,19 @@ const FormularioMetaWildrift = () =>{
     }
     return `https://cdn.communitydragon.org/latest/champion/${championName}/square`
   }
-  const urlItemsData = "https://ddragon.leagueoflegends.com/cdn/15.10.1/data/en_US/item.json";
+  const urlItemsData = `https://ddragon.leagueoflegends.com/cdn/${ddragonVersion}/data/en_US/item.json`;
   const itemImgUrl = (itemId) => {
-    return `https://ddragon.leagueoflegends.com/cdn/15.10.1/img/item/${itemId}`
+    return `https://ddragon.leagueoflegends.com/cdn/${ddragonVersion}/img/item/${itemId}`
   }
+  console.log({urlItemsData, itemImgUrl:itemImgUrl(3068), ddragonVersion})
   // dame una constantes donde pueda obtener las sub runas de las runas
 
   // dame una constante donde pueda obtener las runas de la pagina de runas 
-  const urlRunesData = "https://ddragon.leagueoflegends.com/cdn/15.10.1/data/en_US/runesReforged.json";
+  const urlRunesData = `https://ddragon.leagueoflegends.com/cdn/${ddragonVersion}/data/en_US/runesReforged.json`;
   const runeImgUrl = (runePath) => {
     return `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/${runePath}`
   }
+  console.log({urlRunesData, runeImgUrl:runeImgUrl("perkstyle_domination.png"), ddragonVersion})
 
   useEffect(() => {
     const fetchVersion = async () => {
@@ -112,6 +114,7 @@ const FormularioMetaWildrift = () =>{
         })),
       };
     });
+    console.log({runes})
     return runes;
   }
   useEffect(() => {

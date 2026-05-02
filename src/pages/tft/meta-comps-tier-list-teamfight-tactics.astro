@@ -104,10 +104,10 @@ const admin =
     <p>
       Analizamos el meta de TFT tras los cambios del último parche. Si buscás las comps de TFT más sólidas para rankear en el Set 17, aquí tenés la tier list definitiva. Como especialistas en el circuito competitivo, actualizamos estas builds y composiciones diariamente para que sepas qué jugar, cuándo hacer reroll y cómo optimizar tus items en cada partida.
     </p>
-    <p class="text-update">
+    <!-- <p class="text-update">
       📅 Última actualización parche 17.2B
-    </p>
-    <h2>Top 10 Comps TFT</h2>
+    </p> -->
+    <h2>Top 10 Mejores Comps TFT (Parche 17.2B):</h2>
     {/* 5 en la columna izquierda y 5 en la columna derecha */}
     <ol class="lista-numerada">
       {
@@ -448,6 +448,9 @@ const admin =
     margin: 5px 0;
     font-size: 1em;
   }
+  h2{
+    font-size: 1.4em;
+  }
   h2, h3{
     margin-block-start: 0;
     margin-block-end: 0;
@@ -479,20 +482,7 @@ const admin =
   }
 </style>
 
-<script>
-  document.addEventListener("astro:page-load", () => {
-    const pantalla = window.innerWidth;
-    const tituloMetaComps = document.getElementById("tituloMetaComps");
-    if (tituloMetaComps && pantalla <= 900) {
-      tituloMetaComps.innerHTML =
-        "Best TFT Meta Comps & Builds Mejores Composiciones";
-    }
-    if (tituloMetaComps && pantalla > 900) {
-      tituloMetaComps.innerHTML =
-        "Best TFT Meta Comps & Builds | Mejores Composiciones";
-    }
-  });
-</script>
+
 
 <script>
   import { toggleActiveComp, activeCompId } from "src/stores/menuFiltradoAdmin";

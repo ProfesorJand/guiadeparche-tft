@@ -15,7 +15,7 @@ import ChampTierList from "@components/TFT/ChampTierList.jsx"
 import { AllCraftableItems, setNumberPBE,setNumberLatest, versionTFT, setMutatorLatest, setMutatorPBE, dataTFTChampions, dataTFTAllItems, dataTFTTraits } from "src/stores/dataTFT.js"
 import { useStore } from "@nanostores/react"
 import InputPowerUpList from "@components/TFT/InputPowerUpList.jsx"
-import FormularioCrearCompoTFT from "./FormularioCrearCompoTFT.jsx"
+//import FormularioCrearCompoTFT from "./FormularioCrearCompoTFT.jsx"
 
 
 const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,edittitulo,editshadowCategory,editinfographicCategory,editaumentos,editgameplay,edittips,editisHide,editboardInfo,editpictureSave,editcarouselItems,editradiantItem,editspatulaItem1,editspatulaItem2,editoriginalComp, editCampeonTierList, editAugmentTierList, editCampeonItemTierList =[{},{},{}], editCampeonTraitTierList = [{}], editCampeonPowerUpList = [{}],editChamp3Stars, editVersion=null, editisInInfographic, editTipSeo }) =>{
@@ -638,7 +638,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
       }
     return (
     <form className={style.containerCrearCompo} onSubmit={(e)=>mySubmit(e)}>
-      <FormularioCrearCompoTFT />
+      {/* <FormularioCrearCompoTFT /> */}
       <div className={style.containerFirst}>
         <label>
           <span>Is In Infographic:</span>
