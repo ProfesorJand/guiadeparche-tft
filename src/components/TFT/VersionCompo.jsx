@@ -21,7 +21,7 @@ export default function VersionCompo() {
 
   return (
     <span className={Style.minititulo}>
-      Tier List Set {version === "pbe" ? setNumberPBE : setNumberLatest} / Version {version === "pbe" ? constantes.MetaCompVersionPBE : constantes.MetaCompVersion}
+      {/* Tier List Set {version === "pbe" ? setNumberPBE : setNumberLatest} / Version {version === "pbe" ? constantes.MetaCompVersionPBE : constantes.MetaCompVersion} */}
     </span>
   );
 }

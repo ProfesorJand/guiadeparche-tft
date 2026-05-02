@@ -14,8 +14,9 @@ interface Props {
   image?: string;
   canonical?: URL;
   hide?:boolean;
+  modified_time?:string;
 }
-const { title, JSONSchema, description, keywords, image, canonical, hide=false } = Astro.props;
+const { title, JSONSchema, description, keywords, image, canonical, hide=false, modified_time } = Astro.props;
 
 
 ---
@@ -54,6 +55,7 @@ const { title, JSONSchema, description, keywords, image, canonical, hide=false }
     {keywords && <meta name="keywords" content={keywords} />}
     {image && <meta property="og:image" content={image} />}
     {canonical && <link rel="canonical" href={canonical} />}
+    {modified_time && <meta property="article:modified_time" content={modified_time} />}
 
      <!-- Schema Script -->
     {JSONSchema && <script type="application/ld+json" set:html={JSONSchema}></script>}

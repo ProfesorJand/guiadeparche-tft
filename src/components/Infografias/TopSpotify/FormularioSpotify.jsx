@@ -125,11 +125,11 @@ const FormularioSpotify = ({
 
         const plays = item.plays || 0;
         const formattedPlays = plays >= 1000000000
-          ? (plays / 1000000000).toLocaleString('en-US', { maximumFractionDigits: 1 }) + "B"
+          ? (plays / 1000000000).toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + "B"
           : plays >= 1000000
-            ? (plays / 1000000).toLocaleString('en-US', { maximumFractionDigits: 1 }) + "M"
+            ? (plays / 1000000).toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + "M"
             : plays >= 1000
-              ? (plays / 1000).toLocaleString('en-US', { maximumFractionDigits: 1 }) + "K"
+              ? (plays / 1000).toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + "K"
               : plays.toString();
 
         newMonthlyListener[index] = formattedPlays;
@@ -165,9 +165,9 @@ const FormularioSpotify = ({
 
         const listeners = artist.listeners || 0;
         const formattedListeners = listeners >= 1000000
-          ? (listeners / 1000000).toLocaleString('en-US', { maximumFractionDigits: 1 }) + "M"
+          ? (listeners / 1000000).toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + "M"
           : listeners >= 1000
-            ? (listeners / 1000).toLocaleString('en-US', { maximumFractionDigits: 1 }) + "K"
+            ? (listeners / 1000).toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + "K"
             : listeners.toString();
 
         newMonthlyListener[index] = formattedListeners;

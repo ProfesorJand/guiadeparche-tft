@@ -15,9 +15,10 @@ import ChampTierList from "@components/TFT/ChampTierList.jsx"
 import { AllCraftableItems, setNumberPBE,setNumberLatest, versionTFT, setMutatorLatest, setMutatorPBE, dataTFTChampions, dataTFTAllItems, dataTFTTraits } from "src/stores/dataTFT.js"
 import { useStore } from "@nanostores/react"
 import InputPowerUpList from "@components/TFT/InputPowerUpList.jsx"
+import FormularioCrearCompoTFT from "./FormularioCrearCompoTFT.jsx"
 
 
-const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,edittitulo,editshadowCategory,editinfographicCategory,editaumentos,editgameplay,edittips,editisHide,editboardInfo,editpictureSave,editcarouselItems,editradiantItem,editspatulaItem1,editspatulaItem2,editoriginalComp, editCampeonTierList, editAugmentTierList, editCampeonItemTierList =[{},{},{}], editCampeonTraitTierList = [{}], editCampeonPowerUpList = [{}],editChamp3Stars, editVersion=null, editisInInfographic }) =>{
+const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,edittitulo,editshadowCategory,editinfographicCategory,editaumentos,editgameplay,edittips,editisHide,editboardInfo,editpictureSave,editcarouselItems,editradiantItem,editspatulaItem1,editspatulaItem2,editoriginalComp, editCampeonTierList, editAugmentTierList, editCampeonItemTierList =[{},{},{}], editCampeonTraitTierList = [{}], editCampeonPowerUpList = [{}],editChamp3Stars, editVersion=null, editisInInfographic, editTipSeo }) =>{
     const currentVersion= useStore(versionTFT);
     const itemsDataIngles = useStore(dataTFTAllItems)
     const [version, setVersion] = useState(versionTFT.get())
@@ -65,6 +66,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
     const allChampions = useStore(dataTFTChampions);
     const [loadingPicture, setLoadingPicture] = useState(false)
     const traitsList = useStore(dataTFTTraits);
+    const [tipSeo, setTipSeo] = useState(editTipSeo)
     const championsColor = [
       "var(--color-hex-cost-default)",
       "var(--color-hex-cost-1)",
@@ -222,6 +224,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         setVersion(editVersion)
         setIsHide(editisHide)
         setIsInInfographic(editisInInfographic)
+        setTipSeo(editTipSeo)
       }
     },[edit])
 
@@ -570,7 +573,8 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           champTrait,
           champPowerUp,
           champ3Stars,
-          version:currentVersion
+          version:currentVersion,
+          tipSeo
         }
         if(tier && posicion && dificultad && titulo && shadowCategory && infographicCategory && aumentos.length && Object.keys(carouselItems).length && Object.keys(boardInfo?.early?.data || {}).length && Object.keys(boardInfo).length && Object.keys(campeonTierList).length && Object.keys(boardInfo?.[originalComp]?.data || {}).length){
           const token = import.meta.env.PUBLIC_TOKEN_META;
@@ -634,6 +638,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
       }
     return (
     <form className={style.containerCrearCompo} onSubmit={(e)=>mySubmit(e)}>
+      <FormularioCrearCompoTFT />
       <div className={style.containerFirst}>
         <label>
           <span>Is In Infographic:</span>
@@ -738,6 +743,8 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         </select>
       </label>
 
+
+
       <label>
         <span>Original Comp to Show:</span>
         <select onChange={(e)=>{setOriginalComp(e.target.value)}} defaultValue={editoriginalComp || originalComp}>
@@ -760,6 +767,18 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           <option value={false}>FALSE</option>
           <option value={true}>TRUE</option>
         </select>
+      </label>
+
+      <label>
+        <span>Tip Seo:</span>
+        <textarea
+          name="tipseo"
+          type="text"
+          defaultValue={editTipSeo || tipSeo}
+          onChange={(e)=>setTipSeo(e.target.value)}
+          placeholder="Type Tip Seo"
+          required
+        />
       </label>
 
       <br></br>

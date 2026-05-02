@@ -13,6 +13,8 @@ import Composicion from "@components/main/Admin/Composicion.jsx";
 const version = versionTFT.get();
 const setNumber = version === "pbe" ? setNumberPBE : setNumberLatest;
 const nameDelSet = nameOfSet[version];
+
+
 const title = `▷ Best TFT Comps & Builds Set ${setNumber} ${nameDelSet}.`;
 // Example: Construct a canonical URL using your production domain
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
@@ -24,15 +26,16 @@ const keywords =
   "TFT Meta, Meta comps, comps TFT, comp TFT, Meta TFT, composiciones TFT, build TFT";
 const thumbnail = "https://guiadeparche.com/tft/set17/backgroundWrapperSet17.webp";
 const imgPost = "https://guiadeparche.com/tft/assets/GP_logo.png";
+const modified_time = new Date().toISOString();
 
 
 // const todasLasComps = await fetchAndSortComps(composMetaJSON);
 const todasLasCompsPBE = await fetchAndSortComps(composMetaPBEJSON);
-console.log({todasLasCompsPBE})
+
 const top10Comps = todasLasCompsPBE.slice(0, 10) ; // version === "pbe" ? todasLasCompsPBE.slice(0, 10) : todasLasComps.slice(0, 10)
 const baseSchema = JSON.parse(crearJSONSchema({ title, imgPost, thumbnail, description }));
-
-
+const top5Comps = todasLasCompsPBE.slice(0, 5) ;
+console.log({top5Comps})
 
 const dificultadEspañol = {
   "Easy": "Fácil",
@@ -81,6 +84,7 @@ const admin =
   keywords={keywords}
   image={"/campeones/set12/ryze.webp"}
   canonical={canonicalURL}
+  modified_time={modified_time}
 >
   <Fragment slot="bodyMainAside">
     <TierListMetaComps todasLasCompsPBE={todasLasCompsPBE} client:only="react" /> <!--     <TierListMetaComps todasLasComps={todasLasComps} todasLasCompsPBE={todasLasCompsPBE} client:only="react" /> -->
@@ -95,57 +99,37 @@ const admin =
 </Fragment> -->
   <Main>
     <h1 id="tituloMetaComps" class="titulo tituloMetaComps">
-      Best TFT Meta Comps & Builds | Mejores Composiciones
+      Mejores Composiciones de TFT (Meta Comps)<br>Tier List Set {setNumber}
     </h1>
+    <p>
+      Analizamos el meta de TFT tras los cambios del último parche. Si buscás las comps de TFT más sólidas para rankear en el Set 17, aquí tenés la tier list definitiva. Como especialistas en el circuito competitivo, actualizamos estas builds y composiciones diariamente para que sepas qué jugar, cuándo hacer reroll y cómo optimizar tus items en cada partida.
+    </p>
+    <p class="text-update">
+      📅 Última actualización parche 17.2B
+    </p>
+    <h2>Top 10 Comps TFT</h2>
+    {/* 5 en la columna izquierda y 5 en la columna derecha */}
+    <ol class="lista-numerada">
+      {
+        top10Comps.map((comp) => (
+          <li>
+            <a href={`#${comp.id}`} class="anchor-simple">
+              {comp.titulo}
+            </a>
+          </li>
+        ))
+      }
+    </ol>
     <VersionCompo client:only="react" />
-    <!-- <div class="videosYT">
-      <div class="videoYTAdd">
-        <h2 class="tituloYt">Español</h2>
-        <Youtube src="https://youtube.com/playlist?list=PLxRnNvReiLMEriFDu0UxXScDabCIX-PWy&si=YW7NdSvPfu9dQhx9" client:load></Youtube>
-      </div>
-      <div class="videoYTAdd">
-        <h2 class="tituloYt">English</h2>
-        <Youtube src="https://www.youtube.com/playlist?list=PLxRnNvReiLMHHtPFxG2tCBzNCrIz_-rnq" client:load></Youtube>
-      </div>
-    </div> -->
-    <!-- <div id="SelectVersion">
-      <SelectVersion client:only="react"/>
-    </div> -->
-    <!-- <div id="ContainerCompsLive" class={version === "pbe" ? "hide" : ""}>
-      <div class="containerMeta">
-        {
-          todasLasComps.map((comp, index) => (
-            <div class="ranking-item-container">
-              <div class="ranking-header-seo" data-comp-id={comp.id} onclick={`if(window.toggleActiveComp) window.toggleActiveComp('${comp.id}')`}>
-                <div class="ranking-title-container">
-                  <h2 class="ranking-title">{index + 1}. Composicion de {(comp as any).titulo}</h2>
-                  <p class="ranking-description">Tier {(comp as any).tier} - Dificultad: {dificultadEspañol[(comp as any).dificultad]} - {infographicCategoriesEspañol[(comp as any).infographicCategory]}</p>
-                </div>
-                <span class="ranking-icon">▼</span>
-              </div>
-              
-              <div class="containerMetaTier hide" data-comp-id={comp.id}>
-                <Composicion
-                  id={comp.id}
-                  compo={comp}
-                  admin={admin}
-                  client:load
-                />
-              </div>
-            </div>
-          ))
-        }
-      </div>
-    </div> -->
-
+  
     <div id="ContainerCompsPBE" class={version === "pbe" ? "" : "hide"}>
       <div class="containerMeta">
         {
           todasLasCompsPBE.map((comp, index) => (
             <div class="ranking-item-container">
-              <div class="ranking-header-seo" data-comp-id={comp.id} onclick={`if(window.toggleActiveComp) window.toggleActiveComp('${comp.id}')`}>
+              <div id={comp.id} class="ranking-header-seo" data-comp-id={comp.id} onclick={`if(window.toggleActiveComp) window.toggleActiveComp('${comp.id}')`}>
                 <div class="ranking-title-container">
-                  <h2 class="ranking-title">{(index + 1).toString().toUpperCase()}. COMPOSICION DE {(comp as any).titulo.toUpperCase()}</h2>
+                  <h3 class="ranking-title">{(index + 1).toString().toUpperCase()}. COMP {(comp as any).titulo.toUpperCase()}</h3>
                   <p class="ranking-description">Tier {(comp as any).tier} - Dificultad: {dificultadEspañol[(comp as any).dificultad]} - {infographicCategoriesEspañol[(comp as any).infographicCategory]}</p>
                   <div class="container-champs">
                     {
@@ -201,6 +185,23 @@ const admin =
 </Layout>
 
 <style>
+  .lista-numerada{
+    width: 100%;
+    column-count: 2;
+    list-style-position: inside;
+    column-gap: 40px; /* Space between columns */
+  }
+  .anchor-simple{
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    color: var(--color-text-principal);
+    &:hover{
+      color: var(--text-color-white-secondary);
+    }
+  }
+  .text-update{
+    text-align: center;
+  }
   .container-champs{
     display: flex;
     flex-direction: row;
@@ -385,6 +386,7 @@ const admin =
     gap: 15px;
     transition: background 0.3s;
     margin-bottom: 8px;
+    scroll-margin-top: calc(var(--height-header) + 20px);
   }
   .ranking-header-seo:hover {
     background: var(--bg-tertiary);
@@ -446,7 +448,7 @@ const admin =
     margin: 5px 0;
     font-size: 1em;
   }
-  h2{
+  h2, h3{
     margin-block-start: 0;
     margin-block-end: 0;
     text-align: left;

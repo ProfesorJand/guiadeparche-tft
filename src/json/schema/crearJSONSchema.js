@@ -15,7 +15,16 @@ export function crearJSONSchema({title, thumbnail = logo.src, imgPost = logo.src
                 "@type": "Person",
                 "name": "Juan Pedro",
                 "familyName":"Andrade",
-                "alternateName":"Jupeson"
+                "alternateName":"Jupeson",
+                "sameAs":[
+                    "https://youtube.com/@jupeson",
+                    "https://twitch.tv/jupeson",
+                    "https://tiktok.com/@jupeson",
+                    "https://liquipedia.net/tft/Jupeson",
+                    "https://instagram.com/jupeson/",
+                    "https://x.com/jupeson",
+                    "https://facebook.com/jupesongaming"
+                ]
 
             },
             {

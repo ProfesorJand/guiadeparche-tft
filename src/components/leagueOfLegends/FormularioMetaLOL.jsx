@@ -18,7 +18,7 @@ const FormularioMetaLOL = () =>{
   const [runes, setRunes] = useState([]);
   const [localMeta, setLocalMeta] = useState({});
   const lanersChampionsMetaStore = useStore(lanersChampionsMeta);
-  const [ddragonVersion, setDdragonVersion] = useState("15.23.1");
+  const [ddragonVersion, setDdragonVersion] = useState("16.9.1");
   
   
   const championImgUrlPortrait = (championName) => {
@@ -27,14 +27,15 @@ const FormularioMetaLOL = () =>{
   const championImgUrlSquare = (championName) => {
     return `https://cdn.communitydragon.org/latest/champion/${championName}/square`
   }
-  const urlItemsData = "https://ddragon.leagueoflegends.com/cdn/15.10.1/data/en_US/item.json";
+  const urlItemsData = `https://ddragon.leagueoflegends.com/cdn/${ddragonVersion}/data/en_US/item.json`;
   const itemImgUrl = (itemId) => {
-    return `https://ddragon.leagueoflegends.com/cdn/15.10.1/img/item/${itemId}`
+    return `https://ddragon.leagueoflegends.com/cdn/${ddragonVersion}/img/item/${itemId}`
   }
   // dame una constantes donde pueda obtener las sub runas de las runas
   
   // dame una constante donde pueda obtener las runas de la pagina de runas 
-  const urlRunesData = "https://ddragon.leagueoflegends.com/cdn/15.10.1/data/en_US/runesReforged.json";
+  const urlRunesData = `https://ddragon.leagueoflegends.com/cdn/${ddragonVersion}/data/en_US/runesReforged.json`; // esta version es vieja como hago para obtener una actualizada?
+ 
   const runeImgUrl = (runePath) => {
     return `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/${runePath}`
   }
