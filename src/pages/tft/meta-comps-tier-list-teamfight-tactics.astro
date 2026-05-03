@@ -35,7 +35,6 @@ const todasLasCompsPBE = await fetchAndSortComps(composMetaPBEJSON);
 const top10Comps = todasLasCompsPBE.slice(0, 10) ; // version === "pbe" ? todasLasCompsPBE.slice(0, 10) : todasLasComps.slice(0, 10)
 const baseSchema = JSON.parse(crearJSONSchema({ title, imgPost, thumbnail, description }));
 const top5Comps = todasLasCompsPBE.slice(0, 5) ;
-console.log({top5Comps})
 
 const dificultadEspañol = {
   "Easy": "Fácil",
@@ -127,7 +126,7 @@ const admin =
         {
           todasLasCompsPBE.map((comp, index) => (
             <div class="ranking-item-container">
-              <div id={comp.id} class="ranking-header-seo" data-comp-id={comp.id} onclick={`if(window.toggleActiveComp) window.toggleActiveComp('${comp.id}')`}>
+              <div id={comp.id} class="ranking-header-seo" data-comp-id={comp.id} onclick={`if(window.toggleActiveComp) window.toggleActiveComp('${comp.id}')`} role="button" tabindex="0" ontouchstart="">
                 <div class="ranking-title-container">
                   <h3 class="ranking-title">{(index + 1).toString().toUpperCase()}. COMP {(comp as any).titulo.toUpperCase()}</h3>
                   <p class="ranking-description">Tier {(comp as any).tier} - Dificultad: {dificultadEspañol[(comp as any).dificultad]} - {infographicCategoriesEspañol[(comp as any).infographicCategory]}</p>
@@ -190,6 +189,8 @@ const admin =
     column-count: 2;
     list-style-position: inside;
     column-gap: 40px; /* Space between columns */
+    box-sizing: border-box;
+    padding: 0;
   }
   .anchor-simple{
     cursor: pointer;
@@ -243,6 +244,7 @@ const admin =
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    box-sizing: border-box;
   }
   .container-items{
     display: flex;
@@ -387,6 +389,8 @@ const admin =
     transition: background 0.3s;
     margin-bottom: 8px;
     scroll-margin-top: calc(var(--height-header) + 20px);
+    box-sizing: border-box;
+    width: 100%;
   }
   .ranking-header-seo:hover {
     background: var(--bg-tertiary);
@@ -396,10 +400,10 @@ const admin =
     font-size: 1.2rem;
     min-width: 40px;
   }
-  /* .ranking-title-container {
-    display: flex;
-    gap: 5px;
-  } */
+  .ranking-title-container {
+    flex: 1;
+    min-width: 0;
+  }
   .ranking-title {
     flex: 1;
     font-weight: bold;
