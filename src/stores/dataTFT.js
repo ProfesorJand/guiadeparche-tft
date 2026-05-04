@@ -284,7 +284,11 @@ export const abreviarNombres = (nombre) =>{
     {
      nombre:"Nunu & Willump",
      abreviacion: "Nunu"
-    }
+    },
+    {
+      nombre:"Twisted Fate",
+      abreviacion: "TF",
+    },
 
   ]
   if(nombresParaAbreviar.some(campeon => campeon.nombre === nombre)){
