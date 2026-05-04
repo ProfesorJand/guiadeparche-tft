@@ -84,6 +84,7 @@ const admin =
   image={"/campeones/set12/ryze.webp"}
   canonical={canonicalURL}
   modified_time={modified_time}
+  mainBackground={"solid"}
 >
   <Fragment slot="bodyMainAside">
     <TierListMetaComps todasLasCompsPBE={todasLasCompsPBE} client:only="react" /> <!--     <TierListMetaComps todasLasComps={todasLasComps} todasLasCompsPBE={todasLasCompsPBE} client:only="react" /> -->
@@ -96,7 +97,7 @@ const admin =
 <Fragment slot="bodyMainAsideAds">
   <AdComponent/>
 </Fragment> -->
-  <Main>
+  <Main >
     <h1 id="tituloMetaComps" class="titulo tituloMetaComps">
       Mejores Composiciones de TFT (Meta Comps)<br>Tier List Set {setNumber}
     </h1>
@@ -113,7 +114,7 @@ const admin =
         top10Comps.map((comp) => (
           <li>
             <a href={`#${comp.id}`} class="anchor-simple">
-              {comp.titulo}
+              {comp.titulo} {`(${comp.tier})`}
             </a>
           </li>
         ))
@@ -126,7 +127,7 @@ const admin =
         {
           todasLasCompsPBE.map((comp, index) => (
             <div class="ranking-item-container">
-              <div id={comp.id} class="ranking-header-seo" data-comp-id={comp.id} onclick={`if(window.toggleActiveComp) window.toggleActiveComp('${comp.id}')`} role="button" tabindex="0" ontouchstart="">
+              <div id={comp.id} class="ranking-header-seo" data-comp-id={comp.id} data-tier={(comp as any).tier} onclick={`if(window.toggleActiveComp) window.toggleActiveComp('${comp.id}')`} role="button" tabindex="0" ontouchstart="">
                 <div class="ranking-title-container">
                   <h3 class="ranking-title">{(index + 1).toString().toUpperCase()}. COMP {(comp as any).titulo.toUpperCase()}</h3>
                   <p class="ranking-description">Tier {(comp as any).tier} - Dificultad: {dificultadEspañol[(comp as any).dificultad]} - {infographicCategoriesEspañol[(comp as any).infographicCategory]}</p>
@@ -196,8 +197,9 @@ const admin =
     cursor: pointer;
     transition: all 0.3s ease-in-out;
     color: var(--color-text-principal);
+    text-decoration: none;
     &:hover{
-      color: var(--text-color-white-secondary);
+      color: var(--color-hex-cost-1);
     }
   }
   .text-update{
@@ -391,6 +393,50 @@ const admin =
     scroll-margin-top: calc(var(--height-header) + 20px);
     box-sizing: border-box;
     width: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+  .ranking-header-seo::after {
+    content: attr(data-tier);
+    position: absolute;
+    right: 5%;
+    top: 12px;
+    transform: translateY(0);
+    font-size: 3rem;
+    font-family: 'ObvioslyWideBold', sans-serif;
+    color: white;
+    opacity: 0.08;
+    pointer-events: none;
+    z-index: 0;
+    line-height: 1;
+  }
+  .ranking-header-seo[data-tier="S"] {
+    background: linear-gradient(135deg, rgba(139, 0, 0, 0.6) 0%, rgba(60, 0, 0, 0.8) 100%);
+    border-color: rgba(255, 50, 50, 0.3);
+  }
+  .ranking-header-seo[data-tier="S"]:hover {
+    background: linear-gradient(135deg, rgba(159, 0, 0, 0.7) 0%, rgba(80, 0, 0, 0.9) 100%);
+  }
+  .ranking-header-seo[data-tier="A"] {
+    background: linear-gradient(135deg, rgba(153, 115, 0, 0.6) 0%, rgba(80, 60, 0, 0.8) 100%);
+    border-color: rgba(255, 200, 50, 0.3);
+  }
+  .ranking-header-seo[data-tier="A"]:hover {
+    background: linear-gradient(135deg, rgba(173, 135, 0, 0.7) 0%, rgba(100, 80, 0, 0.9) 100%);
+  }
+  .ranking-header-seo[data-tier="B"] {
+    background: linear-gradient(135deg, rgba(75, 85, 99, 0.6) 0%, rgba(31, 41, 55, 0.8) 100%);
+    border-color: rgba(156, 163, 175, 0.3);
+  }
+  .ranking-header-seo[data-tier="B"]:hover {
+    background: linear-gradient(135deg, rgba(95, 105, 119, 0.7) 0%, rgba(51, 61, 75, 0.9) 100%);
+  }
+  .ranking-header-seo[data-tier="C"] {
+    background: linear-gradient(135deg, rgba(110, 60, 30, 0.6) 0%, rgba(60, 30, 10, 0.8) 100%);
+    border-color: rgba(180, 100, 50, 0.3);
+  }
+  .ranking-header-seo[data-tier="C"]:hover {
+    background: linear-gradient(135deg, rgba(130, 80, 50, 0.7) 0%, rgba(80, 50, 30, 0.9) 100%);
   }
   .ranking-header-seo:hover {
     background: var(--bg-tertiary);
@@ -403,6 +449,8 @@ const admin =
   .ranking-title-container {
     flex: 1;
     min-width: 0;
+    position: relative;
+    z-index: 1;
   }
   .ranking-title {
     flex: 1;
@@ -425,6 +473,8 @@ const admin =
   .ranking-icon {
     font-size: 0.7rem;
     color: #666;
+    position: relative;
+    z-index: 1;
   }
 
   .containerMetaTier {
