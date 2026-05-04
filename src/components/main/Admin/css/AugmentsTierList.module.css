@@ -56,6 +56,7 @@
   
   display: flex;
   width: 100%;
+
 }
 
 /* Tooltip oculto por defecto */
@@ -73,6 +74,8 @@
   box-sizing: border-box;
   opacity: 0;
   transition: opacity 0.3s ease, visibility 0.3s ease;
+  word-wrap: break-word; /* Estándar antiguo */
+  overflow-wrap: break-word; /* Estándar moderno */
 }
 
 /* Mostrar el tooltip al hacer hover */
@@ -88,6 +91,8 @@
 
 .tooltipDesc{
   font-size: small;
+  word-wrap: break-word; /* Estándar antiguo */
+  overflow-wrap: break-word; /* Estándar moderno */
 }
 
 .effects{

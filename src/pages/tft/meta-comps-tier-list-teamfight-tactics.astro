@@ -459,6 +459,10 @@ const admin =
   .ranking-header-seo:hover {
     background: var(--bg-tertiary);
   }
+  /* Fix iOS Safari dropping clicks on inner elements */
+  .ranking-header-seo * {
+    pointer-events: none;
+  }
   .ranking-number {
     font-family: 'ObvioslyWideBold', sans-serif;
     font-size: 1.2rem;
@@ -584,16 +588,14 @@ const admin =
   import { toggleActiveComp, activeCompId } from "src/stores/menuFiltradoAdmin";
   import { versionTFT, swapVersionTFT } from "@stores/dataTFT";
 
-  // Event delegation to bypass iOS Safari inline click issues
-  document.addEventListener("click", (e) => {
-    const target = e.target as HTMLElement;
-    const header = target.closest(".ranking-header-seo");
-    if (header) {
+  // Direct event listeners to bypass iOS Safari event bubbling bugs
+  document.querySelectorAll(".ranking-header-seo").forEach((header) => {
+    header.addEventListener("click", () => {
       const compId = header.getAttribute("data-comp-id");
       if (compId) {
         toggleActiveComp(compId);
       }
-    }
+    });
   });
 
   // Expose to window for onclick handlers in static HTML

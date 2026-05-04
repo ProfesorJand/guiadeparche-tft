@@ -41,6 +41,8 @@
   width: 100%;
   left:0;
   box-sizing: border-box;
+  word-wrap: break-word; /* Estándar antiguo */
+  overflow-wrap: break-word; /* Estándar moderno */
 }
 
 .containerAumento:hover .tooltip{
@@ -54,6 +56,8 @@
 
 .tooltipDesc{
   font-size: small;
+  word-wrap: break-word; /* Estándar antiguo */
+  overflow-wrap: break-word; /* Estándar moderno */
 }
 
 .effects{
