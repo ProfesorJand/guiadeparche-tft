@@ -15,10 +15,12 @@ interface Props {
   canonical?: URL;
   hide?:boolean;
   modified_time?:string;
+  mainBackground?:string;
 }
-const { title, JSONSchema, description, keywords, image, canonical, hide=false, modified_time } = Astro.props;
+const { title, JSONSchema, description, keywords, image, canonical, hide=false, modified_time, mainBackground } = Astro.props;
 
-
+const mainBgImage = mainBackground === "solid" ? "none" : "radial-gradient(circle, #000000 1px, transparent 1px)";
+const mainBgSize = mainBackground === "solid" ? "none" : "4px 4px";
 ---
 
 <html lang="en">
@@ -126,12 +128,13 @@ const { title, JSONSchema, description, keywords, image, canonical, hide=false, 
   </body>
 </html>
 
-<style is:global>
+<style is:global define:vars={{ mainBgImage, mainBgSize }}>
 
   :root {
     --bg-primary-rgb: 14 3 65;
     --bg-primary: #0e0341;
     --bg-secondary: #0f0b5a;
+    --bg-text-color: #101525;
     --bg-tertiary: #120d69;
     --bg-main: #0c023a;
     --bg-hover:#1d15aa;
@@ -318,8 +321,8 @@ const { title, JSONSchema, description, keywords, image, canonical, hide=false, 
       position: relative;
       flex-direction: column;
       background-color: #101525;
-      background-image: radial-gradient(circle, #000000 1px, transparent 1px);
-      background-size: 4px 4px;
+      background-image: var(--mainBgImage);
+      background-size: var(--mainBgSize);
       opacity: 1;
     }
     .bodyMainAside{
@@ -435,8 +438,8 @@ const { title, JSONSchema, description, keywords, image, canonical, hide=false, 
       position: relative;
       flex-direction: row;
       background-color: #101525;
-      background-image: radial-gradient(circle, #000000 1px, transparent 1px);
-      background-size: 4px 4px;
+      background-image: var(--mainBgImage);
+      background-size: var(--mainBgSize);
       opacity: 1;
     }
     .bodyMainAside{
