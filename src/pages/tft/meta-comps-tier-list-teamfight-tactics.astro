@@ -7,7 +7,7 @@ import { crearJSONSchema } from "src/json/schema/crearJSONSchema";
 import TierListMetaComps from "@components/TFT/TierListMetaComps.jsx";
 import VersionCompo from "@components/TFT/VersionCompo";
 import SelectVersion from "@components/versionTFT/SelectVersion";
-import { composMetaJSON, versionTFT,fetchAndSortComps, composMetaPBEJSON, setNumberPBE, setNumberLatest, nameOfSet } from "@stores/dataTFT";
+import { composMetaJSON, abreviarNombres, versionTFT,fetchAndSortComps, composMetaPBEJSON, setNumberPBE, setNumberLatest, nameOfSet } from "@stores/dataTFT";
 import Composicion from "@components/main/Admin/Composicion.jsx";
 
 const version = versionTFT.get();
@@ -130,7 +130,21 @@ const admin =
               <div id={comp.id} class="ranking-header-seo" data-comp-id={comp.id} data-tier={(comp as any).tier} onclick={`if(window.toggleActiveComp) window.toggleActiveComp('${comp.id}')`} role="button" tabindex="0" ontouchstart="">
                 <div class="ranking-title-container">
                   <h3 class="ranking-title">{(index + 1).toString().toUpperCase()}. COMP {(comp as any).titulo.toUpperCase()}</h3>
-                  <p class="ranking-description">Tier {(comp as any).tier} - Dificultad: {dificultadEspañol[(comp as any).dificultad]} - {infographicCategoriesEspañol[(comp as any).infographicCategory]}</p>
+                  {
+                    comp.tipSeo && (
+                      <p class="ranking-description">{comp.tipSeo}</p>
+                    )
+                  }
+                  {
+                    comp.cuandoJugar && (
+                      <p class="ranking-description">¿Cuándo jugar?: {comp.cuandoJugar}</p>
+                    )
+                  }
+                  {
+                    comp.condicionVictoria && (
+                      <p class="ranking-description">Condición de victoria: {comp.condicionVictoria}</p>
+                    )
+                  }
                   <div class="container-champs">
                     {
                       Object.values(comp.boardInfo[comp.originalComp].data)
@@ -159,7 +173,8 @@ const admin =
                               ))
                             }
                           </div>
-                          <p class="champ-name">{JSON.parse(info.dataCampeon.campeon).nombre}</p>
+                          <p class="champ-name">{abreviarNombres(JSON.parse(info.dataCampeon.campeon).nombre)}</p>
+                          <p class="champ-name-mobile">{abreviarNombres(JSON.parse(info.dataCampeon.campeon).nombre)}</p>
                         </div>
                       )})
                     }
@@ -185,6 +200,9 @@ const admin =
 </Layout>
 
 <style>
+  .champ-name-mobile{
+    display: none;
+  }
   .lista-numerada{
     width: 100%;
     column-count: 2;
@@ -399,7 +417,7 @@ const admin =
   .ranking-header-seo::after {
     content: attr(data-tier);
     position: absolute;
-    right: 5%;
+    right: 5px;
     top: 12px;
     transform: translateY(0);
     font-size: 3rem;
@@ -526,12 +544,23 @@ const admin =
     .champ-name{
       display: none;
     }
+    .champ-name-mobile{
+      display: flex;
+      position: absolute;
+      z-index: 2;
+      top: 100%;
+      font-size: 12px;
+      text-align: center;
+      margin-block-end: 0;
+      margin-block-start: 0;
+    }
     .star{
       top:0px;
       font-size: 10px;
     }
     .ranking-header-seo{
-      padding: 12px 20px 12px 20px;
+      padding:6px 10px 18px 10px;
+      gap:0;
     }
     .lista-numerada{
     column-count: 1;
@@ -552,6 +581,8 @@ const admin =
     document.querySelectorAll('.containerMetaTier').forEach(el => {
       if (el.getAttribute('data-comp-id') === id) {
         el.classList.remove('hide');
+        // Force reflow for iOS Safari to ensure React DOM updates are painted
+        void (el as HTMLElement).offsetHeight;
       } else {
         el.classList.add('hide');
       }

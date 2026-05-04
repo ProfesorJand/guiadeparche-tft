@@ -17,7 +17,16 @@ import { $admin } from "@stores/auth";
 
 const Composicion = ({ id, compo, admin = false, show = true, allwaysOpen = false, onToggle: propOnToggle, isOpen: propIsOpen }) => {
   const storeOpenId = useStore(activeCompId);
-  const isOpen = propIsOpen !== undefined ? propIsOpen : storeOpenId === id;
+  const [localIsOpen, setLocalIsOpen] = useState(false);
+  
+  useEffect(() => {
+    const unsubscribe = activeCompId.subscribe((currentId) => {
+      setLocalIsOpen(currentId === id);
+    });
+    return () => unsubscribe();
+  }, [id]);
+
+  const isOpen = propIsOpen !== undefined ? propIsOpen : (storeOpenId === id || localIsOpen);
   const onToggle = propOnToggle || (() => toggleActiveComp(id));
   const championsTFT = useStore(dataTFTChampions);
   const currentVersion = useStore(versionTFT);
@@ -320,6 +329,9 @@ const Composicion = ({ id, compo, admin = false, show = true, allwaysOpen = fals
           editChamp3Stars={compo?.champ3Stars}
           editVersion={compo.version}
           editradiantItem={compo?.radiantsItems || []}
+          editTipSeo={compo.tipSeo}
+          editCuandoJugar={compo.cuandoJugar}
+          editCondicionVictoria={compo.condicionVictoria}
         />}
       {
         showBigComp &&

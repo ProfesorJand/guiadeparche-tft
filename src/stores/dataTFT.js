@@ -267,6 +267,32 @@ export const fetchAndSortComps = async (url) => {
   }
 }
 
+export const abreviarNombres = (nombre) =>{
+  const nombresParaAbreviar = [
+    {
+      nombre: "The Mighty Mech",
+      abreviacion: "TMM"
+    },
+    {
+      nombre:"Tahm Kench",
+      abreviacion: "TK",
+    },
+    {
+      nombre: "Mordekaiser",
+      abreviacion: "Mordekaiser",
+    },
+    {
+     nombre:"Nunu & Willump",
+     abreviacion: "Nunu"
+    }
+
+  ]
+  if(nombresParaAbreviar.some(campeon => campeon.nombre === nombre)){
+    return nombresParaAbreviar.find(campeon => campeon.nombre === nombre).abreviacion;
+  }
+  return nombre;
+}
+
 export const BASIC_ITEMS = [
   {
     nombre:"BF Sword",

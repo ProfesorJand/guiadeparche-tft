@@ -18,7 +18,7 @@ import InputPowerUpList from "@components/TFT/InputPowerUpList.jsx"
 //import FormularioCrearCompoTFT from "./FormularioCrearCompoTFT.jsx"
 
 
-const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,edittitulo,editshadowCategory,editinfographicCategory,editaumentos,editgameplay,edittips,editisHide,editboardInfo,editpictureSave,editcarouselItems,editradiantItem,editspatulaItem1,editspatulaItem2,editoriginalComp, editCampeonTierList, editAugmentTierList, editCampeonItemTierList =[{},{},{}], editCampeonTraitTierList = [{}], editCampeonPowerUpList = [{}],editChamp3Stars, editVersion=null, editisInInfographic, editTipSeo }) =>{
+const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,edittitulo,editshadowCategory,editinfographicCategory,editaumentos,editgameplay,edittips,editisHide,editboardInfo,editpictureSave,editcarouselItems,editradiantItem,editspatulaItem1,editspatulaItem2,editoriginalComp, editCampeonTierList, editAugmentTierList, editCampeonItemTierList =[{},{},{}], editCampeonTraitTierList = [{}], editCampeonPowerUpList = [{}],editChamp3Stars, editVersion=null, editisInInfographic, editTipSeo, editCuandoJugar, editCondicionVictoria }) =>{
     const currentVersion= useStore(versionTFT);
     const itemsDataIngles = useStore(dataTFTAllItems)
     const [version, setVersion] = useState(versionTFT.get())
@@ -67,6 +67,8 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
     const [loadingPicture, setLoadingPicture] = useState(false)
     const traitsList = useStore(dataTFTTraits);
     const [tipSeo, setTipSeo] = useState(editTipSeo)
+    const [cuandoJugar, setCuandoJugar] = useState("")
+    const [condicionVictoria, setCondicionVictoria] = useState("" )
     const championsColor = [
       "var(--color-hex-cost-default)",
       "var(--color-hex-cost-1)",
@@ -225,6 +227,8 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         setIsHide(editisHide)
         setIsInInfographic(editisInInfographic)
         setTipSeo(editTipSeo)
+        setCuandoJugar(editCuandoJugar)
+        setCondicionVictoria(editCondicionVictoria)
       }
     },[edit])
 
@@ -574,7 +578,9 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           champPowerUp,
           champ3Stars,
           version:currentVersion,
-          tipSeo
+          tipSeo,
+          cuandoJugar,
+          condicionVictoria
         }
         if(tier && posicion && dificultad && titulo && shadowCategory && infographicCategory && aumentos.length && Object.keys(carouselItems).length && Object.keys(boardInfo?.early?.data || {}).length && Object.keys(boardInfo).length && Object.keys(campeonTierList).length && Object.keys(boardInfo?.[originalComp]?.data || {}).length){
           const token = import.meta.env.PUBLIC_TOKEN_META;
@@ -777,7 +783,31 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           defaultValue={editTipSeo || tipSeo}
           onChange={(e)=>setTipSeo(e.target.value)}
           placeholder="Type Tip Seo"
-          required
+          
+        />
+      </label>
+
+      <label>
+        <span>Cuando Jugar:</span>
+        <textarea
+          name="cuandojugar"
+          type="text"
+          defaultValue={editCuandoJugar || cuandoJugar}
+          onChange={(e)=>setCuandoJugar(e.target.value)}
+          placeholder="Type Cuando Jugar"
+          
+        />
+      </label>
+
+      <label>
+        <span>Condicion Victoria:</span>
+        <textarea
+          name="condicionvictoria"
+          type="text"
+          defaultValue={editCondicionVictoria || condicionVictoria}
+          onChange={(e)=>setCondicionVictoria(e.target.value)}
+          placeholder="Type Condicion Victoria"
+          
         />
       </label>
 
