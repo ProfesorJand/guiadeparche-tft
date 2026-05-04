@@ -127,7 +127,7 @@ const admin =
         {
           todasLasCompsPBE.map((comp, index) => (
             <div class="ranking-item-container">
-              <div id={comp.id} class="ranking-header-seo" data-comp-id={comp.id} data-tier={(comp as any).tier} onclick={`if(window.toggleActiveComp) window.toggleActiveComp('${comp.id}')`} role="button" tabindex="0" ontouchstart="">
+              <div id={comp.id} class="ranking-header-seo" data-comp-id={comp.id} data-tier={(comp as any).tier} role="button" tabindex="0">
                 <div class="ranking-title-container">
                   <h3 class="ranking-title">{(index + 1).toString().toUpperCase()}. COMP {(comp as any).titulo.toUpperCase()}</h3>
                   {
@@ -573,6 +573,7 @@ const admin =
     }
     .lista-numerada{
     column-count: 1;
+    margin-block-start: 0;
   }
   }
 </style>
@@ -582,6 +583,18 @@ const admin =
 <script>
   import { toggleActiveComp, activeCompId } from "src/stores/menuFiltradoAdmin";
   import { versionTFT, swapVersionTFT } from "@stores/dataTFT";
+
+  // Event delegation to bypass iOS Safari inline click issues
+  document.addEventListener("click", (e) => {
+    const target = e.target as HTMLElement;
+    const header = target.closest(".ranking-header-seo");
+    if (header) {
+      const compId = header.getAttribute("data-comp-id");
+      if (compId) {
+        toggleActiveComp(compId);
+      }
+    }
+  });
 
   // Expose to window for onclick handlers in static HTML
   (window as any).toggleActiveComp = toggleActiveComp;

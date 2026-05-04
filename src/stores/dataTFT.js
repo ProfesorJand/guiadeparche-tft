@@ -289,6 +289,21 @@ export const abreviarNombres = (nombre) =>{
       nombre:"Twisted Fate",
       abreviacion: "TF",
     },
+    {
+      nombre:"Master Yi",
+      abreviacion: "Yi"
+    },{
+      nombre: "Lissandra",
+      abreviacion: "Liss",
+    },
+    {
+      nombre:"Cho'Gath",
+      abreviacion:"Cho"
+    },
+    {
+      nombre:"Mordekaiser",
+      abreviacion:"Morde",
+    }
 
   ]
   if(nombresParaAbreviar.some(campeon => campeon.nombre === nombre)){
