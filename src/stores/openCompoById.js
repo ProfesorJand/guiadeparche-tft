@@ -25,16 +25,16 @@ export const scrollToComposicion = () => {
         if (element) {
           const headerHtml = document.getElementsByClassName("bodyHeader");
           const headerHeight = headerHtml[0].clientHeight;
-          
+
           window.scrollTo({
             top: element.getBoundingClientRect().y + scrollY - headerHeight,
             behavior: "smooth",
           });
 
-          
+
         }
       }, 550);
-      
+
     }
   });
 };
