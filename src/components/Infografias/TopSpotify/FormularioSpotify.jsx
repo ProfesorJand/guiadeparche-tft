@@ -174,6 +174,12 @@ const FormularioSpotify = ({
       }
     });
 
+    setDatos((oldData)=>{
+      return {
+        ...oldData,
+        titulo:sourceType === "venezolanos" ? "TOP 10 ARTISTAS VENEZOLANOS" : "TOP 10 ARTISTAS GLOBALES"  
+      }
+    })
     setDatosArtistas(newDatosArtistas);
     setArtistasInfo(newArtistasInfo);
     setMusicInfo(newMusicInfo);
@@ -439,7 +445,7 @@ const FormularioSpotify = ({
         Buscar artistas
       </button>
 
-      <button type="button" onClick={() => CapturarImagen({ backgroundRef, nombre: "Top10MusicaSpotify" })}>
+      <button type="button" onClick={() => CapturarImagen({ backgroundRef, nombre: sourceType === "venezolanos" ? `SpotifyVenezuelaTop10-${datos.fechaArchivo}` : `SpotifyGlobalTop10-${datos.fechaArchivo}` })}>
         Capturar
       </button>
 

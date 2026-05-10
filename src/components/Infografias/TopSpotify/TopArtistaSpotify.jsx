@@ -12,7 +12,8 @@ const TopArtistaSpotify = ()=>{
   const [datos, setDatos] = useState({
     titulo:"TOP 10 ARTISTAS VENEZOLANOS",
     titulo2:"MÁS ESCUCHADOS EN SPOTIFY",
-    fecha:`${dia} DE ${mes.toUpperCase()} ${año} (OYENTES MENSUALES)`
+    fecha:`${dia} DE ${mes.toUpperCase()} ${año} (OYENTES MENSUALES)`,
+    fechaArchivo: `${dia}-${mes}-${año}`
   });
   const numberOfTopArtist = 10;
   const [startNumberOfArtist, setStartNumberOfArtist] = useState(1);
