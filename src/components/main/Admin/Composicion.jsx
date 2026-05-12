@@ -215,7 +215,7 @@ const Composicion = ({ id, compo, admin = false, show = true, allwaysOpen = fals
   }
 
   return (
-    <div id={id} ref={backgroundRef} className={[style.containerInfoGlobal, isOpen ? style.containerInfoGlobalOpen : ""].join(" ")}>
+    <div ref={backgroundRef} className={[style.containerInfoGlobal, isOpen ? style.containerInfoGlobalOpen : ""].join(" ")}>
       <div className={style.backgroundWrapper}>
         {/* <img
         src={
@@ -333,13 +333,13 @@ const Composicion = ({ id, compo, admin = false, show = true, allwaysOpen = fals
           editCuandoJugar={compo.cuandoJugar}
           editCondicionVictoria={compo.condicionVictoria}
         />}
-      {
+      {/* {
         showBigComp &&
         <ShowBigCompScreen
           id={bigCompId}
           setShowBigComp={setShowBigComp}
         />
-      }
+      } */}
     </div>
 
   )

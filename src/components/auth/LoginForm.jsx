@@ -305,8 +305,9 @@ const LoginForm = () => {
       const result = await response.json();
 
       if (result.status === 'success') {
-        setUser({ email, ...formData });
-        setStep('success');
+        // En lugar de hacer un set local, forzamos una validación al backend
+        // para que traiga la info fresca de si es o no admin.
+        await verifyUser(email, 'email');
       } else {
         setError(result.message || 'Error al guardar el perfil');
       }

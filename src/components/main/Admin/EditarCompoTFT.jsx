@@ -5,11 +5,11 @@ import { versionTFT, swapVersionTFT, constantesJSON, constantesPHP } from "src/s
 import { useStore } from "@nanostores/react";
 import style from "./css/EditarCompoTFT.module.css"
 import SelectVersion from "@components/versionTFT/SelectVersion.jsx";
-
+import { $admin } from "@stores/auth.js"
 const EditarCompoTFT = () => {
   const currentVersion = useStore(versionTFT);
   const [constantes, setConstantes] = useState({});
-  const admin = localStorage.getItem("user") || false;
+  const admin = useStore($admin);
   useEffect(() => {
     // Obtener las constantes actuales
     const fetchConstantes = async () => {

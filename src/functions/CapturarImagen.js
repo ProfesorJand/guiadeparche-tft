@@ -1,4 +1,4 @@
-import { toPng } from "html-to-image";
+// Import dinámico de html-to-image movido adentro para evitar problemas en iOS Safari
 
 export const waitForImages = async (node) => {
   const images = Array.from(node.querySelectorAll("img"));
@@ -92,6 +92,7 @@ export const CapturarImagen = async ({ backgroundRef, nombre }) => {
       });
     });
 
+    const { toPng } = await import("html-to-image");
 
     const dataUrl = await toPng(node, {
       pixelRatio: 2,

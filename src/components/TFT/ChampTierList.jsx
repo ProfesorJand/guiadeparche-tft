@@ -37,7 +37,7 @@ const ChampTierList = ({id,isSample,campeonTierList, augmentTierList, champItem,
         Object.keys(campeonTierList || {})?.length > 0 && champItem?.length > 0 && 
         <div className={style.containerItemsChampTierList}>
           {champItem.map((item,index)=>{
-            if(item.name){
+            if(item?.name){
               return (
                 <div key={`champItem-${index}`} className={style.itemsChampTierList}>
                   <img className={style.imgItemChampTierList} src={(version === "pbe" ? urlDataDragonPBEGame : urlDataDragonLatestGame) + item.icon.replace(".tex",".png").toLowerCase()} alt={item.name}></img>
@@ -55,7 +55,7 @@ const ChampTierList = ({id,isSample,campeonTierList, augmentTierList, champItem,
       }
       {
         Object.keys(campeonTierList || {})?.length > 0 && champTrait?.length > 0 && 
-          champTrait.map((trait,index)=>{
+          champTrait?.map((trait,index)=>{
             if(trait.name){
               return (
                 <div key={`champTrait-${index}`} className={style.containerTraitChampTierList} style={{borderColor: championsColor[campeonTierList?.coste || campeonTierList?.cost || 0]}}>
