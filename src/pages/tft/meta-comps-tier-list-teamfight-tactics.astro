@@ -7,40 +7,49 @@ import { crearJSONSchema } from "src/json/schema/crearJSONSchema";
 import TierListMetaComps from "@components/TFT/TierListMetaComps.jsx";
 import VersionCompo from "@components/TFT/VersionCompo";
 import SelectVersion from "@components/versionTFT/SelectVersion";
-import { composMetaJSON, abreviarNombres, versionTFT,fetchAndSortComps, composMetaPBEJSON, setNumberPBE, setNumberLatest, nameOfSet } from "@stores/dataTFT";
+import {
+  composMetaJSON,
+  abreviarNombres,
+  versionTFT,
+  fetchAndSortComps,
+  composMetaPBEJSON,
+  setNumberPBE,
+  setNumberLatest,
+  nameOfSet,
+} from "@stores/dataTFT";
 import Composicion from "@components/main/Admin/Composicion.jsx";
 
 const version = versionTFT.get();
 const setNumber = version === "pbe" ? setNumberPBE : setNumberLatest;
 const nameDelSet = nameOfSet[version];
 
-
 const title = `▷ Best TFT Comps & Builds Set ${setNumber} ${nameDelSet}.`;
 // Example: Construct a canonical URL using your production domain
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 // Example: Construct a URL for SEO meta tags using your current domain
 const socialImageURL = new URL("/images/preview.png", Astro.url);
-const description =
-  `Top TFT Meta Comps Set ${setNumber} ${nameDelSet}. Discover the latest Tier List, Augments and Builds for every patch. Mejores Composiciones TFT!`
+const description = `Top TFT Meta Comps Set ${setNumber} ${nameDelSet}. Discover the latest Tier List, Augments and Builds for every patch. Mejores Composiciones TFT!`;
 const keywords =
   "TFT Meta, Meta comps, comps TFT, comp TFT, Meta TFT, composiciones TFT, build TFT";
-const thumbnail = "https://guiadeparche.com/tft/set17/backgroundWrapperSet17.webp";
+const thumbnail =
+  "https://guiadeparche.com/tft/set17/backgroundWrapperSet17.webp";
 const imgPost = "https://guiadeparche.com/tft/assets/GP_logo.png";
 const modified_time = new Date().toISOString();
-
 
 // const todasLasComps = await fetchAndSortComps(composMetaJSON);
 const todasLasCompsPBE = await fetchAndSortComps(composMetaPBEJSON);
 
-const top10Comps = todasLasCompsPBE.slice(0, 10) ; // version === "pbe" ? todasLasCompsPBE.slice(0, 10) : todasLasComps.slice(0, 10)
-const baseSchema = JSON.parse(crearJSONSchema({ title, imgPost, thumbnail, description }));
-const top5Comps = todasLasCompsPBE.slice(0, 5) ;
+const top10Comps = todasLasCompsPBE.slice(0, 10); // version === "pbe" ? todasLasCompsPBE.slice(0, 10) : todasLasComps.slice(0, 10)
+const baseSchema = JSON.parse(
+  crearJSONSchema({ title, imgPost, thumbnail, description }),
+);
+const top5Comps = todasLasCompsPBE.slice(0, 5);
 
 const dificultadEspañol = {
-  "Easy": "Fácil",
-  "Medium": "Medio",
-  "Hard": "Difícil"
-}
+  Easy: "Fácil",
+  Medium: "Medio",
+  Hard: "Difícil",
+};
 
 const infographicCategoriesEspañol = {
   "Roll Lv5": "Rolear Lv5",
@@ -49,28 +58,28 @@ const infographicCategoriesEspañol = {
   "Roll Lv8": "Rolear Lv8",
   "Roll Lv8 y Lv9": "Rolear Lv8 y Lv9",
   "Roll Lv9": "Rolear Lv9",
-  "Roll Lv10": "Rolear Lv10"
-}
+  "Roll Lv10": "Rolear Lv10",
+};
 
 // Add ItemList Schema for "Top 10"
 const itemListSchema = {
   "@context": "https://schema.org",
   "@type": "ItemList",
-  "name": "Top 10 Mejores Composiciones de TFT",
-  "description": "Listado de las 10 mejores composiciones del meta actual de Teamfight Tactics",
-  "itemListElement": top10Comps.map((comp, index) => ({
+  name: "Top 10 Mejores Composiciones de TFT",
+  description:
+    "Listado de las 10 mejores composiciones del meta actual de Teamfight Tactics",
+  itemListElement: top10Comps.map((comp, index) => ({
     "@type": "ListItem",
-    "position": index + 1,
-    "name": "Composición de " + (comp as any).title,
-    "description": `Tier ${(comp as any).tier} - Dificultad: ${dificultadEspañol[(comp as any).dificultad]} - ${infographicCategoriesEspañol[(comp as any).infographicCategory]}`
-  }))
+    position: index + 1,
+    name: "Composición de " + (comp as any).title,
+    description: `Tier ${(comp as any).tier} - Dificultad: ${dificultadEspañol[(comp as any).dificultad]} - ${infographicCategoriesEspañol[(comp as any).infographicCategory]}`,
+  })),
 };
 
 const JSONSchema = JSON.stringify([baseSchema, itemListSchema]);
 
 const admin =
   typeof window !== "undefined" ? localStorage.getItem("user") : false;
-
 ---
 
 <!-- <link rel="canonical" href={canonicalURL} /> --><!-- <meta property="og:image" content={socialImageURL} /> --><!-- <meta name="description" content={description}>
@@ -87,7 +96,11 @@ const admin =
   mainBackground={"solid"}
 >
   <Fragment slot="bodyMainAside">
-    <TierListMetaComps todasLasCompsPBE={todasLasCompsPBE} client:only="react" /> <!--     <TierListMetaComps todasLasComps={todasLasComps} todasLasCompsPBE={todasLasCompsPBE} client:only="react" /> -->
+    <TierListMetaComps
+      todasLasCompsPBE={todasLasCompsPBE}
+      client:only="react"
+    />
+    <!--     <TierListMetaComps todasLasComps={todasLasComps} todasLasCompsPBE={todasLasCompsPBE} client:only="react" /> -->
     <!-- <Youtube src={"https://www.youtube.com/playlist?list=PLxRnNvReiLMEriFDu0UxXScDabCIX-PWy"} client:only="react"/> -->
   </Fragment>
   <!-- <Fragment slot="bodyMainAsideTwitch">
@@ -97,12 +110,16 @@ const admin =
 <Fragment slot="bodyMainAsideAds">
   <AdComponent/>
 </Fragment> -->
-  <Main >
+  <Main>
     <h1 id="tituloMetaComps" class="titulo tituloMetaComps">
       Mejores Composiciones de TFT (Meta Comps) Tier List Set {setNumber}
     </h1>
     <p>
-      Analizamos el meta de TFT tras los cambios del último parche. Si buscás las comps de TFT más sólidas para rankear en el Set 17, aquí tenés la tier list definitiva. Como especialistas en el circuito competitivo, actualizamos estas builds y composiciones diariamente para que sepas qué jugar, cuándo hacer reroll y cómo optimizar tus items en cada partida.
+      Analizamos el meta de TFT tras los cambios del último parche. Si buscás
+      las comps de TFT más sólidas para rankear en el Set 17, aquí tenés la tier
+      list definitiva. Como especialistas en el circuito competitivo,
+      actualizamos estas builds y composiciones diariamente para que sepas qué
+      jugar, cuándo hacer reroll y cómo optimizar tus items en cada partida.
     </p>
     <!-- <p class="text-update">
       📅 Última actualización parche 17.2B
@@ -121,68 +138,107 @@ const admin =
       }
     </ol>
     <VersionCompo client:only="react" />
-  
+
     <div id="ContainerCompsPBE" class={version === "pbe" ? "" : "hide"}>
       <div class="containerMeta">
         {
           todasLasCompsPBE.map((comp, index) => (
             <div class="ranking-item-container">
-              <div id={comp.id} class="ranking-header-seo" data-comp-id={comp.id} data-tier={(comp as any).tier} role="button" tabindex="0">
+              <div
+                id={comp.id}
+                class="ranking-header-seo"
+                data-comp-id={comp.id}
+                data-tier={(comp as any).tier}
+                role="button"
+                tabindex="0"
+              >
                 <div class="ranking-title-container">
-                  <h3 class="ranking-title">{(index + 1).toString().toUpperCase()}. COMP {(comp as any).titulo.toUpperCase()}</h3>
-                  {
-                    comp.tipSeo && (
-                      <p class="ranking-description">{comp.tipSeo}</p>
-                    )
-                  }
-                  {
-                    comp.cuandoJugar && (
-                      <p class="ranking-description">¿Cuándo jugar?: {comp.cuandoJugar}</p>
-                    )
-                  }
-                  {
-                    comp.condicionVictoria && (
-                      <p class="ranking-description">Condición de victoria: {comp.condicionVictoria}</p>
-                    )
-                  }
+                  <h3 class="ranking-title">
+                    {(index + 1).toString().toUpperCase()}. COMP{" "}
+                    {(comp as any).titulo.toUpperCase()}
+                  </h3>
+                  {comp.tipSeo && (
+                    <p class="ranking-description">{comp.tipSeo}</p>
+                  )}
+                  {comp.cuandoJugar && (
+                    <p class="ranking-description">
+                      ¿Cuándo jugar?: {comp.cuandoJugar}
+                    </p>
+                  )}
+                  {comp.condicionVictoria && (
+                    <p class="ranking-description">
+                      Condición de victoria: {comp.condicionVictoria}
+                    </p>
+                  )}
                   <div class="container-champs">
-                    {
-                      Object.values(comp.boardInfo[comp.originalComp].data)
-                        .sort((a, b) => {
-                          try {
-                            return JSON.parse(a.dataCampeon.campeon).coste - JSON.parse(b.dataCampeon.campeon).coste;
-                          } catch (e) {
-                            return 0;
-                          }
-                        })
-                        .map((info) => {
-                        const nombre = JSON.parse(info.dataCampeon.campeon).nombre;
-                        const apiName = JSON.parse(info.dataCampeon.campeon).apiName;
-                        if (nombre === "Frozen Tower" || nombre === "Sand Soldier" || apiName === "TFT15_ShenSword" || nombre === "Bia & Bayin") return null
+                    {Object.values(comp.boardInfo[comp.originalComp].data)
+                      .sort((a, b) => {
+                        try {
+                          return (
+                            JSON.parse(a.dataCampeon.campeon).coste -
+                            JSON.parse(b.dataCampeon.campeon).coste
+                          );
+                        } catch (e) {
+                          return 0;
+                        }
+                      })
+                      .map((info) => {
+                        const nombre = JSON.parse(
+                          info.dataCampeon.campeon,
+                        ).nombre;
+                        const apiName = JSON.parse(
+                          info.dataCampeon.campeon,
+                        ).apiName;
+                        if (
+                          nombre === "Frozen Tower" ||
+                          nombre === "Sand Soldier" ||
+                          apiName === "TFT15_ShenSword" ||
+                          nombre === "Bia & Bayin"
+                        )
+                          return null;
                         return (
-                        <div class={`container-champ container-champ-color-${JSON.parse(info.dataCampeon.campeon).coste}`} >
-                          <img class="champ-img" src={JSON.parse(info.dataCampeon.campeon).img} alt={JSON.parse(info.dataCampeon.campeon).nombre} />
-                          {info.estrellas === 3 &&
-                            <span class="star">★★★</span>
-                          }
-                          <div class="container-items">
-                            {
-                              info.dataItem.map((item) => (
-
-                                <img class="item-img" src={JSON.parse(item.item).icon.includes("https") ? JSON.parse(item.item).icon : `https://raw.communitydragon.org/latest/game/${JSON.parse(item.item).icon.replace(".tex", ".png").toLowerCase()}` } alt={JSON.parse(item.item).name} />
-                              ))
-                            }
+                          <div
+                            class={`container-champ container-champ-color-${JSON.parse(info.dataCampeon.campeon).coste}`}
+                          >
+                            <img
+                              class="champ-img"
+                              src={JSON.parse(info.dataCampeon.campeon).img}
+                              alt={JSON.parse(info.dataCampeon.campeon).nombre}
+                            />
+                            {info.estrellas === 3 && (
+                              <span class="star">★★★</span>
+                            )}
+                            <div class="container-items">
+                              {info.dataItem.map((item) => (
+                                <img
+                                  class="item-img"
+                                  src={
+                                    JSON.parse(item.item).icon.includes("https")
+                                      ? JSON.parse(item.item).icon
+                                      : `https://raw.communitydragon.org/latest/game/${JSON.parse(item.item).icon.replace(".tex", ".png").toLowerCase()}`
+                                  }
+                                  alt={JSON.parse(item.item).name}
+                                />
+                              ))}
+                            </div>
+                            <p class="champ-name">
+                              {abreviarNombres(
+                                JSON.parse(info.dataCampeon.campeon).nombre,
+                              )}
+                            </p>
+                            <p class="champ-name-mobile">
+                              {abreviarNombres(
+                                JSON.parse(info.dataCampeon.campeon).nombre,
+                              )}
+                            </p>
                           </div>
-                          <p class="champ-name">{abreviarNombres(JSON.parse(info.dataCampeon.campeon).nombre)}</p>
-                          <p class="champ-name-mobile">{abreviarNombres(JSON.parse(info.dataCampeon.campeon).nombre)}</p>
-                        </div>
-                      )})
-                    }
+                        );
+                      })}
                   </div>
                 </div>
                 <span class="ranking-icon">▼</span>
               </div>
-              
+
               <div class="containerMetaTier hide" data-comp-id={comp.id}>
                 <Composicion
                   id={comp.id}
@@ -200,10 +256,10 @@ const admin =
 </Layout>
 
 <style>
-  .champ-name-mobile{
+  .champ-name-mobile {
     display: none;
   }
-  .lista-numerada{
+  .lista-numerada {
     width: 100%;
     column-count: 2;
     list-style-position: inside;
@@ -211,44 +267,46 @@ const admin =
     box-sizing: border-box;
     padding: 0;
   }
-  .anchor-simple{
+  .anchor-simple {
     cursor: pointer;
     transition: all 0.3s ease-in-out;
     color: var(--color-text-principal);
     text-decoration: none;
-    &:hover{
-      color: var(--color-hex-cost-1);
+    @media (hover: hover) {
+      &:hover {
+        color: var(--color-hex-cost-1);
+      }
     }
   }
-  .text-update{
+  .text-update {
     text-align: center;
   }
-  .container-champs{
+  .container-champs {
     display: flex;
     flex-direction: row;
     width: 100%;
-    justify-content:space-between;
+    justify-content: space-between;
   }
-  .container-champ-color-1{
-    border:2px solid var(--color-hex-cost-1);
+  .container-champ-color-1 {
+    border: 2px solid var(--color-hex-cost-1);
   }
-  .container-champ-color-2{
-    border:2px solid var(--color-hex-cost-2);
+  .container-champ-color-2 {
+    border: 2px solid var(--color-hex-cost-2);
   }
-  .container-champ-color-3{
-    border:2px solid var(--color-hex-cost-3);
+  .container-champ-color-3 {
+    border: 2px solid var(--color-hex-cost-3);
   }
-  .container-champ-color-4{
-    border:2px solid var(--color-hex-cost-4);
+  .container-champ-color-4 {
+    border: 2px solid var(--color-hex-cost-4);
   }
-  .container-champ-color-5{
-    border:2px solid var(--color-hex-cost-5);
+  .container-champ-color-5 {
+    border: 2px solid var(--color-hex-cost-5);
   }
-  .champ-img{
+  .champ-img {
     width: 100%;
     height: auto;
   }
-  .champ-name{
+  .champ-name {
     position: absolute;
     z-index: 2;
     top: 100%;
@@ -257,29 +315,29 @@ const admin =
     margin-block-end: 0;
     margin-block-start: 0;
   }
-  .container-champ{
+  .container-champ {
     position: relative;
     width: calc(100% / 10);
-    display:flex;
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
   }
-  .container-items{
+  .container-items {
     display: flex;
     flex-direction: row;
-    width:90%;
-    justify-content:center;
+    width: 90%;
+    justify-content: center;
     position: absolute;
     bottom: 0;
   }
-  .item-img{
-    display:flex;
+  .item-img {
+    display: flex;
     width: calc(100% / 3);
     height: auto;
   }
-  .star{
+  .star {
     position: absolute;
     z-index: 2;
     font-size: 15px;
@@ -371,10 +429,12 @@ const admin =
     flex: 1;
     justify-content: center;
     padding: 1rem 0;
-  }
-  button:hover {
     cursor: pointer;
-    background-color: var(--bg-tertiary);
+  }
+  @media (hover: hover) {
+    button:hover {
+      background-color: var(--bg-tertiary);
+    }
   }
   button.activeBtn {
     background-color: var(--bg-primary);
@@ -421,7 +481,7 @@ const admin =
     top: 12px;
     transform: translateY(0);
     font-size: 3rem;
-    font-family: 'ObvioslyWideBold', sans-serif;
+    font-family: "ObvioslyWideBold", sans-serif;
     color: white;
     opacity: 0.08;
     pointer-events: none;
@@ -429,42 +489,73 @@ const admin =
     line-height: 1;
   }
   .ranking-header-seo[data-tier="S"] {
-    background: linear-gradient(135deg, rgba(139, 0, 0, 0.6) 0%, rgba(60, 0, 0, 0.8) 100%);
+    background: linear-gradient(
+      135deg,
+      rgba(139, 0, 0, 0.6) 0%,
+      rgba(60, 0, 0, 0.8) 100%
+    );
     border-color: rgba(255, 50, 50, 0.3);
   }
-  .ranking-header-seo[data-tier="S"]:hover {
-    background: linear-gradient(135deg, rgba(159, 0, 0, 0.7) 0%, rgba(80, 0, 0, 0.9) 100%);
-  }
   .ranking-header-seo[data-tier="A"] {
-    background: linear-gradient(135deg, rgba(153, 115, 0, 0.6) 0%, rgba(80, 60, 0, 0.8) 100%);
+    background: linear-gradient(
+      135deg,
+      rgba(153, 115, 0, 0.6) 0%,
+      rgba(80, 60, 0, 0.8) 100%
+    );
     border-color: rgba(255, 200, 50, 0.3);
   }
-  .ranking-header-seo[data-tier="A"]:hover {
-    background: linear-gradient(135deg, rgba(173, 135, 0, 0.7) 0%, rgba(100, 80, 0, 0.9) 100%);
-  }
   .ranking-header-seo[data-tier="B"] {
-    background: linear-gradient(135deg, rgba(75, 85, 99, 0.6) 0%, rgba(31, 41, 55, 0.8) 100%);
+    background: linear-gradient(
+      135deg,
+      rgba(75, 85, 99, 0.6) 0%,
+      rgba(31, 41, 55, 0.8) 100%
+    );
     border-color: rgba(156, 163, 175, 0.3);
   }
-  .ranking-header-seo[data-tier="B"]:hover {
-    background: linear-gradient(135deg, rgba(95, 105, 119, 0.7) 0%, rgba(51, 61, 75, 0.9) 100%);
-  }
   .ranking-header-seo[data-tier="C"] {
-    background: linear-gradient(135deg, rgba(110, 60, 30, 0.6) 0%, rgba(60, 30, 10, 0.8) 100%);
+    background: linear-gradient(
+      135deg,
+      rgba(110, 60, 30, 0.6) 0%,
+      rgba(60, 30, 10, 0.8) 100%
+    );
     border-color: rgba(180, 100, 50, 0.3);
   }
-  .ranking-header-seo[data-tier="C"]:hover {
-    background: linear-gradient(135deg, rgba(130, 80, 50, 0.7) 0%, rgba(80, 50, 30, 0.9) 100%);
-  }
-  .ranking-header-seo:hover {
-    background: var(--bg-tertiary);
-  }
-  /* Fix iOS Safari dropping clicks on inner elements */
-  .ranking-header-seo * {
-    pointer-events: none;
+
+  @media (hover: hover) {
+    .ranking-header-seo[data-tier="S"]:hover {
+      background: linear-gradient(
+        135deg,
+        rgba(159, 0, 0, 0.7) 0%,
+        rgba(80, 0, 0, 0.9) 100%
+      );
+    }
+    .ranking-header-seo[data-tier="A"]:hover {
+      background: linear-gradient(
+        135deg,
+        rgba(173, 135, 0, 0.7) 0%,
+        rgba(100, 80, 0, 0.9) 100%
+      );
+    }
+    .ranking-header-seo[data-tier="B"]:hover {
+      background: linear-gradient(
+        135deg,
+        rgba(95, 105, 119, 0.7) 0%,
+        rgba(51, 61, 75, 0.9) 100%
+      );
+    }
+    .ranking-header-seo[data-tier="C"]:hover {
+      background: linear-gradient(
+        135deg,
+        rgba(130, 80, 50, 0.7) 0%,
+        rgba(80, 50, 30, 0.9) 100%
+      );
+    }
+    .ranking-header-seo:hover {
+      background: var(--bg-tertiary);
+    }
   }
   .ranking-number {
-    font-family: 'ObvioslyWideBold', sans-serif;
+    font-family: "ObvioslyWideBold", sans-serif;
     font-size: 1.2rem;
     min-width: 40px;
   }
@@ -524,10 +615,11 @@ const admin =
     margin: 5px 0;
     font-size: 1em;
   }
-  h2{
+  h2 {
     font-size: 1.4em;
   }
-  h2, h3{
+  h2,
+  h3 {
     margin-block-start: 0;
     margin-block-end: 0;
     text-align: left;
@@ -536,28 +628,28 @@ const admin =
     display: none;
   }
   @media only screen and (max-width: 1200px) {
-    p{
+    p {
       font-size: 14px;
     }
-    li{
+    li {
       font-size: 14px;
     }
     .tituloMetaComps {
       font-size: 1em;
     }
-    h2{
+    h2 {
       font-size: 0.8em;
     }
-    .ranking-title{
+    .ranking-title {
       font-size: 0.7em;
     }
     .minititulo {
       font-size: 0.8em;
     }
-    .champ-name{
+    .champ-name {
       display: none;
     }
-    .champ-name-mobile{
+    .champ-name-mobile {
       display: flex;
       position: absolute;
       z-index: 2;
@@ -567,56 +659,60 @@ const admin =
       margin-block-end: 0;
       margin-block-start: 0;
     }
-    .star{
-      top:0px;
+    .star {
+      top: 0px;
       font-size: 10px;
     }
-    .ranking-header-seo{
-      padding:6px 10px 18px 10px;
-      gap:0;
+    .ranking-header-seo {
+      padding: 6px 10px 18px 10px;
+      gap: 0;
     }
-    .lista-numerada{
-    column-count: 1;
-    margin-block-start: 0;
-  }
+    .lista-numerada {
+      column-count: 1;
+      margin-block-start: 0;
+    }
   }
 </style>
 
-
-
 <script>
-  import { toggleActiveComp, activeCompId } from "src/stores/menuFiltradoAdmin";
+  import { activeCompId } from "src/stores/menuFiltradoAdmin";
+  import { setOpenCompo } from "src/stores/openCompoById";
   import { versionTFT, swapVersionTFT } from "@stores/dataTFT";
-
-  // Direct event listeners to bypass iOS Safari event bubbling bugs
-  document.querySelectorAll(".ranking-header-seo").forEach((header) => {
-    header.addEventListener("click", () => {
-      const compId = header.getAttribute("data-comp-id");
-      if (compId) {
-        toggleActiveComp(compId);
-      }
-    });
-  });
+  // tomar en cuenta la altura del header para el desplazamiento del scroll
+  // const headerHeight = document.querySelector("header")?.offsetHeight || 0;
+  // document.documentElement.style.setProperty("--header-height", `${headerHeight}px`);
 
   // Expose to window for onclick handlers in static HTML
-  (window as any).toggleActiveComp = toggleActiveComp;
+  (window as any).setOpenCompo = setOpenCompo;
+  // Event delegation to bypass iOS Safari inline click issues
+  document.addEventListener("click", (e) => {
+    const target = e.target as HTMLElement;
+    const header = target.closest(".ranking-header-seo");
+    if (header) {
+      const compId = header.getAttribute("data-comp-id");
+      if (compId) {
+        setOpenCompo(compId);
+      }
+    }
+  });
+
 
   activeCompId.subscribe((id) => {
-    document.querySelectorAll('.containerMetaTier').forEach(el => {
-      if (el.getAttribute('data-comp-id') === id) {
-        el.classList.remove('hide');
+    document.querySelectorAll(".containerMetaTier").forEach((el) => {
+      if (el.getAttribute("data-comp-id") === id) {
+        el.classList.remove("hide");
         // Force reflow for iOS Safari to ensure React DOM updates are painted
         void (el as HTMLElement).offsetHeight;
       } else {
-        el.classList.add('hide');
+        el.classList.add("hide");
       }
     });
 
-    document.querySelectorAll('.ranking-header-seo').forEach(el => {
-      if (el.getAttribute('data-comp-id') === id) {
-        el.classList.add('hide');
+    document.querySelectorAll(".ranking-header-seo").forEach((el) => {
+      if (el.getAttribute("data-comp-id") === id) {
+        el.classList.add("hide");
       } else {
-        el.classList.remove('hide');
+        el.classList.remove("hide");
       }
     });
   });
@@ -637,5 +733,4 @@ const admin =
       }
     }
   });
-
 </script>
