@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useCallback, useMemo } from "react";
 import { useStore } from "@nanostores/react";
 import style from "./css/TierListMetaComps.module.css";
 import ChampTierList from "./ChampTierList.jsx";
-import { toPng } from 'html-to-image';
 import { $admin } from "@stores/auth.js";
 import { versionTFT } from "@stores/dataTFT.js";
 
@@ -74,7 +73,7 @@ const TierListMetaComps = ({todasLasComps = [], todasLasCompsPBE = []}) => {
     });
   };
 
-  const onButtonClick = useCallback(() => {
+  const onButtonClick = useCallback(async () => {
       if (backgroundRef.current === null) return;
 
       const containerElements = backgroundRef.current.querySelectorAll(`.${style.containerMetaCompByTier}`);
@@ -86,28 +85,27 @@ const TierListMetaComps = ({todasLasComps = [], todasLasCompsPBE = []}) => {
         el.style.backgroundColor = 'transparent';
       });
           
-      loadAllImages(backgroundRef.current)
-        .then(() => {
-          return toPng(backgroundRef.current, {
-            cacheBust: true,
-            pixelRatio: 2, // mejora calidad (escala la resolución)
-          });
-        })
-        .then((dataUrl) => {
-          const link = document.createElement('a');
-          link.download = `ComposMetaTFT.png`;
-          link.href = dataUrl;
-          link.click();
-          console.log("📸 Imagen capturada");
-        })
-        .catch((err) => {
-          console.error("❌ Error al capturar imagen:", err);
-        }).finally(() => {
-          // Restauramos los backgrounds originales
-          containerElements.forEach((el, i) => {
-            el.style.backgroundColor = originalBackgrounds[i];
-          });
+      try {
+        await loadAllImages(backgroundRef.current);
+        const { toPng } = await import('html-to-image');
+        const dataUrl = await toPng(backgroundRef.current, {
+          cacheBust: true,
+          pixelRatio: 2, // mejora calidad (escala la resolución)
         });
+        
+        const link = document.createElement('a');
+        link.download = `ComposMetaTFT.png`;
+        link.href = dataUrl;
+        link.click();
+        console.log("📸 Imagen capturada");
+      } catch (err) {
+        console.error("❌ Error al capturar imagen:", err);
+      } finally {
+        // Restauramos los backgrounds originales
+        containerElements.forEach((el, i) => {
+          el.style.backgroundColor = originalBackgrounds[i];
+        });
+      }
     }, [backgroundRef]);
   
 
