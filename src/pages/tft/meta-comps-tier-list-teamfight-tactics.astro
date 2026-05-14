@@ -16,13 +16,14 @@ import {
   setNumberPBE,
   setNumberLatest,
   nameOfSet,
+  constantesTFT
 } from "@stores/dataTFT";
 import Composicion from "@components/main/Admin/Composicion.jsx";
 
 const version = versionTFT.get();
 const setNumber = version === "pbe" ? setNumberPBE : setNumberLatest;
 const nameDelSet = nameOfSet[version];
-
+const numberOfVersion = constantesTFT.get();
 const title = `▷ Best TFT Comps & Builds Set ${setNumber} ${nameDelSet}.`;
 // Example: Construct a canonical URL using your production domain
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
@@ -124,7 +125,7 @@ const admin =
     <!-- <p class="text-update">
       📅 Última actualización parche 17.2B
     </p> -->
-    <h2>Top 10 Mejores Comps TFT (Parche 17.2B):</h2>
+    <h2>Top 10 Mejores Comps TFT (Parche {numberOfVersion.MetaCompVersionPBE}):</h2>
     {/* 5 en la columna izquierda y 5 en la columna derecha */}
     <ol class="lista-numerada">
       {
