@@ -16,8 +16,9 @@ interface Props {
   hide?:boolean;
   modified_time?:string;
   mainBackground?:string;
+  isAdmin?:boolean;
 }
-const { title, JSONSchema, description, keywords, image, canonical, hide=false, modified_time, mainBackground } = Astro.props;
+const { title, JSONSchema, description, keywords, image, canonical, hide=false, modified_time, mainBackground, isAdmin=false } = Astro.props;
 
 const mainBgImage = mainBackground === "solid" ? "none" : "radial-gradient(circle, #000000 1px, transparent 1px)";
 const mainBgSize = mainBackground === "solid" ? "none" : "4px 4px";
@@ -65,7 +66,7 @@ const mainBgSize = mainBackground === "solid" ? "none" : "4px 4px";
     <!-- <ViewTransitions /> -->
   </head>
   <body>
-    <PageLoader client:only="react" />
+    <!-- <PageLoader client:only="react" /> -->
     <div class="bodyLayout">
       
       <header class="bodyHeader">
@@ -75,7 +76,7 @@ const mainBgSize = mainBackground === "solid" ? "none" : "4px 4px";
 
       <div class="bodyInfo">
         <aside class="bodyAside">
-          <Adsense direction='left' dimension="vertical-izquierda" numeracion={0} client:only="react"/>
+          <Adsense direction='left' dimension="vertical-izquierda" numeracion={0} client:load/>
         </aside>
 
         <main class="bodyMain">
@@ -87,8 +88,8 @@ const mainBgSize = mainBackground === "solid" ? "none" : "4px 4px";
               <div class="bodyMainAsideEmbed">
                 <slot name="bodyMainAsideTwitch"></slot>
                 <!-- <Youtube src={"https://youtu.be/1P-7x6JWNp0?si=Y8K-tCZDWgxnw0gE"} client:only="react"/> -->
-                {!hide && <Youtube src={"https://www.youtube.com/playlist?list=PLxRnNvReiLMEriFDu0UxXScDabCIX-PWy"} client:only="react"/>}
-                {!hide && <Youtube src={"https://www.youtube.com/playlist?list=PLxRnNvReiLMHdvfB7WSMuSilnvdS1IUc-"} client:only="react"/>}
+                {!hide && <Youtube src={"https://www.youtube.com/playlist?list=PLxRnNvReiLMEriFDu0UxXScDabCIX-PWy"} client:load/>}
+                {!hide && <Youtube src={"https://www.youtube.com/playlist?list=PLxRnNvReiLMHdvfB7WSMuSilnvdS1IUc-"} client:load/>}
                 <!-- <ads class="bodyMainAsideAds">
                   <slot name="bodyMainAsideAds"></slot>
                 </ads> -->
@@ -101,7 +102,7 @@ const mainBgSize = mainBackground === "solid" ? "none" : "4px 4px";
         </main>
 
         <aside class="bodyAside">
-          <Adsense direction='right' dimension="vertical-derecha" numeracion={1} client:only="react" />
+          <Adsense direction='right' dimension="vertical-derecha" numeracion={1} client:load />
         </aside>
       </div>
 

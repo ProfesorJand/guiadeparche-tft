@@ -24,7 +24,7 @@ const version = versionTFT.get();
 const setNumber = version === "pbe" ? setNumberPBE : setNumberLatest;
 const nameDelSet = nameOfSet[version];
 const numberOfVersion = constantesTFT.get();
-const title = `▷ Best TFT Comps & Builds Set ${setNumber} ${nameDelSet}.`;
+const title = `Mejores Composiciones TFT (Meta Comps) Tier List Set ${setNumber} ${numberOfVersion.MetaCompVersionPBE ? "["+numberOfVersion.MetaCompVersionPBE+"]": ""} `;  
 // Example: Construct a canonical URL using your production domain
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
 // Example: Construct a URL for SEO meta tags using your current domain
@@ -99,7 +99,7 @@ const admin =
   <Fragment slot="bodyMainAside">
     <TierListMetaComps
       todasLasCompsPBE={todasLasCompsPBE}
-      client:only="react"
+      client:load
     />
     <!--     <TierListMetaComps todasLasComps={todasLasComps} todasLasCompsPBE={todasLasCompsPBE} client:only="react" /> -->
     <!-- <Youtube src={"https://www.youtube.com/playlist?list=PLxRnNvReiLMEriFDu0UxXScDabCIX-PWy"} client:only="react"/> -->
@@ -113,7 +113,7 @@ const admin =
 </Fragment> -->
   <Main>
     <h1 id="tituloMetaComps" class="titulo tituloMetaComps">
-      Mejores Composiciones de TFT (Meta Comps) Tier List Set {setNumber}
+      Mejores Composiciones TFT (Meta Comps) Tier List Set {setNumber} [{numberOfVersion.MetaCompVersionPBE}]
     </h1>
     <p>
       Analizamos el meta de TFT tras los cambios del último parche. Si buscás
@@ -122,14 +122,11 @@ const admin =
       actualizamos estas builds y composiciones diariamente para que sepas qué
       jugar, cuándo hacer reroll y cómo optimizar tus items en cada partida.
     </p>
-    <!-- <p class="text-update">
-      📅 Última actualización parche 17.2B
-    </p> -->
-    <h2>Top 10 Mejores Comps TFT (Parche {numberOfVersion.MetaCompVersionPBE}):</h2>
+    <h2>Top 5 Mejores Comps TFT (Parche {numberOfVersion.MetaCompVersionPBE}):</h2>
     {/* 5 en la columna izquierda y 5 en la columna derecha */}
     <ol class="lista-numerada">
       {
-        top10Comps.map((comp) => (
+        top5Comps.map((comp) => (
           <li>
             <a href={`#${comp.id}`} class="anchor-simple">
               {comp.titulo} {`(${comp.tier})`}
@@ -262,11 +259,12 @@ const admin =
   }
   .lista-numerada {
     width: 100%;
-    column-count: 2;
+    column-count: 1;
     list-style-position: inside;
     column-gap: 40px; /* Space between columns */
     box-sizing: border-box;
     padding: 0;
+    font-size:0.9em
   }
   .anchor-simple {
     cursor: pointer;
@@ -599,7 +597,7 @@ const admin =
   }
   .tituloMetaComps {
     margin: 5px 0;
-    font-size: 1.4em;
+    font-size: 1.2em;
   }
   .minititulo {
     display: flex;
@@ -617,7 +615,7 @@ const admin =
     font-size: 1em;
   }
   h2 {
-    font-size: 1.4em;
+    font-size: 1.2em;
   }
   h2,
   h3 {
@@ -627,6 +625,9 @@ const admin =
   }
   .hide {
     display: none;
+  }
+  p{
+    font-size: 0.9em;
   }
   @media only screen and (max-width: 1200px) {
     p {

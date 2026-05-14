@@ -8,7 +8,6 @@ import PosicionamientoCompos from "./PosicionamientoCompos";
 import CrearCompoTFT from "./CrearCompoTFT";
 //import { championsTFT as otrosChampions} from "src/json/updates/constantesLatest.js";
 import { teamPlannerCode, dataTFTChampions, versionTFT, setNumberLatest, setNumberPBE, loadDataTFTFromAPI, getTeamPlannerCodeAPI, crearCompoMetaPHP, setMutatorPBE, setMutatorLatest } from "@stores/dataTFT";
-import ShowBigCompScreen from "./ShowBigCompScreen";
 import RadiantsItems from "./RadiantsItems";
 import { useStore } from "@nanostores/react";
 import MiniInfoComp from "@components/TFT/MiniInfoComp";
