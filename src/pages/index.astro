@@ -54,7 +54,7 @@ const description = "Guiadeparche is a comprehensive guide for the latest patche
 const imgPost = "/lol/portada.webp"
 const JSONSchema = crearJSONSchema({title, imgPost, description});
 const keywords = "Valorant Meta, Agents Valorant, Maps Valorant, Tier List Valorant, Best Agents Valorant";
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
 ---
 <LayoutMidOnly title='Guiadeparche' JSONSchema={JSONSchema} description={description} keywords={keywords} image={imgPost} canonical={canonicalURL}>
   <div class="container">

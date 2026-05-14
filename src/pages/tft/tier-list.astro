@@ -11,7 +11,7 @@ import {latestVersion} from "@json/updates/contantesTFT";
 import CreateAugmentsTierList from "@components/main/Admin/CreateAugmentsTierList";
 const title = `▷ Best TFT Items Tier List - Cheat Sheet for Set 13 ${latestVersion}`;
 const description = `Explore all TFT Items Cheat Sheet and Stats including Tier List for Best Radiant, Artifacts & Support options`;
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
 const keywords = `TFT Tips, TFT Tricks, TFT Guides, TFT Guias, TFT Consejos`;
 const JSONSchema = crearJSONSchema({title, description});
 

@@ -6,7 +6,7 @@ import Youtube from "src/components/youtube/Youtube.jsx";
 import {crearJSONSchema} from "src/json/schema/crearJSONSchema";
 import Twitch from "@components/embed/Twitch";
 // Example: Construct a canonical URL using your production domain
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
 // Example: Construct a URL for SEO meta tags using your current domain
 //const socialImageURL = new URL('/images/preview.png', Astro.url);
 const title = '▷ TFT Tips & Tricks | Teamfight Tactics';

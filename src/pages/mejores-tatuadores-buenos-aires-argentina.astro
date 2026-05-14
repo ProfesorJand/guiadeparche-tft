@@ -17,7 +17,7 @@ const description = "¿Buscás arte en tu piel? Descubrí a los 5 mejores tatuad
 const keywords = "mejores tatuadores buenos aires, tatuadores argentina 2026, tatuaje realismo buenos aires, henry anglas, walter montero, javier obregon, yeyo tattoos, martin aguaisol, tatuajes buenos aires";
 
 // URL canónica para evitar contenido duplicado en los motores de búsqueda
-const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://guiadeparche.com');
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href || 'https://guiadeparche.com';
 
 // ==========================================
 // 2. IMPLEMENTACIÓN DEL SCHEMA (JSON-LD)

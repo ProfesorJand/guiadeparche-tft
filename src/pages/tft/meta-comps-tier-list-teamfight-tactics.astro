@@ -25,7 +25,7 @@ const nameDelSet = nameOfSet[version];
 
 const title = `▷ Best TFT Comps & Builds Set ${setNumber} ${nameDelSet}.`;
 // Example: Construct a canonical URL using your production domain
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
 // Example: Construct a URL for SEO meta tags using your current domain
 const socialImageURL = new URL("/images/preview.png", Astro.url);
 const description = `Top TFT Meta Comps Set ${setNumber} ${nameDelSet}. Discover the latest Tier List, Augments and Builds for every patch. Mejores Composiciones TFT!`;

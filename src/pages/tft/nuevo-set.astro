@@ -12,7 +12,7 @@ const data = {
 }
 const title = `${data.set} ${data.name}`;
 const description = `El nuevo ${data.set} llamado "${data.name}" tambien llamado en ingles "${data.nameEN}" llega a TFT el ${data.fechaLanzamientoPBE} para PBE, y el ${data.fechaLanzamiento} para servidores oficiales.`;
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
 const keywords = `Nuevo Set, Set, TFT, Teamfight Tactics, TFT Nuevo Set, Nuevo Set TFT, ${data.set}, ${data.name}, ${data.nameEN}, ${data.fechaLanzamientoPBE}, ${data.fechaLanzamiento}`;
 const JSONSchema = crearJSONSchema({title, description});
 

@@ -104,9 +104,10 @@ const JSONSchema = {
     }
   ]
 };
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
-<LayoutMidOnly title={title} description={description} JSONSchema={JSON.stringify(JSONSchema)} mainBackground={"solid"}>
+<LayoutMidOnly title={title} description={description} JSONSchema={JSON.stringify(JSONSchema)} mainBackground={"solid"} canonical={canonical}>
 <section class="guia-tft">
   <header class="guide-intro">
     <h1 id="como-jugar-tft">{title}</h1>

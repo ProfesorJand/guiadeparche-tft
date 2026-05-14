@@ -5,12 +5,12 @@ import Contenedor from "@components/valorant/Contenedor";
 import { crearJSONSchema } from "@json/schema/crearJSONSchema";
 import { ValorantConstantes } from "@stores/dataValorant";
 const constantes = ValorantConstantes.get();
-const title=constantes.titulo || "Best Valorant Agents & Lineups | Mejores Agentes";
+const title=constantes?.titulo || "Best Valorant Agents & Lineups | Mejores Agentes";
 const description = constantes.parrafo1 || "Top Agents Meta Valorant. Discover the latest Tier List, Maps for every patch.";
 const imgPost = "/valorant/portada.webp"
 const JSONSchema = crearJSONSchema({title, imgPost, description});
 const keywords = "Valorant Meta, Agents Valorant, Maps Valorant, Tier List Valorant, Best Agents Valorant";
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
 <Layout title={title} JSONSchema={JSONSchema} description={description} keywords={keywords} image={imgPost} canonical={canonicalURL}>
