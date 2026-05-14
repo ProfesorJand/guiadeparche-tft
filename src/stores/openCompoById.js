@@ -1,25 +1,16 @@
 import { atom } from "nanostores";
-import { activeCompId } from "./menuFiltradoAdmin";
+import { activeCompId, toggleActiveComp } from "./menuFiltradoAdmin";
 
-export const openCompoId = atom(null);
+export const openCompoId = activeCompId;
 
-export const setOpenCompo = (id) => {
-  if (openCompoId.get() === id) {
-    openCompoId.set(null); // Si es el mismo, lo cerramos
-  } else {
-    openCompoId.set(id);
-  }
-};
+export const setOpenCompo = toggleActiveComp;
 
 export const selectedComposicion = atom(null);
 
 export const scrollToComposicion = () => {
-  openCompoId.subscribe((id, oldId) => {
+  activeCompId.subscribe((id, oldId) => {
     if (id) {
-      // 1. Abrimos la compo inmediatamente para feedback rápido
-      activeCompId.set(id);
-
-      // 2. Esperar un instante para que el DOM se actualice (la compo se abra)
+      // Esperar un instante para que el DOM se actualice (la compo se abra)
       setTimeout(() => {
         // Buscar el contenedor padre o el contenedor de la compo abierta
         // ya que el header (.ranking-header-seo) ahora está oculto
@@ -37,9 +28,6 @@ export const scrollToComposicion = () => {
           });
         }
       }, 150);
-    } else {
-      // Si el id es null (el usuario des-seleccionó haciendo click en el mismo de nuevo)
-      activeCompId.set(null);
     }
   });
 };

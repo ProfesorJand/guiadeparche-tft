@@ -45,11 +45,36 @@ const mainBgSize = mainBackground === "solid" ? "none" : "4px 4px";
 
       window.gtag('config', 'G-69PWGWV8LZ');
     </script>
-    <!-- google ads mobile -->
-   <script async custom-element="amp-ad" src="https://cdn.ampproject.org/v0/amp-ad-0.1.js" is:inline></script>
-    <!-- google ads -->
-   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6116944495372863"
-    crossorigin="anonymous" is:inline></script>
+    <!-- google ads dynamically loaded (no ads for admin) -->
+    <script is:inline>
+      (function() {
+        var isAdmin = false;
+        try {
+          var savedUser = localStorage.getItem('gp_user');
+          if (savedUser) {
+            isAdmin = !!JSON.parse(savedUser).isAdmin;
+          } else {
+            isAdmin = localStorage.getItem('gp_admin') === 'true';
+          }
+        } catch (e) {}
+
+        if (!isAdmin) {
+          // google ads mobile
+          var ampAdScript = document.createElement('script');
+          ampAdScript.async = true;
+          ampAdScript.setAttribute('custom-element', 'amp-ad');
+          ampAdScript.src = "https://cdn.ampproject.org/v0/amp-ad-0.1.js";
+          document.head.appendChild(ampAdScript);
+
+          // google ads
+          var adsScript = document.createElement('script');
+          adsScript.async = true;
+          adsScript.crossOrigin = "anonymous";
+          adsScript.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6116944495372863";
+          document.head.appendChild(adsScript);
+        }
+      })();
+    </script>
     <link rel="icon" type="image/png" href={(await import("/src/assets/GP_logo.png")).default.src} />
     <meta name="generator" content={Astro.generator} />
     <link rel="sitemap" href="/sitemap-index.xml" />

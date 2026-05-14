@@ -1,12 +1,12 @@
 ---
 import Layout from "@layouts/Layout.astro";
-import MetaComps from "src/components/main/Admin/MetaComps.jsx";
+// import MetaComps from "src/components/main/Admin/MetaComps.jsx";
 import Main from "@components/main/Main.astro";
 import { crearJSONSchema } from "src/json/schema/crearJSONSchema";
 // import Kick from "src/components/embed/Kick.astro";
 import TierListMetaComps from "@components/TFT/TierListMetaComps.jsx";
 import VersionCompo from "@components/TFT/VersionCompo";
-import SelectVersion from "@components/versionTFT/SelectVersion";
+// import SelectVersion from "@components/versionTFT/SelectVersion";
 import {
   composMetaJSON,
   abreviarNombres,
@@ -79,8 +79,6 @@ const itemListSchema = {
 
 const JSONSchema = JSON.stringify([baseSchema, itemListSchema]);
 
-const admin =
-  typeof window !== "undefined" ? localStorage.getItem("user") : false;
 ---
 
 <!-- <link rel="canonical" href={canonicalURL} /> --><!-- <meta property="og:image" content={socialImageURL} /> --><!-- <meta name="description" content={description}>
@@ -241,7 +239,6 @@ const admin =
                 <Composicion
                   id={comp.id}
                   compo={comp}
-                  admin={admin}
                   client:load
                 />
               </div>
