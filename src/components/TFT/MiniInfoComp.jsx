@@ -13,20 +13,22 @@ const MiniInfoComp = ({
   compo,
   admin,
   onToggle,
-  copyToClipboard,
-  generatorCodeBuilder,
   colorDificulty,
   dataCampeones,
   handleEditID,
-  ShowBigComp,
   deleteId,
   forInfografia,
   backgroundRef,
   imagePosicionamientoReady,
-  webInfografia = false
+  webInfografia = false,
+  codeForPBE,
+  allChampionsApiName,
+  generatorCodeBuilder,
+  copyToClipboard
 }) => {
   const containerInfoChampRef = useRef(null);
   const [infoChampHeight, setInfoChampHeight] = useState(0);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
     if (!containerInfoChampRef.current) return;
@@ -45,9 +47,15 @@ const MiniInfoComp = ({
       resizeObserverImg.disconnect();
     };
   }, []);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const safeAdmin = isMounted ? admin : false;
   return (
     <div
-      className={[style.miniInfoComp, compo?.isHide === "true" && admin ? style.isHideForAdmin : compo?.isHide === "true" ? style.isHide : ""].join(" ")}
+      className={[style.miniInfoComp, compo?.isHide === "true" && safeAdmin ? style.isHideForAdmin : compo?.isHide === "true" ? style.isHide : ""].join(" ")}
       ref={containerInfoChampRef}
     >
       <div
@@ -66,7 +74,7 @@ const MiniInfoComp = ({
       >
         <CheckboxIsInInfographic
           compo={compo}
-          admin={admin}
+          admin={safeAdmin}
           show={show}
           forInfografia={forInfografia}
           imagePosicionamientoReady={imagePosicionamientoReady}
@@ -79,14 +87,19 @@ const MiniInfoComp = ({
         <TextoInfoPrimario
           show={show}
           compo={compo}
+          
         />
         <Tags
           colorDificulty={colorDificulty[compo.dificultad]}
           compo={compo}
+          codeForPBE={codeForPBE}
+          allChampionsApiName={allChampionsApiName}
+          generatorCodeBuilder={generatorCodeBuilder}
+          copyToClipboard={copyToClipboard}
         />
         <AdminOptions
           compo={compo}
-          admin={admin}
+          admin={safeAdmin}
           show={show}
           handleEditID={handleEditID}
           isOpen={isOpen}
@@ -186,7 +199,7 @@ function TierImg({ compo, webInfografia }) {
     </div>
   )
 }
-function TextoInfoPrimario({ show, compo }) {
+function TextoInfoPrimario({ show, compo, codeForPBE, allChampionsApiName }) {
   if (!show) return null;
   const currentVersion = useStore(versionTFT);
   const constantes = useStore(constantesTFT);
@@ -198,14 +211,23 @@ function TextoInfoPrimario({ show, compo }) {
       <div className={style.containerInfoComp}>
         <h3 className={[style.titulo, style.tituloComp].join(" ")}>{compo.titulo}</h3>
       </div>
+      
     </div>
   )
 }
-function Tags({ colorDificulty, compo }) {
+function Tags({ colorDificulty, compo, show, codeForPBE, allChampionsApiName, generatorCodeBuilder, copyToClipboard }) {
+  const currentVersion = useStore(versionTFT);
   return (
     <div className={style.tags}>
       <div className={style.dificultad} style={{ border: `1px solid ${colorDificulty}`, color: `${colorDificulty}` }}>{compo.dificultad}</div>
       <div className={style.category}>{compo.infographicCategory}</div>
+
+          <div className={`${style.containerTips} adminOptions`} >
+            <div className={style.containerTextoInfoPrimarioCode} onClick={(e)=>copyToClipboard(e,(currentVersion === "pbe" ? codeForPBE(allChampionsApiName) : generatorCodeBuilder(allChampionsApiName)))}>
+              {"COPIAR CODIGO 📋"}
+            </div>
+          </div>
+
     </div>
   )
 }

@@ -97,7 +97,7 @@ const JSONSchema = JSON.stringify([baseSchema, itemListSchema]);
   <Fragment slot="bodyMainAside">
     <TierListMetaComps
       todasLasCompsPBE={todasLasCompsPBE}
-      client:load
+      client:only="react"
     />
     <!--     <TierListMetaComps todasLasComps={todasLasComps} todasLasCompsPBE={todasLasCompsPBE} client:only="react" /> -->
     <!-- <Youtube src={"https://www.youtube.com/playlist?list=PLxRnNvReiLMEriFDu0UxXScDabCIX-PWy"} client:only="react"/> -->
@@ -214,6 +214,7 @@ const JSONSchema = JSON.stringify([baseSchema, itemListSchema]);
                                       : `https://raw.communitydragon.org/latest/game/${JSON.parse(item.item).icon.replace(".tex", ".png").toLowerCase()}`
                                   }
                                   alt={JSON.parse(item.item).name}
+                                  loading="lazy"
                                 />
                               ))}
                             </div>
@@ -687,6 +688,7 @@ const JSONSchema = JSON.stringify([baseSchema, itemListSchema]);
   document.addEventListener("click", (e) => {
     const target = e.target as HTMLElement;
     const header = target.closest(".ranking-header-seo");
+    console.log({header})
     if (header) {
       const compId = header.getAttribute("data-comp-id");
       if (compId) {

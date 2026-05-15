@@ -14,7 +14,7 @@ import MiniInfoComp from "@components/TFT/MiniInfoComp";
 import { activeCompId, toggleActiveComp } from "@stores/menuFiltradoAdmin";
 import { $admin } from "@stores/auth";
 
-const Composicion = ({ id, compo, admin = false, show = true, allwaysOpen = false, onToggle: propOnToggle, isOpen: propIsOpen }) => {
+const Composicion = ({ id, compo, admin = useStore($admin), show = true, allwaysOpen = false, onToggle: propOnToggle, isOpen: propIsOpen }) => {
   const storeOpenId = useStore(activeCompId);
   const [localIsOpen, setLocalIsOpen] = useState(false);
   
@@ -203,12 +203,6 @@ const Composicion = ({ id, compo, admin = false, show = true, allwaysOpen = fals
     alert("Copied Code: " + codigo);
   }
 
-  function ShowBigComp(e, id) {
-    e.stopPropagation();
-    setShowBigComp((valor) => !valor);
-    setBigCompId(id);
-  }
-
   if (!compo) {
     return <div>Composición no disponible</div>;
   }
@@ -240,11 +234,12 @@ const Composicion = ({ id, compo, admin = false, show = true, allwaysOpen = fals
         colorDificulty={colorDificulty}
         dataCampeones={dataCampeones}
         handleEditID={handleEditID}
-        ShowBigComp={ShowBigComp}
         deleteId={deleteId}
         forInfografia={false}
         backgroundRef={backgroundRef}
         imagePosicionamientoReady={imagePosicionamientoReady}
+        codeForPBE={codeForPBE}
+        allChampionsApiName={allChampionsApiName}
       />
       {
         isOpen &&
@@ -290,13 +285,6 @@ const Composicion = ({ id, compo, admin = false, show = true, allwaysOpen = fals
             {/*<h3 className={style.titulo}>Augments</h3>*/}
             <AumentosCompos aumentos={compo.aumentos} />
           </div>
-          {/* {show && 
-      <div className={style.containerTips}>
-        <div className={style.containerTextoInfoPrimarioCode} onClick={(e)=>copyToClipboard(e,(currentVersion === "pbe" ? codeForPBE(allChampionsApiName) : generatorCodeBuilder(allChampionsApiName)))}>
-          {"COPY TEAM CODE: " + (currentVersion === "pbe" ? codeForPBE(allChampionsApiName) : generatorCodeBuilder(allChampionsApiName)) + " 📋"}
-        </div>
-      </div>
-      } */}
           <FooterTFT />
         </div>
       }
