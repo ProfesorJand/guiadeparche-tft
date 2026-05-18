@@ -1,0 +1,102 @@
+---
+import Layout from "@layouts/Layout.astro";
+import TestIOSReact from '../../components/TFT/TestIOSReact.jsx';
+import TierListMetaComps from "@components/TFT/TierListMetaComps.jsx";
+import { fetchAndSortComps, composMetaPBEJSON } from '@stores/dataTFT';
+import Main from "@components/main/Main.astro";
+
+const todasLasCompsPBE = await fetchAndSortComps(composMetaPBEJSON);
+---
+
+<Layout title="Test iOS Click" description="Página de prueba para problemas de clics en iOS">
+   <Fragment slot="bodyMainAside">
+    <TierListMetaComps
+      todasLasCompsPBE={todasLasCompsPBE}
+      client:only="react"
+    />
+    </Fragment>
+    <Main>
+
+    
+  <div class="test-container" style="max-width: 800px; margin: 0 auto; padding: 2rem 1rem; color: white;">
+    <h1 style="font-size: 2rem; margin-bottom: 1rem; color: #f1fa8c;">Prueba de Clics en iOS</h1>
+    <p style="margin-bottom: 2rem; color: #ccc;">
+      Por favor, prueba estos diferentes métodos para abrir/cerrar contenido en tu iPhone (en Safari y Chrome). 
+      Haz clic en cada uno y verifica si se abre el texto debajo. Esto nos dirá exactamente por qué falla la página de composiciones.
+    </p>
+
+    <!-- Test 1: Div normal sin cursor pointer (Falla mucho en iOS) -->
+    <div class="test-box" style="margin-bottom: 1.5rem;">
+      <div class="toggle-header" id="test1-header" style="background: #333; padding: 1rem; border-radius: 8px; border: 1px solid #444;">
+        🔴 Prueba 1: Div nativo (sin cursor: pointer)
+      </div>
+      <div class="toggle-content" id="test1-content" style="display: none; padding: 1rem; background: #222; margin-top: 5px; border-left: 4px solid #f1fa8c;">
+        ✅ ¡Funciona! El clic fue detectado.
+      </div>
+    </div>
+
+    <!-- Test 2: Div con cursor: pointer (A veces soluciona el problema de iOS) -->
+    <div class="test-box" style="margin-bottom: 1.5rem;">
+      <div class="toggle-header" id="test2-header" style="background: #333; padding: 1rem; border-radius: 8px; cursor: pointer; border: 1px solid #444;">
+        🟢 Prueba 2: Div nativo (CON cursor: pointer)
+      </div>
+      <div class="toggle-content" id="test2-content" style="display: none; padding: 1rem; background: #222; margin-top: 5px; border-left: 4px solid #50fa7b;">
+        ✅ ¡Funciona! Al tener cursor:pointer, iOS lo considera clickeable.
+      </div>
+    </div>
+
+    <!-- Test 3: Botón nativo (El más seguro para iOS) -->
+    <div class="test-box" style="margin-bottom: 1.5rem;">
+      <button class="toggle-header" id="test3-header" style="background: #333; padding: 1rem; border-radius: 8px; width: 100%; text-align: left; border: 1px solid #444; color: white; cursor: pointer; font-size: 1rem; font-family: inherit;">
+        🔵 Prueba 3: Elemento Button (HTML)
+      </button>
+      <div class="toggle-content" id="test3-content" style="display: none; padding: 1rem; background: #222; margin-top: 5px; border-left: 4px solid #8be9fd;">
+        ✅ ¡Funciona! Este es el método más estándar.
+      </div>
+    </div>
+
+    <!-- Test 4: Details y Summary (Nativo del navegador, no usa JS) -->
+    <div class="test-box" style="margin-bottom: 2rem;">
+      <details style="background: #333; padding: 1rem; border-radius: 8px; cursor: pointer; border: 1px solid #444;">
+        <summary style="outline: none; font-weight: bold;">🟠 Prueba 4: Details (Nativo, sin JS)</summary>
+        <div style="padding: 1rem; background: #222; margin-top: 10px; border-left: 4px solid #ffb86c;">
+          ✅ ¡Funciona! Al abrirse no usa JavaScript en absoluto.
+        </div>
+      </details>
+    </div>
+
+    <!-- Pruebas de React -->
+    <TestIOSReact client:load />
+
+  </div>
+  </Main>
+
+  <script is:inline>
+    // Lógica para Test 1
+    const header1 = document.getElementById('test1-header');
+    const content1 = document.getElementById('test1-content');
+    if (header1 && content1) {
+      header1.addEventListener('click', () => {
+        content1.style.display = content1.style.display === 'none' ? 'block' : 'none';
+      });
+    }
+
+    // Lógica para Test 2
+    const header2 = document.getElementById('test2-header');
+    const content2 = document.getElementById('test2-content');
+    if (header2 && content2) {
+      header2.addEventListener('click', () => {
+        content2.style.display = content2.style.display === 'none' ? 'block' : 'none';
+      });
+    }
+
+    // Lógica para Test 3
+    const header3 = document.getElementById('test3-header');
+    const content3 = document.getElementById('test3-content');
+    if (header3 && content3) {
+      header3.addEventListener('click', () => {
+        content3.style.display = content3.style.display === 'none' ? 'block' : 'none';
+      });
+    }
+  </script>
+</Layout>
