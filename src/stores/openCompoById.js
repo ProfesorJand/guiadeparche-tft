@@ -10,7 +10,8 @@ export const selectedComposicion = atom(null);
 export const scrollToComposicion = () => {
   activeCompId.subscribe((id, oldId) => {
     if (id) {
-      // Esperar un instante para que el DOM se actualice (la compo se abra)
+      // Esperar un poco más (350ms) para que el DOM se actualice por completo en Safari (iOS)
+      // antes de ejecutar la animación de scroll. Si se hace al mismo tiempo, iOS corta el renderizado.
       setTimeout(() => {
         // Buscar el contenedor padre o el contenedor de la compo abierta
         // ya que el header (.ranking-header-seo) ahora está oculto
@@ -27,7 +28,7 @@ export const scrollToComposicion = () => {
             behavior: "smooth",
           });
         }
-      }, 150);
+      }, 350);
     }
   });
 };
