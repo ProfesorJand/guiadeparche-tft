@@ -36,6 +36,7 @@ const orderedBaseItems = [
 export const apiGPTFT = `https://api.guiadeparche.com/tft/`;
 export const urlVersionTFT = "https://ddragon.leagueoflegends.com/api/versions.json";
 export const crearCompoMetaPHP = `${apiGPTFT}crearCompoMeta.php`;
+export const crearCompoMetaPHPTest = `${apiGPTFT}crearCompoMetaTest.php`;
 export const uploadImageWebpPHP = `${apiGPTFT}uploadImageWebp.php`;
 export const tierListChampionItemJSON =  `${apiGPTFT}tierListChampionItem.json`;
 export const crearTierListChampionItemPHP = `${apiGPTFT}crearTierListChampionItem.php`;

@@ -5,6 +5,7 @@ import { currentStreamer } from 'src/stores/streamers';
 import Twitch from '@components/embed/Twitch2';
 import Kick from '@components/embed/Kick2';
 import loadingSpinner from 'src/assets/loading-180-v2.svg';
+import gpLogo from 'src/assets/GP_logo.png';
 
 const loadTwitchScript = () => {
   return new Promise((resolve, reject) => {
@@ -29,20 +30,35 @@ const loadTwitchScript = () => {
 const PlatformStreamer = () => {
   const allStreamers = useStore(STREAMERS);
   const streamer = useStore(currentStreamer);
-  const [initialized, setInitialized] = useState(false);
   const [loading, setLoading] = useState(true);
-  const divTwitchRef = useRef(null); // noc si va
-  const embedRef = useRef(null); // noc si va
-
+  const [isOnline, setIsOnline] = useState(false);
 
   useEffect(() => {
     let index = 0;
+    let timeoutId;
+    let isMounted = true;
   
     const checkNextStreamer = async () => {
+      if (!isMounted) return;
+
+      if (!allStreamers || allStreamers.length === 0) {
+        timeoutId = setTimeout(() => {
+           if (isMounted) checkNextStreamer();
+        }, 5000);
+        return;
+      }
+
       if (index >= allStreamers.length) {
         const first = allStreamers[0];
         currentStreamer.set(first || { name: 'jupeson', platform: 'twitch' });
+        setIsOnline(false);
         setLoading(false);
+
+        // Volver a revisar en 3 minutos por si alguien prendió stream
+        timeoutId = setTimeout(() => {
+          index = 0;
+          if (isMounted) checkNextStreamer();
+        }, 180000);
         return;
       }
   
@@ -53,7 +69,13 @@ const PlatformStreamer = () => {
         const online = await isKickOnline(s.name);
         if (online) {
           currentStreamer.set({ name: s.name, platform: 'kick' });
+          setIsOnline(true);
           setLoading(false);
+          // Revisar de nuevo en 5 minutos en caso de que se apague el stream
+          timeoutId = setTimeout(() => {
+             index = 0;
+             if (isMounted) checkNextStreamer();
+          }, 300000);
         } else {
           checkNextStreamer();
         }
@@ -61,20 +83,57 @@ const PlatformStreamer = () => {
         const online = await isTwitchOnline(s.name);
         if (online) {
           currentStreamer.set({ name: s.name, platform: 'twitch' });
+          setIsOnline(true);
           setLoading(false);
+          timeoutId = setTimeout(() => {
+             index = 0;
+             if (isMounted) checkNextStreamer();
+          }, 300000);
         } else {
           checkNextStreamer();
         }
+      } else {
+         checkNextStreamer();
       }
     };
   
     loadTwitchScript().then(() => {
-      if (allStreamers.length) {
-        checkNextStreamer();
-      }
+      checkNextStreamer();
     });
+
+    return () => {
+      isMounted = false;
+      clearTimeout(timeoutId);
+    };
   }, [allStreamers]);
 
+  if (!isOnline) {
+
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%', background: '#111', padding: '1rem', textAlign: 'center' }}>
+        <img src={gpLogo.src} alt="Offline" style={{ maxWidth: '100px', opacity: 0.8, marginBottom: '1rem' }} />
+        <h3 style={{ color: '#fff', margin: '0 0 0.5rem 0' }}>¡Streamers Offline!</h3>
+        <p style={{ color: '#aaa', margin: '0 0 1rem 0', fontSize: '0.9rem' }}>Visita el canal de Jupeson</p>
+        <a 
+          href="https://twitch.tv/jupeson" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          style={{
+            display: 'inline-block',
+            padding: '8px 16px',
+            backgroundColor:  '#9146FF',
+            color:'#fff',
+            textDecoration: 'none',
+            borderRadius: '4px',
+            fontWeight: 'bold',
+            transition: 'opacity 0.2s'
+          }}
+        >
+          Ver en Twitch
+        </a>
+      </div>
+    );
+  }
   if (loading) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
@@ -82,6 +141,7 @@ const PlatformStreamer = () => {
       </div>
     );
   }
+
 
   if (streamer?.platform === "twitch") {
     return <Twitch name={streamer.name} />;

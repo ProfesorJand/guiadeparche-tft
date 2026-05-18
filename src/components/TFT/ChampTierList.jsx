@@ -24,13 +24,13 @@ const ChampTierList = ({id,isSample,campeonTierList, augmentTierList, champItem,
         Object.keys(campeonTierList || {})?.length > 0 && 
         // añadir color del borde
       <div className={[style.poligonChampTierList].join(" ")} style={{backgroundColor: championsColor[campeonTierList?.coste || campeonTierList?.cost]}}> 
-        <img className={style.imgCampeonBuilder} src={urlDataDragonLatestGame + campeonTierList?.tileIcon.replace(".tex",".png").toLowerCase()} alt="campeonTierList"></img>
+        <img className={style.imgCampeonBuilder} src={urlDataDragonLatestGame + campeonTierList?.tileIcon?.replace(".tex",".png")?.toLowerCase()} alt="campeonTierList"></img>
       </div>
       }
       {
         Object.keys(campeonTierList || {})?.length > 0 && Object.keys(augmentTierList || {}).length > 0 &&
       <div className={style.containerAumChampTierList} style={{borderColor: championsColor[campeonTierList?.coste || campeonTierList?.cost]}}>
-        <img className={style.imgAumChampTierList}src={urlDataDragonLatestGame+augmentTierList?.icon.replace(".tex",".png").toLowerCase()}></img>
+        <img className={style.imgAumChampTierList}src={urlDataDragonLatestGame+augmentTierList?.icon?.replace(".tex",".png")?.toLowerCase()}></img>
       </div>
       }
       {
@@ -40,7 +40,7 @@ const ChampTierList = ({id,isSample,campeonTierList, augmentTierList, champItem,
             if(item?.name){
               return (
                 <div key={`champItem-${index}`} className={style.itemsChampTierList}>
-                  <img className={style.imgItemChampTierList} src={(version === "pbe" ? urlDataDragonPBEGame : urlDataDragonLatestGame) + item.icon.replace(".tex",".png").toLowerCase()} alt={item.name}></img>
+                  <img className={style.imgItemChampTierList} src={(version === "pbe" ? urlDataDragonPBEGame : urlDataDragonLatestGame) + item?.icon?.replace(".tex",".png")?.toLowerCase()} alt={item.name}></img>
                 </div>
               )
             }
@@ -59,7 +59,7 @@ const ChampTierList = ({id,isSample,campeonTierList, augmentTierList, champItem,
             if(trait.name){
               return (
                 <div key={`champTrait-${index}`} className={style.containerTraitChampTierList} style={{borderColor: championsColor[campeonTierList?.coste || campeonTierList?.cost || 0]}}>
-                  <img className={style.imgTraitChampTierList} src={urlDataDragonLatestGame + trait.icon.replace(".tex",".png").toLowerCase()} alt={trait.name}></img>
+                  <img className={style.imgTraitChampTierList} src={urlDataDragonLatestGame + trait?.icon?.replace(".tex",".png")?.toLowerCase()} alt={trait.name}></img>
                 </div>  
               )
             }
