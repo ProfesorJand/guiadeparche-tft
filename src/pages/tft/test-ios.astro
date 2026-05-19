@@ -4,6 +4,7 @@ import TestIOSReact from '../../components/TFT/TestIOSReact.jsx';
 import TierListMetaComps from "@components/TFT/TierListMetaComps.jsx";
 import { fetchAndSortComps, composMetaPBEJSON } from '@stores/dataTFT';
 import Main from "@components/main/Main.astro";
+import Composicion from "@components/main/Admin/Composicion.jsx";
 
 const todasLasCompsPBE = await fetchAndSortComps(composMetaPBEJSON);
 ---
@@ -68,6 +69,31 @@ const todasLasCompsPBE = await fetchAndSortComps(composMetaPBEJSON);
     <!-- Pruebas de React -->
     <TestIOSReact client:load />
 
+    <!-- Prueba 7: Componente Composicion Real -->
+    <div class="test-box" style="margin-top: 3rem; margin-bottom: 2rem;">
+      <h3 style="color: #fff; margin-bottom: 1rem;">Test 7: Componente Composicion Real</h3>
+      <p style="color: #ccc; margin-bottom: 1rem;">Haz clic en el botón de abajo para probar el componente real con la lógica exacta de la página principal.</p>
+      {
+        todasLasCompsPBE.slice(0, 5).map((comp, index) => (
+          <div style="margin-bottom: 2rem;">
+            <button 
+              style="background: #333; padding: 1rem; border-radius: 8px; width: 100%; text-align: left; border: 1px solid #444; color: white; cursor: pointer; margin-bottom: 1rem;"
+              onclick={`window.setOpenCompo('${comp.id}')`}
+            >
+              🟢 Abrir Composición Real {index + 1} (ID: {comp.id})
+            </button>
+            <div class="containerMetaTier hide" data-comp-id={comp.id}>
+              <Composicion
+                id={comp.id}
+                compo={comp}
+                client:load
+              />
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
   </div>
   </Main>
 
@@ -99,4 +125,29 @@ const todasLasCompsPBE = await fetchAndSortComps(composMetaPBEJSON);
       });
     }
   </script>
+
+  <script>
+    import { activeCompId } from "@stores/menuFiltradoAdmin";
+    import { setOpenCompo } from "@stores/openCompoById";
+    
+    // Expose to window for onclick handlers in static HTML
+    (window as any).setOpenCompo = setOpenCompo;
+
+    activeCompId.subscribe((id) => {
+      const stringId = id ? String(id) : null;
+      document.querySelectorAll(".containerMetaTier").forEach((el) => {
+        if (el.getAttribute("data-comp-id") === stringId) {
+          el.classList.remove("hide");
+          // Force reflow for iOS Safari to ensure React DOM updates are painted
+          void (el as HTMLElement).offsetHeight;
+        } else {
+          el.classList.add("hide");
+        }
+      });
+    });
+  </script>
+
+  <style>
+    .hide { display: none !important; }
+  </style>
 </Layout>
