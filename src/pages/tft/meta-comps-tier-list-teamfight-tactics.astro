@@ -126,7 +126,7 @@ const JSONSchema = JSON.stringify([baseSchema, itemListSchema]);
       {
         top5Comps.map((comp) => (
           <li>
-            <a href={`#${comp.id}`} class="anchor-simple top-comp-link" data-comp-id={comp.id}>
+            <a href={`#${comp.id}`} class="anchor-simple top-comp-link" data-comp-id={comp.id} onclick={`event.preventDefault(); window.setOpenCompo('${comp.id}')`}>
               {comp.titulo} {`(${comp.tier})`}
             </a>
           </li>
@@ -145,6 +145,7 @@ const JSONSchema = JSON.stringify([baseSchema, itemListSchema]);
                 class="ranking-header-seo"
                 data-comp-id={comp.id}
                 data-tier={(comp as any).tier}
+                onclick={`window.setOpenCompo('${comp.id}')`}
               >
                 <div class="ranking-title-container">
                   <h3 class="ranking-title">
@@ -685,27 +686,6 @@ const JSONSchema = JSON.stringify([baseSchema, itemListSchema]);
 
   // Expose to window for onclick handlers in static HTML
   (window as any).setOpenCompo = setOpenCompo;
-  // Attach click listener directly to headers to fix iOS bugs
-  document.querySelectorAll(".ranking-header-seo").forEach((header) => {
-    header.addEventListener("click", (e) => {
-      const compId = header.getAttribute("data-comp-id");
-      if (compId) {
-        setOpenCompo(compId);
-      }
-    });
-  });
-
-  // Ensure Top 5 links also open the components when clicked
-  document.querySelectorAll(".top-comp-link").forEach((link) => {
-    link.addEventListener("click", (e) => {
-      const compId = link.getAttribute("data-comp-id");
-      if (compId) {
-        // Prevent default hash jump so our custom smooth scroll takes over
-        e.preventDefault();
-        setOpenCompo(compId);
-      }
-    });
-  });
 
   activeCompId.subscribe((id) => {
     const stringId = id ? String(id) : null;
