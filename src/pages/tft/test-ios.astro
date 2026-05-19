@@ -5,6 +5,7 @@ import TierListMetaComps from "@components/TFT/TierListMetaComps.jsx";
 import Main from "@components/main/Main.astro";
 import Composicion from "@components/main/Admin/Composicion.jsx";
 import { TestIOSReactOpcion2, TestIOSReactOpcion3 } from "@components/TFT/TestIOSReactOpciones.jsx";
+import {composMetaPBEJSON, fetchAndSortComps} from "@stores/dataTFT";
 
 const todasLasCompsPBE = await fetchAndSortComps(composMetaPBEJSON);
 ---
