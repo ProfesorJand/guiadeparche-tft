@@ -50,6 +50,14 @@ const Composicion = ({ id, compo, admin = useStore($admin), show = true, allways
     setData(compo.boardInfo[compo.originalComp].data)
     setSinergias(compo.boardInfo[compo.originalComp].sinergias)
   }, [compo])
+
+  useEffect(() => {
+    // Force reflow for iOS Safari when React finishes rendering the open state
+    // This fixes the bug where only the Minicomp shows and the rest is blank
+    if (isOpen && backgroundRef.current) {
+      void backgroundRef.current.offsetHeight;
+    }
+  }, [isOpen]);
   const earlyComp = Object.keys(compo.boardInfo.early.data).map((key) => {
     const { dataCampeon, dataItem } = compo?.boardInfo?.early?.data?.[key]
     return { dataCampeon: dataCampeon.campeon, dataItem }

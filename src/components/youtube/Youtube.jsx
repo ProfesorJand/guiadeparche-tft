@@ -37,6 +37,7 @@ const getId = async (url, titulo) => {
 
 const VideoComponent = ({ src, loading = "lazy", titulo="video de Jupeson" }) => {
   const [video, setVideo] = useState(null);
+  const [imgError, setImgError] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -109,12 +110,18 @@ const VideoComponent = ({ src, loading = "lazy", titulo="video de Jupeson" }) =>
   return (
     <div className={style.divIframe} data-url={video.url}>
       <img
-        src={video?.thumbnail}
+        src={imgError ? video?.thumbnail.replace('maxresdefault.jpg', 'hqdefault.jpg') : video?.thumbnail}
         width={25 * 16}
         height={25 * 9}
         alt={video?.title}
         loading="lazy"
         className={style.youtube_thumbnail}
+        onError={() => setImgError(true)}
+        onLoad={(e) => {
+          if (e.target.naturalWidth === 120 && e.target.src.includes('maxresdefault.jpg')) {
+            setImgError(true);
+          }
+        }}
       />
       <h2 className={style.tituloYoutube}>{video?.title}</h2>
       <div className={style.youtube_play_button}></div>

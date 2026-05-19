@@ -126,7 +126,7 @@ const JSONSchema = JSON.stringify([baseSchema, itemListSchema]);
       {
         top5Comps.map((comp) => (
           <li>
-            <a href={`#${comp.id}`} class="anchor-simple">
+            <a href={`#${comp.id}`} class="anchor-simple top-comp-link" data-comp-id={comp.id}>
               {comp.titulo} {`(${comp.tier})`}
             </a>
           </li>
@@ -140,13 +140,11 @@ const JSONSchema = JSON.stringify([baseSchema, itemListSchema]);
         {
           todasLasCompsPBE.map((comp, index) => (
             <div class="ranking-item-container">
-              <div
+              <button
                 id={comp.id}
                 class="ranking-header-seo"
                 data-comp-id={comp.id}
                 data-tier={(comp as any).tier}
-                role="button"
-                tabindex="0"
               >
                 <div class="ranking-title-container">
                   <h3 class="ranking-title">
@@ -234,7 +232,7 @@ const JSONSchema = JSON.stringify([baseSchema, itemListSchema]);
                   </div>
                 </div>
                 <span class="ranking-icon">▼</span>
-              </div>
+              </button>
 
               <div class="containerMetaTier hide" data-comp-id={comp.id}>
                 <Composicion
@@ -470,6 +468,9 @@ const JSONSchema = JSON.stringify([baseSchema, itemListSchema]);
     width: 100%;
     position: relative;
     overflow: hidden;
+    text-align: left;
+    font-family: inherit;
+    color: inherit;
   }
   .ranking-header-seo::after {
     content: attr(data-tier);
@@ -675,8 +676,8 @@ const JSONSchema = JSON.stringify([baseSchema, itemListSchema]);
 </style>
 
 <script>
-  import { activeCompId } from "src/stores/menuFiltradoAdmin";
-  import { setOpenCompo } from "src/stores/openCompoById";
+  import { activeCompId } from "@stores/menuFiltradoAdmin";
+  import { setOpenCompo } from "@stores/openCompoById";
   import { versionTFT, swapVersionTFT } from "@stores/dataTFT";
   // tomar en cuenta la altura del header para el desplazamiento del scroll
   // const headerHeight = document.querySelector("header")?.offsetHeight || 0;
@@ -684,19 +685,27 @@ const JSONSchema = JSON.stringify([baseSchema, itemListSchema]);
 
   // Expose to window for onclick handlers in static HTML
   (window as any).setOpenCompo = setOpenCompo;
-  // Event delegation to bypass iOS Safari inline click issues
-  document.addEventListener("click", (e) => {
-    const target = e.target as HTMLElement;
-    const header = target.closest(".ranking-header-seo");
-    console.log({header})
-    if (header) {
+  // Attach click listener directly to headers to fix iOS bugs
+  document.querySelectorAll(".ranking-header-seo").forEach((header) => {
+    header.addEventListener("click", (e) => {
       const compId = header.getAttribute("data-comp-id");
       if (compId) {
         setOpenCompo(compId);
       }
-    }
+    });
   });
 
+  // Ensure Top 5 links also open the components when clicked
+  document.querySelectorAll(".top-comp-link").forEach((link) => {
+    link.addEventListener("click", (e) => {
+      const compId = link.getAttribute("data-comp-id");
+      if (compId) {
+        // Prevent default hash jump so our custom smooth scroll takes over
+        e.preventDefault();
+        setOpenCompo(compId);
+      }
+    });
+  });
 
   activeCompId.subscribe((id) => {
     document.querySelectorAll(".containerMetaTier").forEach((el) => {
