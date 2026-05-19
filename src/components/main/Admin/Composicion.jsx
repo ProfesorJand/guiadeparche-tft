@@ -17,8 +17,8 @@ import { $admin } from "@stores/auth";
 const Composicion = ({ id, compo, admin = useStore($admin), show = true, allwaysOpen = false, onToggle: propOnToggle, isOpen: propIsOpen }) => {
   const storeOpenId = useStore(activeCompId);
   
-  const isOpen = propIsOpen !== undefined ? propIsOpen : (storeOpenId === id);
-  const onToggle = propOnToggle || (() => toggleActiveComp(id));
+  const isOpen = propIsOpen !== undefined ? propIsOpen : (String(storeOpenId) === String(id));
+  const onToggle = propOnToggle || (() => toggleActiveComp(String(id)));
   const championsTFT = useStore(dataTFTChampions);
   const currentVersion = useStore(versionTFT);
   const codeOfChampions = useStore(teamPlannerCode);

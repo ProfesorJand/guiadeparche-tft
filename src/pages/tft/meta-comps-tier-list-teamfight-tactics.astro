@@ -708,8 +708,9 @@ const JSONSchema = JSON.stringify([baseSchema, itemListSchema]);
   });
 
   activeCompId.subscribe((id) => {
+    const stringId = id ? String(id) : null;
     document.querySelectorAll(".containerMetaTier").forEach((el) => {
-      if (el.getAttribute("data-comp-id") === id) {
+      if (el.getAttribute("data-comp-id") === stringId) {
         el.classList.remove("hide");
         // Force reflow for iOS Safari to ensure React DOM updates are painted
         void (el as HTMLElement).offsetHeight;
@@ -719,7 +720,7 @@ const JSONSchema = JSON.stringify([baseSchema, itemListSchema]);
     });
 
     document.querySelectorAll(".ranking-header-seo").forEach((el) => {
-      if (el.getAttribute("data-comp-id") === id) {
+      if (el.getAttribute("data-comp-id") === stringId) {
         el.classList.add("hide");
       } else {
         el.classList.remove("hide");
