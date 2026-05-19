@@ -13,7 +13,7 @@ export const TestIOSReactOpcion2 = ({ comp }) => {
 
   return (
     <div style={{ marginTop: '10px' }}>
-      <Composicion id={comp.id} compo={comp} isOpen={true} client:load />
+      <Composicion id={comp.id} compo={comp} isOpen={true} client:only="react"/>
     </div>
   );
 };
@@ -45,7 +45,7 @@ export const TestIOSReactOpcion3 = ({ comps }) => {
                 >
                   Cerrar Composición
                 </button>
-                <Composicion id={comp.id} compo={comp} isOpen={true} />
+                <Composicion id={comp.id} compo={comp} isOpen={true} client:only="react"/>
               </div>
             )}
           </div>
