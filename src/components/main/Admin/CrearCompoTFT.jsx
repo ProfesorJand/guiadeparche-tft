@@ -5,7 +5,7 @@ import Champions from "./ChampionsList.jsx"
 import Sinergias from "./Sinergias.jsx"
 import Items from "./Items.jsx";
 import Youtube from "../../youtube/Youtube.jsx";
-import { toBlob } from 'html-to-image';
+// import { toBlob } from 'html-to-image';
 import { BASIC_ITEMS, CRAFTEABLE_ITEMS, ARTEFACTOS, ITEMS_CRAFTEABLES_PBE, uploadImageWebpPHP, crearCompoMetaPHP, AllBasicItems } from "src/stores/dataTFT.js";
 import { emblems, radiantsItems as listOfRadiantsItems} from "src/json/updates/itemsTFT";
 import CarouselItems from "./CarouselItems.jsx";
@@ -243,6 +243,8 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
       const height = rect.height;
       const pixelRatio = 1.5;
       try {
+        // COMENTADO TEMPORALMENTE PARA TEST EN IOS SAFARI
+        /*
         const blob = await toBlob(element, {
           pixelRatio,
           style: {
@@ -261,7 +263,8 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         const nombreArchivo = id + `-${showBoardID}`;
         const formData = new FormData();
         formData.append('file', webpBlob, `${nombreArchivo}-${version}.webp`);
-
+        */
+        const formData = new FormData(); // Placeholder para evitar error de scope
         const response = await fetch(uploadImageWebpPHP, {
           method: 'POST',
           body: formData,

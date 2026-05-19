@@ -5,7 +5,7 @@ import Composicion from "./Composicion.jsx";
 import style from "./css/ShowBigCompScreen.module.css";
 import { MetaCompVersion } from "src/stores/menuFiltradoAdmin.js";
 import { setNumberLatest, setNumberPBE, versionTFT, constantesJSON } from "@stores/dataTFT.js";
-import { toPng } from 'html-to-image';
+// import { toPng } from 'html-to-image';
 // import html2canvas from "html2canvas";
 
 const ShowBigCompScreen = ({id, setShowBigComp}) => {
@@ -75,12 +75,17 @@ const ShowBigCompScreen = ({id, setShowBigComp}) => {
   
     loadAllImages(backgroundRef.current)
       .then(() => {
+        // COMENTADO TEMPORALMENTE PARA IOS TEST
+        /*
         return toPng(backgroundRef.current, {
           cacheBust: true,
           pixelRatio: 2, // mejora calidad (escala la resolución)
         });
+        */
+        return null;
       })
       .then((dataUrl) => {
+        if (!dataUrl) return;
         const link = document.createElement('a');
         link.download = `${CompToShow.titulo}.png`;
         link.href = dataUrl;
