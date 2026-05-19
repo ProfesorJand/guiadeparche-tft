@@ -14,7 +14,7 @@ const mesActual = nombreMesActual.slice(0,1).toUpperCase() + nombreMesActual.sli
 const mesProximo = nombreMesProximo.slice(0,1).toUpperCase() + nombreMesProximo.slice(1);
 console.log({mesProximo, diaActual})
 const title = `10 Mejores Lanzamientos de Videojuegos en ${diaActual >= 15 ? mesProximo : mesActual} ${mesActual === "Diciembre"  && diaActual >= 15 ? anoProximo : anoActual }`;
-const canonicalURL = "https://guiadeparche.com/mejores-lanzamientos-de-videojuegos";
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
 const description = "Fechas y trailer de próximos videojuegos para jugar y más esperados que se lanzan este mes";
 const keywords = "Videojuegos, Videojuegos 2026, Videojuegos para jugar, Video juegos, videojuegos 2026, lanzamientos videojuegos 2026, mejores juegos PS5, mejores juegos Xbox, juegos PC 2026, trailers videojuegos";
 const thumbnail= "https://guiadeparche.com/gamer/control-gamer.png"
