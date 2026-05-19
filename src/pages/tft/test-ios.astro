@@ -2,9 +2,9 @@
 import Layout from "@layouts/Layout.astro";
 import TestIOSReact from '../../components/TFT/TestIOSReact.jsx';
 import TierListMetaComps from "@components/TFT/TierListMetaComps.jsx";
-import { fetchAndSortComps, composMetaPBEJSON } from '@stores/dataTFT';
 import Main from "@components/main/Main.astro";
 import Composicion from "@components/main/Admin/Composicion.jsx";
+import { TestIOSReactOpcion2, TestIOSReactOpcion3 } from "@components/TFT/TestIOSReactOpciones.jsx";
 
 const todasLasCompsPBE = await fetchAndSortComps(composMetaPBEJSON);
 ---
@@ -69,29 +69,52 @@ const todasLasCompsPBE = await fetchAndSortComps(composMetaPBEJSON);
     <!-- Pruebas de React -->
     <TestIOSReact client:load />
 
-    <!-- Prueba 7: Componente Composicion Real -->
-    <div class="test-box" style="margin-top: 3rem; margin-bottom: 2rem;">
-      <h3 style="color: #fff; margin-bottom: 1rem;">Test 7: Componente Composicion Real</h3>
-      <p style="color: #ccc; margin-bottom: 1rem;">Haz clic en el botón de abajo para probar el componente real con la lógica exacta de la página principal.</p>
+    <!-- Prueba 7: OPCIÓN 1 (Astro con AddEventListener Seguro) -->
+    <div class="test-box" style="margin-top: 3rem; margin-bottom: 2rem; border-top: 2px dashed #444; padding-top: 2rem;">
+      <h2 style="color: #ffb86c; margin-bottom: 1rem;">Opción 1: AddEventListener Limpio (Astro)</h2>
+      <p style="color: #ccc; margin-bottom: 1rem;">Usa el código original pero clona los botones para borrar cualquier evento "fantasma" que cause doble clic.</p>
       {
-        todasLasCompsPBE.slice(0, 5).map((comp, index) => (
-          <div style="margin-bottom: 2rem;">
+        todasLasCompsPBE.slice(0, 3).map((comp, index) => (
+          <div style="margin-bottom: 1rem;">
             <button 
-              style="background: #333; padding: 1rem; border-radius: 8px; width: 100%; text-align: left; border: 1px solid #444; color: white; cursor: pointer; margin-bottom: 1rem;"
-              onclick={`window.setOpenCompo('${comp.id}')`}
+              class="op1-btn"
+              data-comp-id={comp.id}
+              style="background: #333; padding: 1rem; border-radius: 8px; width: 100%; text-align: left; border: 1px solid #444; color: white; cursor: pointer; margin-bottom: 0.5rem;"
             >
-              🟢 Abrir Composición Real {index + 1} (ID: {comp.id})
+              🔴 Abrir Opción 1 (ID: {comp.id})
             </button>
-            <div class="containerMetaTier hide" data-comp-id={comp.id}>
-              <Composicion
-                id={comp.id}
-                compo={comp}
-                client:load
-              />
+            <div class="op1-container hide" data-comp-id={comp.id}>
+              <Composicion id={comp.id} compo={comp} client:load />
             </div>
           </div>
         ))
       }
+    </div>
+
+    <!-- Prueba 8: OPCIÓN 2 (Astro + React Render Condicional) -->
+    <div class="test-box" style="margin-bottom: 2rem; border-top: 2px dashed #444; padding-top: 2rem;">
+      <h2 style="color: #8be9fd; margin-bottom: 1rem;">Opción 2: Sin CSS "display: none"</h2>
+      <p style="color: #ccc; margin-bottom: 1rem;">Usa React para <b>crear/destruir</b> el componente en lugar de solo ocultarlo con CSS, evitando bugs de hidratación de Safari.</p>
+      {
+        todasLasCompsPBE.slice(3, 6).map((comp, index) => (
+          <div style="margin-bottom: 1rem;">
+            <button 
+              onclick={`window.setOpenCompo('${comp.id}')`}
+              style="background: #333; padding: 1rem; border-radius: 8px; width: 100%; text-align: left; border: 1px solid #444; color: white; cursor: pointer; margin-bottom: 0.5rem;"
+            >
+              🔵 Abrir Opción 2 (ID: {comp.id})
+            </button>
+            <TestIOSReactOpcion2 comp={comp} client:load />
+          </div>
+        ))
+      }
+    </div>
+
+    <!-- Prueba 9: OPCIÓN 3 (Puro React) -->
+    <div class="test-box" style="margin-bottom: 2rem; border-top: 2px dashed #444; padding-top: 2rem;">
+      <h2 style="color: #50fa7b; margin-bottom: 1rem;">Opción 3: Todo manejado por React</h2>
+      <p style="color: #ccc; margin-bottom: 1rem;">Ni Astro ni HTML controlan los clics. Todo el bloque es un solo componente React gigante.</p>
+      <TestIOSReactOpcion3 comps={todasLasCompsPBE.slice(6, 9)} client:load />
     </div>
 
   </div>
@@ -130,16 +153,27 @@ const todasLasCompsPBE = await fetchAndSortComps(composMetaPBEJSON);
     import { activeCompId } from "@stores/menuFiltradoAdmin";
     import { setOpenCompo } from "@stores/openCompoById";
     
-    // Expose to window for onclick handlers in static HTML
+    // Expose for Option 2 (inline onclick)
     (window as any).setOpenCompo = setOpenCompo;
+
+    // OPCIÓN 1: Limpiar listeners viejos y añadir uno seguro
+    const btnsOp1 = document.querySelectorAll('.op1-btn');
+    btnsOp1.forEach(btn => {
+      // Clonar el nodo borra cualquier listener que tuviera antes (soluciona eventos fantasma en HMR)
+      const newBtn = btn.cloneNode(true);
+      btn.parentNode.replaceChild(newBtn, btn);
+      
+      newBtn.addEventListener('click', () => {
+        setOpenCompo((newBtn as HTMLElement).getAttribute('data-comp-id'));
+      });
+    });
 
     activeCompId.subscribe((id) => {
       const stringId = id ? String(id) : null;
-      document.querySelectorAll(".containerMetaTier").forEach((el) => {
+      document.querySelectorAll(".op1-container").forEach((el) => {
         if (el.getAttribute("data-comp-id") === stringId) {
           el.classList.remove("hide");
-          // Force reflow for iOS Safari to ensure React DOM updates are painted
-          void (el as HTMLElement).offsetHeight;
+          void (el as HTMLElement).offsetHeight; // Force reflow
         } else {
           el.classList.add("hide");
         }
