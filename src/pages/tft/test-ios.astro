@@ -85,7 +85,7 @@ const todasLasCompsPBE = await fetchAndSortComps(composMetaPBEJSON);
               🔴 Abrir Opción 1 (ID: {comp.id})
             </button>
             <div class="op1-container hide" data-comp-id={comp.id}>
-              <Composicion id={comp.id} compo={comp} client:load />
+              <Composicion id={comp.id} compo={comp} client:only="react" />
             </div>
           </div>
         ))
@@ -105,7 +105,7 @@ const todasLasCompsPBE = await fetchAndSortComps(composMetaPBEJSON);
             >
               🔵 Abrir Opción 2 (ID: {comp.id})
             </button>
-            <TestIOSReactOpcion2 comp={comp} client:load />
+            <TestIOSReactOpcion2 comp={comp} client:only="react" />
           </div>
         ))
       }
@@ -115,7 +115,7 @@ const todasLasCompsPBE = await fetchAndSortComps(composMetaPBEJSON);
     <div class="test-box" style="margin-bottom: 2rem; border-top: 2px dashed #444; padding-top: 2rem;">
       <h2 style="color: #50fa7b; margin-bottom: 1rem;">Opción 3: Todo manejado por React</h2>
       <p style="color: #ccc; margin-bottom: 1rem;">Ni Astro ni HTML controlan los clics. Todo el bloque es un solo componente React gigante.</p>
-      <TestIOSReactOpcion3 comps={todasLasCompsPBE.slice(6, 9)} client:load />
+      <TestIOSReactOpcion3 comps={todasLasCompsPBE.slice(6, 9)} client:only="react" />
     </div>
 
   </div>
