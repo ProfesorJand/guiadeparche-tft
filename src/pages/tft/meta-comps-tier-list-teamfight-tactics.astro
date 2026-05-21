@@ -16,7 +16,7 @@ import {
   setNumberPBE,
   setNumberLatest,
   nameOfSet,
-  constantesTFT
+  constantesTFT,
 } from "@stores/dataTFT";
 import Composicion from "@components/main/Admin/Composicion.jsx";
 
@@ -24,8 +24,8 @@ const version = versionTFT.get();
 const setNumber = version === "pbe" ? setNumberPBE : setNumberLatest;
 const nameDelSet = nameOfSet[version];
 const numberOfVersion = constantesTFT.get();
-//const title = `Mejores Composiciones TFT (Meta Comps) Tier List Set ${setNumber} ${numberOfVersion.MetaCompVersionPBE ? "["+numberOfVersion.MetaCompVersionPBE+"]": ""} `;  
-const title= `TFT Comps Set ${setNumber || "17"} – Tier List y Mejores Composiciones`
+//const title = `Mejores Composiciones TFT (Meta Comps) Tier List Set ${setNumber} ${numberOfVersion.MetaCompVersionPBE ? "["+numberOfVersion.MetaCompVersionPBE+"]": ""} `;
+const title = `TFT Comps Set ${setNumber || "17"} – Tier List y Mejores Composiciones`;
 const description = `Las mejores TFT comps del parche ${numberOfVersion.MetaCompVersionPBE || "17.3"} actualizadas diariamente. Tier list del meta con builds, rerolls, items BIS y las compos más fuertes para subir elo rápido.`;
 // Example: Construct a canonical URL using your production domain
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
@@ -79,7 +79,6 @@ const itemListSchema = {
 };
 
 const JSONSchema = JSON.stringify([baseSchema, itemListSchema]);
-
 ---
 
 <!-- <link rel="canonical" href={canonicalURL} /> --><!-- <meta property="og:image" content={socialImageURL} /> --><!-- <meta name="description" content={description}>
@@ -112,29 +111,19 @@ const JSONSchema = JSON.stringify([baseSchema, itemListSchema]);
 </Fragment> -->
   <Main>
     <h1 id="tituloMetaComps" class="titulo tituloMetaComps">
-     TFT Comps: Mejores Composiciones del Set {setNumber} {numberOfVersion.MetaCompVersionPBE ? `(Patch ${numberOfVersion.MetaCompVersionPBE})`:""}
-    </h1>
-    <p>Las TFT comps más fuertes del parche actual incluyen reroll, fast 8 y compos flex para subir elo. Actualizamos esta tier list diariamente según estadísticas y competitivo.</p>
-    <!-- <p>
-      Analizamos el meta de TFT tras los cambios del último parche. Si buscás
-      las comps de TFT más sólidas para rankear en el Set 17, aquí tenés la tier
-      list definitiva. Como especialistas en el circuito competitivo,
-      actualizamos estas builds y composiciones diariamente para que sepas qué
-      jugar, cuándo hacer reroll y cómo optimizar tus items en cada partida.
-    </p> -->
-    <h2>Top 5 Mejores Comps TFT (Parche {numberOfVersion.MetaCompVersionPBE}):</h2>
-    {/* 5 en la columna izquierda y 5 en la columna derecha */}
-    <ol class="lista-numerada">
+      TFT Comps: Mejores Composiciones del Set {setNumber}
       {
-        top5Comps.map((comp) => (
-          <li>
-            <a href={`#${comp.id}`} class="anchor-simple top-comp-link" data-comp-id={comp.id} onclick={`event.preventDefault(); window.setOpenCompo('${comp.id}')`}>
-              {comp.titulo} {`(${comp.tier})`}
-            </a>
-          </li>
-        ))
+        numberOfVersion.MetaCompVersionPBE
+          ? `(Patch ${numberOfVersion.MetaCompVersionPBE})`
+          : ""
       }
-    </ol>
+    </h1>
+    <p>
+      Descubre las mejores TFT comps y composiciones TFT del Set {setNumber}
+      actualizadas para el parche {numberOfVersion.MetaCompVersionPBE}. Aquí
+      encontrarás builds, objetos BIS, aumentos y estrategias para jugar las
+      comps más fuertes del meta de Teamfight Tactics y subir elo más rápido.
+    </p>
     <VersionCompo client:only="react" />
 
     <div id="ContainerCompsPBE" class={version === "pbe" ? "" : "hide"}>
@@ -151,8 +140,8 @@ const JSONSchema = JSON.stringify([baseSchema, itemListSchema]);
               >
                 <div class="ranking-title-container">
                   <h3 class="ranking-title">
-                    {(index + 1).toString().toUpperCase()}. COMP{" "}
-                    {(comp as any).titulo.toUpperCase()}
+                    {(index + 1).toString().toUpperCase()}.
+                    {(comp as any).titulo} TFT Comp ({comp.tier} Tier)
                   </h3>
                   {comp.tipSeo && (
                     <p class="ranking-description">{comp.tipSeo}</p>
@@ -238,11 +227,7 @@ const JSONSchema = JSON.stringify([baseSchema, itemListSchema]);
               </button>
 
               <div class="containerMetaTier hide" data-comp-id={comp.id}>
-                <Composicion
-                  id={comp.id}
-                  compo={comp}
-                  client:load
-                />
+                <Composicion id={comp.id} compo={comp} client:load />
               </div>
             </div>
           ))
@@ -263,7 +248,7 @@ const JSONSchema = JSON.stringify([baseSchema, itemListSchema]);
     column-gap: 40px; /* Space between columns */
     box-sizing: border-box;
     padding: 0;
-    font-size:0.9em
+    font-size: 0.9em;
   }
   .anchor-simple {
     cursor: pointer;
@@ -628,7 +613,7 @@ const JSONSchema = JSON.stringify([baseSchema, itemListSchema]);
   .hide {
     display: none;
   }
-  p{
+  p {
     font-size: 0.9em;
   }
   @media only screen and (max-width: 1200px) {

@@ -4,7 +4,7 @@ import InfografiasSpotifyTopArtistas from "./InfografiasSpotifyTopArtistas";
 import styles from "./InfografiaSpotify.module.css"
 
 
-const TopArtistaSpotify = ()=>{
+const TopArtistaSpotify = () => {
   const fecha = new Date();
   const mes = fecha.toLocaleDateString('es-ES', { month: 'long' }); // Ejemplo: "marzo"
   const dia = fecha.getDate();
@@ -19,9 +19,9 @@ const TopArtistaSpotify = ()=>{
   const backgroundRef = useRef(null);
   const [sourceType, setSourceType] = useState("venezolanos");
   const [datos, setDatos] = useState({
-    titulo:"TOP 10 ARTISTAS VENEZOLANOS",
-    titulo2:"MÁS ESCUCHADOS EN SPOTIFY",
-    fecha:`${dia} DE ${mes.toUpperCase()} ${año} (OYENTES MENSUALES)`,
+    titulo: "TOP 10 ARTISTAS VENEZOLANOS",
+    titulo2: "MÁS ESCUCHADOS EN SPOTIFY",
+    fecha: `${dia} DE ${mes.toUpperCase()} ${año} (OYENTES MENSUALES)`,
     fechaArchivo: `${dia}-${mes}-${año}`
   });
 
@@ -32,15 +32,14 @@ const TopArtistaSpotify = ()=>{
     }));
   }, [sourceType, dia, mes, año]);
 
-  console.log({datos, sourceType})
 
   return (
     <div className={styles.container}>
-      <FormularioSpotify 
-        datos={datos} 
-        setDatos={setDatos} 
+      <FormularioSpotify
+        datos={datos}
+        setDatos={setDatos}
         numberOfTopArtist={numberOfTopArtist}
-        startNumberOfArtist={startNumberOfArtist} 
+        startNumberOfArtist={startNumberOfArtist}
         setStartNumberOfArtist={setStartNumberOfArtist}
         datosArtistas={datosArtistas}
         setDatosArtistas={setDatosArtistas}
@@ -56,18 +55,18 @@ const TopArtistaSpotify = ()=>{
         sourceType={sourceType}
         setSourceType={setSourceType}
       />
-      <InfografiasSpotifyTopArtistas 
+      <InfografiasSpotifyTopArtistas
         backgroundRef={backgroundRef}
-        datos={datos} 
+        datos={datos}
         numberOfTopArtist={numberOfTopArtist}
-        startNumberOfArtist={startNumberOfArtist} 
+        startNumberOfArtist={startNumberOfArtist}
         datosArtistas={datosArtistas}
         artistasInfo={artistasInfo}
         topMusic={topMusic}
         musicInfo={musicInfo}
         monthlyListener={monthlyListener}
         sourceType={sourceType}
-        />
+      />
     </div>
   )
 }
