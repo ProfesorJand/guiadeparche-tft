@@ -307,7 +307,7 @@ async function run() {
 
 // 💾 guardar JSON seguro
 function saveResults(data) {
-  const filePath = "./spotify-data-global-music.json";
+  const filePath = "./spotify-data-global.json";
 
   let existingData = [];
 

@@ -24,14 +24,15 @@ const version = versionTFT.get();
 const setNumber = version === "pbe" ? setNumberPBE : setNumberLatest;
 const nameDelSet = nameOfSet[version];
 const numberOfVersion = constantesTFT.get();
-const title = `Mejores Composiciones TFT (Meta Comps) Tier List Set ${setNumber} ${numberOfVersion.MetaCompVersionPBE ? "["+numberOfVersion.MetaCompVersionPBE+"]": ""} `;  
+//const title = `Mejores Composiciones TFT (Meta Comps) Tier List Set ${setNumber} ${numberOfVersion.MetaCompVersionPBE ? "["+numberOfVersion.MetaCompVersionPBE+"]": ""} `;  
+const title= `TFT Comps Set ${setNumber || "17"} – Tier List y Mejores Composiciones`
+const description = `Las mejores TFT comps del parche ${numberOfVersion.MetaCompVersionPBE || "17.3"} actualizadas diariamente. Tier list del meta con builds, rerolls, items BIS y las compos más fuertes para subir elo rápido.`;
 // Example: Construct a canonical URL using your production domain
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
 // Example: Construct a URL for SEO meta tags using your current domain
 const socialImageURL = new URL("/images/preview.png", Astro.url);
-const description = `Top TFT Meta Comps Set ${setNumber} ${nameDelSet}. Discover the latest Tier List, Augments and Builds for every patch. Mejores Composiciones TFT!`;
 const keywords =
-  "TFT Meta, Meta comps, comps TFT, comp TFT, Meta TFT, composiciones TFT, build TFT";
+  "TFT Meta, Meta comps, comps TFT, comp TFT, Meta TFT, composiciones TFT, build TFT, tft comps, compos tft";
 const thumbnail =
   "https://guiadeparche.com/tft/set17/backgroundWrapperSet17.webp";
 const imgPost = "https://guiadeparche.com/tft/assets/GP_logo.png";
@@ -111,15 +112,16 @@ const JSONSchema = JSON.stringify([baseSchema, itemListSchema]);
 </Fragment> -->
   <Main>
     <h1 id="tituloMetaComps" class="titulo tituloMetaComps">
-      Mejores Composiciones TFT (Meta Comps) Tier List Set {setNumber} [{numberOfVersion.MetaCompVersionPBE}]
+     TFT Comps: Mejores Composiciones del Set {setNumber} {numberOfVersion.MetaCompVersionPBE ? `(Patch ${numberOfVersion.MetaCompVersionPBE})`:""}
     </h1>
-    <p>
+    <p>Las TFT comps más fuertes del parche actual incluyen reroll, fast 8 y compos flex para subir elo. Actualizamos esta tier list diariamente según estadísticas y competitivo.</p>
+    <!-- <p>
       Analizamos el meta de TFT tras los cambios del último parche. Si buscás
       las comps de TFT más sólidas para rankear en el Set 17, aquí tenés la tier
       list definitiva. Como especialistas en el circuito competitivo,
       actualizamos estas builds y composiciones diariamente para que sepas qué
       jugar, cuándo hacer reroll y cómo optimizar tus items en cada partida.
-    </p>
+    </p> -->
     <h2>Top 5 Mejores Comps TFT (Parche {numberOfVersion.MetaCompVersionPBE}):</h2>
     {/* 5 en la columna izquierda y 5 en la columna derecha */}
     <ol class="lista-numerada">

@@ -5,6 +5,7 @@ const fecha = new Date();
 const mes = fecha.toLocaleDateString('es-ES', { month: 'long' }); // Ejemplo: "marzo"
 const dia = fecha.getDate();
 const año = fecha.getFullYear();
+console.log({topMusic, monthlyListener})
   return (
     <div ref={backgroundRef} className={styles.infografiaContainer}>
       <div className={styles.containerFondo}>
@@ -112,7 +113,7 @@ const año = fecha.getFullYear();
       </div>
       <div className={styles.footer} style={{ padding: sourceType !== "venezolanos" ? "3.5rem 5px" : "" }}>
         {
-          sourceType !== "venezolanos" && 
+          (sourceType !== "venezolanos" && !topMusic) && 
           <span className={styles.footerText}>(*) con al menos un tema en el top 50 global de Spotify</span>
         }
         <div className={styles.containerLogo} style={{width: cantidadDeLogos}}>

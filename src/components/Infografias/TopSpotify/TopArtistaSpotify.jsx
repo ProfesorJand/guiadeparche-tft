@@ -9,12 +9,6 @@ const TopArtistaSpotify = ()=>{
   const mes = fecha.toLocaleDateString('es-ES', { month: 'long' }); // Ejemplo: "marzo"
   const dia = fecha.getDate();
   const año = fecha.getFullYear();
-  const [datos, setDatos] = useState({
-    titulo:"TOP 10 ARTISTAS VENEZOLANOS",
-    titulo2:"MÁS ESCUCHADOS EN SPOTIFY",
-    fecha:`${dia} DE ${mes.toUpperCase()} ${año} (OYENTES MENSUALES)`,
-    fechaArchivo: `${dia}-${mes}-${año}`
-  });
   const numberOfTopArtist = 10;
   const [startNumberOfArtist, setStartNumberOfArtist] = useState(1);
   const [datosArtistas, setDatosArtistas] = useState([])
@@ -24,6 +18,21 @@ const TopArtistaSpotify = ()=>{
   const [monthlyListener, setMonthlyListener] = useState([]) //[]
   const backgroundRef = useRef(null);
   const [sourceType, setSourceType] = useState("venezolanos");
+  const [datos, setDatos] = useState({
+    titulo:"TOP 10 ARTISTAS VENEZOLANOS",
+    titulo2:"MÁS ESCUCHADOS EN SPOTIFY",
+    fecha:`${dia} DE ${mes.toUpperCase()} ${año} (OYENTES MENSUALES)`,
+    fechaArchivo: `${dia}-${mes}-${año}`
+  });
+
+  useEffect(() => {
+    setDatos(prev => ({
+      ...prev,
+      fecha: `${dia} DE ${mes.toUpperCase()} ${año} (${sourceType === "venezolanos" ? "OYENTES MENSUALES" : "REPRODUCCIONES ÚLTIMAS 24 H"})`
+    }));
+  }, [sourceType, dia, mes, año]);
+
+  console.log({datos, sourceType})
 
   return (
     <div className={styles.container}>

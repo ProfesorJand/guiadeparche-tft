@@ -1,0 +1,936 @@
+[
+  {
+    "position": 1,
+    "title": "Billie Jean",
+    "albumName": "Thriller",
+    "albumImage": "https://i.scdn.co/image/ab67616d0000485132a7d87248d1b75463483df5",
+    "artists": [
+      {
+        "name": "Michael Jackson",
+        "url": "https://open.spotify.com/artist/3fMbdgg4jU18AjLCKBhRSm",
+        "listeners": 103275080,
+        "artistImageHistory": "https://i.scdn.co/image/188c4fec0fcdb8d074ca9d6a805afec38946c49c",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab676186000001943753db8546a0d1ec0972c594"
+      }
+    ],
+    "plays": 5843674,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 2,
+    "title": "Beauty And A Beat",
+    "albumName": "Believe",
+    "albumImage": "https://i.scdn.co/image/ab67616d00004851f1d02a6cec967f8b6b78f76e",
+    "artists": [
+      {
+        "name": "Justin Bieber",
+        "url": "https://open.spotify.com/artist/1uNFoZAHBGtllmzznpCI3s",
+        "listeners": 143198848,
+        "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd4abf5366b50b499b9d48bf2ae",
+        "backgroundArtistImage": null
+      },
+      {
+        "name": "Nicki Minaj",
+        "url": "https://open.spotify.com/artist/0hCNtLu0JehylgoiP8L4Gh",
+        "listeners": 49052215,
+        "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd46780726d33bd66450dabd4d5",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab676186000001943604c6c213f7c88e351d002d"
+      }
+    ],
+    "plays": 5664542,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 3,
+    "title": "SWIM",
+    "albumName": "ARIRANG",
+    "albumImage": "https://i.scdn.co/image/ab67616d00004851dfa17fad7f190c901603270e",
+    "artists": [
+      {
+        "name": "BTS",
+        "url": "https://open.spotify.com/artist/3Nrfpe0tUJi4K4DXYWgMUX",
+        "listeners": 38588362,
+        "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd487ef96c83d38f358fd297172",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab6761860000019411083b372221231d59ed0b49"
+      }
+    ],
+    "plays": 5130198,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 4,
+    "title": "Janice STFU",
+    "albumName": "ICEMAN",
+    "albumImage": "https://i.scdn.co/image/ab67616d000048518e76f09489ebfa31ac920f08",
+    "artists": [
+      {
+        "name": "Drake",
+        "url": "https://open.spotify.com/artist/3TVXtAsR1Inumwj472S9r4",
+        "listeners": 94882740,
+        "artistImageHistory": "https://i.scdn.co/image/068ae749ee9825fcecc1a0f82ead09aaa8440228",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194a76cf626917521176d2f7723"
+      }
+    ],
+    "plays": 5095521,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 5,
+    "title": "Babydoll",
+    "albumName": "Don't Forget About Me, Demos",
+    "albumImage": "https://i.scdn.co/image/ab67616d000048517b1b6f41c1645af9757d5616",
+    "artists": [
+      {
+        "name": "Dominic Fike",
+        "url": "https://open.spotify.com/artist/6USv9qhCn6zfxlBQIYJ9qs",
+        "listeners": 62456403,
+        "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd4f50d97dc06da36c4e73c1caa",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab676186000001941ce8822b366da01389b26de0"
+      }
+    ],
+    "plays": 4685529,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 6,
+    "title": "Beat It",
+    "albumName": "Thriller",
+    "albumImage": "https://i.scdn.co/image/ab67616d0000485132a7d87248d1b75463483df5",
+    "artists": [
+      {
+        "name": "Michael Jackson",
+        "url": "https://open.spotify.com/artist/3fMbdgg4jU18AjLCKBhRSm",
+        "listeners": 103275080,
+        "artistImageHistory": "https://i.scdn.co/image/188c4fec0fcdb8d074ca9d6a805afec38946c49c",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab676186000001943753db8546a0d1ec0972c594"
+      }
+    ],
+    "plays": 4516384,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 7,
+    "title": "National Treasures",
+    "albumName": "ICEMAN",
+    "albumImage": "https://i.scdn.co/image/ab67616d000048518e76f09489ebfa31ac920f08",
+    "artists": [
+      {
+        "name": "Drake",
+        "url": "https://open.spotify.com/artist/3TVXtAsR1Inumwj472S9r4",
+        "listeners": 94882740,
+        "artistImageHistory": "https://i.scdn.co/image/068ae749ee9825fcecc1a0f82ead09aaa8440228",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194a76cf626917521176d2f7723"
+      }
+    ],
+    "plays": 4406613,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 8,
+    "title": "Ran To Atlanta (feat. Future & Molly Santana)",
+    "albumName": "ICEMAN",
+    "albumImage": "https://i.scdn.co/image/ab67616d000048518e76f09489ebfa31ac920f08",
+    "artists": [
+      {
+        "name": "Drake",
+        "url": "https://open.spotify.com/artist/3TVXtAsR1Inumwj472S9r4",
+        "listeners": 94882740,
+        "artistImageHistory": "https://i.scdn.co/image/068ae749ee9825fcecc1a0f82ead09aaa8440228",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194a76cf626917521176d2f7723"
+      },
+      {
+        "name": "Future",
+        "url": "https://open.spotify.com/artist/1RyvyyTE3xzB2ZywiAwp0i",
+        "listeners": 57002639,
+        "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd4921a17a1760a141b4326bf25",
+        "backgroundArtistImage": "https://image-cdn-fa.spotifycdn.com/image/ab67618600000194b89b62e73c5f8f5601899d4a"
+      },
+      {
+        "name": "Molly Santana",
+        "url": "https://open.spotify.com/artist/1zEHBw7xQf0drXZagRkciU",
+        "listeners": 11614356,
+        "artistImageHistory": null,
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194a486f2a35b4c91e377d1aa0d"
+      }
+    ],
+    "plays": 3852698,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 9,
+    "title": "Whisper My Name",
+    "albumName": "ICEMAN",
+    "albumImage": "https://i.scdn.co/image/ab67616d000048518e76f09489ebfa31ac920f08",
+    "artists": [
+      {
+        "name": "Drake",
+        "url": "https://open.spotify.com/artist/3TVXtAsR1Inumwj472S9r4",
+        "listeners": 94882740,
+        "artistImageHistory": "https://i.scdn.co/image/068ae749ee9825fcecc1a0f82ead09aaa8440228",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194a76cf626917521176d2f7723"
+      }
+    ],
+    "plays": 3843630,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 10,
+    "title": "Shabang",
+    "albumName": "ICEMAN",
+    "albumImage": "https://i.scdn.co/image/ab67616d000048518e76f09489ebfa31ac920f08",
+    "artists": [
+      {
+        "name": "Drake",
+        "url": "https://open.spotify.com/artist/3TVXtAsR1Inumwj472S9r4",
+        "listeners": 94882740,
+        "artistImageHistory": "https://i.scdn.co/image/068ae749ee9825fcecc1a0f82ead09aaa8440228",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194a76cf626917521176d2f7723"
+      }
+    ],
+    "plays": 3445260,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 11,
+    "title": "Human Nature",
+    "albumName": "Thriller",
+    "albumImage": "https://i.scdn.co/image/ab67616d0000485132a7d87248d1b75463483df5",
+    "artists": [
+      {
+        "name": "Michael Jackson",
+        "url": "https://open.spotify.com/artist/3fMbdgg4jU18AjLCKBhRSm",
+        "listeners": 103275080,
+        "artistImageHistory": "https://i.scdn.co/image/188c4fec0fcdb8d074ca9d6a805afec38946c49c",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab676186000001943753db8546a0d1ec0972c594"
+      }
+    ],
+    "plays": 3273288,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 12,
+    "title": "Don't Stop 'Til You Get Enough",
+    "albumName": "Off the Wall",
+    "albumImage": "https://i.scdn.co/image/ab67616d000048512b74bf21c7e4f56758610949",
+    "artists": [
+      {
+        "name": "Michael Jackson",
+        "url": "https://open.spotify.com/artist/3fMbdgg4jU18AjLCKBhRSm",
+        "listeners": 103275080,
+        "artistImageHistory": "https://i.scdn.co/image/188c4fec0fcdb8d074ca9d6a805afec38946c49c",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab676186000001943753db8546a0d1ec0972c594"
+      }
+    ],
+    "plays": 3243817,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 13,
+    "title": "back to friends",
+    "albumName": "I Barely Know Her",
+    "albumImage": "https://i.scdn.co/image/ab67616d000048514229702de91cb3d3a4383302",
+    "artists": [
+      {
+        "name": "sombr",
+        "url": "https://open.spotify.com/artist/4G9NDjRyZFDlJKMRL8hx3S",
+        "listeners": 59039366,
+        "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd4f6c3f5652fd4e69b04700783",
+        "backgroundArtistImage": "https://image-cdn-fa.spotifycdn.com/image/ab67618600000194212072f82dbc31fd2ca87e50"
+      }
+    ],
+    "plays": 3240585,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 14,
+    "title": "Earrings",
+    "albumName": "Sweet Boy",
+    "albumImage": "https://i.scdn.co/image/ab67616d000048512c1f34ecc1929fb59908aad1",
+    "artists": [
+      {
+        "name": "Malcolm Todd",
+        "url": "https://open.spotify.com/artist/7eKkW1zo5uzW8kUntiiBvz",
+        "listeners": 26772516,
+        "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd4681abc180d83f7a0cdec8994",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab676186000001946ad4a3a6e817f33a2f45daea"
+      }
+    ],
+    "plays": 3238544,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 15,
+    "title": "The One That Got Away",
+    "albumName": "Teenage Dream",
+    "albumImage": "https://i.scdn.co/image/ab67616d000048511d955011a3ed477dc77865ad",
+    "artists": [
+      {
+        "name": "Katy Perry",
+        "url": "https://open.spotify.com/artist/6jJ0s89eD6GaHleKKya26X",
+        "listeners": 84615260,
+        "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd44514714a20677c869aa3f802",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab676186000001941a32422300535eb9ed558ff9"
+      }
+    ],
+    "plays": 3215177,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 16,
+    "title": "End of Beginning",
+    "albumName": "DECIDE",
+    "albumImage": "https://i.scdn.co/image/ab67616d00004851fddfffec51b4580acae727c1",
+    "artists": [
+      {
+        "name": "Djo",
+        "url": "https://open.spotify.com/artist/5p9HO3XC5P3BLxJs5Mtrhm",
+        "listeners": 42291688,
+        "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd4ede1486cbb5b1f2f29c7ab38",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194e71afece6689230a74e819c9"
+      }
+    ],
+    "plays": 3053342,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 17,
+    "title": "Man I Need",
+    "albumName": "Man I Need",
+    "albumImage": "https://i.scdn.co/image/ab67616d00004851e3d69e17dde129037a1f09e2",
+    "artists": [
+      {
+        "name": "Olivia Dean",
+        "url": "https://open.spotify.com/artist/00x1fYSGhdqScXBRpSj3DW",
+        "listeners": 57558795,
+        "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd4942448e15f0cb0a03d936bd4",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194f114e859dd143d0d20f4f439"
+      }
+    ],
+    "plays": 3050964,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 18,
+    "title": "2 Hard 4 The Radio",
+    "albumName": "ICEMAN",
+    "albumImage": "https://i.scdn.co/image/ab67616d000048518e76f09489ebfa31ac920f08",
+    "artists": [
+      {
+        "name": "Drake",
+        "url": "https://open.spotify.com/artist/3TVXtAsR1Inumwj472S9r4",
+        "listeners": 94882740,
+        "artistImageHistory": "https://i.scdn.co/image/068ae749ee9825fcecc1a0f82ead09aaa8440228",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194a76cf626917521176d2f7723"
+      }
+    ],
+    "plays": 3023244,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 19,
+    "title": "Choosin' Texas",
+    "albumName": "Dandelion",
+    "albumImage": "https://i.scdn.co/image/ab67616d000048518606848da949bbaddf447d87",
+    "artists": [
+      {
+        "name": "Ella Langley",
+        "url": "https://open.spotify.com/artist/6BRxQ8cD3eqnrVj6WKDok8",
+        "listeners": 29402110,
+        "artistImageHistory": null,
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab6761860000019432d5fb1f5d0fe141c79d654e"
+      }
+    ],
+    "plays": 3016955,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 20,
+    "title": "Dracula - JENNIE Remix",
+    "albumName": "Dracula (Remix)",
+    "albumImage": "https://i.scdn.co/image/ab67616d00004851c7c031ce9d06b131f8563676",
+    "artists": [
+      {
+        "name": "Tame Impala",
+        "url": "https://open.spotify.com/artist/5INjqkS1o8h1imAzPqGZBb",
+        "listeners": 64019784,
+        "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd499d57ddb3a699aef46bb0a60",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab676186000001940199d2f613e810c5c6c552a4"
+      },
+      {
+        "name": "JENNIE",
+        "url": "https://open.spotify.com/artist/250b0Wlc5Vk0CoUsaCY84M",
+        "listeners": 55472778,
+        "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd49c9554701f4364b48e3922b9",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194ceb98079b51d56d0e4ddacca"
+      }
+    ],
+    "plays": 2986872,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 21,
+    "title": "Risk It All",
+    "albumName": "The Romantic",
+    "albumImage": "https://i.scdn.co/image/ab67616d000048513eb8dc748f7efb1470f74395",
+    "artists": [
+      {
+        "name": "Bruno Mars",
+        "url": "https://open.spotify.com/artist/0du5cEVh5yTK9QJze8zA0C",
+        "listeners": 138036919,
+        "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd4ab988c8f5a67164e97fb1532",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194600a1836e65aaa5d2bc3efa6"
+      }
+    ],
+    "plays": 2928759,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 22,
+    "title": "The Fate of Ophelia",
+    "albumName": "The Life of a Showgirl",
+    "albumImage": "https://i.scdn.co/image/ab67616d00004851d7812467811a7da6e6a44902",
+    "artists": [
+      {
+        "name": "Taylor Swift",
+        "url": "https://open.spotify.com/artist/06HL4z0CvFAxyc27GXpf02",
+        "listeners": 101909731,
+        "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd42bf054eaed60a69249718908",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194c45b07608a062f02a9c89bab"
+      }
+    ],
+    "plays": 2885121,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 23,
+    "title": "Raindance (feat. Tems)",
+    "albumName": "The Boy Who Played the Harp",
+    "albumImage": "https://i.scdn.co/image/ab67616d00004851fecaa7826bb0cbe139a8cb83",
+    "artists": [
+      {
+        "name": "Dave",
+        "url": "https://open.spotify.com/artist/6Ip8FS7vWT1uKkJSweANQK",
+        "listeners": 36439237,
+        "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd499ed7f9ebf8d3f13e987889e",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194bfbf2c5417efd54b3ec85a52"
+      },
+      {
+        "name": "Tems",
+        "url": "https://open.spotify.com/artist/687cZJR45JO7jhk1LHIbgq",
+        "listeners": 43520207,
+        "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd483bcacc809a40975eab8d89b",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab676186000001945aaeb5160787275f6925c212"
+      }
+    ],
+    "plays": 2806527,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 24,
+    "title": "drop dead",
+    "albumName": "drop dead (taken that eurostar to france video)",
+    "albumImage": "https://i.scdn.co/image/ab67616d000048511a1495ff41046065b9475366",
+    "artists": [
+      {
+        "name": "Olivia Rodrigo",
+        "url": "https://open.spotify.com/artist/1McMsnEElThX1knmY4oliG",
+        "listeners": 61275464,
+        "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd42ff4f703438a4f932200b1f6",
+        "backgroundArtistImage": "https://image-cdn-fa.spotifycdn.com/image/ab6761860000019490531fa004e3301b67d6447b"
+      }
+    ],
+    "plays": 2800748,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 25,
+    "title": "Plot Twist",
+    "albumName": "ICEMAN",
+    "albumImage": "https://i.scdn.co/image/ab67616d000048518e76f09489ebfa31ac920f08",
+    "artists": [
+      {
+        "name": "Drake",
+        "url": "https://open.spotify.com/artist/3TVXtAsR1Inumwj472S9r4",
+        "listeners": 94882740,
+        "artistImageHistory": "https://i.scdn.co/image/068ae749ee9825fcecc1a0f82ead09aaa8440228",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194a76cf626917521176d2f7723"
+      }
+    ],
+    "plays": 2796797,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 26,
+    "title": "Stateside + Zara Larsson",
+    "albumName": "Fancy Some More?",
+    "albumImage": "https://i.scdn.co/image/ab67616d00004851684ecc5bc1b724d0106ad694",
+    "artists": [
+      {
+        "name": "PinkPantheress",
+        "url": "https://open.spotify.com/artist/78rUTD7y6Cy67W1RVzYs7t",
+        "listeners": 39931348,
+        "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd471399fcaf8970879d22e8c32",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194433b0b55069ca1152f9a8894"
+      },
+      {
+        "name": "Zara Larsson",
+        "url": "https://open.spotify.com/artist/1Xylc3o4UrD53lo9CvFvVg",
+        "listeners": 70401026,
+        "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd4b5b7c11df5ee14801c79022f",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab676186000001949199dc5df142a7f107a73bf5"
+      }
+    ],
+    "plays": 2787302,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 27,
+    "title": "Ordinary",
+    "albumName": "You'll Be Alright, Kid (Chapter 1)",
+    "albumImage": "https://i.scdn.co/image/ab67616d000048518d18d73bbfc8985d52865edf",
+    "artists": [
+      {
+        "name": "Alex Warren",
+        "url": "https://open.spotify.com/artist/0fTSzq9jAh4c36UVb4V7CB",
+        "listeners": 51942613,
+        "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd4841166c19d47242ab740cff5",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab676186000001948e0359dc7a22ecf5762c1ae1"
+      }
+    ],
+    "plays": 2754061,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 28,
+    "title": "DtMF",
+    "albumName": "DeBÍ TiRAR MáS FOToS",
+    "albumImage": "https://i.scdn.co/image/ab67616d00004851bbd45c8d36e0e045ef640411",
+    "artists": [
+      {
+        "name": "Bad Bunny",
+        "url": "https://open.spotify.com/artist/4q3ewBCX7sLwd24euuV69X",
+        "listeners": 100128305,
+        "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd4a1b2c9183be1d6f8a05ec448",
+        "backgroundArtistImage": "https://image-cdn-fa.spotifycdn.com/image/ab676186000001942b440403a6dd8816bd59447e"
+      }
+    ],
+    "plays": 2733535,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 29,
+    "title": "Iris",
+    "albumName": "Dizzy up the Girl",
+    "albumImage": "https://i.scdn.co/image/ab67616d00004851eda9478c39a21e1cdc6609ca",
+    "artists": [
+      {
+        "name": "The Goo Goo Dolls",
+        "url": "https://open.spotify.com/artist/2sil8z5kiy4r76CRTXxBCA",
+        "listeners": 39147585,
+        "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd43b7c6806bcf10b0587e53d60",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194bc143f28b660c463d07f9e0d"
+      }
+    ],
+    "plays": 2729229,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 30,
+    "title": "Self Aware",
+    "albumName": "Self Aware",
+    "albumImage": "https://i.scdn.co/image/ab67616d00004851d6c26d2ae723f7ab553d64cc",
+    "artists": [
+      {
+        "name": "Temper City",
+        "url": "https://open.spotify.com/artist/5mHUmlJWkcoOk1NbjfrXWz",
+        "listeners": 15773979,
+        "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd478e0235d918548e668b152be",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab676186000001941a5113a2391f241c581cd1e7"
+      }
+    ],
+    "plays": 2725914,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 31,
+    "title": "Make Them Cry",
+    "albumName": "ICEMAN",
+    "albumImage": "https://i.scdn.co/image/ab67616d000048518e76f09489ebfa31ac920f08",
+    "artists": [
+      {
+        "name": "Drake",
+        "url": "https://open.spotify.com/artist/3TVXtAsR1Inumwj472S9r4",
+        "listeners": 94882740,
+        "artistImageHistory": "https://i.scdn.co/image/068ae749ee9825fcecc1a0f82ead09aaa8440228",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194a76cf626917521176d2f7723"
+      }
+    ],
+    "plays": 2701610,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 32,
+    "title": "Dust",
+    "albumName": "ICEMAN",
+    "albumImage": "https://i.scdn.co/image/ab67616d000048518e76f09489ebfa31ac920f08",
+    "artists": [
+      {
+        "name": "Drake",
+        "url": "https://open.spotify.com/artist/3TVXtAsR1Inumwj472S9r4",
+        "listeners": 94882740,
+        "artistImageHistory": "https://i.scdn.co/image/068ae749ee9825fcecc1a0f82ead09aaa8440228",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194a76cf626917521176d2f7723"
+      }
+    ],
+    "plays": 2698167,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 33,
+    "title": "DAISIES",
+    "albumName": "SWAG",
+    "albumImage": "https://i.scdn.co/image/ab67616d00004851d65c4773bc5061fd27facc5b",
+    "artists": [
+      {
+        "name": "Justin Bieber",
+        "url": "https://open.spotify.com/artist/1uNFoZAHBGtllmzznpCI3s",
+        "listeners": 143198848,
+        "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd4abf5366b50b499b9d48bf2ae",
+        "backgroundArtistImage": null
+      }
+    ],
+    "plays": 2690260,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 34,
+    "title": "So Easy (To Fall In Love)",
+    "albumName": "The Art of Loving",
+    "albumImage": "https://i.scdn.co/image/ab67616d000048519a336bfb6d40bbd90a507417",
+    "artists": [
+      {
+        "name": "Olivia Dean",
+        "url": "https://open.spotify.com/artist/00x1fYSGhdqScXBRpSj3DW",
+        "listeners": 57558795,
+        "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd4942448e15f0cb0a03d936bd4",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194f114e859dd143d0d20f4f439"
+      }
+    ],
+    "plays": 2682962,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 35,
+    "title": "Love Me Not",
+    "albumName": "Bird's Eye",
+    "albumImage": "https://i.scdn.co/image/ab67616d000048510e62daaea2c7b94053e1c142",
+    "artists": [
+      {
+        "name": "Ravyn Lenae",
+        "url": "https://open.spotify.com/artist/5RTLRtXjbXI2lSXc6jxlAz",
+        "listeners": 32415777,
+        "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd4ec2ffd0b594e884d52dbb7a6",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194bc28f2d2971d8637f283d308"
+      }
+    ],
+    "plays": 2660054,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 36,
+    "title": "Die With A Smile",
+    "albumName": "MAYHEM",
+    "albumImage": "https://i.scdn.co/image/ab67616d00004851b0860cf0a98e09663c82290c",
+    "artists": [
+      {
+        "name": "Lady Gaga",
+        "url": "https://open.spotify.com/artist/1HY2Jd0NmPuamShAr6KMms",
+        "listeners": 103291141,
+        "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd4034a6ed285a8880047320a06",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab676186000001943697206eb86fc80f03da5384"
+      },
+      {
+        "name": "Bruno Mars",
+        "url": "https://open.spotify.com/artist/0du5cEVh5yTK9QJze8zA0C",
+        "listeners": 138036919,
+        "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd4ab988c8f5a67164e97fb1532",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194600a1836e65aaa5d2bc3efa6"
+      }
+    ],
+    "plays": 2573706,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 37,
+    "title": "What Did I Miss?",
+    "albumName": "ICEMAN",
+    "albumImage": "https://i.scdn.co/image/ab67616d000048518e76f09489ebfa31ac920f08",
+    "artists": [
+      {
+        "name": "Drake",
+        "url": "https://open.spotify.com/artist/3TVXtAsR1Inumwj472S9r4",
+        "listeners": 94882740,
+        "artistImageHistory": "https://i.scdn.co/image/068ae749ee9825fcecc1a0f82ead09aaa8440228",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194a76cf626917521176d2f7723"
+      }
+    ],
+    "plays": 2535711,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 38,
+    "title": "Sweater Weather",
+    "albumName": "I Love You.",
+    "albumImage": "https://i.scdn.co/image/ab67616d000048518265a736a1eb838ad5a0b921",
+    "artists": [
+      {
+        "name": "The Neighbourhood",
+        "url": "https://open.spotify.com/artist/77SW9BnxLY8rJ0RciFqkHh",
+        "listeners": 47861064,
+        "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd417697dbe1066197c075a333b",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194d48b4bb2df94c1a52a98ea47"
+      }
+    ],
+    "plays": 2500422,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 39,
+    "title": "Smooth Criminal - 2012 Remaster",
+    "albumName": "Bad (Remastered)",
+    "albumImage": "https://i.scdn.co/image/ab67616d00004851eb2087dcd1eb61f833bdedff",
+    "artists": [
+      {
+        "name": "Michael Jackson",
+        "url": "https://open.spotify.com/artist/3fMbdgg4jU18AjLCKBhRSm",
+        "listeners": 103275080,
+        "artistImageHistory": "https://i.scdn.co/image/188c4fec0fcdb8d074ca9d6a805afec38946c49c",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab676186000001943753db8546a0d1ec0972c594"
+      }
+    ],
+    "plays": 2429538,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 40,
+    "title": "Chicago",
+    "albumName": "XSCAPE",
+    "albumImage": "https://i.scdn.co/image/ab67616d0000485135f36cb686b0d5a12ab3a9f0",
+    "artists": [
+      {
+        "name": "Michael Jackson",
+        "url": "https://open.spotify.com/artist/3fMbdgg4jU18AjLCKBhRSm",
+        "listeners": 103275080,
+        "artistImageHistory": "https://i.scdn.co/image/188c4fec0fcdb8d074ca9d6a805afec38946c49c",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab676186000001943753db8546a0d1ec0972c594"
+      }
+    ],
+    "plays": 2420525,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 41,
+    "title": "Lush Life",
+    "albumName": "So Good",
+    "albumImage": "https://i.scdn.co/image/ab67616d00004851401bf6103d4b7f5230a21582",
+    "artists": [
+      {
+        "name": "Zara Larsson",
+        "url": "https://open.spotify.com/artist/1Xylc3o4UrD53lo9CvFvVg",
+        "listeners": 70401026,
+        "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd4b5b7c11df5ee14801c79022f",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab676186000001949199dc5df142a7f107a73bf5"
+      }
+    ],
+    "plays": 2399079,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 42,
+    "title": "BIRDS OF A FEATHER",
+    "albumName": "HIT ME HARD AND SOFT",
+    "albumImage": "https://i.scdn.co/image/ab67616d0000485171d62ea7ea8a5be92d3c1f62",
+    "artists": [
+      {
+        "name": "Billie Eilish",
+        "url": "https://open.spotify.com/artist/6qqNVTkY8uBg9cP3Jd7DAH",
+        "listeners": 85257270,
+        "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd40389999699d5f04f38d2866c",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab676186000001942d84c1b04696c09702a15b85"
+      }
+    ],
+    "plays": 2382725,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 43,
+    "title": "WHERE IS MY HUSBAND!",
+    "albumName": "THIS MUSIC MAY CONTAIN HOPE.",
+    "albumImage": "https://i.scdn.co/image/ab67616d0000485197c0928704e5a2bd8d4c5b90",
+    "artists": [
+      {
+        "name": "RAYE",
+        "url": "https://open.spotify.com/artist/5KKpBU5eC2tJDzf0wmlRp2",
+        "listeners": 51607350,
+        "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd42514461b5e4119164f10a448",
+        "backgroundArtistImage": "https://image-cdn-fa.spotifycdn.com/image/ab67618600000194c09251f6c5afe8277aacaae6"
+      }
+    ],
+    "plays": 2329579,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 44,
+    "title": "Mr. Brightside",
+    "albumName": "Hot Fuss",
+    "albumImage": "https://i.scdn.co/image/ab67616d00004851ccdddd46119a4ff53eaf1f5d",
+    "artists": [
+      {
+        "name": "The Killers",
+        "url": "https://open.spotify.com/artist/0C0XlULifJtAgn6ZNCW2eu",
+        "listeners": 35311190,
+        "artistImageHistory": "https://i.scdn.co/image/a841f0ee4f2d88c42f55f76c2cc6b588841f5d2f",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194ea7fb086249be31f55010aff"
+      }
+    ],
+    "plays": 2329574,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 45,
+    "title": "B's On The Table (feat. 21 Savage)",
+    "albumName": "ICEMAN",
+    "albumImage": "https://i.scdn.co/image/ab67616d000048518e76f09489ebfa31ac920f08",
+    "artists": [
+      {
+        "name": "Drake",
+        "url": "https://open.spotify.com/artist/3TVXtAsR1Inumwj472S9r4",
+        "listeners": 94882740,
+        "artistImageHistory": "https://i.scdn.co/image/068ae749ee9825fcecc1a0f82ead09aaa8440228",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194a76cf626917521176d2f7723"
+      },
+      {
+        "name": "21 Savage",
+        "url": "https://open.spotify.com/artist/1URnnhqYAYcrqrcwql10ft",
+        "listeners": 43007040,
+        "artistImageHistory": "https://i.scdn.co/image/ab6772690000dd222d5d5a3f3b1549e7880acde3",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194dd37eeca842d0f690fc387bb"
+      }
+    ],
+    "plays": 2316096,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 46,
+    "title": "Make Them Pay",
+    "albumName": "ICEMAN",
+    "albumImage": "https://i.scdn.co/image/ab67616d000048518e76f09489ebfa31ac920f08",
+    "artists": [
+      {
+        "name": "Drake",
+        "url": "https://open.spotify.com/artist/3TVXtAsR1Inumwj472S9r4",
+        "listeners": 94882740,
+        "artistImageHistory": "https://i.scdn.co/image/068ae749ee9825fcecc1a0f82ead09aaa8440228",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194a76cf626917521176d2f7723"
+      }
+    ],
+    "plays": 2313198,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 47,
+    "title": "White Keys",
+    "albumName": "White Keys",
+    "albumImage": "https://i.scdn.co/image/ab67616d000048513696096119ef08824cf85ede",
+    "artists": [
+      {
+        "name": "Dominic Fike",
+        "url": "https://open.spotify.com/artist/6USv9qhCn6zfxlBQIYJ9qs",
+        "listeners": 62456403,
+        "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd4f50d97dc06da36c4e73c1caa",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab676186000001941ce8822b366da01389b26de0"
+      }
+    ],
+    "plays": 2243653,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 48,
+    "title": "Golden",
+    "albumName": "KPop Demon Hunters (Soundtrack from the Netflix Film)",
+    "albumImage": "https://i.scdn.co/image/ab67616d000048514dcb6c5df15cf74596ab25a4",
+    "artists": [
+      {
+        "name": "HUNTR/X",
+        "url": "https://open.spotify.com/artist/2yNNYQBChuox9A5Ka93BIn",
+        "listeners": 30041680,
+        "artistImageHistory": null,
+        "backgroundArtistImage": null
+      },
+      {
+        "name": "EJAE",
+        "url": "https://open.spotify.com/artist/0RMJOzHDhAKY1o2j0W0vxY",
+        "listeners": 30440004,
+        "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd4d469220721e86fe2d133fbcc",
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194903d6bfbf29e7164c054a848"
+      },
+      {
+        "name": "AUDREY NUNA",
+        "url": "https://open.spotify.com/artist/0Wwji82sLA0Hcvtuak3omb",
+        "listeners": 29586793,
+        "artistImageHistory": "https://i.scdn.co/image/80b56dd845f47ad8b0681e3a1a820d136853d26b",
+        "backgroundArtistImage": "https://image-cdn-fa.spotifycdn.com/image/ab676186000001948c56eb9f5ac5ccb8cb07b21d"
+      },
+      {
+        "name": "REI AMI",
+        "url": "https://open.spotify.com/artist/6U1dV7aL68N7Gb0Naq34V5",
+        "listeners": 30456346,
+        "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd48c55b08ab549635cdbecc6b6",
+        "backgroundArtistImage": null
+      },
+      {
+        "name": "KPop Demon Hunters Cast",
+        "url": "https://open.spotify.com/artist/7mW7Tv7NvywKKXqafZo0Lc",
+        "listeners": 33998105,
+        "artistImageHistory": null,
+        "backgroundArtistImage": null
+      }
+    ],
+    "plays": 2220866,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 49,
+    "title": "BAILE INoLVIDABLE",
+    "albumName": "DeBÍ TiRAR MáS FOToS",
+    "albumImage": "https://i.scdn.co/image/ab67616d00004851bbd45c8d36e0e045ef640411",
+    "artists": [
+      {
+        "name": "Bad Bunny",
+        "url": "https://open.spotify.com/artist/4q3ewBCX7sLwd24euuV69X",
+        "listeners": 100128305,
+        "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd4a1b2c9183be1d6f8a05ec448",
+        "backgroundArtistImage": "https://image-cdn-fa.spotifycdn.com/image/ab676186000001942b440403a6dd8816bd59447e"
+      }
+    ],
+    "plays": 2176429,
+    "month": "2026-05-01"
+  },
+  {
+    "position": 50,
+    "title": "Sailor Song",
+    "albumName": "At The Beach, In Every Life",
+    "albumImage": "https://i.scdn.co/image/ab67616d0000485149c26270052e1671add569c1",
+    "artists": [
+      {
+        "name": "Gigi Perez",
+        "url": "https://open.spotify.com/artist/1iCnM8foFssWlPRLfAbIwo",
+        "listeners": 28599223,
+        "artistImageHistory": null,
+        "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194113e9554293cb9b0af5ce50e"
+      }
+    ],
+    "plays": 2156119,
+    "month": "2026-05-01"
+  }
+]

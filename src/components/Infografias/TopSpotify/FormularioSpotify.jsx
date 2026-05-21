@@ -4,6 +4,7 @@ import { CapturarImagen } from "@functions/CapturarImagen";
 import styles from "./FormularioSpotify.module.css";
 import spotifyDataGlobal from "@spotify-data-global";
 import spotifyDataGlobalMusic from "@spotify-data-global-music";
+import spotifyDataGlobalTop50 from "@spotify-data-global-top-50";
 import spotifyData from "@spotify-data"
 
 const FormularioSpotify = ({
@@ -30,7 +31,24 @@ const FormularioSpotify = ({
   const cargarDatosAuto = () => {
     let sortedData = [];
     
-    if (sourceType === "globalesMusic") {
+    if (sourceType === "globalesTop50") {
+      const allTracks = spotifyDataGlobalTop50.filter(item => item.month === "2026-05-01").map(track => {
+        const names = track.artists.map(a => a.name).join(" & ");
+        const images = track.artists.map(a => a.artistImageHistory || a.backgroundArtistImage).filter(img => img);
+        
+        return {
+          ...track,
+          artistName: names,
+          artistImages: images,
+          artistUrl: track.artists[0]?.url || "",
+          backgroundArtistImage: track.artists.find(a => a.backgroundArtistImage)?.backgroundArtistImage || "",
+          link: track.url || "",
+          image: track.albumImage
+        };
+      });
+      sortedData = allTracks.sort((a, b) => a.position - b.position);
+      setTopMusic(true);
+    } else if (sourceType === "globalesMusic") {
       // Agrupar canciones por link para evitar duplicados y capturar colaboraciones
       const tracksMap = new Map();
       
@@ -99,7 +117,7 @@ const FormularioSpotify = ({
     const newMonthlyListener = [];
 
     selectedItems.forEach((item, index) => {
-      if (sourceType === "globalesMusic") {
+      if (sourceType === "globalesMusic" || sourceType === "globalesTop50") {
         // Caso de canciones (tracks)
         newDatosArtistas[index] = {
           urlArtista: item.artistUrl,
@@ -177,7 +195,8 @@ const FormularioSpotify = ({
     setDatos((oldData)=>{
       return {
         ...oldData,
-        titulo:sourceType === "venezolanos" ? "TOP 10 ARTISTAS VENEZOLANOS" : "TOP 10 ARTISTAS GLOBALES"  
+        titulo: sourceType === "venezolanos" ? "TOP 10 ARTISTAS VENEZOLANOS" : (sourceType === "globalesTop50" ? "TOP 20 CANCIONES GLOBALES" : "TOP 10 ARTISTAS GLOBALES"), 
+        titulo2: sourceType === "venezolanos" ? "MÁS ESCUCHADOS EN SPOTIFY" : (sourceType === "globalesTop50" ? "MÁS ESCUCHADAS EN SPOTIFY " : "MÁS ESCUCHADOS EN SPOTIFY")  
       }
     })
     setDatosArtistas(newDatosArtistas);
@@ -258,6 +277,7 @@ const FormularioSpotify = ({
             <option value="venezolanos">Venezolanos</option>
             <option value="globales">Globales</option>
             <option value="globalesMusic">Globales Music</option>
+            <option value="globalesTop50">Globales Top 50</option>
           </select>
           <button type="button" onClick={cargarDatosAuto} style={{ padding: '2px 10px', background: '#1db954', color: 'white', border: 'none', borderRadius: '3px', cursor: 'pointer' }}>
             Autocargar desde Repo
