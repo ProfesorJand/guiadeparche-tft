@@ -207,19 +207,6 @@ const FormularioCrearCompoTFT = ({props}) =>{
             </select>
             </label>
             
-            <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between", width:"100%"}}>
-            
-            <ChampTierList
-              isSample={true}
-              campeonTierList={composicionTFT.campeonEnElMeta}
-              augmentTierList={composicionTFT.campeonEnElMetaAumento}
-              champItem={[composicionTFT.campeonEnElMetaItem1,composicionTFT.campeonEnElMetaItem2,composicionTFT.campeonEnElMetaItem3]}
-              champTrait={composicionTFT.campeonEnElMetaSinergias ? [composicionTFT.campeonEnElMetaSinergias] : []}
-              champ3Stars={composicionTFT.campeonEnElMeta3Stars}
-            />
-
-            </div>
-
             <label htmlFor="esParaGuias">¿Es para Guias?
             <select id="esParaGuias" value={composicionTFT.esParaGuias} onChange={(e) => setComposicionTFT({...composicionTFT, esParaGuias: e.target.value})}>
               <option value="false">No</option>
@@ -436,130 +423,143 @@ const FormularioCrearCompoTFT = ({props}) =>{
 
             {renderBuilderToggle("Compo Final Base", "finalBase")}
             {renderBuilderToggle("Compo Final +level", "finalPlusLevel")}
-            <fieldset style={{width:"49%"}}>
-              <legend>Carry en el Meta</legend>
-            
-            {/* Carry principal para mostrar en tier list */}
+            <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between", width:"100%"}}>
+              <fieldset style={{width:"100%"}}>
+                <legend>Carry en el Meta</legend>
+              
+              {/* Carry principal para mostrar en tier list */}
 
-            {composicionTFT?.esParaGuias === "true" ? (
-              <label htmlFor="campeonEnElMeta">Campeon en el Meta
-              <select id="campeonEnElMeta" value={composicionTFT.campeonEnElMeta?.name || composicionTFT.campeonEnElMeta || ""} onChange={(e) => {
-                const champName = e.target.value;
-                const selectedCarry = composicionTFT.Carries?.find(c => c.campeon === champName);
-                const champObj = allChampionsTFT.find(opt => opt.name === champName);
-                
-                let newItem1 = "";
-                let newItem2 = "";
-                let newItem3 = "";
+              {composicionTFT?.esParaGuias === "true" ? (
+                <label htmlFor="campeonEnElMeta">Campeon en el Meta
+                <select id="campeonEnElMeta" value={composicionTFT.campeonEnElMeta?.name || composicionTFT.campeonEnElMeta || ""} onChange={(e) => {
+                  const champName = e.target.value;
+                  const selectedCarry = composicionTFT.Carries?.find(c => c.campeon === champName);
+                  const champObj = allChampionsTFT.find(opt => opt.name === champName);
+                  
+                  let newItem1 = "";
+                  let newItem2 = "";
+                  let newItem3 = "";
 
-                if (selectedCarry && selectedCarry.objetos) {
-                  newItem1 = selectedCarry.objetos[0]?.principal ? (allItemsTFT.find(opt => opt.name === selectedCarry.objetos[0].principal) || selectedCarry.objetos[0].principal) : "";
-                  newItem2 = selectedCarry.objetos[1]?.principal ? (allItemsTFT.find(opt => opt.name === selectedCarry.objetos[1].principal) || selectedCarry.objetos[1].principal) : "";
-                  newItem3 = selectedCarry.objetos[2]?.principal ? (allItemsTFT.find(opt => opt.name === selectedCarry.objetos[2].principal) || selectedCarry.objetos[2].principal) : "";
-                }
+                  if (selectedCarry && selectedCarry.objetos) {
+                    newItem1 = selectedCarry.objetos[0]?.principal ? (allItemsTFT.find(opt => opt.name === selectedCarry.objetos[0].principal) || selectedCarry.objetos[0].principal) : "";
+                    newItem2 = selectedCarry.objetos[1]?.principal ? (allItemsTFT.find(opt => opt.name === selectedCarry.objetos[1].principal) || selectedCarry.objetos[1].principal) : "";
+                    newItem3 = selectedCarry.objetos[2]?.principal ? (allItemsTFT.find(opt => opt.name === selectedCarry.objetos[2].principal) || selectedCarry.objetos[2].principal) : "";
+                  }
 
-                setComposicionTFT({
-                  ...composicionTFT, 
-                  campeonEnElMeta: champObj || champName,
-                  campeonEnElMetaItem1: newItem1,
-                  campeonEnElMetaItem2: newItem2,
-                  campeonEnElMetaItem3: newItem3
-                });
-              }}>
-                <option value="">Seleccionar Campeón de la Compo</option>
-                {composicionTFT?.Carries?.filter(c => c.campeon).map((carry, idx) => (
-                  <option key={idx} value={carry.campeon}>
-                    {carry.campeon} (Rol: {carry.rol})
-                  </option>
-                ))}
+                  setComposicionTFT({
+                    ...composicionTFT, 
+                    campeonEnElMeta: champObj || champName,
+                    campeonEnElMetaItem1: newItem1,
+                    campeonEnElMetaItem2: newItem2,
+                    campeonEnElMetaItem3: newItem3
+                  });
+                }}>
+                  <option value="">Seleccionar Campeón de la Compo</option>
+                  {composicionTFT?.Carries?.filter(c => c.campeon).map((carry, idx) => (
+                    <option key={idx} value={carry.campeon}>
+                      {carry.campeon} (Rol: {carry.rol})
+                    </option>
+                  ))}
+                </select>
+                </label>
+              ) : (
+                <label htmlFor="campeonEnElMeta">Campeon en el Meta
+                <select id="campeonEnElMeta" value={composicionTFT.campeonEnElMeta?.name || composicionTFT.campeonEnElMeta || ""} onChange={(e) => {
+                  const selectedItem = allChampionsTFT.find(opt => opt.name === e.target.value);
+                  setComposicionTFT({...composicionTFT, campeonEnElMeta: selectedItem || e.target.value});
+                }}>
+                  <option value="">Seleccionar Campeón</option>
+                  {allChampionsTFT.map((option) => (
+                    <option key={option.apiName} value={option.name} data-value={JSON.stringify(option)}>
+                      {option.name}
+                    </option>
+                  ))}
+                </select>
+                </label>
+              )}
+
+              <label htmlFor="campeonEnElMeta3Stars">¿Es para campeon 3 estrellas?
+              <select id="campeonEnElMeta3Stars" value={composicionTFT.campeonEnElMeta3Stars} onChange={(e) => setComposicionTFT({...composicionTFT, campeonEnElMeta3Stars: e.target.value})}>
+                <option value="false">No</option>
+                <option value="true">Si</option>
               </select>
               </label>
-            ) : (
-              <label htmlFor="campeonEnElMeta">Campeon en el Meta
-              <select id="campeonEnElMeta" value={composicionTFT.campeonEnElMeta?.name || composicionTFT.campeonEnElMeta || ""} onChange={(e) => {
-                const selectedItem = allChampionsTFT.find(opt => opt.name === e.target.value);
-                setComposicionTFT({...composicionTFT, campeonEnElMeta: selectedItem || e.target.value});
-              }}>
-                <option value="">Seleccionar Campeón</option>
-                {allChampionsTFT.map((option) => (
-                  <option key={option.apiName} value={option.name} data-value={JSON.stringify(option)}>
+              
+              {/* Aumentos para mostrar en tier list */}
+              <label htmlFor="aumentos">Aumentos
+              <input type="text" list="aumentos" id="aumento" value={composicionTFT.campeonEnElMetaAumento?.apiName || composicionTFT.campeonEnElMetaAumento || ""} onChange={(e) => {
+                const selectedItem = allItemsTFT.find(opt => opt.apiName === e.target.value);
+                setComposicionTFT({...composicionTFT, campeonEnElMetaAumento: selectedItem || e.target.value});
+              }} />
+              <datalist id="aumentos" value={composicionTFT.campeonEnElMetaAumento} onChange={(e) => setComposicionTFT({...composicionTFT, campeonEnElMetaAumento: e.target.value})}>
+                {allItemsTFT.map((option) => (
+                  <option key={option.apiName} value={option.apiName} data-value={JSON.stringify(option)}>
                     {option.name}
                   </option>
                 ))}
-              </select>
+              </datalist>
               </label>
-            )}
+              
+              {composicionTFT?.esParaGuias !== "true" && (
+                <>
+                  {/* Items para mostrar en tier list */}
+                  <label htmlFor="item1">Item 1
+                  <input type="text" list="items" id="item1" value={composicionTFT.campeonEnElMetaItem1?.name || composicionTFT.campeonEnElMetaItem1 || ""} onChange={(e) => {
+                    const selectedItem = allItemsTFT.find(opt => opt.name === e.target.value);
+                    setComposicionTFT({...composicionTFT, campeonEnElMetaItem1: selectedItem || e.target.value});
+                  }} />
+                  </label>
+                  <label htmlFor="item2">Item 2
+                  <input type="text" list="items" id="item2" value={composicionTFT.campeonEnElMetaItem2?.name || composicionTFT.campeonEnElMetaItem2 || ""} onChange={(e) => {
+                    const selectedItem = allItemsTFT.find(opt => opt.name === e.target.value);
+                    setComposicionTFT({...composicionTFT, campeonEnElMetaItem2: selectedItem || e.target.value});
+                  }} />
+                  </label>
+                  <label htmlFor="item3">Item 3
+                  <input type="text" list="items" id="item3" value={composicionTFT.campeonEnElMetaItem3?.name || composicionTFT.campeonEnElMetaItem3 || ""} onChange={(e) => {
+                    const selectedItem = allItemsTFT.find(opt => opt.name === e.target.value);
+                    setComposicionTFT({...composicionTFT, campeonEnElMetaItem3: selectedItem || e.target.value});
+                  }} />
+                  </label>
+                </>
+              )}
 
-            <label htmlFor="campeonEnElMeta3Stars">¿Es para campeon 3 estrellas?
-            <select id="campeonEnElMeta3Stars" value={composicionTFT.campeonEnElMeta3Stars} onChange={(e) => setComposicionTFT({...composicionTFT, campeonEnElMeta3Stars: e.target.value})}>
-              <option value="false">No</option>
-              <option value="true">Si</option>
-            </select>
-            </label>
-            
-            {/* Aumentos para mostrar en tier list */}
-            <label htmlFor="aumentos">Aumentos
-            <input type="text" list="aumentos" id="aumento" value={composicionTFT.campeonEnElMetaAumento?.name || composicionTFT.campeonEnElMetaAumento || ""} onChange={(e) => {
-              const selectedItem = allItemsTFT.find(opt => opt.name === e.target.value);
-              setComposicionTFT({...composicionTFT, campeonEnElMetaAumento: selectedItem || e.target.value});
-            }} />
-            <datalist id="aumentos" value={composicionTFT.campeonEnElMetaAumento} onChange={(e) => setComposicionTFT({...composicionTFT, campeonEnElMetaAumento: e.target.value})}>
-              {allItemsTFT.map((option) => (
-                <option key={option.apiName} value={option.name} data-value={JSON.stringify(option)}>
-                  {option.apiName}
-                </option>
-              ))}
-            </datalist>
-            </label>
-            
-            {composicionTFT?.esParaGuias !== "true" && (
-              <>
-                {/* Items para mostrar en tier list */}
-                <label htmlFor="item1">Item 1
-                <input type="text" list="items" id="item1" value={composicionTFT.campeonEnElMetaItem1?.name || composicionTFT.campeonEnElMetaItem1 || ""} onChange={(e) => {
-                  const selectedItem = allItemsTFT.find(opt => opt.name === e.target.value);
-                  setComposicionTFT({...composicionTFT, campeonEnElMetaItem1: selectedItem || e.target.value});
-                }} />
-                </label>
-                <label htmlFor="item2">Item 2
-                <input type="text" list="items" id="item2" value={composicionTFT.campeonEnElMetaItem2?.name || composicionTFT.campeonEnElMetaItem2 || ""} onChange={(e) => {
-                  const selectedItem = allItemsTFT.find(opt => opt.name === e.target.value);
-                  setComposicionTFT({...composicionTFT, campeonEnElMetaItem2: selectedItem || e.target.value});
-                }} />
-                </label>
-                <label htmlFor="item3">Item 3
-                <input type="text" list="items" id="item3" value={composicionTFT.campeonEnElMetaItem3?.name || composicionTFT.campeonEnElMetaItem3 || ""} onChange={(e) => {
-                  const selectedItem = allItemsTFT.find(opt => opt.name === e.target.value);
-                  setComposicionTFT({...composicionTFT, campeonEnElMetaItem3: selectedItem || e.target.value});
-                }} />
-                </label>
-              </>
-            )}
+              <datalist id="items">
+                {allItemsTFT.map((option) => (
+                  <option key={option.apiName} value={option.name} data-value={JSON.stringify(option)}>
+                    {option.apiName}
+                  </option>
+                ))}
+              </datalist>
+              
+              <label>Trait / Emblema:
+              <input value={composicionTFT.campeonEnElMetaSinergias?.name || composicionTFT.campeonEnElMetaSinergias || ""} onChange={(e)=> {
+                const selectedItem = allItemsTFT.find(opt => opt.name === e.target.value);
+                setComposicionTFT({...composicionTFT, campeonEnElMetaSinergias: selectedItem || e.target.value});
+              }} list="dataListChampsTraits" name="dataListChampsTraits" id="dataListChampsTraits1" placeholder="Select Trait to Show"></input>
+              <datalist id="dataListChampsTraits">
+                {allItemsTFT.map((option) => {
+                  if(option.apiName.includes("EmblemItem"))
+                  return (
+                  <option key={option.apiName} value={option.name}>
+                    {option.apiName}
+                  </option>
+                )})}
+              </datalist>
+              </label>
+              </fieldset>
 
-            <datalist id="items">
-              {allItemsTFT.map((option) => (
-                <option key={option.apiName} value={option.name} data-value={JSON.stringify(option)}>
-                  {option.apiName}
-                </option>
-              ))}
-            </datalist>
-            
-            <label>Trait / Emblema:
-            <input value={composicionTFT.campeonEnElMetaSinergias?.name || composicionTFT.campeonEnElMetaSinergias || ""} onChange={(e)=> {
-              const selectedItem = allItemsTFT.find(opt => opt.name === e.target.value);
-              setComposicionTFT({...composicionTFT, campeonEnElMetaSinergias: selectedItem || e.target.value});
-            }} list="dataListChampsTraits" name="dataListChampsTraits" id="dataListChampsTraits1" placeholder="Select Trait to Show"></input>
-            <datalist id="dataListChampsTraits">
-              {allItemsTFT.map((option) => {
-                if(option.apiName.includes("EmblemItem"))
-                return (
-                <option key={option.apiName} value={option.name}>
-                  {option.apiName}
-                </option>
-              )})}
-            </datalist>
-            </label>
-            </fieldset>
+              <ChampTierList
+                isSample={true}
+                campeonTierList={composicionTFT.campeonEnElMeta}
+                augmentTierList={composicionTFT.campeonEnElMetaAumento}
+                champItem={[composicionTFT.campeonEnElMetaItem1,composicionTFT.campeonEnElMetaItem2,composicionTFT.campeonEnElMetaItem3]}
+                champTrait={composicionTFT.campeonEnElMetaSinergias ? [composicionTFT.campeonEnElMetaSinergias] : []}
+                champ3Stars={composicionTFT.campeonEnElMeta3Stars}
+              />
+
+            </div>
+
 
             {/* NUEVA SECCIÓN DINÁMICA CARRUSEL */}
             <DynamicCarrusel 
