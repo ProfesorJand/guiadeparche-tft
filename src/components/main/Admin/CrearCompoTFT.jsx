@@ -5,7 +5,7 @@ import Champions from "./ChampionsList.jsx"
 import Sinergias from "./Sinergias.jsx"
 import Items from "./Items.jsx";
 import Youtube from "../../youtube/Youtube.jsx";
-// import { toBlob } from 'html-to-image';
+import { toBlob } from 'html-to-image';
 import { BASIC_ITEMS, CRAFTEABLE_ITEMS, ARTEFACTOS, ITEMS_CRAFTEABLES_PBE, uploadImageWebpPHP, crearCompoMetaPHP, AllBasicItems } from "src/stores/dataTFT.js";
 import { emblems, radiantsItems as listOfRadiantsItems} from "src/json/updates/itemsTFT";
 import CarouselItems from "./CarouselItems.jsx";
@@ -15,7 +15,7 @@ import ChampTierList from "@components/TFT/ChampTierList.jsx"
 import { AllCraftableItems, setNumberPBE,setNumberLatest, versionTFT, setMutatorLatest, setMutatorPBE, dataTFTChampions, dataTFTAllItems, dataTFTTraits } from "src/stores/dataTFT.js"
 import { useStore } from "@nanostores/react"
 import InputPowerUpList from "@components/TFT/InputPowerUpList.jsx"
-import FormularioCrearCompoTFT from "@components/TFT/FormularioCrearCompoTFT.jsx"
+//import FormularioCrearCompoTFT from "@components/TFT/FormularioCrearCompoTFT.jsx"
 
 
 const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,edittitulo,editshadowCategory,editinfographicCategory,editaumentos,editgameplay,edittips,editisHide,editboardInfo,editpictureSave,editcarouselItems,editradiantItem,editspatulaItem1,editspatulaItem2,editoriginalComp, editCampeonTierList, editAugmentTierList, editCampeonItemTierList =[{},{},{}], editCampeonTraitTierList = [{}], editCampeonPowerUpList = [{}],editChamp3Stars, editVersion=null, editisInInfographic, editTipSeo, editCuandoJugar, editCondicionVictoria }) =>{
@@ -238,13 +238,14 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
       setLoadingPicture(true);
 
       const element = document.getElementById(showBoardID);
+
       const rect = element.getBoundingClientRect();
       const width = rect.width;
       const height = rect.height;
       const pixelRatio = 1.5;
       try {
         // COMENTADO TEMPORALMENTE PARA TEST EN IOS SAFARI
-        /*
+        
         const blob = await toBlob(element, {
           pixelRatio,
           style: {
@@ -263,13 +264,14 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         const nombreArchivo = id + `-${showBoardID}`;
         const formData = new FormData();
         formData.append('file', webpBlob, `${nombreArchivo}-${version}.webp`);
-        */
-        const formData = new FormData(); // Placeholder para evitar error de scope
+        
+        // const formData = new FormData(); // Placeholder para evitar error de scope
         const response = await fetch(uploadImageWebpPHP, {
           method: 'POST',
           body: formData,
         });
         const data = await response.json();
+        console.log({data})
 
         if (data.status === 'success') {
           setPictureSave(oldObject => ({ ...oldObject, [showBoardID]: true }));
@@ -647,7 +649,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
       }
     return (
     <form className={style.containerCrearCompo} onSubmit={(e)=>mySubmit(e)}>
-      <FormularioCrearCompoTFT />
+      {/* <FormularioCrearCompoTFT /> */}
       <div className={style.containerFirst}>
         <label>
           <span>Is In Infographic:</span>
