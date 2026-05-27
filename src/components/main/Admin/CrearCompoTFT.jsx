@@ -649,7 +649,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
       }
     return (
     <form className={style.containerCrearCompo} onSubmit={(e)=>mySubmit(e)}>
-      <FormularioCrearCompoTFT />
+      {/* <FormularioCrearCompoTFT /> */}
       <div className={style.containerFirst}>
         <label>
           <span>Is In Infographic:</span>
