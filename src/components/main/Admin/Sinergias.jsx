@@ -7,10 +7,12 @@ import { useStore } from "@nanostores/react";
 const Sinergias = ({sinergias, orientacion, show, version})=>{
   const sinergiasData = useStore(dataTFTTraits)
   function checkColor(hexColor){
+    if (!hexColor) return { backgroundColor: colorHex.default };
     if(hexColor === "hex-prismatic.webp"){
       return colorHex.prismatic
     }
-    return {backgroundColor:colorHex[hexColor.replace("hex-","").replace(".webp","")]}
+    const colorKey = hexColor.replace("hex-","").replace(".webp","");
+    return {backgroundColor: colorHex[colorKey] || colorHex.default}
   }
 
   const colorHex = {
@@ -34,7 +36,8 @@ const Sinergias = ({sinergias, orientacion, show, version})=>{
       const data = sinergiasData.find(({apiName})=>{
         return apiName === trait
       })
-      if (traitData) { 
+      const hasLevels = traitData && Object.keys(traitData).length > 0;
+      if (hasLevels) { 
         const levels = Object.keys(traitData).map(Number).sort((a, b) => a - b);
         let maxLevel = levels[levels.length -1];
         let minLevel = levels[0]; // El nivel más bajo disponible
@@ -65,7 +68,7 @@ const Sinergias = ({sinergias, orientacion, show, version})=>{
           max: maxLevel,
           hexColor,
           hexLevel,
-          icon:data?.icon.replace(".tex",".png").toLowerCase()
+          icon: data?.icon ? data.icon.replace(".tex",".png").toLowerCase() : ""
         });
       }else{
         result.push({
@@ -74,7 +77,7 @@ const Sinergias = ({sinergias, orientacion, show, version})=>{
           max: 0,
           hexColor: "hex-default.webp",
           hexLevel: 0,
-          icon:data?.icon.replace(".tex",".png").toLowerCase()
+          icon: data?.icon ? data.icon.replace(".tex",".png").toLowerCase() : ""
         });
       }
     });
