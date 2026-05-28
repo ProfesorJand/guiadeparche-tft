@@ -96,6 +96,7 @@ const MiniInfoComp = ({
           allChampionsApiName={allChampionsApiName}
           generatorCodeBuilder={generatorCodeBuilder}
           copyToClipboard={copyToClipboard}
+          webInfografia={webInfografia}
         />
         <AdminOptions
           compo={compo}
@@ -215,18 +216,18 @@ function TextoInfoPrimario({ show, compo, codeForPBE, allChampionsApiName }) {
     </div>
   )
 }
-function Tags({ colorDificulty, compo, show, codeForPBE, allChampionsApiName, generatorCodeBuilder, copyToClipboard }) {
+function Tags({ colorDificulty, compo, show, codeForPBE, allChampionsApiName, generatorCodeBuilder, copyToClipboard, webInfografia }) {
   const currentVersion = useStore(versionTFT);
   return (
     <div className={style.tags}>
       <div className={style.dificultad} style={{ border: `1px solid ${colorDificulty}`, color: `${colorDificulty}` }}>{compo.dificultad}</div>
       <div className={style.category}>{compo.infographicCategory}</div>
 
-          <div className={`${style.containerTips} adminOptions`} >
+          {!webInfografia && <div className={`${style.containerTips} adminOptions`} >
             <div className={style.containerTextoInfoPrimarioCode} onClick={(e)=>copyToClipboard(e,(currentVersion === "pbe" ? codeForPBE(allChampionsApiName) : generatorCodeBuilder(allChampionsApiName)))}>
               {"COPIAR CODIGO 📋"}
             </div>
-          </div>
+          </div>}
 
     </div>
   )
