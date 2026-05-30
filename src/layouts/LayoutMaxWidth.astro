@@ -6,22 +6,17 @@ import Adsense from '../components/adsense/Adsense.jsx';
 import { ViewTransitions } from 'astro:transitions';
 import PageLoader from '@components/PageLoader';
 import Youtube from '@components/youtube/Youtube.jsx';
+const admin = typeof window !== "undefined" ? window.localStorage.getItem("gp_admin") : false;
 interface Props {
   title: string;
   JSONSchema?: string;
   description?: string;
   keywords?: string;
   image?: string;
-  canonical?: string;
+  canonical?: URL;
   hide?:boolean;
-  modified_time?:string;
-  mainBackground?:string;
-  isAdmin?:boolean;
 }
-const { title, JSONSchema, description, keywords, image, canonical, hide=false, modified_time, mainBackground, isAdmin=false } = Astro.props;
-
-const mainBgImage = mainBackground === "solid" ? "none" : "radial-gradient(circle, #000000 1px, transparent 1px)";
-const mainBgSize = mainBackground === "solid" ? "none" : "4px 4px";
+const { title, JSONSchema, description, keywords, image, canonical, hide=false } = Astro.props;
 ---
 
 <html lang="en">
@@ -29,8 +24,9 @@ const mainBgSize = mainBackground === "solid" ? "none" : "4px 4px";
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <!-- google search console -->
-    <meta name="google-site-verification" content="VXzuc6CSTiTOeduk03n_uh0IUkgaBHkJAhQdtam2md0" />
+    {!admin && <meta name="google-site-verification" content="VXzuc6CSTiTOeduk03n_uh0IUkgaBHkJAhQdtam2md0" />}
     <!-- google analitics -->
+    {!admin && 
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-69PWGWV8LZ"></script>
     <script>
       declare global {
@@ -42,8 +38,10 @@ const mainBgSize = mainBackground === "solid" ? "none" : "4px 4px";
       window.dataLayer = window.dataLayer || [];
       window.gtag = function gtag(){window.dataLayer.push(arguments);}  // Añadir gtag a window
       window.gtag('js', new Date());
+
       window.gtag('config', 'G-69PWGWV8LZ');
     </script>
+    }
     <!-- google ads dynamically loaded (no ads for admin) -->
     <script is:inline>
       (function() {
@@ -82,7 +80,6 @@ const mainBgSize = mainBackground === "solid" ? "none" : "4px 4px";
     {keywords && <meta name="keywords" content={keywords} />}
     {image && <meta property="og:image" content={image} />}
     {canonical && <link rel="canonical" href={canonical} />}
-    {modified_time && <meta property="article:modified_time" content={modified_time} />}
 
      <!-- Schema Script -->
     {JSONSchema && <script type="application/ld+json" set:html={JSONSchema}></script>}
@@ -93,44 +90,13 @@ const mainBgSize = mainBackground === "solid" ? "none" : "4px 4px";
   <body>
     <PageLoader client:only="react" />
     <div class="bodyLayout">
-      
       <header class="bodyHeader">
         <Logo>Guiadeparche</Logo>
         <Header transition:persist/>
       </header> 
-
-      <div class="bodyInfo">
-        <aside class="bodyAside">
-          <Adsense direction='left' dimension="vertical-izquierda" numeracion={0} client:load/>
-        </aside>
-
-        <main class="bodyMain">
-          <aside class="bodyMainAside">
-            <div class="bodyMainAsideSticky">
-              <div class="bodyMainAsideMenu">
-                <slot name="bodyMainAside"></slot>
-              </div>
-              <div class="bodyMainAsideEmbed">
-                <slot name="bodyMainAsideTwitch"></slot>
-                <!-- <Youtube src={"https://youtu.be/1P-7x6JWNp0?si=Y8K-tCZDWgxnw0gE"} client:only="react"/> -->
-                {!hide && <Youtube src={"https://www.youtube.com/playlist?list=PLxRnNvReiLMEriFDu0UxXScDabCIX-PWy"} client:load/>}
-                {!hide && <Youtube src={"https://www.youtube.com/playlist?list=PLxRnNvReiLMHdvfB7WSMuSilnvdS1IUc-"} client:load/>}
-                <!-- <ads class="bodyMainAsideAds">
-                  <slot name="bodyMainAsideAds"></slot>
-                </ads> -->
-              </div>
-            </div>
-          </aside>
-          <section class="bodyMainSection">
-            <slot></slot>
-          </section>
-        </main>
-
-        <aside class="bodyAside">
-          <Adsense direction='right' dimension="vertical-derecha" numeracion={1} client:load />
-        </aside>
-      </div>
-
+      <main class="bodyMain">
+          <slot></slot>
+      </main>
       <footer class="bodyFooter">
         <Footer></Footer>
       </footer>
@@ -153,7 +119,7 @@ const mainBgSize = mainBackground === "solid" ? "none" : "4px 4px";
   </body>
 </html>
 
-<style is:global define:vars={{ mainBgImage, mainBgSize }}>
+<style is:global>
 
   :root {
     --bg-primary-rgb: 14 3 65;
@@ -163,6 +129,11 @@ const mainBgSize = mainBackground === "solid" ? "none" : "4px 4px";
     --bg-tertiary: #120d69;
     --bg-main: #0c023a;
     --bg-hover:#1d15aa;
+    --bg-purple-primary:#321139;
+    --bg-purple-hover-primary:#4d1657;
+    --bg-purple-secondary:#6b2273;
+    --bg-purple-hover-secondary:#5a1b63;
+    --bg-primary-solid:#12182c;
     --color-primary: #cfcfcf;
     --color-white:#cfcfcf;
     --color-black:#1f1f1f;
@@ -172,7 +143,7 @@ const mainBgSize = mainBackground === "solid" ? "none" : "4px 4px";
     --text-color-white-secondary: #e5e5e5;
     --link-color-primary:brown;
     --link-color-secondary:rgb(105, 27, 27);
-    --width-main: 70%;
+    --width-main: 100%;
     --height-header: 8vh;
     --height-footer: 20vh;
     --number-champ-meta: calc(100%/6);
@@ -195,7 +166,7 @@ const mainBgSize = mainBackground === "solid" ? "none" : "4px 4px";
   }
 
   @font-face {
-     font-family: 'ObviouslyWideBoldItalic'; /* Nombre corregido */
+    font-family: 'ObviouslyWideBoldItalic'; /* Nombre corregido */
   src: url('/fonts/ObviouslyWide-BoldItalic.otf') format("opentype");
   font-weight: normal;
   font-style: normal;
@@ -300,7 +271,9 @@ const mainBgSize = mainBackground === "solid" ? "none" : "4px 4px";
   html body .google-anno-skip.google-anno-sc {
     display: none !important;
   }
-
+  a{
+    color: var(--color-white)
+  }
 
 
   @media only screen and (max-width: 900px) {
@@ -346,48 +319,9 @@ const mainBgSize = mainBackground === "solid" ? "none" : "4px 4px";
       position: relative;
       flex-direction: column;
       background-color: #101525;
-      background-image: var(--mainBgImage);
-      background-size: var(--mainBgSize);
+      background-image: radial-gradient(circle, #000000 1px, transparent 1px);
+      background-size: 4px 4px;
       opacity: 1;
-    }
-    .bodyMainAside{
-      display: flex;
-      position: relative;
-      flex-direction: column;
-      width: 100%;
-      order:2
-    }
-    .bodyMainAsideSticky{
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      width: 100%;
-      box-sizing: border-box;
-      justify-content: flex-start;
-    }
-    .bodyMainAsideMenu{
-      display: flex;
-      position: relative;
-      flex-direction: column;
-      box-sizing: border-box;
-    }
-    .bodyMainAsideEmbed{
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      box-sizing: border-box;
-      gap:5px;
-    }
-    .bodyMainAsideAds{
-      display: flex;
-      position:relative;
-      width: 100%;
-    }
-    .bodyMainSection{
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      width: 100%;
     }
     .bodyFooter{
       display: flex;
@@ -422,6 +356,8 @@ const mainBgSize = mainBackground === "solid" ? "none" : "4px 4px";
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      padding: 0 50px;
+      box-sizing: border-box;
       /* padding-bottom: var(--height-footer); */
     }
     .bodyHeader{
@@ -448,73 +384,17 @@ const mainBgSize = mainBackground === "solid" ? "none" : "4px 4px";
       min-height: 92vh;
       /* background-color: #ffd700; */
     }
-    .bodyAside{
-      display: flex;
-      width: calc((100% - var(--width-main)) / 2);
-      position: sticky;
-      top: calc(var(--height-header));
-      padding: 5px;
-      box-sizing: border-box;
-      overflow: hidden;
-    }
     .bodyMain{
       display: flex;
-      width: var(--width-main);
-      position: relative;
-      flex-direction: row;
-      background-color: #101525;
-      background-image: var(--mainBgImage);
-      background-size: var(--mainBgSize);
-      opacity: 1;
-    }
-    .bodyMainAside{
-      display: flex;
-      position: relative;
-      flex-direction: column;
-      width: calc(100%/3);
-      /* background-color: var(--bg-secondary); */
-    }
-
-    .bodyMainAsideSticky{
-      display: flex;
-      flex-direction: column;
-      position: -webkit-sticky;
-      position: sticky;
-      top:var(--height-header);
       width: 100%;
-      box-sizing: border-box;
-      height:max-content;
-      justify-content: flex-start;
-    }
-
-    .bodyMainAsideMenu{
-      display: flex;
       position: relative;
       flex-direction: column;
-      box-sizing: border-box;
+      background-color: var(--bg-primary-solid);
+      /* background-color: #101525;
+      background-image: radial-gradient(circle, #000000 1px, transparent 1px);
+      background-size: 4px 4px;
+      opacity: 1; */
     }
-
-    .bodyMainAsideEmbed{
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      box-sizing: border-box;
-      gap:5px;
-    }
-    .bodyMainAsideAds{
-      display: flex;
-      position:relative;
-      width: 100%;
-      aspect-ratio: 16/9;
-    }
-
-    .bodyMainSection{
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      width: calc(100%*2/3);
-    }
-
     .bodyFooter{
       display: flex;
       position: relative;
