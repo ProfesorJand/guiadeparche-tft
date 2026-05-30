@@ -1,0 +1,33 @@
+---
+import MetaCompsLayout from "@components/TFT/MetaCompsLayout.astro";
+import {
+  fetchAndSortComps,
+  composMetaPBEJSON,
+} from "@stores/dataTFT";
+const todasLasCompsPBE = await fetchAndSortComps(composMetaPBEJSON);
+const top10Comps = [...todasLasCompsPBE.slice(0, 10)];
+const restComps = [...todasLasCompsPBE.slice(10)];
+const getYoutubeId = (url) => {
+  const match = url.match(/(?:youtube\.com\/.*v=|youtu\.be\/)([^"&?/ ]{11})/);
+  return match ? match[1] : null;
+};
+
+const id = getYoutubeId("https://www.youtube.com/watch?v=-xeetqszewY");
+
+// oEmbed SOLO en server/build (NO en React)
+const res = await fetch(
+  `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${id}&format=json`,
+);
+
+const data = await res.json();
+
+const video = {
+  id,
+  title: data.title,
+  thumbnail: `https://i.ytimg.com/vi/${id}/maxresdefault.jpg`,
+};
+
+---
+
+<MetaCompsLayout video={video} top10Comps={top10Comps} restComps={restComps} />
+

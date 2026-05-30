@@ -113,11 +113,11 @@ const menus = [
 
 
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("astro:page-load", () => {
     document.querySelectorAll(".menuMobile").forEach((btn) => {
       btn.addEventListener("click", () => {
         const sideMenu = document.querySelector(".sideMenu");
-        sideMenu.classList.toggle("hide");
+        sideMenu?.classList.toggle("hide");
       });
     });
   });

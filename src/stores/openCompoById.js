@@ -15,11 +15,11 @@ export const scrollToComposicion = () => {
       setTimeout(() => {
         // Buscar el contenedor padre o el contenedor de la compo abierta
         // ya que el header (.ranking-header-seo) ahora está oculto
-        const element = document.querySelector(`.containerMetaTier[data-comp-id="${id}"]`);
-        
+        const element = document?.querySelector(`.containerMetaTier[data-comp-id="${id}"]`);
+
         if (element) {
           const parentContainer = element.closest('.ranking-item-container') || element;
-          const headerHtml = document.getElementsByClassName("bodyHeader");
+          const headerHtml = document?.getElementsByClassName("bodyHeader");
           const headerHeight = headerHtml[0] ? headerHtml[0].clientHeight : 0;
 
           // Hacer el scroll hacia el contenedor de la compo

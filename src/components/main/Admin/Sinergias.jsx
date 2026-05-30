@@ -91,7 +91,7 @@ const Sinergias = ({sinergias, orientacion, show, version})=>{
       if(show ? i < 9 : i < 9){
         if(key.hexColor !== "hex-default.webp"){
           return (
-            <div key={i} className={show ? style.containerSinergiaHex : style.containerSinergiaHexOculto} style={window.innerWidth < 900 ? checkColor(key.hexColor) : {}}>
+            <div key={i} className={show ? style.containerSinergiaHex : style.containerSinergiaHexOculto} style={typeof window !== 'undefined' && window.innerWidth < 900 ? checkColor(key.hexColor) : {}}>
               <span className={style.borderHex} style={checkColor(key.hexColor)}></span> 
               <img className={style.imgSinergia} src={`https://raw.communitydragon.org/${version}/game/${key.icon}`} alt="Trait_Icon" loading="lazy"/>
               <div className={style.infoSinergia}>{key.hexLevel}</div>

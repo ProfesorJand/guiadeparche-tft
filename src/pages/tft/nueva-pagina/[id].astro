@@ -1,0 +1,261 @@
+---
+import MetaCompsLayout from "@components/TFT/MetaCompsLayout.astro";
+
+import {
+  fetchAndSortComps,
+  composMetaPBEJSON,
+  urlDragon,
+} from "@stores/dataTFT";
+
+export async function getStaticPaths() {
+  const todasLasCompsPBE = await fetchAndSortComps(composMetaPBEJSON);
+  return todasLasCompsPBE.map((comp) => ({
+    params: { id: String(comp.id) },
+    props: { comp },
+  }));
+}
+
+const { id } = Astro.params;
+const { comp } = Astro.props;
+
+// Obtener datos de video
+const getYoutubeId = (url) => {
+  const match = url.match(/(?:youtube\.com\/.*v=|youtu\.be\/)([^"&?/ ]{11})/);
+  return match ? match[1] : null;
+};
+
+const videoId = getYoutubeId("https://www.youtube.com/watch?v=-xeetqszewY");
+
+const video = {
+  id: videoId,
+  title: "7 Best Meta Team Compositions in TFT - Patch 17.3",
+  thumbnail: `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`,
+};
+
+// Cargar todas las composiciones para listarlas abajo
+const todasLasCompsPBE = await fetchAndSortComps(composMetaPBEJSON);
+const top10Comps = [...todasLasCompsPBE.slice(0, 10)];
+const restComps = [...todasLasCompsPBE.slice(10)]
+
+
+---
+
+<MetaCompsLayout
+  titleMain={comp.titulo}
+  titleHighlight="GUÍA DETALLADA"
+  description={comp.tipSeo ||
+    `Guía completa paso a paso de la composición ${comp.titulo} para el parche actual de TFT.`}
+  lastUpdate={`Actualizado: Parche ${comp.version || "17.3"}`}
+  video={video}
+  top10Comps={top10Comps}
+  restComps={restComps}
+  activeId={id}
+>  
+</MetaCompsLayout>
+
+<style>
+  .compo-detail-card {
+    background: rgba(28, 22, 54, 0.85);
+    border: 2px solid #7b61ff;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 0 24px rgba(123, 97, 255, 0.25);
+    animation: slideDown 0.3s ease-out;
+  }
+
+  .blockHeader {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .block {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 0 24px rgba(123, 97, 255, 0.25);
+    backdrop-filter: blur(12px);
+    border-radius: 12px;
+    border: 2px solid rgba(123, 97, 255, 0.25);
+    padding: 12px;
+  }
+
+  .two-columns {
+    flex-direction: row;
+  }
+
+  .earlyChampionsContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    width: 100%;
+  }
+  .championEarlyContainer {
+    display: flex;
+    flex-direction: column;
+    width: calc(100% / 5 - 5px);
+  }
+
+  .championImgItems {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .championImageWrapper {
+    display: flex;
+    border: 1px solid;
+    border-radius: 10px;
+  }
+
+  .champSquareCost1 {
+    border-color: #ffffff;
+  }
+  .champSquareCost2 {
+    border-color: #3e9e64;
+  }
+  .champSquareCost3 {
+    border-color: #1e69ee;
+  }
+  .champSquareCost4 {
+    border-color: #b534f5;
+  }
+  .champSquareCost5 {
+    border-color: #f58220;
+  }
+
+  .championImg {
+    width: 100%;
+    border-radius: 10px;
+  }
+
+  .itemsContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 6px;
+  }
+
+  .championImageWrapper {
+    width: 100%;
+  }
+
+  .bigItemPrio {
+    width: calc(100% / 3 - 6px);
+  }
+
+  .littleItemPrio {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+  }
+
+  .itemBestRadiant {
+    width: 50%;
+  }
+
+  .items-prio {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: calc(100% / 3 * 2);
+  }
+
+  .best-radiant {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: calc(100% / 3);
+  }
+
+  .margin-block-zero {
+    margin-block: 0px;
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(123, 97, 255, 0.25);
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .detail-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #fff;
+    font-weight: 700;
+  }
+
+  .difficulty-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .difficulty-badge[data-diff="Easy"],
+  .difficulty-badge[data-diff="Fácil"] {
+    color: #10b981;
+    border-color: rgba(16, 185, 129, 0.3);
+    background: rgba(16, 185, 129, 0.1);
+  }
+
+  .difficulty-badge[data-diff="Medium"],
+  .difficulty-badge[data-diff="Media"] {
+    color: #f59e0b;
+    border-color: rgba(245, 158, 11, 0.3);
+    background: rgba(245, 158, 11, 0.1);
+  }
+
+  .difficulty-badge[data-diff="Hard"],
+  .difficulty-badge[data-diff="Difícil"] {
+    color: #ef4444;
+    border-color: rgba(239, 68, 68, 0.3);
+    background: rgba(239, 68, 68, 0.1);
+  }
+
+  .detail-section {
+    margin-bottom: 20px;
+  }
+
+  .detail-section h3 {
+    margin: 0 0 8px 0;
+    font-size: 1.1rem;
+    color: #ffc832;
+    font-weight: 600;
+  }
+
+  .detail-section p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #e5e7eb;
+  }
+
+  .no-details {
+    margin: 0;
+    color: #9ca3af;
+    font-style: italic;
+    font-size: 0.9rem;
+    text-align: center;
+  }
+</style>
