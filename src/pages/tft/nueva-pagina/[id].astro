@@ -5,6 +5,8 @@ import {
   fetchAndSortComps,
   composMetaPBEJSON,
   urlDragon,
+  constantesTFT,
+  setNumberPBE
 } from "@stores/dataTFT";
 
 export async function getStaticPaths() {
@@ -17,6 +19,7 @@ export async function getStaticPaths() {
 
 const { id } = Astro.params;
 const { comp } = Astro.props;
+const numberOfVersion = constantesTFT.get();
 
 // Obtener datos de video
 const getYoutubeId = (url) => {
@@ -36,16 +39,14 @@ const video = {
 const todasLasCompsPBE = await fetchAndSortComps(composMetaPBEJSON);
 const top10Comps = [...todasLasCompsPBE.slice(0, 10)];
 const restComps = [...todasLasCompsPBE.slice(10)]
-
-
 ---
 
 <MetaCompsLayout
   titleMain={comp.titulo}
-  titleHighlight="GUÍA DETALLADA"
+  titleHighlight=`TFT Comp: Build, Items y Cómo Jugarla en el Set ${setNumberPBE}`
   description={comp.tipSeo ||
     `Guía completa paso a paso de la composición ${comp.titulo} para el parche actual de TFT.`}
-  lastUpdate={`Actualizado: Parche ${comp.version || "17.3"}`}
+  lastUpdate={`Actualizado: Parche ${numberOfVersion.MetaCompVersionPBE || "17.3"}`}
   video={video}
   top10Comps={top10Comps}
   restComps={restComps}

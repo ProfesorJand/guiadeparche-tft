@@ -1,6 +1,6 @@
 import { deepMap, atom, task } from "nanostores";
 import { useStore } from "@nanostores/react";
-
+const token = import.meta.env.PUBLIC_TOKEN_META;
 
 const initialStateDataTFT = {};
 const initialStateDataTFTItems = [];
@@ -63,6 +63,8 @@ export const teamPlannerCode = atom(initialStateTeamPlannerCode);
 export const TFT_SET = atom(initialTFT_SET);
 export const numberOfVersionTFT = atom("15.23.1");
 export const constantesTFT = atom({});
+export const dataTFTLastUpdate = atom(null);
+export const metaCompsTFT = atom(null);
 
 export const urlDragon = () => {
   return `https://raw.communitydragon.org/${versionTFT.get()}/game/`
@@ -264,11 +266,39 @@ export const fetchAndSortComps = async (url) => {
         allSorted.push(...tierComps);
       }
     });
+     const lastModified = response.headers.get('Last-Modified');
+     if(lastModified){
+      //transformar a dia/mes/año string, string dia = 1, mes = 0
+      const date = new Date(lastModified);
+      const dia = date.getDate();
+      const mes = date.getMonth() + 1;
+      const año = date.getFullYear();
+      dataTFTLastUpdate.set(`${dia}/${mes}/${año}`);
+     }
+     metaCompsTFT.set(allSorted)
     return allSorted;
   } catch (e) {
     console.error(`Error fetching from ${url}:`, e);
     return [];
   }
+}
+
+export const addConstantesTFT = async ({key,value}) => {
+  console.log("addConstantesTFT")
+  console.log({key,value})
+  const response = await fetch(constantesPHP,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({key,value}),
+    }
+  );
+  const res = await response.json();
+  console.log({res})
+  constantesTFT.set(res.data);
 }
 
 export const abreviarNombres = (nombre) => {

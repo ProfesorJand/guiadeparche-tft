@@ -184,7 +184,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
         });
       }
     }
-
+    console.log({revisar: boardInfo[id]?.data})
     llenarBoard(boardInfo[id]?.data);
   }, [boardInfo, id, currentVersion]);
   
@@ -830,14 +830,14 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
                 }}
               >
                 <div className={style.poligon}></div>
-                {hexId === "hex27" && (
+                {hexId === `${id}-hex27` && (
                   <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
             </div>
             <div className={style.hexRow}>
               <div
-                id="hex31"
+                id={`${id}-hex31`}
                 className={style.containerPoligon}
                 onDrop={(e) => {
                   handleDrop(e);
@@ -847,12 +847,12 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
                 }}
               >
                 <div className={style.poligon}></div>
-                {hexId === "hex31" && (
+                {hexId === `${id}-hex31` && (
                   <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
               <div
-                id="hex32"
+                id={`${id}-hex32`}
                 className={style.containerPoligon}
                 onDrop={(e) => {
                   handleDrop(e);
@@ -862,12 +862,12 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
                 }}
               >
                 <div className={style.poligon}></div>
-                {hexId === "hex32" && (
+                {hexId === `${id}-hex32` && (
                   <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
               <div
-                id="hex33"
+                id={`${id}-hex33`}
                 className={style.containerPoligon}
                 onDrop={(e) => {
                   handleDrop(e);
@@ -877,12 +877,12 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
                 }}
               >
                 <div className={style.poligon}></div>
-                {hexId === "hex33" && (
+                {hexId === `${id}-hex33` && (
                   <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
               <div
-                id="hex34"
+                id={`${id}-hex34`}
                 className={style.containerPoligon}
                 onDrop={(e) => {
                   handleDrop(e);
@@ -892,12 +892,12 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
                 }}
               >
                 <div className={style.poligon}></div>
-                {hexId === "hex34" && (
+                {hexId === `${id}-hex34` && (
                   <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
               <div
-                id="hex35"
+                id={`${id}-hex35`}
                 className={style.containerPoligon}
                 onDrop={(e) => {
                   handleDrop(e);
@@ -907,12 +907,12 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
                 }}
               >
                 <div className={style.poligon}></div>
-                {hexId === "hex35" && (
+                {hexId === `${id}-hex35` && (
                   <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
               <div
-                id="hex36"
+                id={`${id}-hex36`}
                 className={style.containerPoligon}
                 onDrop={(e) => {
                   handleDrop(e);
@@ -922,12 +922,12 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
                 }}
               >
                 <div className={style.poligon}></div>
-                {hexId === "hex36" && (
+                {hexId === `${id}-hex36` && (
                   <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
               <div
-                id="hex37"
+                id={`${id}-hex37`}
                 className={style.containerPoligon}
                 onDrop={(e) => {
                   handleDrop(e);
@@ -937,7 +937,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
                 }}
               >
                 <div className={style.poligon}></div>
-                {hexId === "hex37" && (
+                {hexId === `${id}-hex37` && (
                   <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
@@ -946,7 +946,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
             <div className={style.hexRow}>
               <div className={style.halfPoligon}></div>
               <div
-                id="hex41"
+                id={`${id}-hex41`}
                 className={style.containerPoligon}
                 onDrop={(e) => {
                   handleDrop(e);
@@ -956,12 +956,12 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
                 }}
               >
                 <div className={style.poligon}></div>
-                {hexId === "hex41" && (
+                {hexId === `${id}-hex41` && (
                   <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
               <div
-                id="hex42"
+                id={`${id}-hex42`}
                 className={style.containerPoligon}
                 onDrop={(e) => {
                   handleDrop(e);
@@ -971,12 +971,12 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
                 }}
               >
                 <div className={style.poligon}></div>
-                {hexId === "hex42" && (
+                {hexId === `${id}-hex42` && (
                   <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
               <div
-                id="hex43"
+                id={`${id}-hex43`}
                 className={style.containerPoligon}
                 onDrop={(e) => {
                   handleDrop(e);
@@ -986,12 +986,12 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
                 }}
               >
                 <div className={style.poligon}></div>
-                {hexId === "hex43" && (
+                {hexId === `${id}-hex43` && (
                   <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
               <div
-                id="hex44"
+                id={`${id}-hex44`}
                 className={style.containerPoligon}
                 onDrop={(e) => {
                   handleDrop(e);
@@ -1001,12 +1001,12 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
                 }}
               >
                 <div className={style.poligon}></div>
-                {hexId === "hex44" && (
+                {hexId === `${id}-hex44` && (
                   <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
               <div
-                id="hex45"
+                id={`${id}-hex45`}
                 className={style.containerPoligon}
                 onDrop={(e) => {
                   handleDrop(e);
@@ -1016,12 +1016,12 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
                 }}
               >
                 <div className={style.poligon}></div>
-                {hexId === "hex45" && (
+                {hexId === `${id}-hex45` && (
                   <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
               <div
-                id="hex46"
+                id={`${id}-hex46`}
                 className={style.containerPoligon}
                 onDrop={(e) => {
                   handleDrop(e);
@@ -1031,12 +1031,12 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
                 }}
               >
                 <div className={style.poligon}></div>
-                {hexId === "hex46" && (
+                {hexId === `${id}-hex46` && (
                   <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>
               <div
-                id="hex47"
+                id={`${id}-hex47`}
                 className={style.containerPoligon}
                 onDrop={(e) => {
                   handleDrop(e);
@@ -1046,7 +1046,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
                 }}
               >
                 <div className={style.poligon}></div>
-                {hexId === "hex47" && (
+                {hexId === `${id}-hex47` && (
                   <ContextMenuBuilder hexId={hexId} setHexId={setHexId} updateBoardInfo={updateBoardInfo}/>
                 )}
               </div>

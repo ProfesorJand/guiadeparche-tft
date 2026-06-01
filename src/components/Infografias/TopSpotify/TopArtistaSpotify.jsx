@@ -19,7 +19,7 @@ const TopArtistaSpotify = () => {
   const backgroundRef = useRef(null);
   const [sourceType, setSourceType] = useState("venezolanos");
   const [datos, setDatos] = useState({
-    titulo: "TOP 10 ARTISTAS VENEZOLANOS",
+    titulo: "TOP 30 ARTISTAS VENEZOLANOS",
     titulo2: "MÁS ESCUCHADOS EN SPOTIFY",
     fecha: `${dia} DE ${mes.toUpperCase()} ${año} (OYENTES MENSUALES)`,
     fechaArchivo: `${dia}-${mes}-${año}`

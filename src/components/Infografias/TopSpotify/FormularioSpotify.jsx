@@ -30,9 +30,11 @@ const FormularioSpotify = ({
 
   const cargarDatosAuto = () => {
     let sortedData = [];
+    const today = new Date();
+    const currentMonth = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-01`;
     
     if (sourceType === "globalesTop50") {
-      const allTracks = spotifyDataGlobalTop50.filter(item => item.month === "2026-05-01").map(track => {
+      const allTracks = spotifyDataGlobalTop50.filter(item => item.month === currentMonth).map(track => {
         const names = track.artists.map(a => a.name).join(" & ");
         const images = track.artists.map(a => a.artistImageHistory || a.backgroundArtistImage).filter(img => img);
         
@@ -104,7 +106,8 @@ const FormularioSpotify = ({
       // necesito que solo tome los que tengan el mes de hoy en el campo month 
       // Ordenar por listeners de mayor a menor (por artista)
       
-      sortedData = [...dataToUse.filter(item => item.month === "2026-05-01")].sort((a, b) => (b.listeners || 0) - (a.listeners || 0));
+      sortedData = [...dataToUse.filter(item => item.month === currentMonth)].sort((a, b) => (b.listeners || 0) - (a.listeners || 0));
+      console.log({sortedData})
     }
 
     // 2. Tomar los elementos según el inicio y el total permitido
@@ -195,7 +198,7 @@ const FormularioSpotify = ({
     setDatos((oldData)=>{
       return {
         ...oldData,
-        titulo: sourceType === "venezolanos" ? "TOP 10 ARTISTAS VENEZOLANOS" : (sourceType === "globalesTop50" ? "TOP 20 CANCIONES GLOBALES" : "TOP 10 ARTISTAS GLOBALES"), 
+        titulo: sourceType === "venezolanos" ? "TOP 30 ARTISTAS VENEZOLANOS" : (sourceType === "globalesTop50" ? "TOP 20 CANCIONES GLOBALES" : "TOP 10 ARTISTAS GLOBALES"), 
         titulo2: sourceType === "venezolanos" ? "MÁS ESCUCHADOS EN SPOTIFY" : (sourceType === "globalesTop50" ? "MÁS ESCUCHADAS EN SPOTIFY " : "MÁS ESCUCHADOS EN SPOTIFY")  
       }
     })
