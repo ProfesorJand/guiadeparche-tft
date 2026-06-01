@@ -101,7 +101,7 @@ const urlRecursosTFT= [
       
     </div>
     <div class="container-video">
-      <Youtube src={constantes.videoPrincipal} client:load />
+      <Youtube src={constantes.videoPrincipal} client:load transition:persist />
       <!-- <img
         src="/tft/assets/master-p.webp"
         alt=""
@@ -203,7 +203,7 @@ const urlRecursosTFT= [
         <div class="resources-body">
           {
             urlRecursosTFT.map((url, index)=>{
-              return <Youtube src={url} client:load />
+              return <Youtube src={url} client:load transition:persist={`youtube-recurso-${index}`} />
             })
           }
 
