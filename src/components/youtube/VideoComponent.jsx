@@ -22,9 +22,9 @@ export default function VideoComponent({ video }) {
             className={style.youtube_thumbnail}
           />
 
-          <h2 className={style.tituloYoutube}>
+          <p className={style.tituloYoutube}>
             {video.title}
-          </h2>
+          </p>
 
           <div className={style.youtube_play_button}></div>
         </>

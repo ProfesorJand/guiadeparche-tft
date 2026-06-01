@@ -13,6 +13,13 @@
     transition: transform 0.3s ease, border-color 0.3s ease;
 }
 
+.containerInfografia {
+    margin-bottom: 0 !important; /* Set to 0 to avoid double spacing when used with justify-content: space-around */
+    padding: 8px 8px 12px 8px; /* Increased bottom padding to prevent items from being cut off */
+    backdrop-filter: none !important; /* Disables backdrop-filter to prevent screenshot render blur bleed */
+    background: rgba(20, 16, 38, 0.92) !important; /* Slightly more opaque background to make up for lack of blur */
+}
+
 /* .container:hover {
     border-color: rgba(123, 97, 255, 0.5);
     transform: translateY(-2px);
@@ -20,6 +27,11 @@
 .cardContainer{
     display:flex;
     flex-direction: row;
+}
+.btnAdmins{
+    display:flex;
+    flex-direction: column;
+    gap:5px;
 }
 .imgBackground {
     display: none;
@@ -32,6 +44,10 @@
     align-items: left;
     width: 80%;
     
+}
+
+.leftContainerInfografia{
+    width:100%
 }
 .rightContainer{
     display:flex;
@@ -66,10 +82,32 @@
 }
 
 .tierNumber {
-    font-size: 2.2rem;
+    font-size: 1.4rem;
+    line-height: 1;
     font-weight: 800;
-    color: #ffc832;
+    padding:4px 8px;
+    text-box-trim: trim-both;
+    text-box-edge: cap alphabetic; 
+    border-radius:4px;
+    color: #ffffff;
     text-shadow: 0 0 10px rgba(255, 200, 50, 0.3);
+}
+
+ .tier-card-S {
+    background: linear-gradient(135deg, #8b000099, #3c0000cc);
+    border-color: #ff32324d;
+}
+.tier-card-A {
+    background: linear-gradient(135deg, #99730099, #503c00cc);
+    border-color: #ffc8324d;
+}
+.tier-card-B {
+    background: linear-gradient(135deg, #4b556399, #1f2937cc);
+    border-color: #9ca3af4d;
+}
+.tier-card-C {
+    background: linear-gradient(135deg, #6e3c1e99, #3c1e0acc);
+    border-color: #b464324d;
 }
 
 .numeracion {
@@ -130,11 +168,11 @@
     background-color: #e9cc74;
 }
 .dificultad-Hard{
-    background-color: #e44f4f;
+    background-color: #ee6868;
 }
 
 .infographicCategory{
-    background-color: #ff32ff;
+    background-color: #ec68ec;
     color: #000000;
     padding: 5px 8px;
     border-radius: 4px;
@@ -151,6 +189,10 @@
     width: 100%;
     gap: 12px;
     margin-bottom: 1.25%;
+}
+
+.championsContainerInfografia{
+    margin-bottom:0;
 }
 
 .championContainer {
@@ -238,7 +280,7 @@
 
 .itemImg{
     width:calc(100%/3);
-    height:100%;
+    aspect-ratio: 1; /* Explicitly set aspect ratio to 1:1 square to avoid stretching or height calculation issues */
     object-fit:cover;
     display:block;
     border-radius: 8px;

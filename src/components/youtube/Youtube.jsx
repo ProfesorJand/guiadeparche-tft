@@ -93,16 +93,13 @@ const VideoComponent = ({ src, loading = "lazy", titulo="video de Jupeson" }) =>
   // }, []);
 
   if (!video) {
-    return <div className={[style.divIframe, styleLoading.skeleton].join(" ")}>
+    return (
           <img
       src={spinner180.src}
-      width={25 * 16}
-      height={25 * 9}
       alt={"loading"}
       loading="eager"
-      className={style.youtube_thumbnail}
-    />
-    </div>;
+      className={style.loading}
+    />)
     // return <img src={spinner180v2.src} alt="loading"></img>;
   }
 

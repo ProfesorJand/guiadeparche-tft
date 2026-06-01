@@ -71,6 +71,7 @@ const ARTISTS = [
   "https://open.spotify.com/artist/7rQgfDLAHgLGCmgQAZTUN7",
   "https://open.spotify.com/artist/1Kh1ez0McTFCo8s4Z8Q8S0",
   "https://open.spotify.com/artist/0lO6av16Xf5O2O39jHdyHx",
+  "https://open.spotify.com/artist/5wb8MfrYdUEBSg71SKD0A5",
 ];
 
 
@@ -215,6 +216,15 @@ async function scrapeArtist(browser, url) {
   try {
     await page.close();
   } catch (e) {}
+
+  if (name && name.trim() === "José Luis Rodríguez") {
+    artistImage = [
+      {
+        img: "https://i.scdn.co/image/ab6761610000f178c70544f7af8dcacedbd2dc75",
+        name: "José Luis Rodríguez"
+      }
+    ];
+  }
 
   return {
     name,

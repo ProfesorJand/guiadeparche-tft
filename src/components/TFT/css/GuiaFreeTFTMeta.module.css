@@ -149,14 +149,18 @@
 
 
 .itemsCarouselContainer{
-    grid-template-columns: 6fr 1fr 6fr 1fr 6fr;
-    display: grid;
+        /* grid-template-columns: 6fr 1fr 6fr 1fr 6fr; */
+    /* display: grid; */
     grid-template-rows: max-content;
+    container-type: inline-size;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
 }
 
 .carouselItem{
   display:flex;
-  width:100%;
+  width:calc(100% / 4);
   position:relative;
 }
 
@@ -183,7 +187,7 @@
 .mayorQue{
     display: flex;
     align-items: center;
-    font-size: 4rem;
+    font-size: 20cqw;
 }
 .containerRadiantItem{
   /* display: grid;

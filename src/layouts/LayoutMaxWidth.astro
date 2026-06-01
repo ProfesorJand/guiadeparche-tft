@@ -13,7 +13,7 @@ interface Props {
   description?: string;
   keywords?: string;
   image?: string;
-  canonical?: URL;
+  canonical?: string;
   hide?:boolean;
 }
 const { title, JSONSchema, description, keywords, image, canonical, hide=false } = Astro.props;
@@ -322,6 +322,8 @@ const { title, JSONSchema, description, keywords, image, canonical, hide=false }
       background-image: radial-gradient(circle, #000000 1px, transparent 1px);
       background-size: 4px 4px;
       opacity: 1;
+      padding: 5px;
+      box-sizing: border-box;
     }
     .bodyFooter{
       display: flex;
@@ -350,13 +352,11 @@ const { title, JSONSchema, description, keywords, image, canonical, hide=false }
       display: flex;
       position: relative;
       margin:0;
-      padding: 0;
       width: 100%;
       max-width: 100%;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      padding: 0 50px;
       box-sizing: border-box;
       /* padding-bottom: var(--height-footer); */
     }
@@ -373,6 +373,8 @@ const { title, JSONSchema, description, keywords, image, canonical, hide=false }
       background-image: radial-gradient(circle, #000000 1px, transparent 1px);
       background-size: 4px 4px;
       opacity: 1;
+      padding: 0 2rem;
+      box-sizing: border-box;
     }
     .bodyInfo{
       display: flex;
@@ -390,6 +392,8 @@ const { title, JSONSchema, description, keywords, image, canonical, hide=false }
       position: relative;
       flex-direction: column;
       background-color: var(--bg-primary-solid);
+      padding:2rem;
+      box-sizing: border-box;
       /* background-color: #101525;
       background-image: radial-gradient(circle, #000000 1px, transparent 1px);
       background-size: 4px 4px;

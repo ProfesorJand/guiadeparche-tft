@@ -11,7 +11,7 @@ import DynamicCarrusel from './DynamicCarrusel';
 import ChampionsList from "@components/main/Admin/ChampionsList";
 import ItemsList from "@components/main/Admin/Items";
 
-const FormularioCrearCompoTFT = ({props}) =>{
+const FormularioCrearCompoTFT = ({compo:[]}) =>{
   const allChampionsTFT = useStore(dataTFTChampions);
   const allItemsTFT = useStore(dataTFTAllItems);
 

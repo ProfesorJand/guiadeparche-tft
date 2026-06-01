@@ -1,29 +1,33 @@
 import React, { useEffect, useState } from "react";
 import MetaComps from "./MetaComps.jsx";
 import TierListMetaComps from "@components/TFT/TierListMetaComps.jsx";
-import { versionTFT, swapVersionTFT, constantesJSON, constantesPHP } from "src/stores/dataTFT.js";
+import { versionTFT, swapVersionTFT, constantesJSON, metaCompsTFT, constantesPHP, addConstantesTFT, constantesTFT } from "src/stores/dataTFT.js";
 import { useStore } from "@nanostores/react";
 import style from "./css/EditarCompoTFT.module.css"
 import SelectVersion from "@components/versionTFT/SelectVersion.jsx";
 import { $admin } from "@stores/auth.js"
+import Youtube from "@components/youtube/Youtube.jsx";
+import CardsCompos from "@components/TFT/CardsCompos.jsx";
 const EditarCompoTFT = () => {
   const currentVersion = useStore(versionTFT);
-  const [constantes, setConstantes] = useState({});
+  //const [constantes, setConstantes] = useState({});
   const admin = useStore($admin);
-  useEffect(() => {
-    // Obtener las constantes actuales
-    const fetchConstantes = async () => {
-      try {
-        const response = await fetch(constantesJSON,{cache:"reload"});
-        const data = await response.json();
-        setConstantes(data);
-      } catch (error) {
-        console.error("Error obteniendo constantes:", error);
-      }
-    };
+  const constantes = useStore(constantesTFT)
+  const metaComps = useStore(metaCompsTFT)
+  // useEffect(() => {
+  //   // Obtener las constantes actuales
+  //   const fetchConstantes = async () => {
+  //     try {
+  //       const response = await fetch(constantesJSON,{cache:"reload"});
+  //       const data = await response.json();
+  //       setConstantes(data);
+  //     } catch (error) {
+  //       console.error("Error obteniendo constantes:", error);
+  //     }
+  //   };
 
-    fetchConstantes();
-  }, []);
+  //   fetchConstantes();
+  // }, []);
 
   const actualizarConstantes = async (inputId) => {
     const element = document.getElementById(inputId);
@@ -68,6 +72,16 @@ const EditarCompoTFT = () => {
             onClick={() => actualizarConstantes("inputMetaCompVersion")}
             />
         </label>
+        <label className={style.containerConstanteUpdate}>
+          <span>Video Principal en TFT Meta Comps:</span>
+          <Youtube src={constantes?.videoPrincipal} client:only="react"/>
+          <input id="videoPrincipal" type="text" placeholder="https://www.youtube.com/watch?v=..." />
+          <input
+            type="button"
+            value="Update"
+            onClick={() => addConstantesTFT({key:"videoPrincipal", value:document.getElementById("videoPrincipal").value})}
+            />
+        </label>
 
         <label className={style.containerConstanteUpdate}>
           
@@ -94,6 +108,21 @@ const EditarCompoTFT = () => {
           onClick={() => actualizarConstantes("inputUltimaVersionPBE", "ultimaVersionPBE")}
         />
       </label> */}
+
+      {
+        metaComps.length > 0 && metaComps.map((comp, index)=>{
+          return (
+            <CardsCompos 
+            comp={comp}
+            numeracion={index + 1}
+            isActive={false}
+            edit={true}
+            client:load
+          />
+          
+        )
+        })
+      }
 
       <MetaComps showHide={true} admin={admin} />
     </>

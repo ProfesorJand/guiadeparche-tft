@@ -2,6 +2,13 @@
 import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
 import VideoComponent from "@components/youtube/VideoComponent.jsx";
 import CardsCompos from "@components/TFT/CardsCompos";
+import {  setNumberPBE, constantesTFT, dataTFTLastUpdate, urlDragon} from "@stores/dataTFT";
+import { crearJSONSchema } from "src/json/schema/crearJSONSchema";
+import Youtube from "@components/youtube/Youtube.jsx";
+
+const constantes = constantesTFT.get();
+const lastUpdateComps = dataTFTLastUpdate.get();
+
 interface Props {
   titleMain?: string;
   titleHighlight?: string;
@@ -14,10 +21,10 @@ interface Props {
 }
 
 const {
-  titleMain = "TFT META COMPS",
-  titleHighlight = "TIER LIST - PATCH 17.3",
-  description = "Las mejores composiciones del Set 17 actualizadas para el parche 17.3. Aprende cuándo jugarlas, como posicionar y qué objetos usar para subir de elo más rápido en Teamfight Tactics.",
-  lastUpdate = "14 de Julio de 2026 - Parche 17.3",
+  titleMain = "TFT Comps: ",
+  titleHighlight = `Mejores Composiciones del Set ${setNumberPBE} (Patch ${constantes.MetaCompVersionPBE})`,
+  description = `Descubre las mejores TFT comps y composiciones TFT del Set ${setNumberPBE} actualizadas para el parche ${constantes.MetaCompVersionPBE}. Aquí encontrarás builds, objetos BIS, aumentos y estrategias para jugar las comps más fuertes del meta de Teamfight Tactics y subir elo más rápido.`,
+  lastUpdate = lastUpdateComps || null,
   video,
   top10Comps,
   restComps = [],
@@ -42,55 +49,64 @@ const tiersInfo = [
   },
   {
     tier: "C",
-    title: "Situacionales",
+    title: "Viables",
     text: "Composiciones situacionales o que requieren una ejecución más precisa. ",
   },
 ];
+
+const keywords =
+  "TFT Meta, Meta comps, comps TFT, comp TFT, Meta TFT, composiciones TFT, build TFT, tft comps, compos tft";
+
+
+const baseSchema = JSON.parse(
+  crearJSONSchema({title: titleMain + " " + titleHighlight, description:description})
+)
+const JSONSchema = JSON.stringify(baseSchema);
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
+const urlRecursosTFT= [
+  "https://youtu.be/hsU_1u38dOY",
+  "https://youtu.be/EXZ6NdN9pVA",
+  "https://youtu.be/PEuWSN1sD48",
+  "https://youtu.be/12ejp2WlnZw",
+  "https://youtu.be/sEG8PLrgO20",
+  "https://youtu.be/qoV9hH9s9RI",
+  //"https://youtu.be/nD-1exiSgnE"
+]
 ---
 
-<LayoutMaxWidth>
-  <div class="two-columns">
+<LayoutMaxWidth 
+  title={`${titleMain} ${titleHighlight}`}
+  description={description}
+  keywords={keywords}
+  JSONSchema={JSONSchema}
+  canonical={canonicalURL}
+  >
+  <div class="two-columns header-section">
     <div id="container-info">
       <h1>
         {titleMain}<br /><span class="colored-text">{titleHighlight}</span>
       </h1>
       <p>{description}</p>
-      <ul role="list" class="list-none">
-        <li>📅 Actualizado cada parche</li>
-        <li>🎯 Probado en High Elo</li>
-        <li>🗺️ Guías detalladas</li>
-      </ul>
       <div class="two-columns space-between">
-        <a class="btn-primary" href="#tier-list"
-          >✔ DESCARGAR CHEATSHEET GRATIS</a
-        >
-        <a
-          class="btn-secondary"
-          href={`https://www.youtube.com/watch?v=${video.id}`}
-          >✔ VER GUÍA DEL PARCHE 17.3</a
-        >
-      </div>
-      <div class="two-columns space-between">
-        <div class="info">
-          <p>Última actualización: {lastUpdate}</p>
-        </div>
         <div class="info">
           <p>
-              Actualizado por <a
+              Última actualización: {lastUpdate} 
+              <!-- por
+              <a
                 href="https://www.twitch.tv/jupeson"
-                target="_blank">Jupeson</a
-              >, High Elo Player & Streamer
+                target="_blank">Jupeson</a> y Xpirit -->
             </p>
         </div>
       </div>
-      <img
+      
+    </div>
+    <div class="container-video">
+      <Youtube src={constantes.videoPrincipal} client:load />
+      <!-- <img
         src="/tft/assets/master-p.webp"
         alt=""
         style={{ display: "flex", width: "100%" }}
-      />
-    </div>
-    <div>
-      <VideoComponent video={video} client:load />
+      /> -->
     </div>
   </div>
   <!-- <img src="/tft/assets/master-p.webp" alt="" style={{display:"flex", width:"100%"}}/> -->
@@ -99,18 +115,44 @@ const tiersInfo = [
 
   <div class="three-columns">
     <div class="left-side">
+      <h2>Tiers List</h2>
       {
         tiersInfo.map((tier, index) => (
-          <div key={index} class={`tier-info tier-card-${tier.tier}`}>
+          <div class={`tier-info tier-card-${tier.tier}`}>
             <h3 class="tier-header">
+              
+              <div class="container-tier-text">
               <span class={`tier-number tier-number-${tier.tier}`}>
                 {tier.tier}
               </span>
               <span class={`tier-title tier-title-${tier.tier}`}>
                 {tier.title}
               </span>
+              </div>
+              {
+                [...top10Comps, ...restComps].length &&
+                <div class="container-champs-tier">
+                {[...top10Comps, ...restComps].filter((comp)=>comp.tier === tier.tier).map((comp,index)=>{
+                  const isActive = String(comp.id) === String(activeId);
+                  return (
+                    <div class="champ-tier" data-comp-id={comp.id} data-is-active={isActive ? "true" : "false"} data-cost={comp.campeonTierList.cost}>
+                      <img class="champ-tier-img" src={`${urlDragon()}${comp.campeonTierList.squareIcon.toLowerCase().replace(".tex",".png")}`} alt={comp.campeonTierList.name} />
+                      <div class="champ-tier-items">
+                        {
+                          comp.champItem.map((item, index)=>{
+                            return (
+                              <img class="champ-tier-item-img" src={`${urlDragon()}${item?.icon.toLowerCase().replace(".tex",".png")}`} alt={item?.name} />
+                            );
+                          })
+                        }
+                      </div>
+                    </div>
+                  );
+                })}
+                </div>
+              }
             </h3>
-            <p class={`tier-text`}>{tier.text}</p>
+            {/* <p class={`tier-text`}>{tier.text}</p> */}
           </div>
         ))
       }
@@ -118,17 +160,18 @@ const tiersInfo = [
 
     <div class="middle-side">
       <!-- Aquí es donde se inyectará el componente de detalles si estamos en la vista de detalle -->
-      <h2>Meta Comps</h2>
+      <h2>Mejores TFT Comps del Meta Actual</h2>
+      <p>Las compos están ordenadas por fuerza dentro del meta actual, desde las mejores opciones para subir elo hasta alternativas viables según tu spot.</p>
       {
         top10Comps.map((comp, index) => (
-          <div key={index} class={`comp-card`}>
+          <article class={`comp-card`}>
             <CardsCompos
               comp={comp}
               numeracion={index + 1}
               isActive={String(comp.id) === String(activeId)}
               client:load
             />
-          </div>
+          </article>
         ))
       }
       <button id="ver-mas-button" data-expanded="false">Ver todas las composiciones</button>
@@ -137,7 +180,6 @@ const tiersInfo = [
           const isCurrentActive = String(comp.id) === String(activeId);
           return (
             <div 
-              key={index} 
               class={`comp-card rest-comp-card ${isCurrentActive ? '' : 'hidden-comp'}`}
               data-active={isCurrentActive ? "true" : "false"}
             >
@@ -154,16 +196,19 @@ const tiersInfo = [
     </div>
 
     <div class="right-side">
-      <!-- <div id="resources">
+      <div id="resources">
         <div class="resources-header">
           <h2 id="resource-title">Recursos TFT</h2>
         </div>
         <div class="resources-body">
-          <span id=""></span>
-          <p id="resource-text"></p>
-          <span id=""></span>
+          {
+            urlRecursosTFT.map((url, index)=>{
+              return <Youtube src={url} client:load />
+            })
+          }
+
         </div>
-      </div> -->
+      </div>
     </div>
   </div>
 </LayoutMaxWidth>
@@ -196,19 +241,47 @@ const tiersInfo = [
         }
       });
     }
+
+    // Manejar click en los campeones de la lista de tiers
+    const champTiers = document.querySelectorAll(".champ-tier");
+    champTiers.forEach(element => {
+      element.addEventListener("click", (e) => {
+        e.preventDefault();
+        
+        // Guardar posición de scroll actual
+        sessionStorage.setItem("tft-scroll-position", window.scrollY.toString());
+        
+        const compId = element.getAttribute("data-comp-id");
+        const isActive = element.getAttribute("data-is-active") === "true";
+        
+        const targetUrl = isActive
+          ? "/tft/nueva-pagina"
+          : `/tft/nueva-pagina/${compId}`;
+          
+        import("astro:transitions/client").then(({ navigate }) => {
+          navigate(targetUrl, { scroll: false });
+        });
+      });
+    });
   });
 </script>
 
 <style>
+  .header-section{
+    width:calc(100% * 4 / 6);
+    align-self: center;
+  }
   #container-info {
     display: flex;
     position: relative;
     flex-direction: column;
-    padding: 0 2rem;
+    width: 60%;
+    justify-content: space-between;
     & h1 {
       text-align: left;
       text-decoration: none;
       margin-block-end: 0px;
+      margin-block-start: 0px;
       font-size: 3.5rem;
     }
     & p {
@@ -222,15 +295,24 @@ const tiersInfo = [
       font-weight: 600;
     }
   }
+  .container-video{
+    display:flex;
+    width:40%;
+    flex-direction:column;
+    gap:12px;
+    justify-content: center;
+    align-items: center;
+  }
   .colored-text {
     color: var(--bg-purple-secondary);
   }
   .two-columns {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    display: flex;
+    flex-direction: row;
     gap: 2rem;
     justify-content: center;
     margin-bottom: 1rem;
+    
   }
   .btn-primary {
     color: var(--color-white);
@@ -302,18 +384,81 @@ const tiersInfo = [
     margin-bottom: 1rem;
   }
 
-  @media only screen and (max-width: 900px) {
-    .three-columns {
-      grid-template-columns: none;
-      display: flex;
-      flex-direction: column;
-    }
-    .two-columns {
-      grid-template-columns: none;
-      display: flex;
-      flex-direction: column;
-    }
+  .resources-body{
+    display:flex;
+    flex-direction:column;
+    gap:20px;
   }
+  .container-tier-text{
+    display:flex;
+    flex-direction: row;
+    gap:10px;
+    align-items: center;
+  }
+  .container-champs-tier{
+    display:flex;
+    flex-direction: row;
+    gap:10px;
+    flex-wrap: wrap;
+  }
+  .champ-tier{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    width:calc(100% / 6 - (10px * 5 / 6));
+    transform: scale(0.95)
+  }
+  .champ-tier:hover {
+    transform: scale(1);
+  }
+  .champ-tier:active {
+    transform: scale(1);
+  }
+  .champ-tier[data-is-active="true"] {
+    transform: scale(1);
+  }
+  .champ-tier-img{
+    width:100%;
+    border: 2px solid var(--bg-purple-hover-primary);
+    border-radius: 0.5rem;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+  
+  /* Bordes y Glows personalizados basados en el coste del campeón */
+  .champ-tier[data-cost="1"] .champ-tier-img { border-color: var(--color-hex-cost-1, grey); }
+  .champ-tier[data-cost="2"] .champ-tier-img { border-color: var(--color-hex-cost-2, green); }
+  .champ-tier[data-cost="3"] .champ-tier-img { border-color: var(--color-hex-cost-3, aqua); }
+  .champ-tier[data-cost="4"] .champ-tier-img { border-color: var(--color-hex-cost-4, purple); }
+  .champ-tier[data-cost="5"] .champ-tier-img { border-color: var(--color-hex-cost-5, gold); }
+
+  /* Glows al pasar el mouse por encima */
+  .champ-tier[data-cost="1"]:hover .champ-tier-img { box-shadow: 0 0 12px rgba(128, 128, 128, 0.6); }
+  .champ-tier[data-cost="2"]:hover .champ-tier-img { box-shadow: 0 0 12px rgba(34, 197, 94, 0.6); }
+  .champ-tier[data-cost="3"]:hover .champ-tier-img { box-shadow: 0 0 12px rgba(0, 255, 255, 0.6); }
+  .champ-tier[data-cost="4"]:hover .champ-tier-img { box-shadow: 0 0 12px rgba(168, 85, 247, 0.6); }
+  .champ-tier[data-cost="5"]:hover .champ-tier-img { box-shadow: 0 0 12px rgba(234, 179, 8, 0.6); }
+
+  /* Glows permanentes cuando la composición está seleccionada/activa */
+  .champ-tier[data-is-active="true"][data-cost="1"] .champ-tier-img { box-shadow: 0 0 18px rgba(128, 128, 128, 0.9), 0 0 5px rgba(128, 128, 128, 0.5); }
+  .champ-tier[data-is-active="true"][data-cost="2"] .champ-tier-img { box-shadow: 0 0 18px rgba(34, 197, 94, 0.9), 0 0 5px rgba(34, 197, 94, 0.5); }
+  .champ-tier[data-is-active="true"][data-cost="3"] .champ-tier-img { box-shadow: 0 0 18px rgba(0, 255, 255, 0.9), 0 0 5px rgba(0, 255, 255, 0.5); }
+  .champ-tier[data-is-active="true"][data-cost="4"] .champ-tier-img { box-shadow: 0 0 18px rgba(168, 85, 247, 0.9), 0 0 5px rgba(168, 85, 247, 0.5); }
+  .champ-tier[data-is-active="true"][data-cost="5"] .champ-tier-img { box-shadow: 0 0 18px rgba(234, 179, 8, 0.9), 0 0 5px rgba(234, 179, 8, 0.5); }
+  .champ-tier-items{
+    display:flex;
+    flex-direction: row;
+    /* gap:10px; */
+    /* flex-wrap: wrap; */
+  }
+  .champ-tier-item-img{
+    width:calc(100% / 3);
+    border-radius: 0.5rem;
+  }
+
+
 
   .left-side {
     display: flex;
@@ -326,6 +471,8 @@ const tiersInfo = [
       justify-content: flex-start;
       padding: 15px;
       box-sizing: border-box;
+      border-radius: 0.5rem;
+      
     }
     .tier-header {
       display: flex;
@@ -390,5 +537,35 @@ const tiersInfo = [
   }
   .hidden-comp {
     display: none !important;
+  }
+  @media only screen and (max-width: 900px) {
+    #container-info{
+      width:100%;
+      & h1{
+        font-size:1.5rem;
+      }
+    }
+    .header-section{
+      width:100%;
+    }
+
+    .container-video{
+      width:100%
+    }
+
+    .left-side{
+      order: 2
+    }
+
+    .three-columns {
+      grid-template-columns: none;
+      display: flex;
+      flex-direction: column;
+    }
+    .two-columns {
+      grid-template-columns: none;
+      display: flex;
+      flex-direction: column;
+    }
   }
 </style>
