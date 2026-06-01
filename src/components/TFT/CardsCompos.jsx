@@ -58,7 +58,6 @@ const infographicCategoriesEspañol = {
             ? headerHtml[0].clientHeight
             : 80;
 
-        console.log({headerHeight})
         const elementPosition =
           containerRef.current.getBoundingClientRect().top
           + window.scrollY;
