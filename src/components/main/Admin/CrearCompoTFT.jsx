@@ -225,6 +225,31 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         setBoardInfo(editboardInfo)
         setPictureSave(editpictureSave)
         setCarouselItems(editcarouselItems)
+        if (editcarouselItems) {
+          const basicItemsCombine = {};
+          const orderedBaseItems = [
+            'TFT_Item_BFSword',
+            'TFT_Item_RecurveBow',
+            'TFT_Item_NeedlesslyLargeRod',
+            'TFT_Item_TearOfTheGoddess',
+            'TFT_Item_ChainVest',
+            'TFT_Item_NegatronCloak',
+            'TFT_Item_GiantsBelt',
+            'TFT_Item_SparringGloves',
+            'TFT_Item_Spatula',
+            'TFT_Item_FryingPan'
+          ];
+          ["BasicItem1", "BasicItem2", "BasicItem3"].forEach((key) => {
+            const item = editcarouselItems[key];
+            if (item && item.apiName) {
+              const idx = orderedBaseItems.indexOf(item.apiName);
+              if (idx !== -1) {
+                basicItemsCombine[key] = idx;
+              }
+            }
+          });
+          setCarouselBasicItems(basicItemsCombine);
+        }
         setRadiantsItems(editradiantItem)
         setSpatulaItem1(editspatulaItem1)
         setSpatulaItem2(editspatulaItem2)
@@ -512,7 +537,20 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         return apiName === value
       })
       console.log({dataVEEEEER:data})
-      setCarouselItems((oldObject)=>{ return {...oldObject, [item]:data }})
+      
+      // Clear the corresponding Complete Item from state and DOM
+      const completeItemKey = item.replace("Basic", "Complete");
+      setCarouselItems((oldObject)=>{ 
+        const newObject = {...oldObject};
+        delete newObject[completeItemKey];
+        return {...newObject, [item]:data };
+      })
+
+      const slotNumber = item.split("Item")[1];
+      const completeInput = document.getElementById(`Carousel_Complete_Item${slotNumber}`);
+      if (completeInput) {
+        completeInput.value = "";
+      }
     }
 
     function handlerRadiantItem(value, item){
