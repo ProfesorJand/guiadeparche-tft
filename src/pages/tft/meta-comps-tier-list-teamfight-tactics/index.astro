@@ -1,0 +1,11 @@
+---
+import MetaCompsLayout from "@components/TFT/MetaCompsLayout.astro";
+import {
+  fetchAndSortComps,
+  composMetaPBEJSON
+} from "@stores/dataTFT";
+const todasLasCompsPBE = await fetchAndSortComps(composMetaPBEJSON);
+const top10Comps = [...todasLasCompsPBE.slice(0, 10)];
+const restComps = [...todasLasCompsPBE.slice(10)];
+---
+<MetaCompsLayout top10Comps={top10Comps} restComps={restComps} />

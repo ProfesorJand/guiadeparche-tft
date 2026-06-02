@@ -115,7 +115,7 @@ const urlRecursosTFT= [
 
   <div class="three-columns">
     <div class="left-side">
-      <h2>Tiers List</h2>
+      <h2>Tier List</h2>
       {
         tiersInfo.map((tier, index) => (
           <div class={`tier-info tier-card-${tier.tier}`}>
@@ -133,9 +133,9 @@ const urlRecursosTFT= [
                 [...top10Comps, ...restComps].length &&
                 <div class="container-champs-tier">
                 {[...top10Comps, ...restComps].filter((comp)=>comp.tier === tier.tier).map((comp,index)=>{
-                  const isActive = String(comp.id) === String(activeId);
+                  const isActive = String(comp.compUrl) === String(activeId);
                   return (
-                    <div class="champ-tier" data-comp-id={comp.id} data-is-active={isActive ? "true" : "false"} data-cost={comp.campeonTierList.cost}>
+                    <div class="champ-tier" data-comp-id={comp.compUrl} data-is-active={isActive ? "true" : "false"} data-cost={comp.campeonTierList.cost}>
                       <img class="champ-tier-img" src={`${urlDragon()}${comp.campeonTierList.squareIcon.toLowerCase().replace(".tex",".png")}`} alt={comp.campeonTierList.name} />
                       <div class="champ-tier-items">
                         {
@@ -168,7 +168,7 @@ const urlRecursosTFT= [
             <CardsCompos
               comp={comp}
               numeracion={index + 1}
-              isActive={String(comp.id) === String(activeId)}
+              isActive={String(comp.compUrl) === String(activeId)}
               client:load
             />
           </article>
@@ -177,7 +177,7 @@ const urlRecursosTFT= [
       <button id="ver-mas-button" data-expanded="false">Ver todas las composiciones</button>
       {
         restComps && restComps.map((comp, index) => {
-          const isCurrentActive = String(comp.id) === String(activeId);
+          const isCurrentActive = String(comp.compUrl) === String(activeId);
           return (
             <div 
               class={`comp-card rest-comp-card ${isCurrentActive ? '' : 'hidden-comp'}`}
@@ -216,28 +216,48 @@ const urlRecursosTFT= [
 <script>
   document.addEventListener("astro:page-load", () => {
     const verMasButton = document.getElementById("ver-mas-button");
+    const restCards = document.querySelectorAll(".rest-comp-card");
+
+    const expandComps = () => {
+      restCards.forEach(card => {
+        card.classList.remove("hidden-comp");
+      });
+      if (verMasButton) {
+        verMasButton.textContent = "Ver menos composiciones";
+        verMasButton.setAttribute("data-expanded", "true");
+      }
+    };
+
+    const collapseComps = () => {
+      restCards.forEach(card => {
+        const isActive = card.getAttribute("data-active") === "true";
+        if (!isActive) {
+          card.classList.add("hidden-comp");
+        }
+      });
+      if (verMasButton) {
+        verMasButton.textContent = "Ver todas las composiciones";
+        verMasButton.setAttribute("data-expanded", "false");
+      }
+    };
+
+    // Restaurar estado al cargar la página
+    const savedExpanded = localStorage.getItem("tft-comps-expanded") === "true";
+    if (savedExpanded) {
+      expandComps();
+    } else {
+      collapseComps();
+    }
+
     if (verMasButton) {
       verMasButton.addEventListener("click", () => {
-        const restCards = document.querySelectorAll(".rest-comp-card");
         const isExpanded = verMasButton.getAttribute("data-expanded") === "true";
-        
         if (!isExpanded) {
-          // Mostrar todas las composiciones ocultas
-          restCards.forEach(card => {
-            card.classList.remove("hidden-comp");
-          });
-          verMasButton.textContent = "Ver menos composiciones";
-          verMasButton.setAttribute("data-expanded", "true");
+          expandComps();
+          localStorage.setItem("tft-comps-expanded", "true");
         } else {
-          // Ocultar todas las que no estén marcadas como activas
-          restCards.forEach(card => {
-            const isActive = card.getAttribute("data-active") === "true";
-            if (!isActive) {
-              card.classList.add("hidden-comp");
-            }
-          });
-          verMasButton.textContent = "Ver todas las composiciones";
-          verMasButton.setAttribute("data-expanded", "false");
+          collapseComps();
+          localStorage.setItem("tft-comps-expanded", "false");
         }
       });
     }
@@ -257,8 +277,8 @@ const urlRecursosTFT= [
         }
         
         const targetUrl = isActive
-          ? "/tft/nueva-pagina"
-          : `/tft/nueva-pagina/${compUrlId}`;
+          ? "/tft/meta-comps-tier-list-teamfight-tactics"
+          : `/tft/meta-comps-tier-list-teamfight-tactics/${compUrlId}`;
           
         import("astro:transitions/client").then(({ navigate }) => {
           navigate(targetUrl, { scroll: false });
@@ -423,7 +443,7 @@ const urlRecursosTFT= [
     justify-content: center;
     cursor: pointer;
     transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    width:calc(100% / 6 - (10px * 5 / 6));
+    width:calc(100% / 3 - (10px * 2 / 3));
     transform: scale(0.95)
   }
   .champ-tier:hover {
