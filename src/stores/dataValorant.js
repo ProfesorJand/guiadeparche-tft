@@ -1,4 +1,5 @@
 import { deepMap, atom, task } from "nanostores";
+import { cachedFetch } from "../utils/cachedFetch.js";
 
 const iniAgentsByMapMeta = {}
 
@@ -9,7 +10,7 @@ export const fetchAgentsMeta = async ()=>{
   try{
     const token = import.meta.env.PUBLIC_TOKEN_META;
     const url = "https://api.guiadeparche.com/val/AgentsMeta.json";
-    const response = await fetch(url,{
+    const response = await cachedFetch(url,{
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -20,7 +21,7 @@ export const fetchAgentsMeta = async ()=>{
     ValorantAgentsMeta.set(data);
     return data;
   }catch(err){
-    console.error("Error fetching champions meta data:", err);
+    console.error("Error fetching Valorant agents meta data:", err);
     throw err;
   }
 }
@@ -31,7 +32,7 @@ export const fetchConstantesValorant = async ()=>{
       try{
         const token = import.meta.env.PUBLIC_TOKEN_META;
         const url = "https://api.guiadeparche.com/val/constantes.json";
-        const response = await fetch(url,{
+        const response = await cachedFetch(url,{
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -42,7 +43,7 @@ export const fetchConstantesValorant = async ()=>{
         ValorantConstantes.set(data);
         return data;
       }catch(err){
-        console.error("Error fetching champions meta data:", err);
+        console.error("Error fetching Valorant constantes:", err);
         throw err;
       }
     }

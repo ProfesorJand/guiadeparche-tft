@@ -1,4 +1,5 @@
 import {deepMap, atom, task} from "nanostores";
+import { cachedFetch } from "../utils/cachedFetch.js";
 
 const initialLanersChampionsMeta = {
   Top: [],
@@ -42,53 +43,68 @@ export const urlPositionLaners = (laner) =>{
   return fullUrl[laner] || `${url}position-top.svg`;
 }
 export const fetchChampions = async () => {
-  const response = await fetch(urlChampionsData);
-  const data = await response.json();
-  const champions = Object.keys(data.data).map((key) => {
-    return {
-      id: data.data[key].key,
-      name: data.data[key].name,
-      title: data.data[key].title,
-      imagePortrait: championImgUrlPortrait(data.data[key].id),
-      imageSquare: championImgUrlSquare(data.data[key].id),
-    };
+  try {
+    const response = await cachedFetch(urlChampionsData);
+    const data = await response.json();
+    const champions = Object.keys(data.data).map((key) => {
+      return {
+        id: data.data[key].key,
+        name: data.data[key].name,
+        title: data.data[key].title,
+        imagePortrait: championImgUrlPortrait(data.data[key].id),
+        imageSquare: championImgUrlSquare(data.data[key].id),
+      };
+    }
+    );
+    return champions;
+  } catch (e) {
+    console.error("Error fetching champions from DDragon:", e);
+    throw e;
   }
-  );
-  return champions;
 }
 export const fetchItems = async () => {
-  const response = await fetch(urlItemsData);
-  const data = await response.json();
-  const items = Object.keys(data.data).map((key) => {
-    return {
-      id: key,
-      name: data.data[key].name,
-      description: data.data[key].description,
-      image: itemImgUrl(data.data[key].image.full),
-    };
+  try {
+    const response = await cachedFetch(urlItemsData);
+    const data = await response.json();
+    const items = Object.keys(data.data).map((key) => {
+      return {
+        id: key,
+        name: data.data[key].name,
+        description: data.data[key].description,
+        image: itemImgUrl(data.data[key].image.full),
+      };
+    }
+    );
+    return items;
+  } catch (e) {
+    console.error("Error fetching items from DDragon:", e);
+    throw e;
   }
-  );
-  return items;
 }
 export const fetchRunes = async () => {
-  const response = await fetch(urlRunesData);
-  const data = await response.json();
-  const runes = data.map((rune) => {
-    return {
-      id: rune.id,
-      name: rune.name,
-      description: rune.description,
-      icon: runeImgUrl(rune.icon.toLowerCase()),
-    };
-  });
-  return runes;
+  try {
+    const response = await cachedFetch(urlRunesData);
+    const data = await response.json();
+    const runes = data.map((rune) => {
+      return {
+        id: rune.id,
+        name: rune.name,
+        description: rune.description,
+        icon: runeImgUrl(rune.icon.toLowerCase()),
+      };
+    });
+    return runes;
+  } catch (e) {
+    console.error("Error fetching runes from DDragon:", e);
+    throw e;
+  }
 }
 
 export const fetchChampionsMeta = async () => {
   try {
     const token = import.meta.env.PUBLIC_TOKEN_META;
     const url = "https://api.guiadeparche.com/lol/ChampsMeta.json";
-    const response = await fetch(url,{
+    const response = await cachedFetch(url,{
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -105,17 +121,19 @@ export const fetchChampionsMeta = async () => {
 }
 
 export const fetchMeta = task(async () => {
-  const champions = await fetchChampions();
-  const items = await fetchItems();
-  const runes = await fetchRunes();
-  await fetchChampionsMeta();
+  try {
+    const champions = await fetchChampions();
+    const items = await fetchItems();
+    const runes = await fetchRunes();
+    await fetchChampionsMeta();
 
-
-  lolChampions.set(champions);
-  lolItems.set(items);
-  lolRunes.set(runes);
-  
-
+    lolChampions.set(champions || []);
+    lolItems.set(items || []);
+    lolRunes.set(runes || []);
+  } catch (e) {
+    console.error("Error fetching LoL meta data:", e);
+    throw e;
+  }
   return;
 });
 
@@ -125,7 +143,7 @@ export const fetchConstantesLOL = async ()=>{
       try{
         const token = import.meta.env.PUBLIC_TOKEN_META;
         const url = "https://api.guiadeparche.com/lol/constantes.json";
-        const response = await fetch(url,{
+        const response = await cachedFetch(url,{
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -133,12 +151,10 @@ export const fetchConstantesLOL = async ()=>{
           }
         });
         const data = await response.json();
-        // console.log("data constantes lOl")
-        // console.log({data})
         LeagueOfLegendsConstantes.set(data);
         return data;
       }catch(err){
-        console.error("Error fetching champions meta data:", err);
+        console.error("Error fetching LoL constantes:", err);
         throw err;
       }
     }
