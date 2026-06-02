@@ -66,6 +66,85 @@ export const constantesTFT = atom({});
 export const dataTFTLastUpdate = atom(null);
 export const metaCompsTFT = atom(null);
 
+export const checkIfCompUrlAlreadyExist = async ({url, titulo})=>{
+  const compUrl = metaCompsTFT.get().filter((comp) => (comp.compUrl === url && comp.titulo !== titulo));
+  console.log({compUrl})
+  if(compUrl.length > 0){
+    let mensaje = "";
+    compUrl.forEach((comp) => {
+      mensaje += "ya existe la url: "+url+" en la compo de: "+comp.titulo+" \n";
+    })
+    if(confirm(mensaje+"¿Deseas reemplazarla?")){
+      for (const comp of compUrl) {
+        let validUrl = false;
+        let cleanNewUrl = "";
+        while (!validUrl) {
+          const newUrl = prompt(`Introduce la nueva URL para la composición "${comp.titulo}":`, comp.compUrl);
+          if (!newUrl) {
+            alert("Operación cancelada. No se modificó la composición existente.");
+            return false;
+          }
+          
+          cleanNewUrl = newUrl.trim().replace(/ /g, "-");
+          if (cleanNewUrl === url) {
+            alert("La nueva URL no puede ser idéntica a la que intentas reemplazar.");
+            continue;
+          }
+          
+          const otherCompConflict = metaCompsTFT.get().find((otherComp) => otherComp.compUrl === cleanNewUrl && otherComp.id !== comp.id);
+          if (otherCompConflict) {
+            alert(`La URL "${cleanNewUrl}" ya está en uso por la composición "${otherCompConflict.titulo}". Por favor, introduce una URL diferente.`);
+            continue;
+          }
+          
+          validUrl = true;
+        }
+        
+        const updatedComp = { ...comp, compUrl: cleanNewUrl };
+        const token = import.meta.env.PUBLIC_TOKEN_META;
+        
+        try {
+          const response = await fetch(crearCompoMetaPHP, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(updatedComp),
+          });
+          const data = await response.json();
+          if (data.status === 'success') {
+            alert(`La composición "${comp.titulo}" ha sido actualizada con la nueva URL: ${cleanNewUrl}`);
+          } else {
+            alert(`Error al guardar la composición "${comp.titulo}": ${data.message}`);
+            return false;
+          }
+        } catch (error) {
+          console.error('Error al guardar compo reemplazada:', error);
+          alert(`Error de red al guardar la composición "${comp.titulo}".`);
+          return false;
+        }
+      }
+      
+      // Recargar datos para refrescar la interfaz de usuario
+      try {
+        const { loadCompsMeta } = await import("src/stores/menuFiltradoAdmin.js");
+        await loadCompsMeta();
+      } catch (err) {
+        console.error("Error al recargar menuFiltradoAdmin:", err);
+      }
+      await fetchAndSortComps(versionTFT.get() === "pbe" ? composMetaPBEJSON : composMetaJSON);
+      
+      return true;
+    }else{
+      return false
+    }
+  }else{
+    alert(`la url: ${url} esta disponible`)
+    return false
+  }
+}
+
 export const urlDragon = () => {
   return `https://raw.communitydragon.org/${versionTFT.get()}/game/`
 }
