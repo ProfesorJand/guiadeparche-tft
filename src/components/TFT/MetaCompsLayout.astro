@@ -248,21 +248,36 @@ const urlRecursosTFT= [
       element.addEventListener("click", (e) => {
         e.preventDefault();
         
-        // Guardar posición de scroll actual
-        sessionStorage.setItem("tft-scroll-position", window.scrollY.toString());
-        
-        const compId = element.getAttribute("data-comp-id");
+        const compUrlId = element.getAttribute("data-comp-id");
         const isActive = element.getAttribute("data-is-active") === "true";
+        
+        // Solo guardar posición de scroll si se va a abrir (para no sobreescribir al cerrar)
+        if (!isActive) {
+          sessionStorage.setItem("tft-scroll-position", window.scrollY.toString());
+        }
         
         const targetUrl = isActive
           ? "/tft/nueva-pagina"
-          : `/tft/nueva-pagina/${compId}`;
+          : `/tft/nueva-pagina/${compUrlId}`;
           
         import("astro:transitions/client").then(({ navigate }) => {
           navigate(targetUrl, { scroll: false });
         });
       });
     });
+
+    // Restaurar posición de scroll al volver a la página principal
+    const segments = window.location.pathname.split("/").filter(Boolean);
+    const isMainPage = segments.length <= 2; // e.g. /tft/nueva-pagina
+    
+    if (isMainPage) {
+      const savedPosition = sessionStorage.getItem("tft-scroll-position");
+      if (savedPosition) {
+        setTimeout(() => {
+          window.scrollTo(0, parseInt(savedPosition));
+        }, 50);
+      }
+    }
   });
 </script>
 

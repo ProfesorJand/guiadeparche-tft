@@ -66,7 +66,7 @@ const infographicCategoriesEspañol = {
           top: elementPosition - headerHeight - 15,
           behavior: "smooth"
         });
-      }, 500);
+      }, 850);
     };
 
     restoreAndAdjust();
@@ -75,11 +75,13 @@ const infographicCategoriesEspañol = {
   const handleToggle = async (e) => {
   e.preventDefault();
 
-  saveScrollPosition();
+  if (!isActive) {
+    saveScrollPosition();
+  }
 
   const targetUrl = isActive
     ? "/tft/nueva-pagina"
-    : `/tft/nueva-pagina/${comp.id}`;
+    : `/tft/nueva-pagina/${comp.compUrl}`;
 
   await navigate(targetUrl, {
     scroll: false
@@ -224,7 +226,7 @@ const deleteComp = ({id, tier, version})=>{
             ):(
 
             <a
-              href={edit && isActive ? "/tft/nueva-pagina" : `/tft/nueva-pagina/${comp.id}`}
+              href={edit && isActive ? "/tft/nueva-pagina" : `/tft/nueva-pagina/${comp.compUrl}`}
               className={style.buttonLink}
               onClick={handleToggle}
             >
@@ -270,6 +272,7 @@ const deleteComp = ({id, tier, version})=>{
           editTipSeo={comp.tipSeo}
           editCuandoJugar={comp.cuandoJugar}
           editCondicionVictoria={comp.condicionVictoria}
+          editCompUrl={comp.compUrl}
         />}
 
     </div>

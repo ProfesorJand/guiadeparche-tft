@@ -12,13 +12,24 @@ import CarouselItems from "./CarouselItems.jsx";
 import RadiantsItems from "./RadiantsItems.jsx";
 import {  getDataTFTBySet} from "src/json/updates/contantesTFT.js"
 import ChampTierList from "@components/TFT/ChampTierList.jsx"
-import { AllCraftableItems, setNumberPBE,setNumberLatest, versionTFT, setMutatorLatest, setMutatorPBE, dataTFTChampions, dataTFTAllItems, dataTFTTraits } from "src/stores/dataTFT.js"
+import { 
+  AllCraftableItems, 
+  setNumberPBE,
+  setNumberLatest, 
+  versionTFT, 
+  setMutatorLatest, 
+  setMutatorPBE, 
+  dataTFTChampions, 
+  dataTFTAllItems, 
+  dataTFTTraits,
+  checkIfCompUrlAlreadyExist
+ } from "src/stores/dataTFT.js"
 import { useStore } from "@nanostores/react"
 import InputPowerUpList from "@components/TFT/InputPowerUpList.jsx"
 import FormularioCrearCompoTFT from "@components/TFT/FormularioCrearCompoTFT.jsx"
 
 
-const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,edittitulo,editshadowCategory,editinfographicCategory,editaumentos,editgameplay,edittips,editisHide,editboardInfo,editpictureSave,editcarouselItems,editradiantItem,editspatulaItem1,editspatulaItem2,editoriginalComp, editCampeonTierList, editAugmentTierList, editCampeonItemTierList =[{},{},{}], editCampeonTraitTierList = [{}], editCampeonPowerUpList = [{}],editChamp3Stars, editVersion=null, editisInInfographic, editTipSeo, editCuandoJugar, editCondicionVictoria }) =>{
+const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,edittitulo,editshadowCategory,editinfographicCategory,editaumentos,editgameplay,edittips,editisHide,editboardInfo,editpictureSave,editcarouselItems,editradiantItem,editspatulaItem1,editspatulaItem2,editoriginalComp, editCampeonTierList, editAugmentTierList, editCampeonItemTierList =[{},{},{}], editCampeonTraitTierList = [{}], editCampeonPowerUpList = [{}],editChamp3Stars, editVersion=null, editisInInfographic, editTipSeo, editCuandoJugar, editCondicionVictoria, editCompUrl }) =>{
     const currentVersion= useStore(versionTFT);
     const itemsDataIngles = useStore(dataTFTAllItems)
     const [version, setVersion] = useState(versionTFT.get())
@@ -68,7 +79,8 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
     const traitsList = useStore(dataTFTTraits);
     const [tipSeo, setTipSeo] = useState(editTipSeo)
     const [cuandoJugar, setCuandoJugar] = useState("")
-    const [condicionVictoria, setCondicionVictoria] = useState("" )
+    const [condicionVictoria, setCondicionVictoria] = useState("" );
+    const [compUrl, setCompUrl] = useState("");
     const championsColor = [
       "var(--color-hex-cost-default)",
       "var(--color-hex-cost-1)",
@@ -229,6 +241,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         setTipSeo(editTipSeo)
         setCuandoJugar(editCuandoJugar)
         setCondicionVictoria(editCondicionVictoria)
+        setCompUrl(editCompUrl)
       }
     },[edit])
 
@@ -585,9 +598,10 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           version:currentVersion,
           tipSeo,
           cuandoJugar,
-          condicionVictoria
+          condicionVictoria,
+          compUrl
         }
-        if(tier && posicion && dificultad && titulo && shadowCategory && infographicCategory && aumentos.length && Object.keys(carouselItems).length && Object.keys(boardInfo?.early?.data || {}).length && Object.keys(boardInfo).length && Object.keys(campeonTierList).length && Object.keys(boardInfo?.[originalComp]?.data || {}).length){
+        if(tier && posicion && dificultad && titulo && shadowCategory && infographicCategory && aumentos.length && Object.keys(carouselItems).length && Object.keys(boardInfo?.early?.data || {}).length && Object.keys(boardInfo).length && Object.keys(campeonTierList).length && Object.keys(boardInfo?.[originalComp]?.data || {}).length && compUrl){
           const token = import.meta.env.PUBLIC_TOKEN_META;
           fetch(crearCompoMetaPHP, {
             method: 'POST',
@@ -642,6 +656,9 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
           
           if(!Object.keys(boardInfo?.[originalComp]?.data || {}).length){
             mensaje += `\nTienes en Original Comp "${originalComp}" selecionado, pero no tienes campeones en ese Posicionamiento`
+          }
+          if(!compUrl){
+            mensaje += "\nComp URL"
           }
           alert(mensaje)
           return
@@ -754,7 +771,27 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         </select>
       </label>
 
-
+      <label htmlFor="compUrl">
+        <span>Comp URL:</span>
+        <input
+          name="compUrl"
+          type="text"
+          defaultValue={editCompUrl || compUrl}
+          onChange={(e)=> setCompUrl(e.target.value.replace(/ /g, "-"))}
+          placeholder="Type Comp URL"
+          required
+        />
+      </label>
+      <input 
+          type="button" 
+          onClick={()=>{checkIfCompUrlAlreadyExist({url:compUrl, titulo: titulo})}}
+          style={{
+            cursor: "pointer",
+            color: "black",
+            fontWeight: "bold",
+          }}
+          value={"Check Comp Url"}
+        ></input>
 
       <label>
         <span>Original Comp to Show:</span>

@@ -59,7 +59,7 @@ const Header1 = ({comp})=>{
             {
               earlyChampions?.map((data, index) => (
 
-                  <div className={style.championImgItems}>
+                  <div key={`earlyChampion-${index}`} className={style.championImgItems}>
                     <div
                       className={`${style.championImageWrapper} ${style[`champSquareCost${data?.campeon?.coste}`]}`}
                     >
@@ -73,6 +73,7 @@ const Header1 = ({comp})=>{
                       <div className={style.itemsContainer}>
                         {data.items.map((item, idx) => (
                           <img
+                            key={`item-earlyChampion-${index}-${idx}`}
                             className={style.itemImg}
                             src={
                               item?.icon?.includes("http")

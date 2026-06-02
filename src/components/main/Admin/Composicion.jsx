@@ -319,6 +319,7 @@ const Composicion = ({ id, compo, admin = useStore($admin), show = true, allways
           editTipSeo={compo.tipSeo}
           editCuandoJugar={compo.cuandoJugar}
           editCondicionVictoria={compo.condicionVictoria}
+          editCompUrl={compo.compUrl}
         />}
       {/* {
         showBigComp &&
