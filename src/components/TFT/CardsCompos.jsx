@@ -80,8 +80,8 @@ const infographicCategoriesEspañol = {
   }
 
   const targetUrl = isActive
-    ? "/tft/nueva-pagina"
-    : `/tft/nueva-pagina/${comp.compUrl}`;
+    ? "/tft/meta-comps-tier-list-teamfight-tactics"
+    : `/tft/meta-comps-tier-list-teamfight-tactics/${comp.compUrl}`;
 
   await navigate(targetUrl, {
     scroll: false
@@ -226,7 +226,7 @@ const deleteComp = ({id, tier, version})=>{
             ):(
 
             <a
-              href={edit && isActive ? "/tft/nueva-pagina" : `/tft/nueva-pagina/${comp.compUrl}`}
+              href={edit && isActive ? "/tft/meta-comps-tier-list-teamfight-tactics" : `/tft/meta-comps-tier-list-teamfight-tactics/${comp.compUrl}`}
               className={style.buttonLink}
               onClick={handleToggle}
             >

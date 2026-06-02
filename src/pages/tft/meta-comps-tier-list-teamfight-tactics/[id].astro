@@ -12,7 +12,7 @@ import {
 export async function getStaticPaths() {
   const todasLasCompsPBE = await fetchAndSortComps(composMetaPBEJSON);
   return todasLasCompsPBE.map((comp) => ({
-    params: { id: String(comp.id) },
+    params: { id: String(comp.compUrl) },
     props: { comp },
   }));
 }
