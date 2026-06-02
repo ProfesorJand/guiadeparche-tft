@@ -124,7 +124,7 @@ const EditarCompoTFT = () => {
         })
       }
 
-      <MetaComps showHide={true} admin={admin} />
+      {/* <MetaComps showHide={true} admin={admin} /> */}
     </>
   );
 };

@@ -298,8 +298,7 @@ export const AllCraftableItems = (todosLosItems) => {
   const apiNames = apiNamesCrafteableItems();
 
   if (!todosLosItems.length) return [];
-
-  return apiNames.map(apiName => {
+  const retornando = apiNames.map(apiName => {
     const item = todosLosItems.find(i => i.apiName === apiName);
     if (!item) return null;
 
@@ -310,7 +309,9 @@ export const AllCraftableItems = (todosLosItems) => {
       combine,
       icon: urlDragon() + item.icon.replace(".tex", ".png").toLowerCase()
     };
-  });
+  }).filter(Boolean);
+  console.log({retornando})
+  return retornando
 };
 
 export const AllBasicItems = (dataTFTAllItems) => {
