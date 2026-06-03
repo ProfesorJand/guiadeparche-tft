@@ -38,6 +38,7 @@ const getId = async (url, titulo) => {
 const VideoComponent = ({ src, loading = "lazy", titulo="video de Jupeson" }) => {
   const [video, setVideo] = useState(null);
   const [imgError, setImgError] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -45,67 +46,41 @@ const VideoComponent = ({ src, loading = "lazy", titulo="video de Jupeson" }) =>
       setVideo(videoData);
     };
     fetchData();
-    //volver a pedir informacion para activar el click
-    const youtubeThumbnail = document.querySelectorAll(`.${style.divIframe}`);
-      youtubeThumbnail.forEach(container => {
-        container.addEventListener('click', () => {
-          const videoId = container.getAttribute('data-url');
-          const iframe = document.createElement('iframe');
-          iframe.setAttribute("src", videoId);
-          iframe.setAttribute('frameborder', '0');
-          iframe.setAttribute('allow', 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture');
-          iframe.setAttribute('allowfullscreen', 'true');
-          iframe.setAttribute("width", "100%");
-          iframe.setAttribute("height", "100%");
-          iframe.classList.add(style.iframeYoutube);
-          container.innerHTML = '';
-          container.appendChild(iframe);
-        });
-      });
   }, [src, titulo]);
-
-  // useEffect(() => {
-  //   const handlePageLoad = () => {
-  //     const youtubeThumbnail = document.querySelectorAll(`.${style.divIframe}`);
-  //     youtubeThumbnail.forEach(container => {
-  //       container.addEventListener('click', () => {
-  //         console.log("click en video")
-  //         const videoId = container.getAttribute('data-url');
-  //         const iframe = document.createElement('iframe');
-  //         iframe.setAttribute("src", videoId);
-  //         iframe.setAttribute('frameborder', '0');
-  //         iframe.setAttribute('allow', 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture');
-  //         iframe.setAttribute('allowfullscreen', 'true');
-  //         iframe.setAttribute("width", "100%");
-  //         iframe.setAttribute("height", "100%");
-  //         iframe.classList.add(style.iframeYoutube);
-  //         container.innerHTML = '';
-  //         container.appendChild(iframe);
-  //       });
-  //     });
-  //   };
-  //   document.addEventListener('astro:page-load', handlePageLoad);
-
-
-  //   return () => {
-  //     document.removeEventListener('astro:page-load', handlePageLoad);
-  //   };
-  // }, []);
 
   if (!video) {
     return (
-          <img
-      src={spinner180.src}
-      alt={"loading"}
-      loading="eager"
-      className={style.loading}
-    />)
-    // return <img src={spinner180v2.src} alt="loading"></img>;
+      <img
+        src={spinner180.src}
+        alt={"loading"}
+        loading="eager"
+        className={style.loading}
+      />)
   }
 
+  if (isPlaying) {
+    return (
+      <div className={style.divIframe}>
+        <iframe
+          src={video.url}
+          frameBorder="0"
+          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+          width="100%"
+          height="100%"
+          className={style.iframeYoutube}
+        />
+      </div>
+    );
+  }
 
   return (
-    <div className={style.divIframe} data-url={video.url}>
+    <div 
+      className={style.divIframe} 
+      data-url={video.url} 
+      onClick={() => setIsPlaying(true)}
+      style={{ cursor: "pointer" }}
+    >
       <img
         src={imgError ? video?.thumbnail.replace('maxresdefault.jpg', 'hqdefault.jpg') : video?.thumbnail}
         width={25 * 16}
