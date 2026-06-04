@@ -82,7 +82,8 @@ const { title, JSONSchema, description, keywords, image, canonical, hide=false, 
     {description && <meta name="description" content={description}/>}
     {keywords && <meta name="keywords" content={keywords} />}
     {image && <meta property="og:image" content={image} />}
-    {canonical && <link rel="canonical" href={canonical} />}
+    {/* debe verificar si al final del string de canonical termina con / y si no lo tiene agregarlo */}
+    {canonical && <link rel="canonical" href={canonical.endsWith("/") ? canonical : canonical + "/"} />}
     {snippetImgUrl && <meta property="og:image" content={snippetImgUrl} />}
 
      <!-- Schema Script -->
@@ -302,9 +303,9 @@ const { title, JSONSchema, description, keywords, image, canonical, hide=false, 
       height: var(--height-header);
       flex-direction: row;
       background-color: #191f32;
-      background-image: radial-gradient(circle, #000000 1px, transparent 1px);
+      /* background-image: radial-gradient(circle, #000000 1px, transparent 1px);
       background-size: 4px 4px;
-      opacity: 1;
+      opacity: 1; */
     }
     .bodyInfo{
       display: flex;
@@ -328,9 +329,9 @@ const { title, JSONSchema, description, keywords, image, canonical, hide=false, 
       position: relative;
       flex-direction: column;
       background-color: #101525;
-      background-image: radial-gradient(circle, #000000 1px, transparent 1px);
+      /* background-image: radial-gradient(circle, #000000 1px, transparent 1px);
       background-size: 4px 4px;
-      opacity: 1;
+      opacity: 1; */
       padding: 5px;
       box-sizing: border-box;
     }
