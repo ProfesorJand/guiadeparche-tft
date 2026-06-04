@@ -38,7 +38,7 @@ const video = {
 // Cargar todas las composiciones para listarlas abajo
 const todasLasCompsPBE = await fetchAndSortComps(composMetaPBEJSON);
 const top10Comps = [...todasLasCompsPBE.slice(0, 10)];
-const restComps = [...todasLasCompsPBE.slice(10)]
+const restComps = [...todasLasCompsPBE.slice(10)];
 ---
 
 <MetaCompsLayout
@@ -51,6 +51,7 @@ const restComps = [...todasLasCompsPBE.slice(10)]
   top10Comps={top10Comps}
   restComps={restComps}
   activeId={id}
+  snippetImgUrl={comp.campeonTierList.tileIcon}
 >  
 </MetaCompsLayout>
 
