@@ -66,10 +66,9 @@ const Cards = ({currentPath}) => {
     <div className={style.cardsContainer}>
       {CardsComoJugar.map(({title, desc, icon, url})=>{
         //remplaza en currentPath de la claseName si tiene # y todo el texto despues de ello
-        const currentPathWithoutHash = url.split("#")[0];
+        const urlWithoutHash = url.split("#")[0];
         return(
-
-          <a className={`${style.card} ${style.url} ${currentPath === currentPathWithoutHash ? style.active : ""}`} href={url}>
+          <a className={`${style.card} ${style.url} ${currentPath === urlWithoutHash ? style.active : ""}`} href={url}>
             <div className={style.containerImage}>
               <img className={style.image} src={icon} alt="" />
             </div>
