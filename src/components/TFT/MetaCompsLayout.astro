@@ -18,6 +18,7 @@ interface Props {
   top10Comps: any[];
   restComps:any[];
   activeId?: string;
+  snippetImgUrl: string;
 }
 
 const {
@@ -29,6 +30,7 @@ const {
   top10Comps,
   restComps = [],
   activeId = null,
+  snippetImgUrl
 } = Astro.props;
 
 const tiersInfo = [
@@ -78,6 +80,7 @@ const urlRecursosTFT= [
   title={`${titleMain} ${titleHighlight}`}
   description={description}
   keywords={keywords}
+  snippetImgUrl={snippetImgUrl}
   JSONSchema={JSONSchema}
   canonical={canonicalURL}
   >

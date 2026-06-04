@@ -2,6 +2,7 @@
 import Header from '../components/headers/Header.astro';
 import Footer from '../components/footer/Footer.astro';
 import Logo from '../components/logo/Logo.astro';
+import logoGP from "src/assets/GP_logo.png";
 import Adsense from '../components/adsense/Adsense.jsx';
 import { ViewTransitions } from 'astro:transitions';
 import PageLoader from '@components/PageLoader';
@@ -15,8 +16,10 @@ interface Props {
   image?: string;
   canonical?: string;
   hide?:boolean;
+  snippetImgUrl?: string;
 }
-const { title, JSONSchema, description, keywords, image, canonical, hide=false } = Astro.props;
+const { title, JSONSchema, description, keywords, image, canonical, hide=false, snippetImgUrl= logoGP.src } = Astro.props;
+
 ---
 
 <html lang="en">
@@ -80,6 +83,7 @@ const { title, JSONSchema, description, keywords, image, canonical, hide=false }
     {keywords && <meta name="keywords" content={keywords} />}
     {image && <meta property="og:image" content={image} />}
     {canonical && <link rel="canonical" href={canonical} />}
+    {snippetImgUrl && <meta property="og:image" content={snippetImgUrl} />}
 
      <!-- Schema Script -->
     {JSONSchema && <script type="application/ld+json" set:html={JSONSchema}></script>}
@@ -195,7 +199,12 @@ const { title, JSONSchema, description, keywords, image, canonical, hide=false }
 
   html {
   background: transparent;
+  scroll-behavior: smooth;
 }
+
+  [id] {
+    scroll-margin-top: calc(var(--height-header) + 20px);
+  }
 
   body::-webkit-scrollbar {
     width: 12px; /* width of the entire scrollbar */
