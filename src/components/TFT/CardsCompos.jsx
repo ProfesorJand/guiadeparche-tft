@@ -5,6 +5,7 @@ import GuiaFreeTFTMeta  from "./GuiaFreeTFTMeta.jsx";
 import { navigate } from "astro:transitions/client";
 import { saveScrollPosition } from "../../utils/scrollRestoration";
 import CrearCompoTFT from "@components/main/Admin/CrearCompoTFT.jsx";
+import { CapturarImagen } from "@functions/CapturarImagen.js";
 
 // Añade aquí manualmente los apiName de los campeones que NO quieres que se muestren
 const EXCLUDED_API_NAMES = [
@@ -141,7 +142,7 @@ const deleteComp = ({id, tier, version})=>{
   return (
     <div ref={containerRef} className={`${style.container} ${isInfografia ? style.containerInfografia : ''}`}>
       <div className={style.cardContainer}>
-        <div className={`${style.leftContainer} ${isInfografia ? style.leftContainerInfografia : ''}`}>
+        <div className={`${style.leftContainer} ${isInfografia ? style.leftContainerInfografia : ''} ${!isInfografia && edit ? style.leftContainerFullWidth : ""}`}>
 
           <div className={style.header}>
 
@@ -210,17 +211,27 @@ const deleteComp = ({id, tier, version})=>{
         </div>
         {
           !isInfografia && 
-          <div className={style.rightContainer}>
+          <div className={`${style.rightContainer} ${!isInfografia ? "adminOptions" : ""}`}>
           <p className={style.tipSeo}>{comp.tipSeo}</p>
           {
             edit ? (
-              <div className={style.btnAdmins}>
+              <div className={`${style.btnAdmins} ${!isInfografia ? "adminOptions" : ""}`}>
                 <button onClick={()=> setOpenForEdit(!openForEdit)}>{isActive ? "Cerrar" : "Ver"}</button>
                 <button onClick={()=> setShowFormForEdit(!showFormForEdit)}>
                   {showFormForEdit ? "Cerrar Edición" : "Editar"}
                 </button>
                 <button onClick={()=> deleteComp({id:comp.id, tier:comp.tier, version:comp.version || "latest"})}>
                   Eliminar
+                </button>
+                <button
+                  onClick={
+                    ()=>CapturarImagen({
+                      backgroundRef:containerRef,
+                      nombre: `TFT_MetaComp_${comp.tier}_${comp.compUrl}`,
+                    })
+                  }
+                >
+                  Descargar
                 </button>
               </div>
             ):(
@@ -238,7 +249,7 @@ const deleteComp = ({id, tier, version})=>{
       </div>
       {(isActive || openForEdit) && (
         <div className={style.detailsWrapper}>
-          <GuiaFreeTFTMeta comp={comp} />
+          <GuiaFreeTFTMeta comp={comp} isInfografia={isInfografia} edit={edit} />
         </div>
       )}
       {showFormForEdit &&

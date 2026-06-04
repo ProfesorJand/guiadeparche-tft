@@ -1,0 +1,165 @@
+---
+import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
+import { crearJSONSchema } from "@json/schema/crearJSONSchema";
+import PaginaBaseMaxWidth from "@components/TFT/paginas/PaginaBaseMaxWidth.astro";
+import Youtube from "@components/youtube/Youtube.jsx";
+import Cards from "@components/TFT/como-jugar/Cards";
+const topTitle="Guía de Economia en TFT";
+const lowerTitle = "";
+const title = `${topTitle}${lowerTitle ? " " + lowerTitle: ""}`;
+const description ="Aprende economía en TFT, interés, rachas, slow roll y cuándo subir de nivel para ganar más partidas.";
+const keywords ="";
+const imgUrl ="";
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const baseSchema = JSON.parse(
+  crearJSONSchema({title, description:description})
+)
+const JSONSchema = JSON.stringify(baseSchema);
+const body=null;
+const currentPath = Astro.url.pathname;
+const indice = [
+
+  {
+    id:"importancia-economia",
+    titulo:"Importancia de la Economía / Oro"
+  },
+  {
+    id:"intereses-racha",
+    titulo:"Cómo Tener Mejor Economía y Ganar Más Oro: Intereses y Rachas"
+  },
+  {
+    id:"cuando-subir-nivel",
+    titulo:"¿Cuándo Subir de Nivel?"
+  },
+  {
+    id:"estrategia-50-oro",
+    titulo:"Estrategia de los 50 de Oro"
+  },
+  {
+    id:"probabilidades",
+    titulo:"Probabilidades y Pool Size"
+  }
+
+]
+---
+
+<LayoutMaxWidth
+  title={title}
+  description={description}
+  keywords={keywords}
+  JSONSchema={JSONSchema}
+  canonical={canonical}
+>
+<PaginaBaseMaxWidth
+  topTitle={topTitle}
+  lowerTitle={lowerTitle}
+  textInfo={description}
+>
+  <div slot="bodyContainerLeft">
+    <!-- Puedes poner contenido aquí para la columna izquierda en el futuro -->
+  </div>
+  <div slot="bodyContainerMid" class="bodyContainerMid">
+    <div class="indiceColumna">
+      <ol>
+      {
+        indice.map((subitem, index)=>{
+          return (
+            <li><a href={`#${subitem.id}`}>{index + 1}. {subitem.titulo}</a></li>
+          )
+        })
+      }
+      </ol>
+      <Youtube slot="videoHeader" src={"https://www.youtube.com/watch?v=PEuWSN1sD48"}  client:load transition:persist/>
+    </div>
+
+    
+    <articule id="importancia-economia">
+      <h2>1. Importancia de la Economía / Oro</h2>
+      <p>El oro es el recurso más importante del juego ya que te permite subir niveles y comprar campeones
+        y actualizar tu tienda. Puedes tener mucha suerte con las fichas, pero si no sabes gestionar tu oro,
+        vas a perder contra jugadores que saben ahorrar. En TFT, el oro no es solo dinero, es tiempo y poder.
+      </p>
+    </articule>
+    <articule id="intereses-racha">
+      <h2>2. Cómo Tener Mejor Economía y Ganar Más Oro: Intereses y Racha</h2>
+      <p>
+        En cada ronda recibes oro base, pero los jugadores inteligentes generan más a través del Interés.
+        Por cada 10 de oro que ahorres, el juego te da 1 moneda extra por ronda, hasta un máximo de 5 extra cuando llegas a 50.
+      </p>
+      <!-- Visual: Gráfico simple mostrando 10g -> +1 / 50g -> +5. -->
+      <p>
+        Además, están las Rachas. Si ganas o pierdes muchas veces seguidas, recibes oro extra.
+        A veces, perder a propósito (llamado racha de derrota) es la mejor forma de hacerte rico temprano
+        puedes incluso no usar ningún campeón para lograrlo. Si empiezas la partida perdiendo 5 rondas seguidas
+        o mejor aún ganando 5 rondas seguidas tendrás una gran ventaja contra el resto en economía.
+      </p>
+    </articule>
+    <articule id="cuando-subir-nivel">
+      <h2>3. ¿Cuándo Subir de Nivel?</h2>
+      <p>
+        Subir de nivel te permite poner una ficha más y mejores probabilidades en la tienda.
+        Como regla general para principiantes: intenta subir al nivel 4 en la ronda 2-1, al nivel 6 en la 3-2
+        y al nivel 8 en la 4-2 o 4-5. Si sigues este ritmo, estarás siempre en la pelea.
+      </p>
+    </articule>
+    <articule id="estrategia-50-oro">
+      <h2>4. Estrategia de los 50 de Oro</h2>
+      <p>
+        No en todos los juegos roleas igual. Pero cuando lo hagas debes tratar siempre estar por encima de 50 de oro,
+        a esto se le llama <a href="#slow-roll">Slow Roll</a>, así solo gastas lo que te sobra y sigues generando economía por intereses.
+      </p>
+    </articule>
+    <articule id="probabilidades">
+      <h2>5. Probabilidades y Pool Size</h2>
+      <!-- Visual: Tabla de probabilidades que aparece sobre la tienda en el juego. -->
+      <p>
+      Mucha gente se enoja porque no le sale su ficha, pero es pura matemática.
+      Si buscas una ficha de coste 1, tus probabilidades bajan a medida que subes de nivel.
+      Si buscas una legendaria de coste 5, solo empezarán a aparecer a partir del nivel 7.
+      </p>
+      <p>
+        ¿Cuando rolear por campeones 3 estellas?
+      </p>
+      <ul>
+        <li>
+          <strong>Coste 1:</strong> En nivel 4 preferiblemente ya que tienes 55% de probabilidad de costes 1 pero también está bien en nivel 5 ya que solo baja a 45%. 
+        </li>
+        <li>
+          <strong>Coste 2:</strong> En nivel 6 ya que tienes la mayor probabilidad posible de costes 2 con 40%. 
+        </li>
+        <li>
+          <strong>Coste 3:</strong> En nivel 7 ya que tienes la mayor probabilidad posible de costes 3 con 40%. 
+        </li>
+      </ul>
+      <p>
+        Existe el <strong>Pool Size:</strong> Hay un número limitado de copias de cada campeón para todos los jugadores.
+        Si ves que otros están comprando lo mismo que tú, ¡deja de gastar! Hay menos probabilidades de que te salga.
+      </p>
+      <ul>
+        <li>
+          <strong>Coste 1:</strong> 30 copias
+        </li>
+        <li>
+          <strong>Coste 2:</strong> 25 copias
+        </li>
+        <li>
+          <strong>Coste 3:</strong> 18 copias
+        </li>
+        <li>
+          <strong>Coste 4:</strong> 10 copias
+        </li>
+        <li>
+          <strong>Coste 5:</strong> 9 copias
+        </li>
+      </ul>
+    </articule>
+    
+    <h2 class="cards-title">Guías y Tutoriales de TFT</h2>
+    <Cards currentPath={currentPath} client:load transition:persist />
+  </div>
+  <div slot="bodyContainerRight">
+    <!-- Puedes poner contenido aquí para la columna derecha en el futuro -->
+  </div>
+</PaginaBaseMaxWidth>
+
+</LayoutMaxWidth>

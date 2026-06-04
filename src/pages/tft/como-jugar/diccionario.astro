@@ -1,0 +1,144 @@
+---
+import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
+import { crearJSONSchema } from "@json/schema/crearJSONSchema";
+import PaginaBaseMaxWidth from "@components/TFT/paginas/PaginaBaseMaxWidth.astro";
+import Youtube from "@components/youtube/Youtube.jsx";
+import Cards from "@components/TFT/como-jugar/Cards";
+const topTitle="Habla TFT como un PRO: términos que debes conocer";
+const lowerTitle = "";
+const title = `${topTitle}${lowerTitle ? " " + lowerTitle: ""}`;
+const description ="Aprende el vocabulario de TFT: BIS, tempo, fast 8, pivotar, contested y otros términos usados por pros.";
+const keywords ="";
+const imgUrl ="";
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const baseSchema = JSON.parse(
+  crearJSONSchema({title, description:description})
+)
+const JSONSchema = JSON.stringify(baseSchema);
+const body=null;
+const currentPath = Astro.url.pathname;
+const indice =[
+  {
+    id:"terminos-de-economia",
+    titulo:"Términos de Economía (Eco, Roll)",
+  },
+  {
+    id:"terminos-de-objetos",
+    titulo:"Términos de Objetos (BIS, Slam, Shred)",
+  },
+  {
+    id:"terminos-de-estrategia",
+    titulo:"Términos de Estrategia (Pivot, Contested, Tempo)",
+  }
+]
+---
+
+<LayoutMaxWidth
+  title={title}
+  description={description}
+  keywords={keywords}
+  JSONSchema={JSONSchema}
+  canonical={canonical}
+>
+<PaginaBaseMaxWidth
+  topTitle={topTitle}
+  lowerTitle={lowerTitle}
+  textInfo={description}
+>
+  <div slot="bodyContainerLeft">
+    <!-- Puedes poner contenido aquí para la columna izquierda en el futuro -->
+  </div>
+  <div slot="bodyContainerMid">
+    <div class="indiceColumna">
+      <ol>
+      {
+        indice.map((subitem, index)=>{
+          return (
+            <li><a href={`#${subitem.id}`}>{index + 1}. {subitem.titulo}</a></li>
+          )
+        })
+      }
+      </ol>
+      <Youtube slot="videoHeader" src={"https://www.youtube.com/watch?v=nD-1exiSgnE"}  client:load transition:persist/>
+    </div>
+
+    <articule id="terminos-de-economia">
+      <p>
+        Ya sabes jugar pero entras a un stream o ves un torneo y escuchas términos como 'BIS','Slammear' o 'Pivotar / Pivotear'
+        y te quedas en blanco. Por eso te voy a enseñar el lenguaje que usan los streamers,
+        creadores de contenido y pro players de TFT para que hables y entiendas TFT como un profesional.
+      </p>
+      <h2>1. Términos de Economía (Eco, Roll)</h2>
+      <ul>
+        <li id="eco"><strong>Eco</strong>: Es tu economía. 'Tener buena eco' es tener mucho oro e interés.</li>
+        <li id="roll"><strong>Roll / Rolear</strong>: Gastar oro para refrescar/actualizar la tienda.</li>
+        <li id="slow-roll"><strong>Slow-roll</strong>: Rolear lento, sería gastar solo el otro que te sobra de los 50 de oro.</li>
+        <li id="fast-8"><strong>Fast 8</strong>: Subir a nivel 8 lo más rápido posible casi siempre sin rolear en niveles bajos.</li>
+        <li id="fast-9"><strong>Fast 9</strong>: Es cuando quieres jugar alrededor de legendarias o cost 5 y
+          buscas llegar lo más rápido posible al nivel 9 para conseguirlos aveces sin rolear en niveles anteriores
+          pero normalmente un poquito para no morir antes de llegar.</li>
+      </ul>
+
+    </articule>
+    <articule id="terminos-de-objetos">
+      <h2>2. Términos de Objetos (BIS, Slam, Shred)</h2>
+      <ul>
+        <li id="bis"><strong>BIS</strong>: Significa que ese es el mejor objeto los mejores objetos para para ese campeón.
+          Hay memes de niveles acá: BIS; True BIS, Astral BIS</li>
+        <li id="slam"><strong>Slam / Slammear</strong>: Armar un objeto de inmediato para no perder vida,
+          aunque no sea el perfecto con los componentes que tengas.</li>
+        <li id="shred"><strong>Shred / Sunder</strong>: Reducir la armadura o resistencia mágica del enemigo. ¡Vital para ganar!</li>
+      </ul>
+    </articule>
+    <articule  id="terminos-de-estrategia">
+      <h2>3. Términos de Estrategia (Pivot, Contested, Tempo)</h2>
+      <ul>
+        <li id="contested"><strong>Estoy Contested o contesteado</strong>: Cuando otro jugador te está robando o te robará las
+          fichas porque juega lo mismo que tú. También se dice me están grifeando cuando alguien intencionalmente
+          está quitando las fichas que necesitas (normalmente para que no la consigas 3 estrellas)</li>
+        <li id="pivot"><strong>Pivot / Pivotar</strong>: Cambiar tu composición a mitad de partida porque el juego te dio algo mejor
+          o estás contesteado.</li>
+        <li id="open-fort"><strong>Open Fort</strong>: Vender todos tus campeones dejando el tablero y la banca vacía para perder a propósito
+          en las rondas iniciales para ahorrar oro y asegurar una racha de derrotas.</li>
+        <li>
+          <strong>Top 1, Top 4 (por lo menos topee)</strong>: Top 1 es ganar de 1ero y Top 4 o topear es quedar entre
+          los primero 4 puestos ya que. No necesitas ser primero para ganar rango.
+          <ul>
+            <li id="highroll"><strong>Highroll o highrolee</strong>: Es cuando tienes mucha suerte en tus tiendas y te sale todo gastando menos oro de los espero.</li>
+            <li id="lowroll"><strong>Lowroll o lowrolee</strong>: Es cuando tienes mucha mala suerte en tus tiendas y no te sale lo que querías o tuviste que gastar mucho más oro del esperado.</li>
+          </ul>
+        </li>
+        <li id="tempo">
+          <p>
+            <strong>Tempo</strong>: es uno de los conceptos más abstractos pero fundamentales en TFT. En términos simples,
+          es el ritmo de poder de la partida. Es la relación entre qué tan fuerte es tu mesa en comparación con el momento
+          actual del juego (ronda/fase) y el resto de los jugadores.</li>
+          </p>
+          <p>
+            También se define como define la velocidad a la que evoluciona el lobby:
+          </p>
+          <ul>
+            <li>Si todos los jugadores gastan oro para subir de nivel rápido, el tempo es alto (agresivo).</li>
+            <li>Si todos ahorran y nadie sube de nivel, el tempo es bajo (lento).</li>
+          </ul>
+          <p>
+            En resumen:
+          </p>
+          <ul>
+            <li>Estar adelantado en tempo: es cuando gastas oro para comprar vida (victorias) aunque a veces naturalmente te sale
+            todo sin rolear y estas muy fuerte.</li>
+            <li>Estar atrasado en tempo: Es cuando gastas vida para ahorrar o tuviste mala suerte en conseguir mejoras
+            en tus fichas naturalmente.</li>
+          </ul>
+        </li>
+      </ul>
+    </articule>
+    <h2 class="cards-title">Guías y Tutoriales de TFT</h2>
+    <Cards currentPath={currentPath} client:load transition:persist />
+  </div>
+  <div slot="bodyContainerRight">
+    <!-- Puedes poner contenido aquí para la columna derecha en el futuro -->
+  </div>
+</PaginaBaseMaxWidth>
+
+</LayoutMaxWidth>

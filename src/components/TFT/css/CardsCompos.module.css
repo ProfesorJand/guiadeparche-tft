@@ -49,6 +49,9 @@
 .leftContainerInfografia{
     width:100%
 }
+.leftContainerFullWidth{
+    width:100%;
+}
 .rightContainer{
     display:flex;
     position:relative;

@@ -5,10 +5,10 @@ import styleLoading from "../meta-comp/css/StyleLoading.module.css"
 
 const fetchPlaylist = async (url, playlist = true) => {
   let jsonUrl;
-  if(playlist){
-    jsonUrl = await fetch(`https://youtube.com/oembed?url=https%3A//www.youtube.com/playlist%3Flist%3D${url}&format=json`, {cache:"reload"});
-  }else{
-    jsonUrl = await fetch(`https://youtube.com/oembed?url=${url}&format=json`, {cache:"reload"})
+  if (playlist) {
+    jsonUrl = await fetch(`https://youtube.com/oembed?url=https%3A//www.youtube.com/playlist%3Flist%3D${url}&format=json`, { cache: "reload" });
+  } else {
+    jsonUrl = await fetch(`https://youtube.com/oembed?url=${url}&format=json`, { cache: "reload" })
   }
   const { thumbnail_url, html, title } = await jsonUrl.json();
   const srcMatch = html.match(/src="([^"]+)"/);
@@ -29,13 +29,13 @@ const getId = async (url, titulo) => {
     return { type: "playlist", url: `https://www.youtube.com/embed/videoseries?list=${playlistId}&si=${siParam}}&autoplay=1&enablejsapi=1"`, thumbnail, title };
   } else if (videoMatch) {
     const { title } = await fetchPlaylist(url, false);
-    return { type: 'video', id: videoMatch[1], thumbnail: `https://i.ytimg.com/vi/${videoMatch[1]}/maxresdefault.jpg`, url: `https://www.youtube.com/embed/${videoMatch[1]}?autoplay=1&enablejsapi=1`, title};
+    return { type: 'video', id: videoMatch[1], thumbnail: `https://i.ytimg.com/vi/${videoMatch[1]}/maxresdefault.jpg`, url: `https://www.youtube.com/embed/${videoMatch[1]}?autoplay=1&enablejsapi=1`, title };
   } else {
     return null;
   }
 };
 
-const VideoComponent = ({ src, loading = "lazy", titulo="video de Jupeson" }) => {
+const VideoComponent = ({ src, loading = "lazy", titulo = "video de Jupeson" }) => {
   const [video, setVideo] = useState(null);
   const [imgError, setImgError] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -75,9 +75,9 @@ const VideoComponent = ({ src, loading = "lazy", titulo="video de Jupeson" }) =>
   }
 
   return (
-    <div 
-      className={style.divIframe} 
-      data-url={video.url} 
+    <div
+      className={style.divIframe}
+      data-url={video.url}
       onClick={() => setIsPlaying(true)}
       style={{ cursor: "pointer" }}
     >

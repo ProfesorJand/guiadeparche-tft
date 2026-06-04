@@ -1,0 +1,261 @@
+---
+import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
+import { crearJSONSchema } from "@json/schema/crearJSONSchema";
+import PaginaBaseMaxWidth from "@components/TFT/paginas/PaginaBaseMaxWidth.astro";
+import Youtube from "@components/youtube/Youtube.jsx";
+import Cards from "@components/TFT/como-jugar/Cards";
+const topTitle="Como Jugar TFT desde Cero:";
+const lowerTitle = "Guía Principiantes y Fundamentos";
+const title = `${topTitle}${lowerTitle ? " " + lowerTitle: ""}`;
+const description ="Aprende qué es TFT y cómo empezar a jugar: Interfaz, comprar y vender campeones, subir de nivel y de estrellas, sinergias, aumentos y el builder";
+const keywords ="";
+const imgUrl ="";
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const baseSchema = JSON.parse(
+  crearJSONSchema({title, description:description})
+)
+const JSONSchema = JSON.stringify(baseSchema);
+const body=null;
+const currentPath = Astro.url.pathname;
+const indice = [
+  {
+    id:"como-jugar-tft",
+    titulo:"Cómo Jugar desde Cero (Nuevos Jugadores)",
+    subtitulos:[
+      {
+        id:"que-es-tft",
+        titulo:"¿Qué es Teamfight Tactics?"
+      },
+      {
+        id:"descargar-tft",
+        titulo:"¿Cómo Descargar TFT en PC, Mac y Mobile?"
+      },
+      {
+        id:"ganar-tft",
+        titulo:"¿Cómo Ganar en TFT: Reglas y Sistema de ELO?"
+      },
+      {
+        id:"modos-juego",
+        titulo:"Modos de Juego: Normales, Ranked y Double Up"
+      }
+    ]
+  },
+  {
+    id:"cosas-debes-saber",
+    titulo:"Cosas que Debes Saber Antes de Empezar a Jugar",
+    subtitulos:[
+      {
+        id:"interfaz-tft",
+        titulo:"La Interfaz de TFT: Entiende tu Centro de Mando"
+      },
+      {
+        id:"subir-estrellas",
+        titulo:"Subir de Estrellas a tus Campeones"
+      },
+      {
+        id:"rasgos-y-sinergias",
+        titulo:"Rasgos y Sinergias: Orígenes y Clases de Campeones"
+      },
+      {
+        id:"aumentos",
+        titulo:"Aumentos en TFT: ¿Qué Son y Cuáles Elegir para Empezar?"
+      },
+      {
+        id:"team-builder",
+        titulo:"El Team Builder: Tu Recordatorio Personalizado"
+      }
+    ]
+  }
+]
+---
+
+<LayoutMaxWidth
+  title={title}
+  description={description}
+  keywords={keywords}
+  JSONSchema={JSONSchema}
+  canonical={canonical}
+>
+<PaginaBaseMaxWidth
+  topTitle={topTitle}
+  lowerTitle={lowerTitle}
+  videoHeadersLength={2}
+>
+    
+  <div slot="bodyContainerLeft">
+    <!-- Puedes poner contenido aquí para la columna izquierda en el futuro -->
+  </div>
+  <div slot="bodyContainerMid" class="bodyContainerMid">
+    <div class="indiceColumna">
+      <ol>
+        <li>
+          <a href={`#${indice[0].subtitulos[0].id}`}><strong>{indice[0].titulo}</strong></a>
+          <ol>
+            {
+              indice[0].subtitulos.map((subitem, index)=>{
+                return (
+                  <li><a href={`#${subitem.id}`}>{index + 1}. {subitem.titulo}</a></li>
+                )
+              })
+            }
+          </ol>
+        </li>
+      </ol>
+      <Youtube  src={"https://www.youtube.com/watch?v=hsU_1u38dOY"}  client:load transition:persist/>
+    </div>
+    <div class="indiceColumna">
+      <ol>
+        <li>
+          <a href={`#${indice[1].subtitulos[0].id}`}><strong>{indice[1].titulo}</strong></a>
+          <ol>
+            {
+              indice[1].subtitulos.map((subitem, index)=>{
+                return (
+                  <li><a href={`#${subitem.id}`}>{index + 1 + indice[0].subtitulos.length}. {subitem.titulo}</a></li>
+                )
+              })
+            }
+          </ol>
+        </li>
+      </ol>
+     <Youtube id="cosas-debes-saber" src={"https://www.youtube.com/watch?v=EXZ6NdN9pVA"}  client:load transition:persist/>
+    </div>
+
+    
+    <articule id= "que-es-tft">
+      <h2>1. ¿Qué es Teamfight Tactics?</h2>
+      <p>
+          TFT, es un juego de estrategia Autobattler de Riot Games.
+          Imagina un tablero de ajedrez donde tú no mueves las piezas, sino que eres el Director Técnico.
+          Tu misión es reclutar a los mejores campeones de League of Legends,
+          armarlos con objetos poderosos y ponerlos en la formación correcta.
+          Una vez que suena la campana, ellos pelean solos por ti.
+          Acá tu cerebro y preparación le gana a los reflejos.
+      </p>
+    </articule>
+    <articule id="descargar-tft">  
+      <h2>2. ¿Cómo Descargar TFT en PC, Mac y Mobile?</h2>
+      <p>Teamfight Tactics es gratis y tiene <a href="#cross-play">Cross-Play</a>.
+        Puedes empezar una partida en tu PC y terminarla en tu celular mientras vas en el bus. Para descargar:</p>
+        <ul>
+          <li>En PC y Mac: <a href="https://teamfighttactics.leagueoflegends.com/" target="_blank">Descarga el Riot Client</a> desde la web oficial o búscalo en la Epic Games Store. Ojo: Si ya juegas LoL, ¡ya tienes TFT instalado! Solo entra y cambia de pestaña.</li>
+          <li>En Mobile: Búscalo como Teamfight Tactics en la <a href="https://play.google.com/store/apps/details?id=com.riotgames.league.teamfighttactics&hl=en" target="_blank">Google Play Store</a> o <a href="https://apps.apple.com/us/app/tft-teamfight-tactics/id1480616748" target="_blank">Apple Store</a>. Y recuerda que una sola cuenta para todo.</li>
+        </ul>
+    </articule>
+    <articule id="ganar-tft">
+      <h2>3. ¿Cómo Ganar en TFT: Reglas y Sistema de ELO?</h2>
+      <p>
+        En TFT te enfrentas a otros 7 jugadores en una batalla de supervivencia.
+        Todos empiezan con 100 puntos de vida. Si tu equipo pierde la ronda, tu vida baja.
+      </p>
+      <p>
+        Regla de Oro: Tu objetivo es ser el último en pie, pero en TFT,
+        quedar en el Top 4 es ganar. Si quedas entre los 4 mejores, ganas puntos (LP) o ELO
+      </p>
+      <p>
+        El Elo en League of Legends y TFT es un sistema de puntuación matemático oculto
+        (técnicamente llamado MMR o Matchmaking Rating) que mide la habilidad relativa de un jugador
+        para emparejarlo con otros de nivel similar. Aunque se refleja visualmente en rangos (Hierro a Retador),
+        el Elo numérico determina a quién te enfrentas y cuánto subes; osea subir de rango que van desde Hierro hasta Retador,
+        el camino es largo, pero no te preocupes, que aquí te voy a enseñar a escalar esa montaña.
+      </p>
+    </articule>
+    <articule id="modos-juego">
+      <h2>4. Modos de Juego: Normales, Ranked y Double Up</h2>
+      <p>
+        Cuando entres al cliente ve jugar y a la sección de TFT y verás 3 modos principales:
+      </p>
+      <ol>
+        <li><strong>Normales</strong>: Para probar cosas locas sin miedo a perder puntos.</li>
+        <li><strong>Ranked</strong>: Donde la cosa se pone seria y subes de rango.</li>
+        <li><strong>Double Up</strong>: Mi favorito para jugar con un amigo en duo y mandarse refuerzos.</li>
+      </ol>
+    </articule>
+      
+    {/* Interfaz/ */}
+    <articule id="interfaz-tft">
+      <h2>5. La Interfaz de TFT: Entiende tu Centro de Mando</h2>
+      <p>
+        Antes de pelear, entiende qué estás viendo:
+      </p>
+        <ul>
+          <li><strong>A la izquierda</strong>: Las Sinergias o Rasgos activos de tus campeones.</li>
+          <li><strong>Abajo</strong>:
+             <ul>
+               <li>
+                <strong>La Tienda</strong>: Si no te gusta lo que ves,
+                puedes gastar 2 de oro en Actualizar para ver unidades nuevas.
+               </li>
+               <li>
+                <strong>La Banca</strong>: Una vez que compras un campeón, se queda en tu Banca. Si te equivocaste o ya no lo necesitas
+                arrastrarlo e nuevo a la tienda para venderlo y recuperar tu oro.
+                </li>
+                <li>
+                  <strong>El Tablero</strong>:
+                  Para que peleen, tienes que arrastrarlos de la banca al Tablero.
+                  Y recuerda:tu Nivel decide cuántos campeones puedes tener fuera.
+                  Si eres nivel 6, puedes poner 6 campeones.
+                </li>
+                <li><strong>Experiencia</strong>:
+                  ¿Quieres subir de nivel más rápido? Usa el botón de Comprar Experiencia."</li>
+              </ul>
+          <li><strong>A la derecha</strong>: La vida de tus oponentes.</li>
+          <li><strong>Arriba</strong>: El tiempo de la ronda y en qué fase de la partida estás. Memoriza esto, porque será tu mapa durante toda la partida."</li>
+      </ul>
+    </articule>
+    <articule id="subir-estrellas">
+      <h2>6. Subir de Estrellas a tus Campeones</h2>
+      <p>
+        En TFT, una ficha de nivel 1 es débil. Para fortalecerla, necesitas 3 copias del mismo campeón para subirlo a 2 estrellas.
+        ¿Quieres el máximo poder? Junta tres campeones de 2 estrellas para crear un monstruo de 3 estrellas
+      </p>
+      {/* Revisar lo del video de economía */}
+      <p>
+        Subir de estrellas aumenta drásticamente la vida y el daño.
+        En el próximo video de economía, te enseñaré los trucos para encontrarlas más rápido según su coste.
+      </p>
+    </articule>
+    <articule id="rasgos-y-sinergias">
+      <h2>7. Rasgos y Sinergias: Orígenes y Clases de Campeones</h2>
+      <p>
+        No pongas campeones al azar. Cada uno tiene un origen y una clase (los Rasgos).
+        Si juntas varios del mismo grupo, activas Sinergias. Por ejemplo, si el rasgo te pide 2 'Peleadores',
+        tus fichas ganarán vida adicional.
+      </p>
+      <p>
+        Siempre busca completar estos grupos. Un equipo con sinergias activas siempre
+        le ganará a un equipo de fichas fuertes pero solitarias.
+      </p>
+    </articule>
+    <articule id="aumentos">
+      <h2>8. Aumentos en TFT: ¿Qué Son y Cuáles Elegir para Empezar?</h2>
+      <p>
+        Tres veces por partida (en las fases 2-1, 3-2 y 4-2), el juego te dará a elegir un Aumento.
+        Son mejoras permanentes que pueden darte oro, objetos o hacer que tus campeones sean más poderosos en combate.
+      </p>
+      <p>
+        ¿Cuál elegir? Si estás empezando, elige los que te den oro/economía o los que te den objetos extra.
+        No te compliques al comienzo y ¡experimenta!". Y recuerda que puedes actualizarlos para buscar otras opciones.
+      </p>
+    </articule>
+    <articule id="team-builder">
+      <h2>9. El Team Builder: Tu Recordatorio Personalizado</h2>
+      <p>
+        Para que no te olvides de qué campeones necesitas, usa el Builder dentro del juego.
+        Puedes marcar los campeones que quieras y el juego te avisará con un icono de pingüino y brillo cuando aparezcan en la tienda.
+      </p>
+      <p>
+        Y si quieres saber qué combinaciones son las mejores ahora mismo,
+        en mi web tienes las Composiciones Meta actualizadas para que solo tengas que copiar y ganar.
+      </p>
+    </articule>
+    
+    <h2 class="cards-title">Guías y Tutoriales de TFT</h2>
+    <Cards currentPath={currentPath} client:load transition:persist />
+  </div>
+  <div slot="bodyContainerRight">
+    <!-- Puedes poner contenido aquí para la columna derecha en el futuro -->
+  </div>
+</PaginaBaseMaxWidth>
+
+</LayoutMaxWidth>

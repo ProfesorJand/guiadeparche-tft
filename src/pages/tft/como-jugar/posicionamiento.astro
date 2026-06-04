@@ -1,0 +1,126 @@
+---
+import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
+import { crearJSONSchema } from "@json/schema/crearJSONSchema";
+import PaginaBaseMaxWidth from "@components/TFT/paginas/PaginaBaseMaxWidth.astro";
+import Youtube from "@components/youtube/Youtube.jsx";
+import Cards from "@components/TFT/como-jugar/Cards";
+const topTitle="Guía de Posicionamiento en TFT";
+const lowerTitle = "";
+const title = `${topTitle}${lowerTitle ? " " + lowerTitle: ""}`;
+const description ="Aprende posicionamiento en TFT, consejos para proteger tu carry, colocar tanques y usar scouting para ganar más.";
+const keywords ="";
+const imgUrl ="";
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const baseSchema = JSON.parse(
+  crearJSONSchema({title, description:description})
+)
+const JSONSchema = JSON.stringify(baseSchema);
+const body=null;
+const currentPath = Astro.url.pathname;
+const indice=[
+  {
+    id:"frontlane-vs-backlane",
+    titulo:"Frontlane Vs Backlane"
+  },
+  {
+    id:"consejos-proteger",
+    titulo:"Consejos para Proteger a tu Carry y Maximizar su Daño"
+  },
+  {
+    id:"posicionar-tanques",
+    titulo:"Cómo Posicionar a tus Tanques"
+  },
+  {
+    id:"el-scouting",
+    titulo:"El Scouting o Scauteo: Espía para Ganar"
+  },
+]
+---
+
+<LayoutMaxWidth
+  title={title}
+  description={description}
+  keywords={keywords}
+  JSONSchema={JSONSchema}
+  canonical={canonical}
+>
+<PaginaBaseMaxWidth
+  topTitle={topTitle}
+  lowerTitle={lowerTitle}
+  textInfo={description}
+>
+  <div slot="bodyContainerLeft">
+    <!-- Puedes poner contenido aquí para la columna izquierda en el futuro -->
+  </div>
+  <div slot="bodyContainerMid">
+    <div class="indiceColumna">
+      <ol>
+      {
+        indice.map((subitem, index)=>{
+          return (
+            <li><a href={`#${subitem.id}`}>{index + 1}. {subitem.titulo}</a></li>
+          )
+        })
+      }
+      </ol>
+      <Youtube slot="videoHeader" src={"https://www.youtube.com/watch?v=sEG8PLrgO20"}  client:load transition:persist/>
+    </div>
+
+    <articule id="frontlane-vs-backlane">
+      <h2>1. Frontlane Vs Backlane</h2>
+      <p>
+        El tablero de TFT tiene 4 filas de hexágonos. La regla básica es simple:
+      </p>
+      <p>
+        <strong>Frontline (Fila 1)</strong>: Aquí van tus tanques, los que tienen mucha vida y armadura. Su único trabajo es estorbar y recibir golpes.
+      </p>
+      <p>
+        <strong>Peleadores cuerpo a cuerpo o off tanks (Fila 2)</strong>: Cerca del frente para que lleguen rápido pero protegidos del agro del enemigo.
+      </p>
+      <p>
+        <strong>Backline (Fila 4)</strong>: Aquí van tus carries de rango. Son frágiles, pero hacen todo el daño.
+      </p>
+    </articule>
+    <articule id="consejos-proteger">
+      <h2>2. Consejos para Proteger a tu Carry y Maximizar su Daño</h2>
+      <ul>
+        <li>
+          Para proteger a tu carry principal, la técnica más vieja y efectiva es posicionarlos el rincón. Esto obliga al enemigo a tener que caminar y matar a tus 'sacrificios' antes de poder tocar a tu fuente de daño."
+        </li>
+        <li>
+          Concentra el daño de un solo lado: En TFT queremos que todas nuestras fichas le peguen al mismo objetivo para eliminarlo rápido. Intenta poner a tus carries del mismo lado que los tanques enemigos más débiles. Si logras que 3 de tus fichas enfoquen a una sola del rival, limpiarás el tablero mucho más rápido.
+        </li>
+        <li>
+          Evita habilidades en área enemigas: Si el enemigo tiene un campeón que lanza un rayo o una explosión gigante, separa a tus unidades. No las amontones todas en el mismo sitio o un solo hechizo acabará con tu sueño del Top 4.
+        </li>
+      </ul>
+    </articule>
+    <articule id="posicionar-tanques">
+      <h2>3. Cómo Posicionar a tus Tanques</h2>
+      <p>
+        Coloca al tanque más fuerte con objetos 100% defensivos para que absorba primero
+        el daño del carry principal enemigo, al lado de él a tu tanque con objetos de utilidad
+        como la capa de fuego solar y el manto del ocaso o chispa iónica, luego al resto de tus
+        tanques sin objetos. De esta forma la utilidad del tanque secundario durará más tiempo y
+        aunque tus tanques de relleno no tengan objetos será útiles con sus habilidades para desgastar al enemigo.
+      </p>
+    </articule>
+    <articule  id="el-scouting">
+      <h2>4. El Scouting o Scauteo: Espía para Ganar</h2>
+      <p>
+        No juegues a ciegas. El Scouting es mirar los tableros de tus oponentes.
+        Usa las teclas '1' y '2' (o toca los retratos en mobile) para ver dónde tienen sus unidades.
+        Puedes saber quien es tu siguiente rival si tiene espadas que acompañan su nombre.
+        Usa esta información para aplicar los consejos que acabamos de ver
+      </p>
+    </articule>
+
+    <h2 class="cards-title">Guías y Tutoriales de TFT</h2>
+    <Cards currentPath={currentPath} client:load transition:persist />
+  </div>
+  <div slot="bodyContainerRight">
+    <!-- Puedes poner contenido aquí para la columna derecha en el futuro -->
+  </div>
+</PaginaBaseMaxWidth>
+
+</LayoutMaxWidth>
