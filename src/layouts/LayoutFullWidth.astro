@@ -82,7 +82,7 @@ console.log({admin})
     {description && <meta name="description" content={description}/>}
     {keywords && <meta name="keywords" content={keywords} />}
     {image && <meta property="og:image" content={image} />}
-    {canonical && <link rel="canonical" href={canonical} />}
+    {canonical && <link rel="canonical" href={canonical.endsWith("/") ? canonical : canonical + "/"} />}
 
      <!-- Schema Script -->
     {JSONSchema && <script type="application/ld+json" set:html={JSONSchema}></script>}

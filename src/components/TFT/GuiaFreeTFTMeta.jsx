@@ -116,7 +116,7 @@ const Header1 = ({comp})=>{
               }
               {
                 comp?.carouselItems?.BasicItem1?.icon && 
-                <img className={style.littleItemImg} src={
+                <img className={comp?.carouselItems?.CompleteItem1?.icon ? style.littleItemImg : style.bigItemImg} src={
                   comp?.carouselItems?.BasicItem1?.icon?.includes("http")
                                     ? comp?.carouselItems?.BasicItem1?.icon
                                     : urlDragon() +
@@ -142,7 +142,7 @@ const Header1 = ({comp})=>{
             }
             {
               comp?.carouselItems?.BasicItem2?.icon  && 
-              <img className={style.littleItemImg} src={
+              <img className={comp?.carouselItems?.CompleteItem2?.icon ? style.littleItemImg : style.bigItemImg} src={
                 comp?.carouselItems?.BasicItem2?.icon?.includes("http")
                 ? comp?.carouselItems?.BasicItem2?.icon
                 : urlDragon() +
@@ -168,7 +168,7 @@ const Header1 = ({comp})=>{
             }
             {
               comp?.carouselItems?.BasicItem3?.icon  && 
-              <img className={style.littleItemImg} src={
+              <img className={comp?.carouselItems?.CompleteItem3?.icon ? style.littleItemImg : style.bigItemImg} src={
                 comp?.carouselItems?.BasicItem3?.icon?.includes("http")
                 ? comp?.carouselItems?.BasicItem3?.icon
                 : urlDragon() +
