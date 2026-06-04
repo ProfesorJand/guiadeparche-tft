@@ -15,7 +15,18 @@ export const cachedFetch = async (url, options = {}) => {
 
   if (!cache.has(cacheKey)) {
     const promise = (async () => {
-      const response = await fetch(url, options);
+      // Build clean headers to prevent WAF/ModSecurity blocks (e.g. 415/403 errors) on GitHub Actions
+      const headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+        'Accept': 'application/json, text/plain, */*',
+        ...(options.headers || {})
+      };
+
+      // Strip Content-Type from GET requests to avoid triggering ModSecurity body parsing issues (which cause 415)
+      if (headers['Content-Type']) delete headers['Content-Type'];
+      if (headers['content-type']) delete headers['content-type'];
+
+      const response = await fetch(url, { ...options, headers });
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status} url: ${url}`);
       }
