@@ -1,0 +1,57 @@
+---
+import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro"
+import { crearJSONSchema } from "@json/schema/crearJSONSchema";
+import PaginaBaseMaxWidth from "@components/TFT/paginas/PaginaBaseMaxWidth.astro";
+import Youtube from "@components/youtube/Youtube.jsx";
+import Cards from "@components/TFT/como-jugar/Cards";
+const topTitle="Como Jugar TFT";
+const lowerTitle = "Guía Completa 2026";
+const title = `${topTitle} ${lowerTitle}`;
+// como hacer para colocar mucho texto en varias lineas?
+const description =[
+  "Aprende cómo jugar TFT con esta guía completa de Teamfight Tactics para principiantes y jugadores que quieren mejorar. En este tutorial encontrarás todo lo necesario para entender las mecánicas del juego, gestionar tu economía, equipar objetos correctamente, elegir composiciones y tomar mejores decisiones en cada partida.",
+  "Si estás empezando desde cero o vuelves después de varios sets sin jugar, esta guía te ayudará a comprender paso a paso cómo funciona TFT y cuáles son los conceptos más importantes para subir de rango más rápido.",
+  "Explora cada sección para aprender economía, objetos, posicionamiento, composición de equipo, términos habituales y estrategias avanzadas utilizadas por jugadores de alto nivel."
+];
+const keywords ="Como Jugar TFT Guia Completa, Teamfight Tactics, TFT, Guia Completa, Como Jugar TFT";
+const imgUrl ="";
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const baseSchema = JSON.parse(
+  crearJSONSchema({title, description:description})
+)
+const JSONSchema = JSON.stringify(baseSchema);
+const body=null;
+const currentPath = Astro.url.pathname;
+---
+
+<LayoutMaxWidth
+  title={title}
+  description={description}
+  keywords={keywords}
+  JSONSchema={JSONSchema}
+  canonical={canonical}
+>
+
+  <PaginaBaseMaxWidth
+    topTitle={topTitle}
+    lowerTitle={lowerTitle}
+    textInfo={description}
+  >
+  
+    <Youtube slot="videoHeader" src={"https://www.youtube.com/watch?v=S1ftxYObRsM"}  client:load />
+
+      <div slot="bodyContainerLeft">
+        <!-- Puedes poner contenido aquí para la columna izquierda en el futuro -->
+      </div>
+      <div slot="bodyContainerMid">
+        <h2 class="cards-title">Guías y Tutoriales de TFT</h2>
+        <Cards currentPath={currentPath} client:load transition:persist/>
+              
+        </div>
+      </div>
+      <div slot="bodyContainerRight">
+        <!-- Puedes poner contenido aquí para la columna derecha en el futuro -->
+      </div>
+
+  </PaginaBaseMaxWidth>
+</LayoutMaxWidth>

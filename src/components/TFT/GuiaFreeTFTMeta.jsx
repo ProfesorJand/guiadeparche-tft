@@ -2,7 +2,7 @@ import { urlDragon, urlComposiciones } from "@stores/dataTFT";
 import style from "./css/GuiaFreeTFTMeta.module.css";
 import Sinergias from "@components/main/Admin/Sinergias";
 import { useState, useRef, useEffect } from "react";
-const GuiaFreeTFTMeta = ({comp}) => {
+const GuiaFreeTFTMeta = ({comp, isInfografia=false, edit=false}) => {
   const [hoveredAugment, setHoveredAugment] = useState(null);
   const augmentRef = useRef(null);
   const tooltipRef = useRef(null);
@@ -32,7 +32,7 @@ const GuiaFreeTFTMeta = ({comp}) => {
     <div className={style.container}>
       <Header1 comp={comp}></Header1>
       <Header2 comp={comp} setHoveredAugment={setHoveredAugment} augmentRef={augmentRef}></Header2>
-      <FooterTooltip augment={hoveredAugment} tooltipRef={tooltipRef}></FooterTooltip>
+      <FooterTooltip augment={hoveredAugment} tooltipRef={tooltipRef} edit={edit} isInfografia={isInfografia}></FooterTooltip>
     </div>
   );
 };
@@ -345,10 +345,10 @@ const formatAugmentDescription = (desc, effects) => {
   return formatted;
 };
 
-const FooterTooltip = ({augment, tooltipRef})=>{
+const FooterTooltip = ({augment, tooltipRef, edit=false, isInfografia=false})=>{
   if (!augment) {
     return (
-      <div ref={tooltipRef} className={style.footerTooltipPlaceholder}>
+      <div ref={tooltipRef} className={`${style.footerTooltipPlaceholder} ${!isInfografia && edit ? "adminOptions" : ""}`}>
         <p className={style.placeholderText}>
           Pasa el cursor sobre un aumento para ver su descripción y efectos
         </p>
@@ -357,7 +357,7 @@ const FooterTooltip = ({augment, tooltipRef})=>{
   }
 
   return (
-    <div ref={tooltipRef} className={style.footerTooltipContainer}>
+    <div ref={tooltipRef} className={`${style.footerTooltipContainer}`}>
       <div className={style.footerTooltipHeader}>
         <img 
           className={style.footerTooltipIcon} 

@@ -1,0 +1,195 @@
+---
+import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
+import { crearJSONSchema } from "@json/schema/crearJSONSchema";
+import PaginaBaseMaxWidth from "@components/TFT/paginas/PaginaBaseMaxWidth.astro";
+import Youtube from "@components/youtube/Youtube.jsx";
+import Cards from "@components/TFT/como-jugar/Cards";
+const topTitle="Guía de Objetos (items) en TFT";
+const lowerTitle = "";
+const title = `${topTitle}${lowerTitle ? " " + lowerTitle: ""}`;
+const description ="Mejores ítems y combos AD, AP y tanque para hacer tus composiciones más fuertes en TFT";
+const keywords ="";
+const imgUrl ="";
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const baseSchema = JSON.parse(
+  crearJSONSchema({title, description:description})
+)
+const JSONSchema = JSON.stringify(baseSchema);
+const body=null;
+const currentPath = Astro.url.pathname;
+const indice=[
+  {
+    id:"componentes-objetos",
+    titulo:"¿Componentes y Cómo Completo Objetos?"
+  },
+  {
+    id:"estadisticas-objetos",
+    titulo:"Explicación de Estadísticas (AP, AD, Armadura, Resistencia Mágica, etc)"
+  },
+  {
+    id:"mejores-objetos-carry-ad",
+    titulo:"Mejores Objetos y Combos para Carry de Daño Físico AD"
+  },
+  {
+    id:"mejores-objetos-carry-ap",
+    titulo:"Mejores Objetos y Combos para Carry de Poder de Habilidad AP"
+  },
+  {
+    id:"mejores-objetos-tanques",
+    titulo:"Mejores Objetos y Combos para Tanques"
+  },
+  {
+    id:"penetración-fisica-magica",
+    titulo:"La Penetración Física y Mágica"
+  },
+  {
+    id:"objetos-especiales",
+    titulo:"Objetos Especiales: Espátula y Sartén Dorado"
+  }
+]
+---
+
+<LayoutMaxWidth
+  title={title}
+  description={description}
+  keywords={keywords}
+  JSONSchema={JSONSchema}
+  canonical={canonical}
+>
+<PaginaBaseMaxWidth
+  topTitle={topTitle}
+  lowerTitle={lowerTitle}
+  textInfo={description}
+>
+  <div slot="bodyContainerLeft">
+    <!-- Puedes poner contenido aquí para la columna izquierda en el futuro -->
+  </div>
+  <div slot="bodyContainerMid" class="bodyContainerMid">
+    <div class="indiceColumna">
+      <ol>
+      {
+        indice.map((subitem, index)=>{
+          return (
+            <li><a href={`#${subitem.id}`}>{index + 1}. {subitem.titulo}</a></li>
+          )
+        })
+      }
+      </ol>
+      <Youtube slot="videoHeader" src={"https://www.youtube.com/watch?v=12ejp2WlnZw"}  client:load transition:persist/>
+    </div>
+
+    <articule id="componentes-objetos">
+      <p>
+        Tener los mejores campeones no sirve de nada si les pones los objetos equivocados.
+        En TFT, los objetos son los que definen quién es el héroe de tu mesa.
+        Hoy te enseño a armar los combos correctos para que tus unidades sean imparables.
+      </p>
+      <h2>1. ¿Componentes y Cómo Completo Objetos?</h2>
+      <p>
+        En cada partida recibirás componentes (items).
+        Si arrastras un componente sobre otro que ya tiene un campeón,
+        se combinan para formar un Objeto Completo.
+        También los puedes hacer en la barra lateral.
+        
+      </p>
+      <p>
+        Recuerda: una vez que combinas un objeto, no puedes deshacerlo a menos que vendas al campeón o uses un reforjador.
+        ¡Así que piensa antes de actuar!
+      </p>
+      <!-- Visual: Mostrar el gesto de arrastrar una Espada y un Arco para formar un Verdugo de Gigantes. -->
+    </articule>
+    <articule id="estadisticas-objetos">
+      <h2>2. Explicación de Estadísticas (AP, AD, Armadura, Resistencia Mágica, etc)</h2>
+      <p>
+        Antes de equipar, debes saber qué significan las estadísticas principales en los campeones:
+      </p>
+      <ul>
+        <li>
+          <strong>Velocidad de Ataque:</strong> Cuantos ataques básicos lanzan por segundo.
+        </li>
+        <li>
+          <strong>Barra de Mana total:</strong> Cuando mana tienen que cargar para lanzar su habilidad definitiva (color azul) 
+        </li>
+        <li>
+          <strong>AD (Daño de Ataque):</strong> Aumenta el daño de los ataques básicos y definitivas de daño físico (color naranja).
+        </li>
+        <li>
+          <strong>AP (Poder de Habilidad):</strong> Aumenta el poder de los hechizos (color morado).
+        </li>
+        <li>
+          <strong>Armadura y MR (Resistencia Mágica):</strong> Reducen el daño físico y mágico que recibes.
+        </li>
+      </ul>
+    </articule>
+    <articule id="mejores-objetos-carry-ad">
+      <h2>3. Mejores Objetos y Combos para Carry de Daño Físico AD</h2>
+      <p>
+        <strong>Para Tiradores (Rango)</strong>: Si tiene mucha velocidad base o depende de sus básicos
+        lo mejor es el combo de Espadafuria de Guinsoo y Krakens irá aumentando su velocidad y daño físico durante la ronda.
+        Si su habilidad es lo principal buscamos el combo de darle mayor regeneración de mana con Shojin
+        y el Filo del Infinito para que sus habilidades tenga precisión o capacidad de hacer golpes críticos.
+      </p>
+      <p>
+        <strong>Para carries cuerpo a cuerpo AD:</strong> Como ellos reciben daño, necesitan un combo que le de 'supervivencia y daño'
+        por ejemplo el Steraks, la Sanguinaria, Valor del Titán, Capa Mercurial y Filo de la Noche.
+        Cualquier combinación de esto va bien pero cada campeón tendrá siempre objetos ideales que puedes ver en mi web.
+      </p>
+    </articule>
+    <articule id="mejores-objetos-carry-ap">
+      <h2>4. Mejores Objetos y Combos para Carry de Poder de Habilidad AP</h2>
+      <p>
+        Los magos o casters quieren lanzar su habilidad y explotar al enemigo.  
+      </p>
+      <p>
+        <strong>Combo 1</strong>: Haz que casteen más rápido con lanza de Shojin, dales AP de base con el Sombrero de Rabadon’s y luego amplifica el daño con Guantelete Enjoyado para críticos o Verdugo de Gigantes para pegar más fuerte a los tanques.
+      </p>
+      <p>
+        <strong>Combo 2</strong>: Si ya tienes AP de base por la sinergia del campeón mejor busca Diente de Nashor que te da mana si pegas críticos así que lo combinas con el Guantelete Enjoyado y finalmente con el Mangual que amplifican el daño si haces críticos.
+      </p>
+    </articule>
+    <articule id="mejores-objetos-tanques">
+      <h2>5. Mejores Objetos y Combos para Tanques</h2>
+      <p>
+        Los tanques son tu línea frontal para proteger a tus carries del daño enemigo asi que quieren vida,
+        armadura, resistencia mágica y durabilidad.
+      </p>
+      <p>
+        El combo básico que no falla es: Gargola, Warmogs y el Espíritu Firme o Steadfast ya que te da todas las 4 estadísticas.
+      </p>
+      <p>
+        Si el lobby es de mucho daño físico hazte la Vesta Espinoza y si el lobby es de mucho daño mágico quieres la Garra de Dragón.
+      </p>
+    </articule>
+    <articule id="penetración-fisica-magica">
+      <h2>6. La Penetración Física y Mágica</h2>
+      <p>
+        Si llegas al final de la partida y no matas a los tanques enemigos,
+        es porque te falta equipar Penetración para reducir sus resistencias.
+      </p>
+      <p>
+        Daño físico: Último suspiro o el Manto del Ocaso.
+      </p>
+      <p>
+        Daño mágico: Báculo del Vacío o Chispa Iónica.
+      </p>
+    </articule>
+
+    <articule id="objetos-especiales">
+      <h2>7. Objetos Especiales: Espátula y Sartén Dorado</h2>
+      <p>
+        Y luego tenemos la Espátula y el sartén dorado. Por sí solos no hacen nada,
+        pero si la combinas con otro componente, puedes darle a un campeón una Sinergia extra.
+        Y si los combinas consigo mismo o entre si te dan una corona de estratega que te regala 1 espacio
+        extra de campeón para tu equipo.
+      </p>
+    </articule>
+
+    <h2 class="cards-title">Guías y Tutoriales de TFT</h2></h2>
+    <Cards currentPath={currentPath} client:load transition:persist />
+  </div>
+  <div slot="bodyContainerRight">
+    <!-- Puedes poner contenido aquí para la columna derecha en el futuro -->
+  </div>
+</PaginaBaseMaxWidth>
+
+</LayoutMaxWidth>

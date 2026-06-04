@@ -1,0 +1,134 @@
+---
+import styles from "./css/PaginaBaseMaxWidth.module.css";
+const {
+  topTitle,
+  lowerTitle,
+  textInfo,
+  videoHeadersLength,
+  
+} = Astro.props;
+
+const hasLeft = Astro.slots.has("bodyContainerLeft");
+const hasMid = Astro.slots.has("bodyContainerMid");
+const hasRight = Astro.slots.has("bodyContainerRight");
+const hasSideVideo = Astro.slots.has("videoSideHeader");
+
+let layoutClass = "";
+if (hasLeft && hasMid && hasRight) {
+  layoutClass = styles.layoutThreeCols;
+} else if (hasLeft && hasMid) {
+  layoutClass = styles.layoutLeftMid;
+} else if (hasMid && hasRight) {
+  layoutClass = styles.layoutMidRight;
+} else if (hasMid) {
+  layoutClass = styles.layoutOnlyMid;
+}
+
+const paragraphs = Array.isArray(textInfo)
+  ? textInfo
+  : (typeof textInfo === 'string' ? textInfo.split(/\r?\n/) : []);
+---
+
+    <div class={styles.pageContainer}>
+      <div class={styles.headerSection}>
+        <div class={`${styles.headerInfo} ${!hasSideVideo ? styles.headerInfoFull : ""}`}>
+          <h1>
+            {topTitle}<br/>
+            <span class={styles.lowerTitle}>{lowerTitle}</span>
+          </h1>
+          {paragraphs.map((paragraph) => {
+            const trimmed = typeof paragraph === 'string' ? paragraph.trim() : paragraph;
+            return trimmed ? <p>{trimmed}</p> : null;
+          })}
+          <slot name="moreInfoHeader"/>
+        </div>
+      </div>
+      <div class={`${styles.bodyContainer} ${layoutClass}`}>
+        {hasLeft && 
+          <div class={styles.colLeft}>
+            <slot name="bodyContainerLeft"/>
+          </div>
+        }
+        {hasMid && 
+          <div class={styles.colMid}>
+            <slot name="bodyContainerMid" />
+          </div>
+        }
+        {hasRight && 
+          <div class={styles.colRight}>
+            <slot name="bodyContainerRight"/>
+          </div>
+        }
+      </div>
+      <slot name="footer"/>
+    </div>
+
+<style is:global>
+  .bodyContainerMid{
+    display:flex;
+    flex-direction: column;
+    gap:20px;
+  }
+  .indiceColumna{
+    display:flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+    align-items: flex-start;
+    gap:20px;
+    & ol{
+      width:100%;
+    }
+    padding:20px;
+    box-sizing: border-box;
+    border-bottom: 2px solid grey;
+  }
+  ol{
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
+    font-size:1.2rem;
+    line-height: 1.5;
+  }
+  li a {
+    text-decoration: none;
+    &:hover{
+      text-decoration: underline;
+      color: var(--color-white)
+    }
+  }
+  ol ol {
+    padding-left: 20px;
+    margin-top: 10px; /* Espacio entre el título principal y los sub-ítems */
+  }
+  ol li:not(:has(ol)) {
+    margin-bottom: 12px; /* Espacio (gap) entre los sub-ítems / ítems hojas */
+    margin-top: 0;
+  }
+  ol li:not(:has(ol)):last-child {
+    margin-bottom: 0;
+  }
+  articule{
+    & h2{
+      font-size: 2rem;
+      text-align: left;
+    }
+    & p{
+      font-size:1.2rem;
+      line-height: 1.5;
+    }
+    & li{
+      font-size: 1.2rem;
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+  }
+  @media (max-width: 900px) {
+   .indiceColumna{
+    flex-direction:column;
+  }
+ }
+</style>
+  
+
+

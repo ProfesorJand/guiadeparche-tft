@@ -1,0 +1,144 @@
+---
+import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
+import { crearJSONSchema } from "@json/schema/crearJSONSchema";
+import PaginaBaseMaxWidth from "@components/TFT/paginas/PaginaBaseMaxWidth.astro";
+import Youtube from "@components/youtube/Youtube.jsx";
+import Cards from "@components/TFT/como-jugar/Cards";
+const topTitle="Cómo elegir que composición jugar en TFT";
+const lowerTitle = "";
+const title = `${topTitle}${lowerTitle ? " " + lowerTitle: ""}`;
+const description ="Aprende cómo elegir composición en TFT según tus objetos, rachas y el meta actual.";
+const keywords ="";
+const imgUrl ="";
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const baseSchema = JSON.parse(
+  crearJSONSchema({title, description:description})
+)
+const JSONSchema = JSON.stringify(baseSchema);
+const body=null;
+const currentPath = Astro.url.pathname;
+const indice = [
+  {
+    id:"lectura-de-componentes",
+    titulo:"Lectura de Componentes: ¿AD, AP o Flexibilidad?"
+  },
+  {
+    id:"scouting-rivales-aliados",
+    titulo:"El Truco del Scouting: Rivales vs Aliados"
+  },
+  {
+    id:"flexibilidad-sin-panico",
+    titulo:"Flexibilidad sin Pánico: Cómo mejorar tu Mesa"
+  },
+  {
+    id:"el-pack-de-4",
+    titulo:'El "Pack de 4": Tu Estrategia Meta'
+  }
+]
+---
+
+<LayoutMaxWidth
+  title={title}
+  description={description}
+  keywords={keywords}
+  JSONSchema={JSONSchema}
+  canonical={canonical}
+>
+<PaginaBaseMaxWidth
+  topTitle={topTitle}
+  lowerTitle={lowerTitle}
+  textInfo={description}
+>
+ 
+  <div slot="bodyContainerLeft">
+    <!-- Puedes poner contenido aquí para la columna izquierda en el futuro -->
+  </div>
+  <div slot="bodyContainerMid">
+    <div class="indiceColumna">
+      <ol>
+      {
+        indice.map((subitem, index)=>{
+          return (
+            <li><a href={`#${subitem.id}`}>{index + 1}. {subitem.titulo}</a></li>
+          )
+        })
+      }
+      </ol>
+      <Youtube slot="videoHeader" src={"https://www.youtube.com/watch?v=qoV9hH9s9RI"}  client:load transition:persist/>
+    </div>
+
+    <articule id="lectura-de-componentes">
+      <p>
+        ¿Qué composición jugar? Esa es la pregunta que define tu partida.
+        Muchos dicen que 'forzar' una misma jugada es malo, pero te diré un secreto: si estás empezando,
+        forzar es la mejor forma de aprender. En elos bajos, dominar una sola receta te dará victorias.
+        Pero, a medida que subas de rango, necesitarás aprender a escuchar lo que el juego te da para no pelearte
+        por las mismas fichas con todo el mundo.
+      </p>
+      <h2>Lectura de Componentes: ¿AD, AP o Flexibilidad?</h2>
+      <p>
+        Tus primeros objetos te dicen el camino.
+      </p>
+      <ul>
+        <li>
+          Si ves Espadas y Arcos, el juego te pide daño físico (AD).
+        </li>
+        <li>
+          Si ves Lágrimas y Varas, busca daño mágico (AP).
+        </li>
+        <li>
+          Pero si te salen objetos de Tanque, ¡felicidades!
+          Tienes la mayor flexibilidad, porque un buen muro defensivo encaja en cualquier composición que decidas armar después.
+        </li>
+      </ul>
+    </articule>
+    <articule  id="scouting-rivales-aliados">
+      <h2>El Truco del Scouting: Rivales vs Aliados</h2>
+      <p>
+        Hacer scouting no es solo ver quién te copia.
+        Mira esto: si otros jugadores están buscando campeones de 3 estrellas del mismo coste que los tuyos,
+        aunque sean fichas diferentes, ¡te están ayudando! Al sacar ellos esas unidades del 'pool' o bolsa común,
+        hacen que sea matemáticamente más fácil que a ti te salgan las tuyas.
+      </p>
+      <p>
+        <strong>Ojo</strong>: Si buscan exactamente tus mismos campeones,
+        ahí sí estás en problemas ('contested' o contesteado).
+        Si tu adversario tiene mejor spot pivotea a otra compo y si tu tienes
+        mejor spot quédate en tu línea y aguanta aunque él no se vaya.
+      </p>
+    </articule>
+    <articule id="flexibilidad-sin-panico">
+      <h2>Flexibilidad sin Pánico: Cómo mejorar tu Mesa</h2>
+      <p>
+        Muchos se asustan al oír la palabra 'pivotar' pero empezando a jugar no necesitas cambiar todo tu equipo de golpe.
+        La flexibilidad real para un principiante es ser capaz de cambiar un tanque por otro mejor que
+        te acaba de salir 2 estrellas, o añadir una unidad legendaria poderosa (de coste 5) aunque no tenga todas
+        sus sinergias activas. Una buena ficha de alto nivel puede sostener tu mesa mientras encuentras el resto de tu equipo ideal.
+      </p>
+    </articule>
+    <articule id="el-pack-de-4">
+      <h2>El "Pack de 4": Tu Estrategia Meta</h2>
+      <p>
+        Para ganar de forma inteligente, no intentes saberlo todo. Domina este Pack de 4:
+      </p>
+      <ol>
+        <li>Dos composiciones de <a href="#fast-8">Fast 8</a> (para cuando vas ganando): Una de daño físico y una de magia.</li>
+        <li>Dos composiciones de Re-roll '3 estrellas' (para cuando vas perdiendo y tienes mucho oro):
+          Una de daño físico y una de magia.</li>
+      </ol>
+      <p>
+        Con estas 4 opciones bajo la manga, sabrás reaccionar ante las principales situación que te
+        tire el tablero. Cada parche las mejores composiciones Meta cambian si quieres verlas actualizadas
+        revisa el link en el comentario fijado.
+      </p>
+    </articule>
+
+    <h2 class="cards-title">Guías y Tutoriales de TFT</h2>
+    <Cards currentPath={currentPath} client:load transition:persist />
+  </div>
+  <div slot="bodyContainerRight">
+    <!-- Puedes poner contenido aquí para la columna derecha en el futuro -->
+  </div>
+</PaginaBaseMaxWidth>
+
+</LayoutMaxWidth>
