@@ -419,10 +419,10 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
       e.preventDefault();
       const aumentosInput = document.getElementById("aumentos");
       const value = aumentosInput.value;
-      if(aumentos.length >= 8){
-        alert("Has alcanzado el limite de 8 aumentos.\nElimina un aumento para añadir uno nuevo.")
-        return
-      }
+      // if(aumentos.length >= 8){
+      //   alert("Has alcanzado el limite de 8 aumentos.\nElimina un aumento para añadir uno nuevo.")
+      //   return
+      // }
       const repetido = aumentos.filter(({apiName})=>{
         return apiName === value
       })
