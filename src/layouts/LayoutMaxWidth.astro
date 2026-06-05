@@ -75,7 +75,8 @@ const { title, JSONSchema, description, keywords, image, canonical, hide=false, 
         }
       })();
     </script>
-    <link rel="icon" type="image/png" href={(await import("/src/assets/GP_logo.png")).default.src} />
+    <link rel="icon" type="image/png" href={"/web/GP_logo.png"} />
+    <!-- <link rel="icon" type="image/png" href={"/web/logo-gp-2026.png"} /> -->
     <meta name="generator" content={Astro.generator} />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta name="author" content="Jupeson, Profesorjand"/>
@@ -96,7 +97,7 @@ const { title, JSONSchema, description, keywords, image, canonical, hide=false, 
     <PageLoader client:only="react" />
     <div class="bodyLayout">
       <header class="bodyHeader">
-        <Logo>Guiadeparche</Logo>
+        <Logo></Logo>
         <Header transition:persist/>
       </header> 
       <main class="bodyMain">
@@ -240,8 +241,8 @@ const { title, JSONSchema, description, keywords, image, canonical, hide=false, 
     flex-direction: column;
     min-height: 100vh;
     background-color: #191f32;
-    background-image: radial-gradient(circle, #000000 1px, transparent 1px);
-    background-size: 4px 4px;
+    /* background-image: radial-gradient(circle, #000000 1px, transparent 1px);
+    background-size: 4px 4px; */
     opacity: 1;
   }
   code {
@@ -380,8 +381,8 @@ const { title, JSONSchema, description, keywords, image, canonical, hide=false, 
       height: var(--height-header);
       flex-direction: row;
       background-color: #191f32;
-      background-image: radial-gradient(circle, #000000 1px, transparent 1px);
-      background-size: 4px 4px;
+      /* background-image: radial-gradient(circle, #000000 1px, transparent 1px);
+      background-size: 4px 4px; */
       opacity: 1;
       padding: 0 2rem;
       box-sizing: border-box;

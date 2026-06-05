@@ -211,11 +211,11 @@ const deleteComp = ({id, tier, version})=>{
         </div>
         {
           !isInfografia && 
-          <div className={`${style.rightContainer} ${!isInfografia ? "adminOptions" : ""}`}>
+          <div className={`${style.rightContainer} ${!isInfografia ? "hideForCapture" : ""}`}>
           <p className={style.tipSeo}>{comp.tipSeo}</p>
           {
             edit ? (
-              <div className={`${style.btnAdmins} ${!isInfografia ? "adminOptions" : ""}`}>
+              <div className={`${style.btnAdmins} ${!isInfografia ? "hideForCapture" : ""}`}>
                 <button onClick={()=> setOpenForEdit(!openForEdit)}>{isActive ? "Cerrar" : "Ver"}</button>
                 <button onClick={()=> setShowFormForEdit(!showFormForEdit)}>
                   {showFormForEdit ? "Cerrar Edición" : "Editar"}
