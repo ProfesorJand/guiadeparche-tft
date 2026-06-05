@@ -1,6 +1,5 @@
 ---
-import MejoresComposicionesDeTeamfightTactics from "./composiciones-tft/mejores-composiciones-de-teamfight-tactics.astro";
-import LayoutMidOnly from "@layouts/LayoutMidOnly.astro";
+import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
 import CardPaginas from "@components/cards/Paginas.astro";
 
 const Paginas = [
@@ -49,27 +48,706 @@ const Paginas = [
 ]
 
 import { crearJSONSchema } from "@json/schema/crearJSONSchema";
-const title="Guiadeparche"
-const description = "Guiadeparche is a comprehensive guide for the latest patches in Riot Games and others. Discover the best champions, agents, and compositions to dominate your games.";
-const imgPost = "/lol/portada.webp"
+const title="GuiadeParche: La Plataforma de TFT Más Utilizada en Español"
+const description = "Desde 2019 ayudando a jugadores de Teamfight Tactics a mejorar con composiciones, guías y estrategias actualizadas por Jupeson y un equipo de jugadores Challenger.";
+const imgPost = "/web/GP_logo.png"
 const JSONSchema = crearJSONSchema({title, imgPost, description});
-const keywords = "Valorant Meta, Agents Valorant, Maps Valorant, Tier List Valorant, Best Agents Valorant";
+const keywords = "TFT Meta, Teamfight Tactics, GuiadeParche, Jupeson, Composiciones TFT, Guia TFT, Como jugar TFT";
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
 ---
-<LayoutMidOnly title='Guiadeparche' JSONSchema={JSONSchema} description={description} keywords={keywords} image={imgPost} canonical={canonicalURL}>
-  <div class="container">
-    {Paginas.map(({titulo, descripcion, img, link})=>{
-      return (
-          <CardPaginas titulo={titulo} descripcion={descripcion} img={img} link={link}/>
-        )
-      })}
+<LayoutMaxWidth title={title} JSONSchema={JSONSchema} description={description} keywords={keywords} image={imgPost} canonical={canonicalURL}>
+  <div class="home-wrapper">
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-content">
+        <h1>GuiadeParche:<br>La Plataforma de TFT Más Utilizada en Español</h1>
+        <p class="hero-text">
+          Desde 2019 ayudando a jugadores de Teamfight Tactics a mejorar con composiciones, guías y estrategias actualizadas por Jupeson y un equipo de jugadores Challenger.
+        </p>
+
+        <div class="cta-group">
+          <a href="/tft/meta-comps-tier-list-teamfight-tactics/" class="btn btn-primary">Meta TFT Actual</a>
+          <a href="/tft/como-jugar/" class="btn btn-secondary">Aprender TFT</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Master Plan Section -->
+    <section class="masterplan-section">
+      <div class="masterplan-card">
+        <div class="masterplan-content">
+          <h2>TFT Master Plan de GuiadeParche</h2>
+          <p>Puedes obtener el TFT Master Plan donde conviertes partidas caóticas en decisiones claras:</p>
+          <ul class="masterplan-list">
+            <li>✔ Reconocer condiciones OP</li>
+            <li>✔ Elegir la mejor compo rápido</li>
+            <li>✔ Manejar economía como Challenger</li>
+            <li>✔ Saber cuándo pivotear o forzar</li>
+          </ul>
+          
+          <form class="subscription-form" action="/login/" method="GET">
+            <button type="submit">Registrarme</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Explora Section -->
+    <section class="explora-section">
+      <h2 class="section-title">Explora Guiadeparche</h2>
+      <div class="explora-grid">
+        <a href="/tft/meta-comps-tier-list-teamfight-tactics/" class="explora-card">
+          <h3>TFT Meta</h3>
+          <p>Mejores composiciones actualizadas.</p>
+        </a>
+        <a href="/tft/como-jugar/" class="explora-card">
+          <h3>Aprender TFT</h3>
+          <p>Tutoriales y guías.</p>
+        </a>
+        <a href="/tft/nuevo-set/" class="explora-card">
+          <h3>Nuevo Set TFT</h3>
+          <p>Mecánicas y cambios.</p>
+        </a>
+        <a href="/esports/" class="explora-card">
+          <h3>Esports TFT</h3>
+          <p>Circuitos, torneos y competitivo.</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+      <h2 class="section-title">La referencia de TFT en español</h2>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-value">1,6M+</span>
+          <span class="stat-label">Jugadores han utilizado GuiadeParche desde 2019</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value">14M+</span>
+          <span class="stat-label">Páginas vistas</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value">11M+</span>
+          <span class="stat-label">Sesiones acumuladas</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value">5,5M+</span>
+          <span class="stat-label">Impresiones en Google en el último año</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value">374K+</span>
+          <span class="stat-label">Clics orgánicos en los últimos 12 meses</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value">Desde 2019</span>
+          <span class="stat-label">Cubriendo Teamfight Tactics desde sus inicios</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Creator Section -->
+    <section class="creator-section">
+      <div class="creator-card">
+        <div class="creator-img-wrapper">
+          <img src="/Jupeson_LOGO_Sin_Publicidad_Sin_Bordes.png" alt="Jupeson" class="creator-img" />
+        </div>
+        <div class="creator-info">
+          <h2 class="creator-title">Creado por Jupeson y su equipo</h2>
+          <p class="creator-description">
+            GuiadeParche es liderado por Jupeson, caster de 9 Campeonatos Mundiales de TFT, junto a un equipo de jugadores Challenger encargados de analizar el meta y mantener las guías actualizadas.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    
+
+    <!-- Other games / cards section -->
+    <section class="pages-section">
+      <h2 class="section-title">Explora Más Guías de Videojuegos</h2>
+      <div class="pages-container">
+        {Paginas.map(({titulo, descripcion, img, link})=>{
+          return (
+              <CardPaginas titulo={titulo} descripcion={descripcion} img={img} link={link}/>
+            )
+          })}
+      </div>
+    </section>
   </div>
-</LayoutMidOnly>
+</LayoutMaxWidth>
 
 <style>
-  .container{
+  .home-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 4rem;
+    padding: 2rem 1.5rem;
+    box-sizing: border-box;
+  }
+
+  /* Hero Section */
+  .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 4rem 2rem;
+    border-radius: 24px;
+    background: linear-gradient(135deg, rgba(20, 16, 75, 0.6) 0%, rgba(10, 5, 40, 0.8) 100%);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 215, 0, 0.15);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    margin-bottom: 1rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(136, 58, 234, 0.12) 0%, rgba(0, 0, 0, 0) 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero h1 {
+    font-family: 'ObviouslyWideBoldItalic', 'ObvioslyWideBold', sans-serif;
+    font-size: 2.8rem;
+    line-height: 1.15;
+    margin: 0 0 1.5rem 0;
+    text-decoration: none;
+    background: linear-gradient(135deg, #ffd700 0%, #ffaa00 50%, #ff8c00 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    letter-spacing: -0.5px;
+    text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    .hero h1 {
+      font-size: 1.8rem;
+    }
+    .hero {
+      padding: 2.5rem 1rem;
+    }
+  }
+
+  .hero-text {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #cbd5e1;
+    margin: 0 auto 2.5rem auto;
+
+  }
+
+  @media (max-width: 768px) {
+    .hero-text {
+      font-size: 1rem;
+    }
+  }
+
+  .cta-group {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.9rem 2.2rem;
+    font-size: 1.05rem;
+    font-weight: bold;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    font-family: 'ObvioslyWideBold', sans-serif;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%);
+    color: #0c023a;
+    border: none;
+    box-shadow: 0 4px 20px rgba(255, 140, 0, 0.3);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 6px 25px rgba(255, 140, 0, 0.5);
+  }
+
+  .btn-secondary {
+    background: rgba(255, 255, 255, 0.05);
+    color: #e2e8f0;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+  }
+
+  .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-3px);
+    color: #ffffff;
+  }
+
+  /* H2 Headings */
+  .section-title {
+    font-family: 'ObviouslyWideBoldItalic', 'ObvioslyWideBold', sans-serif;
+    font-size: 2.2rem;
+    color: #ffffff;
+    text-align: center;
+    margin: 0 0 2rem 0;
+    position: relative;
+    text-decoration: none;
+  }
+
+  .section-title::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background: #ffd700;
+    margin: 0.8rem auto 0 auto;
+    border-radius: 2px;
+    box-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+  }
+
+  @media (max-width: 768px) {
+    .section-title {
+      font-size: 1.6rem;
+    }
+  }
+
+  /* Explora Section */
+  .explora-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .explora-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    width: 100%;
+  }
+
+  @media (max-width: 900px) {
+    .explora-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .explora-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .explora-card {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    text-decoration: none;
+    color: #ffffff;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .explora-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, #ffd700, #ff8c00);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  /* Color themes for card top borders */
+  .explora-card:nth-child(1)::before { background: linear-gradient(90deg, #ffd700, #ff8c00); }
+  .explora-card:nth-child(2)::before { background: linear-gradient(90deg, #00f2fe, #4facfe); }
+  .explora-card:nth-child(3)::before { background: linear-gradient(90deg, #f35588, #ff8c00); }
+  .explora-card:nth-child(4)::before { background: linear-gradient(90deg, #38ef7d, #11998e); }
+
+  .explora-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+  }
+
+  .explora-card:hover::before {
+    opacity: 1;
+  }
+
+  .explora-card h3 {
+    font-family: 'ObviouslyWideBoldItalic', 'ObvioslyWideBold', sans-serif;
+    font-size: 1.4rem;
+    margin: 0 0 0.8rem 0;
+    color: #ffffff;
+    transition: color 0.3s ease;
+  }
+
+  .explora-card:hover h3 {
+    color: #ffd700;
+  }
+
+  .explora-card p {
+    font-size: 0.95rem;
+    line-height: 1.4;
+    color: #94a3b8;
+    margin: 0;
+  }
+
+  /* Stats Grid */
+  .stats-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    width: 100%;
+  }
+
+  @media (max-width: 900px) {
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .stats-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .stat-card {
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 18px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0) 100%);
+    pointer-events: none;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 215, 0, 0.3);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 215, 0, 0.05);
+  }
+
+  .stat-value {
+    font-family: 'ObviouslyWideBoldItalic', 'ObvioslyWideBold', sans-serif;
+    font-size: 2.3rem;
+    font-weight: 900;
+    margin-bottom: 0.8rem;
+    background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .stat-label {
+    font-size: 1rem;
+    line-height: 1.4;
+    color: #94a3b8;
+  }
+
+  /* Creator Section */
+  .creator-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .creator-card {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    background: linear-gradient(135deg, rgba(20, 16, 75, 0.4) 0%, rgba(15, 11, 90, 0.5) 100%);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+    padding: 2.5rem;
+    width: 100%;
+    box-sizing: border-box;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+  }
+
+  @media (max-width: 768px) {
+    .creator-card {
+      flex-direction: column;
+      text-align: center;
+      gap: 1.5rem;
+      padding: 2rem 1.5rem;
+    }
+  }
+
+  .creator-img-wrapper {
+    position: relative;
+
+  }
+
+  /* .creator-img-wrapper::after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #ffd700, #ff8c00);
+    z-index: 0;
+    opacity: 0.6;
+    filter: blur(8px);
+    animation: pulse 3s infinite alternate;
+  } */
+
+  @keyframes pulse {
+    0% {
+      transform: scale(0.98);
+      opacity: 0.4;
+    }
+    100% {
+      transform: scale(1.02);
+      opacity: 0.8;
+    }
+  }
+
+  .creator-img {
+    width:150px;
+    object-fit: cover;
+    position: relative;
+  }
+
+  .creator-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .creator-title {
+    font-family: 'ObviouslyWideBoldItalic', 'ObvioslyWideBold', sans-serif;
+    font-size: 1.8rem;
+    margin: 0 0 1rem 0;
+    color: #ffffff;
+    text-align: left;
+  }
+
+  @media (max-width: 768px) {
+    .creator-title {
+      text-align: center;
+    }
+  }
+
+  .creator-description {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #cbd5e1;
+    margin: 0;
+  }
+
+  /* Master Plan Section */
+  .masterplan-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .masterplan-card {
+    background: linear-gradient(135deg, rgba(30, 20, 90, 0.5) 0%, rgba(10, 5, 45, 0.8) 100%);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    border-radius: 24px;
+    padding: 3rem 2rem;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .masterplan-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.05) 0%, rgba(0, 0, 0, 0) 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .masterplan-content {
+    position: relative;
+    z-index: 1;
+    margin: 0 auto;
+  }
+
+  .masterplan-card h2 {
+    font-family: 'ObviouslyWideBoldItalic', 'ObvioslyWideBold', sans-serif;
+    font-size: 2.2rem;
+    margin: 0 0 1rem 0;
+    background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  @media (max-width: 768px) {
+    .masterplan-card h2 {
+      font-size: 1.6rem;
+    }
+  }
+
+  .masterplan-card p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #cbd5e1;
+    margin: 0 0 1rem 0;
+  }
+
+  .masterplan-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto 2rem auto;
+    text-align: left;
+    display: inline-block;
+    color: #cbd5e1;
+    font-size: 1.1rem;
+    line-height: 1.8;
+  }
+
+  .masterplan-list li {
+    margin-bottom: 0.5rem;
+  }
+
+  .subscription-form {
+    display: flex;
+    gap: 0.8rem;
+    width: 100%;
+    justify-content: center;
+  }
+
+  @media (max-width: 600px) {
+    .subscription-form {
+      flex-direction: column;
+      gap: 1rem;
+    }
+  }
+
+  /* .subscription-form input[type="email"] {
+    flex-grow: 1;
+    padding: 0.9rem 1.5rem;
+    border-radius: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(0, 0, 0, 0.4);
+    color: #ffffff;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+  }
+
+  .subscription-form input[type="email"]:focus {
+    border-color: #ffd700;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+    background: rgba(0, 0, 0, 0.6);
+  } */
+
+  .subscription-form input[type="email"]::placeholder {
+    color: #64748b;
+  }
+
+  .subscription-form button {
+    padding: 0.9rem 2rem;
+    border-radius: 50px;
+    border: none;
+    background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%);
+    color: #0c023a;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'ObvioslyWideBold', sans-serif;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
+  }
+
+  .subscription-form button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 140, 0, 0.5);
+  }
+
+  .subscription-form button:active {
+    transform: translateY(0);
+  }
+
+  /* Bottom Cards Grid */
+  .pages-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .pages-container {
     display: flex;
     width: 100%;
     flex-direction: row;
     flex-wrap: wrap;
+    justify-content: center;
   }
+</style>

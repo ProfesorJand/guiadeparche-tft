@@ -29,6 +29,12 @@ const { titulo, descripcion, img, link } = Astro.props
   cursor: pointer;
  }
 
+ @media only screen and (min-width: 900px) {
+  .cardContainer {
+    width: calc(100% / 4);
+  }
+ }
+
  .cardContainer:hover{
   scale: 1;
  }

@@ -348,7 +348,7 @@ const formatAugmentDescription = (desc, effects) => {
 const FooterTooltip = ({augment, tooltipRef, edit=false, isInfografia=false})=>{
   if (!augment) {
     return (
-      <div ref={tooltipRef} className={`${style.footerTooltipPlaceholder} ${!isInfografia && edit ? "adminOptions" : ""}`}>
+      <div ref={tooltipRef} className={`${style.footerTooltipPlaceholder} ${!isInfografia && edit ? "hideForCapture" : ""}`}>
         <p className={style.placeholderText}>
           Pasa el cursor sobre un aumento para ver su descripción y efectos
         </p>

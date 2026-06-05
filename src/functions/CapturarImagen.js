@@ -42,7 +42,7 @@ export const CapturarImagen = async ({ backgroundRef, nombre }) => {
   const node = backgroundRef?.current;
   if (!node) return;
 
-  const adminOptionsElements = node.querySelectorAll(".adminOptions");
+  const adminOptionsElements = node.querySelectorAll(".hideForCapture");
   const checkBoxIsInInfographicElements =
     node.querySelectorAll(".checkBoxIsInInfographic");
 

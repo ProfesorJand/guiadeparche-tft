@@ -1,6 +1,4 @@
 ---
-import { Image } from 'astro:assets';
-import logo from '../../assets/GP_logo.png';
 interface ImageMetadata {
   src: string;
   width: number;
@@ -15,11 +13,13 @@ interface ImageMetadata {
     rel="noopener noreferrer"
     id="logo-link"
     >
-    <Image
+    <!-- src={"/web/logo-gp-2026.png"} -->
+    <img
     class="logo"
-    src={logo}
+    src={"/web/GP_logo.png"} 
     alt="Logo Guiadeparche"
     />
+    Guiadeparche
     <slot/>
   </a>
 </div>
@@ -40,8 +40,7 @@ interface ImageMetadata {
 <style>
   .logo {
     display: flex;
-    width: 50px;
-    height: auto;
+    height:  var(--height-header);
   }
   .logoContainer{
     display: flex;
@@ -56,9 +55,7 @@ interface ImageMetadata {
     .logo {
       display: flex;
       position: relative;
-      width: 50px;
-      max-width: 100%;
-      height: auto;
+      height: var(--height-header);
       aspect-ratio: 1/1;
       box-sizing: border-box;
     }
@@ -74,7 +71,7 @@ interface ImageMetadata {
     .containerHeaderLogo{
       display: flex;
       position: relative;
-      width: calc((100% - var(--width-main)) / 2);
+      width: 100%;
       justify-content: center;
       align-items: center;
     }
