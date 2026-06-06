@@ -1,6 +1,8 @@
 .menuContainer {
   position: relative;
   display: flex;
+  height: var(--height-header);
+  aspect-ratio: 1 / 1;
 }
 
 .menuItem {
@@ -12,11 +14,11 @@
 }
 
 .menuItem:hover:not(.active) {
-  background-color: var(--bg-tertiary);
+  background-color: var(--bg-primary-solid);
 }
 
 .active {
-  background-color: var(--bg-hover);
+  background-color: var(--bg-primary-solid);
   cursor: pointer;
 }
 

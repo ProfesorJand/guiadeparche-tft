@@ -9,7 +9,7 @@ export function crearJSONSchema({title, thumbnail = logo.src, imgPost = logo.src
         "dateModified": new Date().toISOString(),
         "image":imgPost,
         "thumbnailUrl":thumbnail,
-        "description":description,
+        "description":Array.isArray(description) ? description[0] : description,
         "author": [
             {
                 "@type": "Person",

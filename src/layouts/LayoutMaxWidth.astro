@@ -10,15 +10,19 @@ import Youtube from '@components/youtube/Youtube.jsx';
 const admin = typeof window !== "undefined" ? window.localStorage.getItem("gp_admin") : false;
 interface Props {
   title: string;
-  JSONSchema?: string;
-  description?: string;
+  JSONSchema?: string; 
+  description?: string | string[];
   keywords?: string;
   image?: string;
   canonical?: string;
   hide?:boolean;
   snippetImgUrl?: string;
 }
-const { title, JSONSchema, description, keywords, image, canonical, hide=false, snippetImgUrl= logoGP.src } = Astro.props;
+const { title, JSONSchema, description, keywords, image, canonical, hide=false, snippetImgUrl } = Astro.props;
+
+// Si no se define snippetImgUrl, usamos image o la ruta por defecto del logo en la carpeta public
+const resolvedSnippetImgUrl = snippetImgUrl || image || "/web/GP_logo.png";
+const absoluteSnippetImgUrl = new URL(resolvedSnippetImgUrl, Astro.site || "https://guiadeparche.com").href;
 
 ---
 
@@ -80,12 +84,12 @@ const { title, JSONSchema, description, keywords, image, canonical, hide=false, 
     <meta name="generator" content={Astro.generator} />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta name="author" content="Jupeson, Profesorjand"/>
-    {description && <meta name="description" content={description}/>}
+    {description && <meta name="description" content={Array.isArray(description) ? description[0] : description}/>} 
     {keywords && <meta name="keywords" content={keywords} />}
-    {image && <meta property="og:image" content={image} />}
+
     {/* debe verificar si al final del string de canonical termina con / y si no lo tiene agregarlo */}
     {canonical && <link rel="canonical" href={canonical.endsWith("/") ? canonical : canonical + "/"} />}
-    {snippetImgUrl && <meta property="og:image" content={snippetImgUrl} />}
+    {absoluteSnippetImgUrl && <meta property="og:image" content={absoluteSnippetImgUrl} />}
 
      <!-- Schema Script -->
     {JSONSchema && <script type="application/ld+json" set:html={JSONSchema}></script>}

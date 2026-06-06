@@ -7,6 +7,7 @@ const menus = [
   {
     nombre:"Teamfight Tactics",
     link:"/tft/meta-comps-tier-list-teamfight-tactics/",
+    linkPrincipal:"tft",
     img:"/tft/assets/t-logo.png",
     // submenus:[
     //   {nombre:"Patch Dates",link:"/tft/patch-dates/"},
@@ -17,16 +18,19 @@ const menus = [
   {
     nombre:"League of Legends",
     link:"/lol/best-champions-tier-list-league-of-legends/",
+    linkPrincipal:"lol",
     img:"/lol/lol_icon.png"
   },
   {
     nombre:"Valorant",
     link:"/valorant/meta-agents-maps/",
+    linkPrincipal:"valorant",
     img:"/valorant/logos/v2.png"
   },
   {
     nombre:"Wildrift",
     link:"/wildrift/best-champions-tier-list-wild-rift",
+    linkPrincipal:"wildrift",
     img:"/wildrift/logo/mini-logo.webp"
   },
   // {
@@ -37,16 +41,19 @@ const menus = [
   {
     nombre:"2XKO",
     link:"/2xko/best-team-duos-champions-meta-tier-list-2xko/",
+    linkPrincipal:"2xko",
     img:"/2xko/logo/2xko-icono.png"
   },
   {
     nombre:"Illuvium",
     link:"/illuvium/Guantlet-Arena-Best-Teams/",
+    linkPrincipal:"illuvium",
     img:"https://api.guiadeparche.com/illuvium/assets/logos/logo_cuadrado_illuvium.webp",
   },
   {
     nombre:"Mejores Lanzamientos de Videojuegos",
     link:"/mejores-lanzamientos-de-videojuegos",
+    linkPrincipal:"mejores-lanzamientos-de-videojuegos",
     img:"/gamer/control-gamer.png",
   }
   
@@ -85,7 +92,7 @@ const menus = [
     <div class="menuContainer">
       {
         menus.map((menu) => {
-          return <Menu link={menu.link} nombre={menu.nombre} submenus={menu?.submenus} img={menu.img} onlyAdmin={menu.onlyAdmin} client:only="react" />;
+          return <Menu linkPrincipal={menu.linkPrincipal} link={menu.link} nombre={menu.nombre} submenus={menu?.submenus} img={menu.img} onlyAdmin={menu.onlyAdmin} client:only="react" />;
         })
       }
       <UserMenu client:only="react" />
@@ -105,7 +112,7 @@ const menus = [
       </div>
       {
         menus.map((menu) => {
-          return <Menu link={menu.link} nombre={menu.nombre} img={menu.img}  />;
+          return <Menu linkPrincipal={menu.linkPrincipal} link={menu.link} nombre={menu.nombre} img={menu.img}  />;
         })
       }
     </div>
@@ -171,9 +178,10 @@ const menus = [
       position: relative;
       width: 100%;
       gap: 10px;
-      align-items: center;
-      justify-content: center;
+      align-items: flex-end;
+      justify-content: flex-end;
       box-sizing: border-box;
+      height: var(--height-header);
     }
   }
 </style>

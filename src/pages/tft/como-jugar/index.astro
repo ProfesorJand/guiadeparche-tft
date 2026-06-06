@@ -4,7 +4,7 @@ import { crearJSONSchema } from "@json/schema/crearJSONSchema";
 import PaginaBaseMaxWidth from "@components/TFT/paginas/PaginaBaseMaxWidth.astro";
 import Youtube from "@components/youtube/Youtube.jsx";
 import Cards from "@components/TFT/como-jugar/Cards";
-const topTitle="Como Jugar TFT";
+const topTitle="Cómo Jugar TFT";
 const lowerTitle = "Guía Completa 2026";
 const title = `${topTitle} ${lowerTitle}`;
 // como hacer para colocar mucho texto en varias lineas?
@@ -13,7 +13,7 @@ const description =[
   "Si estás empezando desde cero o vuelves después de varios sets sin jugar, esta guía te ayudará a comprender paso a paso cómo funciona TFT y cuáles son los conceptos más importantes para subir de rango más rápido.",
   "Explora cada sección para aprender economía, objetos, posicionamiento, composición de equipo, términos habituales y estrategias avanzadas utilizadas por jugadores de alto nivel."
 ];
-const keywords ="Como Jugar TFT Guia Completa, Teamfight Tactics, TFT, Guia Completa, Como Jugar TFT";
+const keywords = "Cómo Jugar TFT, Guía TFT, tutorial TFT, TFT para principiantes, aprender TFT, consejos TFT";
 const imgUrl ="";
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const baseSchema = JSON.parse(
@@ -43,12 +43,11 @@ const currentPath = Astro.url.pathname;
       <div slot="bodyContainerLeft">
         <!-- Puedes poner contenido aquí para la columna izquierda en el futuro -->
       </div>
-      <div slot="bodyContainerMid">
-        <h2 class="cards-title">Guías y Tutoriales de TFT</h2>
-        <Cards currentPath={currentPath} client:load transition:persist/>
-              
+        <div slot="bodyContainerMid">
+          <h2 class="cards-title">Guías y Tutoriales de TFT</h2>
+          <Cards currentPath={currentPath} client:load transition:persist/>
+                
         </div>
-      </div>
       <div slot="bodyContainerRight">
         <!-- Puedes poner contenido aquí para la columna derecha en el futuro -->
       </div>

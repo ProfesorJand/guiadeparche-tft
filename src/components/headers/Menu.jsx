@@ -1,13 +1,13 @@
 import style from "./Menu.module.css";
 import { useEffect, useState } from 'react';
 
-const Menu = ({link, nombre, submenus = [], img = "", onlyAdmin=false }) => {
+const Menu = ({link, linkPrincipal, nombre, submenus = [], img = "", onlyAdmin=false }) => {
   const [currentPath, setCurrentPath] = useState('');
   const [admin, setAdmin] = useState(false); // Estado para admin
 
   useEffect(() => {
     // Esto solo se ejecuta en navegador
-    setCurrentPath(window.location.pathname);
+    setCurrentPath(window.location.pathname.split('/')[1]);
     const user = localStorage.getItem("user") || "";
     setAdmin(!!user);
   }, []);
@@ -20,7 +20,7 @@ const Menu = ({link, nombre, submenus = [], img = "", onlyAdmin=false }) => {
   return (
     <div className="menuContainer">
       <a
-        className={[style.menuItem, currentPath === link ? style.active : ''].join(" ")}
+        className={[style.menuItem, currentPath === linkPrincipal ? style.active : ''].join(" ")}
         href={currentPath === link ? null : link}
         target="_self"
       >
