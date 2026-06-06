@@ -51,7 +51,7 @@ const restComps = [...todasLasCompsPBE.slice(10)];
   top10Comps={top10Comps}
   restComps={restComps}
   activeId={id}
-  snippetImgUrl={comp.campeonTierList.tileIcon}
+  snippetImgUrl={urlDragon()+ comp.campeonTierList.tileIcon.replace(".tex",".png").toLowerCase()}
 >  
 </MetaCompsLayout>
 
