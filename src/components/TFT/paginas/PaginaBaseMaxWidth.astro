@@ -108,14 +108,19 @@ const paragraphs = Array.isArray(textInfo)
   ol li:not(:has(ol)):last-child {
     margin-bottom: 0;
   }
-  articule{
+  article{
     & h2{
       font-size: 2rem;
       text-align: left;
     }
+    & h3{
+      font-size: 1.6rem;
+    }
     & p{
       font-size:1.2rem;
       line-height: 1.5;
+      margin-block-end: 0;
+      margin-block-start: 0;
     }
     & li{
       font-size: 1.2rem;
@@ -123,6 +128,7 @@ const paragraphs = Array.isArray(textInfo)
       margin-bottom: 12px;
     }
   }
+  
   @media (max-width: 900px) {
    .indiceColumna{
     flex-direction:column;

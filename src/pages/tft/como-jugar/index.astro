@@ -37,20 +37,18 @@ const currentPath = Astro.url.pathname;
     lowerTitle={lowerTitle}
     textInfo={description}
   >
-  
-    <Youtube slot="videoHeader" src={"https://www.youtube.com/watch?v=S1ftxYObRsM"}  client:load />
 
-      <div slot="bodyContainerLeft">
-        <!-- Puedes poner contenido aquí para la columna izquierda en el futuro -->
+    <div slot="bodyContainerLeft">
+      <!-- Puedes poner contenido aquí para la columna izquierda en el futuro -->
+    </div>
+      <div slot="bodyContainerMid">
+        <h2 class="cards-title">Guías y Tutoriales de TFT</h2>
+        <Cards currentPath={currentPath} client:load transition:persist/>
+              
       </div>
-        <div slot="bodyContainerMid">
-          <h2 class="cards-title">Guías y Tutoriales de TFT</h2>
-          <Cards currentPath={currentPath} client:load transition:persist/>
-                
-        </div>
-      <div slot="bodyContainerRight">
-        <!-- Puedes poner contenido aquí para la columna derecha en el futuro -->
-      </div>
+    <div slot="bodyContainerRight">
+      <!-- Puedes poner contenido aquí para la columna derecha en el futuro -->
+    </div>
 
   </PaginaBaseMaxWidth>
 </LayoutMaxWidth>
