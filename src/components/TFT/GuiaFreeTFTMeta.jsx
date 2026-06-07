@@ -263,11 +263,10 @@ const Header2 = ({comp, setHoveredAugment, augmentRef})=>{
 const Posicionamiento = ({comp})=>{
   return (
     <div className={`${style.borderBlock} ${style.containerPosicionamientoBlock}`}>
-      <h4>Sinergias</h4>
+      <h4>Posicionamiento</h4>
       <div className={style.containerSinergiasActivas}>
         <Sinergias sinergias={comp?.boardInfo?.[comp?.originalComp]?.sinergias} orientacion={"vertical"} show={true} version={comp?.version} />
       </div>
-      <h4>Posicionamiento</h4>
       <img className={style.posicionamientoImg} src={`${urlComposiciones}${comp?.id}-${comp?.originalComp}${comp?.version === "pbe" ? "-pbe" : ""}.webp`} alt={`Posicionamiento de ${comp.titulo}`}/>
     </div>
   )

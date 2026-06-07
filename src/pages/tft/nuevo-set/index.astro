@@ -1,0 +1,596 @@
+---
+import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
+import { crearJSONSchema } from "@json/schema/crearJSONSchema";
+import PaginaBaseMaxWidth from "@components/TFT/paginas/PaginaBaseMaxWidth.astro";
+import Youtube from "@components/youtube/Youtube.jsx";
+
+const topTitle = "Nuevo Set TFT:";
+const lowerTitle = "Todo sobre el Set 17 de Teamfight Tactics";
+const title = `${topTitle} ${lowerTitle}`;
+
+const description = "Descubre todo sobre el nuevo Set de TFT: campeones, sinergias, mecánicas, fecha de lanzamiento, duración del Set y consejos para empezar con ventaja.";
+
+const keywords = "Nuevo Set TFT, Set 17 TFT, Teamfight Tactics Set 17, TFT Dioses del Espacio, fecha de lanzamiento Set 17, meta TFT";
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+
+const baseSchema = JSON.parse(
+  crearJSONSchema({title, description: description})
+);
+const JSONSchema = JSON.stringify(baseSchema);
+
+const currentPath = Astro.url.pathname;
+---
+
+<LayoutMaxWidth
+  title={title}
+  description={description}
+  keywords={keywords}
+  JSONSchema={JSONSchema}
+  canonical={canonical}
+>
+  <PaginaBaseMaxWidth
+    topTitle={topTitle}
+    lowerTitle={lowerTitle}
+    textInfo={description}
+  >
+    <div slot="bodyContainerLeft">
+      <!-- Columna izquierda vacía para consistencia -->
+    </div>
+
+    <div slot="bodyContainerMid" class="bodyContainerMid">
+      
+      <!-- Seccion 1: ¿Qué es el Set 17 de TFT? -->
+      <article id="que-es-set-17">
+        <h2>¿Qué es el Set 17 de TFT?</h2>
+        <p>
+          El Set 17 de Teamfight Tactics, titulado oficialmente <strong>TFT: Dioses del Espacio / Deidades Siderales</strong> (o <em>Space Gods</em> en inglés), sumerge a los estrategas en una auténtica odisea intergaláctica con un diseño celestial, campeones galácticos y bendiciones de los dioses.
+        </p>
+        
+      </article>
+
+      <!-- Cards de Navegación de Secciones -->
+      <div class="cards-grid">
+        <a href="/tft/nuevo-set/consejos-tips-para-mejorar" class="nav-card">
+          <div class="nav-card-icon">💡</div>
+          <div class="nav-card-info">
+            <h3>Consejos del Set TFT</h3>
+            <p>Aprende de estos tips de Jupeson para subir de elo fácilmente en Teamfight Tactics.</p>
+          </div>
+        </a>
+        <a href="/tft/mejores-comps-tier-list-teamfight-tactics" class="nav-card">
+          <div class="nav-card-icon">🏆</div>
+          <div class="nav-card-info">
+            <h3>Mejores Composiciones del Set Actual de TFT</h3>
+            <p>Consulta el tier list y las mejores configuraciones para subir de rango.</p>
+          </div>
+        </a>
+      </div>
+
+      <article>
+        <h2>Mecánica del Set</h2>
+        <p>El Set 17 de TFT introduce la mecánica de Dioses Espaciales, se eliminan los carruseles y son reemplazado por el reino de los Dioses. Acá tendrás que elegir entre 2 dioses que son diferentes en cada partida (más el dios pengu que siempre esta presente), y te darán ofrendas si los eliges.</p>
+
+        <h3>¿Qué hace cada Dios Espacial en TFT Set 17?</h3>
+        <p>Tendrás 3 encuentros con los dioses, y en cada uno deberás elegir un dios con su ofrenda. El dios que elijas 2 o más veces te dará también un <strong>"boon"</strong> o <strong>"bendición"</strong> acorde a su arquetipo. A continuación te explico los detalles de cada Dios:</p>
+        
+        <ul>
+          <li><h4><strong>Ahri</strong>:</h4>
+            <ul>
+              <li>Otorga economía (Oro, experiencia y actualización de tienda "roll")</li>
+              <li>Bendición: Daño de ataque y Daño de Habilidad por nivel, puntos de experiencia por ronda</li>
+            </ul>
+          </li>
+        </ul>
+
+        <ul>
+          <li><h4><strong>Aurelion Sol</strong>:</h4>
+            <ul>
+              <li>Te da misiones a cambio de recompensas y su bendición depende de que misión hayas elegido.</li>
+              <li><strong>Misión de atributo</strong>: Tras desplegar 6 atributos que no sean únicos en un combate contra un jugador, obtienes un emblema aleatorio y 1 Reforjador.</li>
+              <li><strong>Misión de riqueza</strong>: Al acumular 50 de oro, obtienes 1 yunque de componente y 4 de oro.</li>
+              <li><strong>Misión estelar</strong>: La próxima vez que subas el nivel de estrellas de un campeón, obtienes 10 de oro.</li>
+              <li><strong>Misión de nivel</strong>: Cuando alcanzas el nivel 9, obtienes 20 de oro.</li>
+              <li><strong>Misión de poca vida</strong>: La primera vez que tu vida descienda a 30, obtienes 18 de oro.</li>
+              <li><strong>Misión de reroll</strong>: Tras cambiar la tienda 15 veces, obtienes 2 yunques de componente.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <ul>
+          <li><h4><strong>Ekko</strong>:</h4>
+            <ul>
+              <li>Sus recompensas tienen valor a largo plazo (escurridizos, artefactos u objetos, campeones coste 4 y 5, mejoras en estadísticas, Oro en rondas y botines)</li>
+              <li>Bendición de anomalía: objeto que evoluciona según el roll de tus campeones</li>
+            </ul>
+          </li>
+        </ul>
+
+        <ul>
+          <li><h4><strong>Evelynn</strong>:</h4>
+            <ul>
+              <li>Perfecto para jugar tempo, otorga poderosas recompensas a cambio de puntos de vida del estratega.</li>
+              <li>Bendición: Otorga durabilidad a tu equipo, pero si pierdes un combate pierdes 1 vida de estratega adicional.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <ul>
+          <li><h4><strong>Kayle</strong>:</h4>
+            <ul>
+              <li>Otorga objetos y/o yunques de componentes.</li>
+              <li>Bendición: Por cada objeto completo que tenga tu equipo obtienes % de daño de ataque y de poder de habilidad.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <ul>
+          <li><h4><strong>Soraka</strong>:</h4>
+            <ul>
+              <li>Otorga supervivencia ya sea con vida o escudos a tus campeones, objetos de vida o vida extra a tu estratega.</li>
+              <li>Bendición: tu equipo obtiene vida por cada punto de vida faltante de tu estratega. Al principio de cada combate otorga vida a tu estratega por ronda.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <ul>
+          <li><h4><strong>Thresh</strong>:</h4>
+            <ul>
+              <li>Obtienes botines misteriosos, o una gracia de los otros dioses y oro.</li>
+              <li>Bendición: en cada ronda tira un dado. Recibes una bonificación acorde al resultado de los dados. Mayor numero, mayor recompensa.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <ul>
+          <li><h4><strong>Varus</strong>:</h4>
+            <ul>
+              <li>Ideal para subir a tus campeones a 3 estrellas ya que otorga duplicadores y campeones o tienda mejoradas.</li>
+              <li>Bendición: Tu equipo obtiene 15 de vida por cada nivel de estrellas de tus campeones, y las probabilidades de obtener campeones de coste 5 aumentan un 2%.</li>
+            </ul>
+          </li>
+        </ul>
+
+        <ul>
+          <li><h4><strong>Yasuo</strong>:</h4>
+            <ul>
+              <li>Otorga potenciar hexágonos para tus campeones tanques, daño o utilidad.</li>
+              <li>Bendición: Aumenta el poder de los hexágonos de Yasuo en un 50%. Si solo tienes 2 hexágonos, obtienes 8 de oro.</li>
+            </ul>
+          </li>
+        </ul>
+
+      </article>
+
+      
+
+      <!-- Seccion 4: Consejos para Empezar el Set -->
+      <!-- <article id="consejos-inicio">
+        <h3>Consejos para Empezar el Set</h3>
+        <p>
+          Afrontar los primeros días de un nuevo set puede ser abrumador. Con estos consejos prácticos reducirás tu curva de aprendizaje y evitarás los errores más comunes de la comunidad.
+        </p>
+        
+        <div class="video-embed-container">
+          <Youtube src="https://www.youtube.com/watch?v=qoV9hH9s9RI" client:load />
+        </div>
+
+        <div class="consejos-grid">
+          <div class="consejo-item avoid">
+            <h4>❌ Qué evitar</h4>
+            <p>
+              Evita forzar una sola composición en todas tus partidas. El Set 17 recompensa fuertemente la flexibilidad, y forzar la misma mesa ignorando las rotaciones cósmicas y los aumentos orbitales es una receta segura para perder LP. Tampoco amontones a tus carrys en un solo hexágono orbital si el oponente tiene campeones de daño en área masivo.
+            </p>
+          </div>
+          <div class="consejo-item practice">
+            <h4>✔️ Qué practicar</h4>
+            <p>
+              Práctica el posicionamiento dinámico de tus carries y tanques sobre las casillas orbitales para aprovechar sus bonificaciones variables. Aprende las combinaciones de objetos híbridos (como chispa iónica o manto del ocaso) que son extremadamente potentes gracias al daño cósmico base incrementado de este set.
+            </p>
+          </div>
+          <div class="consejo-item mistakes">
+            <h4>⚠️ Qué suele hacer la gente mal</h4>
+            <p>
+              El error más común de los jugadores es descuidar las transiciones de nivel medio. Dado que los Dioses del Espacio tienen picos de poder muy marcados a nivel 7 y 8, quedarse atascado en composiciones de bajo coste (reroll de nivel 5) suele costar la partida si no se alcanza a estabilizar a tiempo con carries de coste 4 celestiales.
+            </p>
+          </div>
+        </div>
+      </article> -->
+
+      <!-- Seccion 6: Fechas del Set -->
+      <article id="fechas-set">
+        <h2>Fechas del Set 17 de TFT</h2>
+        <p>
+          Lleva el registro de las fases de desarrollo y duración oficial del Set 17. Esta información es crucial para planificar tu escalada competitiva antes de las finales del set.
+        </p>
+        
+        <div class="table-container">
+          <table class="dates-table">
+            <thead>
+              <tr>
+                <th>Fase / Evento</th>
+                <th>Fecha / Detalle</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Lanzamiento PBE (Pruebas)</strong></td>
+                <td>31 de Marzo 2026</td>
+              </tr>
+              <tr>
+                <td><strong>Lanzamiento Servidor Oficial</strong></td>
+                <td>15 de Abril 2026</td>
+              </tr>
+              <tr>
+                <td><strong>Fin Estimado del Set</strong></td>
+                <td>15 de Agosto 2026</td>
+              </tr>
+              <tr>
+                <td><strong>Duración Aproximada</strong></td>
+                <td>4 Meses</td>
+              </tr>
+              <tr>
+                <td><strong>Siguiente Set (Set 18) Estimado</strong></td>
+                <td>16 de Agosto 2026</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </article>
+
+      <!-- Seccion 7: Preguntas Frecuentes -->
+      <!-- <article id="preguntas-frecuentes" class="faq-section">
+        <h2>Preguntas Frecuentes (FAQ)</h2>
+        <div class="faq-list">
+          
+          <div class="faq-item">
+            <h4>¿Cuándo sale el nuevo Set 17 de TFT?</h4>
+            <p>
+              El Set 17, Dioses del Espacio, se lanzó oficialmente en todos los servidores el <strong>15 de Abril 2026</strong>. Su periodo de pruebas en el PBE comenzó el 31 de Marzo 2026.
+            </p>
+          </div>
+
+          <div class="faq-item">
+            <h4>¿Cuánto dura un Set de TFT?</h4>
+            <p>
+              Un Set principal de Teamfight Tactics dura aproximadamente <strong>4 meses</strong>. Durante este periodo se introducen múltiples parches quincenales de balance para mantener el meta competitivo saludable.
+            </p>
+          </div>
+
+          <div class="faq-item">
+            <h4>¿Cuál es el Set actual de TFT?</h4>
+            <p>
+              El Set actual activo es el <strong>Set 17: Dioses del Espacio</strong>, que reemplaza al set anterior introduciendo mecánicas celestes y tableros orbitales.
+            </p>
+          </div>
+
+          <div class="faq-item">
+            <h4>¿Qué cambia en cada Set?</h4>
+            <p>
+              Cada Set renueva por completo el catálogo de campeones, los rasgos de sinergias (clases y orígenes), añade una mecánica de juego global única, nuevos Aumentos y realiza reajustes al sistema de objetos.
+            </p>
+          </div>
+
+          <div class="faq-item">
+            <h4>¿Cuántos Sets tiene TFT en total?</h4>
+            <p>
+              Con la llegada de Dioses del Espacio, Teamfight Tactics ha completado y lanzado oficialmente <strong>17 sets temáticos</strong> desde su debut original en el año 2019.
+            </p>
+          </div>
+
+          <div class="faq-item">
+            <h4>¿Dónde puedo ver las mejores composiciones del Set?</h4>
+            <p>
+              Puedes consultar nuestra lista de mejores composiciones actualizadas en tiempo real en la sección de <a href="/tft/meta-comps-tier-list-teamfight-tactics">Meta Tier List de TFT</a>.
+            </p>
+          </div>
+
+          <div class="faq-item">
+            <h4>¿Dónde puedo aprender a jugar TFT?</h4>
+            <p>
+              Si eres principiante o buscas pulir tus fundamentos de economía y posicionamiento, te recomendamos leer nuestra completa <a href="/tft/como-jugar/">Guía para Aprender a Jugar TFT</a>.
+            </p>
+          </div>
+
+        </div>
+      </article> -->
+
+      
+
+    </div>
+
+    <div slot="bodyContainerRight">
+      <!-- Columna derecha vacía para consistencia -->
+    </div>
+  </PaginaBaseMaxWidth>
+</LayoutMaxWidth>
+
+<style>
+  .bodyContainerMid {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  /* Cards Grid */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin: 20px 0;
+  }
+
+  @media (max-width: 768px) {
+    .cards-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .nav-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    text-decoration: none;
+    color: #ffffff;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .nav-card:hover {
+    transform: translateY(-4px);
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(255, 215, 0, 0.3);
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.15);
+  }
+
+  .nav-card-icon {
+    font-size: 2rem;
+    background: rgba(255, 215, 0, 0.1);
+    border-radius: 12px;
+    min-width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffd700;
+  }
+
+  .nav-card-info h3 {
+    margin: 0 0 5px 0;
+    font-size: 1.2rem;
+    /* font-family: 'ObvioslyWideBold', sans-serif; */
+    color: #ffffff;
+    transition: color 0.3s ease;
+  }
+
+  .nav-card:hover h3 {
+    color: #ffd700;
+  }
+
+  .nav-card-info p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #94a3b8;
+    line-height: 1.4;
+  }
+
+  /* Video Embeds */
+  .video-embed-container {
+    width: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+    margin: 20px 0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  }
+
+  /* Image Showcase */
+  .image-showcase {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  }
+
+  .responsive-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+  }
+
+  /* Consejo Items */
+  .consejos-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin: 25px 0;
+  }
+
+  .consejo-item {
+    border-radius: 12px;
+    padding: 20px;
+    border-left: 4px solid;
+  }
+
+  .consejo-item h4 {
+    margin: 0 0 10px 0;
+    font-family: 'ObvioslyWideBold', sans-serif;
+    font-size: 1.1rem;
+  }
+
+  .consejo-item p {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #cbd5e1;
+  }
+
+  .consejo-item.avoid {
+    border-left-color: #ef4444;
+    background: rgba(239, 68, 68, 0.04);
+  }
+
+  .consejo-item.avoid h4 {
+    color: #f87171;
+  }
+
+  .consejo-item.practice {
+    border-left-color: #10b981;
+    background: rgba(16, 185, 129, 0.04);
+  }
+
+  .consejo-item.practice h4 {
+    color: #34d399;
+  }
+
+  .consejo-item.mistakes {
+    border-left-color: #f59e0b;
+    background: rgba(245, 158, 11, 0.04);
+  }
+
+  .consejo-item.mistakes h4 {
+    color: #fbbf24;
+  }
+
+  /* Composiciones Highlight */
+  .comp-highlight {
+    background: linear-gradient(135deg, rgba(136, 58, 234, 0.12) 0%, rgba(20, 16, 75, 0.4) 100%);
+    border: 1px solid rgba(136, 58, 234, 0.3);
+    border-radius: 18px;
+    padding: 25px;
+    margin: 30px 0;
+    box-shadow: 0 8px 30px rgba(136, 58, 234, 0.1);
+  }
+
+  .comp-card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 15px;
+  }
+
+  .comp-card-content p {
+    margin: 0;
+  }
+
+  .bold-text {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #ffd700;
+  }
+
+  .cta-action-container {
+    margin-top: 10px;
+  }
+
+  .btn-meta-redirect {
+    display: inline-block;
+    padding: 12px 35px;
+    background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%);
+    color: #0c023a;
+    text-decoration: none;
+    font-weight: bold;
+    font-family: 'ObvioslyWideBold', sans-serif;
+    border-radius: 50px;
+    text-transform: uppercase;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
+  }
+
+  .btn-meta-redirect:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 6px 20px rgba(255, 140, 0, 0.5);
+    color: #0c023a;
+  }
+
+  /* Table */
+  .table-container {
+    width: 100%;
+    overflow-x: auto;
+    margin: 20px 0;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  }
+
+  .dates-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .dates-table th, .dates-table td {
+    padding: 15px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .dates-table th {
+    background: rgba(255, 255, 255, 0.05);
+    color: #ffd700;
+    font-family: 'ObvioslyWideBold', sans-serif;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+  }
+
+  .dates-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  /* FAQ */
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 25px;
+  }
+
+  .faq-item {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 20px;
+    transition: background 0.3s ease;
+  }
+
+  .faq-item:hover {
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .faq-item h4 {
+    margin: 0 0 10px 0;
+    font-size: 1.15rem;
+    color: #ffd700;
+    font-family: 'ObvioslyWideBold', sans-serif;
+  }
+
+  .faq-item p {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #cbd5e1;
+  }
+
+  .faq-item a {
+    color: #00f2fe;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .faq-item a:hover {
+    text-decoration: underline;
+  }
+</style>

@@ -1,5 +1,19 @@
 import style from "./css/Cards.module.css";
-const Cards = ({currentPath}) => {
+import {useState, useEffect} from "react";
+const Cards = () => {
+   const [urlWindow, setUrlWindow] = useState("");
+   useEffect(() => {
+     const updatePath = () => {
+       setUrlWindow(window.location.pathname);
+     };
+     updatePath();
+     document.addEventListener("astro:after-swap", updatePath);
+     document.addEventListener("astro:page-load", updatePath);
+     return () => {
+       document.removeEventListener("astro:after-swap", updatePath);
+       document.removeEventListener("astro:page-load", updatePath);
+     };
+   }, []);
   const CardsComoJugar=[
   {
     title:"Cómo jugar desde cero",
@@ -67,8 +81,11 @@ const Cards = ({currentPath}) => {
       {CardsComoJugar.map(({title, desc, icon, url})=>{
         //remplaza en currentPath de la claseName si tiene # y todo el texto despues de ello
         const urlWithoutHash = url.split("#")[0];
+       
+        const cleanPath = (p) => p.replace(/\/$/, "");
+        const isActive = cleanPath(urlWindow) === cleanPath(urlWithoutHash);
         return(
-          <a className={`${style.card} ${style.url} ${currentPath === urlWithoutHash ? style.active : ""}`} href={url}>
+          <a className={`${style.card} ${style.url} ${isActive ? style.active : ""}`} href={url}>
             <div className={style.containerImage}>
               <img className={style.image} src={icon} alt="" />
             </div>
