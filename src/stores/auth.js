@@ -4,6 +4,7 @@ export const $admin = atom(false);
 export const $user = atom(null);
 export const $authError = atom(null);
 export const $authLoading = atom(false);
+export const $activeTab = atom('data');
 
 // ... (líneas 1-7 iguales)
 
@@ -55,4 +56,9 @@ export const logOut = () => {
   $admin.set(false)
   localStorage.removeItem('gp_user');
   localStorage.removeItem('gp_admin');
+}
+
+
+export const setActiveTab = (tab) => {
+  $activeTab.set(tab);
 }

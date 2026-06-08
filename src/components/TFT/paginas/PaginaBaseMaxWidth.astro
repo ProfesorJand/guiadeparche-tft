@@ -97,6 +97,9 @@ const paragraphs = Array.isArray(textInfo)
       color: var(--color-white)
     }
   }
+  ul{
+    margin-block-start:0;
+  }
   ol ol {
     padding-left: 20px;
     margin-top: 10px; /* Espacio entre el título principal y los sub-ítems */
@@ -108,25 +111,103 @@ const paragraphs = Array.isArray(textInfo)
   ol li:not(:has(ol)):last-child {
     margin-bottom: 0;
   }
-  article{
-    & h2{
+   h2{
       font-size: 2rem;
       text-align: left;
     }
-    & h3{
+     h3{
       font-size: 1.6rem;
     }
-    & p{
+     p{
       font-size:1.2rem;
       line-height: 1.5;
       margin-block-end: 0;
       margin-block-start: 0;
     }
-    & li{
+     li{
       font-size: 1.2rem;
       line-height: 1.5;
       margin-bottom: 12px;
     }
+
+  details {
+    background: rgba(16, 21, 37, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    margin-bottom: 1.25rem;
+    padding: 1rem 1.25rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  details:hover {
+    border-color: var(--bg-purple-secondary);
+    background: rgba(29, 21, 170, 0.15);
+    box-shadow: 0 4px 25px rgba(107, 34, 115, 0.15);
+  }
+
+  details[open] {
+    border-color: rgba(107, 34, 115, 0.6);
+    background: rgba(16, 21, 37, 0.85);
+  }
+
+  details summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--text-color-white-primary);
+    cursor: pointer;
+    user-select: none;
+    list-style: none;
+  }
+
+  details summary::-webkit-details-marker {
+    display: none;
+  }
+
+  details summary::after {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid var(--text-color-white-primary);
+    border-bottom: 2px solid var(--text-color-white-primary);
+    transform: rotate(45deg);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-right: 0.5rem;
+  }
+
+  details[open] > summary::after {
+    transform: rotate(-135deg);
+    border-color: var(--bg-purple-secondary);
+  }
+
+  details[open] > summary {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  details > *:not(summary) {
+    animation: slideFadeIn 0.35s ease-out;
+  }
+
+  @keyframes slideFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  details ol {
+    margin-top: 0.5rem;
+    margin-bottom: 0;
   }
   
   @media (max-width: 900px) {

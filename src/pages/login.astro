@@ -1,5 +1,5 @@
 ---
-import Layout from '../layouts/LayoutMidOnly.astro';
+import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
 import LoginForm from '../components/auth/LoginForm.jsx';
 import Main from '@components/main/Main.astro';
 
@@ -8,7 +8,7 @@ import Main from '@components/main/Main.astro';
 const GOOGLE_CLIENT_ID = import.meta.env.PUBLIC_ID_CLIENT_GOOGLE_CLOUD_OAUTH;
 ---
 
-<Layout title="Iniciar Sesión | Guia de Parche">
+<LayoutMaxWidth title="Iniciar Sesión | Guiadeparche">
   <!-- Metatags and scripts moved directly into the layout's slot -->
   <meta name="google-signin-client_id" content={GOOGLE_CLIENT_ID}>
   <script src="https://apis.google.com/js/api.js" is:inline></script>
@@ -27,7 +27,7 @@ const GOOGLE_CLIENT_ID = import.meta.env.PUBLIC_ID_CLIENT_GOOGLE_CLOUD_OAUTH;
 
     </div>
   </Main>
-</Layout>
+</LayoutMaxWidth>
 
 <style>
   .login-wrapper {

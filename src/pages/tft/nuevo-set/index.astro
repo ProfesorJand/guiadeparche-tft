@@ -3,6 +3,7 @@ import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
 import { crearJSONSchema } from "@json/schema/crearJSONSchema";
 import PaginaBaseMaxWidth from "@components/TFT/paginas/PaginaBaseMaxWidth.astro";
 import Youtube from "@components/youtube/Youtube.jsx";
+import RegistrarseBTN from "@components/TFT/RegistrarseBTN";
 
 const topTitle = "Nuevo Set TFT:";
 const lowerTitle = "Todo sobre el Set 17 de Teamfight Tactics";
@@ -19,7 +20,6 @@ const baseSchema = JSON.parse(
 );
 const JSONSchema = JSON.stringify(baseSchema);
 
-const currentPath = Astro.url.pathname;
 ---
 
 <LayoutMaxWidth
@@ -48,6 +48,12 @@ const currentPath = Astro.url.pathname;
         </p>
         
       </article>
+      <RegistrarseBTN
+        text="Estamos construyendo una nueva herramienta para ayudarte a elegir mejor tus composiciones."
+        buttonText="Únete a la lista →"
+        layout="column"
+        className="mb-20"
+      />
 
       <!-- Cards de Navegación de Secciones -->
       <div class="cards-grid">
@@ -592,5 +598,10 @@ const currentPath = Astro.url.pathname;
 
   .faq-item a:hover {
     text-decoration: underline;
+  }
+
+<style>
+  .mb-20 {
+    margin-bottom: 20px;
   }
 </style>

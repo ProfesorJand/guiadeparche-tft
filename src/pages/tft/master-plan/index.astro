@@ -1,0 +1,94 @@
+---
+import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
+import { crearJSONSchema } from "@json/schema/crearJSONSchema";
+
+import PaginaBaseMaxWidth from "@components/TFT/paginas/PaginaBaseMaxWidth.astro";
+const topTitle="Master Plan";
+const lowerTitle="La herramienta definitiva para tomar mejores decisiones en TFT";
+const title=`${topTitle}: ${lowerTitle}`;
+const description="Descubre todo sobre el Master Plan de TFT: qué es, cómo funciona y cómo conseguirlo.";
+const keywords="tft, master plan, teamfight tactics";
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
+const baseSchema = JSON.parse(
+  crearJSONSchema({title, description: description})
+);
+const JSONSchema = JSON.stringify(baseSchema);
+---
+<LayoutMaxWidth 
+  title={title}
+  description={description}
+  keywords={keywords}
+  JSONSchema={JSONSchema}
+  canonical={canonicalURL}
+  >
+  <PaginaBaseMaxWidth
+    topTitle={topTitle}
+    textInfo={["Estamos construyendo una nueva forma de aprender TFT.",
+    "Diseñada para ayudarte a elegir mejor tus composiciones, adaptarte al meta y mejorar más rápido en cada partida.",
+    "El lanzamiento está previsto para las próximas semanas."]}
+  >
+    <div slot="bodyContainerLeft">
+      <!-- Columna izquierda vacía para consistencia -->
+    </div>
+
+    <div slot="bodyContainerMid" class="bodyContainerMid">
+      <a href="" class="button">Reservar mi acceso</a>
+      <details open>
+        <summary>¿Para quién es?</summary>
+        <ol>
+          <li>Jugadores que quieren subir de rango</li>
+          <li>No importa si eres Bronce o Challenger.</li>
+          <li>El objetivo es ayudarte a tomar mejores decisiones durante la partida.</li>
+        </ol>
+      </details>
+      <details open>
+        <summary>¿Por qué lo estamos creando?</summary>
+        <ol>
+          <li>Porque las composiciones son solo una parte de TFT.</li>
+          <li>La mayoría de jugadores pierde partidas por:
+            <ul>
+              <li>Elegir mal su composición</li>
+              <li>No adaptar su plan</li>
+              <li>Jugar una composición en el spot equivocado</li>
+              <li>No entender cuándo pivotar</li>
+            </ul>
+          </li>
+        </ol>
+      </details>
+      <details open>
+        <summary>¿Qué puedes hacer hoy?</summary>
+        <ol>
+          <li><a href="/login">Pre-registrarte</a></li>
+          <li>Al hacerlo:
+            <ol>
+              <li>Recibirás acceso prioritario</li>
+              <li>Conocerás las novedades antes que nadie</li>
+              <li>Podrás acceder a descuentos exclusivos de lanzamiento</li>
+            </ol>
+          </li>
+        </ol>
+      </details>
+    </div>
+
+    <div slot="bodyContainerRight">
+      <!-- Columna Derecha vacía para consistencia -->
+    </div>
+  </PaginaBaseMaxWidth>
+</LayoutMaxWidth>
+
+<style>
+  a{
+    color: var(--text-color-white-primary);
+    text-decoration: none;
+    background: var(--bg-purple-secondary);
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+    width: fit-content;
+  }
+  a:hover{
+    background: var(--bg-purple-primary);
+    text-decoration: none;
+  }
+</style>
