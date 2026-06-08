@@ -36,5 +36,13 @@ export default defineConfig({
   redirects: {
     '/tft/meta-comps-tier-list-teamfight-tactics/bel-veth/': '/tft/meta-comps-tier-list-teamfight-tactics/belveth/',
   },
-  integrations: [react(), sitemap()]
+  integrations: [
+    react(),
+    sitemap({
+      filter: (page) => 
+        !page.includes('/admin') && 
+        !page.includes('/perfil') && 
+        !page.includes('/login')
+    })
+  ]
 });
