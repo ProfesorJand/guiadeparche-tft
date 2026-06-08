@@ -4,6 +4,7 @@ import { crearJSONSchema } from "@json/schema/crearJSONSchema";
 import PaginaBaseMaxWidth from "@components/TFT/paginas/PaginaBaseMaxWidth.astro";
 import Youtube from "@components/youtube/Youtube.jsx";
 import Cards from "@components/TFT/como-jugar/Cards";
+import RegistrarseBTN from "@components/TFT/RegistrarseBTN";
 const topTitle="Cómo Jugar TFT";
 const lowerTitle = "Guía Completa 2026";
 const title = `${topTitle} ${lowerTitle}`;
@@ -42,6 +43,12 @@ const currentPath = Astro.url.pathname;
       <!-- Puedes poner contenido aquí para la columna izquierda en el futuro -->
     </div>
       <div slot="bodyContainerMid">
+        <RegistrarseBTN
+          text="¿Quieres mejorar más rápido en TFT?"
+          buttonText="Próximamente: TFT Master Plan"
+          layout="column"
+          className="mb-25"
+        />
         <h2 class="cards-title">Guías y Tutoriales de TFT</h2>
         <Cards currentPath={currentPath} client:load transition:persist/>
               
@@ -52,3 +59,9 @@ const currentPath = Astro.url.pathname;
 
   </PaginaBaseMaxWidth>
 </LayoutMaxWidth>
+
+<style>
+  .mb-25 {
+    margin-bottom: 25px;
+  }
+</style>

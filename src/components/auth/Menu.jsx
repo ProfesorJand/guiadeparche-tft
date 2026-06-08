@@ -9,11 +9,11 @@ const Menu = ({activeTab, setActiveTab, styles, admin}) =>{
       available:true
     },
     {
-      name: "Guías PDF",
+      name: "Master Plan",
       icon: "",
-      tab: "guides",
+      tab: "master-plan",
       admin: false,
-      available:false
+      available:true
     },
     {
       name: "Cuenta de Riot",

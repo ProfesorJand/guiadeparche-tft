@@ -1,9 +1,9 @@
 ---
 import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
-import VideoComponent from "@components/youtube/VideoComponent.jsx";
 import CardsCompos from "@components/TFT/CardsCompos";
 import {  setNumberPBE, constantesTFT, dataTFTLastUpdate, urlDragon} from "@stores/dataTFT";
 import { crearJSONSchema } from "src/json/schema/crearJSONSchema";
+import RegistrarseBTN from "./RegistrarseBTN.jsx";
 import Youtube from "@components/youtube/Youtube.jsx";
 
 const constantes = constantesTFT.get();
@@ -100,15 +100,11 @@ const urlRecursosTFT= [
                 target="_blank">Jupeson</a> y Xpirit -->
             </p>
         </div>
-        <div class="info">
-          <p>
-              Próximamente TFT Master Plan 
-              
-              <!-- <a
-                href="https://www.twitch.tv/jupeson"
-                target="_blank">Jupeson</a> y Xpirit -->
-            </p>
-        </div>
+        <RegistrarseBTN
+          text="¿Quieres probar el TFT Master Plan antes que nadie?"
+          buttonText="Pre-regístrate gratis →"
+          layout="row"
+        />
       </div>
       
     </div>
@@ -121,10 +117,7 @@ const urlRecursosTFT= [
       /> -->
     </div>
   </div>
-  <!-- <img src="/tft/assets/master-p.webp" alt="" style={{display:"flex", width:"100%"}}/> -->
-  <!-- <img src="/tft/assets/master-plan-tft-horizontal.webp" alt="" style={{display:"flex", width:"100%"}}/> -->
-  <!-- <img src="/tft/assets/master-plan-tft-horizontal-3-1.webp" alt="" style={{display:"flex", width:"100%"}}/> -->
-
+ 
   <div class="three-columns">
     <div class="left-side">
       <h2>Tier List</h2>
@@ -418,7 +411,9 @@ const urlRecursosTFT= [
     border-radius: 0.5rem;
     padding: 0.5rem 1rem;
     font-size: 0.8rem;
+    box-sizing: border-box;
   }
+
 
   .three-columns {
     display: grid;

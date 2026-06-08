@@ -1,12 +1,10 @@
-import React, { useEffect, useRef, useCallback, useMemo } from "react";
+import { useEffect, useRef, useCallback, useMemo } from "react";
 import { useStore } from "@nanostores/react";
 import style from "./css/TierListMetaComps.module.css";
 import ChampTierList from "./ChampTierList.jsx";
 import { $admin } from "@stores/auth.js";
-import { versionTFT } from "@stores/dataTFT.js";
 
 const TierListMetaComps = ({todasLasComps = [], todasLasCompsPBE = []}) => {
-  const currentVersion = useStore(versionTFT);
   const activeComps = todasLasCompsPBE; // currentVersion === "pbe" ? todasLasCompsPBE : todasLasComps;
 
   // Agrupar por tier para mantener la estructura visual

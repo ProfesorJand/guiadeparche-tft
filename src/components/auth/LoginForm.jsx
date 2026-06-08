@@ -450,14 +450,15 @@ const LoginForm = () => {
     </div>
   );
 
-  const renderSuccess = () => (
-    <div className={styles.auth_step}>
-      <h2>¡Bienvenido, {user?.name || email}!</h2>
-      <p>Has iniciado sesión correctamente.</p>
-      <button onClick={() => window.location.href = '/perfil'} className={styles.primary_btn}>Perfil</button>
-      <button onClick={() => window.location.href = '/'} className={styles.primary_btn}>Ir al Inicio</button>
-    </div>
-  );
+  const renderSuccess = () => {
+    window.location.href = '/perfil';
+    return (
+      <div className={styles.auth_step}>
+        <h2>¡Bienvenido, {user?.name || email}!</h2>
+        <p>Redirigiendo a tu perfil...</p>
+      </div>
+    );
+  };
 
   if (user && step !== 'success' && step !== 'profile-complete') {
     return renderSuccess();

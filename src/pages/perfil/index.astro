@@ -1,12 +1,19 @@
 ---
-import LayoutMidOnly from "@layouts/LayoutMidOnly.astro";
+import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
 import PerfilUsuario from "@components/auth/PerfilUsuario.jsx";
+import PaginaBaseMaxWidth from "@components/TFT/paginas/PaginaBaseMaxWidth.astro";
+import UserMenu from "@components/auth/UserMenu.jsx";
 ---
 
-<LayoutMidOnly title="Perfil">
-    <PerfilUsuario client:only="react">
-        <div slot="fallback" style="display: flex; width:100%; height:100%; align-items: center; justify-content: center; background: rgba(15, 11, 90, 0.4); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1);">
-            <div style="color: #94a3b8; font-family: sans-serif;">Cargando perfil...</div>
-        </div>
-    </PerfilUsuario>
-</LayoutMidOnly>
+<LayoutMaxWidth title="Perfil">
+    <PaginaBaseMaxWidth
+        topTitle='Perfil'
+    >
+        <UserMenu client:load slot="bodyContainerLeft"></UserMenu>
+        <PerfilUsuario client:only="react" slot="bodyContainerMid" >
+            <div slot="fallback" style="display: flex; width:100%; height:100%; align-items: center; justify-content: center; background: rgba(15, 11, 90, 0.4); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1);">
+                <div style="color: #94a3b8; font-family: sans-serif;">Cargando perfil...</div>
+            </div>
+        </PerfilUsuario>
+    </PaginaBaseMaxWidth>
+</LayoutMaxWidth>
