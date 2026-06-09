@@ -85,7 +85,7 @@ const Cards = () => {
         const cleanPath = (p) => p.replace(/\/$/, "");
         const isActive = cleanPath(urlWindow) === cleanPath(urlWithoutHash);
         return(
-          <a className={`${style.card} ${style.url} ${isActive ? style.active : ""}`} href={url}>
+          <a key={title} className={`${style.card} ${style.url} ${isActive ? style.active : ""}`} href={url}>
             <div className={style.containerImage}>
               <img className={style.image} src={icon} alt="" />
             </div>

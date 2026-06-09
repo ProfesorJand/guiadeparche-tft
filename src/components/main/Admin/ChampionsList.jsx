@@ -4,7 +4,7 @@ import { versionTFT, setNumberLatest, setNumberPBE, dataTFTChampions, dataTFTTra
 import { useStore } from "@nanostores/react";
 // import {listaCampeones} from "../../../functions/campeonestft.js";
 // import { fetchingDataTFT } from "src/json/updates/constantesPBE.js";
-import { championsTFTIngles, traitsTFTIngles } from "src/json/updates/contantesTFT.js";
+// import { championsTFTIngles, traitsTFTIngles } from "src/json/updates/contantesTFT.js";
 
 const Champions = ()=>{
     const [championsList, setChampionsList]=useState(null);

@@ -54,6 +54,16 @@ const tiersInfo = [
     title: "Viables",
     text: "Composiciones situacionales o que requieren una ejecución más precisa. ",
   },
+  {
+    tier:"H",
+    title:"Hero",
+    text:"",
+  },
+  {
+    tier:"X",
+    title:"Situacional",
+    text:"",
+  }
 ];
 
 const keywords =
@@ -122,44 +132,52 @@ const urlRecursosTFT= [
     <div class="left-side">
       <h2>Tier List</h2>
       {
-        tiersInfo.map((tier, index) => (
-          <div class={`tier-info tier-card-${tier.tier}`}>
-            <h3 class="tier-header">
-              
-              <div class="container-tier-text">
-              <span class={`tier-number tier-number-${tier.tier}`}>
-                {tier.tier}
-              </span>
-              <span class={`tier-title tier-title-${tier.tier}`}>
-                {tier.title}
-              </span>
-              </div>
-              {
-                [...top10Comps, ...restComps].length &&
-                <div class="container-champs-tier">
-                {[...top10Comps, ...restComps].filter((comp)=>comp.tier === tier.tier).map((comp,index)=>{
-                  const isActive = String(comp.compUrl) === String(activeId);
-                  return (
-                    <div class="champ-tier" data-comp-id={comp.compUrl} data-is-active={isActive ? "true" : "false"} data-cost={comp.campeonTierList.cost}>
-                      <img class="champ-tier-img" src={`${urlDragon()}${comp.campeonTierList.squareIcon.toLowerCase().replace(".tex",".png")}`} alt={comp.campeonTierList.name} />
-                      <div class="champ-tier-items">
-                        {
-                          comp.champItem.map((item, index)=>{
-                            return (
-                              <img class="champ-tier-item-img" src={`${urlDragon()}${item?.icon.toLowerCase().replace(".tex",".png")}`} alt={item?.name} />
-                            );
-                          })
-                        }
-                      </div>
-                    </div>
-                  );
-                })}
+        tiersInfo.map((tier, index) => {
+          const hasComps = [...top10Comps, ...restComps].some(
+            (comp) => comp.tier === tier.tier || comp.tierExtra === tier.tier
+          );
+          if ((tier.tier === "H" || tier.tier === "X") && !hasComps) {
+            return null;
+          }
+          return (
+            <div class={`tier-info tier-card-${tier.tier}`}>
+              <h3 class="tier-header">
+                
+                <div class="container-tier-text">
+                <span class={`tier-number tier-number-${tier.tier}`}>
+                  {tier.tier}
+                </span>
+                <span class={`tier-title tier-title-${tier.tier}`}>
+                  {tier.title}
+                </span>
                 </div>
-              }
-            </h3>
-            {/* <p class={`tier-text`}>{tier.text}</p> */}
-          </div>
-        ))
+                {
+                  [...top10Comps, ...restComps].length &&
+                  <div class="container-champs-tier">
+                  {[...top10Comps, ...restComps].filter((comp)=>comp.tier === tier.tier || comp.tierExtra === tier.tier).map((comp,index)=>{
+                    const isActive = String(comp.compUrl) === String(activeId);
+                    return (
+                      <div class="champ-tier" data-comp-id={comp.compUrl} data-is-active={isActive ? "true" : "false"} data-cost={comp.campeonTierList.cost}>
+                        <img class="champ-tier-img" src={`${urlDragon()}${comp.campeonTierList.squareIcon.toLowerCase().replace(".tex",".png")}`} alt={comp.campeonTierList.name} />
+                        <div class="champ-tier-items">
+                          {
+                            comp.champItem.map((item, index)=>{
+                              return (
+                                <img class="champ-tier-item-img" src={`${urlDragon()}${item?.icon.toLowerCase().replace(".tex",".png")}`} alt={item?.name} />
+                              );
+                            })
+                          }
+                        </div>
+                      </div>
+                    );
+                  })}
+                  </div>
+                }
+              </h3>
+              {/* <p class={`tier-text`}>{tier.text}</p> */}
+            </div>
+          );
+        })
       }
     </div>
 
@@ -535,6 +553,14 @@ const urlRecursosTFT= [
     }
     .tier-card-C {
       background: linear-gradient(135deg, #6e3c1e99, #3c1e0acc);
+      border-color: #b464324d;
+    }
+    .tier-card-H {
+      background: linear-gradient(135deg, #04410999, #024719cc);
+      border-color: #b464324d;
+    }
+    .tier-card-X{
+      background: linear-gradient(135deg, #920ad199, #3f0247cc);
       border-color: #b464324d;
     }
     .tier-number {

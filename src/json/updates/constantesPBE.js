@@ -12,8 +12,8 @@ export const idioma = "en";
 export const pais = "us";
 export const setPBE = "13";
 
-export const pbeVersionLog = (await fetchingPBEVersionTFT()).version.split(".");
-export const pbeVersion = pbeVersionLog[0]+"."+pbeVersionLog[1];
+// export const pbeVersionLog = (await fetchingPBEVersionTFT()).version.split(".");
+// export const pbeVersion = pbeVersionLog[0]+"."+pbeVersionLog[1];
 
 export async function fetchingPBEVersionTFT(){
     const urlDragon = `https://raw.communitydragon.org/${version}/content-metadata.json`
@@ -21,13 +21,13 @@ export async function fetchingPBEVersionTFT(){
     return await fetching.json();
 }
 
-export const datosTFT = await fetchingDataTFT({version,idioma,pais});
+// export const datosTFT = await fetchingDataTFT({version,idioma,pais});
 
-export const championsTFT = await datosTFT.sets[setPBE].champions;
+// export const championsTFT = await datosTFT.sets[setPBE].champions;
 
-export const aumentos = datosTFT.items.filter((e)=>{
-    return e.icon.indexOf("/Augments/")>=0 && e?.apiName?.indexOf("TFT12")>=0;
-});
+// export const aumentos = datosTFT.items.filter((e)=>{
+//     return e.icon.indexOf("/Augments/")>=0 && e?.apiName?.indexOf("TFT12")>=0;
+// });
 
 
 
@@ -37,4 +37,4 @@ export async function fetchingMetaTFTPBE(){
     return datos;
 }
 
-export const metaPBE = await fetchingMetaTFTPBE();
+// export const metaPBE = await fetchingMetaTFTPBE();

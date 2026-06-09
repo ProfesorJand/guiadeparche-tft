@@ -90,7 +90,8 @@ const FormularioCrearCompoTFT = ({compo:[]}) =>{
   const tempo = {
     Es:["Agresivo / Slam","Open fort / Salvar HP"],
     En:["Aggressive / Slam","Open fort / Save HP"]}
-  const tiers = ["S","A","B","C","D"];
+  const tiers = ["S","A","B","C"];
+  const tiersExtras = ["N/A","H","X"]
   const dañoTipo = {
     Es: ["AD","AP","Híbrido"],
     En: ["AD","AP","Hybrid"]
@@ -174,6 +175,17 @@ const FormularioCrearCompoTFT = ({compo:[]}) =>{
             <select id="tier" value={composicionTFT.tier} onChange={(e) => setComposicionTFT({...composicionTFT, tier: e.target.value})}>
               <option value="">Seleccionar Tier</option>
               {tiers.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+            </label>
+
+            <label htmlFor="tier">¿Es Tier H o X ?
+            <select id="tier" value={composicionTFT?.tierExtra} onChange={(e) => setComposicionTFT({...composicionTFT, tier: e.target.value})}>
+              <option value="">Seleccionar</option>
+              {tiersExtras.map((option) => (
                 <option key={option} value={option}>
                   {option}
                 </option>

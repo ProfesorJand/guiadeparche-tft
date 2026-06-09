@@ -26,10 +26,10 @@ import {
  } from "src/stores/dataTFT.js"
 import { useStore } from "@nanostores/react"
 import InputPowerUpList from "@components/TFT/InputPowerUpList.jsx"
-import FormularioCrearCompoTFT from "@components/TFT/FormularioCrearCompoTFT.jsx"
+//import FormularioCrearCompoTFT from "@components/TFT/FormularioCrearCompoTFT.jsx"
 
 
-const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,edittitulo,editshadowCategory,editinfographicCategory,editaumentos,editgameplay,edittips,editisHide,editboardInfo,editpictureSave,editcarouselItems,editradiantItem,editspatulaItem1,editspatulaItem2,editoriginalComp, editCampeonTierList, editAugmentTierList, editCampeonItemTierList =[{},{},{}], editCampeonTraitTierList = [{}], editCampeonPowerUpList = [{}],editChamp3Stars, editVersion=null, editisInInfographic, editTipSeo, editCuandoJugar, editCondicionVictoria, editCompUrl }) =>{
+const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,edittitulo,editshadowCategory,editinfographicCategory,editaumentos,editgameplay,edittips,editisHide,editboardInfo,editpictureSave,editcarouselItems,editradiantItem,editspatulaItem1,editspatulaItem2,editoriginalComp, editCampeonTierList, editAugmentTierList, editCampeonItemTierList =[{},{},{}], editCampeonTraitTierList = [{}], editCampeonPowerUpList = [{}],editChamp3Stars, editVersion=null, editisInInfographic, editTipSeo, editCuandoJugar, editCondicionVictoria, editCompUrl, edittierExtra }) =>{
     const currentVersion= useStore(versionTFT);
     const itemsDataIngles = useStore(dataTFTAllItems)
     const [version, setVersion] = useState(versionTFT.get())
@@ -43,7 +43,8 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
     const urlDataDragonLatestGame = "https://raw.communitydragon.org/latest/game/";
     const shadowCategories = ["Fast 8","Specifics Augments","3 Stars"]
     const infographicCategories = ["Roll Lv5","Roll Lv6","Roll Lv7","Roll Lv8","Roll Lv8 y Lv9", "Roll Lv9","Roll Lv10"]
-    const [tier, setTier] = useState("S")
+    const [tier, setTier] = useState("S");
+    const [tierExtra, setTierExtra] = useState("N/A")
     const [posicion, setPosicion] = useState(1)
     const [dificultad, setDificultad] = useState("Easy")
     const [titulo, setTitulo] = useState("");
@@ -214,6 +215,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
       if(edit){
         setId(editId)
         setTier(edittier);
+        setTierExtra(edittierExtra);
         setPosicion(editposicion);
         setDificultad(editdificultad)
         setTitulo(edittitulo)
@@ -610,6 +612,7 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
         const resultado = {
           id:id === null ? generadorID() : id,
           tier,
+          tierExtra,
           posicion,
           dificultad,
           titulo,
@@ -745,6 +748,21 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
               <option value="C">C</option>
               <option value="D">D</option>
               <option value="MEME">MEME</option>
+          </select>
+      </label>
+
+      <label htmlFor="tiersExtras">
+        <span>¿Es Tier H o X ?:</span>
+          <select
+              name="tiersExtras"
+              id="tiersExtras"
+              onChange={(e)=>setTierExtra(e.target.value)}
+              defaultValue={edittierExtra || tierExtra}
+              required
+          >
+              <option value="N/A">N/A</option>
+              <option value="H">H</option>
+              <option value="X">X</option>
           </select>
       </label>
 

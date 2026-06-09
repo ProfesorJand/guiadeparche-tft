@@ -23,7 +23,6 @@ const { title, JSONSchema, description, keywords, image, canonical, hide=false, 
 // Si no se define snippetImgUrl, usamos image o la ruta por defecto del logo en la carpeta public
 const resolvedSnippetImgUrl = snippetImgUrl || image || "/web/GP_logo.png";
 const absoluteSnippetImgUrl = new URL(resolvedSnippetImgUrl, Astro.site || "https://guiadeparche.com").href;
-
 ---
 
 <html lang="en">
@@ -88,7 +87,7 @@ const absoluteSnippetImgUrl = new URL(resolvedSnippetImgUrl, Astro.site || "http
     {keywords && <meta name="keywords" content={keywords} />}
 
     {/* debe verificar si al final del string de canonical termina con / y si no lo tiene agregarlo */}
-    {canonical && <link rel="canonical" href={canonical.endsWith("/") ? canonical : canonical + "/"} />}
+    {canonical && <link rel="canonical" href={canonical?.endsWith("/") ? canonical : canonical + "/"} />}
     {absoluteSnippetImgUrl && <meta property="og:image" content={absoluteSnippetImgUrl} />}
 
      <!-- Schema Script -->

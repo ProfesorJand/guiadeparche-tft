@@ -77,9 +77,9 @@ export async function championsTFTIngles({version=VERSION_PBE, set=SET_PBE}) {
   return (await datosTFTIngles({version})).sets[set].champions; // SET_LATEST 
 }
 
-export const traitsTFTIngles = (await datosTFTIngles({})).sets[SET_PBE].traits; // SET_LATEST
-export const itemsDataIngles = (await datosTFTIngles({})).items;
+// export const traitsTFTIngles = (await datosTFTIngles({})).sets[SET_PBE].traits; // SET_LATEST
+// export const itemsDataIngles = (await datosTFTIngles({})).items;
 
-export const fetchMeta = await fetch(metaTFTComposicionesJSON, {cache:"reload"});
-export const meta = await fetchMeta.json();
+// export const fetchMeta = await fetch(metaTFTComposicionesJSON, {cache:"reload"});
+// export const meta = await fetchMeta.json();
 
