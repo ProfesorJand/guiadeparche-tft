@@ -100,6 +100,7 @@ const FormularioCrearCompoTFT = ({compo:[]}) =>{
     Es: ["Economía","Combate","Items","Emblemas"],
     En: ["Economy","Combat","Items","Emblems"]
   }
+  //comentario para comit
 
   function generadorID(){
       const a = Date.now().toString(30);
