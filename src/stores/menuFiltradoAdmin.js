@@ -1,6 +1,7 @@
 import { atom, deepMap } from "nanostores";
 import backupMeta from "src/json/backupMeta.json" assert { type: 'json' };
 import { composMetaJSON, composMetaPBEJSON, constantesJSON, versionTFT } from "@stores/dataTFT";
+import metaCompsTFTPBE from "../utils/metaCompsTFTPBE.json";
 
 export const defaultAction = atom("crear")
 
@@ -13,7 +14,8 @@ const hierarchyShadowCategory = ["Fast 8", "Fast 9", "3 Stars", "Situacional"];
 export const isLoadingDataTFTFromApi = atom(true)
 
 export const loadCompsMeta = async () => {
-  const urlMetaBackend = versionTFT.get() === "pbe" ? composMetaPBEJSON : composMetaJSON;
+  const isPBE = versionTFT.get() === "pbe";
+  const urlMetaBackend = isPBE ? composMetaPBEJSON : composMetaJSON;
 
   const processData = (data) => {
     return Object.keys(data)
@@ -25,6 +27,22 @@ export const loadCompsMeta = async () => {
         return a.posicion - b.posicion;
       }));
   };
+
+  if (isPBE) {
+    try {
+      const data = metaCompsTFTPBE;
+      const sortableArray = processData(data);
+      initialStateMetaComps.set(sortableArray);
+      MetaComps.set(sortableArray);
+      return sortableArray;
+    } catch (err) {
+      console.error("Error loading local PBE compositions in [menuFiltradoAdmin.js]:", err);
+      const sortableArray = processData(backupMeta);
+      initialStateMetaComps.set(sortableArray);
+      MetaComps.set(sortableArray);
+      return sortableArray;
+    }
+  }
 
   try {
     const response = await fetch(urlMetaBackend, { cache: "reload" });
@@ -103,7 +121,11 @@ export const filterByCategory = (e) => {
   MetaComps.set(newMeta);
 };
 
-await loadCompsMeta();
+try {
+  await loadCompsMeta();
+} catch (e) {
+  console.error("Failed top-level await loadCompsMeta:", e);
+}
 
 
 export const getConstantsTFT = async () => {
@@ -131,4 +153,8 @@ export const toggleActiveComp = (id) => {
   }
 };
 
-await getConstantsTFT()
+try {
+  await getConstantsTFT();
+} catch (e) {
+  console.error("Failed top-level await getConstantsTFT:", e);
+}

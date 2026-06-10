@@ -1,12 +1,16 @@
 ---
 import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
 import CardsCompos from "@components/TFT/CardsCompos";
-import {  setNumberPBE, constantesTFT, dataTFTLastUpdate, urlDragon} from "@stores/dataTFT";
+import {  setNumberPBE, constantesTFT, loadConstantes, dataTFTLastUpdate, urlDragon} from "@stores/dataTFT";
 import { crearJSONSchema } from "src/json/schema/crearJSONSchema";
 import RegistrarseBTN from "./RegistrarseBTN.jsx";
 import Youtube from "@components/youtube/Youtube.jsx";
 
-const constantes = constantesTFT.get();
+let constantes = constantesTFT.get();
+if(Object.keys(constantes).length === 0){
+  constantes = await loadConstantes();
+}
+console.log({constantes})
 const lastUpdateComps = dataTFTLastUpdate.get();
 
 interface Props {

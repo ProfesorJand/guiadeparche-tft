@@ -1,6 +1,8 @@
 import { deepMap, atom, task } from "nanostores";
 import { useStore } from "@nanostores/react";
 import { cachedFetch } from "../utils/cachedFetch.js";
+import metaCompsTFTPBE from "../utils/metaCompsTFTPBE.json";
+import { constantesTFTLocal } from "../utils/constantesTFT.js";
 const token = import.meta.env.PUBLIC_TOKEN_META;
 
 const initialStateDataTFT = {};
@@ -63,7 +65,7 @@ export const versionTFT = atom(initialTFT_SET);
 export const teamPlannerCode = atom(initialStateTeamPlannerCode);
 export const TFT_SET = atom(initialTFT_SET);
 export const numberOfVersionTFT = atom("15.23.1");
-export const constantesTFT = atom({});
+export const constantesTFT = atom(constantesTFTLocal);
 export const dataTFTLastUpdate = atom(null);
 export const metaCompsTFT = atom(null);
 
@@ -156,7 +158,7 @@ export const loadDataTFTFromAPI = ({ version = versionTFT.get(), idioma = "en", 
   task(async () => {
     try {
       const urlDragon = `https://raw.communitydragon.org/${version}/cdragon/tft/${idioma}_${pais}.json`
-      const response = await cachedFetch(urlDragon);
+      const response = await fetch(urlDragon);
       const data = await response.json();
       updateDataTFT(data)
       await loadConstantes();
@@ -171,7 +173,7 @@ export const loadDataTFTFromAPI = ({ version = versionTFT.get(), idioma = "en", 
 export const getMetadataVersionTFTBySet = async (set = TFT_SET.get()) => {
   try {
     const urlDragon = `https://raw.communitydragon.org/${set}/content-metadata.json`;
-    const response = await cachedFetch(urlDragon);
+    const response = await fetch(urlDragon);
     const data = await response.json();
     const [v1, v2, ...rest] = data.version.split(".");
     const version = v1.concat(".", v2);
@@ -269,7 +271,7 @@ export const swapVersionTFT = (data) => {
 export const getTeamPlannerCodeAPI = async () => {
   try {
     const url = `https://raw.communitydragon.org/${versionTFT.get()}/plugins/rcp-be-lol-game-data/global/default/v1/tftchampions-teamplanner.json`;
-    const response = await cachedFetch(url);
+    const response = await fetch(url);
     const data = await response.json();
 
     const formattedData = Object.values(data?.[versionTFT.get() === "pbe" ? setMutatorPBE : setMutatorLatest] || [])
@@ -292,7 +294,7 @@ versionTFT.subscribe((version) => {
 
 const updateVersionNumberTFT = async () => {
   try {
-    const resp = await cachedFetch(urlVersionTFT);
+    const resp = await fetch(urlVersionTFT);
     const versions = await resp.json();
     const latest = versions[0];
     numberOfVersionTFT.set(latest);
@@ -302,14 +304,17 @@ const updateVersionNumberTFT = async () => {
   }
 }
 
-const loadConstantes = async () => {
+// NOTA PARA EL FUTURO:
+// Si quieres volver a requerir la descarga por red en lugar de usar constantes locales,
+// puedes remover constantesTFTLocal del fallback o quitar este try-catch.
+export const loadConstantes = async () => {
   try {
-    const response = await cachedFetch(constantesJSON, { cache: "reload" });
+    const response = await fetch(constantesJSON, { cache: "reload" });
     const data = await response.json();
-    constantesTFT.set(data);
+    constantesTFT.set(data || constantesTFTLocal);
   } catch (e) {
-    console.error("Error loading constantes:", e);
-    throw e;
+    console.error("Error loading constantes, using local fallback:", e);
+    constantesTFT.set(constantesTFTLocal);
   }
 }
 
@@ -357,8 +362,30 @@ export const AllBasicItems = (dataTFTAllItems) => {
 
 // SEO: Fetch Compositions Server-Side for Schema and initial render
 export const fetchAndSortComps = async (url) => {
+  if (url && url.includes("composMetaPBE")) {
+    try {
+      const data = metaCompsTFTPBE;
+      const hierarchy = ["S", "A", "B", "C", "D", "MEME"];
+      const allSorted = [];
+
+      hierarchy.forEach(tier => {
+        if (data[tier]) {
+          const tierComps = [...data[tier]].sort((a, b) => (a.posicion || 0) - (b.posicion || 0));
+          allSorted.push(...tierComps);
+        }
+      });
+      // Set a fallback last update date (since we don't have HTTP headers)
+      dataTFTLastUpdate.set("10/6/2026");
+      metaCompsTFT.set(allSorted);
+      return allSorted;
+    } catch (e) {
+      console.error(`Error loading local PBE compositions in [dataTFT.js]:`, e);
+      return [];
+    }
+  }
+
   try {
-    const response = await cachedFetch(
+    const response = await fetch(
       url,
       { cache: "no-cache" }
     );

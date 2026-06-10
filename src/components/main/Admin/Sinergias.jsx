@@ -24,7 +24,7 @@ const Sinergias = ({sinergias, orientacion, show, version})=>{
     default:"grey"
    }
 
-  const sortable = Object.entries(sinergias)
+  const sortable = Object.entries(sinergias || {})
     .sort(([,a],[,b]) => b-a)
     .reduce((r, [k, v]) => ({ ...r, [k]: v }), {});
 
@@ -87,7 +87,7 @@ const Sinergias = ({sinergias, orientacion, show, version})=>{
   return (
 
       <div className={show ? [style.containerSinergia, orientacion==="horizontal" ? style.containerSinergiaHorizontal: ""].join(" ") : style.containerSinergiaOculto }>
-    {Object.keys(sinergias).length > 0 && getMinMaxTraits(sortable).map((key,i)=>{
+    {Object.keys(sinergias || {}).length > 0 && getMinMaxTraits(sortable).map((key,i)=>{
       if(show ? i < 9 : i < 9){
         if(key.hexColor !== "hex-default.webp"){
           return (
