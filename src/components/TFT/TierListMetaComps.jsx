@@ -3,9 +3,19 @@ import { useStore } from "@nanostores/react";
 import style from "./css/TierListMetaComps.module.css";
 import ChampTierList from "./ChampTierList.jsx";
 import { $admin } from "@stores/auth.js";
+import { metaCompsTFT, fetchAndSortComps, composMetaPBEJSON } from "@stores/dataTFT";
 
 const TierListMetaComps = ({todasLasComps = [], todasLasCompsPBE = []}) => {
-  const activeComps = todasLasCompsPBE; // currentVersion === "pbe" ? todasLasCompsPBE : todasLasComps;
+  const compsFromStore = useStore(metaCompsTFT);
+  const activeComps = compsFromStore || todasLasCompsPBE || [];
+
+  useEffect(() => {
+    if (activeComps.length === 0) {
+      fetchAndSortComps(composMetaPBEJSON).catch((err) => {
+        console.error("Error fetching comps on client side:", err);
+      });
+    }
+  }, [activeComps.length]);
 
   // Agrupar por tier para mantener la estructura visual
   const groupedComps = useMemo(() => {

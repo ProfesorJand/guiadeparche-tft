@@ -6,7 +6,7 @@ import {
   composMetaPBEJSON,
   urlDragon,
   constantesTFT,
-  setNumberPBE
+  setNumberPBE,
 } from "@stores/dataTFT";
 
 export async function getStaticPaths() {
@@ -51,9 +51,9 @@ const restComps = [...todasLasCompsPBE.slice(10)];
   top10Comps={top10Comps}
   restComps={restComps}
   activeId={id}
-  snippetImgUrl={urlDragon()+ comp.campeonTierList.tileIcon.replace(".tex",".png").toLowerCase()}
->  
-</MetaCompsLayout>
+  snippetImgUrl={urlDragon() +
+    comp.campeonTierList.tileIcon.replace(".tex", ".png").toLowerCase()}
+/>
 
 <style>
   .compo-detail-card {

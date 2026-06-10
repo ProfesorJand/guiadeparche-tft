@@ -162,7 +162,6 @@ export const loadDataTFTFromAPI = ({ version = versionTFT.get(), idioma = "en", 
       await loadConstantes();
     } catch (e) {
       console.error("Error loading TFT data from API:", e);
-      throw e;
     }
   })
 }
@@ -281,7 +280,6 @@ export const getTeamPlannerCodeAPI = async () => {
     teamPlannerCode.set(formattedData);
   } catch (e) {
     console.error("Error getting team planner code from API:", e);
-    throw e;
   }
 };
 
@@ -309,7 +307,6 @@ const loadConstantes = async () => {
     constantesTFT.set(data);
   } catch (e) {
     console.error("Error loading constantes:", e);
-    throw e;
   }
 }
 
@@ -358,7 +355,7 @@ export const AllBasicItems = (dataTFTAllItems) => {
 // SEO: Fetch Compositions Server-Side for Schema and initial render
 export const fetchAndSortComps = async (url) => {
   try {
-    const response = await cachedFetch(
+    const response = await fetch(
       url,
       { cache: "no-cache" }
     );
@@ -385,7 +382,7 @@ export const fetchAndSortComps = async (url) => {
     return allSorted;
   } catch (e) {
     console.error(`Error fetching from ${url}:`, e);
-    throw e;
+    return [];
   }
 }
 
