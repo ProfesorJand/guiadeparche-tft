@@ -1,5 +1,5 @@
 import { deepMap, atom, task } from "nanostores";
-import { cachedFetch } from "../utils/cachedFetch.js";
+//import { cachedFetch } from "../utils/cachedFetch.js";
 
 const iniAgentsByMapMeta = {}
 
@@ -10,7 +10,7 @@ export const fetchAgentsMeta = async ()=>{
   try{
     const token = import.meta.env.PUBLIC_TOKEN_META;
     const url = "https://api.guiadeparche.com/val/AgentsMeta.json";
-    const response = await cachedFetch(url,{
+    const response = await fetch(url,{
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -32,7 +32,7 @@ export const fetchConstantesValorant = async ()=>{
       try{
         const token = import.meta.env.PUBLIC_TOKEN_META;
         const url = "https://api.guiadeparche.com/val/constantes.json";
-        const response = await cachedFetch(url,{
+        const response = await fetch(url,{
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -43,8 +43,7 @@ export const fetchConstantesValorant = async ()=>{
         ValorantConstantes.set(data);
         return data;
       }catch(err){
-        console.error("Error fetching Valorant constantes:", err);
-        throw err;
+        console.error("Error in [dataValorant.js] fetchConstantesValorant from https://api.guiadeparche.com/val/constantes.json :", err);
       }
     }
   )

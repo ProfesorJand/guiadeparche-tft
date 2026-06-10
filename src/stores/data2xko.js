@@ -1,5 +1,5 @@
 import { deepMap, task } from "nanostores";
-import { cachedFetch } from "../utils/cachedFetch.js";
+//import { cachedFetch } from "../utils/cachedFetch.js";
 
 export const Constantes2xko = deepMap({});
 export const ChampsMeta2xko = deepMap({});
@@ -12,7 +12,7 @@ export const fetchCampeones2xkoMeta = async ()=>{
   try{
     const token = import.meta.env.PUBLIC_TOKEN_META;
     console.log("Fetching 2xko champs meta data with token:");
-    const response = await cachedFetch(urlGetMeta2xko,{
+    const response = await fetch(urlGetMeta2xko,{
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -44,8 +44,7 @@ export const fetchConstantes2xko = async ()=>{
         Constantes2xko.set(data);
         return data;
       }catch(err){
-        console.error("Error fetching 2xko constantes:", err);
-        throw err;
+        console.error("Error in [data2xko.js] fetchConstantes2xko from https://api.guiadeparche.com/2xko/constantes.json :", err);
       }
     }
   )

@@ -1,6 +1,6 @@
 import { deepMap, atom, task } from "nanostores";
 import { useStore } from "@nanostores/react";
-import { cachedFetch } from "../utils/cachedFetch.js";
+//import { cachedFetch } from "../utils/cachedFetch.js";
 const token = import.meta.env.PUBLIC_TOKEN_META;
 
 const initialStateDataTFT = {};
@@ -150,13 +150,19 @@ export const urlDragon = () => {
   return `https://raw.communitydragon.org/${versionTFT.get()}/game/`
 }
 
+const controller = new AbortController();
+
+setTimeout(() => controller.abort(), 30000);
+
 
 // version: latest / pbe ---- idioma: en / es --- pais: mx /es /gb /us
 export const loadDataTFTFromAPI = ({ version = versionTFT.get(), idioma = "en", pais = "us" }) => {
+  console.log("Antes del Task")
   task(async () => {
     try {
+      console.log("dentro del tast")
       const urlDragon = `https://raw.communitydragon.org/${version}/cdragon/tft/${idioma}_${pais}.json`
-      const response = await cachedFetch(urlDragon);
+      const response = await fetch(urlDragon, { signal: controller.signal });
       const data = await response.json();
       updateDataTFT(data)
       await loadConstantes();
@@ -170,7 +176,7 @@ export const loadDataTFTFromAPI = ({ version = versionTFT.get(), idioma = "en", 
 export const getMetadataVersionTFTBySet = async (set = TFT_SET.get()) => {
   try {
     const urlDragon = `https://raw.communitydragon.org/${set}/content-metadata.json`;
-    const response = await cachedFetch(urlDragon);
+    const response = await fetch(urlDragon);
     const data = await response.json();
     const [v1, v2, ...rest] = data.version.split(".");
     const version = v1.concat(".", v2);
@@ -268,7 +274,7 @@ export const swapVersionTFT = (data) => {
 export const getTeamPlannerCodeAPI = async () => {
   try {
     const url = `https://raw.communitydragon.org/${versionTFT.get()}/plugins/rcp-be-lol-game-data/global/default/v1/tftchampions-teamplanner.json`;
-    const response = await cachedFetch(url);
+    const response = await fetch(url);
     const data = await response.json();
 
     const formattedData = Object.values(data?.[versionTFT.get() === "pbe" ? setMutatorPBE : setMutatorLatest] || [])
@@ -290,7 +296,7 @@ versionTFT.subscribe((version) => {
 
 const updateVersionNumberTFT = async () => {
   try {
-    const resp = await cachedFetch(urlVersionTFT);
+    const resp = await fetch(urlVersionTFT);
     const versions = await resp.json();
     const latest = versions[0];
     numberOfVersionTFT.set(latest);
@@ -300,17 +306,7 @@ const updateVersionNumberTFT = async () => {
   }
 }
 
-const loadConstantes = async () => {
-  try {
-    const response = await cachedFetch(constantesJSON, { cache: "reload" });
-    const data = await response.json();
-    constantesTFT.set(data);
-  } catch (e) {
-    console.error("Error loading constantes:", e);
-  }
-}
 
-loadDataTFTFromAPI({})
 
 
 export const apiNamesCrafteableItems = () => {
@@ -352,12 +348,15 @@ export const AllBasicItems = (dataTFTAllItems) => {
   return dataOfBasicItems;
 }
 
+
+
 // SEO: Fetch Compositions Server-Side for Schema and initial render
 export const fetchAndSortComps = async (url) => {
   try {
     const response = await fetch(
       url,
-      { cache: "no-cache" }
+      // { cache: "no-cache" }
+      { signal: controller.signal }
     );
     const data = await response.json();
     const hierarchy = ["S", "A", "B", "C", "D", "MEME"];
@@ -385,6 +384,21 @@ export const fetchAndSortComps = async (url) => {
     return [];
   }
 }
+const loadConstantes = async () => {
+  try {
+    console.log("loadingConstantes");
+    console.log({constantesJSON})
+    const response = await fetch(constantesJSON, {  signal: controller.signal });
+    const data = await response.json();
+    console.log({data})
+    constantesTFT.set(data);
+  } catch (e) {
+    console.error("Error loading constantes:", e);
+  }
+}
+
+loadDataTFTFromAPI({})
+
 
 export const addConstantesTFT = async ({key,value}) => {
   console.log("addConstantesTFT")

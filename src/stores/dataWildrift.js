@@ -1,5 +1,5 @@
 import {deepMap, atom, task} from "nanostores";
-import { cachedFetch } from "../utils/cachedFetch.js";
+//import { cachedFetch } from "../utils/cachedFetch.js";
 
 const initialLanersChampionsMeta = {
   Top: [],
@@ -45,7 +45,7 @@ export const urlPositionLaners = (laner) =>{
 }
 export const fetchChampions = async () => {
   try {
-    const response = await cachedFetch(urlChampionsData);
+    const response = await fetch(urlChampionsData);
     const data = await response.json();
     const champions = Object.keys(data.data).map((key) => {
       return {
@@ -65,7 +65,7 @@ export const fetchChampions = async () => {
 }
 export const fetchItems = async () => {
   try {
-    const response = await cachedFetch(urlItemsData);
+    const response = await fetch(urlItemsData);
     const data = await response.json();
     const items = Object.keys(data.data).map((key) => {
       return {
@@ -84,7 +84,7 @@ export const fetchItems = async () => {
 }
 export const fetchRunes = async () => {
   try {
-    const response = await cachedFetch(urlRunesData);
+    const response = await fetch(urlRunesData);
     const data = await response.json();
     const runes = data.map((rune) => {
       return {
@@ -105,7 +105,7 @@ export const fetchChampionsMeta = async () => {
   try {
     const token = import.meta.env.PUBLIC_TOKEN_META;
     const url = "https://api.guiadeparche.com/wildrift/ChampsMeta.json";
-    const response = await cachedFetch(url,{
+    const response = await fetch(url,{
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -132,8 +132,7 @@ export const fetchMeta = task(async () => {
     wildriftItems.set(items || []);
     wildriftRunes.set(runes || []);
   } catch (e) {
-    console.error("Error fetching Wild Rift meta data:", e);
-    throw e;
+    console.error("Error in [dataWildrift.js] fetchMeta task (Wild Rift meta data):", e);
   }
   return;
 });
@@ -144,7 +143,7 @@ export const fetchConstantesWildrift = async ()=>{
       try{
         const token = import.meta.env.PUBLIC_TOKEN_META;
         const url = "https://api.guiadeparche.com/wildrift/constantes.json";
-        const response = await cachedFetch(url,{
+        const response = await fetch(url,{
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -155,8 +154,7 @@ export const fetchConstantesWildrift = async ()=>{
         WildriftConstantes.set(data);
         return data;
       }catch(err){
-        console.error("Error fetching Wild Rift constantes:", err);
-        throw err;
+        console.error("Error in [dataWildrift.js] fetchConstantesWildrift from https://api.guiadeparche.com/wildrift/constantes.json :", err);
       }
     }
   )

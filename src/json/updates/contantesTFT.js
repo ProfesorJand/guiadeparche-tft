@@ -20,11 +20,18 @@ export async function fetchingDataTFT({ version = VERSION_LATEST, idioma = IDIOM
 }
 
 const GET_LAST_VERSION_NUMBER = async (version = VERSION_LATEST) => {
-  const resultado = await fetchingLatestVersionTFT(version);
-  const getVersion = resultado?.version.split(".")
-  return getVersion[0] + "." + getVersion[1]
+  try {
+    const resultado = await fetchingLatestVersionTFT(version);
+    const getVersion = resultado?.version.split(".")
+    return getVersion[0] + "." + getVersion[1]
+  } catch (error) {
+    console.error("Error in GET_LAST_VERSION_NUMBER inside [contantesTFT.js]:", error);
+    return "15.23"; // fallback
+  }
 };
-export const latestVersion = GET_LAST_VERSION_NUMBER()
+export const latestVersion = GET_LAST_VERSION_NUMBER().catch(err => {
+  console.error("Unhandled promise in latestVersion [contantesTFT.js]:", err);
+});
 
 export async function fetchingLatestVersionTFT(version = VERSION_LATEST) {
   const urlDragon = `https://raw.communitydragon.org/${version}/content-metadata.json`
@@ -77,9 +84,23 @@ export async function championsTFTIngles({ version = VERSION_PBE, set = SET_PBE 
   return (await datosTFTIngles({ version })).sets[set].champions; // SET_LATEST 
 }
 
-export const traitsTFTIngles = (await datosTFTIngles({})).sets[SET_PBE].traits; // SET_LATEST
-export const itemsDataIngles = (await datosTFTIngles({})).items;
+export let traitsTFTIngles = [];
+export let itemsDataIngles = [];
+export let fetchMeta = null;
+export let meta = null;
 
-export const fetchMeta = await fetch(metaTFTComposicionesJSON, { cache: "reload" });
-export const meta = await fetchMeta.json();
+try {
+  const dataIngles = await datosTFTIngles({});
+  traitsTFTIngles = dataIngles.sets[SET_PBE].traits;
+  itemsDataIngles = dataIngles.items;
+} catch (e) {
+  console.error("Error loading traitsTFTIngles or itemsDataIngles from Community Dragon in [contantesTFT.js]:", e);
+}
+
+try {
+  fetchMeta = await fetch(metaTFTComposicionesJSON, { cache: "reload" });
+  meta = await fetchMeta.json();
+} catch (e) {
+  console.error(`Error fetching meta compositions from ${metaTFTComposicionesJSON} in [contantesTFT.js]:`, e);
+}
 

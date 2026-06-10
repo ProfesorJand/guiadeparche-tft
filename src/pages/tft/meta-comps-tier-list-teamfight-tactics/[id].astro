@@ -7,10 +7,14 @@ import {
   urlDragon,
   constantesTFT,
   setNumberPBE,
+  metaCompsTFT
 } from "@stores/dataTFT";
 
 export async function getStaticPaths() {
-  const todasLasCompsPBE = await fetchAndSortComps(composMetaPBEJSON);
+  let todasLasCompsPBE  = metaCompsTFT.get();
+  if(!todasLasCompsPBE || todasLasCompsPBE.length === 0){
+    todasLasCompsPBE = await fetchAndSortComps(composMetaPBEJSON);
+  }
   return todasLasCompsPBE.map((comp) => ({
     params: { id: String(comp.compUrl) },
     props: { comp },
