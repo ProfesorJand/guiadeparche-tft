@@ -77,9 +77,32 @@ export async function championsTFTIngles({version=VERSION_PBE, set=SET_PBE}) {
   return (await datosTFTIngles({version})).sets[set].champions; // SET_LATEST 
 }
 
-export const traitsTFTIngles = (await datosTFTIngles({})).sets[SET_PBE].traits; // SET_LATEST
-export const itemsDataIngles = (await datosTFTIngles({})).items;
+// NOTA PARA EL FUTURO:
+// Si quieres volver a requerir el fetch directo sin try-catch (que puede fallar si la red está caída),
+// el código original era:
+// export const traitsTFTIngles = (await datosTFTIngles({})).sets[SET_PBE].traits;
+// export const itemsDataIngles = (await datosTFTIngles({})).items;
+let traitsTFTIngles = [];
+let itemsDataIngles = [];
+try {
+  const dataIngles = await datosTFTIngles({});
+  traitsTFTIngles = dataIngles?.sets?.[SET_PBE]?.traits || [];
+  itemsDataIngles = dataIngles?.items || [];
+} catch (e) {
+  console.error("Error loading traitsTFTIngles/itemsDataIngles in contantesTFT.js:", e);
+}
+export { traitsTFTIngles, itemsDataIngles };
 
-export const fetchMeta = await fetch(metaTFTComposicionesJSON, {cache:"reload"});
-export const meta = await fetchMeta.json();
+// NOTA PARA EL FUTURO:
+// El fetch original de meta era:
+// export const fetchMeta = await fetch(metaTFTComposicionesJSON, {cache:"reload"});
+// export const meta = await fetchMeta.json();
+let meta = {};
+try {
+  const fetchMeta = await fetch(metaTFTComposicionesJSON, {cache:"reload"});
+  meta = await fetchMeta.json();
+} catch (e) {
+  console.error("Error loading meta in contantesTFT.js, using default:", e);
+}
+export { meta };
 
