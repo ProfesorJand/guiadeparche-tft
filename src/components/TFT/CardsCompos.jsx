@@ -43,7 +43,11 @@ const infographicCategoriesEspañol = {
       );
 
       if (savedPosition) {
+        const html = document.documentElement;
+        const originalScrollBehavior = html.style.scrollBehavior;
+        html.style.scrollBehavior = "auto";
         window.scrollTo(0, parseInt(savedPosition));
+        html.style.scrollBehavior = originalScrollBehavior;
       }
 
       // Usar un pequeño retraso para permitir que la composición anterior se colapse

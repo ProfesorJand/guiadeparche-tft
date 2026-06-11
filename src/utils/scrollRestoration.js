@@ -11,6 +11,10 @@ export const restoreScrollPosition = () => {
   );
 
   if (savedPosition) {
+    const html = document.documentElement;
+    const originalScrollBehavior = html.style.scrollBehavior;
+    html.style.scrollBehavior = "auto";
     window.scrollTo(0, parseInt(savedPosition));
+    html.style.scrollBehavior = originalScrollBehavior;
   }
 };

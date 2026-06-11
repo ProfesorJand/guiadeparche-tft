@@ -2,14 +2,14 @@ import MiniInfoComp from "@components/TFT/MiniInfoComp.jsx";
 import { useStore  } from "@nanostores/react";
 import { useEffect,useState} from "react";
 import { MetaComps as compos, loadCompsMeta, isLoadingDataTFTFromApi } from "src/stores/menuFiltradoAdmin.js";
-import {constantesJSON, constantesTFT, versionTFT, setNumberPBE, setNumberLatest} from "@stores/dataTFT.js"
+import {constantesJSON, metaCompsTFT, constantesTFT, versionTFT, setNumberPBE, setNumberLatest} from "@stores/dataTFT.js"
 import LogoGuiadeparche from "@components/logo/LogoGuiadeparche";
 import  CardCompos from "@components/TFT/CardsCompos.jsx";
 import style from "./css/InfografiaTFTComps.module.css";
 
 const InfografiaTFTComps = ({backgroundRef, setTituloInfografiaTFT, tituloInfografiaTFT, logoMovilnet, logoGuiadeparche, webInfografia = false}) =>{
   const colorDificulty= {Easy:"green",Medium:"orange",Hard:"red"}
-  const composMeta = useStore(compos);
+  const composMeta = useStore(metaCompsTFT);
   const [composInInfographic, setComposInInfographic] = useState([]);
   // const [constantes, setConstantes] = useState({});
   const currentVersion = useStore(versionTFT);
@@ -44,6 +44,7 @@ useEffect(() => {
 
   // 2️⃣ Filtramos solo los que tengan isInInfographic === true
   const filtrados = todos.filter(c => c.isInInfographic === true);
+  console.log({filtrados})
 
   // 3️⃣ Nos quedamos con los primeros 10
   const cantidadDeCompos = filtrados.slice(0, 4);

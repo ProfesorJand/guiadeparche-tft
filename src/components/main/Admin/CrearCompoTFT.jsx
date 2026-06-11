@@ -758,7 +758,6 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
               id="tierExtra"
               onChange={(e)=>setTierExtra(e.target.value)}
               defaultValue={edittierExtra || tierExtra}
-              required
           >
               <option value="">no aplica</option>
               <option value="H">H</option>

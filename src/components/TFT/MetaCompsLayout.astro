@@ -320,7 +320,11 @@ const urlRecursosTFT= [
       const savedPosition = sessionStorage.getItem("tft-scroll-position");
       if (savedPosition) {
         setTimeout(() => {
+          const html = document.documentElement;
+          const originalScrollBehavior = html.style.scrollBehavior;
+          html.style.scrollBehavior = "auto";
           window.scrollTo(0, parseInt(savedPosition));
+          html.style.scrollBehavior = originalScrollBehavior;
         }, 50);
       }
     }

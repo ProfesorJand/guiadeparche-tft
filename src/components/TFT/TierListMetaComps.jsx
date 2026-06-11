@@ -11,7 +11,7 @@ const TierListMetaComps = ({todasLasComps = [], todasLasCompsPBE = []}) => {
   const groupedComps = useMemo(() => {
     const hierarchy = ["S", "A", "B", "C", "D", "MEME"];
     return hierarchy.map(tierName => 
-      activeComps.filter(c => c.tier === tierName)
+      activeComps?.filter(c => c.tier === tierName)
     ).filter(group => group.length > 0);
   }, [activeComps]);
 
