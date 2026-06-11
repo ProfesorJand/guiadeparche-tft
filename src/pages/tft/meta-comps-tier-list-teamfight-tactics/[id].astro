@@ -1,16 +1,14 @@
 ---
 import MetaCompsLayout from "@components/TFT/MetaCompsLayout.astro";
 
+import { getComposMetaPBE, getConstantes } from "../../../lib/cache/tftCache.js";
 import {
-  fetchAndSortComps,
-  composMetaPBEJSON,
   urlDragon,
-  constantesTFT,
   setNumberPBE
 } from "@stores/dataTFT";
 
 export async function getStaticPaths() {
-  const todasLasCompsPBE = await fetchAndSortComps(composMetaPBEJSON);
+  const todasLasCompsPBE = await getComposMetaPBE();
   return todasLasCompsPBE.map((comp) => ({
     params: { id: String(comp.compUrl) },
     props: { comp },
@@ -19,7 +17,7 @@ export async function getStaticPaths() {
 
 const { id } = Astro.params;
 const { comp } = Astro.props;
-const numberOfVersion = constantesTFT.get();
+const numberOfVersion = await getConstantes();
 
 // Obtener datos de video
 const getYoutubeId = (url) => {
@@ -36,7 +34,7 @@ const video = {
 };
 
 // Cargar todas las composiciones para listarlas abajo
-const todasLasCompsPBE = await fetchAndSortComps(composMetaPBEJSON);
+const todasLasCompsPBE = await getComposMetaPBE();
 const top10Comps = [...todasLasCompsPBE.slice(0, 10)];
 const restComps = [...todasLasCompsPBE.slice(10)];
 ---

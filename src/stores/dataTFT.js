@@ -1,7 +1,7 @@
 import { deepMap, atom, task } from "nanostores";
 import { useStore } from "@nanostores/react";
 import { cachedFetch } from "../utils/cachedFetch.js";
-import metaCompsTFTPBE from "../utils/metaCompsTFTPBE.json";
+//import metaCompsTFTPBE from "../utils/metaCompsTFTPBE.json";
 import { constantesTFTLocal } from "../utils/constantesTFT.js";
 const token = import.meta.env.PUBLIC_TOKEN_META;
 
@@ -287,10 +287,12 @@ export const getTeamPlannerCodeAPI = async () => {
   }
 };
 
-versionTFT.subscribe((version) => {
-  loadDataTFTFromAPI({ version: version })
-  getTeamPlannerCodeAPI(); // Llamar automáticamente cuando cambia la versión
-});
+if (typeof window !== 'undefined') {
+  versionTFT.subscribe((version) => {
+    loadDataTFTFromAPI({ version: version })
+    getTeamPlannerCodeAPI(); // Llamar automáticamente cuando cambia la versión
+  });
+}
 
 const updateVersionNumberTFT = async () => {
   try {
@@ -318,7 +320,9 @@ export const loadConstantes = async () => {
   }
 }
 
-loadDataTFTFromAPI({})
+if (typeof window !== 'undefined') {
+  loadDataTFTFromAPI({})
+}
 
 
 export const apiNamesCrafteableItems = () => {
@@ -362,27 +366,27 @@ export const AllBasicItems = (dataTFTAllItems) => {
 
 // SEO: Fetch Compositions Server-Side for Schema and initial render
 export const fetchAndSortComps = async (url) => {
-  if (url && url.includes("composMetaPBE")) {
-    try {
-      const data = metaCompsTFTPBE;
-      const hierarchy = ["S", "A", "B", "C", "D", "MEME"];
-      const allSorted = [];
+  // if (url && url.includes("composMetaPBE")) {
+  //   try {
+  //     const data = metaCompsTFT.get();
+  //     const hierarchy = ["S", "A", "B", "C", "D", "MEME"];
+  //     const allSorted = [];
 
-      hierarchy.forEach(tier => {
-        if (data[tier]) {
-          const tierComps = [...data[tier]].sort((a, b) => (a.posicion || 0) - (b.posicion || 0));
-          allSorted.push(...tierComps);
-        }
-      });
-      // Set a fallback last update date (since we don't have HTTP headers)
-      dataTFTLastUpdate.set("10/6/2026");
-      metaCompsTFT.set(allSorted);
-      return allSorted;
-    } catch (e) {
-      console.error(`Error loading local PBE compositions in [dataTFT.js]:`, e);
-      return [];
-    }
-  }
+  //     hierarchy.forEach(tier => {
+  //       if (data[tier]) {
+  //         const tierComps = [...data[tier]].sort((a, b) => (a.posicion || 0) - (b.posicion || 0));
+  //         allSorted.push(...tierComps);
+  //       }
+  //     });
+  //     // Set a fallback last update date (since we don't have HTTP headers)
+  //     dataTFTLastUpdate.set("10/6/2026");
+  //     metaCompsTFT.set(allSorted);
+  //     return allSorted;
+  //   } catch (e) {
+  //     console.error(`Error loading local PBE compositions in [dataTFT.js]:`, e);
+  //     return [];
+  //   }
+  // }
 
   try {
     const response = await fetch(

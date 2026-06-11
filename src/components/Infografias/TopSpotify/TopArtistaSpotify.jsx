@@ -28,7 +28,7 @@ const TopArtistaSpotify = () => {
   useEffect(() => {
     setDatos(prev => ({
       ...prev,
-      fecha: `${dia} DE ${mes.toUpperCase()} ${año} (${sourceType === "venezolanos" ? "OYENTES MENSUALES" : "REPRODUCCIONES ÚLTIMAS 24 H"})`
+      fecha: `${dia} DE ${mes.toUpperCase()} ${año} (${sourceType === "venezolanos" || sourceType === "globales" ? "OYENTES MENSUALES" : "REPRODUCCIONES ÚLTIMAS 24 H"})`
     }));
   }, [sourceType, dia, mes, año]);
 

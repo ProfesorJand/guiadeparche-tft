@@ -50,4 +50,6 @@ export const fetchConstantesValorant = async ()=>{
   )
 }
 
-fetchConstantesValorant()
+if (typeof window !== 'undefined') {
+  fetchConstantesValorant();
+}

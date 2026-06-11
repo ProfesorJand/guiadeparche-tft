@@ -162,4 +162,6 @@ export const fetchConstantesWildrift = async ()=>{
   )
 }
 
-fetchConstantesWildrift()
+if (typeof window !== 'undefined') {
+  fetchConstantesWildrift();
+}

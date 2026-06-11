@@ -121,10 +121,12 @@ export const filterByCategory = (e) => {
   MetaComps.set(newMeta);
 };
 
-try {
-  await loadCompsMeta();
-} catch (e) {
-  console.error("Failed top-level await loadCompsMeta:", e);
+if (typeof window !== 'undefined') {
+  try {
+    await loadCompsMeta();
+  } catch (e) {
+    console.error("Failed top-level await loadCompsMeta:", e);
+  }
 }
 
 
@@ -153,8 +155,10 @@ export const toggleActiveComp = (id) => {
   }
 };
 
-try {
-  await getConstantsTFT();
-} catch (e) {
-  console.error("Failed top-level await getConstantsTFT:", e);
+if (typeof window !== 'undefined') {
+  try {
+    await getConstantsTFT();
+  } catch (e) {
+    console.error("Failed top-level await getConstantsTFT:", e);
+  }
 }

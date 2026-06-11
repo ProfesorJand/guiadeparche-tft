@@ -1761,5 +1761,3281 @@
       }
     ],
     "month": "2026-04-01"
+  },
+  {
+    "name": "Ariana Grande",
+    "url": "https://open.spotify.com/artist/66CXWjxzNUsdJxJ2JdwvnR",
+    "listeners": 88496765,
+    "backgroundArtistImage": "https://image-cdn-fa.spotifycdn.com/image/ab67618600000194e1732cadcb123dede061baa1",
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd4e952abe9d4996cc7f09a8964",
+    "topTracks": [
+      {
+        "title": "hate that i made you love me",
+        "link": "https://open.spotify.com/track/20jbSiX29FDX4oQxBXyUEi",
+        "image": "https://i.scdn.co/image/ab67616d00001e02b622d42c30697e1e1414343c",
+        "plays": 85221565
+      },
+      {
+        "title": "we can't be friends (wait for your love)",
+        "link": "https://open.spotify.com/track/51ZQ1vr10ffzbwIjDCwqm4",
+        "image": "https://i.scdn.co/image/ab67616d00001e028b58d20f1b77295730db15b4",
+        "plays": 1982176562
+      },
+      {
+        "title": "Love Me Harder",
+        "link": "https://open.spotify.com/track/5J4ZkQpzMUFojo1CtAZYpn",
+        "image": "https://i.scdn.co/image/ab67616d00001e02deec12a28d1e336c5052e9aa",
+        "plays": 1429449274
+      },
+      {
+        "title": "Into You",
+        "link": "https://open.spotify.com/track/76FZM38RC8XaAjJ77CVTNe",
+        "image": "https://i.scdn.co/image/ab67616d00001e0233342c57a9b2c4e04c97b3f5",
+        "plays": 2008796058
+      },
+      {
+        "title": "Save Your Tears (Remix) (with Ariana Grande) - Bonus Track",
+        "link": "https://open.spotify.com/track/1oFAF1hdPOickyHgbuRjyX",
+        "image": "https://i.scdn.co/image/ab67616d00001e02b5097b81179824803664aaaf",
+        "plays": 2238922461
+      },
+      {
+        "title": "One Last Time",
+        "link": "https://open.spotify.com/track/7xoUc6faLbCqZO6fQEYprd",
+        "image": "https://i.scdn.co/image/ab67616d00001e02deec12a28d1e336c5052e9aa",
+        "plays": 2108606873
+      },
+      {
+        "title": "7 rings",
+        "link": "https://open.spotify.com/track/6ocbgoVGwYJhOv1GgI9NsF",
+        "image": "https://i.scdn.co/image/ab67616d00001e0256ac7b86e090f307e218e9c8",
+        "plays": 2835677187
+      },
+      {
+        "title": "Side To Side",
+        "link": "https://open.spotify.com/track/44ONERBHALxftQNWq6dmyd",
+        "image": "https://i.scdn.co/image/ab67616d00001e0233342c57a9b2c4e04c97b3f5",
+        "plays": 1903620099
+      },
+      {
+        "title": "Dangerous Woman",
+        "link": "https://open.spotify.com/track/3nef5W8jTkXrOKgCu4kmq7",
+        "image": "https://i.scdn.co/image/ab67616d00001e0233342c57a9b2c4e04c97b3f5",
+        "plays": 1617409054
+      },
+      {
+        "title": "thank u, next",
+        "link": "https://open.spotify.com/track/3e9HZxeyfWwjeyPAMmWSSQ",
+        "image": "https://i.scdn.co/image/ab67616d00001e0256ac7b86e090f307e218e9c8",
+        "plays": 2247581715
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "Justin Bieber",
+    "url": "https://open.spotify.com/artist/1uNFoZAHBGtllmzznpCI3s",
+    "listeners": 133565079,
+    "backgroundArtistImage": null,
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd4abf5366b50b499b9d48bf2ae",
+    "topTracks": [
+      {
+        "title": "Beauty And A Beat",
+        "link": "https://open.spotify.com/track/6QFCMUUq1T2Vf5sFUXcuQ7",
+        "image": "https://i.scdn.co/image/ab67616d00001e02f1d02a6cec967f8b6b78f76e",
+        "plays": 1909802095
+      },
+      {
+        "title": "DAISIES",
+        "link": "https://open.spotify.com/track/5BZsQlgw21vDOAjoqkNgKb",
+        "image": "https://i.scdn.co/image/ab67616d00001e02d65c4773bc5061fd27facc5b",
+        "plays": 839073650
+      },
+      {
+        "title": "Confident",
+        "link": "https://open.spotify.com/track/3JsydWaf2Ev4ehaLUjj3SY",
+        "image": "https://i.scdn.co/image/ab67616d00001e0258ae8fddecbd2630005409c9",
+        "plays": 1258850000
+      },
+      {
+        "title": "Baby",
+        "link": "https://open.spotify.com/track/6epn3r7S14KUqlReYr77hA",
+        "image": "https://i.scdn.co/image/ab67616d00001e02629dc9e2e3bc20bbd7d92e4a",
+        "plays": 1641134930
+      },
+      {
+        "title": "Sorry",
+        "link": "https://open.spotify.com/track/09CtPGIpYB4BrO8qb1RGsF",
+        "image": "https://i.scdn.co/image/ab67616d00001e02f46b9d202509a8f7384b90de",
+        "plays": 2955345636
+      },
+      {
+        "title": "Love Yourself",
+        "link": "https://open.spotify.com/track/50kpGaPAhYJ3sGmk6vplg0",
+        "image": "https://i.scdn.co/image/ab67616d00001e02f46b9d202509a8f7384b90de",
+        "plays": 3247406405
+      },
+      {
+        "title": "STAY (with Justin Bieber)",
+        "link": "https://open.spotify.com/track/567e29TDzLwZwfDuEpGTwo",
+        "image": "https://i.scdn.co/image/ab67616d00001e02b4d59e6fa7e5e7cbc57ac33a",
+        "plays": 3957394670
+      },
+      {
+        "title": "Eenie Meenie",
+        "link": "https://open.spotify.com/track/4vVTI94F9uJ8lHNDWKv0i2",
+        "image": "https://i.scdn.co/image/ab67616d00001e024dea4c1cdf30c359dbaec318",
+        "plays": 1135183825
+      },
+      {
+        "title": "Ghost",
+        "link": "https://open.spotify.com/track/6I3mqTwhRpn34SLVafSH7G",
+        "image": "https://i.scdn.co/image/ab67616d00001e02e6f407c7f3a0ec98845e4431",
+        "plays": 2302547529
+      },
+      {
+        "title": "YUKON",
+        "link": "https://open.spotify.com/track/29iva9idM6rFCPUlu7Rhxl",
+        "image": "https://i.scdn.co/image/ab67616d00001e02d65c4773bc5061fd27facc5b",
+        "plays": 407055970
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "Nicki Minaj",
+    "url": "https://open.spotify.com/artist/0hCNtLu0JehylgoiP8L4Gh",
+    "listeners": 48146841,
+    "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab676186000001943604c6c213f7c88e351d002d",
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd46780726d33bd66450dabd4d5",
+    "topTracks": [
+      {
+        "title": "Starships",
+        "link": "https://open.spotify.com/track/2EBCVPNAG46nbgs6jXPGvv",
+        "image": "https://i.scdn.co/image/ab67616d00001e02ef9ad61e2a4f15606fd4ab15",
+        "plays": 1600454436
+      },
+      {
+        "title": "Bang Bang",
+        "link": "https://open.spotify.com/track/0puf9yIluy9W0vpMEUoAnN",
+        "image": "https://i.scdn.co/image/ab67616d00001e02930f686fe89425c7b6bf9a7d",
+        "plays": 1709178917
+      },
+      {
+        "title": "Super Bass",
+        "link": "https://open.spotify.com/track/3hlksXnvbKogFdPbpO9vel",
+        "image": "https://i.scdn.co/image/ab67616d00001e02aa7d2641af0fa4c1f76fafbf",
+        "plays": 1161622786
+      },
+      {
+        "title": "Tusa",
+        "link": "https://open.spotify.com/track/0dKg2vGC1hFqcK5LGTaKzX",
+        "image": "https://i.scdn.co/image/ab67616d00001e02ae28c8f2748587cc2a33d6c2",
+        "plays": 1722269867
+      },
+      {
+        "title": "Swalla (feat. Nicki Minaj & Ty Dolla $ign)",
+        "link": "https://open.spotify.com/track/58w5J5yNWeGZ7a4cM1rO7Y",
+        "image": "https://i.scdn.co/image/ab67616d00001e02e61bf150469db99447be6206",
+        "plays": 1276380972
+      },
+      {
+        "title": "The Night Is Still Young",
+        "link": "https://open.spotify.com/track/75u9uswC5UMdtv4SQ3xSYf",
+        "image": "https://i.scdn.co/image/ab67616d00001e0205d647d0e976e7fb2460492e",
+        "plays": 497181436
+      },
+      {
+        "title": "Va Va Voom",
+        "link": "https://open.spotify.com/track/2jATUzETZL49e6SywauZKE",
+        "image": "https://i.scdn.co/image/ab67616d00001e024f0aae4e435a794e0e24d115",
+        "plays": 355955572
+      },
+      {
+        "title": "Moment 4 Life",
+        "link": "https://open.spotify.com/track/1ia019RqDK2o4QiANR1Dyn",
+        "image": "https://i.scdn.co/image/ab67616d00001e02c17570626959bfa6c2435925",
+        "plays": 387043213
+      },
+      {
+        "title": "Anaconda",
+        "link": "https://open.spotify.com/track/5eqiMMbaeUZ32Q7sS00H35",
+        "image": "https://i.scdn.co/image/ab67616d00001e0205d647d0e976e7fb2460492e",
+        "plays": 585630654
+      },
+      {
+        "title": "Super Freaky Girl",
+        "link": "https://open.spotify.com/track/2uHn71ZwsodBen5QUUDqHw",
+        "image": "https://i.scdn.co/image/ab67616d00001e02651e1dbc0b5218f2306181a1",
+        "plays": 672816894
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "Michael Jackson",
+    "url": "https://open.spotify.com/artist/3fMbdgg4jU18AjLCKBhRSm",
+    "listeners": 113086654,
+    "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab676186000001943753db8546a0d1ec0972c594",
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/188c4fec0fcdb8d074ca9d6a805afec38946c49c",
+    "topTracks": [
+      {
+        "title": "Billie Jean",
+        "link": "https://open.spotify.com/track/7J1uxwnxfQLu4APicE5Rnj",
+        "image": "https://i.scdn.co/image/ab67616d00001e0232a7d87248d1b75463483df5",
+        "plays": 2893969167
+      },
+      {
+        "title": "Beat It",
+        "link": "https://open.spotify.com/track/3BovdzfaX4jb5KFQwoPfAw",
+        "image": "https://i.scdn.co/image/ab67616d00001e0232a7d87248d1b75463483df5",
+        "plays": 1888545278
+      },
+      {
+        "title": "Don't Stop 'Til You Get Enough",
+        "link": "https://open.spotify.com/track/46eu3SBuFCXWsPT39Yg3tJ",
+        "image": "https://i.scdn.co/image/ab67616d00001e022b74bf21c7e4f56758610949",
+        "plays": 858944591
+      },
+      {
+        "title": "Human Nature",
+        "link": "https://open.spotify.com/track/4cgjA7B4fJBHyB9Ya2bu0t",
+        "image": "https://i.scdn.co/image/ab67616d00001e0232a7d87248d1b75463483df5",
+        "plays": 442184806
+      },
+      {
+        "title": "Chicago",
+        "link": "https://open.spotify.com/track/5BKKy9fIJL5uM9fz1SnqyP",
+        "image": "https://i.scdn.co/image/ab67616d00001e0235f36cb686b0d5a12ab3a9f0",
+        "plays": 722922422
+      },
+      {
+        "title": "Smooth Criminal - 2012 Remaster",
+        "link": "https://open.spotify.com/track/5T7ywazdGIydr6JCW6t02j",
+        "image": "https://i.scdn.co/image/ab67616d00001e02eb2087dcd1eb61f833bdedff",
+        "plays": 1178654437
+      },
+      {
+        "title": "Bad - 2012 Remaster",
+        "link": "https://open.spotify.com/track/2gSNBigeWMVtY3QBIvPAEc",
+        "image": "https://i.scdn.co/image/ab67616d00001e02eb2087dcd1eb61f833bdedff",
+        "plays": 583260362
+      },
+      {
+        "title": "Dirty Diana - 2012 Remaster",
+        "link": "https://open.spotify.com/track/0AcgKF7kbSoCkh3n7vlHwK",
+        "image": "https://i.scdn.co/image/ab67616d00001e02eb2087dcd1eb61f833bdedff",
+        "plays": 501191780
+      },
+      {
+        "title": "They Don't Care About Us",
+        "link": "https://open.spotify.com/track/3wuCCNCnBhJlwkIJTBZFiv",
+        "image": "https://i.scdn.co/image/ab67616d00001e02b4a878f008a0eda552446701",
+        "plays": 668835860
+      },
+      {
+        "title": "The Way You Make Me Feel - 2012 Remaster",
+        "link": "https://open.spotify.com/track/76HKOVWqsEg26SECtmw7Rz",
+        "image": "https://i.scdn.co/image/ab67616d00001e02eb2087dcd1eb61f833bdedff",
+        "plays": 795109061
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "BTS",
+    "url": "https://open.spotify.com/artist/3Nrfpe0tUJi4K4DXYWgMUX",
+    "listeners": 36889426,
+    "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab6761860000019411083b372221231d59ed0b49",
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd487ef96c83d38f358fd297172",
+    "topTracks": [
+      {
+        "title": "SWIM",
+        "link": "https://open.spotify.com/track/68lbSrXDORS51pmyjZv712",
+        "image": "https://i.scdn.co/image/ab67616d00001e02dfa17fad7f190c901603270e",
+        "plays": 568217005
+      },
+      {
+        "title": "Body to Body",
+        "link": "https://open.spotify.com/track/2rKkfc4VZ74FQDc1FF1Zo6",
+        "image": "https://i.scdn.co/image/ab67616d00001e02dfa17fad7f190c901603270e",
+        "plays": 255910515
+      },
+      {
+        "title": "2.0",
+        "link": "https://open.spotify.com/track/3bmpXHVie1GTy37OkXJ7Vc",
+        "image": "https://i.scdn.co/image/ab67616d00001e02dfa17fad7f190c901603270e",
+        "plays": 223640096
+      },
+      {
+        "title": "Hooligan",
+        "link": "https://open.spotify.com/track/20dAJsyno9ZoBLJtqgQnUI",
+        "image": "https://i.scdn.co/image/ab67616d00001e02dfa17fad7f190c901603270e",
+        "plays": 227654088
+      },
+      {
+        "title": "FYA",
+        "link": "https://open.spotify.com/track/0KmrKOdScRDVYwWS8hkkdv",
+        "image": "https://i.scdn.co/image/ab67616d00001e02dfa17fad7f190c901603270e",
+        "plays": 197397560
+      },
+      {
+        "title": "they don’t know ’bout us",
+        "link": "https://open.spotify.com/track/0b61A7v9agI08BG21jJPQ9",
+        "image": "https://i.scdn.co/image/ab67616d00001e02dfa17fad7f190c901603270e",
+        "plays": 186596144
+      },
+      {
+        "title": "NORMAL",
+        "link": "https://open.spotify.com/track/4B4Q7zfd0aHcuhQBfCRnH5",
+        "image": "https://i.scdn.co/image/ab67616d00001e02dfa17fad7f190c901603270e",
+        "plays": 194577736
+      },
+      {
+        "title": "Like Animals",
+        "link": "https://open.spotify.com/track/2IFND3phjzIG1RcPnHh2hP",
+        "image": "https://i.scdn.co/image/ab67616d00001e02dfa17fad7f190c901603270e",
+        "plays": 186962110
+      },
+      {
+        "title": "Aliens",
+        "link": "https://open.spotify.com/track/5tg21NdePCn5m8F9BXOEeJ",
+        "image": "https://i.scdn.co/image/ab67616d00001e02dfa17fad7f190c901603270e",
+        "plays": 181725582
+      },
+      {
+        "title": "Into the Sun",
+        "link": "https://open.spotify.com/track/1ZNolq7VI7efGlh2hb2VVr",
+        "image": "https://i.scdn.co/image/ab67616d00001e02dfa17fad7f190c901603270e",
+        "plays": 152132601
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "Dominic Fike",
+    "url": "https://open.spotify.com/artist/6USv9qhCn6zfxlBQIYJ9qs",
+    "listeners": 60441460,
+    "backgroundArtistImage": "https://image-cdn-fa.spotifycdn.com/image/ab676186000001941ce8822b366da01389b26de0",
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd4f50d97dc06da36c4e73c1caa",
+    "topTracks": [
+      {
+        "title": "Babydoll",
+        "link": "https://open.spotify.com/track/7yNf9YjeO5JXUE3JEBgnYc",
+        "image": "https://i.scdn.co/image/ab67616d00001e027b1b6f41c1645af9757d5616",
+        "plays": 1479160189
+      },
+      {
+        "title": "White Keys",
+        "link": "https://open.spotify.com/track/5ViLKrbyL3HD6wsq3AB9eI",
+        "image": "https://i.scdn.co/image/ab67616d00001e023696096119ef08824cf85ede",
+        "plays": 312807508
+      },
+      {
+        "title": "3 Nights",
+        "link": "https://open.spotify.com/track/0uI7yAKUf52Cn7y3sYyjiX",
+        "image": "https://i.scdn.co/image/ab67616d00001e027b1b6f41c1645af9757d5616",
+        "plays": 1309527275
+      },
+      {
+        "title": "Mama's Boy",
+        "link": "https://open.spotify.com/track/0b6xZk9f96N77BfmYWnQNC",
+        "image": "https://i.scdn.co/image/ab67616d00001e025b26c1b56d89c1416d21db60",
+        "plays": 289106302
+      },
+      {
+        "title": "misses",
+        "link": "https://open.spotify.com/track/6WTFHKrnZpwEBLRS10Ylqs",
+        "image": "https://i.scdn.co/image/ab67616d00001e020297fb98f81fc0b611fcf71d",
+        "plays": 305333611
+      },
+      {
+        "title": "Love Hangover (feat. Dominic Fike)",
+        "link": "https://open.spotify.com/track/0rx7xu0RmZLpJjKNVZjSVv",
+        "image": "https://i.scdn.co/image/ab67616d00001e02dcf27dec5e479b2e39c4c993",
+        "plays": 232333782
+      },
+      {
+        "title": "Phone Numbers",
+        "link": "https://open.spotify.com/track/3f9Mzvd3URfbbIJBX4pz9Z",
+        "image": "https://i.scdn.co/image/ab67616d00001e021047fa3fb0151cf803d9c696",
+        "plays": 377723019
+      },
+      {
+        "title": "How Much Is Weed?",
+        "link": "https://open.spotify.com/track/44KWbTVZev3SWdv1t5UoYE",
+        "image": "https://i.scdn.co/image/ab67616d00001e025b26c1b56d89c1416d21db60",
+        "plays": 105587135
+      },
+      {
+        "title": "Mona Lisa",
+        "link": "https://open.spotify.com/track/71DSaeKtXQaMAqnvMT7Uoc",
+        "image": "https://i.scdn.co/image/ab67616d00001e025b26c1b56d89c1416d21db60",
+        "plays": 240893871
+      },
+      {
+        "title": "Why",
+        "link": "https://open.spotify.com/track/1xLs8Mu1QEVbGCpyHQ2r2U",
+        "image": "https://i.scdn.co/image/ab67616d00001e028c7e2ab6558632be78a244c2",
+        "plays": 200242475
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "Olivia Rodrigo",
+    "url": "https://open.spotify.com/artist/1McMsnEElThX1knmY4oliG",
+    "listeners": 62015858,
+    "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab6761860000019490531fa004e3301b67d6447b",
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd42ff4f703438a4f932200b1f6",
+    "topTracks": [
+      {
+        "title": "drop dead",
+        "link": "https://open.spotify.com/track/7Hc6qcJG4NtyZgbNvQyd8U",
+        "image": "https://i.scdn.co/image/ab67616d00001e021a1495ff41046065b9475366",
+        "plays": 226024474
+      },
+      {
+        "title": "the cure",
+        "link": "https://open.spotify.com/track/4EoJ151oQ5jY48z4RhSE96",
+        "image": "https://i.scdn.co/image/ab67616d00001e0279e480cbab8c7b86d277841a",
+        "plays": 92853176
+      },
+      {
+        "title": "deja vu",
+        "link": "https://open.spotify.com/track/6HU7h9RYOaPRFeh0R3UeAr",
+        "image": "https://i.scdn.co/image/ab67616d00001e02a91c10fe9472d9bd89802e5a",
+        "plays": 2304135988
+      },
+      {
+        "title": "traitor",
+        "link": "https://open.spotify.com/track/5CZ40GBx1sQ9agT82CLQCT",
+        "image": "https://i.scdn.co/image/ab67616d00001e02a91c10fe9472d9bd89802e5a",
+        "plays": 2347292495
+      },
+      {
+        "title": "drivers license",
+        "link": "https://open.spotify.com/track/5wANPM4fQCJwkGd4rN57mH",
+        "image": "https://i.scdn.co/image/ab67616d00001e02a91c10fe9472d9bd89802e5a",
+        "plays": 2862299233
+      },
+      {
+        "title": "vampire",
+        "link": "https://open.spotify.com/track/1kuGVB7EU95pJObxwvfwKS",
+        "image": "https://i.scdn.co/image/ab67616d00001e02e85259a1cae29a8d91f2093d",
+        "plays": 1663980405
+      },
+      {
+        "title": "good 4 u",
+        "link": "https://open.spotify.com/track/4ZtFanR9U6ndgddUvNcjcG",
+        "image": "https://i.scdn.co/image/ab67616d00001e02a91c10fe9472d9bd89802e5a",
+        "plays": 2661777831
+      },
+      {
+        "title": "happier",
+        "link": "https://open.spotify.com/track/2tGvwE8GcFKwNdAXMnlbfl",
+        "image": "https://i.scdn.co/image/ab67616d00001e02a91c10fe9472d9bd89802e5a",
+        "plays": 1655246065
+      },
+      {
+        "title": "favorite crime",
+        "link": "https://open.spotify.com/track/5JCoSi02qi3jJeHdZXMmR8",
+        "image": "https://i.scdn.co/image/ab67616d00001e02a91c10fe9472d9bd89802e5a",
+        "plays": 1550231451
+      },
+      {
+        "title": "jealousy, jealousy",
+        "link": "https://open.spotify.com/track/0MMyJUC3WNnFS1lit5pTjk",
+        "image": "https://i.scdn.co/image/ab67616d00001e02a91c10fe9472d9bd89802e5a",
+        "plays": 1272304294
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "Malcolm Todd",
+    "url": "https://open.spotify.com/artist/7eKkW1zo5uzW8kUntiiBvz",
+    "listeners": 32550025,
+    "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab676186000001946ad4a3a6e817f33a2f45daea",
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd4681abc180d83f7a0cdec8994",
+    "topTracks": [
+      {
+        "title": "Earrings",
+        "link": "https://open.spotify.com/track/0eAuGrXyGFYwur9ARUe7LJ",
+        "image": "https://i.scdn.co/image/ab67616d00001e022c1f34ecc1929fb59908aad1",
+        "plays": 313329971
+      },
+      {
+        "title": "Sweet Boy",
+        "link": "https://open.spotify.com/track/59c2xv2kMzYM6HR9oY6BIa",
+        "image": "https://i.scdn.co/image/ab67616d00001e022c1f34ecc1929fb59908aad1",
+        "plays": 283165745
+      },
+      {
+        "title": "Roommates",
+        "link": "https://open.spotify.com/track/5vPUv0xziXbV4lnWeVNXNq",
+        "image": "https://i.scdn.co/image/ab67616d00001e022c1f34ecc1929fb59908aad1",
+        "plays": 250834946
+      },
+      {
+        "title": "Chest Pain (I Love)",
+        "link": "https://open.spotify.com/track/2XUx8PCXGpP1XhZJMGiUol",
+        "image": "https://i.scdn.co/image/ab67616d00001e0287607b2c8f5f52f1f057be0d",
+        "plays": 323080572
+      },
+      {
+        "title": "I Saw Your Face",
+        "link": "https://open.spotify.com/track/3B3eD9Mo22YTke9AuOirzn",
+        "image": "https://i.scdn.co/image/ab67616d00001e026ad1bfc5a6102f8e926a8c5f",
+        "plays": 31535471
+      },
+      {
+        "title": "Breathe",
+        "link": "https://open.spotify.com/track/1ib0HGZolb3nwD62HBJYV5",
+        "image": "https://i.scdn.co/image/ab67616d00001e026ad1bfc5a6102f8e926a8c5f",
+        "plays": 42725300
+      },
+      {
+        "title": "4Me 4Me",
+        "link": "https://open.spotify.com/track/7uEFboafVLvROPYTqdMi0n",
+        "image": "https://i.scdn.co/image/ab67616d00001e022c1f34ecc1929fb59908aad1",
+        "plays": 82532392
+      },
+      {
+        "title": "Mr. Incorrect",
+        "link": "https://open.spotify.com/track/1JOUKim8ZlHaM5N43sQ9dq",
+        "image": "https://i.scdn.co/image/ab67616d00001e022c1f34ecc1929fb59908aad1",
+        "plays": 69590797
+      },
+      {
+        "title": "Bleed (feat. Omar Apollo)",
+        "link": "https://open.spotify.com/track/2TAKt1x0k9AltDJm31GhEu",
+        "image": "https://i.scdn.co/image/ab67616d00001e0287607b2c8f5f52f1f057be0d",
+        "plays": 95338217
+      },
+      {
+        "title": "Attention",
+        "link": "https://open.spotify.com/track/4YL3I7JjXiS0p8GpCestbv",
+        "image": "https://i.scdn.co/image/ab67616d00001e02436145513f91113c10292b12",
+        "plays": 35089722
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "Drake",
+    "url": "https://open.spotify.com/artist/3TVXtAsR1Inumwj472S9r4",
+    "listeners": 99767799,
+    "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194a76cf626917521176d2f7723",
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/068ae749ee9825fcecc1a0f82ead09aaa8440228",
+    "topTracks": [
+      {
+        "title": "Janice STFU",
+        "link": "https://open.spotify.com/track/514joG57v4yKTsfQmz7stz",
+        "image": "https://i.scdn.co/image/ab67616d00001e02fe9d3ab9adb1d3b59835b81c",
+        "plays": 119270829
+      },
+      {
+        "title": "National Treasures",
+        "link": "https://open.spotify.com/track/393OFJFZKIIv66JmJcNm9D",
+        "image": "https://i.scdn.co/image/ab67616d00001e02fe9d3ab9adb1d3b59835b81c",
+        "plays": 81156262
+      },
+      {
+        "title": "One Dance",
+        "link": "https://open.spotify.com/track/1zi7xx7UVEFkmKfv06H8x0",
+        "image": "https://i.scdn.co/image/ab67616d00001e029416ed64daf84936d89e671c",
+        "plays": 4282786345
+      },
+      {
+        "title": "Whisper My Name",
+        "link": "https://open.spotify.com/track/7KGHenqXZofXNm5MKDbT3J",
+        "image": "https://i.scdn.co/image/ab67616d00001e02fe9d3ab9adb1d3b59835b81c",
+        "plays": 72973597
+      },
+      {
+        "title": "Shabang",
+        "link": "https://open.spotify.com/track/6vjpQIdABqntoe3zPazPec",
+        "image": "https://i.scdn.co/image/ab67616d00001e02fe9d3ab9adb1d3b59835b81c",
+        "plays": 70344065
+      },
+      {
+        "title": "Ran To Atlanta (feat. Future & Molly Santana)",
+        "link": "https://open.spotify.com/track/3DK90400cDlV5WUJPraMph",
+        "image": "https://i.scdn.co/image/ab67616d00001e02fe9d3ab9adb1d3b59835b81c",
+        "plays": 71825066
+      },
+      {
+        "title": "2 Hard 4 The Radio",
+        "link": "https://open.spotify.com/track/7COiiObIVJIdBcW3J43Iy2",
+        "image": "https://i.scdn.co/image/ab67616d00001e02fe9d3ab9adb1d3b59835b81c",
+        "plays": 54758156
+      },
+      {
+        "title": "What Did I Miss?",
+        "link": "https://open.spotify.com/track/7oDbkGSI3IRzKmhrTiQdID",
+        "image": "https://i.scdn.co/image/ab67616d00001e02fe9d3ab9adb1d3b59835b81c",
+        "plays": 230325631
+      },
+      {
+        "title": "Plot Twist",
+        "link": "https://open.spotify.com/track/3cLCA9LSb6UiOeNvTZoaav",
+        "image": "https://i.scdn.co/image/ab67616d00001e02fe9d3ab9adb1d3b59835b81c",
+        "plays": 50632072
+      },
+      {
+        "title": "Dust",
+        "link": "https://open.spotify.com/track/4eE16RJFDKf2WxBTqqfylu",
+        "image": "https://i.scdn.co/image/ab67616d00001e02fe9d3ab9adb1d3b59835b81c",
+        "plays": 50438002
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "Taylor Swift",
+    "url": "https://open.spotify.com/artist/06HL4z0CvFAxyc27GXpf02",
+    "listeners": 101917278,
+    "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194c45b07608a062f02a9c89bab",
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd42bf054eaed60a69249718908",
+    "topTracks": [
+      {
+        "title": "The Fate of Ophelia",
+        "link": "https://open.spotify.com/track/53iuhJlwXhSER5J2IYYv1W",
+        "image": "https://i.scdn.co/image/ab67616d00001e02d7812467811a7da6e6a44902",
+        "plays": 1436402036
+      },
+      {
+        "title": "Opalite",
+        "link": "https://open.spotify.com/track/3yWuTOYDztXjZxdE2cIRUa",
+        "image": "https://i.scdn.co/image/ab67616d00001e02d7812467811a7da6e6a44902",
+        "plays": 761447256
+      },
+      {
+        "title": "I Knew It, I Knew You",
+        "link": "https://open.spotify.com/track/5uPaqMMt59KGrdKIitDRqa",
+        "image": "https://i.scdn.co/image/ab67616d00001e02a35a1d4983e2b4fd0094f910",
+        "plays": 27767906
+      },
+      {
+        "title": "Cruel Summer",
+        "link": "https://open.spotify.com/track/1BxfuPKGuaTgP7aM0Bbdwr",
+        "image": "https://i.scdn.co/image/ab67616d00001e02e787cffec20aa2a396a61647",
+        "plays": 3380173620
+      },
+      {
+        "title": "Style",
+        "link": "https://open.spotify.com/track/0ug5NqcwcFR2xrfTkc7k8e",
+        "image": "https://i.scdn.co/image/ab67616d00001e0252b2a3824413eefe9e33817a",
+        "plays": 1799380553
+      },
+      {
+        "title": "Blank Space",
+        "link": "https://open.spotify.com/track/1u8c2t2Cy7UBoG4ArRcF5g",
+        "image": "https://i.scdn.co/image/ab67616d00001e0252b2a3824413eefe9e33817a",
+        "plays": 2472437461
+      },
+      {
+        "title": "Shake It Off",
+        "link": "https://open.spotify.com/track/0cqRj7pUJDkTCEsJkx8snD",
+        "image": "https://i.scdn.co/image/ab67616d00001e0252b2a3824413eefe9e33817a",
+        "plays": 1910763616
+      },
+      {
+        "title": "cardigan",
+        "link": "https://open.spotify.com/track/4R2kfaDFhslZEMJqAFNpdd",
+        "image": "https://i.scdn.co/image/ab67616d00001e0295f754318336a07e85ec59bc",
+        "plays": 2001227348
+      },
+      {
+        "title": "august",
+        "link": "https://open.spotify.com/track/3hUxzQpSfdDqwM3ZTFQY0K",
+        "image": "https://i.scdn.co/image/ab67616d00001e0295f754318336a07e85ec59bc",
+        "plays": 1805640781
+      },
+      {
+        "title": "Lover",
+        "link": "https://open.spotify.com/track/1dGr1c8CrMLDpV6mPbImSI",
+        "image": "https://i.scdn.co/image/ab67616d00001e02e787cffec20aa2a396a61647",
+        "plays": 2055742371
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "Katy Perry",
+    "url": "https://open.spotify.com/artist/6jJ0s89eD6GaHleKKya26X",
+    "listeners": 87619624,
+    "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab676186000001941a32422300535eb9ed558ff9",
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd44514714a20677c869aa3f802",
+    "topTracks": [
+      {
+        "title": "The One That Got Away",
+        "link": "https://open.spotify.com/track/2009X8GyWTqyxIdzAEYW6N",
+        "image": "https://i.scdn.co/image/ab67616d00001e021d955011a3ed477dc77865ad",
+        "plays": 1631173951
+      },
+      {
+        "title": "Last Friday Night (T.G.I.F.)",
+        "link": "https://open.spotify.com/track/1htQDV8JxSuXG2QsNj5ttr",
+        "image": "https://i.scdn.co/image/ab67616d00001e021d955011a3ed477dc77865ad",
+        "plays": 1907788595
+      },
+      {
+        "title": "Hot N Cold",
+        "link": "https://open.spotify.com/track/1TEjSXPdAakDotj2Wji3PU",
+        "image": "https://i.scdn.co/image/ab67616d00001e02df35c65d88dfacb5798f7291",
+        "plays": 1446218974
+      },
+      {
+        "title": "Dark Horse",
+        "link": "https://open.spotify.com/track/4jbmgIyjGoXjY01XxatOx6",
+        "image": "https://i.scdn.co/image/ab67616d00001e021e9a057052d59004caf47e22",
+        "plays": 1992880364
+      },
+      {
+        "title": "California Gurls",
+        "link": "https://open.spotify.com/track/1GhbQDYGEOjyFwfT8lojcx",
+        "image": "https://i.scdn.co/image/ab67616d00001e021d955011a3ed477dc77865ad",
+        "plays": 1343614469
+      },
+      {
+        "title": "Legendary Lovers",
+        "link": "https://open.spotify.com/track/0pOZYYEJawmTAPtkzYKSa2",
+        "image": "https://i.scdn.co/image/ab67616d00001e021e9a057052d59004caf47e22",
+        "plays": 122304555
+      },
+      {
+        "title": "Firework",
+        "link": "https://open.spotify.com/track/3lXbHd0EoryoQh3vpevNEP",
+        "image": "https://i.scdn.co/image/ab67616d00001e021d955011a3ed477dc77865ad",
+        "plays": 1542032846
+      },
+      {
+        "title": "Teenage Dream",
+        "link": "https://open.spotify.com/track/6r1ygpKNXg7deq18rzyM7F",
+        "image": "https://i.scdn.co/image/ab67616d00001e021d955011a3ed477dc77865ad",
+        "plays": 1192847590
+      },
+      {
+        "title": "I Kissed A Girl",
+        "link": "https://open.spotify.com/track/1pXrR5Y9OgcIV2JEAl2lCB",
+        "image": "https://i.scdn.co/image/ab67616d00001e02df35c65d88dfacb5798f7291",
+        "plays": 1279602038
+      },
+      {
+        "title": "Wide Awake",
+        "link": "https://open.spotify.com/track/5JLv62qFIS1DR3zGEcApRt",
+        "image": "https://i.scdn.co/image/ab67616d00001e02937af329667311f4b2831616",
+        "plays": 823946198
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "Temper City",
+    "url": "https://open.spotify.com/artist/5mHUmlJWkcoOk1NbjfrXWz",
+    "listeners": 21667087,
+    "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab676186000001941a5113a2391f241c581cd1e7",
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd478e0235d918548e668b152be",
+    "topTracks": [],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "sombr",
+    "url": "https://open.spotify.com/artist/4G9NDjRyZFDlJKMRL8hx3S",
+    "listeners": 56817157,
+    "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194212072f82dbc31fd2ca87e50",
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd4f6c3f5652fd4e69b04700783",
+    "topTracks": [
+      {
+        "title": "back to friends",
+        "link": "https://open.spotify.com/track/7qjZnBKE73H4Oxkopwulqe",
+        "image": "https://i.scdn.co/image/ab67616d00001e024229702de91cb3d3a4383302",
+        "plays": 1936183557
+      },
+      {
+        "title": "Homewrecker",
+        "link": "https://open.spotify.com/track/7tICCrK3CcyRFKza7yrR0z",
+        "image": "https://i.scdn.co/image/ab67616d00001e029a8d41dca4c7d0ef23d76dd7",
+        "plays": 280058011
+      },
+      {
+        "title": "12 to 12",
+        "link": "https://open.spotify.com/track/05od2qm2MTSKCHxy1GBp5W",
+        "image": "https://i.scdn.co/image/ab67616d00001e024229702de91cb3d3a4383302",
+        "plays": 679284975
+      },
+      {
+        "title": "undressed",
+        "link": "https://open.spotify.com/track/0TFTAtCYhp2tQ9KcJIZb55",
+        "image": "https://i.scdn.co/image/ab67616d00001e024229702de91cb3d3a4383302",
+        "plays": 949935234
+      },
+      {
+        "title": "we never dated",
+        "link": "https://open.spotify.com/track/0t1fdMrn7JOg9DDsT95bxt",
+        "image": "https://i.scdn.co/image/ab67616d00001e024229702de91cb3d3a4383302",
+        "plays": 215026927
+      },
+      {
+        "title": "Potential",
+        "link": "https://open.spotify.com/track/4cpHvqL4dvporE8JlQwkec",
+        "image": "https://i.scdn.co/image/ab67616d00001e02268a4941736e3d24630266e9",
+        "plays": 38246352
+      },
+      {
+        "title": "would've been you",
+        "link": "https://open.spotify.com/track/2U7svZUGvR4tfKdyxv9mXu",
+        "image": "https://i.scdn.co/image/ab67616d00001e024327577d7acfa1419d564a6a",
+        "plays": 291552721
+      },
+      {
+        "title": "do i ever cross your mind",
+        "link": "https://open.spotify.com/track/5dt0PVoQ5xq5mvrJ1Bp3ou",
+        "image": "https://i.scdn.co/image/ab67616d00001e0218ed851fae0639b6e478a09d",
+        "plays": 245283997
+      },
+      {
+        "title": "crushing",
+        "link": "https://open.spotify.com/track/2pQoErkcTbLdQLnUtMYvuZ",
+        "image": "https://i.scdn.co/image/ab67616d00001e024229702de91cb3d3a4383302",
+        "plays": 65518816
+      },
+      {
+        "title": "i wish i knew how to quit you",
+        "link": "https://open.spotify.com/track/5Lfdb0KKLWKEns27p20uYt",
+        "image": "https://i.scdn.co/image/ab67616d00001e024229702de91cb3d3a4383302",
+        "plays": 78595746
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "Djo",
+    "url": "https://open.spotify.com/artist/5p9HO3XC5P3BLxJs5Mtrhm",
+    "listeners": 40047875,
+    "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194e71afece6689230a74e819c9",
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd4ede1486cbb5b1f2f29c7ab38",
+    "topTracks": [
+      {
+        "title": "End of Beginning",
+        "link": "https://open.spotify.com/track/3qhlB30KknSejmIvZZLjOD",
+        "image": "https://i.scdn.co/image/ab67616d00001e02fddfffec51b4580acae727c1",
+        "plays": 2695221420
+      },
+      {
+        "title": "Delete Ya",
+        "link": "https://open.spotify.com/track/7tFI5cqfAoR7MIvmbw1qd8",
+        "image": "https://i.scdn.co/image/ab67616d00001e0203d4a33d03332e44d0dd7fe9",
+        "plays": 101615052
+      },
+      {
+        "title": "Basic Being Basic",
+        "link": "https://open.spotify.com/track/2jjwQENSoGnYbQEK4acuC6",
+        "image": "https://i.scdn.co/image/ab67616d00001e0203d4a33d03332e44d0dd7fe9",
+        "plays": 99353046
+      },
+      {
+        "title": "Charlie's Garden",
+        "link": "https://open.spotify.com/track/4kPfzkWY23WgM902kNAQLn",
+        "image": "https://i.scdn.co/image/ab67616d00001e0203d4a33d03332e44d0dd7fe9",
+        "plays": 44830522
+      },
+      {
+        "title": "Chateau (Feel Alright)",
+        "link": "https://open.spotify.com/track/3vjs2MDHoF9xhylNg6Y9un",
+        "image": "https://i.scdn.co/image/ab67616d00001e025b97ef03e581f7ab1cea9c48",
+        "plays": 177152667
+      },
+      {
+        "title": "Roddy",
+        "link": "https://open.spotify.com/track/5hS8s1Vf4CeSRBT1bTWa39",
+        "image": "https://i.scdn.co/image/ab67616d00001e025b97ef03e581f7ab1cea9c48",
+        "plays": 127279318
+      },
+      {
+        "title": "Potion",
+        "link": "https://open.spotify.com/track/60jK1IQ31TzqtL1e0sHHda",
+        "image": "https://i.scdn.co/image/ab67616d00001e0203d4a33d03332e44d0dd7fe9",
+        "plays": 34678060
+      },
+      {
+        "title": "Lonesome Is A State of Mind",
+        "link": "https://open.spotify.com/track/5DcV7k8MIdYJAAIR0O3Iks",
+        "image": "https://i.scdn.co/image/ab67616d00001e0203d4a33d03332e44d0dd7fe9",
+        "plays": 24899502
+      },
+      {
+        "title": "Change",
+        "link": "https://open.spotify.com/track/1yQkAv4xtapCBCzI8q1QGF",
+        "image": "https://i.scdn.co/image/ab67616d00001e02fddfffec51b4580acae727c1",
+        "plays": 49093609
+      },
+      {
+        "title": "I Want Your Video",
+        "link": "https://open.spotify.com/track/7KnGAY27aFqgiYySwt7yg5",
+        "image": "https://i.scdn.co/image/ab67616d00001e02fddfffec51b4580acae727c1",
+        "plays": 29902028
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "Ella Langley",
+    "url": "https://open.spotify.com/artist/6BRxQ8cD3eqnrVj6WKDok8",
+    "listeners": 30134682,
+    "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab6761860000019432d5fb1f5d0fe141c79d654e",
+    "artistImage": null,
+    "artistImageHistory": null,
+    "topTracks": [
+      {
+        "title": "Choosin' Texas",
+        "link": "https://open.spotify.com/track/7scFxt9VhL4FJwuPSfRlfN",
+        "image": "https://i.scdn.co/image/ab67616d00001e028606848da949bbaddf447d87",
+        "plays": 435800899
+      },
+      {
+        "title": "Be Her",
+        "link": "https://open.spotify.com/track/13HD3tYTiz8oSRxWzXEq7g",
+        "image": "https://i.scdn.co/image/ab67616d00001e028606848da949bbaddf447d87",
+        "plays": 143985725
+      },
+      {
+        "title": "weren't for the wind",
+        "link": "https://open.spotify.com/track/2A22iI0x4EYAVXNpKPhNEM",
+        "image": "https://i.scdn.co/image/ab67616d00001e02edf9ec71330d53881ee0c2d9",
+        "plays": 385620789
+      },
+      {
+        "title": "I Can't Love You Anymore",
+        "link": "https://open.spotify.com/track/61rwYQu9An4QWrcCUyFUyq",
+        "image": "https://i.scdn.co/image/ab67616d00001e020c20b697b7cc3bfe3eb954bc",
+        "plays": 49180459
+      },
+      {
+        "title": "Hell At Night (feat. Ella Langley)",
+        "link": "https://open.spotify.com/track/3pAVk6Ydn0dcGpG8gDyxSJ",
+        "image": "https://i.scdn.co/image/ab67616d00001e02077790f3c84f48b3ce264818",
+        "plays": 184098962
+      },
+      {
+        "title": "Loving Life Again",
+        "link": "https://open.spotify.com/track/7sSmQ1OuQqmOabSxLnOnT5",
+        "image": "https://i.scdn.co/image/ab67616d00001e028606848da949bbaddf447d87",
+        "plays": 58913150
+      },
+      {
+        "title": "you look like you love me (feat. Riley Green)",
+        "link": "https://open.spotify.com/track/2PyJAiQjp1OPkow2FJZKHR",
+        "image": "https://i.scdn.co/image/ab67616d00001e02cf0d0343d350f57d265484e0",
+        "plays": 371437726
+      },
+      {
+        "title": "Bottom Of Your Boots",
+        "link": "https://open.spotify.com/track/0hv6276QhpMDnVJIMxEWPH",
+        "image": "https://i.scdn.co/image/ab67616d00001e028606848da949bbaddf447d87",
+        "plays": 47080964
+      },
+      {
+        "title": "Dandelion",
+        "link": "https://open.spotify.com/track/34D5CH3DKBGpAj8ktFOAUH",
+        "image": "https://i.scdn.co/image/ab67616d00001e028606848da949bbaddf447d87",
+        "plays": 75895378
+      },
+      {
+        "title": "Country Boy's Dream Girl",
+        "link": "https://open.spotify.com/track/5eVuVYp9OyD9dm6Wcyb5nr",
+        "image": "https://i.scdn.co/image/ab67616d00001e025af0621852c2181c63954c20",
+        "plays": 188816410
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "Olivia Dean",
+    "url": "https://open.spotify.com/artist/00x1fYSGhdqScXBRpSj3DW",
+    "listeners": 54889327,
+    "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194f114e859dd143d0d20f4f439",
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd4942448e15f0cb0a03d936bd4",
+    "topTracks": [
+      {
+        "title": "Man I Need",
+        "link": "https://open.spotify.com/track/1qbmS6ep2hbBRaEZFpn7BX",
+        "image": "https://i.scdn.co/image/ab67616d00001e02e3d69e17dde129037a1f09e2",
+        "plays": 1174211109
+      },
+      {
+        "title": "So Easy (To Fall In Love)",
+        "link": "https://open.spotify.com/track/6sGIMrtIzQjdzNndVxe397",
+        "image": "https://i.scdn.co/image/ab67616d00001e029a336bfb6d40bbd90a507417",
+        "plays": 856916058
+      },
+      {
+        "title": "Rein Me In (with Olivia Dean)",
+        "link": "https://open.spotify.com/track/0MUXBhPUDF8or0kfQ0EHwV",
+        "image": "https://i.scdn.co/image/ab67616d00001e0270722c52a53ef4a56f0c2eb0",
+        "plays": 311702803
+      },
+      {
+        "title": "Nice To Each Other",
+        "link": "https://open.spotify.com/track/7gKxCvTDWwV9wBhdeBbr3l",
+        "image": "https://i.scdn.co/image/ab67616d00001e02a9e75099d7065c71cc7ede72",
+        "plays": 490688783
+      },
+      {
+        "title": "A Couple Minutes",
+        "link": "https://open.spotify.com/track/312z6PZ8wwREck8613PkJk",
+        "image": "https://i.scdn.co/image/ab67616d00001e029a336bfb6d40bbd90a507417",
+        "plays": 310031652
+      },
+      {
+        "title": "Dive",
+        "link": "https://open.spotify.com/track/36vmaZyO0iAE6FZ7287fg2",
+        "image": "https://i.scdn.co/image/ab67616d00001e02cac9b52107643faf13a7587b",
+        "plays": 457789205
+      },
+      {
+        "title": "The Hardest Part",
+        "link": "https://open.spotify.com/track/3cPoiK69oQ1SdbB2j2ulGm",
+        "image": "https://i.scdn.co/image/ab67616d00001e02cac9b52107643faf13a7587b",
+        "plays": 387085668
+      },
+      {
+        "title": "Ok Love You Bye",
+        "link": "https://open.spotify.com/track/66YywMJbAgzQrGkFKjnSsK",
+        "image": "https://i.scdn.co/image/ab67616d00001e02b05c07b076354a0542c92544",
+        "plays": 309887792
+      },
+      {
+        "title": "Baby Steps",
+        "link": "https://open.spotify.com/track/5SruEBX3KpgpDvEcIuN53P",
+        "image": "https://i.scdn.co/image/ab67616d00001e029a336bfb6d40bbd90a507417",
+        "plays": 237922097
+      },
+      {
+        "title": "Let Alone The One You Love",
+        "link": "https://open.spotify.com/track/3Vd4fHzwS6pBS3muymjiDi",
+        "image": "https://i.scdn.co/image/ab67616d00001e029a336bfb6d40bbd90a507417",
+        "plays": 234565382
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "Ravyn Lenae",
+    "url": "https://open.spotify.com/artist/5RTLRtXjbXI2lSXc6jxlAz",
+    "listeners": 33909755,
+    "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab6761860000019429572a53ad71093ae06bf1a9",
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd4ec2ffd0b594e884d52dbb7a6",
+    "topTracks": [
+      {
+        "title": "Love Me Not",
+        "link": "https://open.spotify.com/track/4WFgvKVfEhb3IUAFGrutTR",
+        "image": "https://i.scdn.co/image/ab67616d00001e020e62daaea2c7b94053e1c142",
+        "plays": 1207533948
+      },
+      {
+        "title": "Love Me Not (feat. Rex Orange County)",
+        "link": "https://open.spotify.com/track/3ld1FzyNgpZwGn4h9cOXrq",
+        "image": "https://i.scdn.co/image/ab67616d00001e02084cd39fc4059e42cd19d61b",
+        "plays": 278782301
+      },
+      {
+        "title": "Handle",
+        "link": "https://open.spotify.com/track/6NDvhN0PFBIioNAbM4EDak",
+        "image": "https://i.scdn.co/image/ab67616d00001e02fe9d6d49b1d662eb54faa089",
+        "plays": 2012972
+      },
+      {
+        "title": "Reputation (feat. Dominic Fike)",
+        "link": "https://open.spotify.com/track/52m9ZMBCf6tv5ONxr81Uv0",
+        "image": "https://i.scdn.co/image/ab67616d00001e021d9a8caa24ecaa5374ecf824",
+        "plays": 7661109
+      },
+      {
+        "title": "pink + pink",
+        "link": "https://open.spotify.com/track/5jysHNTiZcXz83qaIXl3vf",
+        "image": "https://i.scdn.co/image/ab67616d00001e02dc9c43138a621ee63a7bc863",
+        "plays": 23349115
+      },
+      {
+        "title": "Genius",
+        "link": "https://open.spotify.com/track/2od6VwQ93pD6vfYss3oync",
+        "image": "https://i.scdn.co/image/ab67616d00001e020e62daaea2c7b94053e1c142",
+        "plays": 34398037
+      },
+      {
+        "title": "Skin Tight (feat. Steve Lacy)",
+        "link": "https://open.spotify.com/track/4KVSdwwJ67JHu5s9vIA0zi",
+        "image": "https://i.scdn.co/image/ab67616d00001e0216b517dd247cc4454b54f6f3",
+        "plays": 49346180
+      },
+      {
+        "title": "One Wish (feat. Childish Gambino)",
+        "link": "https://open.spotify.com/track/4jaNeCjRjTCekyaErvjnRX",
+        "image": "https://i.scdn.co/image/ab67616d00001e020e62daaea2c7b94053e1c142",
+        "plays": 30586728
+      },
+      {
+        "title": "New Jersey (feat. Ravyn Lenae)",
+        "link": "https://open.spotify.com/track/0O3OEz6OsTE4tKVhWKpCks",
+        "image": "https://i.scdn.co/image/ab67616d00001e02391d8b7f4d327cb0ec4f0aef",
+        "plays": 2412766
+      },
+      {
+        "title": "Cry about it! (feat. Ravyn Lenae)",
+        "link": "https://open.spotify.com/track/2qMymtxoafC1JRtiiXUVFN",
+        "image": "https://i.scdn.co/image/ab67616d00001e02e77f111cef8e442e00f01b93",
+        "plays": 14396237
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "The Goo Goo Dolls",
+    "url": "https://open.spotify.com/artist/2sil8z5kiy4r76CRTXxBCA",
+    "listeners": 39823916,
+    "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194bc143f28b660c463d07f9e0d",
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd43b7c6806bcf10b0587e53d60",
+    "topTracks": [
+      {
+        "title": "Iris",
+        "link": "https://open.spotify.com/track/6Qyc6fS4DsZjB2mRW9DsQs",
+        "image": "https://i.scdn.co/image/ab67616d00001e02eda9478c39a21e1cdc6609ca",
+        "plays": 3440881838
+      },
+      {
+        "title": "Slide",
+        "link": "https://open.spotify.com/track/0nnwn7LWHCAu09jfuH1xTA",
+        "image": "https://i.scdn.co/image/ab67616d00001e02eda9478c39a21e1cdc6609ca",
+        "plays": 456830993
+      },
+      {
+        "title": "Name",
+        "link": "https://open.spotify.com/track/1G8jae4jD8mwkXdodqHsBM",
+        "image": "https://i.scdn.co/image/ab67616d00001e027db048b350136b3116ad02d4",
+        "plays": 230173027
+      },
+      {
+        "title": "Black Balloon",
+        "link": "https://open.spotify.com/track/5zmaypMaWb21FUGBxbw8hT",
+        "image": "https://i.scdn.co/image/ab67616d00001e02eda9478c39a21e1cdc6609ca",
+        "plays": 115331489
+      },
+      {
+        "title": "Here Is Gone",
+        "link": "https://open.spotify.com/track/4KqTGPPmXowMPEoShSVOta",
+        "image": "https://i.scdn.co/image/ab67616d00001e029923ca569ea4d53394c0146e",
+        "plays": 75295929
+      },
+      {
+        "title": "Sympathy",
+        "link": "https://open.spotify.com/track/5fIrBv7PrI2MBcktQOcmpI",
+        "image": "https://i.scdn.co/image/ab67616d00001e029923ca569ea4d53394c0146e",
+        "plays": 119264870
+      },
+      {
+        "title": "Iris",
+        "link": "https://open.spotify.com/track/3zlLhEnV9yMRRSE3bFS0Xe",
+        "image": "https://i.scdn.co/image/ab67616d00001e02c57d0367c948c90f91483d9d",
+        "plays": 4179621
+      },
+      {
+        "title": "Iris - Live",
+        "link": "https://open.spotify.com/track/46uAPYj07jhrHt0ggMiwtA",
+        "image": "https://i.scdn.co/image/ab67616d00001e021853fac9a1eae995032ea2a5",
+        "plays": 33406898
+      },
+      {
+        "title": "Better Days",
+        "link": "https://open.spotify.com/track/2hiB8QxWic092OablwpoVC",
+        "image": "https://i.scdn.co/image/ab67616d00001e02d2cf74bd97456053a7b7de98",
+        "plays": 59911415
+      },
+      {
+        "title": "Come to Me",
+        "link": "https://open.spotify.com/track/3sBfItjYrLgKrCPIZndhc6",
+        "image": "https://i.scdn.co/image/ab67616d00001e02bb251e2ac9f0a2ee4de0d6cc",
+        "plays": 64307922
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "Dave",
+    "url": "https://open.spotify.com/artist/6Ip8FS7vWT1uKkJSweANQK",
+    "listeners": 35693875,
+    "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194bfbf2c5417efd54b3ec85a52",
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd499ed7f9ebf8d3f13e987889e",
+    "topTracks": [
+      {
+        "title": "Raindance (feat. Tems)",
+        "link": "https://open.spotify.com/track/3oTuTpF1F3A7rEC6RKsMRz",
+        "image": "https://i.scdn.co/image/ab67616d00001e02fecaa7826bb0cbe139a8cb83",
+        "plays": 618675538
+      },
+      {
+        "title": "Sprinter",
+        "link": "https://open.spotify.com/track/6NYbDTmstd7JSUWl2hVBqR",
+        "image": "https://i.scdn.co/image/ab67616d00001e02dd9f1f94f2f9a10310a3d525",
+        "plays": 1114282320
+      },
+      {
+        "title": "Location (feat. Burna Boy)",
+        "link": "https://open.spotify.com/track/6KFWubocLBhrLs31RpEdR9",
+        "image": "https://i.scdn.co/image/ab67616d00001e02565f69a950084775df6a4e77",
+        "plays": 717549111
+      },
+      {
+        "title": "CRG (feat. Dave)",
+        "link": "https://open.spotify.com/track/5tgSjvWO685Z0mYKefArMI",
+        "image": "https://i.scdn.co/image/ab67616d00001e0258513cbc1bba4cd4c5f472ce",
+        "plays": 128422582
+      },
+      {
+        "title": "Starlight",
+        "link": "https://open.spotify.com/track/3ixYkZI6rGk3ktisaIQrh0",
+        "image": "https://i.scdn.co/image/ab67616d00001e0214f73cfd0173fd89f937ad23",
+        "plays": 419694337
+      },
+      {
+        "title": "Trojan Horse",
+        "link": "https://open.spotify.com/track/16D8OTSQ2qq9SEMzijwZiH",
+        "image": "https://i.scdn.co/image/ab67616d00001e0251504c9d0dda1644b2b7d5dd",
+        "plays": 168673828
+      },
+      {
+        "title": "Law Of Attraction (feat. Snoh Aalegra)",
+        "link": "https://open.spotify.com/track/6Rz9To4o1UlycFUIhj3WwK",
+        "image": "https://i.scdn.co/image/ab67616d00001e021c9f7d8a332ac375ea17a58e",
+        "plays": 111862471
+      },
+      {
+        "title": "Doesn't Just Happen",
+        "link": "https://open.spotify.com/track/2NI8EpPOnrRQhNs81tAAoe",
+        "image": "https://i.scdn.co/image/ab67616d00001e02884dd01508605dca727d8993",
+        "plays": 11864851
+      },
+      {
+        "title": "Screwface Capital",
+        "link": "https://open.spotify.com/track/0zvs4YrUqCwOJ5yVKY4tFm",
+        "image": "https://i.scdn.co/image/ab67616d00001e02565f69a950084775df6a4e77",
+        "plays": 205813732
+      },
+      {
+        "title": "Thiago Silva",
+        "link": "https://open.spotify.com/track/3DKCTIiJ97bS9TGiqcABjo",
+        "image": "https://i.scdn.co/image/ab67616d00001e02d62b2ae12715851c28bebaa4",
+        "plays": 299178428
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "Tems",
+    "url": "https://open.spotify.com/artist/687cZJR45JO7jhk1LHIbgq",
+    "listeners": 41496187,
+    "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab676186000001945aaeb5160787275f6925c212",
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd483bcacc809a40975eab8d89b",
+    "topTracks": [
+      {
+        "title": "Raindance (feat. Tems)",
+        "link": "https://open.spotify.com/track/3oTuTpF1F3A7rEC6RKsMRz",
+        "image": "https://i.scdn.co/image/ab67616d00001e02fecaa7826bb0cbe139a8cb83",
+        "plays": 618675538
+      },
+      {
+        "title": "WAIT FOR U (feat. Drake & Tems)",
+        "link": "https://open.spotify.com/track/59nOXPmaKlBfGMDeOVGrIK",
+        "image": "https://i.scdn.co/image/ab67616d00001e021692599c8c0f98e470c68106",
+        "plays": 1358254975
+      },
+      {
+        "title": "Me & U",
+        "link": "https://open.spotify.com/track/31kxPC3ZB9AYwCLyHaqEVX",
+        "image": "https://i.scdn.co/image/ab67616d00001e02318f971d63a3a534ee237c9f",
+        "plays": 357889332
+      },
+      {
+        "title": "Essence (feat. Tems)",
+        "link": "https://open.spotify.com/track/5FG7Tl93LdH117jEKYl3Cm",
+        "image": "https://i.scdn.co/image/ab67616d00001e02b5b1023769a6bf19b14d66ab",
+        "plays": 374857516
+      },
+      {
+        "title": "Love Me JeJe",
+        "link": "https://open.spotify.com/track/1eDI5oU04SLsXl0TfxfwYf",
+        "image": "https://i.scdn.co/image/ab67616d00001e02318f971d63a3a534ee237c9f",
+        "plays": 251267961
+      },
+      {
+        "title": "Free Mind",
+        "link": "https://open.spotify.com/track/2mzM4Y0Rnx2BDZqRnhQ5Q6",
+        "image": "https://i.scdn.co/image/ab67616d00001e020ab4d3e1c0b5c5e453287a4c",
+        "plays": 303136914
+      },
+      {
+        "title": "What You Need",
+        "link": "https://open.spotify.com/track/7x5RhTT2bzS6CCQFeNb5HU",
+        "image": "https://i.scdn.co/image/ab67616d00001e024522df9fc7103540be3e7950",
+        "plays": 34754430
+      },
+      {
+        "title": "Higher",
+        "link": "https://open.spotify.com/track/2QdSb68BzZGMgCbsrFmSLc",
+        "image": "https://i.scdn.co/image/ab67616d00001e020ab4d3e1c0b5c5e453287a4c",
+        "plays": 269832479
+      },
+      {
+        "title": "I THINK YOU'RE SPECIAL",
+        "link": "https://open.spotify.com/track/0mQLFm42be28X8yKBTiHP3",
+        "image": "https://i.scdn.co/image/ab67616d00001e02a958d093e94944dd0e7258b2",
+        "plays": 41636042
+      },
+      {
+        "title": "Burning",
+        "link": "https://open.spotify.com/track/1D1M805zV8DwhYXsvJdQZx",
+        "image": "https://i.scdn.co/image/ab67616d00001e02318f971d63a3a534ee237c9f",
+        "plays": 82177133
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "Jennifer Lopez",
+    "url": "https://open.spotify.com/artist/2DlGxzQSjYe5N6G9nkYghR",
+    "listeners": 49486552,
+    "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194493eac8ea323fb33f291eb2d",
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd4a374370152e1492959312c7d",
+    "topTracks": [
+      {
+        "title": "On The Floor",
+        "link": "https://open.spotify.com/track/3C0nOe05EIt1390bVABLyN",
+        "image": "https://i.scdn.co/image/ab67616d00001e02d7b2aa3834b82b1cbe899a48",
+        "plays": 1067263114
+      },
+      {
+        "title": "We Are One (Ole Ola) [The Official 2014 FIFA World Cup Song] (feat. Jennifer Lopez & Claudia Leitte)",
+        "link": "https://open.spotify.com/track/1PCvKFPWnTXAe2oaReVUcr",
+        "image": "https://i.scdn.co/image/ab67616d00001e02e6efeff81a318670a292090f",
+        "plays": 434414793
+      },
+      {
+        "title": "On The Floor - Radio Edit",
+        "link": "https://open.spotify.com/track/0Oe49j06Bjrxs8PltuVeaW",
+        "image": "https://i.scdn.co/image/ab67616d00001e025c7fdd07d99c156401073aaa",
+        "plays": 623969997
+      },
+      {
+        "title": "Let's Get Loud",
+        "link": "https://open.spotify.com/track/6kQz6t5z1FK4uohPh8Kd73",
+        "image": "https://i.scdn.co/image/ab67616d00001e029f8872d948b2f5ec7b7c830b",
+        "plays": 559536235
+      },
+      {
+        "title": "Save Me Tonight",
+        "link": "https://open.spotify.com/track/4WuAr5SE1ZfXxu6OWtykkG",
+        "image": "https://i.scdn.co/image/ab67616d00001e02ab06fe415d821163f1372f75",
+        "plays": 19749956
+      },
+      {
+        "title": "Jenny from the Block (feat. Jadakiss & Styles P.) - Track Masters Remix",
+        "link": "https://open.spotify.com/track/7LqjznQwfrax7MjQXmxqdQ",
+        "image": "https://i.scdn.co/image/ab67616d00001e02a1bf4c1efc808162ac95090f",
+        "plays": 486446538
+      },
+      {
+        "title": "Ain't Your Mama",
+        "link": "https://open.spotify.com/track/2hgzdQdnfWwtdpZbhZlV72",
+        "image": "https://i.scdn.co/image/ab67616d00001e0277681dc657ac6b6c96056acf",
+        "plays": 550951286
+      },
+      {
+        "title": "If You Had My Love",
+        "link": "https://open.spotify.com/track/3wvg3Jpee5NzpSBZhBqFdE",
+        "image": "https://i.scdn.co/image/ab67616d00001e029f8872d948b2f5ec7b7c830b",
+        "plays": 213618642
+      },
+      {
+        "title": "Waiting for Tonight",
+        "link": "https://open.spotify.com/track/1ffslNl0FbbFvorcEVLUFL",
+        "image": "https://i.scdn.co/image/ab67616d00001e029f8872d948b2f5ec7b7c830b",
+        "plays": 216140594
+      },
+      {
+        "title": "El Ultimo Adiós - Varios Artistas Version",
+        "link": "https://open.spotify.com/track/0tzixmHNQfE6S6SirSToxW",
+        "image": "https://i.scdn.co/image/ab67616d00001e024e19f670ace532c6c2202094",
+        "plays": 316696609
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "Pitbull",
+    "url": "https://open.spotify.com/artist/0TnOYISbd1XYRBk9myaseg",
+    "listeners": 86124121,
+    "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194316a0270092186694d4130b1",
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd46565ce1da49ffe1a676b8695",
+    "topTracks": [
+      {
+        "title": "On The Floor",
+        "link": "https://open.spotify.com/track/3C0nOe05EIt1390bVABLyN",
+        "image": "https://i.scdn.co/image/ab67616d00001e02d7b2aa3834b82b1cbe899a48",
+        "plays": 1067263114
+      },
+      {
+        "title": "Give Me Everything (feat. Nayer)",
+        "link": "https://open.spotify.com/track/4QNpBfC0zvjKqPJcyqBy9W",
+        "image": "https://i.scdn.co/image/ab67616d00001e021dc7483a9fcfce54822a2f19",
+        "plays": 2133045516
+      },
+      {
+        "title": "Time of Our Lives",
+        "link": "https://open.spotify.com/track/2bJvI42r8EF3wxjOuDav4r",
+        "image": "https://i.scdn.co/image/ab67616d00001e02e6efeff81a318670a292090f",
+        "plays": 1950793290
+      },
+      {
+        "title": "Timber",
+        "link": "https://open.spotify.com/track/3cHyrEgdyYRjgJKSOiOtcS",
+        "image": "https://i.scdn.co/image/ab67616d00001e022ffc2c580b6595a3e675a730",
+        "plays": 2164127860
+      },
+      {
+        "title": "DJ Got Us Fallin' In Love (feat. Pitbull)",
+        "link": "https://open.spotify.com/track/4356Typ82hUiFAynbLYbPn",
+        "image": "https://i.scdn.co/image/ab67616d00001e0286b0c9728ad3ed338eaeea79",
+        "plays": 1430483470
+      },
+      {
+        "title": "Fireball (feat. John Ryan)",
+        "link": "https://open.spotify.com/track/4Y7XAxTANhu3lmnLAzhWJW",
+        "image": "https://i.scdn.co/image/ab67616d00001e02e6efeff81a318670a292090f",
+        "plays": 943343071
+      },
+      {
+        "title": "Feel This Moment (feat. Christina Aguilera)",
+        "link": "https://open.spotify.com/track/0Hf4aIJpsN4Os2f0y0VqWl",
+        "image": "https://i.scdn.co/image/ab67616d00001e022ffc2c580b6595a3e675a730",
+        "plays": 1101089009
+      },
+      {
+        "title": "Hotel Room Service",
+        "link": "https://open.spotify.com/track/6Rb0ptOEjBjPPQUlQtQGbL",
+        "image": "https://i.scdn.co/image/ab67616d00001e0217db13c5730433ca2f0088e0",
+        "plays": 954049473
+      },
+      {
+        "title": "International Love (feat. Chris Brown)",
+        "link": "https://open.spotify.com/track/62zFEHfAYl5kdHYOivj4BC",
+        "image": "https://i.scdn.co/image/ab67616d00001e021dc7483a9fcfce54822a2f19",
+        "plays": 911639295
+      },
+      {
+        "title": "I Know You Want Me (Calle Ocho)",
+        "link": "https://open.spotify.com/track/5RzFJd6W40SDTyZkX6xx45",
+        "image": "https://i.scdn.co/image/ab67616d00001e0217db13c5730433ca2f0088e0",
+        "plays": 750284942
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "Bad Bunny",
+    "url": "https://open.spotify.com/artist/4q3ewBCX7sLwd24euuV69X",
+    "listeners": 100442641,
+    "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab676186000001942b440403a6dd8816bd59447e",
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd4a1b2c9183be1d6f8a05ec448",
+    "topTracks": [
+      {
+        "title": "DtMF",
+        "link": "https://open.spotify.com/track/3sK8wGT43QFpWrvNQsrQya",
+        "image": "https://i.scdn.co/image/ab67616d00001e02bbd45c8d36e0e045ef640411",
+        "plays": 1923326109
+      },
+      {
+        "title": "BAILE INoLVIDABLE",
+        "link": "https://open.spotify.com/track/2lTm559tuIvatlT1u0JYG2",
+        "image": "https://i.scdn.co/image/ab67616d00001e02bbd45c8d36e0e045ef640411",
+        "plays": 1562215829
+      },
+      {
+        "title": "NUEVAYoL",
+        "link": "https://open.spotify.com/track/5TFD2bmFKGhoCRbX61nXY5",
+        "image": "https://i.scdn.co/image/ab67616d00001e02bbd45c8d36e0e045ef640411",
+        "plays": 1313285408
+      },
+      {
+        "title": "EoO",
+        "link": "https://open.spotify.com/track/6J5kc12BW5HuP3d7C3vvx8",
+        "image": "https://i.scdn.co/image/ab67616d00001e02bbd45c8d36e0e045ef640411",
+        "plays": 1141192398
+      },
+      {
+        "title": "Tití Me Preguntó",
+        "link": "https://open.spotify.com/track/1IHWl5LamUGEuP4ozKQSXZ",
+        "image": "https://i.scdn.co/image/ab67616d00001e0249d694203245f241a1bcaa72",
+        "plays": 2238705201
+      },
+      {
+        "title": "VOY A LLeVARTE PA PR",
+        "link": "https://open.spotify.com/track/59D4DOkspUbWyMmbAPQkxZ",
+        "image": "https://i.scdn.co/image/ab67616d00001e02bbd45c8d36e0e045ef640411",
+        "plays": 988187942
+      },
+      {
+        "title": "LA CANCIÓN",
+        "link": "https://open.spotify.com/track/0fea68AdmYNygeTGI4RC18",
+        "image": "https://i.scdn.co/image/ab67616d00001e024891d9b25d8919448388f3bb",
+        "plays": 2603878662
+      },
+      {
+        "title": "VeLDÁ",
+        "link": "https://open.spotify.com/track/7d6yK8v8J484SWH5prIQiE",
+        "image": "https://i.scdn.co/image/ab67616d00001e02bbd45c8d36e0e045ef640411",
+        "plays": 900629665
+      },
+      {
+        "title": "Qué Pasaría...",
+        "link": "https://open.spotify.com/track/0l0vcZMU7AOeQmUIREoI2U",
+        "image": "https://i.scdn.co/image/ab67616d00001e02a6224f2f93c0ab4b2e01b44b",
+        "plays": 1034491699
+      },
+      {
+        "title": "KLOuFRENS",
+        "link": "https://open.spotify.com/track/4MUrUT38U98olfnyzMBCzm",
+        "image": "https://i.scdn.co/image/ab67616d00001e02bbd45c8d36e0e045ef640411",
+        "plays": 662087229
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "Tame Impala",
+    "url": "https://open.spotify.com/artist/5INjqkS1o8h1imAzPqGZBb",
+    "listeners": 63493339,
+    "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab676186000001940199d2f613e810c5c6c552a4",
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd499d57ddb3a699aef46bb0a60",
+    "topTracks": [
+      {
+        "title": "Dracula - JENNIE Remix",
+        "link": "https://open.spotify.com/track/5yvVYFDUpbnjcnRBgjwTzM",
+        "image": "https://i.scdn.co/image/ab67616d00001e02c7c031ce9d06b131f8563676",
+        "plays": 326857871
+      },
+      {
+        "title": "Dracula",
+        "link": "https://open.spotify.com/track/1NXbNEAcPvY5G1xvfN57aA",
+        "image": "https://i.scdn.co/image/ab67616d00001e02208500450dcd0fd294d7bd3b",
+        "plays": 438966659
+      },
+      {
+        "title": "The Less I Know The Better",
+        "link": "https://open.spotify.com/track/6K4t31amVTZDgR3sKmwUJJ",
+        "image": "https://i.scdn.co/image/ab67616d00001e029e1cfc756886ac782e363d79",
+        "plays": 2479151347
+      },
+      {
+        "title": "Borderline",
+        "link": "https://open.spotify.com/track/5hM5arv9KDbCHS0k9uqwjr",
+        "image": "https://i.scdn.co/image/ab67616d00001e0258267bd34420a00d5cf83a49",
+        "plays": 1184029318
+      },
+      {
+        "title": "Let It Happen",
+        "link": "https://open.spotify.com/track/2X485T9Z5Ly0xyaghN73ed",
+        "image": "https://i.scdn.co/image/ab67616d00001e029e1cfc756886ac782e363d79",
+        "plays": 962231581
+      },
+      {
+        "title": "New Person, Same Old Mistakes",
+        "link": "https://open.spotify.com/track/52ojopYMUzeNcudsoz7O9D",
+        "image": "https://i.scdn.co/image/ab67616d00001e029e1cfc756886ac782e363d79",
+        "plays": 813358435
+      },
+      {
+        "title": "Eventually",
+        "link": "https://open.spotify.com/track/5M4yti0QxgqJieUYaEXcpw",
+        "image": "https://i.scdn.co/image/ab67616d00001e029e1cfc756886ac782e363d79",
+        "plays": 598623645
+      },
+      {
+        "title": "Feels Like We Only Go Backwards",
+        "link": "https://open.spotify.com/track/0LtOwyZoSNZKJWHqjzADpW",
+        "image": "https://i.scdn.co/image/ab67616d00001e02370c12f82872c9cfaee80193",
+        "plays": 676345222
+      },
+      {
+        "title": "New Gold (feat. Tame Impala and Bootie Brown)",
+        "link": "https://open.spotify.com/track/60SvhHtwefT0e2G7i7kOH3",
+        "image": "https://i.scdn.co/image/ab67616d00001e0219707804f73dc50f7a29cd86",
+        "plays": 298130960
+      },
+      {
+        "title": "Is It True",
+        "link": "https://open.spotify.com/track/6RZmhpvukfyeSURhf4kZ0d",
+        "image": "https://i.scdn.co/image/ab67616d00001e0258267bd34420a00d5cf83a49",
+        "plays": 288446872
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "JENNIE",
+    "url": "https://open.spotify.com/artist/250b0Wlc5Vk0CoUsaCY84M",
+    "listeners": 53803515,
+    "backgroundArtistImage": "https://image-cdn-fa.spotifycdn.com/image/ab67618600000194ceb98079b51d56d0e4ddacca",
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd49c9554701f4364b48e3922b9",
+    "topTracks": [
+      {
+        "title": "Dracula - JENNIE Remix",
+        "link": "https://open.spotify.com/track/5yvVYFDUpbnjcnRBgjwTzM",
+        "image": "https://i.scdn.co/image/ab67616d00001e02c7c031ce9d06b131f8563676",
+        "plays": 326857871
+      },
+      {
+        "title": "One Of The Girls (with JENNIE, Lily Rose Depp)",
+        "link": "https://open.spotify.com/track/7CyPwkp0oE8Ro9Dd5CUDjW",
+        "image": "https://i.scdn.co/image/ab67616d00001e02b0dd6a5cd1dec96c4119c262",
+        "plays": 2674578127
+      },
+      {
+        "title": "like JENNIE",
+        "link": "https://open.spotify.com/track/0fK7ie6XwGxQTIkpFoWkd1",
+        "image": "https://i.scdn.co/image/ab67616d00001e02dcf27dec5e479b2e39c4c993",
+        "plays": 866986797
+      },
+      {
+        "title": "Mantra",
+        "link": "https://open.spotify.com/track/1kUyOJb3fzUo8r0OCz5SQk",
+        "image": "https://i.scdn.co/image/ab67616d00001e02dcf27dec5e479b2e39c4c993",
+        "plays": 552033519
+      },
+      {
+        "title": "ExtraL (feat. Doechii)",
+        "link": "https://open.spotify.com/track/4EIFwndJvGpgFjsEbNuYif",
+        "image": "https://i.scdn.co/image/ab67616d00001e02dcf27dec5e479b2e39c4c993",
+        "plays": 329392371
+      },
+      {
+        "title": "Seoul City",
+        "link": "https://open.spotify.com/track/4zUob9iYFS9TgAR0hgo5pR",
+        "image": "https://i.scdn.co/image/ab67616d00001e027f86eab0ae4e3d318b92e0b9",
+        "plays": 187841066
+      },
+      {
+        "title": "Love Hangover (feat. Dominic Fike)",
+        "link": "https://open.spotify.com/track/0rx7xu0RmZLpJjKNVZjSVv",
+        "image": "https://i.scdn.co/image/ab67616d00001e02dcf27dec5e479b2e39c4c993",
+        "plays": 232333782
+      },
+      {
+        "title": "Handlebars (feat. Dua Lipa)",
+        "link": "https://open.spotify.com/track/3gJAFFELdZyIM8tiwLAikg",
+        "image": "https://i.scdn.co/image/ab67616d00001e02dcf27dec5e479b2e39c4c993",
+        "plays": 206783443
+      },
+      {
+        "title": "SOLO",
+        "link": "https://open.spotify.com/track/2wVDWtLKXunswWecARNILj",
+        "image": "https://i.scdn.co/image/ab67616d00001e0262e6288a5887b95176cca29e",
+        "plays": 784746833
+      },
+      {
+        "title": "ZEN",
+        "link": "https://open.spotify.com/track/2chbuybiy6aDDBC985tJcP",
+        "image": "https://i.scdn.co/image/ab67616d00001e02dcf27dec5e479b2e39c4c993",
+        "plays": 102704603
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "Bruno Mars",
+    "url": "https://open.spotify.com/artist/0du5cEVh5yTK9QJze8zA0C",
+    "listeners": 136807706,
+    "backgroundArtistImage": "https://image-cdn-fa.spotifycdn.com/image/ab67618600000194600a1836e65aaa5d2bc3efa6",
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd4ab988c8f5a67164e97fb1532",
+    "topTracks": [
+      {
+        "title": "Risk It All",
+        "link": "https://open.spotify.com/track/5y2ijHECwFYWqcAHKTZgzD",
+        "image": "https://i.scdn.co/image/ab67616d00001e023eb8dc748f7efb1470f74395",
+        "plays": 403564962
+      },
+      {
+        "title": "Die With A Smile",
+        "link": "https://open.spotify.com/track/7so0lgd0zP2Sbgs2d7a1SZ",
+        "image": "https://i.scdn.co/image/ab67616d00001e02b0860cf0a98e09663c82290c",
+        "plays": 3744289052
+      },
+      {
+        "title": "I Just Might",
+        "link": "https://open.spotify.com/track/6f68Ac5tt5BQOpwr0BV9oN",
+        "image": "https://i.scdn.co/image/ab67616d00001e023eb8dc748f7efb1470f74395",
+        "plays": 448263549
+      },
+      {
+        "title": "Locked out of Heaven",
+        "link": "https://open.spotify.com/track/3w3y8KPTfNeOKPiqUTakBh",
+        "image": "https://i.scdn.co/image/ab67616d00001e02926f43e7cce571e62720fd46",
+        "plays": 3295310209
+      },
+      {
+        "title": "That's What I Like",
+        "link": "https://open.spotify.com/track/0KKkJNfGyhkQ5aFogxQAPU",
+        "image": "https://i.scdn.co/image/ab67616d00001e02232711f7d66a1e19e89e28c5",
+        "plays": 3247738269
+      },
+      {
+        "title": "Just the Way You Are",
+        "link": "https://open.spotify.com/track/7BqBn9nzAq8spo5e7cZ0dJ",
+        "image": "https://i.scdn.co/image/ab67616d00001e027039c1c841fc3dfa2ad8a0d8",
+        "plays": 3316221288
+      },
+      {
+        "title": "APT.",
+        "link": "https://open.spotify.com/track/4wJ5Qq0jBN4ajy7ouZIV1c",
+        "image": "https://i.scdn.co/image/ab67616d00001e027be65ce6672ed7e5aac6e966",
+        "plays": 2492180798
+      },
+      {
+        "title": "When I Was Your Man",
+        "link": "https://open.spotify.com/track/0nJW01T7XtvILxQgC5J7Wh",
+        "image": "https://i.scdn.co/image/ab67616d00001e02926f43e7cce571e62720fd46",
+        "plays": 3178145282
+      },
+      {
+        "title": "Uptown Funk (feat. Bruno Mars)",
+        "link": "https://open.spotify.com/track/32OlwWuMpZ6b0aN2RZOeMS",
+        "image": "https://i.scdn.co/image/ab67616d00001e029860171ddfee17f77a570cf6",
+        "plays": 2681796264
+      },
+      {
+        "title": "Talking to the Moon",
+        "link": "https://open.spotify.com/track/161DnLWsx1i3u1JT05lzqU",
+        "image": "https://i.scdn.co/image/ab67616d00001e027039c1c841fc3dfa2ad8a0d8",
+        "plays": 2143674032
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "Lady Gaga",
+    "url": "https://open.spotify.com/artist/1HY2Jd0NmPuamShAr6KMms",
+    "listeners": 102498427,
+    "backgroundArtistImage": "https://image-cdn-fa.spotifycdn.com/image/ab676186000001943697206eb86fc80f03da5384",
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd4034a6ed285a8880047320a06",
+    "topTracks": [
+      {
+        "title": "Die With A Smile",
+        "link": "https://open.spotify.com/track/7so0lgd0zP2Sbgs2d7a1SZ",
+        "image": "https://i.scdn.co/image/ab67616d00001e02b0860cf0a98e09663c82290c",
+        "plays": 3744289052
+      },
+      {
+        "title": "Poker Face",
+        "link": "https://open.spotify.com/track/1QV6tiMFM6fSOKOGLMHYYg",
+        "image": "https://i.scdn.co/image/ab67616d00001e02e691217483df8798445c82e2",
+        "plays": 2188817795
+      },
+      {
+        "title": "Just Dance",
+        "link": "https://open.spotify.com/track/1dzQoRqT5ucxXVaAhTcT0J",
+        "image": "https://i.scdn.co/image/ab67616d00001e02e691217483df8798445c82e2",
+        "plays": 1792093320
+      },
+      {
+        "title": "Bad Romance",
+        "link": "https://open.spotify.com/track/0SiywuOBRcynK0uKGWdCnn",
+        "image": "https://i.scdn.co/image/ab67616d00001e025c9890c0456a3719eeecd8aa",
+        "plays": 1904152921
+      },
+      {
+        "title": "Judas",
+        "link": "https://open.spotify.com/track/7F25roCtYi55JouckaayPC",
+        "image": "https://i.scdn.co/image/ab67616d00001e02a5d31644260279be8d0c46c0",
+        "plays": 1182106111
+      },
+      {
+        "title": "Always Remember Us This Way",
+        "link": "https://open.spotify.com/track/2rbDhOo9Fh61Bbu23T2qCk",
+        "image": "https://i.scdn.co/image/ab67616d00001e02b5d4b4ed17ec86c4b3944af2",
+        "plays": 1913977892
+      },
+      {
+        "title": "Shallow",
+        "link": "https://open.spotify.com/track/2VxeLyX666F8uXCJ0dZF8B",
+        "image": "https://i.scdn.co/image/ab67616d00001e02e2d156fdc691f57900134342",
+        "plays": 3102983907
+      },
+      {
+        "title": "Paparazzi",
+        "link": "https://open.spotify.com/track/02XnQdf7sipaKBBHixz3Zp",
+        "image": "https://i.scdn.co/image/ab67616d00001e02e691217483df8798445c82e2",
+        "plays": 1062304641
+      },
+      {
+        "title": "Telephone",
+        "link": "https://open.spotify.com/track/4TCL0qqKyqsMZml0G3M9IM",
+        "image": "https://i.scdn.co/image/ab67616d00001e025c9890c0456a3719eeecd8aa",
+        "plays": 1136704599
+      },
+      {
+        "title": "Abracadabra",
+        "link": "https://open.spotify.com/track/2LHNTC9QZxsL3nWpt8iaSR",
+        "image": "https://i.scdn.co/image/ab67616d00001e02b0860cf0a98e09663c82290c",
+        "plays": 804136671
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "Gigi Perez",
+    "url": "https://open.spotify.com/artist/1iCnM8foFssWlPRLfAbIwo",
+    "listeners": 28470893,
+    "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194113e9554293cb9b0af5ce50e",
+    "artistImage": null,
+    "artistImageHistory": null,
+    "topTracks": [
+      {
+        "title": "Sailor Song",
+        "link": "https://open.spotify.com/track/21IYMdzTrzSe191Cy5eMap",
+        "image": "https://i.scdn.co/image/ab67616d00001e0249c26270052e1671add569c1",
+        "plays": 1987339472
+      },
+      {
+        "title": "Fable",
+        "link": "https://open.spotify.com/track/7GjxQQQD9jYCF2Eeh2HHcT",
+        "image": "https://i.scdn.co/image/ab67616d00001e0249c26270052e1671add569c1",
+        "plays": 231534136
+      },
+      {
+        "title": "At The Beach, In Every Life",
+        "link": "https://open.spotify.com/track/5LfgzPHvka22FdRAxOme6m",
+        "image": "https://i.scdn.co/image/ab67616d00001e0249c26270052e1671add569c1",
+        "plays": 38292034
+      },
+      {
+        "title": "Please Be Rude",
+        "link": "https://open.spotify.com/track/7bLFtDcAmwVD3pw7zTUfmy",
+        "image": "https://i.scdn.co/image/ab67616d00001e0249c26270052e1671add569c1",
+        "plays": 93541746
+      },
+      {
+        "title": "Eternity",
+        "link": "https://open.spotify.com/track/438QRARw2l8mc0TyFk8BLy",
+        "image": "https://i.scdn.co/image/ab67616d00001e02e98622f378649601c690e9ea",
+        "plays": 23813132
+      },
+      {
+        "title": "Sometimes (Backwood)",
+        "link": "https://open.spotify.com/track/1ElGmhauttS9p7LwmHG9uM",
+        "image": "https://i.scdn.co/image/ab67616d00001e02513e0264b503bbe94cf08ad6",
+        "plays": 200993347
+      },
+      {
+        "title": "Sugar Water",
+        "link": "https://open.spotify.com/track/7mDgx8aONzvoKw0Ckx3wF7",
+        "image": "https://i.scdn.co/image/ab67616d00001e0249c26270052e1671add569c1",
+        "plays": 16072027
+      },
+      {
+        "title": "Icarus (with Gigi Perez)",
+        "link": "https://open.spotify.com/track/5JHbJWAt56lUXP70gEeBRv",
+        "image": "https://i.scdn.co/image/ab67616d00001e02bd305d70478e999c2a9de235",
+        "plays": 9277259
+      },
+      {
+        "title": "Chemistry",
+        "link": "https://open.spotify.com/track/4xhsAoMER10d3dcRFvT8kk",
+        "image": "https://i.scdn.co/image/ab67616d00001e0249c26270052e1671add569c1",
+        "plays": 31152929
+      },
+      {
+        "title": "collide",
+        "link": "https://open.spotify.com/track/0A8g9LveqMvaf0In4AVRnm",
+        "image": "https://i.scdn.co/image/ab67616d00001e02b1bafd943e8f80e543dce7a1",
+        "plays": 2417191
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "Billie Eilish",
+    "url": "https://open.spotify.com/artist/6qqNVTkY8uBg9cP3Jd7DAH",
+    "listeners": 81618020,
+    "backgroundArtistImage": "https://image-cdn-fa.spotifycdn.com/image/ab676186000001942d84c1b04696c09702a15b85",
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd40389999699d5f04f38d2866c",
+    "topTracks": [
+      {
+        "title": "BIRDS OF A FEATHER",
+        "link": "https://open.spotify.com/track/6dOtVTDdiauQNBQEDOtlAB",
+        "image": "https://i.scdn.co/image/ab67616d00001e0271d62ea7ea8a5be92d3c1f62",
+        "plays": 3774091792
+      },
+      {
+        "title": "WILDFLOWER",
+        "link": "https://open.spotify.com/track/3QaPy1KgI7nu9FJEQUgn6h",
+        "image": "https://i.scdn.co/image/ab67616d00001e0271d62ea7ea8a5be92d3c1f62",
+        "plays": 2107890473
+      },
+      {
+        "title": "lovely (with Khalid)",
+        "link": "https://open.spotify.com/track/0u2P5u6lvoDfwTYjAADbn4",
+        "image": "https://i.scdn.co/image/ab67616d00001e028a3f0a3ca7929dea23cd274c",
+        "plays": 3782808897
+      },
+      {
+        "title": "ocean eyes",
+        "link": "https://open.spotify.com/track/2uIX8YMNjGMD7441kqyyNU",
+        "image": "https://i.scdn.co/image/ab67616d00001e022cafcdd985630d72594ecc49",
+        "plays": 2220825253
+      },
+      {
+        "title": "CHIHIRO",
+        "link": "https://open.spotify.com/track/7BRD7x5pt8Lqa1eGYC4dzj",
+        "image": "https://i.scdn.co/image/ab67616d00001e0271d62ea7ea8a5be92d3c1f62",
+        "plays": 1221351669
+      },
+      {
+        "title": "Happier Than Ever",
+        "link": "https://open.spotify.com/track/4RVwu0g32PAqgUiJoXsdF8",
+        "image": "https://i.scdn.co/image/ab67616d00001e022a038d3bf875d23e4aeaa84e",
+        "plays": 1861506270
+      },
+      {
+        "title": "What Was I Made For? [From The Motion Picture \"Barbie\"]",
+        "link": "https://open.spotify.com/track/6wf7Yu7cxBSPrRlWeSeK0Q",
+        "image": "https://i.scdn.co/image/ab67616d00001e02ed317ec13d3de9e01fb99c9e",
+        "plays": 1623591466
+      },
+      {
+        "title": "when the party's over",
+        "link": "https://open.spotify.com/track/43zdsphuZLzwA9k4DJhU0I",
+        "image": "https://i.scdn.co/image/ab67616d00001e0250a3147b4edd7701a876c6ce",
+        "plays": 2509016956
+      },
+      {
+        "title": "everything i wanted",
+        "link": "https://open.spotify.com/track/3ZCTVFBt2Brf31RLEnCkWJ",
+        "image": "https://i.scdn.co/image/ab67616d00001e02f2248cf6dad1d6c062587249",
+        "plays": 2127992785
+      },
+      {
+        "title": "bad guy",
+        "link": "https://open.spotify.com/track/2Fxmhks0bxGSBdJ92vM42m",
+        "image": "https://i.scdn.co/image/ab67616d00001e0250a3147b4edd7701a876c6ce",
+        "plays": 2932127336
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "PinkPantheress",
+    "url": "https://open.spotify.com/artist/78rUTD7y6Cy67W1RVzYs7t",
+    "listeners": 37591300,
+    "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194433b0b55069ca1152f9a8894",
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd471399fcaf8970879d22e8c32",
+    "topTracks": [
+      {
+        "title": "Stateside + Zara Larsson",
+        "link": "https://open.spotify.com/track/1DwscornXpj8fmOmYVlqZt",
+        "image": "https://i.scdn.co/image/ab67616d00001e02684ecc5bc1b724d0106ad694",
+        "plays": 568730166
+      },
+      {
+        "title": "Girl Like Me",
+        "link": "https://open.spotify.com/track/7aYGCP34Xo6XujY7Ix1DxB",
+        "image": "https://i.scdn.co/image/ab67616d00001e022a6a5bd7ec690d91a384245d",
+        "plays": 79854518
+      },
+      {
+        "title": "Pain",
+        "link": "https://open.spotify.com/track/4S4QJfBGGrC8jRIjJHf1Ka",
+        "image": "https://i.scdn.co/image/ab67616d00001e020348d174bc1253a02bcb4ca2",
+        "plays": 1111225151
+      },
+      {
+        "title": "Illegal",
+        "link": "https://open.spotify.com/track/1WmBVbFmLt0w6zPP37TeCG",
+        "image": "https://i.scdn.co/image/ab67616d00001e022a6a5bd7ec690d91a384245d",
+        "plays": 249167558
+      },
+      {
+        "title": "Boy's a liar Pt. 2",
+        "link": "https://open.spotify.com/track/5CCr8msaN3MhgqBoa9yWhH",
+        "image": "https://i.scdn.co/image/ab67616d00001e0215a9d5a02103c2d683c07fb4",
+        "plays": 1091413629
+      },
+      {
+        "title": "Break It Off - Bonus",
+        "link": "https://open.spotify.com/track/78ul3D77noQsYjSwvwiPU1",
+        "image": "https://i.scdn.co/image/ab67616d00001e020348d174bc1253a02bcb4ca2",
+        "plays": 451608544
+      },
+      {
+        "title": "I Must Apologise",
+        "link": "https://open.spotify.com/track/2rrq3SGYxk90xLx5fMmPhZ",
+        "image": "https://i.scdn.co/image/ab67616d00001e020348d174bc1253a02bcb4ca2",
+        "plays": 315274976
+      },
+      {
+        "title": "Tonight",
+        "link": "https://open.spotify.com/track/5QCfOMH5K7bS4dH7H7PNeI",
+        "image": "https://i.scdn.co/image/ab67616d00001e022a6a5bd7ec690d91a384245d",
+        "plays": 111551674
+      },
+      {
+        "title": "Stateside",
+        "link": "https://open.spotify.com/track/5UBfLYnkImP1RKMMy4TGs8",
+        "image": "https://i.scdn.co/image/ab67616d00001e022a6a5bd7ec690d91a384245d",
+        "plays": 83715635
+      },
+      {
+        "title": "Midnight Sun - Girls Trip",
+        "link": "https://open.spotify.com/track/7AXjrKBk1TbYjm3xcVPCvC",
+        "image": "https://i.scdn.co/image/ab67616d00001e02a31ab0f3ab14e04bae830d40",
+        "plays": 9382874
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "Zara Larsson",
+    "url": "https://open.spotify.com/artist/1Xylc3o4UrD53lo9CvFvVg",
+    "listeners": 67655890,
+    "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab676186000001949199dc5df142a7f107a73bf5",
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd4b5b7c11df5ee14801c79022f",
+    "topTracks": [
+      {
+        "title": "Stateside + Zara Larsson",
+        "link": "https://open.spotify.com/track/1DwscornXpj8fmOmYVlqZt",
+        "image": "https://i.scdn.co/image/ab67616d00001e02684ecc5bc1b724d0106ad694",
+        "plays": 568730166
+      },
+      {
+        "title": "Lush Life",
+        "link": "https://open.spotify.com/track/1rIKgCH4H52lrvDcz50hS8",
+        "image": "https://i.scdn.co/image/ab67616d00001e02401bf6103d4b7f5230a21582",
+        "plays": 2399939697
+      },
+      {
+        "title": "Midnight Sun",
+        "link": "https://open.spotify.com/track/1qRV1dKLOfH1s00b9J2LUQ",
+        "image": "https://i.scdn.co/image/ab67616d00001e027657f9028ea8bb2c18dca99f",
+        "plays": 317162574
+      },
+      {
+        "title": "Symphony (feat. Zara Larsson)",
+        "link": "https://open.spotify.com/track/72gv4zhNvRVdQA0eOenCal",
+        "image": "https://i.scdn.co/image/ab67616d00001e025c66e925d8fe4c92ebfb49ed",
+        "plays": 1946438116
+      },
+      {
+        "title": "SHE DID IT AGAIN (feat. Zara Larsson)",
+        "link": "https://open.spotify.com/track/3jucj0h0tajme6rUEadmWN",
+        "image": "https://i.scdn.co/image/ab67616d00001e02564858dca5482e57c932782f",
+        "plays": 47759407
+      },
+      {
+        "title": "Never Forget You",
+        "link": "https://open.spotify.com/track/6hmhG1b4LEyNuashVvuIAo",
+        "image": "https://i.scdn.co/image/ab67616d00001e02401bf6103d4b7f5230a21582",
+        "plays": 1179214400
+      },
+      {
+        "title": "Eurosummer - Girls Trip",
+        "link": "https://open.spotify.com/track/53fyIvbeN7rfLK1GIZNLDL",
+        "image": "https://i.scdn.co/image/ab67616d00001e02d20dd1327b269aa6af1fab69",
+        "plays": 13829717
+      },
+      {
+        "title": "Ruin My Life",
+        "link": "https://open.spotify.com/track/4nyY8oVjbX2d4qzlpiVM5n",
+        "image": "https://i.scdn.co/image/ab67616d00001e022b7e82aa841acc14f07faef1",
+        "plays": 691277181
+      },
+      {
+        "title": "Ain't My Fault",
+        "link": "https://open.spotify.com/track/0ADG9OgdVTL7fgREP75BrZ",
+        "image": "https://i.scdn.co/image/ab67616d00001e02401bf6103d4b7f5230a21582",
+        "plays": 577410395
+      },
+      {
+        "title": "Pretty Ugly",
+        "link": "https://open.spotify.com/track/5FYkRxeoLfVxMqyfNR6TMQ",
+        "image": "https://i.scdn.co/image/ab67616d00001e0293872dded9b6fe861ac52752",
+        "plays": 45677666
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "The Neighbourhood",
+    "url": "https://open.spotify.com/artist/77SW9BnxLY8rJ0RciFqkHh",
+    "listeners": 46838811,
+    "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194d48b4bb2df94c1a52a98ea47",
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd417697dbe1066197c075a333b",
+    "topTracks": [
+      {
+        "title": "Sweater Weather",
+        "link": "https://open.spotify.com/track/2QjOHCTQ1Jl3zawyYOpxh6",
+        "image": "https://i.scdn.co/image/ab67616d00001e028265a736a1eb838ad5a0b921",
+        "plays": 4663683863
+      },
+      {
+        "title": "Reflections",
+        "link": "https://open.spotify.com/track/2xql0pid3EUwW38AsywxhV",
+        "image": "https://i.scdn.co/image/ab67616d00001e029b6ac98a52f62d5cb473da40",
+        "plays": 1085789166
+      },
+      {
+        "title": "Softcore",
+        "link": "https://open.spotify.com/track/2K7xn816oNHJZ0aVqdQsha",
+        "image": "https://i.scdn.co/image/ab67616d00001e029b6ac98a52f62d5cb473da40",
+        "plays": 1647100961
+      },
+      {
+        "title": "Daddy Issues",
+        "link": "https://open.spotify.com/track/5E30LdtzQTGqRvNd7l6kG5",
+        "image": "https://i.scdn.co/image/ab67616d00001e025260c62db020e5861a51556d",
+        "plays": 2132220447
+      },
+      {
+        "title": "You Get Me So High",
+        "link": "https://open.spotify.com/track/7zwn1eykZtZ5LODrf7c0tS",
+        "image": "https://i.scdn.co/image/ab67616d00001e029b6ac98a52f62d5cb473da40",
+        "plays": 1009017075
+      },
+      {
+        "title": "A Little Death",
+        "link": "https://open.spotify.com/track/0pxPNTroZcxXA0w6IDgMQJ",
+        "image": "https://i.scdn.co/image/ab67616d00001e02354be6d543058b65075b9d16",
+        "plays": 352075151
+      },
+      {
+        "title": "Afraid",
+        "link": "https://open.spotify.com/track/7brQHA2CgQpcMBiOlfiXYb",
+        "image": "https://i.scdn.co/image/ab67616d00001e028265a736a1eb838ad5a0b921",
+        "plays": 644343633
+      },
+      {
+        "title": "Cry Baby",
+        "link": "https://open.spotify.com/track/0EfsDEYaSjGYd66Pr881nq",
+        "image": "https://i.scdn.co/image/ab67616d00001e025260c62db020e5861a51556d",
+        "plays": 471078714
+      },
+      {
+        "title": "Nervous",
+        "link": "https://open.spotify.com/track/113xf7t4qNM7038YJvauik",
+        "image": "https://i.scdn.co/image/ab67616d00001e029b6ac98a52f62d5cb473da40",
+        "plays": 338638079
+      },
+      {
+        "title": "The Beach",
+        "link": "https://open.spotify.com/track/2u0CelO5c81XS7z3dGpHbS",
+        "image": "https://i.scdn.co/image/ab67616d00001e025260c62db020e5861a51556d",
+        "plays": 519254374
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "RAYE",
+    "url": "https://open.spotify.com/artist/5KKpBU5eC2tJDzf0wmlRp2",
+    "listeners": 49036373,
+    "backgroundArtistImage": "https://image-cdn-fa.spotifycdn.com/image/ab67618600000194c09251f6c5afe8277aacaae6",
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd42514461b5e4119164f10a448",
+    "topTracks": [
+      {
+        "title": "WHERE IS MY HUSBAND!",
+        "link": "https://open.spotify.com/track/7eYzn1CuiJK6VvUhf8zA6k",
+        "image": "https://i.scdn.co/image/ab67616d00001e0297c0928704e5a2bd8d4c5b90",
+        "plays": 842141518
+      },
+      {
+        "title": "Escapism.",
+        "link": "https://open.spotify.com/track/5mHdCZtVyb4DcJw8799hZp",
+        "image": "https://i.scdn.co/image/ab67616d00001e0294e5237ce925531dbb38e75f",
+        "plays": 1287935661
+      },
+      {
+        "title": "Click Clack Symphony. (feat. Hans Zimmer)",
+        "link": "https://open.spotify.com/track/0XOynYFi9hQfIXKnTct9A7",
+        "image": "https://i.scdn.co/image/ab67616d00001e0297c0928704e5a2bd8d4c5b90",
+        "plays": 69232845
+      },
+      {
+        "title": "Prada",
+        "link": "https://open.spotify.com/track/59NraMJsLaMCVtwXTSia8i",
+        "image": "https://i.scdn.co/image/ab67616d00001e02e4b7dccdfd54375ded9ccc5c",
+        "plays": 1072033610
+      },
+      {
+        "title": "Worth It.",
+        "link": "https://open.spotify.com/track/7JgNAnCjJvL8hBR1kmCOFF",
+        "image": "https://i.scdn.co/image/ab67616d00001e0294e5237ce925531dbb38e75f",
+        "plays": 250865980
+      },
+      {
+        "title": "Born Again (feat. Doja Cat & RAYE)",
+        "link": "https://open.spotify.com/track/7KNmIjcmGJIBrhP2s5Vioe",
+        "image": "https://i.scdn.co/image/ab67616d00001e0295ce3d848f4e452489d4a12c",
+        "plays": 370881670
+      },
+      {
+        "title": "You Don't Know Me (feat. RAYE)",
+        "link": "https://open.spotify.com/track/4DJORZgsbqnEJ4f4B9TBGV",
+        "image": "https://i.scdn.co/image/ab67616d00001e02bb3c162ddba09bfba12199ea",
+        "plays": 737890678
+      },
+      {
+        "title": "Joy.",
+        "link": "https://open.spotify.com/track/5CKbUv7zkOdf8X2602qgei",
+        "image": "https://i.scdn.co/image/ab67616d00001e0297c0928704e5a2bd8d4c5b90",
+        "plays": 18043733
+      },
+      {
+        "title": "I Know You're Hurting.",
+        "link": "https://open.spotify.com/track/0ka0xUb0kho8KMOCuuPOZJ",
+        "image": "https://i.scdn.co/image/ab67616d00001e0297c0928704e5a2bd8d4c5b90",
+        "plays": 25252168
+      },
+      {
+        "title": "Oscar Winning Tears.",
+        "link": "https://open.spotify.com/track/0iO2iCAjtX0t5duvczNQt6",
+        "image": "https://i.scdn.co/image/ab67616d00001e0294e5237ce925531dbb38e75f",
+        "plays": 238503847
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "The Killers",
+    "url": "https://open.spotify.com/artist/0C0XlULifJtAgn6ZNCW2eu",
+    "listeners": 36583773,
+    "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194ea7fb086249be31f55010aff",
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/a841f0ee4f2d88c42f55f76c2cc6b588841f5d2f",
+    "topTracks": [
+      {
+        "title": "Mr. Brightside",
+        "link": "https://open.spotify.com/track/003vvx7Niy0yvhvHt4a68B",
+        "image": "https://i.scdn.co/image/ab67616d00001e02ccdddd46119a4ff53eaf1f5d",
+        "plays": 3260580036
+      },
+      {
+        "title": "Somebody Told Me",
+        "link": "https://open.spotify.com/track/6PwjJ58I4t7Mae9xfZ9l9v",
+        "image": "https://i.scdn.co/image/ab67616d00001e02ccdddd46119a4ff53eaf1f5d",
+        "plays": 1229643917
+      },
+      {
+        "title": "When You Were Young",
+        "link": "https://open.spotify.com/track/70wYA8oYHoMzhRRkARoMhU",
+        "image": "https://i.scdn.co/image/ab67616d00001e024f87f14089217e3f70a5f39e",
+        "plays": 859447686
+      },
+      {
+        "title": "Human",
+        "link": "https://open.spotify.com/track/1sTsuZTdANkiFd7T34H3nb",
+        "image": "https://i.scdn.co/image/ab67616d00001e02a43cd43ef4f3b2d5413b17f9",
+        "plays": 720079773
+      },
+      {
+        "title": "All These Things That I've Done",
+        "link": "https://open.spotify.com/track/5vollujufHY0jMZxx77VWr",
+        "image": "https://i.scdn.co/image/ab67616d00001e02ccdddd46119a4ff53eaf1f5d",
+        "plays": 483441459
+      },
+      {
+        "title": "Read My Mind",
+        "link": "https://open.spotify.com/track/7cX4PJz1old9fyFI8RlfgW",
+        "image": "https://i.scdn.co/image/ab67616d00001e024f87f14089217e3f70a5f39e",
+        "plays": 344431300
+      },
+      {
+        "title": "Smile Like You Mean It",
+        "link": "https://open.spotify.com/track/3KANrKOFYyAxfjQJHkgBdb",
+        "image": "https://i.scdn.co/image/ab67616d00001e02ccdddd46119a4ff53eaf1f5d",
+        "plays": 252043119
+      },
+      {
+        "title": "The Man",
+        "link": "https://open.spotify.com/track/5aWhs651KYM26HYM16kRdk",
+        "image": "https://i.scdn.co/image/ab67616d00001e02f65523eab3152dcca83b6fca",
+        "plays": 226471320
+      },
+      {
+        "title": "Shot At The Night",
+        "link": "https://open.spotify.com/track/2aZ2Co4NeQRsqWcU930zHT",
+        "image": "https://i.scdn.co/image/ab67616d00001e0248488c2eee5727efc30bf657",
+        "plays": 175949962
+      },
+      {
+        "title": "Jenny Was A Friend Of Mine",
+        "link": "https://open.spotify.com/track/60eVCXFCuw1WYswBuNZc4H",
+        "image": "https://i.scdn.co/image/ab67616d00001e02ccdddd46119a4ff53eaf1f5d",
+        "plays": 112846167
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "The Police",
+    "url": "https://open.spotify.com/artist/5NGO30tJxFlKixkPSgXcFE",
+    "listeners": 38693617,
+    "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194af496a5f2377f1149d2a5cf3",
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/72fe2cadb69ab59960ae3dbd29618549e4432699",
+    "topTracks": [
+      {
+        "title": "Every Breath You Take",
+        "link": "https://open.spotify.com/track/1JSTJqkT5qHq8MDJnJbRE1",
+        "image": "https://i.scdn.co/image/ab67616d00001e02c8e97cafeb2acb85b21a777e",
+        "plays": 3550990895
+      },
+      {
+        "title": "Roxanne",
+        "link": "https://open.spotify.com/track/3EYOJ48Et32uATr9ZmLnAo",
+        "image": "https://i.scdn.co/image/ab67616d00001e022043dd3544a339547d04b436",
+        "plays": 1022792963
+      },
+      {
+        "title": "Message In A Bottle",
+        "link": "https://open.spotify.com/track/1oYYd2gnWZYrt89EBXdFiO",
+        "image": "https://i.scdn.co/image/ab67616d00001e028ec81cc654b45ade8bdf1486",
+        "plays": 716181021
+      },
+      {
+        "title": "Every Little Thing She Does Is Magic",
+        "link": "https://open.spotify.com/track/44aTAUBF0g6sMkMNE8I5kd",
+        "image": "https://i.scdn.co/image/ab67616d00001e02b7879980ef2ea7ac1cc29316",
+        "plays": 575897032
+      },
+      {
+        "title": "Don't Stand So Close To Me",
+        "link": "https://open.spotify.com/track/5veJDT0MLsLbhYsx42GXUD",
+        "image": "https://i.scdn.co/image/ab67616d00001e02fb1bc65edf4717e75fbc70ab",
+        "plays": 299834622
+      },
+      {
+        "title": "Walking On The Moon",
+        "link": "https://open.spotify.com/track/62uLNJgVZaFiEiKV4LpoYJ",
+        "image": "https://i.scdn.co/image/ab67616d00001e028ec81cc654b45ade8bdf1486",
+        "plays": 209055634
+      },
+      {
+        "title": "So Lonely",
+        "link": "https://open.spotify.com/track/2wnsBaxrmkthIFAm6vqCuX",
+        "image": "https://i.scdn.co/image/ab67616d00001e022043dd3544a339547d04b436",
+        "plays": 217009306
+      },
+      {
+        "title": "Wrapped Around Your Finger - Remastered 2003",
+        "link": "https://open.spotify.com/track/400ZJAUFuEuIGXhr7ie4xf",
+        "image": "https://i.scdn.co/image/ab67616d00001e02c8e97cafeb2acb85b21a777e",
+        "plays": 99064861
+      },
+      {
+        "title": "Can't Stand Losing You",
+        "link": "https://open.spotify.com/track/6DjKJgwe9c90Bd2iya0fre",
+        "image": "https://i.scdn.co/image/ab67616d00001e022043dd3544a339547d04b436",
+        "plays": 150082061
+      },
+      {
+        "title": "King Of Pain",
+        "link": "https://open.spotify.com/track/1V15l05snHYHYVxerjMFGo",
+        "image": "https://i.scdn.co/image/ab67616d00001e02c8e97cafeb2acb85b21a777e",
+        "plays": 105424081
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "Alex Warren",
+    "url": "https://open.spotify.com/artist/0fTSzq9jAh4c36UVb4V7CB",
+    "listeners": 49120984,
+    "backgroundArtistImage": "https://image-cdn-fa.spotifycdn.com/image/ab67618600000194f1376125d2cd2c37dac8b83d",
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd4c0c50ea1eaacb34f307073cb",
+    "topTracks": [
+      {
+        "title": "Ordinary",
+        "link": "https://open.spotify.com/track/2RkZ5LkEzeHGRsmDqKwmaJ",
+        "image": "https://i.scdn.co/image/ab67616d00001e028d18d73bbfc8985d52865edf",
+        "plays": 1956887249
+      },
+      {
+        "title": "FEVER DREAM",
+        "link": "https://open.spotify.com/track/7ogpGbKc4Io6NCU6ydxXwZ",
+        "image": "https://i.scdn.co/image/ab67616d00001e02e98fb90ec2e15c005a0b6f7f",
+        "plays": 183170923
+      },
+      {
+        "title": "Carry You Home",
+        "link": "https://open.spotify.com/track/1wOp7yTVyH176bW1z9WAiv",
+        "image": "https://i.scdn.co/image/ab67616d00001e028d18d73bbfc8985d52865edf",
+        "plays": 760319296
+      },
+      {
+        "title": "Eternity",
+        "link": "https://open.spotify.com/track/6wHpLMmp98aHcV8L1JFrj8",
+        "image": "https://i.scdn.co/image/ab67616d00001e02d6371b93dc556ff52b4cd945",
+        "plays": 400753068
+      },
+      {
+        "title": "Bloodline",
+        "link": "https://open.spotify.com/track/2qPQcfUgizNDOIv1orkTAd",
+        "image": "https://i.scdn.co/image/ab67616d00001e02d6371b93dc556ff52b4cd945",
+        "plays": 328679868
+      },
+      {
+        "title": "Before You Leave Me",
+        "link": "https://open.spotify.com/track/792FHkvZbBQuWWM1a4TfL8",
+        "image": "https://i.scdn.co/image/ab67616d00001e028d18d73bbfc8985d52865edf",
+        "plays": 498205546
+      },
+      {
+        "title": "FINE PLACE TO DIE",
+        "link": "https://open.spotify.com/track/2k4PvUBCu1mkNbXLXhvaBW",
+        "image": "https://i.scdn.co/image/ab67616d00001e02a94d7a2a1c02b7c061ef4207",
+        "plays": 23020877
+      },
+      {
+        "title": "Burning Down",
+        "link": "https://open.spotify.com/track/6aybzjLxocD14YySwF3aus",
+        "image": "https://i.scdn.co/image/ab67616d00001e028d18d73bbfc8985d52865edf",
+        "plays": 312903710
+      },
+      {
+        "title": "Ordinary - Wedding Version",
+        "link": "https://open.spotify.com/track/4t6qMeHgbxWod2SLokiSQp",
+        "image": "https://i.scdn.co/image/ab67616d00001e02fdbfeabe762f90f1570fce50",
+        "plays": 154510863
+      },
+      {
+        "title": "Save You a Seat",
+        "link": "https://open.spotify.com/track/0TdacYZkgRxz8ZvHUtpimP",
+        "image": "https://i.scdn.co/image/ab67616d00001e028d18d73bbfc8985d52865edf",
+        "plays": 233536809
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "HUNTR/X",
+    "url": "https://open.spotify.com/artist/2yNNYQBChuox9A5Ka93BIn",
+    "listeners": 28617609,
+    "backgroundArtistImage": null,
+    "artistImage": null,
+    "artistImageHistory": null,
+    "topTracks": [
+      {
+        "title": "Golden",
+        "link": "https://open.spotify.com/track/1CPZ5BxNNd0n0nF4Orb9JS",
+        "image": "https://i.scdn.co/image/ab67616d00001e024dcb6c5df15cf74596ab25a4",
+        "plays": 1768632936
+      },
+      {
+        "title": "How It’s Done",
+        "link": "https://open.spotify.com/track/3RXUgPNIbUgFxsDWuBQEt6",
+        "image": "https://i.scdn.co/image/ab67616d00001e024dcb6c5df15cf74596ab25a4",
+        "plays": 644230303
+      },
+      {
+        "title": "What It Sounds Like",
+        "link": "https://open.spotify.com/track/5sBDrrtLGbV64QJnEqfjer",
+        "image": "https://i.scdn.co/image/ab67616d00001e024dcb6c5df15cf74596ab25a4",
+        "plays": 604041120
+      },
+      {
+        "title": "Takedown",
+        "link": "https://open.spotify.com/track/0MHStU0muAIEMbwdnebYu2",
+        "image": "https://i.scdn.co/image/ab67616d00001e024dcb6c5df15cf74596ab25a4",
+        "plays": 518033675
+      },
+      {
+        "title": "Golden - David Guetta REM/X",
+        "link": "https://open.spotify.com/track/5tVnzVWIKrmmuOPGbXUbT4",
+        "image": "https://i.scdn.co/image/ab67616d00001e029febcc4cd68d476ac83877cf",
+        "plays": 92293093
+      },
+      {
+        "title": "Dorada - Golden - versión en español",
+        "link": "https://open.spotify.com/track/03x2Hzommc7gHp1rqh0xBC",
+        "image": "https://i.scdn.co/image/ab67616d00001e02a316b14617bab6c5e3cd8dba",
+        "plays": 48143113
+      },
+      {
+        "title": "Briller - Golden - version française",
+        "link": "https://open.spotify.com/track/4Zg2p0S5G6dxF3xCmRBv3R",
+        "image": "https://i.scdn.co/image/ab67616d00001e02a316b14617bab6c5e3cd8dba",
+        "plays": 33334144
+      },
+      {
+        "title": "Golden - Acapella",
+        "link": "https://open.spotify.com/track/3RUVLIRUNA3KHLt8pd8PL6",
+        "image": "https://i.scdn.co/image/ab67616d00001e02333392a83a4514ae635ed982",
+        "plays": 56145616
+      },
+      {
+        "title": "Golden - David Guetta REM/X (Extended)",
+        "link": "https://open.spotify.com/track/3p3FbElRZudNO4hp1Av8MO",
+        "image": "https://i.scdn.co/image/ab67616d00001e029febcc4cd68d476ac83877cf",
+        "plays": 24055315
+      },
+      {
+        "title": "Golden - Instrumental",
+        "link": "https://open.spotify.com/track/5LByxLn1X1Q9vr0xa4ZLYf",
+        "image": "https://i.scdn.co/image/ab67616d00001e02333392a83a4514ae635ed982",
+        "plays": 30776122
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "EJAE",
+    "url": "https://open.spotify.com/artist/0RMJOzHDhAKY1o2j0W0vxY",
+    "listeners": 29021445,
+    "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab67618600000194903d6bfbf29e7164c054a848",
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd4d469220721e86fe2d133fbcc",
+    "topTracks": [
+      {
+        "title": "Golden",
+        "link": "https://open.spotify.com/track/1CPZ5BxNNd0n0nF4Orb9JS",
+        "image": "https://i.scdn.co/image/ab67616d00001e024dcb6c5df15cf74596ab25a4",
+        "plays": 1768632936
+      },
+      {
+        "title": "How It’s Done",
+        "link": "https://open.spotify.com/track/3RXUgPNIbUgFxsDWuBQEt6",
+        "image": "https://i.scdn.co/image/ab67616d00001e024dcb6c5df15cf74596ab25a4",
+        "plays": 644230303
+      },
+      {
+        "title": "What It Sounds Like",
+        "link": "https://open.spotify.com/track/5sBDrrtLGbV64QJnEqfjer",
+        "image": "https://i.scdn.co/image/ab67616d00001e024dcb6c5df15cf74596ab25a4",
+        "plays": 604041120
+      },
+      {
+        "title": "Takedown",
+        "link": "https://open.spotify.com/track/0MHStU0muAIEMbwdnebYu2",
+        "image": "https://i.scdn.co/image/ab67616d00001e024dcb6c5df15cf74596ab25a4",
+        "plays": 518033675
+      },
+      {
+        "title": "Free",
+        "link": "https://open.spotify.com/track/5DxDLsW6PsLz5gkwC7Mk5S",
+        "image": "https://i.scdn.co/image/ab67616d00001e024dcb6c5df15cf74596ab25a4",
+        "plays": 520586736
+      },
+      {
+        "title": "Golden - David Guetta REM/X",
+        "link": "https://open.spotify.com/track/5tVnzVWIKrmmuOPGbXUbT4",
+        "image": "https://i.scdn.co/image/ab67616d00001e029febcc4cd68d476ac83877cf",
+        "plays": 92293093
+      },
+      {
+        "title": "Golden - Acapella",
+        "link": "https://open.spotify.com/track/3RUVLIRUNA3KHLt8pd8PL6",
+        "image": "https://i.scdn.co/image/ab67616d00001e02333392a83a4514ae635ed982",
+        "plays": 56145616
+      },
+      {
+        "title": "Golden - David Guetta REM/X (Extended)",
+        "link": "https://open.spotify.com/track/3p3FbElRZudNO4hp1Av8MO",
+        "image": "https://i.scdn.co/image/ab67616d00001e029febcc4cd68d476ac83877cf",
+        "plays": 24055315
+      },
+      {
+        "title": "Golden - Sing-Along",
+        "link": "https://open.spotify.com/track/6NUa05EU58TXYuf98zInYD",
+        "image": "https://i.scdn.co/image/ab67616d00001e021cf7cd782eb7dc75a8d181fc",
+        "plays": 30776122
+      },
+      {
+        "title": "Prologue (Hunter’s Mantra)",
+        "link": "https://open.spotify.com/track/0FtKxO7DnsJIJj3a0Qed8w",
+        "image": "https://i.scdn.co/image/ab67616d00001e021615e7967ac3430d802939c3",
+        "plays": 15458218
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "AUDREY NUNA",
+    "url": "https://open.spotify.com/artist/0Wwji82sLA0Hcvtuak3omb",
+    "listeners": 28184333,
+    "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab676186000001948c56eb9f5ac5ccb8cb07b21d",
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/80b56dd845f47ad8b0681e3a1a820d136853d26b",
+    "topTracks": [
+      {
+        "title": "Golden",
+        "link": "https://open.spotify.com/track/1CPZ5BxNNd0n0nF4Orb9JS",
+        "image": "https://i.scdn.co/image/ab67616d00001e024dcb6c5df15cf74596ab25a4",
+        "plays": 1768632936
+      },
+      {
+        "title": "How It’s Done",
+        "link": "https://open.spotify.com/track/3RXUgPNIbUgFxsDWuBQEt6",
+        "image": "https://i.scdn.co/image/ab67616d00001e024dcb6c5df15cf74596ab25a4",
+        "plays": 644230303
+      },
+      {
+        "title": "What It Sounds Like",
+        "link": "https://open.spotify.com/track/5sBDrrtLGbV64QJnEqfjer",
+        "image": "https://i.scdn.co/image/ab67616d00001e024dcb6c5df15cf74596ab25a4",
+        "plays": 604041120
+      },
+      {
+        "title": "Takedown",
+        "link": "https://open.spotify.com/track/0MHStU0muAIEMbwdnebYu2",
+        "image": "https://i.scdn.co/image/ab67616d00001e024dcb6c5df15cf74596ab25a4",
+        "plays": 518033675
+      },
+      {
+        "title": "Golden - David Guetta REM/X",
+        "link": "https://open.spotify.com/track/5tVnzVWIKrmmuOPGbXUbT4",
+        "image": "https://i.scdn.co/image/ab67616d00001e029febcc4cd68d476ac83877cf",
+        "plays": 92293093
+      },
+      {
+        "title": "Golden - Acapella",
+        "link": "https://open.spotify.com/track/3RUVLIRUNA3KHLt8pd8PL6",
+        "image": "https://i.scdn.co/image/ab67616d00001e02333392a83a4514ae635ed982",
+        "plays": 56145616
+      },
+      {
+        "title": "Golden - David Guetta REM/X (Extended)",
+        "link": "https://open.spotify.com/track/3p3FbElRZudNO4hp1Av8MO",
+        "image": "https://i.scdn.co/image/ab67616d00001e029febcc4cd68d476ac83877cf",
+        "plays": 24055315
+      },
+      {
+        "title": "Golden - Sing-Along",
+        "link": "https://open.spotify.com/track/6NUa05EU58TXYuf98zInYD",
+        "image": "https://i.scdn.co/image/ab67616d00001e021cf7cd782eb7dc75a8d181fc",
+        "plays": 30776122
+      },
+      {
+        "title": "Golden - Glowin' Version",
+        "link": "https://open.spotify.com/track/0SIEcuChTr2DIhuPgklpeP",
+        "image": "https://i.scdn.co/image/ab67616d00001e021cf7cd782eb7dc75a8d181fc",
+        "plays": 6977638
+      },
+      {
+        "title": "What It Sounds Like - Acapella",
+        "link": "https://open.spotify.com/track/5diyROKgjowezpjRgQNBPQ",
+        "image": "https://i.scdn.co/image/ab67616d00001e021615e7967ac3430d802939c3",
+        "plays": 9523899
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "REI AMI",
+    "url": "https://open.spotify.com/artist/6U1dV7aL68N7Gb0Naq34V5",
+    "listeners": 29174496,
+    "backgroundArtistImage": null,
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd48c55b08ab549635cdbecc6b6",
+    "topTracks": [
+      {
+        "title": "Golden",
+        "link": "https://open.spotify.com/track/1CPZ5BxNNd0n0nF4Orb9JS",
+        "image": "https://i.scdn.co/image/ab67616d00001e024dcb6c5df15cf74596ab25a4",
+        "plays": 1768632936
+      },
+      {
+        "title": "How It’s Done",
+        "link": "https://open.spotify.com/track/3RXUgPNIbUgFxsDWuBQEt6",
+        "image": "https://i.scdn.co/image/ab67616d00001e024dcb6c5df15cf74596ab25a4",
+        "plays": 644230303
+      },
+      {
+        "title": "What It Sounds Like",
+        "link": "https://open.spotify.com/track/5sBDrrtLGbV64QJnEqfjer",
+        "image": "https://i.scdn.co/image/ab67616d00001e024dcb6c5df15cf74596ab25a4",
+        "plays": 604041120
+      },
+      {
+        "title": "Takedown",
+        "link": "https://open.spotify.com/track/0MHStU0muAIEMbwdnebYu2",
+        "image": "https://i.scdn.co/image/ab67616d00001e024dcb6c5df15cf74596ab25a4",
+        "plays": 518033675
+      },
+      {
+        "title": "Golden - David Guetta REM/X",
+        "link": "https://open.spotify.com/track/5tVnzVWIKrmmuOPGbXUbT4",
+        "image": "https://i.scdn.co/image/ab67616d00001e029febcc4cd68d476ac83877cf",
+        "plays": 92293093
+      },
+      {
+        "title": "Freak (feat. REI AMI)",
+        "link": "https://open.spotify.com/track/5jkbw3FDS3bSSb4oLKYbjf",
+        "image": "https://i.scdn.co/image/ab67616d00001e0256e48367038b47c8812a803e",
+        "plays": 262139768
+      },
+      {
+        "title": "Golden - Acapella",
+        "link": "https://open.spotify.com/track/3RUVLIRUNA3KHLt8pd8PL6",
+        "image": "https://i.scdn.co/image/ab67616d00001e02333392a83a4514ae635ed982",
+        "plays": 56145616
+      },
+      {
+        "title": "Golden - David Guetta REM/X (Extended)",
+        "link": "https://open.spotify.com/track/3p3FbElRZudNO4hp1Av8MO",
+        "image": "https://i.scdn.co/image/ab67616d00001e029febcc4cd68d476ac83877cf",
+        "plays": 24055315
+      },
+      {
+        "title": "Golden - Sing-Along",
+        "link": "https://open.spotify.com/track/6NUa05EU58TXYuf98zInYD",
+        "image": "https://i.scdn.co/image/ab67616d00001e021cf7cd782eb7dc75a8d181fc",
+        "plays": 30776122
+      },
+      {
+        "title": "Golden - Glowin' Version",
+        "link": "https://open.spotify.com/track/0SIEcuChTr2DIhuPgklpeP",
+        "image": "https://i.scdn.co/image/ab67616d00001e021cf7cd782eb7dc75a8d181fc",
+        "plays": 6977638
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "KPop Demon Hunters Cast",
+    "url": "https://open.spotify.com/artist/7mW7Tv7NvywKKXqafZo0Lc",
+    "listeners": 32457009,
+    "backgroundArtistImage": null,
+    "artistImage": null,
+    "artistImageHistory": null,
+    "topTracks": [
+      {
+        "title": "Golden",
+        "link": "https://open.spotify.com/track/1CPZ5BxNNd0n0nF4Orb9JS",
+        "image": "https://i.scdn.co/image/ab67616d00001e024dcb6c5df15cf74596ab25a4",
+        "plays": 1768632936
+      },
+      {
+        "title": "Soda Pop",
+        "link": "https://open.spotify.com/track/02sy7FAs8dkDNYsHp4Ul3f",
+        "image": "https://i.scdn.co/image/ab67616d00001e024dcb6c5df15cf74596ab25a4",
+        "plays": 762943933
+      },
+      {
+        "title": "How It’s Done",
+        "link": "https://open.spotify.com/track/3RXUgPNIbUgFxsDWuBQEt6",
+        "image": "https://i.scdn.co/image/ab67616d00001e024dcb6c5df15cf74596ab25a4",
+        "plays": 644230303
+      },
+      {
+        "title": "What It Sounds Like",
+        "link": "https://open.spotify.com/track/5sBDrrtLGbV64QJnEqfjer",
+        "image": "https://i.scdn.co/image/ab67616d00001e024dcb6c5df15cf74596ab25a4",
+        "plays": 604041120
+      },
+      {
+        "title": "Your Idol",
+        "link": "https://open.spotify.com/track/1I37Zz2g3hk9eWxaNkj031",
+        "image": "https://i.scdn.co/image/ab67616d00001e024dcb6c5df15cf74596ab25a4",
+        "plays": 738884894
+      },
+      {
+        "title": "Takedown",
+        "link": "https://open.spotify.com/track/0MHStU0muAIEMbwdnebYu2",
+        "image": "https://i.scdn.co/image/ab67616d00001e024dcb6c5df15cf74596ab25a4",
+        "plays": 518033675
+      },
+      {
+        "title": "Free",
+        "link": "https://open.spotify.com/track/5DxDLsW6PsLz5gkwC7Mk5S",
+        "image": "https://i.scdn.co/image/ab67616d00001e024dcb6c5df15cf74596ab25a4",
+        "plays": 520586736
+      },
+      {
+        "title": "Golden - David Guetta REM/X",
+        "link": "https://open.spotify.com/track/5tVnzVWIKrmmuOPGbXUbT4",
+        "image": "https://i.scdn.co/image/ab67616d00001e029febcc4cd68d476ac83877cf",
+        "plays": 92293093
+      },
+      {
+        "title": "Dorada - Golden - versión en español",
+        "link": "https://open.spotify.com/track/03x2Hzommc7gHp1rqh0xBC",
+        "image": "https://i.scdn.co/image/ab67616d00001e02a316b14617bab6c5e3cd8dba",
+        "plays": 48143113
+      },
+      {
+        "title": "Briller - Golden - version française",
+        "link": "https://open.spotify.com/track/4Zg2p0S5G6dxF3xCmRBv3R",
+        "image": "https://i.scdn.co/image/ab67616d00001e02a316b14617bab6c5e3cd8dba",
+        "plays": 33334144
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "Mac Miller",
+    "url": "https://open.spotify.com/artist/4LLpKhyESsyAXpc4laK94U",
+    "listeners": 37179731,
+    "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab6761860000019423f740d8024b6e88db9d7eb8",
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd458107afa3d4c4f8016d27b91",
+    "topTracks": [
+      {
+        "title": "The Spins",
+        "link": "https://open.spotify.com/track/3iEUDvanZwQhLCIqUmCR7N",
+        "image": "https://i.scdn.co/image/ab67616d00001e027414c28a11a87cbfd91dce10",
+        "plays": 1332534384
+      },
+      {
+        "title": "Cinderella (feat. Ty Dolla $ign)",
+        "link": "https://open.spotify.com/track/2lpygKqzPFtItQ4ss3cgfb",
+        "image": "https://i.scdn.co/image/ab67616d00001e022e92f776279eaf45d14a33fd",
+        "plays": 326743321
+      },
+      {
+        "title": "Love Lost",
+        "link": "https://open.spotify.com/track/6WVdae8LbPfpOXAWuYdMnT",
+        "image": "https://i.scdn.co/image/ab67616d00001e028bd48e2347b4cdaf8d6144f8",
+        "plays": 499888683
+      },
+      {
+        "title": "Come Back to Earth",
+        "link": "https://open.spotify.com/track/01z2fBGB8Hl3Jd3zXe4IXR",
+        "image": "https://i.scdn.co/image/ab67616d00001e02175c577a61aa13d4fb4b6534",
+        "plays": 490408705
+      },
+      {
+        "title": "Congratulations (feat. Bilal)",
+        "link": "https://open.spotify.com/track/1OubIZ0ARYCUq5kceYUQiO",
+        "image": "https://i.scdn.co/image/ab67616d00001e022e92f776279eaf45d14a33fd",
+        "plays": 533082864
+      },
+      {
+        "title": "Small Worlds",
+        "link": "https://open.spotify.com/track/4gT3mNJA8lnlkYFqGZ8IA2",
+        "image": "https://i.scdn.co/image/ab67616d00001e02175c577a61aa13d4fb4b6534",
+        "plays": 523732818
+      },
+      {
+        "title": "Weekend (feat. Miguel)",
+        "link": "https://open.spotify.com/track/6GnhWMhgJb7uyiiPEiEkDA",
+        "image": "https://i.scdn.co/image/ab67616d00001e02ee0f38410382a255e4fb15f4",
+        "plays": 795359950
+      },
+      {
+        "title": "Self Care",
+        "link": "https://open.spotify.com/track/5bJ1DrEM4hNCafcDd1oxHx",
+        "image": "https://i.scdn.co/image/ab67616d00001e02175c577a61aa13d4fb4b6534",
+        "plays": 853407014
+      },
+      {
+        "title": "Woods",
+        "link": "https://open.spotify.com/track/3Qa944OTMZkg8DHjET8JQv",
+        "image": "https://i.scdn.co/image/ab67616d00001e02d9d8f1a08476cd347fbea313",
+        "plays": 221655832
+      },
+      {
+        "title": "Blue World",
+        "link": "https://open.spotify.com/track/2hwOoMtWPtTSSn6WHV7Vp5",
+        "image": "https://i.scdn.co/image/ab67616d00001e02d9d8f1a08476cd347fbea313",
+        "plays": 470415477
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "Ty Dolla $ign",
+    "url": "https://open.spotify.com/artist/7c0XG5cIJTrrAgEC3ULPiq",
+    "listeners": 36200567,
+    "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab6761860000019417303c322bd519daf02dcdd4",
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd426545469ea14482008b6d4c3",
+    "topTracks": [
+      {
+        "title": "Or Nah (feat. The Weeknd, Wiz Khalifa & DJ Mustard) - Remix",
+        "link": "https://open.spotify.com/track/7t2bFihaDvhIrd2gn2CWJO",
+        "image": "https://i.scdn.co/image/ab67616d00001e021c04efd2804b16cf689de7f0",
+        "plays": 1311185795
+      },
+      {
+        "title": "CARNIVAL",
+        "link": "https://open.spotify.com/track/2McT2fkH0VDqPsbiB9HWPq",
+        "image": "https://i.scdn.co/image/ab67616d00001e029c654f315df05ae7c6ec8980",
+        "plays": 912455035
+      },
+      {
+        "title": "DON'T KILL THE PARTY (feat. Quavo & Juicy J)",
+        "link": "https://open.spotify.com/track/4YmsnZcxHEGEqHB3K0vdt0",
+        "image": "https://i.scdn.co/image/ab67616d00001e02712be553f73989a1b7607674",
+        "plays": 124237977
+      },
+      {
+        "title": "Swalla (feat. Nicki Minaj & Ty Dolla $ign)",
+        "link": "https://open.spotify.com/track/58w5J5yNWeGZ7a4cM1rO7Y",
+        "image": "https://i.scdn.co/image/ab67616d00001e02e61bf150469db99447be6206",
+        "plays": 1276380972
+      },
+      {
+        "title": "Nights Like This (feat. Ty Dolla $ign)",
+        "link": "https://open.spotify.com/track/6ZRuF2n1CQxyxxAAWsKJOy",
+        "image": "https://i.scdn.co/image/ab67616d00001e02f882c60f16e308b5e51fbccf",
+        "plays": 745646435
+      },
+      {
+        "title": "Switchblade (feat. Ty Dolla $ign)",
+        "link": "https://open.spotify.com/track/27Vku9m1VA4ooCpTgJM57e",
+        "image": "https://i.scdn.co/image/ab67616d00001e02c8e473ed553fc89b70d1557b",
+        "plays": 4334152
+      },
+      {
+        "title": "Location",
+        "link": "https://open.spotify.com/track/6Ilomcr9iLplsgAvZjHkJP",
+        "image": "https://i.scdn.co/image/ab67616d00001e0223ed374ad59469543181f7b7",
+        "plays": 143604940
+      },
+      {
+        "title": "BURN",
+        "link": "https://open.spotify.com/track/7BPadP3q9qwMkho3IMPU99",
+        "image": "https://i.scdn.co/image/ab67616d00001e029c654f315df05ae7c6ec8980",
+        "plays": 286636558
+      },
+      {
+        "title": "OTW",
+        "link": "https://open.spotify.com/track/6Hgh47WXVKtXN5zGOu0hjI",
+        "image": "https://i.scdn.co/image/ab67616d00001e029766f79668e76238a1c13e2c",
+        "plays": 708227276
+      },
+      {
+        "title": "Scared of the Dark (feat. XXXTENTACION)",
+        "link": "https://open.spotify.com/track/3vWzyGTu6Ovo1GdrcJqH6e",
+        "image": "https://i.scdn.co/image/ab67616d00001e02e2e352d89826aef6dbd5ff8f",
+        "plays": 358409215
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "Vance Joy",
+    "url": "https://open.spotify.com/artist/10exVja0key0uqUkk6LJRT",
+    "listeners": 33429619,
+    "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab676186000001943b15747df3cae0299d64915e",
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd4f7ac250bd1d51ca86ef438c2",
+    "topTracks": [
+      {
+        "title": "Riptide",
+        "link": "https://open.spotify.com/track/2uXlHCUbq9OMUwx3hrk06o",
+        "image": "https://i.scdn.co/image/ab67616d00001e0205d081cbdc2f67d37a364d63",
+        "plays": 3718936439
+      },
+      {
+        "title": "Mess Is Mine",
+        "link": "https://open.spotify.com/track/6IJXxWAHTVORSyl7lT5pkY",
+        "image": "https://i.scdn.co/image/ab67616d00001e0205d081cbdc2f67d37a364d63",
+        "plays": 657189250
+      },
+      {
+        "title": "Missing Piece",
+        "link": "https://open.spotify.com/track/2vB9ME0oZwfTGAUMC71CaT",
+        "image": "https://i.scdn.co/image/ab67616d00001e0292b01fe760858d96443e5420",
+        "plays": 344676986
+      },
+      {
+        "title": "Georgia",
+        "link": "https://open.spotify.com/track/5sfvzgf96i6nLyLELnrLZ6",
+        "image": "https://i.scdn.co/image/ab67616d00001e0205d081cbdc2f67d37a364d63",
+        "plays": 581299712
+      },
+      {
+        "title": "Saturday Sun",
+        "link": "https://open.spotify.com/track/2RiBogNRfulkNf7fVbPOrJ",
+        "image": "https://i.scdn.co/image/ab67616d00001e029ac709b94022896013465886",
+        "plays": 407005142
+      },
+      {
+        "title": "Fire and the Flood",
+        "link": "https://open.spotify.com/track/7ewI4ZKxRXrkESHB8eGBnO",
+        "image": "https://i.scdn.co/image/ab67616d00001e0205d081cbdc2f67d37a364d63",
+        "plays": 292510953
+      },
+      {
+        "title": "I'm with You",
+        "link": "https://open.spotify.com/track/6Qwuw0eOeszVlewLpu24gR",
+        "image": "https://i.scdn.co/image/ab67616d00001e029ac709b94022896013465886",
+        "plays": 193479931
+      },
+      {
+        "title": "We're Going Home",
+        "link": "https://open.spotify.com/track/5J7zqPpQkN9JZiaELHNKSL",
+        "image": "https://i.scdn.co/image/ab67616d00001e029ac709b94022896013465886",
+        "plays": 118653367
+      },
+      {
+        "title": "Lay It on Me",
+        "link": "https://open.spotify.com/track/7oekneJCJO74ycdLzdk16v",
+        "image": "https://i.scdn.co/image/ab67616d00001e029ac709b94022896013465886",
+        "plays": 185591323
+      },
+      {
+        "title": "Divine Feelings",
+        "link": "https://open.spotify.com/track/3D4JBITefQuOsZZyLdESAi",
+        "image": "https://i.scdn.co/image/ab67616d00001e02f9bb95ebedf8f069f50722c6",
+        "plays": 13789993
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "F3miii",
+    "url": "https://open.spotify.com/artist/0gmx7cndNJbFM0DAO7fT0s",
+    "listeners": 14846111,
+    "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab6761860000019419618deb45daec27e07b3a48",
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd4d06e80e972881632e45ecb39",
+    "topTracks": [
+      {
+        "title": "NOBLE",
+        "link": "https://open.spotify.com/track/4Jsus7N4d8hFB2G9gcRdBv",
+        "image": "https://i.scdn.co/image/ab67616d00001e023e2c1f8bb3f146186e2a1dc5",
+        "plays": 99480929
+      },
+      {
+        "title": "FROM YOUR EYES",
+        "link": "https://open.spotify.com/track/59zSL8ZmZk1VwAYcpWczQK",
+        "image": "https://i.scdn.co/image/ab67616d00001e02c822f0e5b7bfc7578e1b977a",
+        "plays": 4534298
+      },
+      {
+        "title": "NOBLE - Slowed Down",
+        "link": "https://open.spotify.com/track/3FjIAugCxgkZXYD2bN6L1v",
+        "image": "https://i.scdn.co/image/ab67616d00001e023e2c1f8bb3f146186e2a1dc5",
+        "plays": 884499
+      },
+      {
+        "title": "SPLINTER",
+        "link": "https://open.spotify.com/track/3jjIOrKthJeLRtjwTKROfj",
+        "image": "https://i.scdn.co/image/ab67616d00001e02593204dcdee3e8aa2e8b3eb5",
+        "plays": 969702
+      },
+      {
+        "title": "LOSTWITHOUTMARIA",
+        "link": "https://open.spotify.com/track/5vHRQOgc2tQb4h7KrBQUmS",
+        "image": "https://i.scdn.co/image/ab67616d00001e02fd40129a656d22605aa70191",
+        "plays": 2803702
+      },
+      {
+        "title": "READY TO GO",
+        "link": "https://open.spotify.com/track/2iILrivggWe9J9YjSpLCtl",
+        "image": "https://i.scdn.co/image/ab67616d00001e02a4dc2681af104e2e6a683600",
+        "plays": 757613
+      },
+      {
+        "title": "BBY CRUMBS",
+        "link": "https://open.spotify.com/track/4J73olXlMdSvckMRU5brDF",
+        "image": "https://i.scdn.co/image/ab67616d00001e02593204dcdee3e8aa2e8b3eb5",
+        "plays": 185811
+      },
+      {
+        "title": "TRUTH",
+        "link": "https://open.spotify.com/track/4C9BuBuYgYlOvLh6QzMpqb",
+        "image": "https://i.scdn.co/image/ab67616d00001e0220766437d88a4e5c2fc59dd3",
+        "plays": 437934
+      },
+      {
+        "title": "HIDING",
+        "link": "https://open.spotify.com/track/24bziBXe6Af2aAg3PDmgCM",
+        "image": "https://i.scdn.co/image/ab67616d00001e02c9e67d15d578048b2336f748",
+        "plays": 271369
+      },
+      {
+        "title": "SO GOOD",
+        "link": "https://open.spotify.com/track/1aBxiPzsZv7yZqRlfqcaMX",
+        "image": "https://i.scdn.co/image/ab67616d00001e02220c30fbdcfece4f2fe34406",
+        "plays": 156629
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "Shakira",
+    "url": "https://open.spotify.com/artist/0EmeFodog0BfCgMzAIvKQp",
+    "listeners": 90424736,
+    "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab676186000001940d3dfebee93054ad556f93c4",
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd433d088fa9d09827c30058e26",
+    "topTracks": [
+      {
+        "title": "Hips Don't Lie (feat. Wyclef Jean)",
+        "link": "https://open.spotify.com/track/3d0WouFnFmr0K3kjeza3fF",
+        "image": "https://i.scdn.co/image/ab67616d00001e0285432abc16fd92be0d435cb9",
+        "plays": 2519235230
+      },
+      {
+        "title": "Dai Dai",
+        "link": "https://open.spotify.com/track/0kosUz0jePvjiz4ctmR6wL",
+        "image": "https://i.scdn.co/image/ab67616d00001e0203cadf1b3fe324c1dc710ed4",
+        "plays": 41750777
+      },
+      {
+        "title": "Zoo",
+        "link": "https://open.spotify.com/track/3vJIaiTIHxHhYafTSPNiH4",
+        "image": "https://i.scdn.co/image/ab67616d00001e02a6c1dcda006bbf12825b7f43",
+        "plays": 232846825
+      },
+      {
+        "title": "Chantaje (feat. Maluma)",
+        "link": "https://open.spotify.com/track/6mICuAdrwEjh6Y6lroV2Kg",
+        "image": "https://i.scdn.co/image/ab67616d00001e02eec120f35546507f59f05c41",
+        "plays": 1424631562
+      },
+      {
+        "title": "TQG",
+        "link": "https://open.spotify.com/track/0DWdj2oZMBFSzRsi2Cvfzf",
+        "image": "https://i.scdn.co/image/ab67616d00001e0282de1ca074ae63cb18fce335",
+        "plays": 1497722542
+      },
+      {
+        "title": "La Tortura (feat. Alejandro Sanz)",
+        "link": "https://open.spotify.com/track/53AafWSzYsiJKnAtJTUB5f",
+        "image": "https://i.scdn.co/image/ab67616d00001e02afccde0243b5c750c07f6825",
+        "plays": 787329151
+      },
+      {
+        "title": "GIRL LIKE ME",
+        "link": "https://open.spotify.com/track/1zLBsSVxETQOfINOLYvT5m",
+        "image": "https://i.scdn.co/image/ab67616d00001e027a7bb3f6985052cd97c15279",
+        "plays": 759333423
+      },
+      {
+        "title": "Waka Waka (This Time for Africa) [The Official 2010 FIFA World Cup (TM) Song] (feat. Freshlyground)",
+        "link": "https://open.spotify.com/track/4B0ScPwmG3oAOg9Ek7ODdm",
+        "image": "https://i.scdn.co/image/ab67616d00001e021364ce1164c1a42370cbf865",
+        "plays": 1076890849
+      },
+      {
+        "title": "Whenever, Wherever",
+        "link": "https://open.spotify.com/track/0RJWhctsc1G1Hg3Ov2th7x",
+        "image": "https://i.scdn.co/image/ab67616d00001e029d68bc56bf51dcb2e4033e36",
+        "plays": 874160083
+      },
+      {
+        "title": "Can't Remember to Forget You (feat. Rihanna)",
+        "link": "https://open.spotify.com/track/7o1Pm9jpH0wFpN5g793Lnq",
+        "image": "https://i.scdn.co/image/ab67616d00001e020da1a7e7f3e9ef163e1c1dbf",
+        "plays": 811273555
+      }
+    ],
+    "month": "2026-06-01"
+  },
+  {
+    "name": "Burna Boy",
+    "url": "https://open.spotify.com/artist/3wcj11K77LjEY1PkEazffa",
+    "listeners": 36650349,
+    "backgroundArtistImage": "https://image-cdn-ak.spotifycdn.com/image/ab6761860000019483ba9f59de7fb6593f8c95be",
+    "artistImage": null,
+    "artistImageHistory": "https://i.scdn.co/image/ab6761670000ecd4382b8740e367ee2893715e8b",
+    "topTracks": [
+      {
+        "title": "Dai Dai",
+        "link": "https://open.spotify.com/track/0kosUz0jePvjiz4ctmR6wL",
+        "image": "https://i.scdn.co/image/ab67616d00001e0203cadf1b3fe324c1dc710ed4",
+        "plays": 41750777
+      },
+      {
+        "title": "wgft (feat. Burna Boy)",
+        "link": "https://open.spotify.com/track/0WsC4ETIXyiHDMXRaPMvKe",
+        "image": "https://i.scdn.co/image/ab67616d00001e0203a253cffd6d9e556ef4eec5",
+        "plays": 255076473
+      },
+      {
+        "title": "Last Last",
+        "link": "https://open.spotify.com/track/57DarSfRMIVRCeDBGW0l5S",
+        "image": "https://i.scdn.co/image/ab67616d00001e0221315ced0015f33e514be031",
+        "plays": 586961875
+      },
+      {
+        "title": "Location (feat. Burna Boy)",
+        "link": "https://open.spotify.com/track/6KFWubocLBhrLs31RpEdR9",
+        "image": "https://i.scdn.co/image/ab67616d00001e02565f69a950084775df6a4e77",
+        "plays": 717549111
+      },
+      {
+        "title": "On the Low",
+        "link": "https://open.spotify.com/track/1zIk8RJEKGvoH4FioFnGyJ",
+        "image": "https://i.scdn.co/image/ab67616d00001e02a9c13c1a5538f87146ac8ca5",
+        "plays": 403022127
+      },
+      {
+        "title": "WE PRAY",
+        "link": "https://open.spotify.com/track/6xX6zmaXeKzB4u9TiM1XgU",
+        "image": "https://i.scdn.co/image/ab67616d00001e02d75f119409f50e08ce77c5f1",
+        "plays": 235545244
+      },
+      {
+        "title": "Gbona",
+        "link": "https://open.spotify.com/track/1PlYxNrefqOBvk52umixt9",
+        "image": "https://i.scdn.co/image/ab67616d00001e02a9c13c1a5538f87146ac8ca5",
+        "plays": 271804936
+      },
+      {
+        "title": "For My Hand (feat. Ed Sheeran)",
+        "link": "https://open.spotify.com/track/3ltc9j6uh3LvO7FuXm6Ix3",
+        "image": "https://i.scdn.co/image/ab67616d00001e0221315ced0015f33e514be031",
+        "plays": 368529532
+      },
+      {
+        "title": "City Boys",
+        "link": "https://open.spotify.com/track/4RoKNqyZ9622tcAeNPNv5k",
+        "image": "https://i.scdn.co/image/ab67616d00001e02c361f3720bafc0da36f14d96",
+        "plays": 274331539
+      },
+      {
+        "title": "Ye",
+        "link": "https://open.spotify.com/track/3FskQrDXcY24ur2fCvz35O",
+        "image": "https://i.scdn.co/image/ab67616d00001e028bbbda6360f9898d291ef8ff",
+        "plays": 321215949
+      }
+    ],
+    "month": "2026-06-01"
   }
 ]

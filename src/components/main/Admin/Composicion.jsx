@@ -320,6 +320,7 @@ const Composicion = ({ id, compo, admin = useStore($admin), show = true, allways
           editCuandoJugar={compo.cuandoJugar}
           editCondicionVictoria={compo.condicionVictoria}
           editCompUrl={compo.compUrl}
+          edittierExtra={compo.tierExtra}
         />}
       {/* {
         showBigComp &&
