@@ -102,7 +102,7 @@ const FormularioSpotify = ({
       sortedData = allTracks.sort((a, b) => (b.plays || 0) - (a.plays || 0));
       setTopMusic(true);
     } else {
-      const dataToUse = sourceType === "venezolanos" ? spotifyData : sourceType === "globales" ? spotifyDataGlobalMusic : spotifyDataGlobalMusic;
+      const dataToUse = sourceType === "venezolanos" ? spotifyData : sourceType === "globales" ? spotifyDataGlobal : spotifyDataGlobalMusic;
       // necesito que solo tome los que tengan el mes de hoy en el campo month 
       // Ordenar por listeners de mayor a menor (por artista)
       

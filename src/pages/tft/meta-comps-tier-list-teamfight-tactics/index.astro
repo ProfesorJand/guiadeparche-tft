@@ -1,10 +1,7 @@
 ---
 import MetaCompsLayout from "@components/TFT/MetaCompsLayout.astro";
-import {
-  fetchAndSortComps,
-  composMetaPBEJSON
-} from "@stores/dataTFT";
-const todasLasCompsPBE = await fetchAndSortComps(composMetaPBEJSON);
+import { getComposMetaPBE } from "../../../lib/cache/tftCache.js";
+const todasLasCompsPBE = await getComposMetaPBE();
 const top10Comps = [...todasLasCompsPBE.slice(0, 10)];
 const restComps = [...todasLasCompsPBE.slice(10)];
 ---

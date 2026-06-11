@@ -74,4 +74,6 @@ export const fetchConstantesDota2 = async ()=>{
   )
 }
 
-fetchConstantesDota2()
+if (typeof window !== 'undefined') {
+  fetchConstantesDota2();
+}

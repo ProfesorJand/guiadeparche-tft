@@ -1,17 +1,16 @@
 ---
 import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
 import CardsCompos from "@components/TFT/CardsCompos";
-import {  setNumberPBE, constantesTFT, loadConstantes, dataTFTLastUpdate, urlDragon} from "@stores/dataTFT";
+import { getConstantes, getMetadata } from "src/lib/cache/tftCache.js";
+import {  setNumberPBE, urlDragon} from "@stores/dataTFT";
 import { crearJSONSchema } from "src/json/schema/crearJSONSchema";
 import RegistrarseBTN from "./RegistrarseBTN.jsx";
 import Youtube from "@components/youtube/Youtube.jsx";
 
-let constantes = constantesTFT.get();
-if(Object.keys(constantes).length === 0){
-  constantes = await loadConstantes();
-}
-console.log({constantes})
-const lastUpdateComps = dataTFTLastUpdate.get();
+const constantes = await getConstantes();
+const metadata = await getMetadata();
+
+const lastUpdateComps = metadata.lastUpdatePBE;
 
 interface Props {
   titleMain?: string;
@@ -57,6 +56,16 @@ const tiersInfo = [
     tier: "C",
     title: "Viables",
     text: "Composiciones situacionales o que requieren una ejecución más precisa. ",
+  },
+  {
+    tier: "H",
+    title: "Hero",
+    text: "Composiciones que tienen aumento de heroe.",
+  },
+  {
+    tier: "X",
+    title: "Situacional",
+    text: "Cuando cumplen ciertos requisitos.",
   },
 ];
 
@@ -141,7 +150,15 @@ const urlRecursosTFT= [
               {
                 [...top10Comps, ...restComps].length &&
                 <div class="container-champs-tier">
-                {[...top10Comps, ...restComps].filter((comp)=>comp.tier === tier.tier).map((comp,index)=>{
+                {[...top10Comps, ...restComps].filter((comp)=>{
+                  if (tier.tier === 'H') {
+                    return comp.tierExtra === 'H';
+                  }
+                  if (tier.tier === 'X') {
+                    return comp.tierExtra === 'X';
+                  }
+                  return comp.tier === tier.tier;
+                }).map((comp,index)=>{
                   const isActive = String(comp.compUrl) === String(activeId);
                   return (
                     <div class="champ-tier" data-comp-id={comp.compUrl} data-is-active={isActive ? "true" : "false"} data-cost={comp.campeonTierList.cost}>
@@ -540,6 +557,14 @@ const urlRecursosTFT= [
     .tier-card-C {
       background: linear-gradient(135deg, #6e3c1e99, #3c1e0acc);
       border-color: #b464324d;
+    }
+    .tier-card-H {
+      background: linear-gradient(135deg, #10b98199, #064e3bcc);
+      border-color: #34d3994d;
+    }
+    .tier-card-X {
+      background: linear-gradient(135deg, #06b6d499, #164e63cc);
+      border-color: #22d3ee4d;
     }
     .tier-number {
       font-size: 4rem;

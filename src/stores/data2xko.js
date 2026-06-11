@@ -51,4 +51,6 @@ export const fetchConstantes2xko = async ()=>{
   )
 }
 
-fetchConstantes2xko()
+if (typeof window !== 'undefined') {
+  fetchConstantes2xko();
+}

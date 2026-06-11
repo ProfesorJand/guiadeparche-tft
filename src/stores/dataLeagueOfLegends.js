@@ -161,4 +161,6 @@ export const fetchConstantesLOL = async ()=>{
   )
 }
 
-fetchConstantesLOL()
+if (typeof window !== 'undefined') {
+  fetchConstantesLOL();
+}

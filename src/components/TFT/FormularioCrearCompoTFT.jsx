@@ -180,6 +180,17 @@ const FormularioCrearCompoTFT = ({compo:[]}) =>{
               ))}
             </select>
             </label>
+
+            <label htmlFor="tier">Tier Extra "H" o "X"
+            <select id="tier" value={composicionTFT.tierExtra} onChange={(e) => setComposicionTFT({...composicionTFT, tierExtra: e.target.value})}>
+              <option value={composicionTFT.tierExtra || ""}>{composicionTFT.tierExtra || "Seleccionar Tier Extra"}</option>
+              {["N/A", "H", "X"].map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+            </label>
             
             <label htmlFor="posicion">Posición
             <input type="number" id="posicion" min={1} max={15} value={composicionTFT.posicion} onChange={(e) => setComposicionTFT({...composicionTFT, posicion: e.target.value})} />

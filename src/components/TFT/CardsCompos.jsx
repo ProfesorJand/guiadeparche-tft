@@ -284,6 +284,7 @@ const deleteComp = ({id, tier, version})=>{
           editCuandoJugar={comp.cuandoJugar}
           editCondicionVictoria={comp.condicionVictoria}
           editCompUrl={comp.compUrl}
+          edittierExtra={comp.tierExtra}
         />}
 
     </div>

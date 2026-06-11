@@ -3,8 +3,8 @@ import Main from '@components/main/Main.astro';
 import Layout from 'src/layouts/Layout.astro';
 import AdminPanel from "../components/main/Admin/Admin.jsx";
 import TierListMetaComps from '@components/TFT/TierListMetaComps.jsx';
-import {composMetaPBEJSON, fetchAndSortComps} from "@stores/dataTFT";
-const todasLasCompsPBE = await fetchAndSortComps(composMetaPBEJSON);
+import { getComposMetaPBE } from "../lib/cache/tftCache.js";
+const todasLasCompsPBE = await getComposMetaPBE();
 ---
 
 <Layout title='admin'>

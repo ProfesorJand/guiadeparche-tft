@@ -40,6 +40,8 @@ jobs:
           node-version: 20
 
       - run: npm ci
+      # - name: Download TFT Data
+      #   run: node scripts/download-data.js
       - run: npm run build
 
       - uses: actions/upload-pages-artifact@v3
