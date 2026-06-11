@@ -22,6 +22,10 @@ jobs:
       - name: Instalar dependencias
         run: npm install
 
+      # Instalar los navegadores de playwright
+      - name: Install Playwright Browsers
+        run: npx playwright install chromium --with-deps
+
       # 🟢 Script día 1
       - name: Ejecutar scrapeSpotify.js
         if: github.event.schedule == '0 0 1 * *'
