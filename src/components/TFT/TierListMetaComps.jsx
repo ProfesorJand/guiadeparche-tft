@@ -9,9 +9,10 @@ const TierListMetaComps = ({todasLasComps = [], todasLasCompsPBE = []}) => {
 
   // Agrupar por tier para mantener la estructura visual
   const groupedComps = useMemo(() => {
+    if (!activeComps) return [];
     const hierarchy = ["S", "A", "B", "C", "D", "MEME"];
     return hierarchy.map(tierName => 
-      activeComps?.filter(c => c.tier === tierName)
+      activeComps.filter(c => c.tier === tierName)
     ).filter(group => group.length > 0);
   }, [activeComps]);
 
