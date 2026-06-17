@@ -348,7 +348,7 @@
   gap:2cqh;
   box-sizing: border-box;
   border: 1px solid rgba(255, 0, 0, 0.5);
-  container-type:inline-size;
+  container-type: size;
   height:100%;
 }
 .containerAumentos{
@@ -358,13 +358,14 @@
   width:100%;
   flex-wrap:wrap;
   justify-content:center;
+  height: 90%;
+  container-type: size;
 }
 
 .containerCuadrosAumentos{
   display:flex;
   flex-direction:row;
-  width:calc((100% - 5cqh) / 2);
-  container-type:inline-size;
+  height:calc((100% - 5cqh) / 2);
   position: relative;
   background-color:rgba(0, 0, 0, 0.50);
 }
