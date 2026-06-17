@@ -1,0 +1,434 @@
+.container{
+  display:flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap:10px;
+  padding:10px;
+  width:calc(100% / 3);
+  background-color: rgb(17, 8, 26);
+  position:relative;
+  box-sizing:border-box;
+  container-type:size;
+  aspect-ratio: 4 / 5;
+}
+
+.header{
+  display:flex;
+  flex-direction:row;
+  width:100%;
+  justify-content: space-between;
+  align-items: center;
+  height: calc( (100% - (10px * 2)) / 12 * 1);
+  container-type: size;
+}
+.body{
+  display:flex;
+  flex-direction:row;
+  width:100%;
+  height: calc( (100% - (10px * 2)) / 12 * 6);
+  gap:2cqh;
+
+}
+.footer{
+  display:flex;
+  flex-direction:row;
+  width:100%;
+  height: calc( (100% - (10px * 2)) / 12 * 5);
+  gap:2cqh;
+}
+.titleComp{
+  font-size:45cqh;
+  font-family: 'ObvioslyWideBold', sans-serif;
+}
+
+.initialInfoComp{
+  display:flex;
+  flex-direction: column;
+  width:calc((100% - 2cqh) / 12 * 5);
+  position:relative;
+  height:100%;
+}
+.imgEstrellasCard{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20%;
+  z-index: 2;
+}
+.imgCampeonCard{
+  position: relative;
+  height: 100%;
+  z-index: 1;
+  object-fit: cover;
+}
+.containerTags{
+  display:flex;
+  position:absolute;
+  flex-direction: column;
+  width:100%;
+  height:100%;
+  gap:5px;
+  container-type:size;
+}
+/* .imgItemsCard{
+  position: relative;
+  width: calc((100% - 10px) / 3);
+  z-index:3
+} */
+.tierCard{
+  position: relative;
+  z-index: 2;
+  /* padding: 8px 8px; */
+  font-weight: 900;
+  text-align: left;
+  font-size: 100cqh;
+  text-transform: uppercase;
+  /* font-family: 'Inter', system-ui, sans-serif; */
+  letter-spacing: 2px;
+  font-family: 'ObvioslyWideBold', sans-serif;
+  
+  /* Hacemos el texto transparente para que se vea el gradiente de fondo */
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2); /* Un borde muy sutil para dar volumen */
+}
+
+/* Tier S: Naranja a Rojo Intenso + Brillo */
+.tierCard[data-tier="S"] { 
+  background-image: linear-gradient(135deg, #ff8c00, #ff003c);
+  filter: drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.6)) drop-shadow(2px 2px 4px rgb(0, 0, 0));
+} 
+
+/* Tier A: Oro Brillante + Brillo */
+.tierCard[data-tier="A"] { 
+  background-image: linear-gradient(135deg, #ffe066, #f8b500); 
+  filter: drop-shadow(0px 0px 8px rgba(248, 181, 0, 0.6)) drop-shadow(2px 4px 4px rgba(0,0,0,0.8));
+} 
+
+/* Tier B: Plata / Azul Metálico + Brillo */
+.tierCard[data-tier="B"] { 
+  background-image: linear-gradient(135deg, #ffffff, #8ca3bc); 
+  filter: drop-shadow(0px 0px 8px rgba(140, 163, 188, 0.6)) drop-shadow(2px 4px 4px rgba(0,0,0,0.8));
+} 
+
+/* Tier C: Bronce / Cobre + Brillo */
+.tierCard[data-tier="C"] { 
+  background-image: linear-gradient(135deg, #e3a985, #b87333); 
+  filter: drop-shadow(0px 0px 8px rgba(184, 115, 51, 0.6)) drop-shadow(2px 4px 4px rgba(0,0,0,0.8));
+}
+
+.dificultadCard{
+  position:relative;
+  z-index:2;
+  padding: 8px 8px;
+  width:fit-content;
+  border-radius: 4px;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+.dificultadCard[data-dificultad="Facil"], .dificultadCard[data-dificultad="Easy"] { background-color: #2ecc71; } /* Verde */
+.dificultadCard[data-dificultad="Medio"], .dificultadCard[data-dificultad="Medium"] { background-color: #e67e22; } /* Naranja */
+.dificultadCard[data-dificultad="Dificil"], .dificultadCard[data-dificultad="Hard"] { background-color: #e00000; } /* Rojo */
+
+.categoriaCard{
+  position:relative;
+  z-index:2;
+  padding: 8px 8px;
+  width:fit-content;
+  border-radius: 4px;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+.categoriaCard[data-categoria="Fast 8"] { background-color: #44095c; } /* Morado */
+.categoriaCard[data-categoria="Fast 9"] { background-color: #a75207; } /* Anaranjado */
+.categoriaCard[data-categoria="3 Estrellas"], .categoriaCard[data-categoria="3 Stars"] { background-color: #b18f06; color: black; text-shadow: none; } /* Amarillo */
+
+.dañoCard{
+  position:relative;
+  z-index:2;
+  padding: 8px 8px;
+  width:fit-content;
+  border-radius: 4px;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+}
+
+.dañoCard[data-tipodedaño="AP"] {background-color: #8a0a8a}
+.dañoCard[data-tipodedaño="AD"] {background-color: #d4481e}
+.dañoCard[data-tipodedaño="Hibrido"] {background-color: #1ba716}
+
+.imgAumentoCard{
+  position: absolute;
+  top: 20%;
+  transform: translateY(-50%);
+  right: 0;
+  height: 20%;
+  width:20%;
+  z-index: 2;
+  background-color:red;
+}
+.imgEmblemaCard{
+  position: absolute;
+  top: 40%;
+  transform: translateY(-50%);
+  right: 0;
+  height: 20%;
+  width:20%;
+  z-index: 2;
+  background-color:green;
+}
+
+.initialFundamentalDioses{
+  display:flex;
+  flex-direction: column;
+  width:calc((100% - 2cqh) / 12 * 7);
+  container-type:size;
+  box-sizing: border-box;
+  gap:2cqh;
+  height:100%;
+}
+.initialFundamentals{
+  display:flex;
+  flex-direction: column;
+  width:100%;
+  border: 1px solid rgba(255, 0, 0, 0.5);
+  box-sizing: border-box;
+  padding:2cqh 2cqh 4cqh 2cqh;
+  gap:2cqh;
+  container-type:inline-size;
+  height:calc((100% - (2cqh)) / 12 * 8 );
+}
+.titleMiniInfoCard{
+  text-align:center;
+}
+.containerItemsPrio{
+  display:flex;
+  flex-direction:row;
+  gap:2cqh;
+  width:100%;
+  flex-wrap: wrap;
+  height:30cqh;
+}
+.containerItemPrio{
+  display:flex;
+  width:calc((100% - (2cqh * 3)) / 4)
+}
+.imgItemsPrio{
+  position: relative;
+  width: 100%;
+  z-index:3
+}
+.containerCampeonesEarly{
+  display:flex;
+  width:100%;
+  gap:2cqh;
+  height:60%;
+}
+.campeonEarly{
+  display:flex;
+  width:calc((100% - (2cqh * 2)) / 3);
+  flex-direction:column;
+  position:relative;
+}
+.imgCampeonEarly{
+  width: 100%;
+  position: relative;
+}
+.containerItemsCampeonEarly{
+  display:flex;
+  width:100%;
+  flex-direction: row;
+  position:absolute;
+  bottom:-2cqh;
+}
+.imgItemsCampeonEarly{
+  display:flex;
+  width:calc(100%  / 3)
+}
+.initialDioses{
+  display:flex;
+  flex-direction:column;
+  width:100%;
+  padding:2cqh;
+  gap:2cqh;
+  box-sizing: border-box;
+  border: 1px solid rgba(255, 0, 0, 0.5);
+  height: calc((100% - (2cqh)) / 12 * 4);
+}
+.containerDioses{
+  display:flex;
+  flex-direction:row;
+  gap:5cqh;
+  width:100%;
+  justify-content: center;
+  overflow: hidden;
+
+}
+.containerDios{
+  display:flex;
+  flex-direction: column;
+  width:calc((100% - (5cqh * 2)) / 3);
+  container-type:inline-size;
+}
+.containerImgDios{
+  display:flex;
+  width:100%;
+  overflow:hidden;
+}
+.imgDios{
+  position: relative;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  transform: scale(3) translateY(3px);
+  z-index: 1;
+}
+.nombreDios{
+  position: relative;
+  height: 20%;
+  width: 100%;
+  z-index: 1;
+      font-size: 1cqh;
+    text-align: center;
+}
+.initialCondiciones{
+  display:flex;
+  flex-direction: column;
+  width:calc((100% - 2cqh) / 2);
+  container-type:size;
+  padding:2cqh;
+  gap:2cqh;
+  box-sizing: border-box;
+  border: 1px solid rgba(255, 0, 0, 0.5);
+  height:100%;
+}
+.containerCondicion{
+  display:flex;
+  flex-direction:row;
+  container-type: size;
+  width:100%;
+  flex-wrap:wrap;
+  gap:5cqh;
+  justify-content:center;
+  height:90%;
+}
+.containerCuadrosCondicion{
+  display:flex;
+  position:relative;
+  height: calc((100% - 5cqh) / 2);
+  background-color:rgba(0, 0, 0, 0.50);
+}
+.imgCondicionGrande{
+  position: relative;
+  width: 100%;
+}
+.imgCondicionPequeno{
+  position: absolute;
+  width: 50%;
+  left: 50%;
+  transform: translate(-50%, 0);
+  /* background: radial-gradient(circle, rgb(0, 0, 0) 50%, rgba(255,0,0,0) 80%); */
+  filter: drop-shadow(1px 0px 5px black) 
+          drop-shadow(0px -1px 5px black) 
+          drop-shadow(1px 0px 5px black) 
+          drop-shadow(0px -1px 5px black);
+}
+.initialAumentos{
+  display:flex;
+  flex-direction: column;
+  width:calc((100% - 2cqh) / 2);
+  padding:2cqh;
+  gap:2cqh;
+  box-sizing: border-box;
+  border: 1px solid rgba(255, 0, 0, 0.5);
+  container-type:inline-size;
+  height:100%;
+}
+.containerAumentos{
+  display:flex;
+  flex-direction: row;
+  gap:5cqh;
+  width:100%;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+
+.containerCuadrosAumentos{
+  display:flex;
+  flex-direction:row;
+  width:calc((100% - 5cqh) / 2);
+  container-type:inline-size;
+  position: relative;
+  background-color:rgba(0, 0, 0, 0.50);
+}
+
+.imgAumentoCuadroGrande{
+  position: relative;
+  width: 100%;
+}
+.imgAumentoCuadroPequeno{
+  position: absolute;
+  width: 30%;
+  top:0;
+  transform: translateY(-25%);
+}
+.opText{
+  text-shadow: 
+  /* First Ring: Red */
+  -2px -2px 0 #ff0000,  2px -2px 0 #ff0000, -2px  2px 0 #ff0000,  2px  2px 0 #ff0000,
+    0px -2px 0 #ff0000,  0px  2px 0 #ff0000, -2px  0px 0 #ff0000,  2px  0px 0 #ff0000,
+  /* Second Ring: Blue */
+  -4px -4px 0 #0000ff,  4px -4px 0 #0000ff, -4px  4px 0 #0000ff,  4px  4px 0 #0000ff,
+    0px -4px 0 #0000ff,  0px  4px 0 #0000ff, -4px  0px 0 #0000ff,  4px  0px 0 #0000ff;
+  font-size:8cqh;
+  right:0;
+  position:absolute;
+  text-align: left; 
+}
+
+.tooltip{
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: rgba(10, 10, 15, 0.9); /* Más oscuro para mejor contraste */
+  backdrop-filter: blur(10px);
+  padding: 8px 12px;
+  border-radius: 6px;
+  color: #fff; /* Color de texto blanco */
+  font-size: 14px;
+  white-space: nowrap; /* Evita que el texto baje a la siguiente línea */
+  z-index: 100;
+  pointer-events: none; /* Evita que estorbe al ratón y cause parpadeos */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.6);
+  animation: tooltipFadeIn 0.2s ease-out forwards;
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width:900px){
+  .container{
+    gap:5px;
+    flex-direction: column;
+    width:100%;
+  }
+  .initialInfoComp{
+    width:100%;
+  }
+  .initialFundamentals{
+    width:100%;
+  }
+}

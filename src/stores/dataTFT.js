@@ -53,6 +53,27 @@ export const urlComposiciones = `${apiGPTFT}composiciones/`;
 export const metaTFTComposicionesJSON = `${apiGPTFT}metaTFTComposiciones.json`;
 export const composMetaJSON = `${apiGPTFT}composMeta.json`;
 export const composMetaPBEJSON = `${apiGPTFT}composMetaPBE.json`;
+export const composMetaPBETestJSON = `${apiGPTFT}composMetaPBETest.json`;
+export const composTest = atom({})
+export const composMetaPBETest = async()=>{
+  await fetch(composMetaPBETestJSON,{
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    cache:"no-cache"
+  })
+    .then(response => response.json())
+    .then(COMPOSTEST => {
+      
+      composTest.set(COMPOSTEST)
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+}
+
 export const assets3Estrellas = `${apiGPTFT}3-estrellas.webp`;
 
 export const dataTFT = deepMap(initialStateDataTFT)
@@ -412,7 +433,9 @@ export const fetchAndSortComps = async (url) => {
       const año = date.getFullYear();
       dataTFTLastUpdate.set(`${dia}/${mes}/${año}`);
      }
-     metaCompsTFT.set(allSorted)
+     metaCompsTFT.set(allSorted);
+     console.log("hace el fetch al PBE TEST")
+     composMetaPBETest();
     return allSorted;
   } catch (e) {
     console.error(`Error fetching from ${url}:`, e);

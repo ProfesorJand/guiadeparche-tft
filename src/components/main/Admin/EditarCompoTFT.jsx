@@ -63,6 +63,7 @@ const EditarCompoTFT = () => {
 
   return (
     <>
+        
         <label className={style.containerConstanteUpdate}>
           <span>Label Meta Comps Version:</span>
           <input id="inputMetaCompVersion" type="text" placeholder={currentVersion === "pbe" ? (constantes?.MetaCompVersionPBE || "") : (constantes?.MetaCompVersion || "")} />

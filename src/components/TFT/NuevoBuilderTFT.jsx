@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import style from "../main/Admin/css/Builder.module.css";
-import {findTraitsStyles, dataTFTTraits} from "@stores/dataTFT";
-import {traitsColors} from "@functions/campeonestft.js";
+import { useStore } from "@nanostores/react";
+import { dataTFTChampions, dataTFTAllItems, dataTFTTraits, findTraitsStyles, urlDragon } from "@stores/dataTFT";
+import { composicionTFT as datosCompos, actualizarComposicionTFT } from "@stores/tft/dataFormularioCrear.js";
+import { traitsColors } from "@functions/campeonestft.js";
 import ContextMenuBuilderNew from "./ContextMenuBuilderNew.jsx";
-// Reuse builder styles or a newly created css if needed, for now we will reuse Admin/css/Builder.module.css
 
 const championsColor = [
   "var(--color-hex-cost-default)",
@@ -15,13 +16,65 @@ const championsColor = [
   "var(--color-hex-cost-6)",
 ];
 
-const NuevoBuilderTFT = ({ composicionTFT, setComposicionTFT, campoBuilder }) => {
-  const [draggedHex, setDraggedHex] = useState(null);
+const NuevoBuilderTFT = ({ posicionIndex }) => {
   const [activeMenu, setActiveMenu] = useState(null);
   const version = "latest";
-  // composicionTFT[campoBuilder] holds an object: { [hexIndex]: championData }
-  const boardData = composicionTFT[campoBuilder] || {};
-  const synergiesCount  = {};
+  
+  const globalChampions = useStore(dataTFTChampions) || [];
+  const globalItems = useStore(dataTFTAllItems) || [];
+  const globalTraits = useStore(dataTFTTraits) || [];
+  const globalComposicion = useStore(datosCompos);
+
+  const tableroArray = globalComposicion.posicionamiento?.[posicionIndex]?.tablero || [];
+  
+  // Reconstruct boardData from state array
+  const boardData = {};
+  tableroArray.forEach(champ => {
+    const hexIndex = champ.fila * 10 + champ.col;
+    
+    const champData = globalChampions.find(c => c.apiName === champ.apiNameCampeon);
+    if (!champData) return;
+
+    const itemsData = (champ.apiNameItemsDelCampeon || []).map(apiNameItem => {
+      if (!apiNameItem) return null;
+      const itemData = globalItems.find(i => i.apiName === apiNameItem);
+      if (!itemData) return null;
+      
+      let traitExtra = null;
+      if (itemData.incompatibleTraits && itemData.incompatibleTraits.length > 0) {
+        traitExtra = globalTraits.find((t) => t.apiName === itemData.incompatibleTraits[0]);
+      }
+
+      return {
+        apiName: itemData.apiName || itemData.name,
+        imagen: itemData.icon.startsWith("http") ? itemData.icon.toLowerCase().replace(".tex", ".png") : urlDragon() + itemData.icon.toLowerCase().replace(".tex", ".png"),
+        traitExtra
+      };
+    }).filter(Boolean);
+
+    const resolvedTraits = (champData.traits || []).map(traitName => {
+      const traitObj = globalTraits.find(t => t.name === traitName || t.apiName === traitName);
+      if (traitObj) {
+        const { effects, desc, ...rest } = traitObj;
+        return rest;
+      }
+      return { apiName: traitName, name: traitName, icon: "hex-default.webp" }; // fallback
+    }).filter(Boolean);
+
+    boardData[hexIndex] = {
+      apiName: champData.apiName,
+      nombre: champData.name,
+      imagen: champData.tileIcon.includes("http") ? champData.tileIcon.toLowerCase().replace(".tex", ".png") : urlDragon() + champData.tileIcon.toLowerCase().replace(".tex", ".png"),
+      coste: champData.cost,
+      traits: resolvedTraits,
+      items: itemsData,
+      estrellas: champ.estrella || 1,
+      extraSynergy: champ.sinergiaExtraMissFortune || null,
+      hexagono: hexIndex
+    };
+  });
+
+  const synergiesCount = {};
   Object.values(boardData).forEach((champion) => {
     const collectedTraits = new Set();
     champion.traits.forEach((trait) => {
@@ -38,13 +91,35 @@ const NuevoBuilderTFT = ({ composicionTFT, setComposicionTFT, campoBuilder }) =>
         }
       });
     }
+    // Caso especial Miss Fortune
+    if (champion.extraSynergy) {
+      const mfTrait = globalTraits.find(t => t.apiName === champion.extraSynergy || t.name === champion.extraSynergy);
+      if (mfTrait && !collectedTraits.has(mfTrait.apiName)) {
+        collectedTraits.add(mfTrait.apiName);
+        const currentCount = synergiesCount[mfTrait.apiName]?.count || 0;
+        synergiesCount[mfTrait.apiName] = {count: currentCount + 1, icon: mfTrait.icon};
+      }
+    }
   });
 
-  const getLimit = () => {
-    if (campoBuilder.includes("Lv4")) return 4;
-    if (campoBuilder.includes("Lv5")) return 5;
-    if (campoBuilder.includes("Lv6")) return 6;
-    return 28; // default max
+  const updateTablero = (newBoard) => {
+    const newTablero = Object.entries(newBoard).map(([hex, champ]) => {
+      const hexNum = parseInt(hex);
+      return {
+        fila: Math.floor(hexNum / 10),
+        col: hexNum % 10,
+        apiNameCampeon: champ.apiName,
+        apiNameItemsDelCampeon: champ.items.map(i => i.apiName),
+        estrella: champ.estrellas || 1,
+        sinergiaExtraMissFortune: champ.extraSynergy || ""
+      };
+    });
+
+    actualizarComposicionTFT(prev => {
+      const newPos = [...(prev.posicionamiento || [])];
+      newPos[posicionIndex] = { ...newPos[posicionIndex], tablero: newTablero };
+      return { ...prev, posicionamiento: newPos };
+    });
   };
 
   const handleDrop = (e, hexIndex) => {
@@ -61,34 +136,28 @@ const NuevoBuilderTFT = ({ composicionTFT, setComposicionTFT, campoBuilder }) =>
 
     if (itemMoveRaw) {
       const itemMove = JSON.parse(itemMoveRaw);
-      // Validar que el drop es en un hexagono con un campeón y que tenga espacio
       if (newBoard[hexIndex] && newBoard[hexIndex].items.length < 3) {
          if (fromHexIndexItem !== hexIndex.toString()) {
             newBoard[fromHexIndexItem].items.splice(fromItemIndex, 1);
             newBoard[hexIndex].items.push(itemMove);
-            setComposicionTFT({ ...composicionTFT, [campoBuilder]: newBoard });
+            updateTablero(newBoard);
          }
       } else if (!newBoard[hexIndex]) {
-         // Si se suelta en un hex vacío, se elimina el item
          newBoard[fromHexIndexItem].items.splice(fromItemIndex, 1);
-         setComposicionTFT({ ...composicionTFT, [campoBuilder]: newBoard });
+         updateTablero(newBoard);
       }
       return;
     }
 
     if (dataItemRaw) {
-      // Adding an item to an existing champion
       const item = JSON.parse(dataItemRaw);
       if (newBoard[hexIndex] && newBoard[hexIndex].items.length < 3) {
-        // Verify we are not dragging item from the board itself unless we handle swapItem
-        // The prompt says "apiname de los items (maximo 3 items permitidos se pueden agregar en 1 solo campeon)"
         const itemImageUrl = item.icon.startsWith("http")
           ? item.icon.replace(".tex", ".png").toLowerCase()
           : "https://raw.communitydragon.org/latest/game/" + item.icon.replace(".tex", ".png").toLowerCase();
         
         let traitExtra = null;
         if (item.incompatibleTraits && item.incompatibleTraits.length > 0) {
-          const globalTraits = dataTFTTraits.get();
           traitExtra = globalTraits.find((t) => t.apiName === item.incompatibleTraits[0]);
         }
 
@@ -100,7 +169,7 @@ const NuevoBuilderTFT = ({ composicionTFT, setComposicionTFT, campoBuilder }) =>
             traitExtra
           }]
         };
-        setComposicionTFT({ ...composicionTFT, [campoBuilder]: newBoard });
+        updateTablero(newBoard);
       }
       return;
     }
@@ -109,55 +178,44 @@ const NuevoBuilderTFT = ({ composicionTFT, setComposicionTFT, campoBuilder }) =>
       const campeon = JSON.parse(dataCampeonRaw);
       const isOccupied = !!newBoard[hexIndex];
       const targetChampion = newBoard[hexIndex];
-      console.log({ campeon })
 
       const newChampionData = {
         apiName: campeon.apiName,
         nombre: campeon.nombre || campeon.name,
         imagen: campeon.img || campeon.icon,
         coste: campeon.coste || campeon.cost || 0,
-        traits: (campeon.traits || campeon.sinergia || []).map(trait => {
+        traits: (campeon.traits || campeon.sinergia || []).filter(Boolean).map(trait => {
           const { effects, desc, ...rest } = trait;
           return rest;
         }),
         items: [],
-        estrellas: 1, // default 1 star
+        estrellas: 1,
         hexagono: hexIndex,
-        extraSynergy: null // default null
+        extraSynergy: null
       };
 
       if (isFromBoard) {
-        // Dragging from another hex
-        if (fromHexIndex === hexIndex.toString()) return; // dropped on same hex
+        if (fromHexIndex === hexIndex.toString()) return;
 
         const sourceChampion = newBoard[fromHexIndex];
 
         if (isOccupied) {
-          // Swap
           newBoard[hexIndex] = { ...sourceChampion, hexagono: hexIndex };
           newBoard[fromHexIndex] = { ...targetChampion, hexagono: fromHexIndex };
         } else {
-          // Move
           newBoard[hexIndex] = { ...sourceChampion, hexagono: hexIndex };
           delete newBoard[fromHexIndex];
         }
       } else {
-        // Dragging from outside
         if (isOccupied) {
           alert("El hexágono ya está ocupado. No puedes colocar un campeón aquí desde afuera.");
-          return;
-        }
-
-        const currentCount = Object.keys(newBoard).length;
-        if (currentCount >= getLimit()) {
-          alert(`Solo puedes añadir un máximo de ${getLimit()} campeones en ${campoBuilder}.`);
           return;
         }
 
         newBoard[hexIndex] = newChampionData;
       }
 
-      setComposicionTFT({ ...composicionTFT, [campoBuilder]: newBoard });
+      updateTablero(newBoard);
     }
   };
 
@@ -169,13 +227,11 @@ const NuevoBuilderTFT = ({ composicionTFT, setComposicionTFT, campoBuilder }) =>
 
   const handleDragEndChampion = (e, hexIndex) => {
     e.stopPropagation();
-    // Identificamos en qué elemento se soltó el mouse
     const dropTarget = document.elementFromPoint(e.clientX, e.clientY);
-    // Si no se soltó en un contenedor válido (un hexágono), lo eliminamos
     if (!dropTarget || !dropTarget.closest(`.${style.containerPoligon}`)) {
       const newBoard = { ...boardData };
       delete newBoard[hexIndex];
-      setComposicionTFT({ ...composicionTFT, [campoBuilder]: newBoard });
+      updateTablero(newBoard);
     }
   };
 
@@ -189,12 +245,11 @@ const NuevoBuilderTFT = ({ composicionTFT, setComposicionTFT, campoBuilder }) =>
   const handleDragEndItem = (e, fromHexIndex, itemIndex) => {
     e.stopPropagation();
     const dropTarget = document.elementFromPoint(e.clientX, e.clientY);
-    // Si no se soltó sobre un contenedor válido, se elimina
     if (!dropTarget || !dropTarget.closest(`.${style.containerPoligon}`)) {
       const newBoard = { ...boardData };
       if (newBoard[fromHexIndex] && newBoard[fromHexIndex].items[itemIndex]) {
         newBoard[fromHexIndex].items.splice(itemIndex, 1);
-        setComposicionTFT({ ...composicionTFT, [campoBuilder]: newBoard });
+        updateTablero(newBoard);
       }
     }
   };
@@ -208,79 +263,50 @@ const NuevoBuilderTFT = ({ composicionTFT, setComposicionTFT, campoBuilder }) =>
   const handleRemoveItem = (hexIndex, itemIndex) => {
     const newBoard = { ...boardData };
     newBoard[hexIndex].items.splice(itemIndex, 1);
-    setComposicionTFT({ ...composicionTFT, [campoBuilder]: newBoard });
+    updateTablero(newBoard);
   };
 
   function findClosestTraitImage(traitType, traitLevel) {
-      // Primero intentamos obtener los estilos dinámicamente desde la data de TFT
-      const dynamicStyles = findTraitsStyles(traitType);
-      if (Object.keys(dynamicStyles).length > 0) {
-        const thresholds = Object.keys(dynamicStyles)
-          .map(Number)
-          .sort((a, b) => b - a);
-        for (const threshold of thresholds) {
-          if (traitLevel >= threshold) {
-            return dynamicStyles[threshold];
-          }
+    const dynamicStyles = findTraitsStyles(traitType);
+    if (Object.keys(dynamicStyles).length > 0) {
+      const thresholds = Object.keys(dynamicStyles).map(Number).sort((a, b) => b - a);
+      for (const threshold of thresholds) {
+        if (traitLevel >= threshold) {
+          return dynamicStyles[threshold];
         }
       }
-  
-      // Si no se encuentra en la data dinámica, usamos el mapeo manual (fallback)
-      if(traitType === "BlackRose"){
-        traitType = "Black Rose"
-      }
-      if(traitType === "FormSwapper"){
-        traitType = "Form Swapper"
-      }
-      if(traitType === "HighRoller"){
-        traitType = "High Roller"
-      }
-      if(traitType === "JunkerKing"){
-        traitType = "Junker King"
-      }
-      if(traitType === "PitFighter"){
-        traitType = "Pit Fighter"
-      }
-      if (traitsColors[traitType]) {
-        const traitLevels = Object.keys(traitsColors[traitType])
-          .map(Number)
-          .sort((a, b) => a - b);
-        for (let i = traitLevels.length - 1; i >= 0; i--) {
-          if (traitLevel >= traitLevels[i]) {
-            return traitsColors[traitType][traitLevels[i]];
-          }
-        }
-        // Retornar una imagen por defecto si el traitLevel es menor que todos los disponibles
-      }
-      return "hex-default.webp";
     }
+
+    if(traitType === "BlackRose") traitType = "Black Rose";
+    if(traitType === "FormSwapper") traitType = "Form Swapper";
+    if(traitType === "HighRoller") traitType = "High Roller";
+    if(traitType === "JunkerKing") traitType = "Junker King";
+    if(traitType === "PitFighter") traitType = "Pit Fighter";
+
+    if (traitsColors[traitType]) {
+      const traitLevels = Object.keys(traitsColors[traitType]).map(Number).sort((a, b) => a - b);
+      for (let i = traitLevels.length - 1; i >= 0; i--) {
+        if (traitLevel >= traitLevels[i]) {
+          return traitsColors[traitType][traitLevels[i]];
+        }
+      }
+    }
+    return "hex-default.webp";
+  }
 
   const renderHexagons = () => {
     const hexes = [];
-    const numberOfHexes = getLimit();
-
-    let rows = [];
-    if (numberOfHexes === 28) {
-      // 4 rows of 7 hexes
-      rows = [
-        [11, 12, 13, 14, 15, 16, 17],
-        [21, 22, 23, 24, 25, 26, 27],
-        [31, 32, 33, 34, 35, 36, 37],
-        [41, 42, 43, 44, 45, 46, 47]
-      ];
-    } else {
-      // Create a single row for limits < 28
-      const singleRow = [];
-      for (let i = 1; i <= numberOfHexes; i++) {
-        singleRow.push(10 + i);
-      }
-      rows = [singleRow];
-    }
+    
+    const rows = [
+      [11, 12, 13, 14, 15, 16, 17],
+      [21, 22, 23, 24, 25, 26, 27],
+      [31, 32, 33, 34, 35, 36, 37],
+      [41, 42, 43, 44, 45, 46, 47]
+    ];
 
     rows.forEach((row, rowIndex) => {
       const hexRow = (
         <div key={`row-${rowIndex}`} className={style.hexRow}>
-          {/* Offset for even rows can be handled via CSS or adding empty half polygons */}
           {rowIndex % 2 !== 0 && <div className={style.halfPoligon}></div>}
 
           {row.map(hexIndex => {
@@ -310,7 +336,6 @@ const NuevoBuilderTFT = ({ composicionTFT, setComposicionTFT, campoBuilder }) =>
                   >
                     <div className={style.containerSinergias}>
                       {champion.traits && champion.traits.map((syn, idx) => {
-                        
                         const count = synergiesCount[syn.apiName]?.count || 1;
                         const traitSVG = findClosestTraitImage(syn.apiName.replace(" ", ""), count);
                         const iconUrl = syn.icon.startsWith("http")
@@ -332,8 +357,8 @@ const NuevoBuilderTFT = ({ composicionTFT, setComposicionTFT, campoBuilder }) =>
 
                     {champion.extraSynergy && (
                       <div className={style.containerSinergias}>
-                        <div className={style.containerTrait} style={{ backgroundColor: "purple", color: "white", fontSize: "10px", borderRadius: "50%" }}>
-                          S
+                        <div className={style.containerTrait} style={{ backgroundColor: "purple", color: "white", fontSize: "10px", borderRadius: "50%", padding: "2px 4px" }}>
+                          MF
                         </div>
                       </div>
                     )}
@@ -357,9 +382,7 @@ const NuevoBuilderTFT = ({ composicionTFT, setComposicionTFT, campoBuilder }) =>
                       <ContextMenuBuilderNew
                         hexIndex={hexIndex}
                         boardData={boardData}
-                        composicionTFT={composicionTFT}
-                        setComposicionTFT={setComposicionTFT}
-                        campoBuilder={campoBuilder}
+                        updateTablero={updateTablero}
                         setActiveMenu={setActiveMenu}
                       />
                     )}
@@ -379,15 +402,11 @@ const NuevoBuilderTFT = ({ composicionTFT, setComposicionTFT, campoBuilder }) =>
   };
 
   const renderTraits = () => {
-    // evaluar primero si hay sinergias activas, si no, no renderizar
-    
     return (
       <div className={style.containerTraitsShow}>
         {Object.keys(synergiesCount).map((trait, idx) => {
           const count = synergiesCount[trait].count || 1;
-          console.log({trait})
           const traitSVG = findClosestTraitImage(trait.replace(" ", ""), count);
-          console.log({traitSVG})
           if (traitSVG === "hex-default.webp") return null;
            const iconUrl = synergiesCount[trait]?.icon.startsWith("http")
               ? synergiesCount[trait]?.icon.toLowerCase().replace(".tex", ".png")
@@ -415,3 +434,4 @@ const NuevoBuilderTFT = ({ composicionTFT, setComposicionTFT, campoBuilder }) =>
 };
 
 export default NuevoBuilderTFT;
+

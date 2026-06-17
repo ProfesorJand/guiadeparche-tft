@@ -114,7 +114,47 @@ const FormularioMetaWildrift = () =>{
         })),
       };
     });
-    console.log({runes})
+
+    const extraRunes = [{
+      id: "iceOverlord",
+      name: "Ice Overlord",
+      icon: "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/styles/7204_resolve.png",
+      slotsRunes: [
+        {
+          id: "iceOverlord",
+          name: "Ice Overlord",
+          icon: "/wildrift/runes/ice-overlord.webp",
+          slotsRunes: [
+            {
+              id: "iceOverlord",
+              name: "Ice Overlord",
+              icon: "https://wiki.leagueoflegends.com/en-us/images/thumb/Ice_Overlord_WR_rune.png/64px-Ice_Overlord_WR_rune.png?884ac",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      id: "phaseRush2",
+      name: "Phase Rush",
+      icon: "https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/perk-images/styles/7202_sorcery.png",
+      slotsRunes: [
+        {
+          id: "phaseRush3",
+          name: "Phase Rush",
+          icon: "/wildrift/runes/phase-rush.png",
+          slotsRunes: [
+            {
+              id: "phaseRush4",
+              name: "Phase Rush",
+              icon: "https://www.wildriftfire.com/images/runes/ice-overlord.png",
+            },
+          ],
+        },
+      ],
+    },
+  ]
+    runes.push(...extraRunes)
     return runes;
   }
   useEffect(() => {

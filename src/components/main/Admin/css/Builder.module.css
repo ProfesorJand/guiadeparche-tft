@@ -47,7 +47,7 @@
     position:relative;
     visibility:hidden;
     aspect-ratio: 1.15/1;
-    width: calc(50% - ((var(--hex-between)*4)));
+    width: calc(((100% - (var(--hex-between) * 7)) / 14) - 7.5px); 
 
 }
 
@@ -68,7 +68,7 @@
   .containerPoligon{
     display: flex;
     position:relative;
-    width: 100%;
+    width: calc(((100% - (var(--hex-between) * 7)) / 7.5));
   }
   
 

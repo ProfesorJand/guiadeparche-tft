@@ -17,4 +17,75 @@ label{
 fieldset{
   border: 2px dotted rgb(53, 53, 53);
   border-radius: 5px;
-}
+}\n
+/* Buttons */
+.btnPrimary { padding: 8px 12px; background-color: #00BCD4; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; margin-top: 10px; width: fit-content; }
+.btnPrimaryNoWidth { margin-bottom: 15px; padding: 8px 12px; background-color: #00BCD4; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+.btnDanger { padding: 5px 10px; background-color: #f44336; color: white; border: none; border-radius: 4px; cursor: pointer; }
+.btnDangerAuto { padding: 5px 10px; background-color: #f44336; color: white; border: none; border-radius: 4px; cursor: pointer; margin-left: auto; }
+.btnDangerFit { padding: 5px 10px; background-color: #f44336; color: white; border: none; border-radius: 4px; cursor: pointer; height: fit-content; }
+.btnWarning { padding: 8px 12px; background-color: #FF9800; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+.btnSuccess { padding: 8px 12px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+.btnSuccessSm { padding: 5px 10px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; }
+.btnGold { padding: 5px 10px; background-color: #FFD700; color: black; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+.btnRedSm { padding: 5px 10px; background-color: #d40000; color: white; border: none; border-radius: 4px; cursor: pointer; }
+.btnDark { width: 40px; padding: 10px; background-color: #333; color: white; border: none; cursor: pointer; font-weight: bold; border-radius: 5px; }
+.btnDarkDanger { width: 40px; padding: 10px; background-color: #f44336; color: white; border: none; cursor: pointer; font-weight: bold; border-radius: 5px; }
+.btnPurple { padding: 8px 12px; background-color: #9c27b0; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+
+/* Fieldsets */
+.fieldsetCyan { border: 2px dashed #00BCD4; padding: 15px; margin-bottom: 20px; border-radius: 8px; }
+.legendCyan { color: #00BCD4; font-weight: bold; padding: 0 10px; }
+.fieldsetPurple { border: 1px solid #9c27b0; border-radius: 5px; padding: 10px; margin-bottom: 15px; }
+.fieldsetGold { border: 1px solid #FFD700; border-radius: 5px; padding: 10px; margin-bottom: 15px; }
+.fieldsetGreen { border: 1px solid #4CAF50; border-radius: 5px; padding: 10px; margin-bottom: 15px; }
+.fieldsetOrange { border: 1px solid #FF9800; border-radius: 5px; padding: 10px; margin-bottom: 15px; }
+.fieldsetRed { border: 1px solid #d61d1dff; border-radius: 5px; padding: 10px; margin-bottom: 15px; }
+
+/* Layouts */
+.rowGap10 { display: flex; flex-direction: row; gap: 10px; align-items: center; margin-bottom: 10px; flex-wrap: wrap; }
+.rowGap5 { display: flex; flex-direction: row; gap: 5px; align-items: center; }
+.rowGap15 { display: flex; gap: 15px; align-items: center; margin-bottom: 10px; flex-wrap: wrap; }
+.rowGap5Norm { display: flex; gap: 5px; align-items: center; }
+.rowGap15Border { display: flex; gap: 15px; align-items: center; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px dashed #eee; flex-wrap: wrap; }
+.flex1Gap15 { display: flex; flex: 1; gap: 15px; flex-wrap: wrap; }
+.flexGap5 { display: flex; gap: 5px; }
+.colCenterGap5 { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.toggleHeader { display: flex; gap: 10px; width: 100%; margin-bottom: 5px; }
+.toggleContent { display: flex; flex-direction: row; justify-content: space-between; width: 100%; }
+.toggleLeft { width: 50%; padding: 10px; border: 1px solid #333; border-top: none; border-radius: 0 0 5px 5px; }
+.toggleRight { width: 50%; display: flex; flex-direction: column; }
+.flexRowGap10Width100 { width: 100%; display: flex; flex-direction: row; gap: 10px; }
+.levelContainer { border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; }
+.levelHeader { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+.levelInputs { display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
+.flexCol { display: flex; flex-direction: column; }
+.flexColEnd { display: flex; flex-direction: column; justify-content: flex-end; }
+.checkboxRow { display: flex; align-items: center; gap: 5px; padding: 5px 0; }
+.championsContainer { padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+.champsHeader { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.flexOnly { display: flex; }
+
+/* Images & Icons */
+.champIconContainer { position: relative; width: 50px; height: 50px; border: 1px solid #ddd; border-radius: 5px; background-color: #eee; display: flex; justify-content: center; align-items: center; }
+.champIcon { width: 100%; height: 100%; border-radius: 5px; object-fit: cover; }
+.itemIconSmall { width: 16px; height: 16px; border: 1px solid #000; background-color: #222; }
+.itemIconMed { width: 24px; height: 24px; border: 1px solid #000; background-color: #222; }
+.itemIconLg { width: 100px; height: 100px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 10px; }
+.metaImage { width: 100px; height: 100px;object-fit: cover; object-position: center; }
+
+/* Inputs */
+.inputBase { padding: 5px; border-radius: 4px; border: 1px solid #ccc; min-width: 150px; }
+.inputSmall { width: 100px; padding: 5px; }
+.inputMedium { width: 150px; padding: 5px; }
+.inputFlex1 { flex: 1; min-width: 150px; padding: 5px; }
+.inputDark { flex: 1; padding: 10px; background-color: #444; color: white; border: none; border-radius: 5px; }
+.inputTiny { padding: 5px; }
+.inputFull { width: 100%; padding: 5px; box-sizing: border-box; }
+.width100 { width: 100px; }
+.width100Pad5 { width: 100%; padding: 5px; }
+
+/* Misc */
+.emptyChamp { color: #aaa; font-size: 24px; }
+.starContainer { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); display: flex; gap: 2px; z-index: 2; }
+.itemContainer { position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); display: flex; gap: 2px; z-index: 2; }
