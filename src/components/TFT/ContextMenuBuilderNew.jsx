@@ -5,9 +5,7 @@ import { dataTFTTraits } from "@stores/dataTFT.js";
 const ContextMenuBuilderNew = ({
   hexIndex,
   boardData,
-  composicionTFT,
-  setComposicionTFT,
-  campoBuilder,
+  updateTablero,
   setActiveMenu
 }) => {
   const champion = boardData[hexIndex];
@@ -48,42 +46,24 @@ const ContextMenuBuilderNew = ({
         break;
       case "X Remove":
         delete newBoard[hexIndex];
-        setComposicionTFT({ ...composicionTFT, [campoBuilder]: newBoard });
+        updateTablero(newBoard);
         setActiveMenu(null);
         return;
       default:
         // Manejar selecciones de sinergias extras
         const extraTrait = findExtraOptions.find((t) => t.name === opcion);
         if (extraTrait) {
-          let newTraits = [...currentChampion.traits];
-          const undeterminedTraitApiName = "TFT17_MissFortuneUndeterminedTrait";
-          
-          const hasTrait = newTraits.some((t) => t.apiName === extraTrait.apiName);
-          if (hasTrait) {
-            // Si ya la tiene, se la quitamos
-            newTraits = newTraits.filter((t) => t.apiName !== extraTrait.apiName);
-            // Volvemos a agregar el trait indefinido si está disponible en la base de datos de traits
-            const undeterminedTrait = traits.find((t) => t.apiName === undeterminedTraitApiName);
-            if (undeterminedTrait && !newTraits.some(t => t.apiName === undeterminedTraitApiName)) {
-              newTraits.push(undeterminedTrait);
-            }
+          if (currentChampion.extraSynergy === extraTrait.apiName || currentChampion.extraSynergy === extraTrait.name) {
+             currentChampion.extraSynergy = null;
           } else {
-            // Si no la tiene, removemos cualquier otra sinergia extra antes de agregar la nueva
-            newTraits = newTraits.filter(
-              (t) => !findExtraOptions.some((et) => et.apiName === t.apiName)
-            );
-            // Removemos explícitamente el trait indefinido
-            newTraits = newTraits.filter((t) => t.apiName !== undeterminedTraitApiName);
-            // Y finalmente agregamos la nueva seleccionada
-            newTraits.push(extraTrait);
+             currentChampion.extraSynergy = extraTrait.apiName;
           }
-          currentChampion.traits = newTraits;
         }
         break;
     }
 
     newBoard[hexIndex] = currentChampion;
-    setComposicionTFT({ ...composicionTFT, [campoBuilder]: newBoard });
+    updateTablero(newBoard);
     setActiveMenu(null);
   };
 

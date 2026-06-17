@@ -1,12 +1,15 @@
 import React, {useEffect, useRef, useState} from "react";
 import style from "./css/CardsCompos.module.css";
-import { urlDragon, crearCompoMetaPHP } from "@stores/dataTFT";
+import { urlDragon, crearCompoMetaPHP, composTest, teamPlannerCode, versionTFT, setNumberLatest, setNumberPBE, setMutatorPBE, setMutatorLatest, dataTFTChampions } from "@stores/dataTFT";
 import GuiaFreeTFTMeta  from "./GuiaFreeTFTMeta.jsx";
 import { navigate } from "astro:transitions/client";
 import { saveScrollPosition } from "../../utils/scrollRestoration";
 import CrearCompoTFT from "@components/main/Admin/CrearCompoTFT.jsx";
 import { CapturarImagen } from "@functions/CapturarImagen.js";
+import FormularioCrearCompoTFT from "./FormularioCrearCompoTFT.jsx";
+import {useStore} from "@nanostores/react";
 
+import CardsMasterPlanCompos from "./master-plan/CardsMasterPlanCompos.jsx";
 // Añade aquí manualmente los apiName de los campeones que NO quieres que se muestren
 const EXCLUDED_API_NAMES = [
   "TFT17_Summon",
@@ -14,6 +17,80 @@ const EXCLUDED_API_NAMES = [
 ];
 
 const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = false }) => {
+  const composTestB = useStore(composTest);
+  const currentVersion = useStore(versionTFT);
+  const codeOfChampions = useStore(teamPlannerCode);
+  const championsTFT = useStore(dataTFTChampions);
+
+  function copyToClipboard(e, codigo) {
+    e.preventDefault();
+    e.stopPropagation();
+    navigator.clipboard.writeText(codigo);
+    alert("Copied Code: " + codigo);
+  }
+
+  function championsCodeBuilder(allChampions) {
+    const priorityNames = ['TFT13_MissMage', 'TFT13_Viktor', 'TFT13_Warwick'];
+    const sortedArray = allChampions.sort((a, b) => {
+      if (priorityNames.includes(a.apiName) && priorityNames.includes(b.apiName)) {
+        return priorityNames.indexOf(a.apiName) - priorityNames.indexOf(b.apiName);
+      }
+      if (priorityNames.includes(a.apiName)) return 1;
+      if (priorityNames.includes(b.apiName)) return -1;
+      return a.apiName.localeCompare(b.apiName);
+    });
+    const result = { "empty_slot": "00" };
+    const sequence = [];
+    let i = 0;
+    while (sequence.length <= sortedArray.length) {
+      let hex = i.toString(16).padStart(2, "0");
+      sequence.push(hex);
+      i++;
+    }
+    sortedArray.forEach((item, index) => {
+      if (item.apiName !== "TFT13_Rammus") {
+        result[item.apiName] = sequence[index + 1];
+      }
+    });
+    return result;
+  }
+
+  function generatorCodeBuilder(allChampionsApiName) {
+    let sinDuplicados = [...new Set(allChampionsApiName)];
+    const championsList = [];
+    championsTFT.forEach(({ apiName, traits }) => {
+      if (traits.length > 0) {
+        championsList.push({ apiName });
+      }
+    });
+    const RulesChampionsCode = championsCodeBuilder(championsList);
+    let championsCode = "01";
+    for (let i = 0; i < 10; i++) {
+      if (sinDuplicados[i]) {
+        championsCode = championsCode.concat(RulesChampionsCode[sinDuplicados[i].apiName]);
+      } else {
+        championsCode = championsCode.concat("00");
+      }
+    }
+    championsCode = championsCode.concat("TFTSet13");
+    return championsCode;
+  }
+
+  function codeForPBE(allChampionsApiName) {
+    let sinDuplicados = [...new Set(allChampionsApiName)];
+    let championsCode = "02";
+    let cantidadDeCampeones = sinDuplicados.length;
+    sinDuplicados.forEach(({ apiName }) => {
+      championsCode = championsCode.concat(codeOfChampions[apiName] || "");
+    });
+    let espaciosVacios = 10 - cantidadDeCampeones;
+    if (espaciosVacios > 0) {
+      championsCode = championsCode.concat("000".repeat(espaciosVacios));
+    }
+    championsCode = championsCode.concat(currentVersion === "pbe" ? setMutatorPBE : setMutatorLatest);
+    return championsCode;
+  }
+
   const [openForEdit, setOpenForEdit] = useState(false);
   const [showFormForEdit, setShowFormForEdit] = useState(false);
   const containerRef = useRef(null);
@@ -22,6 +99,9 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
   Medium: "Medio",
   Hard: "Difícil",
 };
+
+
+
 
 const infographicCategoriesEspañol = {
   "Roll Lv5": "Rolear Lv5",
@@ -143,6 +223,10 @@ const deleteComp = ({id, tier, version})=>{
     })
     .filter(Boolean); // Omitir campeones excluidos (los null)
 
+  const allChampionsApiName = campeones.map(({ campeon }) => {
+    return { apiName: campeon.apiName }
+  });
+
   return (
     <div ref={containerRef} className={`${style.container} ${isInfografia ? style.containerInfografia : ''}`}>
       <div className={style.cardContainer}>
@@ -220,7 +304,9 @@ const deleteComp = ({id, tier, version})=>{
           {
             edit ? (
               <div className={`${style.btnAdmins} ${!isInfografia ? "hideForCapture" : ""}`}>
+                
                 <button onClick={()=> setOpenForEdit(!openForEdit)}>{isActive ? "Cerrar" : "Ver"}</button>
+                <button onClick={(e)=>copyToClipboard(e,(currentVersion === "pbe" ? codeForPBE(allChampionsApiName) : generatorCodeBuilder(allChampionsApiName)))}>Copiar Código</button>
                 <button onClick={()=> setShowFormForEdit(!showFormForEdit)}>
                   {showFormForEdit ? "Cerrar Edición" : "Editar"}
                 </button>
@@ -239,14 +325,20 @@ const deleteComp = ({id, tier, version})=>{
                 </button>
               </div>
             ):(
-
-            <a
-              href={edit && isActive ? "/tft/meta-comps-tier-list-teamfight-tactics" : `/tft/meta-comps-tier-list-teamfight-tactics/${comp.compUrl}`}
-              className={style.buttonLink}
-              onClick={handleToggle}
-            >
-              {isActive ? "Cerrar" : "Ver"}
-            </a>
+              <div className={`${style.btnAdmins} ${!isInfografia ? "hideForCapture" : ""}`}>
+                <div style={{display:"flex",flexDirection:"row",gap:"10px"}}>
+                  <a
+                    href={edit && isActive ? "/tft/meta-comps-tier-list-teamfight-tactics" : `/tft/meta-comps-tier-list-teamfight-tactics/${comp.compUrl}`}
+                    className={style.buttonLink}
+                    onClick={handleToggle}
+                  >
+                    {isActive ? "Cerrar" : "Ver"}
+                  </a>
+                  <button className={style.buttonLink} onClick={(e)=>copyToClipboard(e,(currentVersion === "pbe" ? codeForPBE(allChampionsApiName) : generatorCodeBuilder(allChampionsApiName)))}>
+                    Copiar Código
+                  </button>
+                </div>
+              </div>
             )
           }
         </div>}
@@ -257,6 +349,15 @@ const deleteComp = ({id, tier, version})=>{
         </div>
       )}
       {showFormForEdit &&
+
+      <>
+      <FormularioCrearCompoTFT
+        compo={composTestB?.S?.[0]}
+      />
+      <CardsMasterPlanCompos
+        compo={composTestB?.S?.[0]}
+      />
+
         <CrearCompoTFT
           edit={true}
           editId={comp.id}
@@ -289,7 +390,10 @@ const deleteComp = ({id, tier, version})=>{
           editCondicionVictoria={comp.condicionVictoria}
           editCompUrl={comp.compUrl}
           edittierExtra={comp.tierExtra}
-        />}
+          />
+        </>
+        
+        }
 
     </div>
   )

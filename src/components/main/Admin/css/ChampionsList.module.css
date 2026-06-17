@@ -26,7 +26,7 @@
 .containerChampion{
     display: flex;
     position:relative;
-    width: calc((100%/14) - 5px + (5px / 14));
+    width: calc((100%/10) - 5px + (5px / 10));
     height: auto;
     aspect-ratio: 1/1;
     border: 3px solid;

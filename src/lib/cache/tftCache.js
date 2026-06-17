@@ -77,16 +77,16 @@ export async function getComposMeta() {
 export async function getConstantes() {
   if (constantesCache) return constantesCache;
 
-  if (typeof window === 'undefined') {
-    try {
-      const filePath = path.join(process.cwd(), 'src/data/constantes.json');
-      const fileContent = await fs.readFile(filePath, 'utf-8');
-      constantesCache = JSON.parse(fileContent);
-      return constantesCache;
-    } catch (err) {
-      console.warn("Could not read local constantes.json, fetching remote...", err.message);
-    }
-  }
+  // if (typeof window === 'undefined') {
+  //   try {
+  //     const filePath = path.join(process.cwd(), 'src/data/constantes.json');
+  //     const fileContent = await fs.readFile(filePath, 'utf-8');
+  //     constantesCache = JSON.parse(fileContent);
+  //     return constantesCache;
+  //   } catch (err) {
+  //     console.warn("Could not read local constantes.json, fetching remote...", err.message);
+  //   }
+  // }
 
   try {
     const response = await fetch('https://api.guiadeparche.com/tft/constantes.json');
