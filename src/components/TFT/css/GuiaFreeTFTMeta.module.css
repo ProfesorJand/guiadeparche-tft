@@ -147,20 +147,74 @@
 
 }
 
+.containerCondicion{
+  display:flex;
+  flex-direction:row;
+  gap:5px;
+  justify-content: center;
+  align-items:center;
+  width:100%;
+  height: stretch;
+}
+.condicionOp{
+  display:flex;
+  width:calc((100% - (5px * 2)) / 3);
+  position:relative;
+  height: stretch;
+  justify-content: center;
+  align-items: center;
+}
+
+.condicionGrandeImg{
+  width:100%;
+}
+.condicionPequenoImg{
+  position:absolute;
+  bottom:0;
+  left:50%;
+  transform: translateX(-50%);
+  width:30%;
+}
+.condicionMP{
+  display:flex;
+  width:calc((100% - (5px * 2)) / 3);
+  font-size: 10px;
+  padding: 4px 8px;
+  background: rgb(51, 51, 51);
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
+  height: 100%;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  word-break: break-word;
+  box-sizing: border-box;
+  outline: 5px groove #e9e8e8;
+  outline-offset: -5px;
+  overflow-wrap: break-word; /* Asegura el quiebre si la palabra es gigante */
+  hyphens: auto;
+}
 
 .itemsCarouselContainer{
         /* grid-template-columns: 6fr 1fr 6fr 1fr 6fr; */
     /* display: grid; */
-    grid-template-rows: max-content;
+    /* grid-template-rows: max-content; */
     container-type: inline-size;
     display: flex;
     flex-direction: row;
     width: 100%;
+    gap: 5px;
+    flex-wrap: nowrap;
+    align-items: center;
+    height:stretch;
+    
 }
 
 .carouselItem{
   display:flex;
-  width:calc(100% / 4);
+  flex: 1;
+  min-width: 0;
   position:relative;
 }
 
@@ -187,7 +241,8 @@
 .mayorQue{
     display: flex;
     align-items: center;
-    font-size: 20cqw;
+    font-size: 7.5cqw;
+    color: rgba(255, 255, 255, 0.466);
 }
 .containerRadiantItem{
   /* display: grid;
@@ -207,6 +262,42 @@
   box-sizing: border-box;
 }
 
+
+
+.containerVerMasPlanB{
+  display:flex;
+  flex-direction:row;
+  gap:5px;
+  width:100%;
+  height:stretch;
+}
+.containerVerMasBuilds{
+  display:flex;
+  flex-direction:row;
+  gap:5px;
+  width:100%;
+  height:stretch;
+}
+.btnMasterPlan{
+  font-size:10px; 
+  padding:4px 8px;
+  background: #0000008c; 
+  color:white; 
+  border-radius:4px; 
+  text-decoration:none; 
+  font-weight:bold;
+  justify-content: center;
+  align-items: center;
+  width:stretch;
+  height:stretch;
+  box-sizing: border-box;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  text-align: center;
+  border:2px solid white;
+  align-content: center;
+}
+
 .containerAugmentsBlock{
   width:20%;
   position:relative;
@@ -222,9 +313,30 @@
   gap:5px;
 }
 
+
 .augmentContainer{
   display:flex;
-  width: calc(100% / 3 - (5px * 2 / 2));;
+  width: calc((100% - (5px * 1)) / 2);
+}
+.augmentContainerMP{
+  display:flex;
+  font-size: 10px;
+  padding: 4px 8px;
+  background: rgb(51, 51, 51);
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
+  width: 100%;
+  aspect-ratio: 1;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  word-break: break-word;
+  box-sizing: border-box;
+  outline: 3px groove #e9e8e8;
+  outline-offset: -3px;
+  overflow-wrap: break-word; /* Asegura el quiebre si la palabra es gigante */
+  hyphens: auto;
 }
 
 .augmentImg{
@@ -236,6 +348,7 @@
   overflow: hidden;
   box-sizing: border-box;
   transition: transform 0.2s ease;
+  background-color: #0000007e;
 }
 
 .augmentContainer:hover{
@@ -416,6 +529,65 @@
   border: 1px solid rgba(123, 97, 255, 0.2);
 }
 
+.containerFooterBuild{
+  display:flex;
+  flex-direction: row;
+  width:100%;
+  border: 1px solid rgba(123, 97, 255, 0.2);
+  border-radius: 8px;
+  gap:12px;
+  align-items: flex-start;
+}
+.containerBuild{
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+  width:calc((100% - (12px * 4)) / 5);
+  align-items:center;
+  border-radius: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  box-sizing: border-box;
+  height: stretch;
+  padding: 5px 0;
+}
+.verMasBuilds{
+  width:100%;
+  height:100%;
+}
+
+.buildCampeonItems{
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width:100%;
+}
+
+.buildChampionImg{
+  width: 100%;
+}
+.containerBuildItemImg{
+  display:flex;
+  flex-direction: row;
+  gap:5px;
+  width:100%;
+  justify-content: center;
+}
+.buildItemText{
+  display:flex;
+  width: calc((100% - (5px * 3 )) / 5 * 1.5);
+  align-items: center;
+  justify-content: flex-end;
+  text-align: right;
+}
+.buildItemImg{
+  display:flex;
+  width: calc((100% - (10px * 4 )) / 3);
+  border-radius: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  box-sizing: border-box;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -440,6 +612,7 @@
   .blockBestRadiant{
     width:100%;
   }
+
   .containerAugmentsPosition{
    flex-direction: column-reverse;
   }

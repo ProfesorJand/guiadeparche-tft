@@ -61,7 +61,11 @@ const FormularioCrearCompoTFT = ({ compo = {} }) => {
       urlSEO: compo.urlSEO || compo.compUrl || "",
       campeonesEarly: compo.campeonesEarly || Object.values(compo?.boardInfo?.early?.data)?.map((champ)=>{return {apiNameCampeon: JSON.parse(champ.dataCampeon.campeon).apiName, apiNameItemsDelCampeon: champ.dataItem || []}}) || [],
       dioses: compo.dioses || [],
-      bestBuild: compo.bestBuild || [],
+      bestBuild: compo.bestBuild?.map(b => ({
+        apiNameCampeon: b.apiNameCampeon,
+        apiNameItemsBisDelCampeon: b.apiNameItemsBisDelCampeon || (b.apiNameItemsDelCampeon ? [b.apiNameItemsDelCampeon.slice(0, 3)] : [["", "", ""]]),
+        apiNameItemsSpecialBisDelCampeon: b.apiNameItemsSpecialBisDelCampeon || [["", "", ""]],
+      })) || [],
       condiciones: compo.condiciones || [],
       aumentos:compo.aumentos.every(item => typeof item === 'object') ? compo.aumentos.map((aument)=>{return {apiNameGrande: aument.apiName || aument.apiNameGrande, apiNamePequeno:aument.apiNamePequeno, early:aument.early, midLate:aument.midLate, op:aument.op}}) : compo.aumentos || [],
       encuentros: compo.encuentros || [],
@@ -1068,7 +1072,7 @@ const BestBuild = () => {
   const addBestBuildRow = () => {
     actualizarComposicionTFT(prev => ({
       ...prev,
-      bestBuild: [...(prev.bestBuild || []), { apiNameCampeon: "", apiNameItemsDelCampeon: ["", "", ""] }]
+      bestBuild: [...(prev.bestBuild || []), { apiNameCampeon: "", apiNameItemsBisDelCampeon: [["", "", ""]], apiNameItemsSpecialBisDelCampeon: [["", "", ""]] }]
     }));
   };
 
@@ -1088,34 +1092,34 @@ const BestBuild = () => {
     });
   };
 
-  const updateBestBuildItem = (rowIndex, itemIndex, value) => {
+  const updateBestBuildItem = (rowIndex, listType, listIndex, itemIndex, value) => {
     actualizarComposicionTFT(prev => {
       const newBestBuilds = [...(prev.bestBuild || [])];
-      const items = [...(newBestBuilds[rowIndex].apiNameItemsDelCampeon || ["", "", ""])];
+      const lists = [...(newBestBuilds[rowIndex][listType] || [["", "", ""]])];
+      const items = [...lists[listIndex]];
       items[itemIndex] = value;
-      newBestBuilds[rowIndex] = { ...newBestBuilds[rowIndex], apiNameItemsDelCampeon: items };
+      lists[listIndex] = items;
+      newBestBuilds[rowIndex] = { ...newBestBuilds[rowIndex], [listType]: lists };
       return { ...prev, bestBuild: newBestBuilds };
     });
   };
 
-  const addItemsRowToBestBuild = (rowIndex) => {
+  const addItemsRowToBestBuild = (rowIndex, listType) => {
     actualizarComposicionTFT(prev => {
       const newBestBuilds = [...(prev.bestBuild || [])];
-      const items = [...(newBestBuilds[rowIndex].apiNameItemsDelCampeon || ["", "", ""])];
-      items.push("", "", "");
-      newBestBuilds[rowIndex] = { ...newBestBuilds[rowIndex], apiNameItemsDelCampeon: items };
+      const lists = [...(newBestBuilds[rowIndex][listType] || [])];
+      lists.push(["", "", ""]);
+      newBestBuilds[rowIndex] = { ...newBestBuilds[rowIndex], [listType]: lists };
       return { ...prev, bestBuild: newBestBuilds };
     });
   };
 
-  const removeItemsRowFromBestBuild = (rowIndex) => {
+  const removeItemsRowFromBestBuild = (rowIndex, listType, listIndex) => {
     actualizarComposicionTFT(prev => {
       const newBestBuilds = [...(prev.bestBuild || [])];
-      const items = [...(newBestBuilds[rowIndex].apiNameItemsDelCampeon || ["", "", ""])];
-      if (items.length > 3) {
-        items.splice(-3, 3);
-      }
-      newBestBuilds[rowIndex] = { ...newBestBuilds[rowIndex], apiNameItemsDelCampeon: items };
+      const lists = [...(newBestBuilds[rowIndex][listType] || [])];
+      lists.splice(listIndex, 1);
+      newBestBuilds[rowIndex] = { ...newBestBuilds[rowIndex], [listType]: lists };
       return { ...prev, bestBuild: newBestBuilds };
     });
   };
@@ -1127,9 +1131,6 @@ const BestBuild = () => {
         const champData = allChampionsTFT?.find(c => c.apiName === build.apiNameCampeon);
         const champImgUrl = champData?.tileIcon ? (champData.tileIcon.includes("http") ? champData.tileIcon.toLowerCase().replace(".tex", ".png") : urlDragon() + champData.tileIcon.toLowerCase().replace(".tex", ".png")) : null;
         
-        const numItems = Math.max(3, build.apiNameItemsDelCampeon?.length || 3);
-        const numChunks = Math.ceil(numItems / 3);
-
         return (
           <div key={rowIndex} className={style.rowGap15Border}>
             <div className={style.champIconContainer}>
@@ -1147,57 +1148,105 @@ const BestBuild = () => {
                 style={{ alignSelf: 'flex-start', marginTop: '5px' }}
               />
               
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                {Array.from({ length: numChunks }).map((_, chunkIdx) => (
-                  <div key={chunkIdx} className={style.flexGap5} style={{ alignItems: 'center' }}>
-                    {[0, 1, 2].map(subIdx => {
-                      const itemIndex = chunkIdx * 3 + subIdx;
-                      const apiNameItem = build.apiNameItemsDelCampeon?.[itemIndex];
-                      const itemData = allItemsTFT?.find(i => i.apiName === apiNameItem);
-                      const itemImgUrl = itemData?.icon ? (itemData.icon.includes("http") ? itemData.icon.toLowerCase().replace(".tex", ".png") : urlDragon() + itemData.icon.toLowerCase().replace(".tex", ".png")) : null;
+              <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', flex: '1', minWidth: '300px' }}>
+                  <strong>Item BIS</strong>
+                  {(build.apiNameItemsBisDelCampeon || [["", "", ""]]).map((itemList, listIdx) => (
+                    <div key={listIdx} className={style.flexGap5} style={{ alignItems: 'center' }}>
+                      {[0, 1, 2].map(itemIndex => {
+                        const apiNameItem = itemList[itemIndex];
+                        const itemData = allItemsTFT?.find(i => i.apiName === apiNameItem);
+                        const itemImgUrl = itemData?.icon ? (itemData.icon.includes("http") ? itemData.icon.toLowerCase().replace(".tex", ".png") : urlDragon() + itemData.icon.toLowerCase().replace(".tex", ".png")) : null;
 
-                      return (
-                        <div key={itemIndex} className={style.colCenterGap5}>
-                          <input
-                            type="text"
-                            list="listaItemsApiName"
-                            value={apiNameItem || ""}
-                            onChange={(e) => updateBestBuildItem(rowIndex, itemIndex, e.target.value)}
-                            placeholder={`Item ${itemIndex + 1}`}
-                            className={style.inputSmall}
-                          />
-                          {itemImgUrl && <img src={itemImgUrl} alt={apiNameItem} className={style.itemIconMed} />}
-                        </div>
-                      );
-                    })}
-                    {chunkIdx > 0 && chunkIdx === numChunks - 1 && (
-                      <button 
-                        type="button" 
-                        onClick={() => removeItemsRowFromBestBuild(rowIndex)}
-                        className={style.btnDangerFit}
-                        style={{ marginLeft: '5px' }}
-                        title="Eliminar esta fila de items"
-                      >
-                        - Fila
-                      </button>
-                    )}
-                  </div>
-                ))}
-                <button 
-                  type="button" 
-                  onClick={() => addItemsRowToBestBuild(rowIndex)} 
-                  className={style.btnCyanSm} 
-                  style={{ width: 'fit-content' }}
-                >
-                  + Añadir Fila de Items
-                </button>
+                        return (
+                          <div key={itemIndex} className={style.colCenterGap5}>
+                            <input
+                              type="text"
+                              list="listaItemsApiName"
+                              value={apiNameItem || ""}
+                              onChange={(e) => updateBestBuildItem(rowIndex, "apiNameItemsBisDelCampeon", listIdx, itemIndex, e.target.value)}
+                              placeholder={`Item ${itemIndex + 1}`}
+                              className={style.inputFull}
+                            />
+                            {itemImgUrl && <img src={itemImgUrl} alt={apiNameItem} className={style.itemIconMed} />}
+                          </div>
+                        );
+                      })}
+                      {listIdx > 0 && (
+                        <button 
+                          type="button" 
+                          onClick={() => removeItemsRowFromBestBuild(rowIndex, "apiNameItemsBisDelCampeon", listIdx)}
+                          className={style.btnDangerFit}
+                          style={{ marginLeft: '5px' }}
+                          title="Eliminar esta fila de items BIS"
+                        >
+                          - Fila
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                  <button 
+                    type="button" 
+                    onClick={() => addItemsRowToBestBuild(rowIndex, "apiNameItemsBisDelCampeon")} 
+                    className={style.btnCyanSm} 
+                    style={{ width: 'fit-content' }}
+                  >
+                    + Añadir Fila Alternativa BIS
+                  </button>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', flex: '1', minWidth: '300px' }}>
+                  <strong>Special BIS</strong>
+                  {(build.apiNameItemsSpecialBisDelCampeon || [["", "", ""]]).map((itemList, listIdx) => (
+                    <div key={listIdx} className={style.flexGap5} style={{ alignItems: 'center' }}>
+                      {[0, 1, 2].map(itemIndex => {
+                        const apiNameItem = itemList[itemIndex];
+                        const itemData = allItemsTFT?.find(i => i.apiName === apiNameItem);
+                        const itemImgUrl = itemData?.icon ? (itemData.icon.includes("http") ? itemData.icon.toLowerCase().replace(".tex", ".png") : urlDragon() + itemData.icon.toLowerCase().replace(".tex", ".png")) : null;
+
+                        return (
+                          <div key={itemIndex} className={style.colCenterGap5}>
+                            <input
+                              type="text"
+                              list="listaItemsApiName"
+                              value={apiNameItem || ""}
+                              onChange={(e) => updateBestBuildItem(rowIndex, "apiNameItemsSpecialBisDelCampeon", listIdx, itemIndex, e.target.value)}
+                              placeholder={`Item ${itemIndex + 1}`}
+                              className={style.inputFull}
+                            />
+                            {itemImgUrl && <img src={itemImgUrl} alt={apiNameItem} className={style.itemIconMed} />}
+                          </div>
+                        );
+                      })}
+                      {listIdx > 0 && (
+                        <button 
+                          type="button" 
+                          onClick={() => removeItemsRowFromBestBuild(rowIndex, "apiNameItemsSpecialBisDelCampeon", listIdx)}
+                          className={style.btnDangerFit}
+                          style={{ marginLeft: '5px' }}
+                          title="Eliminar esta fila de items Special BIS"
+                        >
+                          - Fila
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                  <button 
+                    type="button" 
+                    onClick={() => addItemsRowToBestBuild(rowIndex, "apiNameItemsSpecialBisDelCampeon")} 
+                    className={style.btnCyanSm} 
+                    style={{ width: 'fit-content' }}
+                  >
+                    + Añadir Fila Alternativa Special BIS
+                  </button>
+                </div>
               </div>
 
               <button 
                 type="button" 
                 onClick={() => removeBestBuildRow(rowIndex)}
                 className={style.btnDangerFit}
-                style={{ marginLeft: 'auto' }}
+                style={{ marginLeft: 'auto', marginTop: '10px' }}
                 title="Eliminar este Campeón"
               >
                 X Campeón
@@ -1293,7 +1342,7 @@ const CampeonesEarly = () => {
                         value={apiNameItem || ""}
                         onChange={(e) => updateCampeonEarlyItem(rowIndex, itemIndex, e.target.value)}
                         placeholder={`Item ${itemIndex + 1}`}
-                        className={style.inputSmall}
+                        className={style.inputFull}
                       />
                       {itemImgUrl && <img src={itemImgUrl} alt={apiNameItem} className={style.itemIconMed} />}
                     </div>

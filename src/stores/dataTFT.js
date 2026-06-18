@@ -435,7 +435,7 @@ export const fetchAndSortComps = async (url) => {
      }
      metaCompsTFT.set(allSorted);
      console.log("hace el fetch al PBE TEST")
-     composMetaPBETest();
+     await composMetaPBETest();
     return allSorted;
   } catch (e) {
     console.error(`Error fetching from ${url}:`, e);

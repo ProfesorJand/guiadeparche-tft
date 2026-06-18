@@ -112,7 +112,8 @@ const defaultValuesComposicionTFT = {
   dioses:[], // 3 Fijos // masterplan
   bestBuild:[{
     apiNameCampeon: "",
-    apiNameItemsDelCampeon: [],
+    apiNameItemsBisDelCampeon: [["", "", ""]],
+    apiNameItemsSpecialBisDelCampeon: [["", "", ""]],
   }],
   condiciones:[{
     apiNameGrande:"",

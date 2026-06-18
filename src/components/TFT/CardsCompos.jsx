@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import style from "./css/CardsCompos.module.css";
-import { urlDragon, crearCompoMetaPHP, composTest, teamPlannerCode, versionTFT, setNumberLatest, setNumberPBE, setMutatorPBE, setMutatorLatest, dataTFTChampions } from "@stores/dataTFT";
+import { urlDragon, crearCompoMetaPHP, composTest, composMetaPBETest,teamPlannerCode, versionTFT, setNumberLatest, setNumberPBE, setMutatorPBE, setMutatorLatest, dataTFTChampions } from "@stores/dataTFT";
 import GuiaFreeTFTMeta  from "./GuiaFreeTFTMeta.jsx";
 import { navigate } from "astro:transitions/client";
 import { saveScrollPosition } from "../../utils/scrollRestoration";
@@ -21,6 +21,13 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
   const currentVersion = useStore(versionTFT);
   const codeOfChampions = useStore(teamPlannerCode);
   const championsTFT = useStore(dataTFTChampions);
+
+  useEffect(() => {
+  // Si la tienda está vacía (no se llenó en el SSR/Layout), obtenla:
+  if (Object.keys(composTestB).length === 0) {
+    composMetaPBETest();
+  }
+}, [composTestB]);
 
   function copyToClipboard(e, codigo) {
     e.preventDefault();
@@ -345,7 +352,8 @@ const deleteComp = ({id, tier, version})=>{
       </div>
       {(isActive || openForEdit) && (
         <div className={style.detailsWrapper}>
-          <GuiaFreeTFTMeta comp={comp} isInfografia={isInfografia} edit={edit} />
+          <GuiaFreeTFTMeta comp={composTestB?.S?.[0]} isInfografia={false} edit={false} />
+          {/* <GuiaFreeTFTMeta comp={comp} isInfografia={isInfografia} edit={edit} /> */}
         </div>
       )}
       {showFormForEdit &&

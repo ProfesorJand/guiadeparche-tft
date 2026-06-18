@@ -16,7 +16,7 @@ const championsColor = [
   "var(--color-hex-cost-6)",
 ];
 
-const NuevoBuilderTFT = ({ posicionIndex }) => {
+const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => {
   const [activeMenu, setActiveMenu] = useState(null);
   const version = "latest";
   
@@ -25,7 +25,7 @@ const NuevoBuilderTFT = ({ posicionIndex }) => {
   const globalTraits = useStore(dataTFTTraits) || [];
   const globalComposicion = useStore(datosCompos);
 
-  const tableroArray = globalComposicion.posicionamiento?.[posicionIndex]?.tablero || [];
+  const tableroArray = customTablero || globalComposicion.posicionamiento?.[posicionIndex]?.tablero || [];
   
   // Reconstruct boardData from state array
   const boardData = {};
@@ -103,6 +103,7 @@ const NuevoBuilderTFT = ({ posicionIndex }) => {
   });
 
   const updateTablero = (newBoard) => {
+    if (readOnly) return;
     const newTablero = Object.entries(newBoard).map(([hex, champ]) => {
       const hexNum = parseInt(hex);
       return {
@@ -317,19 +318,21 @@ const NuevoBuilderTFT = ({ posicionIndex }) => {
               <div
                 key={hexIndex}
                 className={style.containerPoligon}
-                onDrop={(e) => handleDrop(e, hexIndex)}
-                onDragOver={(e) => e.preventDefault()}
-                onContextMenu={(e) => handleContextMenu(e, hexIndex)}
+                onDrop={readOnly ? undefined : (e) => handleDrop(e, hexIndex)}
+                onDragOver={readOnly ? undefined : (e) => e.preventDefault()}
+                onContextMenu={readOnly ? undefined : (e) => handleContextMenu(e, hexIndex)}
               >
                 <div className={style.poligon} style={{ backgroundColor: hexColor }}></div>
 
                 {champion && (
                   <div
-                    draggable
-                    onDragStart={(e) => handleDragStartChampion(e, hexIndex, champion)}
-                    onDragEnd={(e) => handleDragEndChampion(e, hexIndex)}
+                    draggable={!readOnly}
+                    onDragStart={readOnly ? undefined : (e) => handleDragStartChampion(e, hexIndex, champion)}
+                    onDragEnd={readOnly ? undefined : (e) => handleDragEndChampion(e, hexIndex)}
+                    style={{ cursor: readOnly ? 'default' : 'grab' }}
                     className={`${style.containerImageChampion} ${champion.estrellas === 4 ? style.estrellas4 : champion.estrellas === 3 ? style.estrellas3 : champion.estrellas === 2 ? style.estrellas2 : champion.estrellas === 1 ? style.estrellas1 : ""}`}
                     onClick={(e) => {
+                      if (readOnly) return;
                       e.stopPropagation();
                       setActiveMenu(activeMenu === hexIndex ? null : hexIndex);
                     }}
@@ -367,11 +370,12 @@ const NuevoBuilderTFT = ({ posicionIndex }) => {
                       {champion.items.map((item, i) => (
                         <div 
                           key={i} 
-                          draggable
-                          onDragStart={(e) => handleDragStartItem(e, hexIndex, i, item)}
-                          onDragEnd={(e) => handleDragEndItem(e, hexIndex, i)}
+                          draggable={!readOnly}
+                          onDragStart={readOnly ? undefined : (e) => handleDragStartItem(e, hexIndex, i, item)}
+                          onDragEnd={readOnly ? undefined : (e) => handleDragEndItem(e, hexIndex, i)}
                           className={style.containerItem} 
-                          onContextMenu={(e) => { e.preventDefault(); e.stopPropagation(); handleRemoveItem(hexIndex, i); }}
+                          style={{ cursor: readOnly ? 'default' : 'grab' }}
+                          onContextMenu={(e) => { if (readOnly) return; e.preventDefault(); e.stopPropagation(); handleRemoveItem(hexIndex, i); }}
                         >
                           <img className={style.imgItem} src={item.imagen} alt={item.apiName} />
                         </div>
@@ -427,7 +431,7 @@ const NuevoBuilderTFT = ({ posicionIndex }) => {
 
   return (
     <div className={style.containerBuilder} style={{ marginBottom: "20px" }} onClick={() => setActiveMenu(null)}>
-      {renderTraits()}
+      {!readOnly && renderTraits()}
       {renderHexagons()}
     </div>
   );
