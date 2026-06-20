@@ -1,0 +1,146 @@
+---
+import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
+import Main from '@components/main/Main.astro';
+---
+
+<LayoutMaxWidth title="Términos y Condiciones | Guía de Parche">
+  <Main backgroundColor="none">
+    <div class="terms-container">
+      <h1>Términos, Condiciones y Política de Privacidad</h1>
+      
+      <section>
+        <h2>1. Información General y Responsable de los Datos</h2>
+        <p>Bienvenido/a a <strong>Guía de Parche</strong>. Al registrarte y utilizar nuestra plataforma, aceptas las condiciones descritas en este documento. Nosotros somos los responsables del tratamiento de los datos personales que nos proporcionas y nos comprometemos a mantener tu información segura.</p>
+      </section>
+
+      <section>
+        <h2>2. Qué datos recopilamos y cómo los utilizamos</h2>
+        <p>Cuando te registras, recopilamos información básica como tu nombre, correo electrónico, país y fecha de nacimiento. Estos datos se utilizan para:</p>
+        <ul>
+          <li>Crear y gestionar tu cuenta de usuario dentro de la plataforma.</li>
+          <li>Brindarte un servicio personalizado según tu perfil.</li>
+          <li>(Si has aceptado recibir comunicaciones) Enviarte correos electrónicos sobre <strong>novedades de la página web, guías, descuentos y promociones especiales</strong> relacionadas con Teamfight Tactics y nuestros servicios.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>3. Privacidad y Protección de tus Datos</h2>
+        <p>En Guía de Parche nos tomamos muy en serio tu privacidad. <strong>No vendemos, alquilamos ni compartimos</strong> tu correo electrónico, ni ninguna otra información personal con empresas de terceros o listas de spam sin tu consentimiento expreso, a menos que sea requerido por la ley.</p>
+        <p>Tus datos son almacenados en servidores seguros con medidas de protección para evitar el acceso no autorizado.</p>
+      </section>
+
+      <section>
+        <h2>4. Plazo de Conservación</h2>
+        <p>Mantendremos tus datos personales mientras tu cuenta siga activa o hasta que decidas retirar tu consentimiento para el envío de comunicaciones. Si solicitas la eliminación de tu cuenta, tus datos serán borrados de nuestros sistemas de forma permanente.</p>
+      </section>
+
+      <section>
+        <h2>5. Tus Derechos (Cancelar Suscripción o Eliminar Cuenta)</h2>
+        <p>Como usuario, tienes el control total sobre tus datos. En cualquier momento puedes ejercer los siguientes derechos:</p>
+        <ul>
+          <li><strong>Darte de baja (Opt-out):</strong> Puedes cancelar la suscripción a nuestros correos promocionales y de newsletters en cualquier momento haciendo clic en el enlace "Darse de baja" o "Unsubscribe" que aparece en la parte inferior de nuestros correos.</li>
+          <li><strong>Modificación y Eliminación:</strong> Puedes actualizar la información de tu perfil o solicitar la eliminación completa de tu cuenta contactándonos a través de nuestros canales oficiales de soporte.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>6. Modificaciones de esta Política</h2>
+        <p>Nos reservamos el derecho a modificar estos términos en cualquier momento. Cualquier cambio significativo será notificado a través de la página web o por correo electrónico, asegurándonos siempre de mantener nuestro compromiso con tu privacidad.</p>
+      </section>
+
+      <div class="footer-note">
+        <p>Última actualización: {new Date().toLocaleDateString('es-ES')}</p>
+        <a href="/login" class="back-link">Volver al inicio de sesión</a>
+      </div>
+    </div>
+  </Main>
+</LayoutMaxWidth>
+
+<style>
+  .terms-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 40px 30px;
+    color: #e2e8f0;
+    line-height: 1.6;
+    background: rgba(15, 11, 90, 0.7);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    backdrop-filter: blur(10px);
+  }
+
+  .terms-container h1 {
+    font-family: 'ObvioslyWideBold', sans-serif;
+    color: white;
+    font-size: 2.2rem;
+    margin-bottom: 30px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 20px;
+  }
+
+  .terms-container h2 {
+    color: #3b82f6;
+    font-size: 1.3rem;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    font-weight: bold;
+  }
+
+  .terms-container p {
+    margin-bottom: 15px;
+    font-size: 1rem;
+    color: #cbd5e1;
+  }
+
+  .terms-container ul {
+    margin-bottom: 20px;
+    padding-left: 20px;
+    font-size: 1rem;
+  }
+
+  .terms-container li {
+    margin-bottom: 10px;
+    color: #cbd5e1;
+    font-size: 1rem;
+  }
+
+  .terms-container strong {
+    color: #f8fafc;
+  }
+
+  .footer-note {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+    font-size: 0.9rem;
+    color: #94a3b8;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-top: 15px;
+    color: #3b82f6;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+  }
+
+  .back-link:hover {
+    color: #60a5fa;
+    text-decoration: underline;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .terms-container {
+      padding: 25px 20px;
+      margin: 20px 10px;
+    }
+    .terms-container h1 {
+      font-size: 1.5rem;
+    }
+  }
+</style>

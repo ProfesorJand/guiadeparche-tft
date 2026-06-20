@@ -90,6 +90,12 @@ export const constantesTFT = atom(constantesTFTLocal);
 export const dataTFTLastUpdate = atom(null);
 export const metaCompsTFT = atom(null);
 
+export const compActiveId = atom(null);
+
+export const activeComp = ({id})=>{
+  compActiveId.set(id);
+}
+
 export const checkIfCompUrlAlreadyExist = async ({url, titulo})=>{
   const compUrl = metaCompsTFT.get().filter((comp) => (comp.compUrl === url && comp.titulo !== titulo));
   console.log({compUrl})

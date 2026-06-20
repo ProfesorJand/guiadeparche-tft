@@ -430,7 +430,7 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
   }
 
   return (
-    <div className={style.containerBuilder} style={{ marginBottom: "20px" }} onClick={() => setActiveMenu(null)}>
+    <div className={style.containerBuilder} onClick={() => setActiveMenu(null)}>
       {!readOnly && renderTraits()}
       {renderHexagons()}
     </div>
