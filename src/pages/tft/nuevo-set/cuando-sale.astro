@@ -3,6 +3,7 @@ import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
 import { crearJSONSchema } from "@json/schema/crearJSONSchema";
 import PaginaBaseMaxWidth from "@components/TFT/paginas/PaginaBaseMaxWidth.astro";
 import Youtube from "@components/youtube/Youtube.jsx";
+import VideoComponent from "@components/youtube/VideoComponent";
 
 const topTitle = "¿Cuándo Sale el Set 18 de TFT?";
 const lowerTitle = "Fecha Oficial de Lanzamiento";
@@ -59,7 +60,8 @@ const currentPath = Astro.url.pathname;
         <p>Antes de llegar a los servidores oficiales, el Set 18 estará disponible en el PBE durante aproximadamente dos semanas.</p>
         <p>
           La llegada al PBE está prevista, programado para el 14 de Julio de 2026, permitiendo a los jugadores probar las nuevas mecánicas y campeones durante 4 semana antes del lanzamiento global.
-        </p>
+        </p>        
+          <Youtube src="https://www.youtube.com/watch?v=WnB0H48FE6Q" client:load />
       </article>
 
       <article>
@@ -146,6 +148,7 @@ const currentPath = Astro.url.pathname;
 
     <div slot="bodyContainerRight">
       <!-- Columna derecha vacía para consistencia -->
+       
     </div>
   </PaginaBaseMaxWidth>
 </LayoutMaxWidth>
