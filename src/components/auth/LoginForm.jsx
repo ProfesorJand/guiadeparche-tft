@@ -462,31 +462,19 @@ const LoginForm = () => {
           <label>
             <input
               type="checkbox"
-              checked={formData.newsletter}
-              onChange={(e) => setFormData({ ...formData, newsletter: e.target.checked })}
-              disabled={loading}
-            />
-            Deseo recibir correos con novedades, guías y descuentos.
-          </label>
-        </div>
-
-        <div className={styles.checkbox_group}>
-          <label>
-            <input
-              type="checkbox"
               checked={formData.termsAccepted}
               onChange={(e) => setFormData({ ...formData, termsAccepted: e.target.checked })}
               required
               disabled={loading}
             />
             <span>
-              He leído y acepto los <a href="/terminos" target="_blank" rel="noopener noreferrer">términos y condiciones</a> y la política de privacidad.
+              He leído y acepto los <a href="/terminos-y-condiciones" target="_blank" rel="noopener noreferrer">términos y condiciones</a> y la <a href="/politica-de-privacidad" target="_blank" rel="noopener noreferrer">política de privacidad</a>.
             </span>
           </label>
         </div>
 
         <button type="submit" className={styles.submit_btn} disabled={loading || !formData.termsAccepted}>
-          {loading ? 'Guardando...' : 'Finalizar Registro'}
+          {loading ? 'Guardando...' : 'Registrarme y recibir promociones'}
         </button>
       </form>
     </div>
