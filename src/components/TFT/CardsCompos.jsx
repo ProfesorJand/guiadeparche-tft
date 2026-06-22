@@ -313,7 +313,7 @@ const deleteComp = ({id, tier, version})=>{
             edit ? (
               <div className={`${style.btnAdmins} ${!isInfografia ? "hideForCapture" : ""}`}>
                 
-                <button onClick={()=> setOpenForEdit(!openForEdit)}>{isActive ? "Cerrar" : "Ver"}</button>
+                <button onClick={()=> setOpenForEdit(!openForEdit)}>{isActive ? "TFT Meta" : `${comp.compUrl.replace("-"," ").toUpperCase()} TFT`}</button>
                 <button onClick={(e)=>copyToClipboard(e,(currentVersion === "pbe" ? codeForPBE(allChampionsApiName) : generatorCodeBuilder(allChampionsApiName)))}>Copiar Código</button>
                 <button onClick={()=> setShowFormForEdit(!showFormForEdit)}>
                   {showFormForEdit ? "Cerrar Edición" : "Editar"}
