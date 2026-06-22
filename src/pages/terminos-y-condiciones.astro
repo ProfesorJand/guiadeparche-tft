@@ -1,0 +1,138 @@
+---
+import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
+import Main from '@components/main/Main.astro';
+---
+
+<LayoutMaxWidth title="Términos y Condiciones | Guiadeparche">
+  <Main backgroundColor="none">
+    <div class="terms-container">
+      <h1>Términos y Condiciones</h1>
+      
+      <section>
+        <h2>1. Información General</h2>
+        <p>Bienvenido/a a <strong>Guiadeparche</strong>. Al acceder y utilizar nuestra plataforma, aceptas estar sujeto a los presentes Términos y Condiciones. Si no estás de acuerdo con alguna parte de estos términos, te invitamos a no utilizar nuestros servicios.</p>
+      </section>
+
+      <section>
+        <h2>2. Cuentas de Usuario y Responsabilidades</h2>
+        <p>Para acceder a ciertas funciones, es posible que debas registrarte. Al hacerlo, te comprometes a proporcionar información precisa. Eres responsable de todas las actividades que ocurran bajo tu cuenta.</p>
+        <p>Nos reservamos el derecho de suspender o cancelar cuentas que violen estos términos, que proporcionen información falsa o que se utilicen para fines fraudulentos.</p>
+      </section>
+
+      <section>
+        <h2>3. Uso Adecuado de la Plataforma</h2>
+        <p>Te comprometes a utilizar Guiadeparche únicamente con fines legales y de una manera que no infrinja los derechos de, ni restrinja o inhiba el uso y disfrute de la plataforma por parte de cualquier tercero.</p>
+        <p>Queda prohibido el uso de la web para la transmisión de material difamatorio, ofensivo o que infrinja los derechos de autor de terceros.</p>
+      </section>
+
+      <section>
+        <h2>4. Propiedad Intelectual</h2>
+        <p>Todo el contenido presente en esta plataforma, incluyendo textos, gráficos, logotipos, íconos y software, es propiedad de Guiadeparche o de sus proveedores de contenido y está protegido por las leyes de propiedad intelectual internacionales.</p>
+      </section>
+
+      <section>
+        <h2>5. Limitación de Responsabilidad</h2>
+        <p>Guiadeparche no se hace responsable por los daños directos, indirectos o consecuentes que puedan resultar del uso o la imposibilidad de uso de la plataforma, incluyendo la pérdida de datos o interrupciones del servicio.</p>
+      </section>
+
+      <section>
+        <h2>6. Modificaciones de los Términos</h2>
+        <p>Nos reservamos el derecho a modificar estos Términos y Condiciones en cualquier momento. Los cambios entrarán en vigencia inmediatamente después de su publicación en el sitio web. Es tu responsabilidad revisar periódicamente estos términos.</p>
+      </section>
+
+      <div class="footer-note">
+        <p>Última actualización: {new Date().toLocaleDateString('es-ES')}</p>
+        <a href="/login" class="back-link">Volver al inicio de sesión</a>
+      </div>
+    </div>
+  </Main>
+</LayoutMaxWidth>
+
+<style>
+  .terms-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 40px 30px;
+    color: #e2e8f0;
+    line-height: 1.6;
+    background: rgba(15, 11, 90, 0.7);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    backdrop-filter: blur(10px);
+  }
+
+  .terms-container h1 {
+    font-family: 'ObvioslyWideBold', sans-serif;
+    color: white;
+    font-size: 2.2rem;
+    margin-bottom: 30px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 20px;
+  }
+
+  .terms-container h2 {
+    color: #3b82f6;
+    font-size: 1.3rem;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    font-weight: bold;
+  }
+
+  .terms-container p {
+    margin-bottom: 15px;
+    font-size: 1rem;
+    color: #cbd5e1;
+  }
+
+  .terms-container ul {
+    margin-bottom: 20px;
+    padding-left: 20px;
+    font-size: 1rem;
+  }
+
+  .terms-container li {
+    margin-bottom: 10px;
+    color: #cbd5e1;
+    font-size: 1rem;
+  }
+
+  .terms-container strong {
+    color: #f8fafc;
+  }
+
+  .footer-note {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+    font-size: 0.9rem;
+    color: #94a3b8;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-top: 15px;
+    color: #3b82f6;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+  }
+
+  .back-link:hover {
+    color: #60a5fa;
+    text-decoration: underline;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .terms-container {
+      padding: 25px 20px;
+      margin: 20px 10px;
+    }
+    .terms-container h1 {
+      font-size: 1.5rem;
+    }
+  }
+</style>
