@@ -99,7 +99,8 @@ const LoginForm = () => {
             country: datosUsuario.pais, 
             dob: datosUsuario.fecha_nacimiento, 
             loginType: typeLogin,
-            isAdmin: result.isAdmin
+            isAdmin: result.isAdmin,
+            termsAccepted: datosUsuario.termsAccepted,
           });
           setEmail(datosUsuario.email);
           setStep('success');
@@ -295,15 +296,17 @@ const LoginForm = () => {
     setLoading(true);
     setError(null);
     // añadir si el usuario ya existe omite el paso de guardar usuario y pasa a success
-    console.log({email})
     if (user) {
       setStep('success');
       return;
     }
 
+    const dateInArgentina = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Argentina/Buenos_Aires" }));
+    const termsAcceptedAtStr = `${dateInArgentina.getFullYear()}-${String(dateInArgentina.getMonth() + 1).padStart(2, '0')}-${String(dateInArgentina.getDate()).padStart(2, '0')} ${String(dateInArgentina.getHours()).padStart(2, '0')}:${String(dateInArgentina.getMinutes()).padStart(2, '0')}:${String(dateInArgentina.getSeconds()).padStart(2, '0')}`;
+
     const submissionData = {
       ...formData,
-      termsAcceptedAt: new Date().toISOString()
+      termsAcceptedAt: termsAcceptedAtStr
     };
 
     try {
