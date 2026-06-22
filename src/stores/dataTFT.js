@@ -391,6 +391,32 @@ export const AllBasicItems = (dataTFTAllItems) => {
   return dataOfBasicItems;
 }
 
+export const addRestCompsFetch = async (url)=>{
+try {
+    const response = await fetch(
+      url,
+      { cache: "no-cache" }
+    );
+    const data = await response.json();
+    const hierarchy = ["S", "A", "B", "C", "D", "MEME"];
+    const allSorted = [];
+
+    hierarchy.forEach(tier => {
+      if (data[tier]) {
+        const tierComps = [...data[tier]].sort((a, b) => (a.posicion || 0) - (b.posicion || 0));
+        allSorted.push(...tierComps);
+      }
+    });
+
+    const currentState = metaCompsTFT.get() || [];
+    //eliminar los id que ya existen en allSorted en currentState
+    const restos = allSorted.filter(comp => !currentState.some(sComp => sComp.id === comp.id));
+    metaCompsTFT.set([...currentState, ...restos]);
+  }catch(error){
+    console.error(error);
+  }
+}
+
 // SEO: Fetch Compositions Server-Side for Schema and initial render
 export const fetchAndSortComps = async (url) => {
   // if (url && url.includes("composMetaPBE")) {

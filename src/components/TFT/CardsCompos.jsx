@@ -212,12 +212,12 @@ const deleteComp = ({id, tier, version})=>{
   }
 }
 
-  // Mapear, parsear y filtrar campeones
+  // Mapear, parsear y filtrar campeones, y debe ordenarse por "cost" que se obtiene en campeonInfo
   const campeones = Object.keys(comp?.boardInfo?.[comp?.originalComp]?.data || {})
     .map((key) => {
       const { dataCampeon, dataItem, estrellas } = comp?.boardInfo?.[comp?.originalComp]?.data[key];
       const campeonInfo = JSON.parse(dataCampeon?.campeon || "{}");
-
+      
       // Si el campeón está en la lista de excluidos, no lo agregamos
       if (EXCLUDED_API_NAMES.includes(campeonInfo?.apiName)) {
         return null;
@@ -228,8 +228,9 @@ const deleteComp = ({id, tier, version})=>{
         estrellas: estrellas
       };
     })
-    .filter(Boolean); // Omitir campeones excluidos (los null)
-
+    .filter(Boolean) // Omitir campeones excluidos (los null)
+    .sort((a, b) => a?.campeon?.coste - b?.campeon?.coste);
+    
   const allChampionsApiName = campeones.map(({ campeon }) => {
     return { apiName: campeon.apiName }
   });
@@ -251,21 +252,22 @@ const deleteComp = ({id, tier, version})=>{
             <div className={style.headerControls}>
               {
                 comp?.dificultad && (
-                  <span className={`${style.dificultad} ${style[`dificultad-${comp?.dificultad}`]}`}>{dificultadEspañol[comp?.dificultad].toUpperCase()}</span>
+                  <span className={`${style.dificultad} ${style?.[`dificultad-${comp?.dificultad}`]}`}>{comp?.dificultad?.toUpperCase()}</span>
                 )
               }
               {
-                comp?.shadowCategory && (
-                  <span className={style.shadowCategory}>{comp?.shadowCategory.toUpperCase()}</span>
+                comp?.categoria && (
+                  <span className={style.shadowCategory}>{comp?.categoria?.toUpperCase()}</span>
                 )
               }
               {
                 comp?.infographicCategory && (
-                  <span className={style.infographicCategory}>{infographicCategoriesEspañol[comp?.infographicCategory].toUpperCase()}</span>
+                  <span className={style.infographicCategory}>{comp?.infographicCategory?.toUpperCase()}</span>
                 )
               }
             </div>
           </div>
+          <p className={style.tipSeo}>{comp.tipSeo}</p>
 
           <div className={`${style.championsContainer} ${isInfografia ? style.championsContainerInfografia : ''}`}>
             {
@@ -307,7 +309,6 @@ const deleteComp = ({id, tier, version})=>{
         {
           !isInfografia && 
           <div className={`${style.rightContainer} ${!isInfografia ? "hideForCapture" : ""}`}>
-          <p className={style.tipSeo}>{comp.tipSeo}</p>
           {
             edit ? (
               <div className={`${style.btnAdmins} ${!isInfografia ? "hideForCapture" : ""}`}>
@@ -333,18 +334,16 @@ const deleteComp = ({id, tier, version})=>{
               </div>
             ):(
               <div className={`${style.btnAdmins} ${!isInfografia ? "hideForCapture" : ""}`}>
-                <div style={{display:"flex",flexDirection:"row",gap:"10px"}}>
                   <a
                     href={edit && isActive ? "/tft/meta-comps-tier-list-teamfight-tactics" : `/tft/meta-comps-tier-list-teamfight-tactics/${comp.compUrl}`}
                     className={style.buttonLink}
                     onClick={handleToggle}
                   >
-                    {isActive ? "Cerrar" : "Ver"}
+                    {isActive ? "TFT Meta ⬆" : `${comp?.compUrl?.replace("-"," ")?.toUpperCase()} TFT ⬇`}
                   </a>
                   <button className={style.buttonLink} onClick={(e)=>copyToClipboard(e,(currentVersion === "pbe" ? codeForPBE(allChampionsApiName) : generatorCodeBuilder(allChampionsApiName)))}>
                     Copiar Código
                   </button>
-                </div>
               </div>
             )
           }
@@ -352,21 +351,21 @@ const deleteComp = ({id, tier, version})=>{
       </div>
       {(isActive || openForEdit) && (
         <div className={style.detailsWrapper}>
-          <GuiaFreeTFTMeta comp={composTestB?.S?.[0]} isInfografia={false} edit={false} />
-          {/* <GuiaFreeTFTMeta comp={comp} isInfografia={isInfografia} edit={edit} /> */}
+          {/* <GuiaFreeTFTMeta comp={composTestB?.S?.[0]} isInfografia={false} edit={false} /> */}
+          <GuiaFreeTFTMeta comp={comp} isInfografia={isInfografia} edit={edit} />
         </div>
       )}
       {showFormForEdit &&
 
       <>
       <FormularioCrearCompoTFT
-        compo={composTestB?.S?.[0]}
+        compo={comp}
       />
-      <CardsMasterPlanCompos
+      {/* <CardsMasterPlanCompos
         compo={composTestB?.S?.[0]}
-      />
+      /> */}
 
-        <CrearCompoTFT
+        {/* <CrearCompoTFT
           edit={true}
           editId={comp.id}
           edittier={comp.tier}
@@ -398,7 +397,7 @@ const deleteComp = ({id, tier, version})=>{
           editCondicionVictoria={comp.condicionVictoria}
           editCompUrl={comp.compUrl}
           edittierExtra={comp.tierExtra}
-          />
+          /> */}
         </>
         
         }

@@ -36,7 +36,7 @@ const CardsMasterPlanCompos = ({compo})=>{
                 data-categoria={compo.categoria}
               >{compo.categoria}
               </span>
-              <span className={style.dañoCard} data-tipodedaño={compo.tipoDeDaño}>{compo.tipoDeDaño}</span>
+              <span className={style.dañoCard} data-tipoDeDano={compo.tipoDeDano}>{compo.tipoDeDano}</span>
               {compo.campeonMeta.aumento &&
                 <img 
                 className={style.imgAumentoCard} 
@@ -132,7 +132,7 @@ const CardsMasterPlanCompos = ({compo})=>{
                 const rapido = allItemsTFT.find((x) => x.apiName === condicion.apiNameGrande) || allChampionsTFT.find((x) => x.apiName === condicion.apiNameGrande)
                 console.log({rapido})
                 const filtrado = allItemsTFT.find((x) => x.apiName === condicion.apiNameGrande)?.icon || allChampionsTFT.find((x) => x.apiName === condicion.apiNameGrande)?.tileIcon
-                busquedaGrande = filtrado ? urlDragon()+filtrado.toLowerCase().replace(".tex",".png").replace("/hexcore/","/choiceui/") : ""
+                busquedaGrande = filtrado ? urlDragon()+filtrado.toLowerCase().replace(".tex",".png").replace("/augments/hexcore/","/augments/choiceui/") : ""
                 textoGrande= rapido?.name;
               }
               if(extras.includes(condicion.apiNamePequeno)){
@@ -142,7 +142,7 @@ const CardsMasterPlanCompos = ({compo})=>{
                 const rapido = allItemsTFT.find((x) => x.apiName === condicion.apiNamePequeno) || allChampionsTFT.find((x) => x.apiName === condicion.apiNamePequeno)
                 console.log({rapido})
                 const filtrado = allItemsTFT.find((x) => x.apiName === condicion.apiNamePequeno)?.icon || allChampionsTFT.find((x) => x.apiName === condicion.apiNamePequeno)?.tileIcon
-                busquedaPequeno = filtrado ? urlDragon()+filtrado.toLowerCase().replace(".tex",".png").replace("/hexcore/","/choiceui/") : ""
+                busquedaPequeno = filtrado ? urlDragon()+filtrado.toLowerCase().replace(".tex",".png").replace("/augments/hexcore/","/augments/choiceui/") : ""
                 textoPequeño= rapido?.name;
               }
               if(condicion.early)
@@ -180,13 +180,13 @@ const CardsMasterPlanCompos = ({compo})=>{
                 busquedaGrande = `/tft/assets/${aumento.apiNameGrande.replace(" ","")}.webp`
               }else{
                 const filtrado = allItemsTFT.find((x) => x.apiName === aumento.apiNameGrande)?.icon || allChampionsTFT.find((x) => x.apiName === aumento.apiNameGrande)?.tileIcon
-                busquedaGrande = filtrado ? urlDragon()+filtrado.toLowerCase().replace(".tex",".png").replace("/hexcore/","/choiceui/") : ""
+                busquedaGrande = filtrado ? urlDragon()+filtrado.toLowerCase().replace(".tex",".png").replace("/augments/hexcore/","/augments/choiceui/") : ""
               }
               if(extras.includes(aumento.apiNamePequeno)){
                 busquedaPequeno = `/tft/assets/${aumento.apiNamePequeno.replace(" ","")}.webp`
               }else{
                 const filtrado = allItemsTFT.find((x) => x.apiName === aumento.apiNamePequeno)?.icon || allChampionsTFT.find((x) => x.apiName === aumento.apiNamePequeno)?.tileIcon
-                busquedaPequeno = filtrado ? urlDragon()+filtrado.toLowerCase().replace(".tex",".png").replace("/hexcore/","/choiceui/") : ""
+                busquedaPequeno = filtrado ? urlDragon()+filtrado.toLowerCase().replace(".tex",".png").replace("/augments/hexcore/","/augments/choiceui/") : ""
               }
               if(aumento.early)
                 return (

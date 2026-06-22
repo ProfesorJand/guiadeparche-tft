@@ -2,10 +2,11 @@
 import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
 import CardsCompos from "@components/TFT/CardsCompos";
 import { getConstantes, getMetadata } from "src/lib/cache/tftCache.js";
-import {  setNumberPBE, urlDragon} from "@stores/dataTFT";
+import {  setNumberPBE, urlDragon, dataTFTChampions, dataTFTAllItems} from "@stores/dataTFT";
 import { crearJSONSchema } from "src/json/schema/crearJSONSchema";
 import RegistrarseBTN from "./RegistrarseBTN.jsx";
 import Youtube from "@components/youtube/Youtube.jsx";
+import CampeonImgInTierList from "@components/TFT/meta/CampeonImgInTierList.jsx"
 
 const constantes = await getConstantes();
 const metadata = await getMetadata();
@@ -35,6 +36,11 @@ const {
   activeId = null,
   snippetImgUrl
 } = Astro.props;
+// console.log({top10Comps:top10Comps[0]})
+// const allChampionsIfno = useStore(dataTFTChampions);
+// const allItemsInfo = useStore(dataTFTAllItems);
+// console.log({allChampionsIfno})
+// console.log({allItemsInfo})
 
 const tiersInfo = [
   {
@@ -161,18 +167,26 @@ const urlRecursosTFT= [
                 }).map((comp,index)=>{
                   const isActive = String(comp.compUrl) === String(activeId);
                   return (
-                    <div class="champ-tier" data-comp-id={comp.compUrl} data-is-active={isActive ? "true" : "false"} data-cost={comp.campeonTierList.cost}>
-                      <img class="champ-tier-img" src={`${urlDragon()}${comp.campeonTierList.squareIcon.toLowerCase().replace(".tex",".png")}`} alt={comp.campeonTierList.name} />
-                      <div class="champ-tier-items">
-                        {
-                          comp.champItem.map((item, index)=>{
-                            return (
-                              <img class="champ-tier-item-img" src={`${urlDragon()}${item?.icon.toLowerCase().replace(".tex",".png")}`} alt={item?.name} />
-                            );
-                          })
-                        }
-                      </div>
-                    </div>
+                    // <div class="champ-tier" data-comp-id={comp.compUrl} data-is-active={isActive ? "true" : "false"} data-cost={comp?.campeonMeta?.cost}>
+                    //   <img class="champ-tier-img" src={`${urlDragon()}${comp.campeonTierList.squareIcon.toLowerCase().replace(".tex",".png")}`} alt={comp.campeonTierList.name} />
+                    //   <div class="champ-tier-items">
+                    //     {
+                    //       comp.champItem.map((item, index)=>{
+                    //         return (
+                    //           <img class="champ-tier-item-img" src={`${urlDragon()}${item?.icon.toLowerCase().replace(".tex",".png")}`} alt={item?.name} />
+                    //         );
+                    //       })
+                    //     }
+                    //   </div>
+                    // </div>
+                    <CampeonImgInTierList
+                      apiNameCampeon={comp?.campeonMeta?.apiNameCampeon}
+                      showItems={true}
+                      apiNameItems={comp?.campeonMeta?.apiNameItemsDelCampeon}
+                      compUrl={comp.compUrl}
+                      client:load
+                      transition:persist
+                    />
                   );
                 })}
                 </div>
@@ -200,7 +214,7 @@ const urlRecursosTFT= [
           </article>
         ))
       }
-      <button id="ver-mas-button" data-expanded="false">Ver todas las composiciones</button>
+      { restComps.length > 0 && <button id="ver-mas-button" data-expanded="false">Ver todas las composiciones</button>}
       {
         restComps && restComps.map((comp, index) => {
           const isCurrentActive = String(comp.compUrl) === String(activeId);
@@ -461,8 +475,8 @@ const urlRecursosTFT= [
     align-items: center;
   }
   .container-champs-tier{
-    display:flex;
-    flex-direction: row;
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr;
     gap:10px;
     flex-wrap: wrap;
   }

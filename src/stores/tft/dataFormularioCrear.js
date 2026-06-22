@@ -66,7 +66,7 @@ const defaultValuesComposicionTFT = {
     aumento:"",
     emblema:"",
   },
-  tipoDeDaño:dañoTipo.Es[0],
+  tipoDeDano:dañoTipo.Es[0],
 
   niveles:[
     {

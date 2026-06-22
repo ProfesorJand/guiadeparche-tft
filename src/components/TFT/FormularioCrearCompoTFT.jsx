@@ -32,7 +32,6 @@ const FormularioCrearCompoTFT = ({ compo = {} }) => {
 
   //const [composicionTFT, setComposicionTFT] = useState({});
   useEffect(()=>{
-    console.log({compo})
     if(Object.keys(compo).length){
      actualizarComposicionTFT({
       ...compo,
@@ -52,7 +51,7 @@ const FormularioCrearCompoTFT = ({ compo = {} }) => {
         aumento: compo?.augmentTierList?.[0]?.apiName,
         emblema: compo?.champTrait?.[0]?.apiName,
       },
-      tipoDeDaño: compo.tipoDeDaño,
+      tipoDeDano: compo.tipoDeDano,
       niveles: compo.niveles || [],
       itemsPrio : compo.itemsPrio || Object.values(compo?.carouselItems)?.map((item)=>item.apiName) || [],
       posicionamiento : compo.posicionamiento,
@@ -460,8 +459,8 @@ const TipoDaño = ()=>{
   const datosComposicionTFT = useStore(datosCompos);
   return (
     <label htmlFor="tipoDaño">Tipo de Daño de la Compo AD / AP / Hibrido
-      <select id="tipoDaño" value={datosComposicionTFT.tipoDeDaño} onChange={(e) => {
-        actualizarComposicionTFT({tipoDeDaño: e.target.value });
+      <select id="tipoDaño" value={datosComposicionTFT.tipoDeDano} onChange={(e) => {
+        actualizarComposicionTFT({tipoDeDano: e.target.value });
       }}>
         <option value="">Selecciona el tipo de daño</option>
         {dañoTipo.Es.map((daño, idx) => (
@@ -1475,7 +1474,7 @@ const Textareas = () => {
         <textarea
           name="tipseo"
           type="text"
-          defaultValue={datosComposicionTFT?.tipSeo}
+          value={datosComposicionTFT?.tipSeo}
           onChange={(e) => actualizarComposicionTFT({ ...datosComposicionTFT, tipSeo: e.target.value })}
           placeholder="Type Tip Seo"
         />

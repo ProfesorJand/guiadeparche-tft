@@ -21,6 +21,20 @@
   flex-direction:row;
 }
 
+.block{
+  display:flex;
+  flex-direction: column;
+  border: 1px solid #e5e7eb57;
+  border-radius: 12px;
+  padding:15px;
+  gap:5px;
+  box-sizing: border-box;
+  width:100%;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+
 .borderBlock{
   border: 1px solid rgba(123, 97, 255, 0.25);;
   box-sizing: border-box;
@@ -28,11 +42,25 @@
   gap:5px;
   border-radius:12px;
   align-items: center;
+  width: stretch;
   & h4{
     margin-block-end: 0;
     margin-block-start:0
   }
 }
+.blockColumn{
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.blockRow{
+  display:flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
 
 .blockEarlyGame{
   /* grid-area: earlyGame;
@@ -163,17 +191,39 @@
   height: stretch;
   justify-content: center;
   align-items: center;
+  aspect-ratio: 1 / 1;
+  border-radius: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  overflow:hidden;
+}
+.containerCondicionesOP{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(calc((100% - (10px)) / 2), 1fr));
+  gap: 5px;
+  width: 100%;
+}
+.containerOp{
+  display:flex;
+  width: 100%;
+  border-radius: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  box-sizing: border-box;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  position:relative;
 }
 
 .condicionGrandeImg{
   width:100%;
+  background-color: #0000007e;
 }
 .condicionPequenoImg{
   position:absolute;
-  bottom:0;
-  left:50%;
-  transform: translateX(-50%);
-  width:30%;
+  top:0;
+  left:0;
+  /* transform: translateX(-50%); */
+  width:50%;
+  border-radius:5px;
 }
 .condicionMP{
   display:flex;
@@ -277,6 +327,7 @@
   gap:5px;
   width:100%;
   height:stretch;
+  overflow: hidden;
 }
 .btnMasterPlan{
   font-size:10px; 
@@ -298,11 +349,37 @@
   align-content: center;
 }
 
-.containerAugmentsBlock{
+.imgMasterPlan{
+  display:flex;
+  width:100%;
+  height:100%;
+  background-color: #00000081;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  justify-items: center;
+  padding: 5px;
+  box-sizing: border-box;
+}
+.planBContainer{
+  width:calc((100% - (5px * 1)) / 3);
+  border-radius: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+}
+
+.containerSideBlock{
   width:20%;
   position:relative;
   display:flex;
   flex-direction: column;
+  /*border: 1px solid rgba(123, 97, 255, 0.25); */
+    box-sizing: border-box;
+    /* padding: 15px; */
+    gap: 20px;
+    /* border-radius: 12px; */
+    align-items: center;
 }
 
 .containerAugments{
@@ -317,6 +394,12 @@
 .augmentContainer{
   display:flex;
   width: calc((100% - (5px * 1)) / 2);
+  border-radius: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  box-sizing: border-box;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  position:relative;
 }
 .augmentContainerMP{
   display:flex;
@@ -343,9 +426,6 @@
   width: 100%;
   object-fit: cover;
   display: flex;
-  border-radius: 8px;
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  overflow: hidden;
   box-sizing: border-box;
   transition: transform 0.2s ease;
   background-color: #0000007e;
@@ -531,12 +611,11 @@
 
 .containerFooterBuild{
   display:flex;
-  flex-direction: row;
   width:100%;
   border: 1px solid rgba(123, 97, 255, 0.2);
   border-radius: 8px;
   gap:12px;
-  align-items: flex-start;
+  align-items: center;
 }
 .containerBuild{
   display:flex;
@@ -548,7 +627,16 @@
   border: 2px solid rgba(255, 255, 255, 0.1);
   box-sizing: border-box;
   height: stretch;
+  background-color: #0000007e;
+}
+.containerBuildCard{
+  display:flex;
+  flex-direction: column;
+  gap:5px;
+  width: 100%;
   padding: 5px 0;
+  justify-content: center;
+  align-items: center;
 }
 .verMasBuilds{
   width:100%;

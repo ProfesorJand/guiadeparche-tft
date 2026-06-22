@@ -1,0 +1,49 @@
+.champTier{
+  display:flex;
+  position:relative;
+  /* width: calc((100% - (10px * 2)) / 3); */
+  flex-direction: column;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+.champTier:hover{
+  scale: 1.1;
+  cursor:pointer
+}
+
+.champTierImg{
+  width: 100%;
+  border: 2px solid;
+  border-radius: .5rem;
+  box-sizing: border-box;
+}
+.cost-1{
+  border-color: var(--color-hex-cost-1);
+}
+.cost-2{
+  border-color: var(--color-hex-cost-2);
+}
+.cost-3{
+  border-color: var(--color-hex-cost-3);
+}
+.cost-4{
+  border-color: var(--color-hex-cost-4);
+}
+.cost-5{
+  border-color: var(--color-hex-cost-5);
+}
+.activeComp{
+  scale: 1.1;
+}
+.champTierItems{
+  display:flex;
+  position:relative;
+  width: 100%;
+}
+.champTierItemImg{
+  width: calc(100% / 3);
+  border-radius: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  box-sizing: border-box;
+}
+

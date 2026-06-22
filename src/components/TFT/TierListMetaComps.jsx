@@ -5,9 +5,9 @@ import ChampTierList from "./ChampTierList.jsx";
 import { $admin } from "@stores/auth.js";
 
 const TierListMetaComps = ({todasLasComps = [], todasLasCompsPBE = []}) => {
-  const activeComps = todasLasCompsPBE; // currentVersion === "pbe" ? todasLasCompsPBE : todasLasComps;
+ const activeComps = todasLasCompsPBE; // currentVersion === "pbe" ? todasLasCompsPBE : todasLasComps;
 
-  // Agrupar por tier para mantener la estructura visual
+ // Agrupar por tier para mantener la estructura visual
   const groupedComps = useMemo(() => {
     if (!activeComps) return [];
     const hierarchy = ["S", "A", "B", "C", "D", "MEME"];

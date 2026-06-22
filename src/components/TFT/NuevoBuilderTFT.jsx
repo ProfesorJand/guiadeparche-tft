@@ -32,7 +32,7 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
   tableroArray.forEach(champ => {
     const hexIndex = champ.fila * 10 + champ.col;
     
-    const champData = globalChampions.find(c => c.apiName === champ.apiNameCampeon);
+    const champData = globalChampions.find(c => c.apiName === champ?.apiNameCampeon);
     if (!champData) return;
 
     const itemsData = (champ.apiNameItemsDelCampeon || []).map(apiNameItem => {
@@ -366,7 +366,7 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
                       </div>
                     )}
 
-                    <div className={style.containerItems}>
+                    {/* <div className={style.containerItems}>
                       {champion.items.map((item, i) => (
                         <div 
                           key={i} 
@@ -380,7 +380,7 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
                           <img className={style.imgItem} src={item.imagen} alt={item.apiName} />
                         </div>
                       ))}
-                    </div>
+                    </div> */}
 
                     {activeMenu === hexIndex && (
                       <ContextMenuBuilderNew
