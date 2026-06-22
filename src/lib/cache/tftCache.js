@@ -38,7 +38,7 @@ export async function getComposMetaPBE() {
   // }
 
   try {
-    const response = await fetch('https://api.guiadeparche.com/tft/composMetaPBE.json', {cache: "no-store"});
+    const response = await fetch('https://api.guiadeparche.com/tft/composMetaPBETest.json', {cache: "no-store"});
     const data = await response.json();
     composMetaPBECache = sortComps(data);
     return composMetaPBECache;

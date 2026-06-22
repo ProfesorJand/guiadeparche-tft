@@ -160,9 +160,9 @@
   text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
 }
 
-.dañoCard[data-tipodedaño="AP"] {background-color: #8a0a8a}
-.dañoCard[data-tipodedaño="AD"] {background-color: #d4481e}
-.dañoCard[data-tipodedaño="Hibrido"] {background-color: #1ba716}
+.dañoCard[data-tipoDeDano="AP"] {background-color: #8a0a8a}
+.dañoCard[data-tipoDeDano="AD"] {background-color: #d4481e}
+.dañoCard[data-tipoDeDano="Hibrido"] {background-color: #1ba716}
 
 .imgAumentoCard{
   position: absolute;

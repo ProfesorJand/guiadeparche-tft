@@ -8,7 +8,7 @@ const AumentosCompos =({aumentos})=>{
   return (
     <div className={style.containerAumentos}>
       {aumentos.map((aumento, index)=>{
-        var urlImg = url+aumento.icon.toLowerCase().replace(".tex",".png").replace("hexcore","choiceui")
+        var urlImg = url+aumento.icon.toLowerCase().replace(".tex",".png").replace("/augments/hexcore/","/augments/choiceui/")
         // if(urlImg.includes("crest_") && !urlImg.includes("arcana")){
         //   urlImg = urlImg.replace("1","")
         // }

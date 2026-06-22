@@ -90,6 +90,12 @@ export const constantesTFT = atom(constantesTFTLocal);
 export const dataTFTLastUpdate = atom(null);
 export const metaCompsTFT = atom(null);
 
+export const compActiveId = atom(null);
+
+export const activeComp = ({id})=>{
+  compActiveId.set(id);
+}
+
 export const checkIfCompUrlAlreadyExist = async ({url, titulo})=>{
   const compUrl = metaCompsTFT.get().filter((comp) => (comp.compUrl === url && comp.titulo !== titulo));
   console.log({compUrl})
@@ -385,6 +391,32 @@ export const AllBasicItems = (dataTFTAllItems) => {
   return dataOfBasicItems;
 }
 
+export const addRestCompsFetch = async (url)=>{
+try {
+    const response = await fetch(
+      url,
+      { cache: "no-cache" }
+    );
+    const data = await response.json();
+    const hierarchy = ["S", "A", "B", "C", "D", "MEME"];
+    const allSorted = [];
+
+    hierarchy.forEach(tier => {
+      if (data[tier]) {
+        const tierComps = [...data[tier]].sort((a, b) => (a.posicion || 0) - (b.posicion || 0));
+        allSorted.push(...tierComps);
+      }
+    });
+
+    const currentState = metaCompsTFT.get() || [];
+    //eliminar los id que ya existen en allSorted en currentState
+    const restos = allSorted.filter(comp => !currentState.some(sComp => sComp.id === comp.id));
+    metaCompsTFT.set([...currentState, ...restos]);
+  }catch(error){
+    console.error(error);
+  }
+}
+
 // SEO: Fetch Compositions Server-Side for Schema and initial render
 export const fetchAndSortComps = async (url) => {
   // if (url && url.includes("composMetaPBE")) {
@@ -435,7 +467,7 @@ export const fetchAndSortComps = async (url) => {
      }
      metaCompsTFT.set(allSorted);
      console.log("hace el fetch al PBE TEST")
-     composMetaPBETest();
+     await composMetaPBETest();
     return allSorted;
   } catch (e) {
     console.error(`Error fetching from ${url}:`, e);

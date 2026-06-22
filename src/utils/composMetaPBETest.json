@@ -1,0 +1,1089 @@
+{
+    "S": [
+        {
+            "id": "2lb75jqg3dimdk76gd9g",
+            "version": "pbe",
+            "ocultar": false,
+            "nombre": "Fast 9 AP",
+            "tier": "S",
+            "posicion": 1,
+            "dificultad": "Dificil",
+            "categoria": "Fast 8",
+            "campeonMeta": {
+                "apiNameCampeon": "TFT17_Sona",
+                "apiNameItemsDelCampeon": [
+                    "TFT_Item_SpearOfShojin",
+                    "TFT_Item_Morellonomicon",
+                    "TFT_Item_StatikkShiv"
+                ],
+                "estrellas": 1,
+                "aumento": "",
+                "emblema": ""
+            },
+            "tipoDeDa\u00f1o": "AP",
+            "niveles": [
+                {
+                    "lv": 5,
+                    "etapa": 2,
+                    "ronda": 5,
+                    "roll": false,
+                    "campeones": [
+                        {
+                            "apiNameCampeon": "TFT17_Leona",
+                            "estrella": 1,
+                            "apiNameItemsDelCampeon": []
+                        },
+                        {
+                            "apiNameCampeon": "TFT17_Teemo",
+                            "estrella": 1,
+                            "apiNameItemsDelCampeon": []
+                        },
+                        {
+                            "apiNameCampeon": "TFT17_Nasus",
+                            "estrella": 1,
+                            "apiNameItemsDelCampeon": []
+                        },
+                        {
+                            "apiNameCampeon": "TFT17_Chogath",
+                            "estrella": 1,
+                            "apiNameItemsDelCampeon": []
+                        },
+                        {
+                            "apiNameCampeon": "TFT17_Pantheon",
+                            "estrella": 1,
+                            "apiNameItemsDelCampeon": []
+                        }
+                    ]
+                },
+                {
+                    "lv": 6,
+                    "etapa": 2,
+                    "ronda": 5,
+                    "roll": false,
+                    "campeones": [
+                        {
+                            "apiNameCampeon": "TFT17_Leona",
+                            "estrella": 1,
+                            "apiNameItemsDelCampeon": []
+                        },
+                        {
+                            "apiNameCampeon": "TFT17_Teemo",
+                            "estrella": 1,
+                            "apiNameItemsDelCampeon": []
+                        },
+                        {
+                            "apiNameCampeon": "TFT17_Nasus",
+                            "estrella": 1,
+                            "apiNameItemsDelCampeon": []
+                        },
+                        {
+                            "apiNameCampeon": "TFT17_Chogath",
+                            "estrella": 1,
+                            "apiNameItemsDelCampeon": []
+                        },
+                        {
+                            "apiNameCampeon": "TFT17_Pantheon",
+                            "estrella": 1,
+                            "apiNameItemsDelCampeon": []
+                        },
+                        {
+                            "apiNameCampeon": "TFT17_Nami",
+                            "estrella": 1,
+                            "apiNameItemsDelCampeon": []
+                        }
+                    ]
+                }
+            ],
+            "itemsPrio": [
+                "TFT_Item_ChainVest",
+                "TFT_Item_StatikkShiv",
+                "TFT_Item_GargoyleStoneplate",
+                "TFT_Item_Morellonomicon"
+            ],
+            "posicionamiento": [
+                {
+                    "nombre": "Compo Final Base",
+                    "tablero": [
+                        {
+                            "fila": 1,
+                            "col": 1,
+                            "apiNameCampeon": "TFT17_Rhaast",
+                            "apiNameItemsDelCampeon": [],
+                            "estrella": 1,
+                            "sinergiaExtraMissFortune": ""
+                        },
+                        {
+                            "fila": 1,
+                            "col": 2,
+                            "apiNameCampeon": "TFT17_Mordekaiser",
+                            "apiNameItemsDelCampeon": [],
+                            "estrella": 1,
+                            "sinergiaExtraMissFortune": ""
+                        },
+                        {
+                            "fila": 1,
+                            "col": 3,
+                            "apiNameCampeon": "TFT17_IvernMinion",
+                            "apiNameItemsDelCampeon": [],
+                            "estrella": 1,
+                            "sinergiaExtraMissFortune": ""
+                        },
+                        {
+                            "fila": 1,
+                            "col": 4,
+                            "apiNameCampeon": "TFT17_Blitzcrank",
+                            "apiNameItemsDelCampeon": [
+                                "TFT_Item_ThiefsGloves"
+                            ],
+                            "estrella": 1,
+                            "sinergiaExtraMissFortune": ""
+                        },
+                        {
+                            "fila": 1,
+                            "col": 5,
+                            "apiNameCampeon": "TFT17_Illaoi",
+                            "apiNameItemsDelCampeon": [],
+                            "estrella": 1,
+                            "sinergiaExtraMissFortune": ""
+                        },
+                        {
+                            "fila": 1,
+                            "col": 6,
+                            "apiNameCampeon": "TFT17_Nunu",
+                            "apiNameItemsDelCampeon": [
+                                "TFT_Item_GargoyleStoneplate",
+                                "TFT_Item_FrozenHeart",
+                                "TFT_Item_AdaptiveHelm"
+                            ],
+                            "estrella": 1,
+                            "sinergiaExtraMissFortune": ""
+                        },
+                        {
+                            "fila": 2,
+                            "col": 5,
+                            "apiNameCampeon": "TFT17_Summon",
+                            "apiNameItemsDelCampeon": [],
+                            "estrella": 1,
+                            "sinergiaExtraMissFortune": ""
+                        },
+                        {
+                            "fila": 4,
+                            "col": 1,
+                            "apiNameCampeon": "TFT17_Karma",
+                            "apiNameItemsDelCampeon": [],
+                            "estrella": 1,
+                            "sinergiaExtraMissFortune": ""
+                        },
+                        {
+                            "fila": 4,
+                            "col": 5,
+                            "apiNameCampeon": "TFT17_Bard",
+                            "apiNameItemsDelCampeon": [
+                                "TFT_Item_MadredsBloodrazor",
+                                "TFT_Item_RabadonsDeathcap"
+                            ],
+                            "estrella": 1,
+                            "sinergiaExtraMissFortune": ""
+                        },
+                        {
+                            "fila": 4,
+                            "col": 7,
+                            "apiNameCampeon": "TFT17_Sona",
+                            "apiNameItemsDelCampeon": [
+                                "TFT_Item_StatikkShiv",
+                                "TFT_Item_SpearOfShojin",
+                                "TFT_Item_Morellonomicon"
+                            ],
+                            "estrella": 1,
+                            "sinergiaExtraMissFortune": ""
+                        }
+                    ]
+                }
+            ],
+            "ordenPrioridadAumentos": ["econ","items","combat"],
+            "tipSEO": "La comp de Fast 9 AP se juega con racha de victoria y aumentos de objetos y econom\u00eda. Enfoca en vanguardias desde temprano y objetos de tanque con mana para Nunu, en late Sona y Bardo son felxibles para tener objetos de utilidad y poder de habilidad.",
+            "urlSEO": "sona",
+            "campeonesEarly": [
+                {
+                    "apiNameCampeon": "TFT17_Belveth",
+                    "apiNameItemsDelCampeon": [
+                        "TFT_Item_TitansResolve",
+                        "TFT_Item_Bloodthirster",
+                        "TFT_Item_LastWhisper"
+                    ]
+                },
+                {
+                    "apiNameCampeon": "TFT17_Leona",
+                    "apiNameItemsDelCampeon": [
+                        "",
+                        "",
+                        ""
+                    ]
+                },
+                {
+                    "apiNameCampeon": "TFT17_Teemo",
+                    "apiNameItemsDelCampeon": [
+                        "TFTTutorial_Item_GuinsoosRageblade",
+                        "TFT_Item_StatikkShiv",
+                        "TFT_Item_JeweledGauntlet"
+                    ]
+                }
+            ],
+            "dioses": [
+                "Thresh",
+                "Ahri"
+            ],
+            "bestBuild": [
+                {
+                    "apiNameCampeon": "TFT17_MasterYi",
+                    "apiNameItemsDelCampeon": [
+                        "TFT_Item_GuinsoosRageblade",
+                        "TFT_Item_GuinsoosRageblade",
+                        "TFT_Item_Deathblade",
+                        "TFT17_Item_RangedTraitEmblemItem",
+                        "TFT_Item_TitansResolve",
+                        "TFT_Item_GuardianAngel"
+                    ]
+                },
+                {
+                    "apiNameCampeon": "TFT17_Sona",
+                    "apiNameItemsDelCampeon": [
+                        "TFT_Item_BlueBuff",
+                        "TFT_Item_StatikkShiv",
+                        "TFT_Item_Morellonomicon",
+                        "TFT5_Item_BlueBuffRadiant",
+                        "TFT17_Item_AstronautEmblemItem",
+                        "TFT_Item_Morellonomicon"
+                    ]
+                }
+            ],
+            "condiciones": [
+                {
+                    "apiNameGrande": "TFT17_Teemo",
+                    "apiNamePequeno": "TFT7_Augment_LuckyGloves",
+                    "early": true
+                },
+                {
+                    "apiNameGrande": "TFT17_Leona",
+                    "apiNamePequeno": "Orbe",
+                    "early": true,
+                    "op": true
+                },
+                {
+                    "apiNameGrande": "Loss Streak",
+                    "apiNamePequeno": "",
+                    "early": true,
+                    "op": true
+                },
+                {
+                    "apiNameGrande": "TFT17_Item_SpaceGrooveEmblemItem",
+                    "apiNamePequeno": "TFT17_Riven",
+                    "midLate": true
+                }
+            ],
+            "aumentos": [
+                {
+                    "apiNameGrande": "TFT11_Augment_Slammin",
+                    "early": true
+                },
+                {
+                    "apiNameGrande": "TFT6_Augment_Electrocharge1",
+                    "early": true
+                },
+                {
+                    "apiNameGrande": "TFT_Augment_ExplosiveGrowthPlus",
+                    "early": true,
+                    "op": true
+                },
+                {
+                    "apiNameGrande": "TFT_Augment_ComponentQuestRod",
+                    "early": true
+                },
+                {
+                    "apiNameGrande": "TFT_Augment_ForgeRod",
+                    "midLate": true
+                }
+            ],
+            "encuentros": [],
+            "titulo": "Fast 9 AP",
+            "shadowCategory": "Fast 8",
+            "infographicCategory": "Roll Lv8 y Lv9",
+            "carouselItems": {
+                "BasicItem1": {
+                    "apiName": "TFT_Item_TearOfTheGoddess",
+                    "associatedTraits": [],
+                    "composition": [],
+                    "desc": "%i:TFTManaRegen% +@ManaRegen@ Mana Regen",
+                    "effects": {
+                        "ManaRegen": 1
+                    },
+                    "from": null,
+                    "icon": "https:\/\/raw.communitydragon.org\/pbe\/game\/assets\/maps\/tft\/icons\/items\/hexcore\/tft_item_tearofthegoddess.tft_set13.png",
+                    "id": null,
+                    "incompatibleTraits": [],
+                    "name": "Tear of the Goddess",
+                    "tags": [
+                        "component"
+                    ],
+                    "unique": false
+                },
+                "BasicItem2": {
+                    "apiName": "TFT_Item_NeedlesslyLargeRod",
+                    "associatedTraits": [],
+                    "composition": [],
+                    "desc": "%i:scaleAP% +@AP@ Ability Power",
+                    "effects": {
+                        "AP": 10
+                    },
+                    "from": null,
+                    "icon": "https:\/\/raw.communitydragon.org\/pbe\/game\/assets\/maps\/tft\/icons\/items\/hexcore\/tft_item_needlesslylargerod.tft_set13.png",
+                    "id": null,
+                    "incompatibleTraits": [],
+                    "name": "Needlessly Large Rod",
+                    "tags": [
+                        "component"
+                    ],
+                    "unique": false
+                },
+                "BasicItem3": {
+                    "apiName": "TFT_Item_ChainVest",
+                    "associatedTraits": [],
+                    "composition": [],
+                    "desc": "%i:scaleArmor% +@Armor@ Armor",
+                    "effects": {
+                        "Armor": 20
+                    },
+                    "from": null,
+                    "icon": "https:\/\/raw.communitydragon.org\/pbe\/game\/assets\/maps\/tft\/icons\/items\/hexcore\/tft_item_chainvest.tft_set13.png",
+                    "id": null,
+                    "incompatibleTraits": [],
+                    "name": "Chain Vest",
+                    "tags": [
+                        "component"
+                    ],
+                    "unique": false
+                },
+                "CompleteItem1": {
+                    "apiName": "TFT_Item_StatikkShiv",
+                    "associatedTraits": [],
+                    "composition": [
+                        "TFT_Item_RecurveBow",
+                        "TFT_Item_TearOfTheGoddess"
+                    ],
+                    "desc": "Damage from attacks and Abilities @MRShred@% <TFTKeyword>Shred<\/TFTKeyword> the target for @MRShredDuration@ seconds. This effect does not stack.<br><br><tftitemrules><tftbold>Shred<\/tftbold>: Reduce Magic Resist<\/tftitemrules>",
+                    "effects": {
+                        "AP": 35,
+                        "AS": 15,
+                        "MRShred": 30,
+                        "MRShredDuration": 5,
+                        "ManaRegen": 1
+                    },
+                    "from": null,
+                    "icon": "https:\/\/raw.communitydragon.org\/pbe\/game\/assets\/maps\/tft\/icons\/items\/hexcore\/tft_item_voidstaff.png",
+                    "id": null,
+                    "incompatibleTraits": [],
+                    "name": "Void Staff",
+                    "tags": [
+                        "{7ea41d13}"
+                    ],
+                    "unique": false,
+                    "combine": [
+                        1,
+                        3
+                    ]
+                },
+                "CompleteItem2": {
+                    "apiName": "TFT_Item_RabadonsDeathcap",
+                    "associatedTraits": [],
+                    "composition": [
+                        "TFT_Item_NeedlesslyLargeRod",
+                        "TFT_Item_NeedlesslyLargeRod"
+                    ],
+                    "desc": "<tftitemrules>This humble hat can help you make, or unmake, the world itself.<\/tftitemrules><br><br>@TFTUnitProperty.:TFT_Augment_DeadlierCaps_TRAKey@",
+                    "effects": {
+                        "AP": 55,
+                        "BonusDamage": 0.15000000596046448,
+                        "{1543aa48}": 0.15000000596046448
+                    },
+                    "from": null,
+                    "icon": "https:\/\/raw.communitydragon.org\/pbe\/game\/assets\/maps\/tft\/icons\/items\/hexcore\/tft_item_rabadonsdeathcap.tft_set13.png",
+                    "id": null,
+                    "incompatibleTraits": [],
+                    "name": "Rabadon's Deathcap",
+                    "tags": [
+                        "{7ea41d13}",
+                        "AbilityPower"
+                    ],
+                    "unique": false,
+                    "combine": [
+                        2,
+                        2
+                    ]
+                },
+                "CompleteItem3": {
+                    "apiName": "TFT_Item_GargoyleStoneplate",
+                    "associatedTraits": [],
+                    "composition": [
+                        "TFT_Item_ChainVest",
+                        "TFT_Item_NegatronCloak"
+                    ],
+                    "desc": "Gain @ArmorPerEnemy@ Armor and @MRPerEnemy@ Magic Resist for each enemy targeting the holder.",
+                    "effects": {
+                        "Armor": 25,
+                        "ArmorPerEnemy": 10,
+                        "Health": 100,
+                        "MRPerEnemy": 10,
+                        "MagicResist": 25,
+                        "SizeIncrease": 0.07500000298023224,
+                        "{4dc0582f}": 20
+                    },
+                    "from": null,
+                    "icon": "https:\/\/raw.communitydragon.org\/pbe\/game\/assets\/maps\/tft\/icons\/items\/hexcore\/tft_item_gargoylestoneplate.tft_set13.png",
+                    "id": null,
+                    "incompatibleTraits": [],
+                    "name": "Gargoyle Stoneplate",
+                    "tags": [
+                        "{7ea41d13}",
+                        "{15b72700}"
+                    ],
+                    "unique": false,
+                    "combine": [
+                        4,
+                        5
+                    ]
+                }
+            },
+            "radiantsItems": {
+                "RadiantItem1": {
+                    "apiName": "TFT5_Item_RabadonsDeathcapRadiant",
+                    "associatedTraits": [],
+                    "composition": [],
+                    "desc": "<tftitemrules>It's witnessed - and unleashed - miracles and calamities both.<\/tftitemrules><br><br>@TFTUnitProperty.:TFT_Augment_DeadlierCaps_TRAKey@",
+                    "effects": {
+                        "AP": 110,
+                        "BonusDamage": 0.5,
+                        "{1543aa48}": 0.30000001192092896
+                    },
+                    "from": null,
+                    "icon": "ASSETS\/Maps\/TFT\/Icons\/Items\/Hexcore\/TFT5_Item_RabadonsDeathcapRadiant.TFT_Set13.tex",
+                    "id": null,
+                    "incompatibleTraits": [],
+                    "name": "Radiant Rabadon's Deathcap",
+                    "tags": [
+                        "{6ef5c598}",
+                        "{ec243f6b}"
+                    ],
+                    "unique": false
+                }
+            },
+            "boardInfo": {
+                "early": {
+                    "data": {
+                        "hex11": {
+                            "dataCampeon": {
+                                "campeon": "{\"apiName\":\"TFT17_Leona\",\"nombre\":\"Leona\",\"characterName\":\"TFT17_Leona\",\"coste\":1,\"sinergia\":[{\"apiName\":\"TFT17_ADMIN\",\"desc\":\"Scribe a unique divine law, allowing you to choose an effect to apply to Arbiters when a chosen cause occurs.<br><br><row>(@MinUnits@) Choose a cause and effect for your law<\/row><br><row>(@MinUnits@) Effects are stronger. <\/row>\",\"effects\":[{\"maxUnits\":2,\"minUnits\":2,\"style\":1,\"variables\":{\"DamageInstances\":10,\"HealthThreshold\":0.4000000059604645,\"ManaToSpend\":50,\"NumAttacks\":3,\"NumSeconds\":4,\"ShieldDuration\":4,\"{fefec6fb}\":1}},{\"maxUnits\":25000,\"minUnits\":3,\"style\":5,\"variables\":{\"DamageInstances\":10,\"HealthThreshold\":0.4000000059604645,\"ManaToSpend\":50,\"NumAttacks\":3,\"NumSeconds\":4,\"ShieldDuration\":4,\"{fefec6fb}\":1}}],\"icon\":\"ASSETS\/UX\/TraitIcons\/Trait_Icon_17_Arbiter.TFT_Set17.tex\",\"name\":\"Arbiter\"},{\"apiName\":\"TFT17_ShieldTank\",\"desc\":\"Vanguards gain @DamageReductionPct*100@% Durability while Shielded. <br><br>Combat start and @HealthThreshold*100@%&nbsp;Health: Gain a max Health Shield for @ShieldDuration@&nbsp;seconds.<br><br><row>(@MinUnits@) @ShieldPercentAmount*100@% max Health<\/row><br><row>(@MinUnits@) @ShieldPercentAmount*100@% max Health<\/row><br><row>(@MinUnits@) @ShieldPercentAmount*100@% max Health;<br>@EnhancedDurability*100@%&nbsp;%i:scaleDR% while Shielded<\/row>\",\"effects\":[{\"maxUnits\":3,\"minUnits\":2,\"style\":1,\"variables\":{\"DamageReductionPct\":0.05000000074505806,\"EnhancedDurability\":0.07999999821186066,\"HealthThreshold\":0.5,\"ShieldDuration\":10,\"ShieldPercentAmount\":0.1599999964237213}},{\"maxUnits\":5,\"minUnits\":4,\"style\":3,\"variables\":{\"DamageReductionPct\":0.05000000074505806,\"EnhancedDurability\":0.07999999821186066,\"HealthThreshold\":0.5,\"ShieldDuration\":10,\"ShieldPercentAmount\":0.30000001192092896}},{\"maxUnits\":25000,\"minUnits\":6,\"style\":5,\"variables\":{\"DamageReductionPct\":0.05000000074505806,\"EnhancedDurability\":0.07999999821186066,\"HealthThreshold\":0.5,\"ShieldDuration\":10,\"ShieldPercentAmount\":0.4000000059604645}}],\"icon\":\"ASSETS\/UX\/TraitIcons\/Trait_Icon_12_Vanguard.TFT_Set12.tex\",\"name\":\"Vanguard\"}],\"stats\":{\"armor\":40,\"attackSpeed\":0.6000000238418579,\"critChance\":0.25,\"critMultiplier\":1.399999976158142,\"damage\":50,\"hp\":700,\"initialMana\":50,\"magicResist\":40,\"mana\":110,\"range\":1},\"img\":\"https:\/\/raw.communitydragon.org\/pbe\/game\/assets\/characters\/tft17_leona\/hud\/tft17_leona_square.tft_set17.png\",\"ability\":{\"desc\":\"Gain <TFTBonus>@ModifiedShield@ (%i:scaleAP%)<\/TFTBonus> Shield for @ShieldDuration@ seconds. Bash the current target, dealing <magicDamage>@ModifiedDamage@ (%i:scaleArmor%%i:scaleMR%)<\/magicDamage> magic damage and stunning them for <scaleLevel>@StunDuration@<\/scaleLevel> seconds.\",\"icon\":\"ASSETS\/Characters\/TFT17_Leona\/HUD\/Icons2D\/TFT17_LeonaQ.TFT_Set17.tex\",\"name\":\"Shield of Daybreak\",\"variables\":[{\"name\":\"ShieldAmount\",\"value\":[0,420,480,620,760,0,0]},{\"name\":\"Damage\",\"value\":[0,100,150,225,385,0,0]},{\"name\":\"StunDuration\",\"value\":[0,1.75,1.75,2,2.25,0,0]},{\"name\":\"DefenseToDamageRatio\",\"value\":[0,1.2000000476837158,1.7999999523162842,2.700000047683716,4.599999904632568,0,0]},{\"name\":\"ShieldDuration\",\"value\":[4,4,4,4,4,4,4]}]}}",
+                                "from": "Board",
+                                "hexId": "early-hex11"
+                            },
+                            "estrellas": 1,
+                            "powerUp": false,
+                            "dataItem": []
+                        },
+                        "hex12": {
+                            "dataCampeon": {
+                                "campeon": "{\"apiName\":\"TFT17_Lissandra\",\"nombre\":\"Lissandra\",\"characterName\":\"TFT17_Lissandra\",\"coste\":1,\"sinergia\":[{\"apiName\":\"TFT17_DarkStar\",\"desc\":\"<row>(@MinUnits@) Dark Stars create a black hole that consumes enemies at <ShowIf.TFT17_DarkStar_HasNeutronStar><TFTBonus>@TFTUnitProperty.trait:TFT17_Augment_DarkStar_NeutronStar_BonusExecutePercent*100@%<\/TFTBonus><\/ShowIf.TFT17_DarkStar_HasNeutronStar><ShowIfNot.TFT17_DarkStar_HasNeutronStar>@ExecuteHPPercent*100@%<\/ShowIfNot.TFT17_DarkStar_HasNeutronStar> max health.<\/row><br><row>(@MinUnits@) AND they gain @ADAP@% %i:scaleAD%%i:scaleAP%.<\/row><br><row>(@MinUnits@) AND the strongest Dark Star unit goes supermassive, gaining @SupermassivePercentBonus*100@% effectiveness from Dark Star, and creates 2 minor Black Holes.<\/row><br><row>(@MinUnits@) All Dark Stars are supermassive. At level 10, CONSUME EVERYONE. <\/row>\",\"effects\":[{\"maxUnits\":3,\"minUnits\":2,\"style\":1,\"variables\":{\"ADAP\":45,\"ExecuteHPPercent\":0.07999999821186066,\"PercentHealth\":0.25,\"SupermassivePercentBonus\":0.699999988079071}},{\"maxUnits\":5,\"minUnits\":4,\"style\":3,\"variables\":{\"ADAP\":45,\"ExecuteHPPercent\":0.07999999821186066,\"PercentHealth\":0.25,\"SupermassivePercentBonus\":0.699999988079071}},{\"maxUnits\":8,\"minUnits\":6,\"style\":5,\"variables\":{\"ADAP\":45,\"ExecuteHPPercent\":0.07999999821186066,\"PercentHealth\":0.25,\"SupermassivePercentBonus\":0.699999988079071}},{\"maxUnits\":25000,\"minUnits\":9,\"style\":6,\"variables\":{\"ADAP\":45,\"ExecuteHPPercent\":0.07999999821186066,\"PercentHealth\":0.25,\"SupermassivePercentBonus\":0.699999988079071}}],\"icon\":\"ASSETS\/UX\/TraitIcons\/Trait_Icon_17_DarkStar.TFT_Set17.tex\",\"name\":\"Dark Star\"},{\"apiName\":\"TFT17_SummonTrait\",\"desc\":\"Shepherds summon the Bond of the Stars to aid them in battle.<br><br><row>(@MinUnits@) Summon Bia<\/row><br><row>(@MinUnits@) Summon Bayin<\/row><br><row>(@MinUnits@) Bia and Bayin's bond grows deeper<\/row><br><br><rules>Bia and Bayin's power are increased by the total star level of all Shepherds.<\/rules>\",\"effects\":[{\"maxUnits\":4,\"minUnits\":3,\"style\":1,\"variables\":{}},{\"maxUnits\":6,\"minUnits\":5,\"style\":3,\"variables\":{}},{\"maxUnits\":25000,\"minUnits\":7,\"style\":5,\"variables\":{}}],\"icon\":\"ASSETS\/UX\/TraitIcons\/Trait_Icon_17_Shepherd.TFT_Set17.tex\",\"name\":\"Shepherd\"},{\"apiName\":\"TFT17_APTrait\",\"desc\":\"Replicator abilities occur a second time at reduced effectiveness.<br><br><expandRow>(@MinUnits@) @Effectiveness*100@% strength<\/expandRow>\",\"effects\":[{\"maxUnits\":3,\"minUnits\":2,\"style\":1,\"variables\":{\"Effectiveness\":0.2199999988079071}},{\"maxUnits\":25000,\"minUnits\":4,\"style\":5,\"variables\":{\"Effectiveness\":0.44999998807907104}}],\"icon\":\"ASSETS\/UX\/TraitIcons\/Trait_Icon_17_Replicator.TFT_Set17.tex\",\"name\":\"Replicator\"}],\"stats\":{\"armor\":15,\"attackSpeed\":0.699999988079071,\"critChance\":0.25,\"critMultiplier\":1.399999976158142,\"damage\":30,\"hp\":450,\"initialMana\":0,\"magicResist\":15,\"mana\":30,\"range\":4},\"img\":\"https:\/\/raw.communitydragon.org\/pbe\/game\/assets\/characters\/tft17_lissandra\/hud\/tft17_lissandra_square.tft_set17.png\",\"ability\":{\"desc\":\"Hurl a shard towards the current target, dealing <magicDamage>@ModifiedDamage@&nbsp;(%i:scaleAP%)<\/magicDamage> magic damage to the first target it hits. After hitting its initial target or at its final destination, the dagger explodes dealing <magicDamage>@ModifiedSecondaryDamage@&nbsp;(%i:scaleAP%)<\/magicDamage> magic damage to nearby targets.\",\"icon\":\"ASSETS\/Characters\/TFT17_Lissandra\/HUD\/Icons2D\/TFT17_Lissandra_Q.TFT_Set17.tex\",\"name\":\"Dark Matter\",\"variables\":[{\"name\":\"Damage\",\"value\":[200,250,375,600,1020,660,660]},{\"name\":\"SecondaryDamage\",\"value\":[100,50,75,115,195,300,300]}]}}",
+                                "from": "Board",
+                                "hexId": "early-hex12"
+                            },
+                            "estrellas": 1,
+                            "powerUp": false,
+                            "dataItem": []
+                        },
+                        "hex13": {
+                            "dataCampeon": {
+                                "campeon": "{\"apiName\":\"TFT17_Teemo\",\"nombre\":\"Teemo\",\"characterName\":\"TFT17_Teemo\",\"coste\":1,\"sinergia\":[{\"apiName\":\"TFT17_SpaceGroove\",\"desc\":\"<row>(@MinUnits@) Groovians can enter {{TFT17_SpaceGroove_TheGroove}}. While in it, they gain Attack Speed and max Health Regen, increased per Groovian on your team.<\/row><br><row>(@MinUnits@) All Groovians start combat in {{TFT17_SpaceGroove_TheGroove}} for @StartOfCombatDuration@ seconds.<\/row><br><row>(@MinUnits@) Each second spent in {{TFT17_SpaceGroove_TheGroove}} grants @ADAPPerSecond@% stacking Attack Damage and Ability Power.<\/row><br><row>(@MinUnits@) Increase these effects by @EffectBonus@%!<\/row><br><row>(@MinUnits@) {{TFT17_SpaceGroove_Groove}}<\/row><br><br>{{TFT17_SpaceGroove_TheGroove}}: @TFTUnitProperty.:TFT17_SpaceGroove_AS*100@% %i:scaleAS%, @TFTUnitProperty.:TFT17_SpaceGroove_HealthRegen*100@% %i:scaleHPRegen%\",\"effects\":[{\"maxUnits\":2,\"minUnits\":1,\"style\":1,\"variables\":{\"ADAPPerSecond\":null,\"EffectBonus\":null,\"StartOfCombatDuration\":null}},{\"maxUnits\":4,\"minUnits\":3,\"style\":3,\"variables\":{\"ADAPPerSecond\":null,\"EffectBonus\":null,\"StartOfCombatDuration\":3}},{\"maxUnits\":6,\"minUnits\":5,\"style\":3,\"variables\":{\"ADAPPerSecond\":5,\"EffectBonus\":null,\"StartOfCombatDuration\":3}},{\"maxUnits\":9,\"minUnits\":7,\"style\":5,\"variables\":{\"ADAPPerSecond\":5,\"EffectBonus\":15,\"StartOfCombatDuration\":3}},{\"maxUnits\":25000,\"minUnits\":10,\"style\":6,\"variables\":{\"ADAPPerSecond\":10,\"EffectBonus\":500,\"StartOfCombatDuration\":60,\"{32ed1fda}\":800,\"{3e46e556}\":1500}}],\"icon\":\"ASSETS\/UX\/TraitIcons\/Trait_Icon_17_SpaceGroove.TFT_Set17.tex\",\"name\":\"Space Groove\"},{\"apiName\":\"TFT17_SummonTrait\",\"desc\":\"Shepherds summon the Bond of the Stars to aid them in battle.<br><br><row>(@MinUnits@) Summon Bia<\/row><br><row>(@MinUnits@) Summon Bayin<\/row><br><row>(@MinUnits@) Bia and Bayin's bond grows deeper<\/row><br><br><rules>Bia and Bayin's power are increased by the total star level of all Shepherds.<\/rules>\",\"effects\":[{\"maxUnits\":4,\"minUnits\":3,\"style\":1,\"variables\":{}},{\"maxUnits\":6,\"minUnits\":5,\"style\":3,\"variables\":{}},{\"maxUnits\":25000,\"minUnits\":7,\"style\":5,\"variables\":{}}],\"icon\":\"ASSETS\/UX\/TraitIcons\/Trait_Icon_17_Shepherd.TFT_Set17.tex\",\"name\":\"Shepherd\"}],\"stats\":{\"armor\":15,\"attackSpeed\":0.699999988079071,\"critChance\":0.25,\"critMultiplier\":1.399999976158142,\"damage\":15,\"hp\":450,\"initialMana\":0,\"magicResist\":15,\"mana\":50,\"range\":4},\"img\":\"https:\/\/raw.communitydragon.org\/pbe\/game\/assets\/characters\/tft17_teemo\/hud\/tft17_teemo_square.tft_set17.png\",\"ability\":{\"desc\":\"<spellPassive>Passive:<\/spellPassive> Attacks deal <magicDamage>@ModifiedHitDamage@ (%i:scaleAP%)<\/magicDamage> bonus magic damage and an additional <magicDamage>@ModifiedMagicDamage@ (%i:scaleAP%)<\/magicDamage> stacking magic damage over @PoisonDuration@ seconds. While an enemy has @GrooveStacks@ or more stacks, Teemo is in {{TFT17_SpaceGroove_TheGroove}}.<br><br><spellActive>Active:<\/spellActive> Gain <TFTBonus>@AttackSpeed*100@%<\/TFTBonus> Attack Speed for @ActiveAttacks@ attacks.\",\"icon\":\"ASSETS\/Characters\/TFT17_Teemo\/HUD\/Icons2D\/TFT17_TeemoW.TFT_Set17.tex\",\"name\":\"Double Time\",\"variables\":[{\"name\":\"HitDamage\",\"value\":[100,30,45,100,170,95,95]},{\"name\":\"MagicDamage\",\"value\":[60,65,95,170,300,180,180]},{\"name\":\"PoisonDuration\",\"value\":[6,6,6,6,6,6,6]},{\"name\":\"GrooveStacks\",\"value\":[5,5,5,5,5,5,5]},{\"name\":\"AttackSpeed\",\"value\":[1.5,1.5,1.5,1.5,1.5,1.5,1.5]},{\"name\":\"ActiveAttacks\",\"value\":[3,3,3,3,3,3,3]}]}}",
+                                "from": "Board",
+                                "hexId": "early-hex13"
+                            },
+                            "estrellas": 1,
+                            "powerUp": false,
+                            "dataItem": []
+                        },
+                        "hex14": {
+                            "dataCampeon": {
+                                "campeon": "{\"apiName\":\"TFT17_IvernMinion\",\"nombre\":\"Meepsie\",\"characterName\":\"TFT17_IvernMinion\",\"coste\":2,\"sinergia\":[{\"apiName\":\"TFT17_Astronaut\",\"desc\":\"Meeple attract Meeps that empower Meeple abilities in meepy ways. They also gain bonus Health.<br><br><row>(@MinUnits@) @Meeps@ %i:set14AmpIcon%, @BonusHealth@ %i:scaleHealth%<\/row><br><row>(@MinUnits@) @Meeps@ %i:set14AmpIcon%, @BonusHealth@ %i:scaleHealth%<\/row><br><row>(@MinUnits@) @Meeps@ %i:set14AmpIcon%, @BonusHealth@ %i:scaleHealth%. Create a Cloning Slot on your bench. Gain gold and a 1-star copy of the champion placed there when cloning completes.<\/row><br><row>(@MinUnits@) @Meeps@ %i:set14AmpIcon%, @BonusHealth@ %i:scaleHealth%. SUMMON THE FOUR MEEPLORDS!<\/row><br><br><rules>Cloning time = Champion cost<\/rules>\",\"effects\":[{\"maxUnits\":4,\"minUnits\":3,\"style\":1,\"variables\":{\"BonusHealth\":100,\"Meeps\":2}},{\"maxUnits\":6,\"minUnits\":5,\"style\":3,\"variables\":{\"BonusHealth\":400,\"Meeps\":3}},{\"maxUnits\":9,\"minUnits\":7,\"style\":5,\"variables\":{\"BonusHealth\":400,\"Meeps\":4}},{\"maxUnits\":25000,\"minUnits\":10,\"style\":6,\"variables\":{\"BonusHealth\":500,\"Meeps\":6}}],\"icon\":\"ASSETS\/UX\/TraitIcons\/Trait_Icon_17_Astronaut.TFT_Set17.tex\",\"name\":\"Meeple\"},{\"apiName\":\"TFT17_SummonTrait\",\"desc\":\"Shepherds summon the Bond of the Stars to aid them in battle.<br><br><row>(@MinUnits@) Summon Bia<\/row><br><row>(@MinUnits@) Summon Bayin<\/row><br><row>(@MinUnits@) Bia and Bayin's bond grows deeper<\/row><br><br><rules>Bia and Bayin's power are increased by the total star level of all Shepherds.<\/rules>\",\"effects\":[{\"maxUnits\":4,\"minUnits\":3,\"style\":1,\"variables\":{}},{\"maxUnits\":6,\"minUnits\":5,\"style\":3,\"variables\":{}},{\"maxUnits\":25000,\"minUnits\":7,\"style\":5,\"variables\":{}}],\"icon\":\"ASSETS\/UX\/TraitIcons\/Trait_Icon_17_Shepherd.TFT_Set17.tex\",\"name\":\"Shepherd\"},{\"apiName\":\"TFT17_FlexTrait\",\"desc\":\"Combat Start: Your Tanks gain a Shield for @ShieldDuration@ seconds. Your other allies gain Damage Amp. <br><br>Voyagers gain double.<br><br><expandRow>(@MinUnits@) @ShieldHP@ Shield; @BonusDA*100@% %i:scaleDA%<\/expandRow><br>\",\"effects\":[{\"maxUnits\":2,\"minUnits\":2,\"style\":1,\"variables\":{\"BonusDA\":0.09000000357627869,\"ShieldDuration\":15,\"ShieldHP\":175,\"{2ad3e251}\":2}},{\"maxUnits\":3,\"minUnits\":3,\"style\":3,\"variables\":{\"BonusDA\":0.15000000596046448,\"ShieldDuration\":15,\"ShieldHP\":250,\"{2ad3e251}\":2}},{\"maxUnits\":4,\"minUnits\":4,\"style\":3,\"variables\":{\"BonusDA\":0.18000000715255737,\"ShieldDuration\":15,\"ShieldHP\":350,\"{2ad3e251}\":2}},{\"maxUnits\":5,\"minUnits\":5,\"style\":3,\"variables\":{\"BonusDA\":0.2199999988079071,\"ShieldDuration\":15,\"ShieldHP\":500,\"{2ad3e251}\":2}},{\"maxUnits\":25000,\"minUnits\":6,\"style\":5,\"variables\":{\"BonusDA\":0.27000001072883606,\"ShieldDuration\":15,\"ShieldHP\":700,\"{2ad3e251}\":2}}],\"icon\":\"ASSETS\/UX\/TraitIcons\/Trait_Icon_17_Voyager.TFT_Set17.tex\",\"name\":\"Voyager\"}],\"stats\":{\"armor\":45,\"attackSpeed\":0.550000011920929,\"critChance\":0.25,\"critMultiplier\":1.399999976158142,\"damage\":65,\"hp\":950,\"initialMana\":50,\"magicResist\":45,\"mana\":100,\"range\":1},\"img\":\"https:\/\/raw.communitydragon.org\/pbe\/game\/assets\/characters\/tft17_ivernminion\/hud\/tft17_ivernminion_square.tft_set17.png\",\"ability\":{\"desc\":\"Heal <scaleHealth>@ModifiedHeal@ (%i:scaleHealth%%i:scaleAP%)<\/scaleHealth> Health over @HealDuration@ seconds. Slam the target, dealing <magicDamage>@ModifiedDamage@ (%i:scaleAP%)<\/magicDamage> magic damage and knocking up for <scaleLevel>@StunDuration@<\/scaleLevel> seconds. The impact creates meepwaves that deal @PercentEffects*100@% of these effects in the target's row.<br><br><mainText enabled=TFT17_Astronaut_IsActive alternate=rules><spellActive enabled=TFT17_Astronaut_IsActive alternate=rules>Meep Bonus:<\/spellActive><TFTBonus><ShowIfNot.TFT17_Astronaut_IsActive><\/ShowIfNot.TFT17_Astronaut_IsActive><ShowIf.TFT17_Astronaut_IsActive><\/ShowIf.TFT17_Astronaut_IsActive><\/TFTBonus> Meeps water Meepsie's flower, increasing all incoming Healing and Shielding by <TFTBonus>@ModifiedHealingAndShielding@ (%i:set14AmpIcon%)<\/TFTBonus>.<\/mainText>\",\"icon\":\"ASSETS\/Characters\/TFT17_IvernMinion\/HUD\/Icons2D\/TFT17_IvernMinion_R.TFT_Set17.tex\",\"name\":\"Meep Impact\",\"variables\":[{\"name\":\"HealingPercentHealth\",\"value\":[0.07999999821186066,0.07999999821186066,0.07999999821186066,0.07999999821186066,0.07999999821186066,0.07999999821186066,0.07999999821186066]},{\"name\":\"HealingAP\",\"value\":[80,380,430,600,770,80,80]},{\"name\":\"HealDuration\",\"value\":[3,3,3,3,3,3,3]},{\"name\":\"Damage\",\"value\":[200,160,240,360,600,450,450]},{\"name\":\"StunDuration\",\"value\":[1.5,1.5,1.75,2,2.25,1.5,1.5]},{\"name\":\"PercentEffects\",\"value\":[0.5,0.5,0.5,0.5,0.5,0.5,0.5]},{\"name\":\"HealingAndShieldingPerAstro\",\"value\":[0.11999999731779099,0.11999999731779099,0.11999999731779099,0.11999999731779099,0.11999999731779099,0.11999999731779099,0.11999999731779099]},{\"name\":\"MeepsPerAstro\",\"value\":[1,1,1,1,1,1,1]}]}}",
+                                "from": "Board",
+                                "hexId": "early-hex14"
+                            },
+                            "estrellas": 1,
+                            "powerUp": false,
+                            "dataItem": []
+                        },
+                        "hex15": {
+                            "dataCampeon": {
+                                "campeon": "{\"apiName\":\"TFT17_Mordekaiser\",\"nombre\":\"Mordekaiser\",\"characterName\":\"TFT17_Mordekaiser\",\"coste\":2,\"sinergia\":[{\"apiName\":\"TFT17_DarkStar\",\"desc\":\"<row>(@MinUnits@) Dark Stars create a black hole that consumes enemies at <ShowIf.TFT17_DarkStar_HasNeutronStar><TFTBonus>@TFTUnitProperty.trait:TFT17_Augment_DarkStar_NeutronStar_BonusExecutePercent*100@%<\/TFTBonus><\/ShowIf.TFT17_DarkStar_HasNeutronStar><ShowIfNot.TFT17_DarkStar_HasNeutronStar>@ExecuteHPPercent*100@%<\/ShowIfNot.TFT17_DarkStar_HasNeutronStar> max health.<\/row><br><row>(@MinUnits@) AND they gain @ADAP@% %i:scaleAD%%i:scaleAP%.<\/row><br><row>(@MinUnits@) AND the strongest Dark Star unit goes supermassive, gaining @SupermassivePercentBonus*100@% effectiveness from Dark Star, and creates 2 minor Black Holes.<\/row><br><row>(@MinUnits@) All Dark Stars are supermassive. At level 10, CONSUME EVERYONE. <\/row>\",\"effects\":[{\"maxUnits\":3,\"minUnits\":2,\"style\":1,\"variables\":{\"ADAP\":45,\"ExecuteHPPercent\":0.07999999821186066,\"PercentHealth\":0.25,\"SupermassivePercentBonus\":0.699999988079071}},{\"maxUnits\":5,\"minUnits\":4,\"style\":3,\"variables\":{\"ADAP\":45,\"ExecuteHPPercent\":0.07999999821186066,\"PercentHealth\":0.25,\"SupermassivePercentBonus\":0.699999988079071}},{\"maxUnits\":8,\"minUnits\":6,\"style\":5,\"variables\":{\"ADAP\":45,\"ExecuteHPPercent\":0.07999999821186066,\"PercentHealth\":0.25,\"SupermassivePercentBonus\":0.699999988079071}},{\"maxUnits\":25000,\"minUnits\":9,\"style\":6,\"variables\":{\"ADAP\":45,\"ExecuteHPPercent\":0.07999999821186066,\"PercentHealth\":0.25,\"SupermassivePercentBonus\":0.699999988079071}}],\"icon\":\"ASSETS\/UX\/TraitIcons\/Trait_Icon_17_DarkStar.TFT_Set17.tex\",\"name\":\"Dark Star\"},{\"apiName\":\"TFT17_ManaTrait\",\"desc\":\"Innate: Conduits gain @InnateManaGain*100@% additional Mana from all sources.<br><br>Your team gains Mana Regen, increased for Conduits.<br><br><expandRow>(@MinUnits@) @TeamManaRegen@ %i:TFTManaRegen% | @ChannelerManaRegen@ %i:TFTManaRegen%<\/expandRow><br><br>\",\"effects\":[{\"maxUnits\":2,\"minUnits\":2,\"style\":1,\"variables\":{\"ChannelerManaRegen\":3,\"InnateManaGain\":0.20000000298023224,\"TeamManaRegen\":1}},{\"maxUnits\":3,\"minUnits\":3,\"style\":3,\"variables\":{\"ChannelerManaRegen\":5,\"InnateManaGain\":0.20000000298023224,\"TeamManaRegen\":1}},{\"maxUnits\":4,\"minUnits\":4,\"style\":3,\"variables\":{\"ChannelerManaRegen\":7,\"InnateManaGain\":0.20000000298023224,\"TeamManaRegen\":2}},{\"maxUnits\":25000,\"minUnits\":5,\"style\":5,\"variables\":{\"ChannelerManaRegen\":9,\"InnateManaGain\":0.20000000298023224,\"TeamManaRegen\":3}}],\"icon\":\"ASSETS\/UX\/TraitIcons\/Trait_Icon_17_Channeler.TFT_Set17.tex\",\"name\":\"Conduit\"},{\"apiName\":\"TFT17_ShieldTank\",\"desc\":\"Vanguards gain @DamageReductionPct*100@% Durability while Shielded. <br><br>Combat start and @HealthThreshold*100@%&nbsp;Health: Gain a max Health Shield for @ShieldDuration@&nbsp;seconds.<br><br><row>(@MinUnits@) @ShieldPercentAmount*100@% max Health<\/row><br><row>(@MinUnits@) @ShieldPercentAmount*100@% max Health<\/row><br><row>(@MinUnits@) @ShieldPercentAmount*100@% max Health;<br>@EnhancedDurability*100@%&nbsp;%i:scaleDR% while Shielded<\/row>\",\"effects\":[{\"maxUnits\":3,\"minUnits\":2,\"style\":1,\"variables\":{\"DamageReductionPct\":0.05000000074505806,\"EnhancedDurability\":0.07999999821186066,\"HealthThreshold\":0.5,\"ShieldDuration\":10,\"ShieldPercentAmount\":0.1599999964237213}},{\"maxUnits\":5,\"minUnits\":4,\"style\":3,\"variables\":{\"DamageReductionPct\":0.05000000074505806,\"EnhancedDurability\":0.07999999821186066,\"HealthThreshold\":0.5,\"ShieldDuration\":10,\"ShieldPercentAmount\":0.30000001192092896}},{\"maxUnits\":25000,\"minUnits\":6,\"style\":5,\"variables\":{\"DamageReductionPct\":0.05000000074505806,\"EnhancedDurability\":0.07999999821186066,\"HealthThreshold\":0.5,\"ShieldDuration\":10,\"ShieldPercentAmount\":0.4000000059604645}}],\"icon\":\"ASSETS\/UX\/TraitIcons\/Trait_Icon_12_Vanguard.TFT_Set12.tex\",\"name\":\"Vanguard\"}],\"stats\":{\"armor\":45,\"attackSpeed\":0.6000000238418579,\"critChance\":0.25,\"critMultiplier\":1.399999976158142,\"damage\":40,\"hp\":950,\"initialMana\":40,\"magicResist\":45,\"mana\":100,\"range\":1},\"img\":\"https:\/\/raw.communitydragon.org\/pbe\/game\/assets\/characters\/tft17_mordekaiser\/hud\/tft17_mordekaiser_square.tft_set17.png\",\"ability\":{\"desc\":\"Gain <TFTBonus>@ModifiedInitialShield@&nbsp;(%i:scaleAP%)<\/TFTBonus> Shield. Each second for the next <ShowIf.TFT17_Augment_Concentration_Active><TFTRadiantItemBonus>@AugmentedDuration@<\/TFTRadiantItemBonus><\/ShowIf.TFT17_Augment_Concentration_Active><ShowIfNot.TFT17_Augment_Concentration_Active>@Duration@<\/ShowIfNot.TFT17_Augment_Concentration_Active> seconds, gain <TFTBonus>@ModifiedShieldPerProc@&nbsp;(%i:scaleAP%)<\/TFTBonus> more Shield and deal <magicDamage>@ModifiedDamagePerProc@&nbsp;(%i:scaleAP%)<\/magicDamage> magic damage to adjacent enemies. When this ability ends, consume the remaining Shield and heal for <scaleHealth>@HealRefund*100@%<\/scaleHealth> of its value.\",\"icon\":\"ASSETS\/Characters\/TFT17_Mordekaiser\/HUD\/Icons2D\/TFT17_MordekaiserW.TFT_Set17.tex\",\"name\":\"Indestructible\",\"variables\":[{\"name\":\"InitialShield\",\"value\":[0,300,375,500,650,200,240]},{\"name\":\"ShieldPerProc\",\"value\":[0,75,90,105,120,0,0]},{\"name\":\"DamagePerProc\",\"value\":[0,45,70,100,170,0,0]},{\"name\":\"HealRefund\",\"value\":[0.4000000059604645,0.4000000059604645,0.4000000059604645,0.4000000059604645,0.4000000059604645,0.4000000059604645,0.4000000059604645]},{\"name\":\"Duration\",\"value\":[4,4,4,4,4,4,4]},{\"name\":\"AugmentedDuration\",\"value\":[6,6,6,6,6,6,6]}]}}",
+                                "from": "Board",
+                                "hexId": "early-hex15"
+                            },
+                            "estrellas": 1,
+                            "powerUp": false,
+                            "dataItem": []
+                        }
+                    },
+                    "sinergias": {
+                        "TFT17_ADMIN": 1,
+                        "TFT17_ShieldTank": 2,
+                        "TFT17_DarkStar": 2,
+                        "TFT17_SummonTrait": 3,
+                        "TFT17_APTrait": 1,
+                        "TFT17_SpaceGroove": 1,
+                        "TFT17_Astronaut": 1,
+                        "TFT17_FlexTrait": 1,
+                        "TFT17_ManaTrait": 1
+                    }
+                },
+                "lv9": {
+                    "data": {
+                        "hex11": {
+                            "dataCampeon": {
+                                "campeon": "{\"apiName\":\"TFT17_Rhaast\",\"nombre\":\"Rhaast\",\"characterName\":\"TFT17_Rhaast\",\"coste\":3,\"sinergia\":[{\"apiName\":\"TFT17_RhaastUniqueTrait\",\"desc\":\"<row>(@MinUnits@) For each non-unique trait you have active, your team gains @BonusOffensiveStat1*100@% Attack Speed, and @BonusDefensiveStat1@ Armor and Magic Resist.<\/row><br><br>Teamwide Attack Speed: @TFTUnitProperty.trait:TFT17_RhaastUnique_OffensiveStatToGain@% %i:scaleAS%<br>Teamwide Resists: @TFTUnitProperty.trait:TFT17_RhaastUnique_DefensiveStatToGain@ %i:scaleArmor%%i:scaleMR%\",\"effects\":[{\"maxUnits\":25000,\"minUnits\":1,\"style\":4,\"variables\":{\"BonusDefensiveStat1\":2,\"BonusDefensiveStat2\":2,\"BonusDefensiveStat3\":2,\"BonusOffensiveStat1\":0.019999999552965164,\"BonusOffensiveStat2\":0.019999999552965164,\"BonusOffensiveStat3\":0.019999999552965164}}],\"icon\":\"ASSETS\/UX\/TraitIcons\/Trait_Icon_17_Redeemer.TFT_Set17.tex\",\"name\":\"Redeemer\"}],\"stats\":{\"armor\":60,\"attackSpeed\":0.6499999761581421,\"critChance\":0.25,\"critMultiplier\":1.399999976158142,\"damage\":60,\"hp\":1200,\"initialMana\":30,\"magicResist\":60,\"mana\":90,\"range\":1},\"img\":\"https:\/\/raw.communitydragon.org\/pbe\/game\/assets\/characters\/tft17_rhaast\/hud\/tft17_kayn_slay_square.tft_set17.png\",\"ability\":{\"desc\":\"Gain <TFTBonus>@Durability*100@%<\/TFTBonus> Durability for @Duration@ seconds, healing <scaleHealth>@ModifiedHeal@&nbsp;(%i:scaleAP%)<\/scaleHealth> over the duration. Afterwards, slash forward in a line, dealing <physicalDamage>@ModifiedDamage@&nbsp;(%i:scaleAD%)<\/physicalDamage> physical damage to enemies hit and knocking them up for @KnockupDuration@ second.\",\"icon\":\"ASSETS\/Characters\/TFT17_Rhaast\/HUD\/Icons2D\/TFT17_Kayn_Passive_Slay.TFT_Set17.tex\",\"name\":\"Divine Scythe\",\"variables\":[{\"name\":\"Duration\",\"value\":[2,2,2,2,2,2,2]},{\"name\":\"Durability\",\"value\":[0.20000000298023224,0.20000000298023224,0.20000000298023224,0.20000000298023224,0.20000000298023224,0.20000000298023224,0.20000000298023224]},{\"name\":\"HealAmount\",\"value\":[1,500,550,650,850,0,0]},{\"name\":\"KnockupDuration\",\"value\":[1,1,1,1,1,1,1]},{\"name\":\"Damage\",\"value\":[0.20000000298023224,120,180,300,510,0.20000000298023224,0.20000000298023224]}]}}",
+                                "from": "Board",
+                                "hexId": "lv9-hex11"
+                            },
+                            "estrellas": 1,
+                            "powerUp": false,
+                            "dataItem": []
+                        },
+                        "hex12": {
+                            "dataCampeon": {
+                                "campeon": "{\"apiName\":\"TFT17_Mordekaiser\",\"nombre\":\"Mordekaiser\",\"characterName\":\"TFT17_Mordekaiser\",\"coste\":2,\"sinergia\":[{\"apiName\":\"TFT17_DarkStar\",\"desc\":\"<row>(@MinUnits@) Dark Stars create a black hole that consumes enemies at <ShowIf.TFT17_DarkStar_HasNeutronStar><TFTBonus>@TFTUnitProperty.trait:TFT17_Augment_DarkStar_NeutronStar_BonusExecutePercent*100@%<\/TFTBonus><\/ShowIf.TFT17_DarkStar_HasNeutronStar><ShowIfNot.TFT17_DarkStar_HasNeutronStar>@ExecuteHPPercent*100@%<\/ShowIfNot.TFT17_DarkStar_HasNeutronStar> max health.<\/row><br><row>(@MinUnits@) AND they gain @ADAP@% %i:scaleAD%%i:scaleAP%.<\/row><br><row>(@MinUnits@) AND the strongest Dark Star unit goes supermassive, gaining @SupermassivePercentBonus*100@% effectiveness from Dark Star, and creates 2 minor Black Holes.<\/row><br><row>(@MinUnits@) All Dark Stars are supermassive. At level 10, CONSUME EVERYONE. <\/row>\",\"effects\":[{\"maxUnits\":3,\"minUnits\":2,\"style\":1,\"variables\":{\"ADAP\":45,\"ExecuteHPPercent\":0.07999999821186066,\"PercentHealth\":0.25,\"SupermassivePercentBonus\":0.699999988079071}},{\"maxUnits\":5,\"minUnits\":4,\"style\":3,\"variables\":{\"ADAP\":45,\"ExecuteHPPercent\":0.07999999821186066,\"PercentHealth\":0.25,\"SupermassivePercentBonus\":0.699999988079071}},{\"maxUnits\":8,\"minUnits\":6,\"style\":5,\"variables\":{\"ADAP\":45,\"ExecuteHPPercent\":0.07999999821186066,\"PercentHealth\":0.25,\"SupermassivePercentBonus\":0.699999988079071}},{\"maxUnits\":25000,\"minUnits\":9,\"style\":6,\"variables\":{\"ADAP\":45,\"ExecuteHPPercent\":0.07999999821186066,\"PercentHealth\":0.25,\"SupermassivePercentBonus\":0.699999988079071}}],\"icon\":\"ASSETS\/UX\/TraitIcons\/Trait_Icon_17_DarkStar.TFT_Set17.tex\",\"name\":\"Dark Star\"},{\"apiName\":\"TFT17_ManaTrait\",\"desc\":\"Innate: Conduits gain @InnateManaGain*100@% additional Mana from all sources.<br><br>Your team gains Mana Regen, increased for Conduits.<br><br><expandRow>(@MinUnits@) @TeamManaRegen@ %i:TFTManaRegen% | @ChannelerManaRegen@ %i:TFTManaRegen%<\/expandRow><br><br>\",\"effects\":[{\"maxUnits\":2,\"minUnits\":2,\"style\":1,\"variables\":{\"ChannelerManaRegen\":3,\"InnateManaGain\":0.20000000298023224,\"TeamManaRegen\":1}},{\"maxUnits\":3,\"minUnits\":3,\"style\":3,\"variables\":{\"ChannelerManaRegen\":5,\"InnateManaGain\":0.20000000298023224,\"TeamManaRegen\":1}},{\"maxUnits\":4,\"minUnits\":4,\"style\":3,\"variables\":{\"ChannelerManaRegen\":7,\"InnateManaGain\":0.20000000298023224,\"TeamManaRegen\":2}},{\"maxUnits\":25000,\"minUnits\":5,\"style\":5,\"variables\":{\"ChannelerManaRegen\":9,\"InnateManaGain\":0.20000000298023224,\"TeamManaRegen\":3}}],\"icon\":\"ASSETS\/UX\/TraitIcons\/Trait_Icon_17_Channeler.TFT_Set17.tex\",\"name\":\"Conduit\"},{\"apiName\":\"TFT17_ShieldTank\",\"desc\":\"Vanguards gain @DamageReductionPct*100@% Durability while Shielded. <br><br>Combat start and @HealthThreshold*100@%&nbsp;Health: Gain a max Health Shield for @ShieldDuration@&nbsp;seconds.<br><br><row>(@MinUnits@) @ShieldPercentAmount*100@% max Health<\/row><br><row>(@MinUnits@) @ShieldPercentAmount*100@% max Health<\/row><br><row>(@MinUnits@) @ShieldPercentAmount*100@% max Health;<br>@EnhancedDurability*100@%&nbsp;%i:scaleDR% while Shielded<\/row>\",\"effects\":[{\"maxUnits\":3,\"minUnits\":2,\"style\":1,\"variables\":{\"DamageReductionPct\":0.05000000074505806,\"EnhancedDurability\":0.07999999821186066,\"HealthThreshold\":0.5,\"ShieldDuration\":10,\"ShieldPercentAmount\":0.1599999964237213}},{\"maxUnits\":5,\"minUnits\":4,\"style\":3,\"variables\":{\"DamageReductionPct\":0.05000000074505806,\"EnhancedDurability\":0.07999999821186066,\"HealthThreshold\":0.5,\"ShieldDuration\":10,\"ShieldPercentAmount\":0.30000001192092896}},{\"maxUnits\":25000,\"minUnits\":6,\"style\":5,\"variables\":{\"DamageReductionPct\":0.05000000074505806,\"EnhancedDurability\":0.07999999821186066,\"HealthThreshold\":0.5,\"ShieldDuration\":10,\"ShieldPercentAmount\":0.4000000059604645}}],\"icon\":\"ASSETS\/UX\/TraitIcons\/Trait_Icon_12_Vanguard.TFT_Set12.tex\",\"name\":\"Vanguard\"}],\"stats\":{\"armor\":45,\"attackSpeed\":0.6000000238418579,\"critChance\":0.25,\"critMultiplier\":1.399999976158142,\"damage\":40,\"hp\":950,\"initialMana\":40,\"magicResist\":45,\"mana\":100,\"range\":1},\"img\":\"https:\/\/raw.communitydragon.org\/pbe\/game\/assets\/characters\/tft17_mordekaiser\/hud\/tft17_mordekaiser_square.tft_set17.png\",\"ability\":{\"desc\":\"Gain <TFTBonus>@ModifiedInitialShield@&nbsp;(%i:scaleAP%)<\/TFTBonus> Shield. Each second for the next <ShowIf.TFT17_Augment_Concentration_Active><TFTRadiantItemBonus>@AugmentedDuration@<\/TFTRadiantItemBonus><\/ShowIf.TFT17_Augment_Concentration_Active><ShowIfNot.TFT17_Augment_Concentration_Active>@Duration@<\/ShowIfNot.TFT17_Augment_Concentration_Active> seconds, gain <TFTBonus>@ModifiedShieldPerProc@&nbsp;(%i:scaleAP%)<\/TFTBonus> more Shield and deal <magicDamage>@ModifiedDamagePerProc@&nbsp;(%i:scaleAP%)<\/magicDamage> magic damage to adjacent enemies. When this ability ends, consume the remaining Shield and heal for <scaleHealth>@HealRefund*100@%<\/scaleHealth> of its value.\",\"icon\":\"ASSETS\/Characters\/TFT17_Mordekaiser\/HUD\/Icons2D\/TFT17_MordekaiserW.TFT_Set17.tex\",\"name\":\"Indestructible\",\"variables\":[{\"name\":\"InitialShield\",\"value\":[0,300,375,500,650,200,240]},{\"name\":\"ShieldPerProc\",\"value\":[0,75,90,105,120,0,0]},{\"name\":\"DamagePerProc\",\"value\":[0,45,70,100,170,0,0]},{\"name\":\"HealRefund\",\"value\":[0.4000000059604645,0.4000000059604645,0.4000000059604645,0.4000000059604645,0.4000000059604645,0.4000000059604645,0.4000000059604645]},{\"name\":\"Duration\",\"value\":[4,4,4,4,4,4,4]},{\"name\":\"AugmentedDuration\",\"value\":[6,6,6,6,6,6,6]}]}}",
+                                "from": "Board",
+                                "hexId": "lv9-hex12"
+                            },
+                            "estrellas": 1,
+                            "powerUp": false,
+                            "dataItem": []
+                        },
+                        "hex13": {
+                            "dataCampeon": {
+                                "campeon": "{\"apiName\":\"TFT17_IvernMinion\",\"nombre\":\"Meepsie\",\"characterName\":\"TFT17_IvernMinion\",\"coste\":2,\"sinergia\":[{\"apiName\":\"TFT17_Astronaut\",\"desc\":\"Meeple attract Meeps that empower Meeple abilities in meepy ways. They also gain bonus Health.<br><br><row>(@MinUnits@) @Meeps@ %i:set14AmpIcon%, @BonusHealth@ %i:scaleHealth%<\/row><br><row>(@MinUnits@) @Meeps@ %i:set14AmpIcon%, @BonusHealth@ %i:scaleHealth%<\/row><br><row>(@MinUnits@) @Meeps@ %i:set14AmpIcon%, @BonusHealth@ %i:scaleHealth%. Create a Cloning Slot on your bench. Gain gold and a 1-star copy of the champion placed there when cloning completes.<\/row><br><row>(@MinUnits@) @Meeps@ %i:set14AmpIcon%, @BonusHealth@ %i:scaleHealth%. SUMMON THE FOUR MEEPLORDS!<\/row><br><br><rules>Cloning time = Champion cost<\/rules>\",\"effects\":[{\"maxUnits\":4,\"minUnits\":3,\"style\":1,\"variables\":{\"BonusHealth\":100,\"Meeps\":2}},{\"maxUnits\":6,\"minUnits\":5,\"style\":3,\"variables\":{\"BonusHealth\":400,\"Meeps\":3}},{\"maxUnits\":9,\"minUnits\":7,\"style\":5,\"variables\":{\"BonusHealth\":400,\"Meeps\":4}},{\"maxUnits\":25000,\"minUnits\":10,\"style\":6,\"variables\":{\"BonusHealth\":500,\"Meeps\":6}}],\"icon\":\"ASSETS\/UX\/TraitIcons\/Trait_Icon_17_Astronaut.TFT_Set17.tex\",\"name\":\"Meeple\"},{\"apiName\":\"TFT17_SummonTrait\",\"desc\":\"Shepherds summon the Bond of the Stars to aid them in battle.<br><br><row>(@MinUnits@) Summon Bia<\/row><br><row>(@MinUnits@) Summon Bayin<\/row><br><row>(@MinUnits@) Bia and Bayin's bond grows deeper<\/row><br><br><rules>Bia and Bayin's power are increased by the total star level of all Shepherds.<\/rules>\",\"effects\":[{\"maxUnits\":4,\"minUnits\":3,\"style\":1,\"variables\":{}},{\"maxUnits\":6,\"minUnits\":5,\"style\":3,\"variables\":{}},{\"maxUnits\":25000,\"minUnits\":7,\"style\":5,\"variables\":{}}],\"icon\":\"ASSETS\/UX\/TraitIcons\/Trait_Icon_17_Shepherd.TFT_Set17.tex\",\"name\":\"Shepherd\"},{\"apiName\":\"TFT17_FlexTrait\",\"desc\":\"Combat Start: Your Tanks gain a Shield for @ShieldDuration@ seconds. Your other allies gain Damage Amp. <br><br>Voyagers gain double.<br><br><expandRow>(@MinUnits@) @ShieldHP@ Shield; @BonusDA*100@% %i:scaleDA%<\/expandRow><br>\",\"effects\":[{\"maxUnits\":2,\"minUnits\":2,\"style\":1,\"variables\":{\"BonusDA\":0.09000000357627869,\"ShieldDuration\":15,\"ShieldHP\":175,\"{2ad3e251}\":2}},{\"maxUnits\":3,\"minUnits\":3,\"style\":3,\"variables\":{\"BonusDA\":0.15000000596046448,\"ShieldDuration\":15,\"ShieldHP\":250,\"{2ad3e251}\":2}},{\"maxUnits\":4,\"minUnits\":4,\"style\":3,\"variables\":{\"BonusDA\":0.18000000715255737,\"ShieldDuration\":15,\"ShieldHP\":350,\"{2ad3e251}\":2}},{\"maxUnits\":5,\"minUnits\":5,\"style\":3,\"variables\":{\"BonusDA\":0.2199999988079071,\"ShieldDuration\":15,\"ShieldHP\":500,\"{2ad3e251}\":2}},{\"maxUnits\":25000,\"minUnits\":6,\"style\":5,\"variables\":{\"BonusDA\":0.27000001072883606,\"ShieldDuration\":15,\"ShieldHP\":700,\"{2ad3e251}\":2}}],\"icon\":\"ASSETS\/UX\/TraitIcons\/Trait_Icon_17_Voyager.TFT_Set17.tex\",\"name\":\"Voyager\"}],\"stats\":{\"armor\":45,\"attackSpeed\":0.550000011920929,\"critChance\":0.25,\"critMultiplier\":1.399999976158142,\"damage\":65,\"hp\":950,\"initialMana\":50,\"magicResist\":45,\"mana\":100,\"range\":1},\"img\":\"https:\/\/raw.communitydragon.org\/pbe\/game\/assets\/characters\/tft17_ivernminion\/hud\/tft17_ivernminion_square.tft_set17.png\",\"ability\":{\"desc\":\"Heal <scaleHealth>@ModifiedHeal@ (%i:scaleHealth%%i:scaleAP%)<\/scaleHealth> Health over @HealDuration@ seconds. Slam the target, dealing <magicDamage>@ModifiedDamage@ (%i:scaleAP%)<\/magicDamage> magic damage and knocking up for <scaleLevel>@StunDuration@<\/scaleLevel> seconds. The impact creates meepwaves that deal @PercentEffects*100@% of these effects in the target's row.<br><br><mainText enabled=TFT17_Astronaut_IsActive alternate=rules><spellActive enabled=TFT17_Astronaut_IsActive alternate=rules>Meep Bonus:<\/spellActive><TFTBonus><ShowIfNot.TFT17_Astronaut_IsActive><\/ShowIfNot.TFT17_Astronaut_IsActive><ShowIf.TFT17_Astronaut_IsActive><\/ShowIf.TFT17_Astronaut_IsActive><\/TFTBonus> Meeps water Meepsie's flower, increasing all incoming Healing and Shielding by <TFTBonus>@ModifiedHealingAndShielding@ (%i:set14AmpIcon%)<\/TFTBonus>.<\/mainText>\",\"icon\":\"ASSETS\/Characters\/TFT17_IvernMinion\/HUD\/Icons2D\/TFT17_IvernMinion_R.TFT_Set17.tex\",\"name\":\"Meep Impact\",\"variables\":[{\"name\":\"HealingPercentHealth\",\"value\":[0.07999999821186066,0.07999999821186066,0.07999999821186066,0.07999999821186066,0.07999999821186066,0.07999999821186066,0.07999999821186066]},{\"name\":\"HealingAP\",\"value\":[80,380,430,600,770,80,80]},{\"name\":\"HealDuration\",\"value\":[3,3,3,3,3,3,3]},{\"name\":\"Damage\",\"value\":[200,160,240,360,600,450,450]},{\"name\":\"StunDuration\",\"value\":[1.5,1.5,1.75,2,2.25,1.5,1.5]},{\"name\":\"PercentEffects\",\"value\":[0.5,0.5,0.5,0.5,0.5,0.5,0.5]},{\"name\":\"HealingAndShieldingPerAstro\",\"value\":[0.11999999731779099,0.11999999731779099,0.11999999731779099,0.11999999731779099,0.11999999731779099,0.11999999731779099,0.11999999731779099]},{\"name\":\"MeepsPerAstro\",\"value\":[1,1,1,1,1,1,1]}]}}",
+                                "from": "Board",
+                                "hexId": "lv9-hex13"
+                            },
+                            "estrellas": 1,
+                            "powerUp": false,
+                            "dataItem": []
+                        },
+                        "hex14": {
+                            "dataCampeon": {
+                                "campeon": "{\"apiName\":\"TFT17_Blitzcrank\",\"nombre\":\"Blitzcrank\",\"characterName\":\"TFT17_Blitzcrank\",\"coste\":5,\"sinergia\":[{\"apiName\":\"TFT17_BlitzcrankUniqueTrait\",\"desc\":\"Once per combat, after falling below @HealthThreshold*100@% percent Health, become untargetable and repair @PercentHealthHeal*100@% max Health per second. Upon reaching full Health, or when no other allies remain, return to combat. If fully healed, for the rest of combat Blitzcrank is in {{TFT17_SpaceGroove_TheGroove}} and Party Crasher's passive fires bolts four times as fast.\",\"effects\":[{\"maxUnits\":25000,\"minUnits\":1,\"style\":4,\"variables\":{\"HealthThreshold\":0.44999998807907104,\"PercentHealthHeal\":0.15000000596046448}}],\"icon\":\"ASSETS\/UX\/TraitIcons\/Trait_Icon_17_PartyAnimal.TFT_Set17.tex\",\"name\":\"Party Animal\"},{\"apiName\":\"TFT17_SpaceGroove\",\"desc\":\"<row>(@MinUnits@) Groovians can enter {{TFT17_SpaceGroove_TheGroove}}. While in it, they gain Attack Speed and max Health Regen, increased per Groovian on your team.<\/row><br><row>(@MinUnits@) All Groovians start combat in {{TFT17_SpaceGroove_TheGroove}} for @StartOfCombatDuration@ seconds.<\/row><br><row>(@MinUnits@) Each second spent in {{TFT17_SpaceGroove_TheGroove}} grants @ADAPPerSecond@% stacking Attack Damage and Ability Power.<\/row><br><row>(@MinUnits@) Increase these effects by @EffectBonus@%!<\/row><br><row>(@MinUnits@) {{TFT17_SpaceGroove_Groove}}<\/row><br><br>{{TFT17_SpaceGroove_TheGroove}}: @TFTUnitProperty.:TFT17_SpaceGroove_AS*100@% %i:scaleAS%, @TFTUnitProperty.:TFT17_SpaceGroove_HealthRegen*100@% %i:scaleHPRegen%\",\"effects\":[{\"maxUnits\":2,\"minUnits\":1,\"style\":1,\"variables\":{\"ADAPPerSecond\":null,\"EffectBonus\":null,\"StartOfCombatDuration\":null}},{\"maxUnits\":4,\"minUnits\":3,\"style\":3,\"variables\":{\"ADAPPerSecond\":null,\"EffectBonus\":null,\"StartOfCombatDuration\":3}},{\"maxUnits\":6,\"minUnits\":5,\"style\":3,\"variables\":{\"ADAPPerSecond\":5,\"EffectBonus\":null,\"StartOfCombatDuration\":3}},{\"maxUnits\":9,\"minUnits\":7,\"style\":5,\"variables\":{\"ADAPPerSecond\":5,\"EffectBonus\":15,\"StartOfCombatDuration\":3}},{\"maxUnits\":25000,\"minUnits\":10,\"style\":6,\"variables\":{\"ADAPPerSecond\":10,\"EffectBonus\":500,\"StartOfCombatDuration\":60,\"{32ed1fda}\":800,\"{3e46e556}\":1500}}],\"icon\":\"ASSETS\/UX\/TraitIcons\/Trait_Icon_17_SpaceGroove.TFT_Set17.tex\",\"name\":\"Space Groove\"},{\"apiName\":\"TFT17_ShieldTank\",\"desc\":\"Vanguards gain @DamageReductionPct*100@% Durability while Shielded. <br><br>Combat start and @HealthThreshold*100@%&nbsp;Health: Gain a max Health Shield for @ShieldDuration@&nbsp;seconds.<br><br><row>(@MinUnits@) @ShieldPercentAmount*100@% max Health<\/row><br><row>(@MinUnits@) @ShieldPercentAmount*100@% max Health<\/row><br><row>(@MinUnits@) @ShieldPercentAmount*100@% max Health;<br>@EnhancedDurability*100@%&nbsp;%i:scaleDR% while Shielded<\/row>\",\"effects\":[{\"maxUnits\":3,\"minUnits\":2,\"style\":1,\"variables\":{\"DamageReductionPct\":0.05000000074505806,\"EnhancedDurability\":0.07999999821186066,\"HealthThreshold\":0.5,\"ShieldDuration\":10,\"ShieldPercentAmount\":0.1599999964237213}},{\"maxUnits\":5,\"minUnits\":4,\"style\":3,\"variables\":{\"DamageReductionPct\":0.05000000074505806,\"EnhancedDurability\":0.07999999821186066,\"HealthThreshold\":0.5,\"ShieldDuration\":10,\"ShieldPercentAmount\":0.30000001192092896}},{\"maxUnits\":25000,\"minUnits\":6,\"style\":5,\"variables\":{\"DamageReductionPct\":0.05000000074505806,\"EnhancedDurability\":0.07999999821186066,\"HealthThreshold\":0.5,\"ShieldDuration\":10,\"ShieldPercentAmount\":0.4000000059604645}}],\"icon\":\"ASSETS\/UX\/TraitIcons\/Trait_Icon_12_Vanguard.TFT_Set12.tex\",\"name\":\"Vanguard\"}],\"stats\":{\"armor\":50,\"attackSpeed\":0.8999999761581421,\"critChance\":0.25,\"critMultiplier\":1.399999976158142,\"damage\":50,\"hp\":1000,\"initialMana\":20,\"magicResist\":50,\"mana\":100,\"range\":1},\"img\":\"https:\/\/raw.communitydragon.org\/pbe\/game\/assets\/characters\/tft17_blitzcrank\/hud\/tft17_blitzcrank_square.tft_set17.png\",\"ability\":{\"desc\":\"<spellPassive>Passive:<\/spellPassive> Every <scaleLevel>@BoltCooldown@<\/scaleLevel> seconds, call down a bolt on the highest Health nearby enemy that deals <magicDamage>@ModifiedBoltDamage@&nbsp;(%i:scaleAP%)<\/magicDamage> magic damage.<br><br><spellActive>Active:<\/spellActive> Summon a disco ball at the largest clump of enemies, then knock up the current target into it, dealing <magicDamage>@ModifiedUppercutDamage@&nbsp;(%i:scaleAP%)<\/magicDamage> magic damage. They crash down into the disco ball, dealing <magicDamage>@ModifiedExplosionDamage@&nbsp;(%i:scaleAP%)<\/magicDamage> magic damage in a three hex radius. Enter {{TFT17_SpaceGroove_TheGroove}} for @GrooveDurationPerTarget@ second per enemy hit.\",\"icon\":\"ASSETS\/Characters\/TFT17_Blitzcrank\/HUD\/Icons2D\/TFT17_BlitzcrankW.TFT_Set17.tex\",\"name\":\"Party Crasher\",\"variables\":[{\"name\":\"BoltCooldown\",\"value\":[2,2,2,0.5,1,1,1]},{\"name\":\"BoltDamage\",\"value\":[90,60,90,150,150,150,150]},{\"name\":\"UppercutDamage\",\"value\":[170,150,225,999,2000,789,5000]},{\"name\":\"ExplosionDamage\",\"value\":[200,175,265,5000,5000,5000,5000]},{\"name\":\"GrooveDurationPerTarget\",\"value\":[1,1,1,1,1,1,1]}]}}",
+                                "from": "Board",
+                                "hexId": "lv9-hex14"
+                            },
+                            "estrellas": 1,
+                            "powerUp": false,
+                            "dataItem": [
+                                {
+                                    "item": "{\"apiName\":\"TFT_Item_ThiefsGloves\",\"associatedTraits\":[],\"composition\":[\"TFT_Item_SparringGloves\",\"TFT_Item_SparringGloves\"],\"desc\":\"Each round: Equip 2 random items.<br><br><tftitemrules>[Consumes 3 item slots.]<\/tftitemrules><br>@TFTUnitProperty.:TFT_BindOnEquipTRA@\",\"effects\":{\"CritChance\":20,\"Health\":150},\"from\":null,\"icon\":\"https:\/\/raw.communitydragon.org\/pbe\/game\/assets\/maps\/tft\/icons\/items\/hexcore\/tft_item_thiefsgloves.tft_set13.png\",\"id\":null,\"incompatibleTraits\":[],\"name\":\"Thief's Gloves\",\"tags\":[\"{7ea41d13}\",\"{2905e581}\",\"{218b53a5}\"],\"unique\":false,\"combine\":[7,7]}",
+                                    "from": "itemBoard",
+                                    "hexId": "lv9-hex14"
+                                }
+                            ]
+                        },
+                        "hex15": {
+                            "dataCampeon": {
+                                "campeon": "{\"apiName\":\"TFT17_Illaoi\",\"nombre\":\"Illaoi\",\"characterName\":\"TFT17_Illaoi\",\"coste\":3,\"sinergia\":[{\"apiName\":\"TFT17_AnimaSquad\",\"desc\":\"After losing a player combat, gain @TechPerCombat@ Tech, plus additional Tech equal to @TechPerLoss@ times the length of your loss streak. Additionally, gain @TechPerKill@ Tech per Anima takedown.<br><br>Each time Animas get @TechBreakpoint@ Tech, they prototype new Anima Weapons. You can take them, or save your Tech to get more powerful weapons next time.<br><br><row>(@MinUnits@) Start Researching! <\/row><br><row>(@MinUnits@) After each player combat, gain loot!<\/row><br><br><ShowIf.TFT17_AnimaSquad_IsDoubleUp><rules>Gain @PairsPartnerWinMultiplier*100@% Tech from losing if your partner wins a combat in Double Up.<\/rules><\/ShowIf.TFT17_AnimaSquad_IsDoubleUp>\",\"effects\":[{\"maxUnits\":5,\"minUnits\":3,\"style\":1,\"variables\":{\"TechBreakpoint\":100,\"TechPerCombat\":20,\"TechPerCombat_DU\":20,\"TechPerDeath_PVE\":1,\"TechPerKill\":2,\"TechPerLoss\":5,\"TechPerLoss_DU\":5,\"TechPerRound_PVE\":20,\"{18a09431}\":0.8500000238418579}},{\"maxUnits\":25000,\"minUnits\":6,\"style\":5,\"variables\":{\"TechBreakpoint\":100,\"TechPerCombat\":20,\"TechPerCombat_DU\":20,\"TechPerDeath_PVE\":1,\"TechPerKill\":2,\"TechPerLoss\":5,\"TechPerLoss_DU\":5,\"TechPerRound_PVE\":20,\"{18a09431}\":0.8500000238418579}}],\"icon\":\"ASSETS\/UX\/TraitIcons\/Trait_Icon_17_AnimaTech.TFT_Set17.tex\",\"name\":\"Anima\"},{\"apiName\":\"TFT17_ShieldTank\",\"desc\":\"Vanguards gain @DamageReductionPct*100@% Durability while Shielded. <br><br>Combat start and @HealthThreshold*100@%&nbsp;Health: Gain a max Health Shield for @ShieldDuration@&nbsp;seconds.<br><br><row>(@MinUnits@) @ShieldPercentAmount*100@% max Health<\/row><br><row>(@MinUnits@) @ShieldPercentAmount*100@% max Health<\/row><br><row>(@MinUnits@) @ShieldPercentAmount*100@% max Health;<br>@EnhancedDurability*100@%&nbsp;%i:scaleDR% while Shielded<\/row>\",\"effects\":[{\"maxUnits\":3,\"minUnits\":2,\"style\":1,\"variables\":{\"DamageReductionPct\":0.05000000074505806,\"EnhancedDurability\":0.07999999821186066,\"HealthThreshold\":0.5,\"ShieldDuration\":10,\"ShieldPercentAmount\":0.1599999964237213}},{\"maxUnits\":5,\"minUnits\":4,\"style\":3,\"variables\":{\"DamageReductionPct\":0.05000000074505806,\"EnhancedDurability\":0.07999999821186066,\"HealthThreshold\":0.5,\"ShieldDuration\":10,\"ShieldPercentAmount\":0.30000001192092896}},{\"maxUnits\":25000,\"minUnits\":6,\"style\":5,\"variables\":{\"DamageReductionPct\":0.05000000074505806,\"EnhancedDurability\":0.07999999821186066,\"HealthThreshold\":0.5,\"ShieldDuration\":10,\"ShieldPercentAmount\":0.4000000059604645}}],\"icon\":\"ASSETS\/UX\/TraitIcons\/Trait_Icon_12_Vanguard.TFT_Set12.tex\",\"name\":\"Vanguard\"},{\"apiName\":\"TFT17_SummonTrait\",\"desc\":\"Shepherds summon the Bond of the Stars to aid them in battle.<br><br><row>(@MinUnits@) Summon Bia<\/row><br><row>(@MinUnits@) Summon Bayin<\/row><br><row>(@MinUnits@) Bia and Bayin's bond grows deeper<\/row><br><br><rules>Bia and Bayin's power are increased by the total star level of all Shepherds.<\/rules>\",\"effects\":[{\"maxUnits\":4,\"minUnits\":3,\"style\":1,\"variables\":{}},{\"maxUnits\":6,\"minUnits\":5,\"style\":3,\"variables\":{}},{\"maxUnits\":25000,\"minUnits\":7,\"style\":5,\"variables\":{}}],\"icon\":\"ASSETS\/UX\/TraitIcons\/Trait_Icon_17_Shepherd.TFT_Set17.tex\",\"name\":\"Shepherd\"}],\"stats\":{\"armor\":50,\"attackSpeed\":0.6499999761581421,\"critChance\":0.25,\"critMultiplier\":1.399999976158142,\"damage\":50,\"hp\":1100,\"initialMana\":40,\"magicResist\":50,\"mana\":100,\"range\":1},\"img\":\"https:\/\/raw.communitydragon.org\/pbe\/game\/assets\/characters\/tft17_illaoi\/hud\/tft17_illaoi_square.tft_set17.png\",\"ability\":{\"desc\":\"Gain <TFTBonus>@ModifiedShield@&nbsp;(%i:scaleAP%)<\/TFTBonus> Shield for @Duration@ seconds. Over the duration, drain <trueDamage>@ModifiedHealthDrain@&nbsp;(%i:scaleAP%)<\/trueDamage> Health from the nearest @NumEnemies@ enemies. Then slam down, dealing <magicDamage>@ModifiedDamage@&nbsp;(%i:scaleAP%)<\/magicDamage> magic damage to all enemies within 2&nbsp;hexes.\",\"icon\":\"ASSETS\/Characters\/TFT17_Illaoi\/HUD\/Icons2D\/TFT17_Illaoi_E_Debuff.TFT_Set17.tex\",\"name\":\"Test of Spirit\",\"variables\":[{\"name\":\"Shield\",\"value\":[250,450,525,650,775,400,400]},{\"name\":\"Duration\",\"value\":[3,3,3,3,3,3,3]},{\"name\":\"HealthDrain\",\"value\":[40,55,85,130,175,240,240]},{\"name\":\"NumEnemies\",\"value\":[3,3,3,3,3,3,3]},{\"name\":\"Damage\",\"value\":[80,80,120,180,240,240,240]}]}}",
+                                "from": "Board",
+                                "hexId": "lv9-hex15"
+                            },
+                            "estrellas": 1,
+                            "powerUp": false,
+                            "dataItem": []
+                        },
+                        "hex16": {
+                            "dataCampeon": {
+                                "campeon": "{\"apiName\":\"TFT17_Nunu\",\"nombre\":\"Nunu & Willump\",\"characterName\":\"TFT17_Nunu\",\"coste\":4,\"sinergia\":[{\"apiName\":\"TFT17_Stargazer_Wolf\",\"desc\":\"Stargazers chart a different constellation every game. This game: <TFTStargazer>The Boar<\/TFTStargazer>.<br><br>Gain gold after winning player combat. Allies in empowered hexes gain @Wolf_Health_Teamwide*100@% Health, Attack Damage, and Ability Power. Stargazers gain more.<br><br>(Gold Earned: @TFTUnitProperty.trait:TFT17_Stargazer_Wolf_TotalGold@)<br><br><expandRow>(@MinUnits@) @Wolf_Gold@ gold, @Wolf_Health*100@% %i:scaleHealth%, @Wolf_ADAP@% %i:scaleAD%%i:scaleAP%<\/expandRow><br><br><rules>More hexes reveal at each player level<\/rules>\",\"effects\":[{\"maxUnits\":3,\"minUnits\":3,\"style\":1,\"variables\":{\"Wolf_ADAP\":10,\"Wolf_Gold\":1,\"Wolf_Health\":0.019999999552965164,\"Wolf_Health_Teamwide\":0.07999999821186066,\"{f5b00dd5}\":8}},{\"maxUnits\":4,\"minUnits\":4,\"style\":3,\"variables\":{\"Wolf_ADAP\":15,\"Wolf_Gold\":2,\"Wolf_Health\":0.07999999821186066,\"Wolf_Health_Teamwide\":0.07999999821186066,\"{f5b00dd5}\":8}},{\"maxUnits\":5,\"minUnits\":5,\"style\":3,\"variables\":{\"Wolf_ADAP\":25,\"Wolf_Gold\":4,\"Wolf_Health\":0.15000000596046448,\"Wolf_Health_Teamwide\":0.07999999821186066,\"{f5b00dd5}\":8}},{\"maxUnits\":25000,\"minUnits\":6,\"style\":5,\"variables\":{\"Wolf_ADAP\":30,\"Wolf_Gold\":6,\"Wolf_Health\":0.2199999988079071,\"Wolf_Health_Teamwide\":0.07999999821186066,\"{f5b00dd5}\":8}}],\"icon\":\"ASSETS\/UX\/TraitIcons\/Trait_Icon_17_Stargazer.TFT_Set17.tex\",\"name\":\"Stargazer\"},{\"apiName\":\"TFT17_ShieldTank\",\"desc\":\"Vanguards gain @DamageReductionPct*100@% Durability while Shielded. <br><br>Combat start and @HealthThreshold*100@%&nbsp;Health: Gain a max Health Shield for @ShieldDuration@&nbsp;seconds.<br><br><row>(@MinUnits@) @ShieldPercentAmount*100@% max Health<\/row><br><row>(@MinUnits@) @ShieldPercentAmount*100@% max Health<\/row><br><row>(@MinUnits@) @ShieldPercentAmount*100@% max Health;<br>@EnhancedDurability*100@%&nbsp;%i:scaleDR% while Shielded<\/row>\",\"effects\":[{\"maxUnits\":3,\"minUnits\":2,\"style\":1,\"variables\":{\"DamageReductionPct\":0.05000000074505806,\"EnhancedDurability\":0.07999999821186066,\"HealthThreshold\":0.5,\"ShieldDuration\":10,\"ShieldPercentAmount\":0.1599999964237213}},{\"maxUnits\":5,\"minUnits\":4,\"style\":3,\"variables\":{\"DamageReductionPct\":0.05000000074505806,\"EnhancedDurability\":0.07999999821186066,\"HealthThreshold\":0.5,\"ShieldDuration\":10,\"ShieldPercentAmount\":0.30000001192092896}},{\"maxUnits\":25000,\"minUnits\":6,\"style\":5,\"variables\":{\"DamageReductionPct\":0.05000000074505806,\"EnhancedDurability\":0.07999999821186066,\"HealthThreshold\":0.5,\"ShieldDuration\":10,\"ShieldPercentAmount\":0.4000000059604645}}],\"icon\":\"ASSETS\/UX\/TraitIcons\/Trait_Icon_12_Vanguard.TFT_Set12.tex\",\"name\":\"Vanguard\"}],\"stats\":{\"armor\":60,\"attackSpeed\":0.6499999761581421,\"critChance\":0.25,\"critMultiplier\":1.399999976158142,\"damage\":60,\"hp\":1300,\"initialMana\":40,\"magicResist\":60,\"mana\":145,\"range\":1},\"img\":\"https:\/\/raw.communitydragon.org\/pbe\/game\/assets\/characters\/tft17_nunu\/hud\/tft17_nunu_square.tft_set17.png\",\"ability\":{\"desc\":\"Gain <TFTBonus>@ModifiedShield@&nbsp;(%i:scaleAP%)<\/TFTBonus> Shield for @ShieldDuration@ seconds. Summon an astrolabe to crash down on a nearby hex, dealing <magicDamage>@ModifiedInitialDamage@&nbsp;(%i:scaleAP%)<\/magicDamage> magic damage to enemies within 2 hexes. Then, push the astrolabe towards the end of the board, dealing <magicDamage>@ModifiedFollowupDamage@&nbsp;(%i:scaleAP%)<\/magicDamage> magic damage. All enemies hit by the astrolabe are knocked up for @StunDuration@ seconds.\",\"icon\":\"ASSETS\/Characters\/TFT17_Nunu\/HUD\/Icons2D\/TFT17_NunuE.TFT_Set17.tex\",\"name\":\"Calamity\",\"variables\":[{\"name\":\"Shield\",\"value\":[0,475,575,2000,4000,0,0]},{\"name\":\"InitialDamage\",\"value\":[0,120,180,2000,4000,0,0]},{\"name\":\"StunDuration\",\"value\":[0,1.5,1.75,8,16,0,0]},{\"name\":\"FollowupDamage\",\"value\":[0,100,150,2000,3000,0,0]},{\"name\":\"LockoutTime\",\"value\":[2.5,2.5,2.5,2.5,2.5,2.5,2.5]},{\"name\":\"ShieldDuration\",\"value\":[4,4,4,4,4,4,4]}]}}",
+                                "from": "Board",
+                                "hexId": "lv9-hex16"
+                            },
+                            "estrellas": 1,
+                            "powerUp": false,
+                            "dataItem": [
+                                {
+                                    "item": "{\"apiName\":\"TFT_Item_GargoyleStoneplate\",\"associatedTraits\":[],\"composition\":[\"TFT_Item_ChainVest\",\"TFT_Item_NegatronCloak\"],\"desc\":\"Gain @ArmorPerEnemy@ Armor and @MRPerEnemy@ Magic Resist for each enemy targeting the holder.\",\"effects\":{\"Armor\":25,\"ArmorPerEnemy\":10,\"Health\":100,\"MRPerEnemy\":10,\"MagicResist\":25,\"SizeIncrease\":0.07500000298023224,\"{4dc0582f}\":20},\"from\":null,\"icon\":\"https:\/\/raw.communitydragon.org\/pbe\/game\/assets\/maps\/tft\/icons\/items\/hexcore\/tft_item_gargoylestoneplate.tft_set13.png\",\"id\":null,\"incompatibleTraits\":[],\"name\":\"Gargoyle Stoneplate\",\"tags\":[\"{7ea41d13}\",\"{15b72700}\"],\"unique\":false,\"combine\":[4,5]}",
+                                    "from": "itemBoard",
+                                    "hexId": "lv9-hex16"
+                                },
+                                {
+                                    "item": "{\"apiName\":\"TFT_Item_FrozenHeart\",\"associatedTraits\":[],\"composition\":[\"TFT_Item_TearOfTheGoddess\",\"TFT_Item_ChainVest\"],\"desc\":\"Combat Start: Gain @CombatStartMana@ Mana.<br><br>At @HealthThreshold@% Health, gain @TriggerMana@ Mana and a Shield equal to @ShieldHealthPercent@% max Health.\",\"effects\":{\"Armor\":25,\"CombatStartMana\":20,\"HealthThreshold\":40,\"MagicResist\":25,\"ManaRegen\":1,\"ShieldDuration\":60,\"ShieldHealthPercent\":20,\"TriggerMana\":15},\"from\":null,\"icon\":\"https:\/\/raw.communitydragon.org\/pbe\/game\/assets\/maps\/tft\/icons\/items\/hexcore\/tft_item_frozenheart.tft_set13.png\",\"id\":null,\"incompatibleTraits\":[],\"name\":\"Protector's Vow\",\"tags\":[\"{7ea41d13}\",\"{15b72700}\"],\"unique\":false,\"combine\":[3,4]}",
+                                    "from": "itemBoard",
+                                    "hexId": "lv9-hex16"
+                                },
+                                {
+                                    "item": "{\"apiName\":\"TFT_Item_AdaptiveHelm\",\"associatedTraits\":[],\"composition\":[\"TFT_Item_NegatronCloak\",\"TFT_Item_TearOfTheGoddess\"],\"desc\":\"Gain an additional @ManaPercIncrease*100@% Mana from all sources. The holder gains an additional bonus based on their Role:<br><br>Tanks and Fighters: Gain @FrontlineResists@ Armor and Magic Resistance.<br><br>Other Roles: Gain @BacklineADAP@% Attack Damage and Ability Power. \",\"effects\":{\"BacklineADAP\":10,\"FrontlineResists\":30,\"MagicResist\":20,\"ManaPercIncrease\":0.15000000596046448,\"ManaRegen\":3},\"from\":null,\"icon\":\"https:\/\/raw.communitydragon.org\/pbe\/game\/assets\/maps\/tft\/icons\/items\/hexcore\/tft_item_adaptivehelm.tft_set13.png\",\"id\":null,\"incompatibleTraits\":[],\"name\":\"Adaptive Helm\",\"tags\":[\"{7ea41d13}\",\"Mana\",\"{15b72700}\"],\"unique\":false,\"combine\":[5,3]}",
+                                    "from": "itemBoard",
+                                    "hexId": "lv9-hex16"
+                                }
+                            ]
+                        },
+                        "hex25": {
+                            "dataCampeon": {
+                                "campeon": "{\"apiName\":\"TFT17_Summon\",\"nombre\":\"Bia & Bayin\",\"characterName\":\"TFT17_Summon\",\"coste\":11,\"sinergia\":[],\"stats\":{\"armor\":0,\"attackSpeed\":0.6000000238418579,\"critChance\":0.25,\"critMultiplier\":1.399999976158142,\"damage\":20,\"hp\":320,\"initialMana\":0,\"magicResist\":null,\"mana\":50,\"range\":1},\"img\":\"https:\/\/raw.communitydragon.org\/pbe\/game\/assets\/characters\/tft17_summon\/skins\/base\/images\/shiro_small.tft_set17.png\",\"ability\":{\"desc\":\"<spellPassive>Passive:<\/spellPassive> Attacks deal <magicDamage>@ModifiedAADamage@&nbsp;(%i:scaleAP%)<\/magicDamage> bonus magic damage.<br><br><spellActive>Active:<\/spellActive> Gain <TFTBonus>@ModifiedShield@ (%i:scaleAP%)<\/TFTBonus> Shield for @ShieldDuration@ seconds and grant allies @BonusAP@% Ability Power for the rest of combat.\",\"icon\":\"ASSETS\/Characters\/TFT17_Summon\/HUD\/TFT17_Summon_Square.TFT_Set17.tex\",\"name\":\"Screech\",\"variables\":[{\"name\":\"AADamage\",\"value\":[0,50,80,140,120,0,0]},{\"name\":\"Shield\",\"value\":[0,125,300,300,525,0,0]},{\"name\":\"ShieldDuration\",\"value\":[4,4,4,4,4,4,4]},{\"name\":\"BonusAP\",\"value\":[20,20,20,20,20,20,20]},{\"name\":\"TailSweepDamage\",\"value\":[200,200,200,200,200,200,200]},{\"name\":\"UltimateDamage\",\"value\":[220,220,220,220,220,220,220]},{\"name\":\"UltimateHeal\",\"value\":[0.15000000596046448,0.15000000596046448,0.15000000596046448,0.15000000596046448,0.15000000596046448,0.15000000596046448,0.15000000596046448]}]}}",
+                                "from": "Board",
+                                "hexId": "lv9-hex25"
+                            },
+                            "estrellas": 1,
+                            "powerUp": false,
+                            "dataItem": []
+                        },
+                        "hex41": {
+                            "dataCampeon": {
+                                "campeon": "{\"apiName\":\"TFT17_Karma\",\"nombre\":\"Karma\",\"characterName\":\"TFT17_Karma\",\"coste\":4,\"sinergia\":[{\"apiName\":\"TFT17_DarkStar\",\"desc\":\"<row>(@MinUnits@) Dark Stars create a black hole that consumes enemies at <ShowIf.TFT17_DarkStar_HasNeutronStar><TFTBonus>@TFTUnitProperty.trait:TFT17_Augment_DarkStar_NeutronStar_BonusExecutePercent*100@%<\/TFTBonus><\/ShowIf.TFT17_DarkStar_HasNeutronStar><ShowIfNot.TFT17_DarkStar_HasNeutronStar>@ExecuteHPPercent*100@%<\/ShowIfNot.TFT17_DarkStar_HasNeutronStar> max health.<\/row><br><row>(@MinUnits@) AND they gain @ADAP@% %i:scaleAD%%i:scaleAP%.<\/row><br><row>(@MinUnits@) AND the strongest Dark Star unit goes supermassive, gaining @SupermassivePercentBonus*100@% effectiveness from Dark Star, and creates 2 minor Black Holes.<\/row><br><row>(@MinUnits@) All Dark Stars are supermassive. At level 10, CONSUME EVERYONE. <\/row>\",\"effects\":[{\"maxUnits\":3,\"minUnits\":2,\"style\":1,\"variables\":{\"ADAP\":45,\"ExecuteHPPercent\":0.07999999821186066,\"PercentHealth\":0.25,\"SupermassivePercentBonus\":0.699999988079071}},{\"maxUnits\":5,\"minUnits\":4,\"style\":3,\"variables\":{\"ADAP\":45,\"ExecuteHPPercent\":0.07999999821186066,\"PercentHealth\":0.25,\"SupermassivePercentBonus\":0.699999988079071}},{\"maxUnits\":8,\"minUnits\":6,\"style\":5,\"variables\":{\"ADAP\":45,\"ExecuteHPPercent\":0.07999999821186066,\"PercentHealth\":0.25,\"SupermassivePercentBonus\":0.699999988079071}},{\"maxUnits\":25000,\"minUnits\":9,\"style\":6,\"variables\":{\"ADAP\":45,\"ExecuteHPPercent\":0.07999999821186066,\"PercentHealth\":0.25,\"SupermassivePercentBonus\":0.699999988079071}}],\"icon\":\"ASSETS\/UX\/TraitIcons\/Trait_Icon_17_DarkStar.TFT_Set17.tex\",\"name\":\"Dark Star\"},{\"apiName\":\"TFT17_FlexTrait\",\"desc\":\"Combat Start: Your Tanks gain a Shield for @ShieldDuration@ seconds. Your other allies gain Damage Amp. <br><br>Voyagers gain double.<br><br><expandRow>(@MinUnits@) @ShieldHP@ Shield; @BonusDA*100@% %i:scaleDA%<\/expandRow><br>\",\"effects\":[{\"maxUnits\":2,\"minUnits\":2,\"style\":1,\"variables\":{\"BonusDA\":0.09000000357627869,\"ShieldDuration\":15,\"ShieldHP\":175,\"{2ad3e251}\":2}},{\"maxUnits\":3,\"minUnits\":3,\"style\":3,\"variables\":{\"BonusDA\":0.15000000596046448,\"ShieldDuration\":15,\"ShieldHP\":250,\"{2ad3e251}\":2}},{\"maxUnits\":4,\"minUnits\":4,\"style\":3,\"variables\":{\"BonusDA\":0.18000000715255737,\"ShieldDuration\":15,\"ShieldHP\":350,\"{2ad3e251}\":2}},{\"maxUnits\":5,\"minUnits\":5,\"style\":3,\"variables\":{\"BonusDA\":0.2199999988079071,\"ShieldDuration\":15,\"ShieldHP\":500,\"{2ad3e251}\":2}},{\"maxUnits\":25000,\"minUnits\":6,\"style\":5,\"variables\":{\"BonusDA\":0.27000001072883606,\"ShieldDuration\":15,\"ShieldHP\":700,\"{2ad3e251}\":2}}],\"icon\":\"ASSETS\/UX\/TraitIcons\/Trait_Icon_17_Voyager.TFT_Set17.tex\",\"name\":\"Voyager\"}],\"stats\":{\"armor\":30,\"attackSpeed\":0.800000011920929,\"critChance\":0.25,\"critMultiplier\":1.399999976158142,\"damage\":40,\"hp\":850,\"initialMana\":10,\"magicResist\":30,\"mana\":55,\"range\":4},\"img\":\"https:\/\/raw.communitydragon.org\/pbe\/game\/assets\/characters\/tft17_karma\/hud\/tft17_karma_square.tft_set17.png\",\"ability\":{\"desc\":\"Gather the force of a black hole, dealing <magicDamage>@ModifiedDamage@&nbsp;(%i:scaleAP%)<\/magicDamage> magic damage split between the target and the <scaleLevel>@NumEnemies@<\/scaleLevel> closest enemies to them. The target takes an additional <magicDamage>@ModifiedSecondaryDamage@&nbsp;(%i:scaleAP%)<\/magicDamage> magic damage.\",\"icon\":\"ASSETS\/Characters\/TFT17_Karma\/HUD\/Icons2D\/TFT17_Karma_Q1.TFT_Set17.tex\",\"name\":\"Singularity\",\"variables\":[{\"name\":\"Damage\",\"value\":[0,570,855,5000,6000,0,0]},{\"name\":\"SecondaryDamage\",\"value\":[0,180,270,1000,1320,0,0]},{\"name\":\"BaseHexRange\",\"value\":[1,1,1,1,1,1,1]},{\"name\":\"NumCastsToExpand\",\"value\":[2,2,2,2,2,2,2]},{\"name\":\"HexPerExpansion\",\"value\":[1,1,1,1,1,1,1]},{\"name\":\"MaximumHexes\",\"value\":[8,8,8,8,8,8,8]},{\"name\":\"NumEnemies\",\"value\":[2,2,2,4,4,4,4]}]}}",
+                                "from": "Board",
+                                "hexId": "hex41"
+                            },
+                            "estrellas": 1,
+                            "powerUp": false,
+                            "dataItem": []
+                        },
+                        "hex45": {
+                            "dataCampeon": {
+                                "campeon": "{\"apiName\":\"TFT17_Bard\",\"nombre\":\"Bard\",\"characterName\":\"TFT17_Bard\",\"coste\":5,\"sinergia\":[{\"apiName\":\"TFT17_Astronaut\",\"desc\":\"Meeple attract Meeps that empower Meeple abilities in meepy ways. They also gain bonus Health.<br><br><row>(@MinUnits@) @Meeps@ %i:set14AmpIcon%, @BonusHealth@ %i:scaleHealth%<\/row><br><row>(@MinUnits@) @Meeps@ %i:set14AmpIcon%, @BonusHealth@ %i:scaleHealth%<\/row><br><row>(@MinUnits@) @Meeps@ %i:set14AmpIcon%, @BonusHealth@ %i:scaleHealth%. Create a Cloning Slot on your bench. Gain gold and a 1-star copy of the champion placed there when cloning completes.<\/row><br><row>(@MinUnits@) @Meeps@ %i:set14AmpIcon%, @BonusHealth@ %i:scaleHealth%. SUMMON THE FOUR MEEPLORDS!<\/row><br><br><rules>Cloning time = Champion cost<\/rules>\",\"effects\":[{\"maxUnits\":4,\"minUnits\":3,\"style\":1,\"variables\":{\"BonusHealth\":100,\"Meeps\":2}},{\"maxUnits\":6,\"minUnits\":5,\"style\":3,\"variables\":{\"BonusHealth\":400,\"Meeps\":3}},{\"maxUnits\":9,\"minUnits\":7,\"style\":5,\"variables\":{\"BonusHealth\":400,\"Meeps\":4}},{\"maxUnits\":25000,\"minUnits\":10,\"style\":6,\"variables\":{\"BonusHealth\":500,\"Meeps\":6}}],\"icon\":\"ASSETS\/UX\/TraitIcons\/Trait_Icon_17_Astronaut.TFT_Set17.tex\",\"name\":\"Meeple\"},{\"apiName\":\"TFT17_ManaTrait\",\"desc\":\"Innate: Conduits gain @InnateManaGain*100@% additional Mana from all sources.<br><br>Your team gains Mana Regen, increased for Conduits.<br><br><expandRow>(@MinUnits@) @TeamManaRegen@ %i:TFTManaRegen% | @ChannelerManaRegen@ %i:TFTManaRegen%<\/expandRow><br><br>\",\"effects\":[{\"maxUnits\":2,\"minUnits\":2,\"style\":1,\"variables\":{\"ChannelerManaRegen\":3,\"InnateManaGain\":0.20000000298023224,\"TeamManaRegen\":1}},{\"maxUnits\":3,\"minUnits\":3,\"style\":3,\"variables\":{\"ChannelerManaRegen\":5,\"InnateManaGain\":0.20000000298023224,\"TeamManaRegen\":1}},{\"maxUnits\":4,\"minUnits\":4,\"style\":3,\"variables\":{\"ChannelerManaRegen\":7,\"InnateManaGain\":0.20000000298023224,\"TeamManaRegen\":2}},{\"maxUnits\":25000,\"minUnits\":5,\"style\":5,\"variables\":{\"ChannelerManaRegen\":9,\"InnateManaGain\":0.20000000298023224,\"TeamManaRegen\":3}}],\"icon\":\"ASSETS\/UX\/TraitIcons\/Trait_Icon_17_Channeler.TFT_Set17.tex\",\"name\":\"Conduit\"}],\"stats\":{\"armor\":40,\"attackSpeed\":0.8500000238418579,\"critChance\":0.25,\"critMultiplier\":1.399999976158142,\"damage\":30,\"hp\":900,\"initialMana\":0,\"magicResist\":40,\"mana\":65,\"range\":4},\"img\":\"https:\/\/raw.communitydragon.org\/pbe\/game\/assets\/characters\/tft17_bard\/hud\/tft17_bard_square.tft_set17.png\",\"ability\":{\"desc\":\"Summon a flying saucer over the current target that lasts <ShowIf.TFT17_Augment_Concentration_Active><TFTRadiantItemBonus>@AugmentedDuration@<\/TFTRadiantItemBonus><\/ShowIf.TFT17_Augment_Concentration_Active><ShowIfNot.TFT17_Augment_Concentration_Active>@Duration@<\/ShowIfNot.TFT17_Augment_Concentration_Active> seconds. Each second it deals <magicDamage>@ModifiedDamagePerSecond@&nbsp;(%i:scaleAP%)<\/magicDamage>&nbsp;magic damage to the target, plus <magicDamage>@ModifiedSplitDamagePerSecond@&nbsp;(%i:scaleAP%)<\/magicDamage>&nbsp;magic damage split between all enemies within @SecondaryHexRange@&nbsp;hex. The saucer deals <TFTBonus>@TankDamageIncrease*100@%<\/TFTBonus> increased damage to Tanks.<br><br>If an enemy under the UFO dies, Bard has a <TFTBonus>@AbductChance*100@%&nbsp;<\/TFTBonus>chance to abduct them and create a 1-star copy on your bench.<br><br><mainText enabled=TFT17_Astronaut_IsActive alternate=rules><spellActive enabled=TFT17_Astronaut_IsActive alternate=rules>Meep bonus:<\/spellActive> On combat start, grant the nearest <TFTBonus>@ModifiedNumAllies@<\/TFTBonus>&nbsp;(%i:set14AmpIcon%) Meeple allies an additional Meep.<\/mainText><br><br><rules>Friends abducted: @TFTUnitProperty.:TFT17_Bard_FriendsAbducted@<\/rules>\",\"icon\":\"ASSETS\/Characters\/TFT17_Bard\/HUD\/Icons2D\/TFT17_Bard_E.TFT_Set17.tex\",\"name\":\"Ultra Friendly Object\",\"variables\":[{\"name\":\"DamagePerSecond\",\"value\":[2,220,330,3000,5000,2,2]},{\"name\":\"SplitDamagePerSecond\",\"value\":[0,135,205,1500,2500,0,0]},{\"name\":\"Duration\",\"value\":[4,4,4,4,4,4,4]},{\"name\":\"AugmentedDuration\",\"value\":[5,5,5,5,5,5,5]},{\"name\":\"AbductChance\",\"value\":[0.4000000059604645,0.15000000596046448,0.20000000298023224,1,0.4000000059604645,0.4000000059604645,0.4000000059604645]},{\"name\":\"PVEAbductionChanceModifier\",\"value\":[1,1,1,1,1,1,1]},{\"name\":\"MeepsPerMeep\",\"value\":[1,1,1,1,1,1,1]},{\"name\":\"TankDamageIncrease\",\"value\":[0.30000001192092896,0.30000001192092896,0.30000001192092896,0.30000001192092896,0.30000001192092896,0.30000001192092896,0.30000001192092896]},{\"name\":\"SecondaryHexRange\",\"value\":[1,1,1,1,1,1,1]},{\"name\":\"CanAbductSecondaryTargets\",\"value\":[1,1,1,1,1,1,1]}]}}",
+                                "from": "Board",
+                                "hexId": "hex45"
+                            },
+                            "estrellas": 1,
+                            "powerUp": false,
+                            "dataItem": [
+                                {
+                                    "item": "{\"apiName\":\"TFT_Item_MadredsBloodrazor\",\"associatedTraits\":[],\"composition\":[\"TFT_Item_BFSword\",\"TFT_Item_RecurveBow\"],\"desc\":\"Gain @DamageAmp*100@% additional Damage Amp against Tanks.\",\"effects\":{\"AD\":0.15000000596046448,\"AP\":15,\"AS\":15,\"DamageAmp\":0.15000000596046448,\"{1543aa48}\":0.15000000596046448,\"{abb9f4ce}\":25},\"from\":null,\"icon\":\"https:\/\/raw.communitydragon.org\/pbe\/game\/assets\/maps\/tft\/icons\/items\/hexcore\/tft_item_madredsbloodrazor.tft_set13.png\",\"id\":null,\"incompatibleTraits\":[],\"name\":\"Giant Slayer\",\"tags\":[\"{7ea41d13}\"],\"unique\":false,\"combine\":[0,1]}",
+                                    "from": "itemBoard",
+                                    "hexId": "hex45"
+                                },
+                                {
+                                    "item": "{\"apiName\":\"TFT_Item_RabadonsDeathcap\",\"associatedTraits\":[],\"composition\":[\"TFT_Item_NeedlesslyLargeRod\",\"TFT_Item_NeedlesslyLargeRod\"],\"desc\":\"<tftitemrules>This humble hat can help you make, or unmake, the world itself.<\/tftitemrules><br><br>@TFTUnitProperty.:TFT_Augment_DeadlierCaps_TRAKey@\",\"effects\":{\"AP\":55,\"BonusDamage\":0.15000000596046448,\"{1543aa48}\":0.15000000596046448},\"from\":null,\"icon\":\"https:\/\/raw.communitydragon.org\/pbe\/game\/assets\/maps\/tft\/icons\/items\/hexcore\/tft_item_rabadonsdeathcap.tft_set13.png\",\"id\":null,\"incompatibleTraits\":[],\"name\":\"Rabadon's Deathcap\",\"tags\":[\"{7ea41d13}\",\"AbilityPower\"],\"unique\":false,\"combine\":[2,2]}",
+                                    "from": "itemBoard",
+                                    "hexId": "hex45"
+                                }
+                            ]
+                        },
+                        "hex47": {
+                            "dataCampeon": {
+                                "campeon": "{\"apiName\":\"TFT17_Sona\",\"nombre\":\"Sona\",\"characterName\":\"TFT17_Sona\",\"coste\":5,\"sinergia\":[{\"apiName\":\"TFT17_SonaUniqueTrait\",\"desc\":\"(@MinUnits@) Sona gives you a random Command Mod every @RoundsPerMod@ rounds which allows you to alter the way an ally behaves during combat. Command Mods last @RoundsPerMod@ player combats even if they are not equipped.\",\"effects\":[{\"maxUnits\":25000,\"minUnits\":1,\"style\":4,\"variables\":{\"AS\":0.15000000596046448,\"HealthRatio\":0.15000000596046448,\"RoundsPerMod\":2}}],\"icon\":\"ASSETS\/UX\/TraitIcons\/Trait_Icon_17_Commander.TFT_Set17.tex\",\"name\":\"Commander\"},{\"apiName\":\"TFT17_PsyOps\",\"desc\":\"Gain Psionic items that can be equipped to any ally.<br><br><row>(@MinUnits@) Gain the @TFTUnitProperty.trait:TFT17_PsyOps_Item1@<\/row><br><row>(@MinUnits@) Gain the @TFTUnitProperty.trait:TFT17_PsyOps_Item2@, Psionic items gain extra effects on Psionic units<\/row><br><br><br>\",\"effects\":[{\"maxUnits\":3,\"minUnits\":2,\"style\":1,\"variables\":{\"{1b889d1c}\":null}},{\"maxUnits\":25000,\"minUnits\":4,\"style\":5,\"variables\":{\"{1b889d1c}\":50}}],\"icon\":\"ASSETS\/UX\/TraitIcons\/Trait_Icon_17_PsyOps.TFT_Set17.tex\",\"name\":\"Psionic\"},{\"apiName\":\"TFT17_SummonTrait\",\"desc\":\"Shepherds summon the Bond of the Stars to aid them in battle.<br><br><row>(@MinUnits@) Summon Bia<\/row><br><row>(@MinUnits@) Summon Bayin<\/row><br><row>(@MinUnits@) Bia and Bayin's bond grows deeper<\/row><br><br><rules>Bia and Bayin's power are increased by the total star level of all Shepherds.<\/rules>\",\"effects\":[{\"maxUnits\":4,\"minUnits\":3,\"style\":1,\"variables\":{}},{\"maxUnits\":6,\"minUnits\":5,\"style\":3,\"variables\":{}},{\"maxUnits\":25000,\"minUnits\":7,\"style\":5,\"variables\":{}}],\"icon\":\"ASSETS\/UX\/TraitIcons\/Trait_Icon_17_Shepherd.TFT_Set17.tex\",\"name\":\"Shepherd\"}],\"stats\":{\"armor\":40,\"attackSpeed\":0.8999999761581421,\"critChance\":0.25,\"critMultiplier\":1.399999976158142,\"damage\":35,\"hp\":900,\"initialMana\":0,\"magicResist\":40,\"mana\":25,\"range\":4},\"img\":\"https:\/\/raw.communitydragon.org\/pbe\/game\/assets\/characters\/tft17_sona\/hud\/tft17_sona_square.tft_set17.png\",\"ability\":{\"desc\":\"Hurl a chunk of magnetic debris at the nearest target without one, dealing <magicDamage>@ModifiedDebrisDamage@&nbsp;(%i:scaleAP%)<\/magicDamage> magic damage and sticking it to them. If an enemy with debris dies, it passes to the nearest enemy without one.<br><br>Every @NumCasts@ casts, instead rip off all debris dealing <magicDamage>@ModifiedDebrisRipDamage@&nbsp;(%i:scaleAP%)<\/magicDamage> magic damage, then crush all the debris onto the target, dealing <magicDamage>@ModifiedSlamDamage@&nbsp;(%i:scaleAP%)<\/magicDamage> magic damage and briefly stunning them.\",\"icon\":\"ASSETS\/Characters\/TFT17_Sona\/HUD\/Icons2D\/TFT17_Sona_E.TFT_Set17.tex\",\"name\":\"Psionic Crush\",\"variables\":[{\"name\":\"DebrisDamage\",\"value\":[300,300,450,999,999,2,2]},{\"name\":\"SlamDamage\",\"value\":[2.5,720,1100,9999,9999,2.5,2.5]},{\"name\":\"NumCasts\",\"value\":[5,5,5,5,5,5,5]},{\"name\":\"DebrisRipDamage\",\"value\":[160,120,180,999,2000,0,0]},{\"name\":\"StunDuration\",\"value\":[1,1,1,1,1,1,1]}]}}",
+                                "from": "Board",
+                                "hexId": "hex47"
+                            },
+                            "estrellas": 1,
+                            "powerUp": false,
+                            "dataItem": [
+                                {
+                                    "item": "{\"apiName\":\"TFT_Item_StatikkShiv\",\"associatedTraits\":[],\"composition\":[\"TFT_Item_RecurveBow\",\"TFT_Item_TearOfTheGoddess\"],\"desc\":\"Damage from attacks and Abilities @MRShred@% <TFTKeyword>Shred<\/TFTKeyword> the target for @MRShredDuration@ seconds. This effect does not stack.<br><br><tftitemrules><tftbold>Shred<\/tftbold>: Reduce Magic Resist<\/tftitemrules>\",\"effects\":{\"AP\":35,\"AS\":15,\"MRShred\":30,\"MRShredDuration\":5,\"ManaRegen\":1},\"from\":null,\"icon\":\"https:\/\/raw.communitydragon.org\/pbe\/game\/assets\/maps\/tft\/icons\/items\/hexcore\/tft_item_voidstaff.png\",\"id\":null,\"incompatibleTraits\":[],\"name\":\"Void Staff\",\"tags\":[\"{7ea41d13}\"],\"unique\":false,\"combine\":[1,3]}",
+                                    "from": "itemBoard",
+                                    "hexId": "hex47"
+                                },
+                                {
+                                    "item": "{\"apiName\":\"TFT_Item_SpearOfShojin\",\"associatedTraits\":[],\"composition\":[\"TFT_Item_BFSword\",\"TFT_Item_TearOfTheGoddess\"],\"desc\":\"Attacks grant @FlatManaRestore@ bonus Mana.\",\"effects\":{\"AD\":0.15000000596046448,\"AP\":15,\"FlatManaRestore\":5,\"ManaRegen\":1},\"from\":null,\"icon\":\"https:\/\/raw.communitydragon.org\/pbe\/game\/assets\/maps\/tft\/icons\/items\/hexcore\/tft_item_spearofshojin.tft_set13.png\",\"id\":null,\"incompatibleTraits\":[],\"name\":\"Spear of Shojin\",\"tags\":[\"{7ea41d13}\",\"Mana\"],\"unique\":false,\"combine\":[0,3]}",
+                                    "from": "itemBoard",
+                                    "hexId": "hex47"
+                                },
+                                {
+                                    "item": "{\"apiName\":\"TFT_Item_Morellonomicon\",\"associatedTraits\":[],\"composition\":[\"TFT_Item_NeedlesslyLargeRod\",\"TFT_Item_GiantsBelt\"],\"desc\":\"Attacks and Abilities deal @BurnPercent@% <TFTKeyword>Burn<\/TFTKeyword> and @GrievousWoundsPercent@% <TFTKeyword>Wound<\/TFTKeyword> to enemies for @BurnDuration@ seconds.<br><br><tftitemrules><tftbold>Burn<\/tftbold>: Deals a percent of the target's max Health as true damage every second<br><tftbold>Wound<\/tftbold>: Reduces healing received<\/tftitemrules>\",\"effects\":{\"AP\":20,\"BurnDuration\":10,\"BurnPercent\":1,\"GrievousWoundsPercent\":33,\"Health\":150,\"ManaRegen\":1,\"MonsterCap\":100,\"TicksPerSecond\":1},\"from\":null,\"icon\":\"https:\/\/raw.communitydragon.org\/pbe\/game\/assets\/maps\/tft\/icons\/items\/hexcore\/tft_item_morellonomicon.tft_set13.png\",\"id\":null,\"incompatibleTraits\":[],\"name\":\"Morellonomicon\",\"tags\":[\"{7ea41d13}\",\"AttackSpeed\",\"AbilityPower\"],\"unique\":false,\"combine\":[2,6]}",
+                                    "from": "itemBoard",
+                                    "hexId": "hex47"
+                                }
+                            ]
+                        }
+                    },
+                    "sinergias": {
+                        "TFT17_RhaastUniqueTrait": 1,
+                        "TFT17_DarkStar": 2,
+                        "TFT17_ManaTrait": 2,
+                        "TFT17_ShieldTank": 4,
+                        "TFT17_Astronaut": 2,
+                        "TFT17_SummonTrait": 3,
+                        "TFT17_FlexTrait": 2,
+                        "TFT17_BlitzcrankUniqueTrait": 1,
+                        "TFT17_SpaceGroove": 1,
+                        "TFT17_AnimaSquad": 1,
+                        "TFT17_Stargazer_Wolf": 1,
+                        "TFT17_SonaUniqueTrait": 1,
+                        "TFT17_PsyOps": 1
+                    }
+                }
+            },
+            "pictureSave": {
+                "lv9": true
+            },
+            "gameplay": [],
+            "spatulaItem1": "",
+            "spatulaItem2": "",
+            "originalComp": "lv9",
+            "isHide": false,
+            "isInInfographic": true,
+            "campeonTierList": {
+                "ability": {
+                    "desc": "Hurl a chunk of magnetic debris at the nearest target without one, dealing <magicDamage>@ModifiedDebrisDamage@&nbsp;(%i:scaleAP%)<\/magicDamage> magic damage and sticking it to them. If an enemy with debris dies, it passes to the nearest enemy without one.<br><br>Every @NumCasts@ casts, instead rip off all debris dealing <magicDamage>@ModifiedDebrisRipDamage@&nbsp;(%i:scaleAP%)<\/magicDamage> magic damage, then crush all the debris onto the target, dealing <magicDamage>@ModifiedSlamDamage@&nbsp;(%i:scaleAP%)<\/magicDamage> magic damage and briefly stunning them.",
+                    "icon": "ASSETS\/Characters\/TFT17_Sona\/HUD\/Icons2D\/TFT17_Sona_E.TFT_Set17.tex",
+                    "name": "Psionic Crush",
+                    "variables": [
+                        {
+                            "name": "DebrisDamage",
+                            "value": [
+                                300,
+                                300,
+                                450,
+                                999,
+                                999,
+                                2,
+                                2
+                            ]
+                        },
+                        {
+                            "name": "SlamDamage",
+                            "value": [
+                                2.5,
+                                720,
+                                1100,
+                                9999,
+                                9999,
+                                2.5,
+                                2.5
+                            ]
+                        },
+                        {
+                            "name": "NumCasts",
+                            "value": [
+                                5,
+                                5,
+                                5,
+                                5,
+                                5,
+                                5,
+                                5
+                            ]
+                        },
+                        {
+                            "name": "DebrisRipDamage",
+                            "value": [
+                                160,
+                                120,
+                                180,
+                                999,
+                                2000,
+                                0,
+                                0
+                            ]
+                        },
+                        {
+                            "name": "StunDuration",
+                            "value": [
+                                1,
+                                1,
+                                1,
+                                1,
+                                1,
+                                1,
+                                1
+                            ]
+                        }
+                    ]
+                },
+                "apiName": "TFT17_Sona",
+                "characterName": "TFT17_Sona",
+                "cost": 5,
+                "icon": "ASSETS\/Characters\/TFT17_Sona\/Skins\/Base\/Images\/TFT17_Sona_splash_centered_17.TFT_Set17.tex",
+                "name": "Sona",
+                "role": "APCaster",
+                "squareIcon": "ASSETS\/Characters\/TFT17_Sona\/Skins\/Base\/Images\/TFT17_Sona_splash_tile_17.TFT_Set17.tex",
+                "stats": {
+                    "armor": 40,
+                    "attackSpeed": 0.8999999761581421,
+                    "critChance": 0.25,
+                    "critMultiplier": 1.399999976158142,
+                    "damage": 35,
+                    "hp": 900,
+                    "initialMana": 0,
+                    "magicResist": 40,
+                    "mana": 25,
+                    "range": 4
+                },
+                "tileIcon": "ASSETS\/Characters\/TFT17_Sona\/HUD\/TFT17_Sona_Square.TFT_Set17.tex",
+                "traits": [
+                    "Commander",
+                    "Psionic",
+                    "Shepherd"
+                ]
+            },
+            "augmentTierList": [],
+            "champItem": [
+                {
+                    "apiName": "TFT_Item_SpearOfShojin",
+                    "associatedTraits": [],
+                    "composition": [
+                        "TFT_Item_BFSword",
+                        "TFT_Item_TearOfTheGoddess"
+                    ],
+                    "desc": "Attacks grant @FlatManaRestore@ bonus Mana.",
+                    "effects": {
+                        "AD": 0.15000000596046448,
+                        "AP": 15,
+                        "FlatManaRestore": 5,
+                        "ManaRegen": 1
+                    },
+                    "from": null,
+                    "icon": "ASSETS\/Maps\/TFT\/Icons\/Items\/Hexcore\/TFT_Item_SpearOfShojin.TFT_Set13.tex",
+                    "id": null,
+                    "incompatibleTraits": [],
+                    "name": "Spear of Shojin",
+                    "tags": [
+                        "{7ea41d13}",
+                        "Mana"
+                    ],
+                    "unique": false
+                },
+                {
+                    "apiName": "TFT_Item_Morellonomicon",
+                    "associatedTraits": [],
+                    "composition": [
+                        "TFT_Item_NeedlesslyLargeRod",
+                        "TFT_Item_GiantsBelt"
+                    ],
+                    "desc": "Attacks and Abilities deal @BurnPercent@% <TFTKeyword>Burn<\/TFTKeyword> and @GrievousWoundsPercent@% <TFTKeyword>Wound<\/TFTKeyword> to enemies for @BurnDuration@ seconds.<br><br><tftitemrules><tftbold>Burn<\/tftbold>: Deals a percent of the target's max Health as true damage every second<br><tftbold>Wound<\/tftbold>: Reduces healing received<\/tftitemrules>",
+                    "effects": {
+                        "AP": 20,
+                        "BurnDuration": 10,
+                        "BurnPercent": 1,
+                        "GrievousWoundsPercent": 33,
+                        "Health": 150,
+                        "ManaRegen": 1,
+                        "MonsterCap": 100,
+                        "TicksPerSecond": 1
+                    },
+                    "from": null,
+                    "icon": "ASSETS\/Maps\/TFT\/Icons\/Items\/Hexcore\/TFT_Item_Morellonomicon.TFT_Set13.tex",
+                    "id": null,
+                    "incompatibleTraits": [],
+                    "name": "Morellonomicon",
+                    "tags": [
+                        "{7ea41d13}",
+                        "AttackSpeed",
+                        "AbilityPower"
+                    ],
+                    "unique": false
+                },
+                {
+                    "apiName": "TFT_Item_StatikkShiv",
+                    "associatedTraits": [],
+                    "composition": [
+                        "TFT_Item_RecurveBow",
+                        "TFT_Item_TearOfTheGoddess"
+                    ],
+                    "desc": "Damage from attacks and Abilities @MRShred@% <TFTKeyword>Shred<\/TFTKeyword> the target for @MRShredDuration@ seconds. This effect does not stack.<br><br><tftitemrules><tftbold>Shred<\/tftbold>: Reduce Magic Resist<\/tftitemrules>",
+                    "effects": {
+                        "AP": 35,
+                        "AS": 15,
+                        "MRShred": 30,
+                        "MRShredDuration": 5,
+                        "ManaRegen": 1
+                    },
+                    "from": null,
+                    "icon": "ASSETS\/Maps\/TFT\/Icons\/Items\/Hexcore\/TFT_Item_VoidStaff.tex",
+                    "id": null,
+                    "incompatibleTraits": [],
+                    "name": "Void Staff",
+                    "tags": [
+                        "{7ea41d13}"
+                    ],
+                    "unique": false
+                }
+            ],
+            "champTrait": [
+                []
+            ],
+            "champPowerUp": [
+                []
+            ],
+            "champ3Stars": false,
+            "tipSeo": "La comp de Fast 9 AP se juega con racha de victoria y aumentos de objetos y econom\u00eda. Enfoca en vanguardias desde temprano y objetos de tanque con mana para Nunu, en late Sona y Bardo son felxibles para tener objetos de utilidad y poder de habilidad.",
+            "cuandoJugar": "",
+            "condicionVictoria": "",
+            "compUrl": "sona"
+        },
+        {
+            "id": "2le1t78h6lcjcj2e6fb4",
+            "version": "pbe",
+            "ocultar": false,
+            "nombre": "Gragas Hero",
+            "tier": "S",
+            "tierExtra": "H",
+            "posicion": "8",
+            "dificultad": "Facil",
+            "categoria": "3 Estrellas",
+            "campeonMeta": {
+                "apiNameCampeon": "TFT17_Gragas",
+                "apiNameItemsDelCampeon": [
+                    "TFT17_Item_PsyOps_SympatheticImplantMod_Radiant",
+                    "TFT_Item_JeweledGauntlet",
+                    "TFT_Item_UnstableConcoction"
+                ],
+                "aumento": "TFT17_Augment_GragasCarry",
+                "emblema": "",
+                "estrellas": true
+            },
+            "tipoDeDa\u00f1o": "AP",
+            "niveles": [],
+            "itemsPrio": [
+                "TFT17_Item_PsyOps_SympatheticImplantMod",
+                "TFT_Item_JeweledGauntlet",
+                "TFT11_Encounter_ChoiceItem_GiveHoJ"
+            ],
+            "posicionamiento": [
+                {
+                    "nombre": "Compo Final Base",
+                    "tablero": [
+                        {
+                            "fila": 1,
+                            "col": 3,
+                            "apiNameCampeon": "TFT17_Pantheon",
+                            "apiNameItemsDelCampeon": [
+                                "TFT_Item_IonicSpark",
+                                "TFT_Item_RedBuff"
+                            ],
+                            "estrella": 3,
+                            "sinergiaExtraMissFortune": ""
+                        },
+                        {
+                            "fila": 1,
+                            "col": 4,
+                            "apiNameCampeon": "TFT17_Gragas",
+                            "apiNameItemsDelCampeon": [
+                                "TFT_Item_JeweledGauntlet",
+                                "TFT_Item_UnstableConcoction",
+                                "TFT17_Item_PsyOps_SympatheticImplantMod"
+                            ],
+                            "estrella": 3,
+                            "sinergiaExtraMissFortune": ""
+                        },
+                        {
+                            "fila": 1,
+                            "col": 5,
+                            "apiNameCampeon": "TFT17_TahmKench",
+                            "apiNameItemsDelCampeon": [],
+                            "estrella": 1,
+                            "sinergiaExtraMissFortune": ""
+                        },
+                        {
+                            "fila": 2,
+                            "col": 2,
+                            "apiNameCampeon": "TFT17_Maokai",
+                            "apiNameItemsDelCampeon": [],
+                            "estrella": 1,
+                            "sinergiaExtraMissFortune": ""
+                        },
+                        {
+                            "fila": 2,
+                            "col": 3,
+                            "apiNameCampeon": "TFT17_Urgot",
+                            "apiNameItemsDelCampeon": [],
+                            "estrella": 1,
+                            "sinergiaExtraMissFortune": ""
+                        },
+                        {
+                            "fila": 2,
+                            "col": 4,
+                            "apiNameCampeon": "TFT17_Chogath",
+                            "apiNameItemsDelCampeon": [],
+                            "estrella": 1,
+                            "sinergiaExtraMissFortune": ""
+                        },
+                        {
+                            "fila": 3,
+                            "col": 1,
+                            "apiNameCampeon": "TFT17_MasterYi",
+                            "apiNameItemsDelCampeon": [
+                                "TFT_Item_GuardianAngel",
+                                "TFT_Item_MadredsBloodrazor",
+                                "TFT17_Item_PsyOps_ChemicalCapacitorMod"
+                            ],
+                            "estrella": 1,
+                            "sinergiaExtraMissFortune": ""
+                        },
+                        {
+                            "fila": 3,
+                            "col": 7,
+                            "apiNameCampeon": "TFT17_Pyke",
+                            "apiNameItemsDelCampeon": [],
+                            "estrella": 1,
+                            "sinergiaExtraMissFortune": ""
+                        },
+                        {
+                            "fila": 4,
+                            "col": 2,
+                            "apiNameCampeon": "TFT17_Sona",
+                            "apiNameItemsDelCampeon": [],
+                            "estrella": 1,
+                            "sinergiaExtraMissFortune": ""
+                        }
+                    ]
+                }
+            ],
+            "ordenPrioridadAumentos": [],
+            "tipSEO": "",
+            "urlSEO": "",
+            "campeonesEarly": [
+                {
+                    "apiNameCampeon": "TFT17_Gragas",
+                    "apiNameItemsDelCampeon": []
+                },
+                {
+                    "apiNameCampeon": "TFT17_Pantheon",
+                    "apiNameItemsDelCampeon": [
+                        "",
+                        "",
+                        ""
+                    ]
+                },
+                {
+                    "apiNameCampeon": "TFT17_Pyke",
+                    "apiNameItemsDelCampeon": [
+                        "",
+                        "",
+                        ""
+                    ]
+                },
+                {
+                    "apiNameCampeon": "TFT17_Chogath",
+                    "apiNameItemsDelCampeon": [
+                        "",
+                        "",
+                        ""
+                    ]
+                },
+                {
+                    "apiNameCampeon": "TFT17_RekSai",
+                    "apiNameItemsDelCampeon": [
+                        "",
+                        "",
+                        ""
+                    ]
+                }
+            ],
+            "dioses": [],
+            "bestBuild": [
+                {
+                    "apiNameCampeon": "TFT17_Gragas",
+                    "apiNameItemsDelCampeon": [
+                        "TFT17_Item_PsyOps_SympatheticImplantMod",
+                        "TFT_Item_JeweledGauntlet",
+                        "TFT11_Encounter_ChoiceItem_GiveHoJ"
+                    ]
+                }
+            ],
+            "condiciones": [],
+            "aumentos": [],
+            "encuentros": [],
+            "url": "a",
+            "tipSeo": "La comp de Gragas heroe se juega unicamente si uno de tus dos objetos psionicos es el Sympathetic implant para maximizar el da\u00f1o a la linea frontal enemiga"
+        }
+    ]
+}

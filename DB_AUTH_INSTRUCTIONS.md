@@ -109,7 +109,7 @@ $stmt->execute([$email, $code, $expires]);
 
 // Enviar Email
 $to = $email;
-$subject = "Tu código de confirmación - Guía de Parche";
+$subject = "Tu código de confirmación - Guiadeparche";
 $message = "Hola! Tu código es: " . $code . "\nExpira en 15 minutos.";
 $headers = "From: no-reply@guiadeparche.com";
 

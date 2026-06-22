@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    background: rgba(20, 16, 38, 0.6);
+    background: rgb(18 16 52);
     border: 1px solid rgba(123, 97, 255, 0.25);
     gap:6px;
     border-radius: 12px;
@@ -32,6 +32,7 @@
     display:flex;
     flex-direction: column;
     gap:5px;
+    container-type:inline-size;
 }
 .imgBackground {
     display: none;
@@ -42,7 +43,7 @@
     position:relative;
     flex-direction: column;
     align-items: left;
-    width: 80%;
+    width: 90%;
     
 }
 
@@ -57,9 +58,10 @@
     position:relative;
     flex-direction: column;
     align-items: left;
-    width: 20%;
+    width: 10%;
     border-left: 1px solid rgba(123, 97, 255, 0.25);
     padding-left: 16px;
+    box-sizing: border-box;
 }
 
 .tipSeo{
@@ -73,7 +75,6 @@
     justify-content: flex-start;
     border-bottom: 1px solid rgba(123, 97, 255, 0.15);
     padding-bottom: 12px;
-    margin-bottom: 16px;
     gap:12px;
 }
 
@@ -164,13 +165,13 @@
     font-size: 0.8rem;
     font-weight: 600;
 }
-.dificultad-Easy{
+.dificultad-Facil{
     background-color: #36e484;
 }
-.dificultad-Medium{
+.dificultad-Medio{
     background-color: #e9cc74;
 }
-.dificultad-Hard{
+.dificultad-Dificil{
     background-color: #ee6868;
 }
 
@@ -185,13 +186,13 @@
 
 /* Contenedores de Campeones */
 .championsContainer {
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
     align-items: flex-start;
-    flex-wrap: wrap;
     width: 100%;
     gap: 12px;
-    margin-bottom: 1.25%;
+    padding: 0px 5px 5px 0;
+    box-sizing: border-box;
 }
 
 .championsContainerInfografia{
@@ -202,9 +203,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: calc((100% - (12px * 8)) / 9);
+    width: 100%;
     position: relative;
 }
+
 
 .championImgItems {
     position: relative;
@@ -243,6 +245,16 @@
     height: 100%;
     object-fit: cover;
     display: block;
+}
+.championImageWrapper::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 40%; /* Controls how high the black fade reaches */
+  background: linear-gradient(to bottom, transparent, rgb(0, 0, 0));
+  pointer-events: none; /* Allows user clicks to pass through to the image */
 }
 
 .championInfo {
@@ -333,7 +345,7 @@
   border-radius: 8px;
   text-decoration: none;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 15cqw;
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   box-sizing: border-box;
   text-align: center;

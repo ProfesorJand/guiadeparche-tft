@@ -2,7 +2,7 @@ import { useEffect, lazy, Suspense } from 'react';
 import { $user, $admin, logOut, $activeTab, setActiveTab } from "@stores/auth";
 import { useStore } from "@nanostores/react";
 import styles from './PerfilUsuario.module.css';
-import {fetchAndSortComps, composMetaPBEJSON} from "@stores/dataTFT";
+import {fetchAndSortComps, composMetaPBEJSON, composMetaPBETestJSON, addRestCompsFetch} from "@stores/dataTFT";
 
 const AdminPanel = lazy(() => import("@components/main/Admin/Admin.jsx"));
 
@@ -13,7 +13,8 @@ const PerfilUsuario = () => {
   useEffect(() => {
     const loadData = async () => {
       if(admin){
-        await fetchAndSortComps(composMetaPBEJSON);
+        await fetchAndSortComps(composMetaPBETestJSON);
+        await addRestCompsFetch(composMetaPBEJSON);
       }
     };
     loadData();

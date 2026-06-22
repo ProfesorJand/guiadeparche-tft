@@ -66,7 +66,7 @@ const defaultValuesComposicionTFT = {
     aumento:"",
     emblema:"",
   },
-  tipoDeDaño:dañoTipo.Es[0],
+  tipoDeDano:dañoTipo.Es[0],
 
   niveles:[
     {
@@ -112,7 +112,8 @@ const defaultValuesComposicionTFT = {
   dioses:[], // 3 Fijos // masterplan
   bestBuild:[{
     apiNameCampeon: "",
-    apiNameItemsDelCampeon: [],
+    apiNameItemsBisDelCampeon: [["", "", ""]],
+    apiNameItemsSpecialBisDelCampeon: [["", "", ""]],
   }],
   condiciones:[{
     apiNameGrande:"",

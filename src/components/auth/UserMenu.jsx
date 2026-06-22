@@ -4,7 +4,7 @@ import ProfileSummary from "@components/auth/ProfileSummary";
 import Menu from "@components/auth/Menu";
 import TierListMetaComps from "@components/TFT/TierListMetaComps";
 import styles from "@components/auth/PerfilUsuario.module.css";
-import { metaCompsTFT, fetchAndSortComps, composMetaPBEJSON } from "@stores/dataTFT";
+import { metaCompsTFT, fetchAndSortComps, composMetaPBEJSON, composMetaJSON } from "@stores/dataTFT";
 import { useEffect } from "react";
 
 const UserMenu=()=>{
@@ -18,6 +18,7 @@ const UserMenu=()=>{
     const loadComps = async()=>{
       if(todasLasCompsPBE) return;
       await fetchAndSortComps(composMetaPBEJSON);
+      await addRestCompsFetch(composMetaJSON);
     }
     loadComps();
   },[]);
@@ -28,7 +29,7 @@ return (
 
     <Menu activeTab={activeTab} setActiveTab={setActiveTab} styles={styles} admin={admin} />
     {activeTab==="admin" &&
-      <TierListMetaComps todasLasCompsPBE={todasLasCompsPBE} />
+     <TierListMetaComps todasLasCompsPBE={todasLasCompsPBE} />
     }
   </aside>
  

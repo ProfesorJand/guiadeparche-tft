@@ -1130,11 +1130,11 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
       </label>
       <div className={style.containerAumentos}>
           
-        {aumentos.map(({icon, apiName})=>{
+        {aumentos.map((apiName)=>{
           return (
             <div key={"ImgAumentos"+apiName} className={style.horizontalWrapper}>
               <button className={style.btnClose} onClick={()=>eliminarAumento(apiName)}>X</button>
-              <img src={urlImgAum+icon.toLowerCase().replace(".tex",".png")} className={style.imgAumento} loading="lazy"></img>
+              <img src={urlImgAum+itemsDataIngles.find((item)=>item.apiName === apiName)?.icon.toLowerCase().replace(".tex",".png")} className={style.imgAumento} loading="lazy"></img>
             </div>
         )
         })}

@@ -1,12 +1,16 @@
-import { urlDragon, urlComposiciones } from "@stores/dataTFT";
+import { urlDragon, urlComposiciones, dataTFTChampions, dataTFTAllItems } from "@stores/dataTFT";
 import style from "./css/GuiaFreeTFTMeta.module.css";
 import Sinergias from "@components/main/Admin/Sinergias";
 import { useState, useRef, useEffect } from "react";
+import { useStore } from "@nanostores/react";
+import NuevoBuilderTFT from "./NuevoBuilderTFT";
+
 const GuiaFreeTFTMeta = ({comp, isInfografia=false, edit=false}) => {
   const [hoveredAugment, setHoveredAugment] = useState(null);
   const augmentRef = useRef(null);
   const tooltipRef = useRef(null);
-
+  const allChampionsTFT = useStore(dataTFTChampions);
+  const allItemsTFT = useStore(dataTFTAllItems);
   useEffect(() => {
     function handleClickOutside(event) {
       // Si se hace clic fuera del contenedor de aumentos Y fuera del tooltip, limpiamos el estado
@@ -30,182 +34,160 @@ const GuiaFreeTFTMeta = ({comp, isInfografia=false, edit=false}) => {
 
   return(
     <div className={style.container}>
-      <Header1 comp={comp}></Header1>
-      <Header2 comp={comp} setHoveredAugment={setHoveredAugment} augmentRef={augmentRef}></Header2>
-      <FooterTooltip augment={hoveredAugment} tooltipRef={tooltipRef} edit={edit} isInfografia={isInfografia}></FooterTooltip>
+      <Header1 comp={comp} allChampionsTFT={allChampionsTFT} allItemsTFT={allItemsTFT} ></Header1>
+      <Header2 comp={comp} setHoveredAugment={setHoveredAugment} augmentRef={augmentRef} allChampionsTFT={allChampionsTFT} allItemsTFT={allItemsTFT} ></Header2>
+      {/* <FooterTooltip augment={hoveredAugment} tooltipRef={tooltipRef} edit={edit} isInfografia={isInfografia}></FooterTooltip> */}
+      <FooterBuild comp={comp}></FooterBuild>
     </div>
   );
 };
 
 export default GuiaFreeTFTMeta;
 
-const Header1 = ({comp})=>{
-  const earlyChampions = Object.keys(comp?.boardInfo?.early?.data || []).map(
-  (key) => {
-  const { dataCampeon, dataItem } = comp?.boardInfo?.early?.data[key];
-  const campeonInfo = JSON.parse(dataCampeon?.campeon || "{}");
-    return {
-      campeon: campeonInfo,
-      items: dataItem.map((item) => JSON.parse(item?.item || "{}")),
-    };
-  },
-  );
-    return (
-      <div className={style.blockBody}>
-        <div className={`${style.blockEarlyGame} ${style.borderBlock}`}>
-          {/* Early Game */}
-          <h4>Early Game</h4>
-          <div className={style.earlyChampionsContainer}>
-            {
-              earlyChampions?.map((data, index) => (
+const Header1 = ({comp, allChampionsTFT, allItemsTFT})=>{
 
-                  <div key={`earlyChampion-${index}`} className={style.championImgItems}>
-                    <div
-                      className={`${style.championImageWrapper} ${style[`champSquareCost${data?.campeon?.coste}`]}`}
-                    >
-                      <img
-                        className={style.championImg}
-                        src={data?.campeon?.img}
-                        alt={data?.campeon?.nombre}
-                      />
-                    </div>
-                    {data?.items && data.items.length > 0 && (
-                      <div className={style.itemsContainer}>
-                        {data.items.map((item, idx) => (
+
+  // 1. Campeones Early
+  const niveles = comp?.niveles?.[0]?.campeones || [];
+
+  // 2. Items Prio
+  const itemsPrio = comp?.itemsPrio?.slice(0, 4) || [];
+
+  // 3. Condicion OP
+  const condiciones = comp?.condiciones || [];
+  let condicionOP = condiciones.find(c => c.early && c.op);
+  if (!condicionOP) {
+    condicionOP = condiciones.find(c => c.early);
+  }
+
+  return (
+    <div className={style.blockBody}>
+      <div className={`${style.blockEarlyGame} ${style.borderBlock}`}>
+        <h4>Mejores Salida de Campeones Early</h4>
+        <div className={style.earlyChampionsContainer}>
+          {
+            niveles?.map((data, index) => {
+              const championData = allChampionsTFT.find(c => c.apiName === data?.apiNameCampeon || data.apiName);
+              if (!championData) return null;
+              return (
+                <div key={`earlyChampion-${index}`} className={style.championImgItems}>
+                  <div
+                    className={`${style.championImageWrapper} ${style[`champSquareCost${championData?.coste}`]}`}
+                  >
+                    <img
+                      className={style.championImg}
+                      src={urlDragon() + championData?.tileIcon?.toLowerCase()?.replace(".tex", ".png")}
+                      alt={championData?.name}
+                    />
+                  </div>
+                  {data?.apiNameItemsDelCampeon && data?.apiNameItemsDelCampeon.length > 0 && (
+                    <div className={style.itemsContainer}>
+                      {data.apiNameItemsDelCampeon.map((itemName, idx) => {
+                        const itemData = allItemsTFT.find(i => i.apiName === itemName);
+                        return itemData && (
                           <img
                             key={`item-earlyChampion-${index}-${idx}`}
                             className={style.itemImg}
                             src={
-                              item?.icon?.includes("http")
-                                ? item?.icon
-                                : urlDragon() +
-                                  item?.icon
-                                    ?.toLowerCase()
-                                    .replace(".tex", ".png")
+                              itemData?.icon?.includes("http")
+                                ? itemData?.icon
+                                : urlDragon() + itemData?.icon?.toLowerCase().replace(".tex", ".png")
                             }
-                            alt={item?.nombre}
+                            alt={itemData?.name}
                           />
-                        ))}
-                      </div>
-                    )}
-                    <div className={style.championInfo}>
-                      <span className={style.championName}>
-                        {data?.campeon?.nombre}
-                      </span>
+                        )
+                      })}
                     </div>
-                </div>
-              ))
-            }
-          </div>
-        </div>
-        {/* Dos columnas: Items Prio y Best Radiant */}
-        <div className={`${style.blockItems} ${style.borderBlock}`}>
-            <h4>Items Prio</h4>
-            <div className={style.itemsCarouselContainer}>
-              <div className={style.carouselItem}>
-              {
-                comp?.carouselItems?.CompleteItem1?.icon && 
-                <img className={style.bigItemImg} src={
-                  comp?.carouselItems?.CompleteItem1?.icon?.includes("http")
-                  ? comp?.carouselItems?.CompleteItem1?.icon
-                  : urlDragon() +
-                  comp?.carouselItems?.CompleteItem1?.icon
-                  ?.toLowerCase()
-                  .replace(".tex", ".png")
-                } alt={comp?.carouselItems?.CompleteItem1?.nombre} />
-              }
-              {
-                comp?.carouselItems?.BasicItem1?.icon && 
-                <img className={comp?.carouselItems?.CompleteItem1?.icon ? style.littleItemImg : style.bigItemImg} src={
-                  comp?.carouselItems?.BasicItem1?.icon?.includes("http")
-                                    ? comp?.carouselItems?.BasicItem1?.icon
-                                    : urlDragon() +
-                                    comp?.carouselItems?.BasicItem1?.icon
-                                        ?.toLowerCase()
-                                        .replace(".tex", ".png")
-                } alt={comp?.carouselItems?.BasicItem1?.nombre} />
-              }
+                  )}
+                  <div className={style.championInfo}>
+                    <span className={style.championName}>
+                      {championData?.name}
+                    </span>
+                  </div>
               </div>
-              <div className={style.mayorQue}>{">"}</div>
-              <div className={style.carouselItem}>
-
-            {
-              comp?.carouselItems?.CompleteItem2?.icon  && 
-              <img className={style.bigItemImg} src={
-                comp?.carouselItems?.CompleteItem2?.icon?.includes("http")
-                ? comp?.carouselItems?.CompleteItem2?.icon
-                : urlDragon() +
-                comp?.carouselItems?.CompleteItem2?.icon
-                ?.toLowerCase()
-                .replace(".tex", ".png")
-              } alt={comp?.carouselItems?.CompleteItem2?.nombre} />
-            }
-            {
-              comp?.carouselItems?.BasicItem2?.icon  && 
-              <img className={comp?.carouselItems?.CompleteItem2?.icon ? style.littleItemImg : style.bigItemImg} src={
-                comp?.carouselItems?.BasicItem2?.icon?.includes("http")
-                ? comp?.carouselItems?.BasicItem2?.icon
-                : urlDragon() +
-                comp?.carouselItems?.BasicItem2?.icon
-                ?.toLowerCase()
-                .replace(".tex", ".png")
-              } alt={comp?.carouselItems?.BasicItem2?.nombre} />
-            }
-            </div>
-            <div className={style.mayorQue}>{">"}</div>
-            <div className={style.carouselItem}>
-
-            {
-              comp?.carouselItems?.CompleteItem3?.icon  && 
-              <img className={style.bigItemImg} src={
-                comp?.carouselItems?.CompleteItem3?.icon?.includes("http")
-                ? comp?.carouselItems?.CompleteItem3?.icon
-                : urlDragon() +
-                comp?.carouselItems?.CompleteItem3?.icon
-                ?.toLowerCase()
-                .replace(".tex", ".png")
-              } alt={comp?.carouselItems?.CompleteItem3?.nombre} />
-            }
-            {
-              comp?.carouselItems?.BasicItem3?.icon  && 
-              <img className={comp?.carouselItems?.CompleteItem3?.icon ? style.littleItemImg : style.bigItemImg} src={
-                comp?.carouselItems?.BasicItem3?.icon?.includes("http")
-                ? comp?.carouselItems?.BasicItem3?.icon
-                : urlDragon() +
-                comp?.carouselItems?.BasicItem3?.icon
-                ?.toLowerCase()
-                .replace(".tex", ".png")
-              } alt={comp?.carouselItems?.BasicItem3?.nombre} />
-            }
-            </div>
-            </div>
-            {/* <CarouselItems carouselItems={comp?.carouselItems} /> */}
-        </div>
-        <div className={`${style.blockBestRadiant} ${style.borderBlock}`}>
-            <h4>Best Radiant</h4>
-            {/* <!-- radiantsItems:{RadiantItem1: {…}} --> */}
-            <div className={style.containerRadiantItem}>
-
-            {
-              (
-                <img
-                className={style.itemBestRadiant}
-                src={
-                  urlDragon() +
-                  comp?.radiantsItems?.RadiantItem1?.icon
-                  .toLowerCase()
-                  .replace(".tex", ".png")
-                }
-                />
               )
-            }
-            </div>
+            })
+          }
+        </div>
+      </div>
+      
+      {/* Condicion OP */}
+      <div className={`${style.blockBestRadiant} ${style.borderBlock}`}>
+          <h4>Condiciones OP (Early)</h4>
+          <div className={style.containerCondicion}>
+            {condicionOP && (() => {
+                let busquedaGrande;
+                let busquedaPequeno;
+                const extras = ["Win Streak","Loss Streak","Orbe"];
+                
+                // API NAME GRANDE
+                if(extras.includes(condicionOP.apiNameGrande)){
+                  busquedaGrande = `/tft/assets/${condicionOP.apiNameGrande.replace(" ","")}.webp`;
+                }else{
+                  const filtrado = allItemsTFT.find((x) => x.apiName === condicionOP.apiNameGrande)?.icon || allChampionsTFT.find((x) => x.apiName === condicionOP.apiNameGrande)?.tileIcon;
+                  busquedaGrande = filtrado ? urlDragon()+filtrado.toLowerCase().replace(".tex",".png").replace("/augments/hexcore/","/augments/choiceui/") : "";
+                }
+                
+                // API NAME PEQUENO
+                if(extras.includes(condicionOP.apiNamePequeno)){
+                  busquedaPequeno = `/tft/assets/${condicionOP.apiNamePequeno.replace(" ","")}.webp`;
+                }else{
+                  const filtrado = allItemsTFT.find((x) => x.apiName === condicionOP.apiNamePequeno)?.icon || allChampionsTFT.find((x) => x.apiName === condicionOP.apiNamePequeno)?.tileIcon;
+                  busquedaPequeno = filtrado ? urlDragon()+filtrado.toLowerCase().replace(".tex",".png").replace("/augments/hexcore/","/augments/choiceui/") : "";
+                }
+
+                return (
+                  <div className={style.condicionOp}>
+                    {condicionOP.apiNameGrande && busquedaGrande && 
+                      <img className={style.condicionGrandeImg} src={busquedaGrande} alt="condicion grande"/>
+                    }
+                    {condicionOP.apiNamePequeno && busquedaPequeno &&
+                      <img className={style.condicionPequenoImg} src={busquedaPequeno} alt="condicion pequeña"/>
+                    }
+                  </div>
+                );
+            })()}
+            <a href="/login" target="_blank" className={style.condicionOp}>
+              <img src="/web/logoGPMP.webp" alt="Master Plan" className={style.imgMasterPlan}/>
+            </a>
           </div>
       </div>
+
+      {/* Items Prio */}
+      <div className={`${style.blockItems} ${style.borderBlock}`}>
+          <h4>Prioridad de Objetos</h4>
+          <div className={style.itemsCarouselContainer}>
+            {itemsPrio.map((itemName, index) => {
+              const itemData = allItemsTFT.find(i => i.apiName === itemName);
+              return itemData ? [
+                <div key={`itemPrio-${index}`} className={style.carouselItem}>
+                  <img
+                    className={style.bigItemImg}
+                    src={itemData?.icon?.includes("http") ? itemData?.icon : urlDragon() + itemData?.icon?.toLowerCase().replace(".tex", ".png")}
+                    alt={itemData?.name}
+                  />
+                </div>,
+                index < itemsPrio.length - 1 ? <span key={`itemPrio-gt-${index}`} className={style.mayorQue}>{'>'}</span> : null
+              ] : null;
+            })}
+          </div>
+      </div>
+    </div>
   )
 }
 
-const Header2 = ({comp, setHoveredAugment, augmentRef})=>{
+const Header2 = ({comp, setHoveredAugment, augmentRef,  allChampionsTFT, allItemsTFT})=>{
+
+  // 3. Condicion OP
+  const condiciones = comp?.condiciones || [];
+  let condicionOP = condiciones.find(c => !c.early && c.op);
+  if (!condicionOP) {
+    condicionOP = condiciones.find(c => !c.early);
+  }
+
+  // Aumentos
+  const aumentosVisibles = comp?.aumentos?.slice(0, 5) || [];
+
   // Solo aplicamos el hover si el dispositivo tiene capacidades de puntero (PC)
   const handleMouseEnter = (augment) => {
     if (window.matchMedia('(hover: hover)').matches) {
@@ -226,32 +208,102 @@ const Header2 = ({comp, setHoveredAugment, augmentRef})=>{
 
   return (
     <div className={`${style.blockBody} ${style.containerAugmentsPosition}`}>
-      <div className={`${style.borderBlock} ${style.containerAugmentsBlock}`}>
-        
-        <h4>Aumentos</h4>
-        <div ref={augmentRef} className={style.containerAugments}>
-          {
-            comp?.aumentos?.map((augment, index) => (
-              <div 
-                className={style.augmentContainer} 
-                key={index}
-                onMouseEnter={() => handleMouseEnter(augment)}
-                onMouseLeave={handleMouseLeave}
-                onClick={() => handleClick(augment)}
-              >
-                <img 
-                  className={style.augmentImg} 
-                  src={
-                    urlDragon() +
-                    augment?.icon
-                    .toLowerCase()
-                    .replace(".tex", ".png")
-                  } 
-                  alt={augment?.name}
-                />
-              </div>
-            ))
-          }
+      <div className={`${style.containerSideBlock}`}> 
+
+
+        <div className={`${style.borderBlock} ${style.blockColumn}`}>
+            <h4>Aumentos</h4>
+          <div ref={augmentRef} className={style.containerAugments} style={{display:"flex", gap:"5px", flexWrap:"wrap", alignItems:"center"}}>
+            {
+              aumentosVisibles?.map((augmentRaw, index) => {
+                const augment = allItemsTFT.find(x => x.apiName === augmentRaw?.apiNameGrande) || augmentRaw;
+                if (!augment?.icon) {
+                  // Fallback para strings especiales como "Win Streak" si es que existen
+                  const extras = ["Win Streak", "Loss Streak", "Orbe"];
+                  if(extras.includes(augmentRaw?.apiNameGrande)){
+                    return (
+                      <div className={style.augmentContainer} key={index}>
+                        <img className={style.augmentImg} src={`/tft/assets/${augmentRaw.apiNameGrande.replace(" ","")}.webp`} alt={augmentRaw.apiNameGrande}/>
+                      </div>
+                    )
+                  }
+                  return null;
+                }
+                return (
+                  <div 
+                    className={style.augmentContainer} 
+                    key={index}
+                    onMouseEnter={() => handleMouseEnter(augment)}
+                    onMouseLeave={handleMouseLeave}
+                    onClick={() => handleClick(augment)}
+                  >
+                    <img 
+                      className={style.augmentImg} 
+                      src={
+                        urlDragon() +
+                        augment?.icon
+                        .toLowerCase()
+                        .replace(".tex", ".png")
+                        .replace("/augments/hexcore/","/augments/choiceui/")
+                      } 
+                      alt={augment?.name}
+                    />
+                  </div>
+                )
+              })
+            }
+            <a href="/login" target="_blank"className={style.augmentContainer}>
+              <img src={"/web/logoGPMP.webp"} className={style.imgMasterPlan}/>
+            </a>
+          </div>
+        </div>
+        <div className={`${style.borderBlock} ${style.blockColumn}`}>
+            <h4>Condiciones OP</h4>
+            <div className={style.containerCondicionesOP}>
+
+            {condicionOP && (() => {
+              let busquedaGrande;
+              let busquedaPequeno;
+              const extras = ["Win Streak","Loss Streak","Orbe"];
+              
+              // API NAME GRANDE
+              if(extras.includes(condicionOP.apiNameGrande)){
+                busquedaGrande = `/tft/assets/${condicionOP.apiNameGrande.replace(" ","")}.webp`;
+              }else{
+                const filtrado = allItemsTFT.find((x) => x.apiName === condicionOP.apiNameGrande)?.icon || allChampionsTFT.find((x) => x.apiName === condicionOP.apiNameGrande)?.tileIcon;
+                busquedaGrande = filtrado ? urlDragon()+filtrado.toLowerCase().replace(".tex",".png").replace("/augments/hexcore/","/augments/choiceui/") : "";
+              }
+              
+              // API NAME PEQUENO
+              if(extras.includes(condicionOP.apiNamePequeno)){
+                busquedaPequeno = `/tft/assets/${condicionOP.apiNamePequeno.replace(" ","")}.webp`;
+              }else{
+                const filtrado = allItemsTFT.find((x) => x.apiName === condicionOP.apiNamePequeno)?.icon || allChampionsTFT.find((x) => x.apiName === condicionOP.apiNamePequeno)?.tileIcon;
+                busquedaPequeno = filtrado ? urlDragon()+filtrado.toLowerCase().replace(".tex",".png").replace("/augments/hexcore/","/augments/choiceui/") : "";
+              }
+
+              return (
+                <div className={style.containerOp}>
+                  {condicionOP.apiNameGrande && busquedaGrande && 
+                    <img className={style.condicionGrandeImg} src={busquedaGrande} alt="condicion grande"/>
+                  }
+                  {condicionOP.apiNamePequeno && busquedaPequeno &&
+                    <img className={style.condicionPequenoImg} src={busquedaPequeno} alt="condicion pequeña"/>
+                  }
+                </div>
+              );
+            })()}
+            <a href="/login" target="_blank" className={style.containerOp}>
+              <img src="/web/logoGPMP.webp" alt="Master Plan" className={style.imgMasterPlan}/>
+            </a>
+          </div>
+        </div>
+        {/* boton de plan B */}
+        <div className={`${style.borderBlock} ${style.blockRow}`}>
+          <h4>Plan B</h4>
+          <a href="/login" target="_blank" className={style.planBContainer}>
+            <img src="/web/logoGPMP.webp" alt="Master Plan" className={style.imgMasterPlan}/>
+          </a>
         </div>
       </div>
       <Posicionamiento comp={comp}/>
@@ -267,7 +319,7 @@ const Posicionamiento = ({comp})=>{
       <div className={style.containerSinergiasActivas}>
         <Sinergias sinergias={comp?.boardInfo?.[comp?.originalComp]?.sinergias} orientacion={"vertical"} show={true} version={comp?.version} />
       </div>
-      <img className={style.posicionamientoImg} src={`${urlComposiciones}${comp?.id}-${comp?.originalComp}${comp?.version === "pbe" ? "-pbe" : ""}.webp`} alt={`Posicionamiento de ${comp.titulo}`}/>
+      <NuevoBuilderTFT customTablero={comp?.posicionamiento?.[0]?.tablero} readOnly={true} />
     </div>
   )
 }
@@ -389,4 +441,71 @@ const FooterTooltip = ({augment, tooltipRef, edit=false, isInfografia=false})=>{
       </div>
     </div>
   );
+}
+
+const FooterBuild = ({comp})=>{
+  const allChampionsTFT = useStore(dataTFTChampions);
+  const allItemsTFT = useStore(dataTFTAllItems);
+  return (
+    <div className={`${style.containerFooterBuild} ${style.borderBlock} ${style.blockColumn}`}>
+      <h4>Mejores Builds/Objetos para Carry y Tanque</h4>
+      <div style={{display:"flex", flexDirection:"row", width: "100%", gap:"20px"}}>
+
+      
+      <a href="/login" target="_blank" className={`${style.containerVerMasBuilds} ${style.containerBuild}`}>
+        <img src="/web/logoGPMP.webp" alt="Logo Guiadeparche Master Plan" className={`${style.imgMasterPlan}`} />
+      </a>
+      {
+        comp?.bestBuild?.length > 0 &&
+        comp?.bestBuild.map((data,index)=>{
+          const buildChampionData = allChampionsTFT.find(c => c.apiName === data?.apiNameCampeon);
+          
+          // Flatten first arrays of BIS and Special BIS to render in the Footer
+          const bisItemsData = (data.apiNameItemsBisDelCampeon?.[0] || []).slice(0, 3).map(itemName => allItemsTFT.find(i => i.apiName === itemName)).filter(Boolean);
+          const specialBisItemsData = (data.apiNameItemsSpecialBisDelCampeon?.[0] || []).slice(0, 3).map(itemName => allItemsTFT.find(i => i.apiName === itemName)).filter(Boolean);
+
+          return (
+            <div key={index} className={style.containerBuild}>
+              <div className={style.containerBuildCard}>
+                <h4>{buildChampionData?.name}</h4>
+                {buildChampionData && (
+                  <div className={style.buildCampeonItems}>
+                    <img 
+                      src={urlDragon() + buildChampionData?.icon?.toLowerCase().replace(".tex", ".png")} 
+                      alt={buildChampionData?.name} 
+                      className={style.buildChampionImg}
+                      title="BIS"
+                    />
+                    <div className={style.containerBuildItemImg}>
+                      {/* {bisItemsData.length > 0 && <span className={style.buildItemText}>BIS</span>} */}
+                      {bisItemsData.map((item, idx) => (
+                        <img 
+                          key={`build-item-bis-${idx}`} 
+                          src={urlDragon() + item?.icon?.toLowerCase().replace(".tex", ".png")} 
+                          alt={item?.name} 
+                          className={style.buildItemImg}
+                        />
+                      ))}
+                    </div>
+                    <div className={style.containerBuildItemImg}>
+                      {/* {specialBisItemsData.length > 0 && <span className={style.buildItemText}>BIS ESPECIAL</span>} */}
+                      {specialBisItemsData.map((item, idx) => (
+                          <img 
+                            key={`build-item-special-${idx}`} 
+                            src={urlDragon() + item?.icon?.toLowerCase().replace(".tex", ".png")} 
+                            alt={item?.name} 
+                            className={style.buildItemImg}
+                          />
+                        ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )
+        })
+      }
+      </div>
+    </div>
+  )
 }

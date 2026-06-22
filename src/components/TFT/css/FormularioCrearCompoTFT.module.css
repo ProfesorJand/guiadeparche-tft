@@ -23,7 +23,7 @@ fieldset{
 .btnPrimaryNoWidth { margin-bottom: 15px; padding: 8px 12px; background-color: #00BCD4; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
 .btnDanger { padding: 5px 10px; background-color: #f44336; color: white; border: none; border-radius: 4px; cursor: pointer; }
 .btnDangerAuto { padding: 5px 10px; background-color: #f44336; color: white; border: none; border-radius: 4px; cursor: pointer; margin-left: auto; }
-.btnDangerFit { padding: 5px 10px; background-color: #f44336; color: white; border: none; border-radius: 4px; cursor: pointer; height: fit-content; }
+.btnDangerFit { padding: 5px 10px; background-color: #f44336; color: white; border: none; border-radius: 4px; cursor: pointer; height: fit-content; flex-shrink: 0; }
 .btnWarning { padding: 8px 12px; background-color: #FF9800; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
 .btnSuccess { padding: 8px 12px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
 .btnSuccessSm { padding: 5px 10px; background-color: #4CAF50; color: white; border: none; border-radius: 4px; cursor: pointer; }
@@ -50,7 +50,7 @@ fieldset{
 .rowGap15Border { display: flex; gap: 15px; align-items: center; margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px dashed #eee; flex-wrap: wrap; }
 .flex1Gap15 { display: flex; flex: 1; gap: 15px; flex-wrap: wrap; }
 .flexGap5 { display: flex; gap: 5px; }
-.colCenterGap5 { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.colCenterGap5 { display: flex; flex-direction: column; align-items: center; gap: 5px; flex: 1; min-width: 0; }
 .toggleHeader { display: flex; gap: 10px; width: 100%; margin-bottom: 5px; }
 .toggleContent { display: flex; flex-direction: row; justify-content: space-between; width: 100%; }
 .toggleLeft { width: 50%; padding: 10px; border: 1px solid #333; border-top: none; border-radius: 0 0 5px 5px; }

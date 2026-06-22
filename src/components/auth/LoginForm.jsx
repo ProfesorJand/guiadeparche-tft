@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { $user, setUser } from '../../stores/auth';
 import { useStore } from '@nanostores/react';
 import styles from './LoginForm.module.css';
+import { countries } from '../../utils/countries';
 
 // For Google Identity Services (GIS)
 const GOOGLE_CLIENT_ID = import.meta.env.PUBLIC_ID_CLIENT_GOOGLE_CLOUD_OAUTH;
@@ -20,7 +21,9 @@ const LoginForm = () => {
     name: '',
     surname: '',
     dob: '',
-    country: ''
+    country: '',
+    newsletter: false,
+    termsAccepted: false
   });
 
   useEffect(() => {
@@ -279,6 +282,11 @@ const LoginForm = () => {
   const handleProfileSubmit = async (e) => {
     e.preventDefault();
 
+    if (!formData.termsAccepted) {
+      setError('Debes aceptar los términos y condiciones para continuar.');
+      return;
+    }
+
     if (!validateDob(formData.dob)) {
       setError('La fecha de nacimiento no es válida. Usa el formato DD/MM/AAAA.');
       return;
@@ -292,6 +300,12 @@ const LoginForm = () => {
       setStep('success');
       return;
     }
+
+    const submissionData = {
+      ...formData,
+      termsAcceptedAt: new Date().toISOString()
+    };
+
     try {
       const response = await fetch('https://api.guiadeparche.com/save-user.php', {
         method: 'POST',
@@ -299,7 +313,7 @@ const LoginForm = () => {
           'Content-Type': 'application/json',
           // 'Authorization': `Bearer ${import.meta.env.PUBLIC_TOKEN_META}`
         },
-        body: JSON.stringify({ email, ...formData })
+        body: JSON.stringify({ email, ...submissionData })
       });
 
       const result = await response.json();
@@ -436,14 +450,42 @@ const LoginForm = () => {
             disabled={loading}
           >
             <option value="">Selecciona tu país</option>
-            <option value="Argentina">Argentina</option>
-            <option value="España">España</option>
-            <option value="México">México</option>
-            <option value="Chile">Chile</option>
-            <option value="Colombia">Colombia</option>
+            {countries.map((country) => (
+              <option key={country} value={country}>
+                {country}
+              </option>
+            ))}
           </select>
         </div>
-        <button type="submit" className={styles.submit_btn} disabled={loading}>
+
+        <div className={styles.checkbox_group}>
+          <label>
+            <input
+              type="checkbox"
+              checked={formData.newsletter}
+              onChange={(e) => setFormData({ ...formData, newsletter: e.target.checked })}
+              disabled={loading}
+            />
+            Deseo recibir correos con novedades, guías y descuentos.
+          </label>
+        </div>
+
+        <div className={styles.checkbox_group}>
+          <label>
+            <input
+              type="checkbox"
+              checked={formData.termsAccepted}
+              onChange={(e) => setFormData({ ...formData, termsAccepted: e.target.checked })}
+              required
+              disabled={loading}
+            />
+            <span>
+              He leído y acepto los <a href="/terminos" target="_blank" rel="noopener noreferrer">términos y condiciones</a> y la política de privacidad.
+            </span>
+          </label>
+        </div>
+
+        <button type="submit" className={styles.submit_btn} disabled={loading || !formData.termsAccepted}>
           {loading ? 'Guardando...' : 'Finalizar Registro'}
         </button>
       </form>
