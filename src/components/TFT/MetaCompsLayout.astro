@@ -265,6 +265,8 @@ const urlRecursosTFT = [
                           comp?.campeonMeta?.apiNameItemsDelCampeon
                         }
                         estrellas={comp?.campeonMeta?.estrellas}
+                        aumento={comp?.campeonMeta?.aumento}
+                        emblema={comp?.campeonMeta?.emblema}
                         compUrl={comp.urlSEO}
                         client:load
                         transition:persist
@@ -843,7 +845,20 @@ const urlRecursosTFT = [
     }
 
     .left-side {
-      order: 2;
+      width:100%;
+      max-width: none;
+      position:relative;
+      top:unset;
+    }
+    .main-side{
+      width:100%
+    }
+    .resources-body{
+      width:100%;
+      
+    }
+    .resource-card{
+      width:100%
     }
 
     .three-columns {
