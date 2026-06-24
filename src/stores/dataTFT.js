@@ -55,8 +55,15 @@ export const composMetaJSON = `${apiGPTFT}composMeta.json`;
 export const composMetaPBEJSON = `${apiGPTFT}composMetaPBE.json`;
 export const composMetaPBETestJSON = `${apiGPTFT}composMetaPBETest.json`;
 export const composTest = atom({})
+
+let fetchingComposPromise = null;
+
 export const composMetaPBETest = async () => {
-  await fetch(composMetaPBETestJSON, {
+  if (fetchingComposPromise) {
+    return fetchingComposPromise;
+  }
+
+  fetchingComposPromise = fetch(composMetaPBETestJSON, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -66,11 +73,16 @@ export const composMetaPBETest = async () => {
   })
     .then(response => response.json())
     .then(COMPOSTEST => {
-      composTest.set(COMPOSTEST)
+      composTest.set(COMPOSTEST);
+      fetchingComposPromise = null;
+      return COMPOSTEST;
     })
     .catch(error => {
       console.error('Error:', error);
+      fetchingComposPromise = null;
     });
+
+  return fetchingComposPromise;
 }
 
 export const assets3Estrellas = `${apiGPTFT}3-estrellas.webp`;
