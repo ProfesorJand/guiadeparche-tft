@@ -48,6 +48,12 @@
     margin-block-start:0
   }
 }
+.blockBestRadiant{
+  & h4{
+    font-size:small;
+  }
+}
+
 .blockColumn{
   display:flex;
   flex-direction: column;
@@ -68,7 +74,7 @@
   grid-template-rows: auto 1fr; */
   display:flex;
   position:relative;
-  width: calc((100% * 5 / 12));
+  width: calc((100% - (20px * 2)) / 12 * 5);
   flex-direction: column;
   
 }
@@ -84,7 +90,7 @@
   grid-auto-flow: column */
   display:flex;
   flex-direction: column;
-  width: calc((100% * 4 / 12)) ;
+  width: calc((100% - (20px * 2)) / 12 * 4) ;
 
 }
 
@@ -171,7 +177,7 @@
   grid-template-rows: auto 1fr; */
   display:flex;
   flex-direction: column;
-  width: calc((100% * 3 / 12));
+  width: calc((100% - (20px * 2)) / 12 * 3);
 
 }
 
@@ -185,6 +191,18 @@
   height: stretch;
 }
 .condicionOp{
+  display:flex;
+  width:calc((100% - (5px * 2)) / 5);
+  position:relative;
+  height: stretch;
+  justify-content: center;
+  align-items: center;
+  aspect-ratio: 1 / 1;
+  border-radius: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  overflow:hidden;
+}
+.condicionOpEarly{
   display:flex;
   width:calc((100% - (5px * 2)) / 3);
   position:relative;
@@ -675,6 +693,13 @@
   border: 2px solid rgba(255, 255, 255, 0.1);
   box-sizing: border-box;
 }
+.containerBuilders{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap:12px;
+    justify-content: center;
+  }
 
 @keyframes fadeIn {
   from {
@@ -702,7 +727,10 @@
   }
 
   .containerAugmentsPosition{
-   flex-direction: column-reverse;
+   flex-direction: column;
+  }
+  .containerSideBlock{
+    width:100%;
   }
   .containerAugmentsBlock{
     width:100%;
@@ -710,11 +738,30 @@
   .containerPosicionamientoBlock{
     width:100%
   }
+  .containerSideBlock{
+    width:100%;
+  }
+  .containerCondicionesOP{
+    justify-items: center;
+  }
+  .containerOp{
+    width:calc((100% - (5px * 2)) / 2)
+  }
+  .condicionOpEarly{
+    width:calc((100% - (5px * 2)) / 5);
+  }
   .augmentContainer{
     width: calc((100% - (5px * 4)) / 5);
     /*calc(100% / 3 - (5px * 2 / 2))*/
   }
   .footerTooltipContainer{
     flex-direction: column;
+  }
+  .containerBuilders{
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .containerBuild{
+    width:calc((100% - (12px * 1)) / 2);
   }
 }

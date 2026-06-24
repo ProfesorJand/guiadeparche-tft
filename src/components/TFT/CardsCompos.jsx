@@ -162,6 +162,32 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
       };
 
       restoreAndAdjust();
+    } else if (isActive) {
+      // Caso de carga directa o desde otro enlace (como el CampeonImgInTierList)
+      const tierlistScroll = sessionStorage.getItem("tft-tierlist-scroll");
+      if (tierlistScroll) {
+        // Restauramos instantáneamente el scroll de la página anterior para que no haya salto visual
+        const html = document.documentElement;
+        const originalScrollBehavior = html.style.scrollBehavior;
+        html.style.scrollBehavior = "auto";
+        window.scrollTo(0, parseFloat(tierlistScroll));
+        html.style.scrollBehavior = originalScrollBehavior;
+        sessionStorage.removeItem("tft-tierlist-scroll");
+      }
+
+      setTimeout(() => {
+        if (!containerRef.current) return;
+
+        const headerHtml = document.getElementsByClassName("bodyHeader");
+        const headerHeight = headerHtml[0] ? headerHtml[0].clientHeight : 80;
+
+        const finalPosition = containerRef.current.getBoundingClientRect().top + window.scrollY;
+
+        window.scrollTo({
+          top: finalPosition - headerHeight - 15,
+          behavior: "smooth"
+        });
+      }, 500); // Un poco más de tiempo para asegurar que todo haya cargado
     }
   }, [isActive, comp.id]);
 
@@ -183,6 +209,19 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
     await navigate(targetUrl, {
       scroll: false
     });
+  };
+
+  const handleToggleCardContainer = (e) => {
+    // Ignorar el click si se hizo sobre un botón, un enlace, una imagen (campeones/items) o el contenedor de la imagen
+    if (
+      e.target.closest('button') || 
+      e.target.closest('a') || 
+      e.target.closest('img') || 
+      e.target.closest(`.${style.championImageWrapper}`)
+    ) {
+      return;
+    }
+    handleToggle(e);
   };
 
   const deleteComp = ({ id, tier, version }) => {
@@ -279,7 +318,7 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
 
   return (
     <div ref={containerRef} className={`${style.container} ${isInfografia ? style.containerInfografia : ''}`}>
-      <div className={style.cardContainer}>
+      <div className={style.cardContainer} onClick={handleToggleCardContainer}>
         <div className={`${style.leftContainer} ${isInfografia ? style.leftContainerInfografia : ''} ${!isInfografia && edit ? style.leftContainerFullWidth : ""}`}>
 
           <div className={style.header}>
@@ -384,6 +423,9 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
                 </div>
               ) : (
                 <div className={`${style.btnAdmins} ${!isInfografia ? "hideForCapture" : ""}`}>
+                  <button className={`${style.buttonLink} ${style.buttonLinkCopy}`} onClick={(e) => copyToClipboard(e, (currentVersion === "pbe" ? codeForPBE(allChampionsApiName) : generatorCodeBuilder(allChampionsApiName)))}>
+                    Copiar Código
+                  </button>
                   <a
                     href={edit && isActive ? "/tft/meta-comps-tier-list-teamfight-tactics" : `/tft/meta-comps-tier-list-teamfight-tactics/${comp.urlSEO}`}
                     className={style.buttonLink}
@@ -391,9 +433,6 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
                   >
                     {isActive ? "TFT Meta ⬆" : `${comp?.urlSEO?.replace("-", " ")?.toUpperCase()} TFT ⬇`}
                   </a>
-                  <button className={style.buttonLink} onClick={(e) => copyToClipboard(e, (currentVersion === "pbe" ? codeForPBE(allChampionsApiName) : generatorCodeBuilder(allChampionsApiName)))}>
-                    Copiar Código
-                  </button>
                 </div>
               )
             }
