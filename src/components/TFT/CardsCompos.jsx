@@ -120,54 +120,60 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
   };
 
   useEffect(() => {
-    if (!isActive) return;
+    // Si esta es la tarjeta que el usuario acaba de clickear (para abrirla o cerrarla)
+    const targetId = sessionStorage.getItem("tft-target-id");
 
-    const restoreAndAdjust = async () => {
-      // Restaurar posición inmediatamente
-      const savedPosition = sessionStorage.getItem(
-        "tft-scroll-position"
-      );
+    if (targetId === comp.id.toString()) {
+      const restoreAndAdjust = async () => {
+        const savedOffset = sessionStorage.getItem("tft-target-offset");
 
-      if (savedPosition) {
-        const html = document.documentElement;
-        const originalScrollBehavior = html.style.scrollBehavior;
-        html.style.scrollBehavior = "auto";
-        window.scrollTo(0, parseInt(savedPosition));
-        html.style.scrollBehavior = originalScrollBehavior;
-      }
+        if (savedOffset && containerRef.current) {
+          // Obtenemos la posición absoluta actual del elemento
+          const elementAbsoluteTop = containerRef.current.getBoundingClientRect().top + window.scrollY;
+          
+          // Ajustamos el scroll al instante para que el elemento aparezca en el mismo lugar exacto de la pantalla
+          const html = document.documentElement;
+          const originalScrollBehavior = html.style.scrollBehavior;
+          html.style.scrollBehavior = "auto";
+          window.scrollTo(0, elementAbsoluteTop - parseFloat(savedOffset));
+          html.style.scrollBehavior = originalScrollBehavior;
+          
+          // Limpiamos los datos guardados
+          sessionStorage.removeItem("tft-target-offset");
+          sessionStorage.removeItem("tft-target-id");
+        }
 
-      // Usar un pequeño retraso para permitir que la composición anterior se colapse
-      // y la actual se renderice por completo antes de calcular la posición exacta.
-      setTimeout(() => {
-        if (!containerRef.current) return;
+        // Si se está abriendo (isActive), animamos hacia su posición final debajo del header
+        if (isActive) {
+          setTimeout(() => {
+            if (!containerRef.current) return;
 
-        const headerHtml =
-          document.getElementsByClassName("bodyHeader");
+            const headerHtml = document.getElementsByClassName("bodyHeader");
+            const headerHeight = headerHtml[0] ? headerHtml[0].clientHeight : 80;
 
-        const headerHeight =
-          headerHtml[0]
-            ? headerHtml[0].clientHeight
-            : 80;
+            const finalPosition = containerRef.current.getBoundingClientRect().top + window.scrollY;
 
-        const elementPosition =
-          containerRef.current.getBoundingClientRect().top
-          + window.scrollY;
+            window.scrollTo({
+              top: finalPosition - headerHeight - 15,
+              behavior: "smooth"
+            });
+          }, 250); // Tiempo para que termine la transición de Astro
+        }
+      };
 
-        window.scrollTo({
-          top: elementPosition - headerHeight - 15,
-          behavior: "smooth"
-        });
-      }, 850);
-    };
-
-    restoreAndAdjust();
-  }, [isActive]);
+      restoreAndAdjust();
+    }
+  }, [isActive, comp.id]);
 
   const handleToggle = async (e) => {
     e.preventDefault();
 
-    if (!isActive) {
-      saveScrollPosition();
+    if (containerRef.current) {
+      // Guardar siempre a qué distancia de la pantalla estaba este elemento al hacer click
+      // y guardar el ID para saber cuál tarjeta debe reajustar el scroll en la siguiente página
+      const offsetTop = containerRef.current.getBoundingClientRect().top;
+      sessionStorage.setItem("tft-target-offset", offsetTop.toString());
+      sessionStorage.setItem("tft-target-id", comp.id.toString());
     }
 
     const targetUrl = isActive
@@ -318,6 +324,8 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
                           src={data?.campeon?.img}
                           alt={data?.campeon?.nombre}
                           crossOrigin="anonymous"
+                          loading="lazy"
+                          decoding="async"
                         ></img>
                       </div>
                       <div className={style.championInfo}>
