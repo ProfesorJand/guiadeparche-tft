@@ -27,10 +27,12 @@
 .cardContainer{
     display:flex;
     flex-direction: row;
+    cursor: pointer;
 }
 .btnAdmins{
     display:flex;
     flex-direction: column;
+    justify-content: space-around;
     gap:5px;
     container-type:inline-size;
 }
@@ -237,6 +239,7 @@
     border: 2px solid rgba(255, 255, 255, 0.1);
     transition: all 0.2s ease;
     box-sizing: border-box;
+    cursor: default;
 }
 
 
@@ -361,7 +364,9 @@
   border-color: rgba(255, 255, 255, 0.25);
   color: #fff; /* Ensure it stays white */
 }
-
+.buttonLinkCopy{
+    background-color: var(--bg-purple-primary);
+}
 @media only screen and (max-width: 900px) {
     .container{
         flex-direction: column;
@@ -384,8 +389,18 @@
         border-left:unset;
         padding-left:unset;
     }
+    .btnAdmins{
+        flex-direction:row
+    }
+    .buttonLink{
+        width:50%;
+        font-size: 5cqw;
+    }
+    .championsContainer{
+        grid-template-columns: repeat(5, 1fr);
+        grid-template-rows: 1fr 1fr;
+    }
     .championContainer{
-        width: calc(100% / 5 - 12px);
-        min-width:unset;
+        width:100%;
     }
 }

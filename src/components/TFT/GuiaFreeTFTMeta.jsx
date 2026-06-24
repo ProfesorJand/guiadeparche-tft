@@ -137,7 +137,7 @@ const Header1 = ({comp, allChampionsTFT, allItemsTFT})=>{
                 }
 
                 return (
-                  <div className={style.condicionOp}>
+                  <div className={style.condicionOpEarly}>
                     {condicionOP.apiNameGrande && busquedaGrande && 
                       <img className={style.condicionGrandeImg} src={busquedaGrande} alt="condicion grande"/>
                     }
@@ -147,7 +147,7 @@ const Header1 = ({comp, allChampionsTFT, allItemsTFT})=>{
                   </div>
                 );
             })()}
-            <a href="/login" target="_blank" className={style.condicionOp}>
+            <a href="/login" target="_blank" className={style.condicionOpEarly}>
               <img src="/web/logoGPMP.webp" alt="Master Plan" className={style.imgMasterPlan}/>
             </a>
           </div>
@@ -449,12 +449,7 @@ const FooterBuild = ({comp})=>{
   return (
     <div className={`${style.containerFooterBuild} ${style.borderBlock} ${style.blockColumn}`}>
       <h4>Mejores Builds/Objetos para Carry y Tanque</h4>
-      <div style={{display:"flex", flexDirection:"row", width: "100%", gap:"20px"}}>
-
-      
-      <a href="/login" target="_blank" className={`${style.containerVerMasBuilds} ${style.containerBuild}`}>
-        <img src="/web/logoGPMP.webp" alt="Logo Guiadeparche Master Plan" className={`${style.imgMasterPlan}`} />
-      </a>
+      <div className={style.containerBuilders}>
       {
         comp?.bestBuild?.length > 0 &&
         comp?.bestBuild.map((data,index)=>{
@@ -505,6 +500,9 @@ const FooterBuild = ({comp})=>{
           )
         })
       }
+      <a href="/login" target="_blank" className={`${style.containerVerMasBuilds} ${style.containerBuild}`}>
+        <img src="/web/logoGPMP.webp" alt="Logo Guiadeparche Master Plan" className={`${style.imgMasterPlan}`} />
+      </a>
       </div>
     </div>
   )
