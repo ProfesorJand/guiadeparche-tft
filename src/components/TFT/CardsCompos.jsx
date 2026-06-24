@@ -225,7 +225,7 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
   };
 
   const deleteComp = ({ id, tier, version }) => {
-    let password = prompt('Write DELETE to continue');
+    let password = prompt('Write DELETE to continue.');
     if (password === "DELETE") {
       let token;
       if (import.meta.env.SSR) {
