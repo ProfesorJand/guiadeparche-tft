@@ -55,18 +55,17 @@ export const composMetaJSON = `${apiGPTFT}composMeta.json`;
 export const composMetaPBEJSON = `${apiGPTFT}composMetaPBE.json`;
 export const composMetaPBETestJSON = `${apiGPTFT}composMetaPBETest.json`;
 export const composTest = atom({})
-export const composMetaPBETest = async()=>{
-  await fetch(composMetaPBETestJSON,{
+export const composMetaPBETest = async () => {
+  await fetch(composMetaPBETestJSON, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
     },
-    cache:"no-cache"
+    cache: "no-cache"
   })
     .then(response => response.json())
     .then(COMPOSTEST => {
-      
       composTest.set(COMPOSTEST)
     })
     .catch(error => {
@@ -92,47 +91,46 @@ export const metaCompsTFT = atom(null);
 
 export const compActiveId = atom(null);
 
-export const activeComp = ({id})=>{
+export const activeComp = ({ id }) => {
   compActiveId.set(id);
 }
 
-export const checkIfCompUrlAlreadyExist = async ({url, titulo})=>{
-  const compUrl = metaCompsTFT.get().filter((comp) => (comp.compUrl === url && comp.titulo !== titulo));
-  console.log({compUrl})
-  if(compUrl.length > 0){
+export const checkIfCompUrlAlreadyExist = async ({ url, titulo }) => {
+  const urlSEO = metaCompsTFT.get().filter((comp) => (comp.urlSEO === url && comp.titulo !== titulo));
+  if (urlSEO.length > 0) {
     let mensaje = "";
-    compUrl.forEach((comp) => {
-      mensaje += "ya existe la url: "+url+" en la compo de: "+comp.titulo+" \n";
+    urlSEO.forEach((comp) => {
+      mensaje += "ya existe la url: " + url + " en la compo de: " + comp.titulo + " \n";
     })
-    if(confirm(mensaje+"¿Deseas reemplazarla?")){
-      for (const comp of compUrl) {
+    if (confirm(mensaje + "¿Deseas reemplazarla?")) {
+      for (const comp of urlSEO) {
         let validUrl = false;
         let cleanNewUrl = "";
         while (!validUrl) {
-          const newUrl = prompt(`Introduce la nueva URL para la composición "${comp.titulo}":`, comp.compUrl);
+          const newUrl = prompt(`Introduce la nueva URL para la composición "${comp.titulo}":`, comp.urlSEO);
           if (!newUrl) {
             alert("Operación cancelada. No se modificó la composición existente.");
             return false;
           }
-          
+
           cleanNewUrl = newUrl.trim().replace(/ /g, "-");
           if (cleanNewUrl === url) {
             alert("La nueva URL no puede ser idéntica a la que intentas reemplazar.");
             continue;
           }
-          
-          const otherCompConflict = metaCompsTFT.get().find((otherComp) => otherComp.compUrl === cleanNewUrl && otherComp.id !== comp.id);
+
+          const otherCompConflict = metaCompsTFT.get().find((otherComp) => otherComp.urlSEO === cleanNewUrl && otherComp.id !== comp.id);
           if (otherCompConflict) {
             alert(`La URL "${cleanNewUrl}" ya está en uso por la composición "${otherCompConflict.titulo}". Por favor, introduce una URL diferente.`);
             continue;
           }
-          
+
           validUrl = true;
         }
-        
-        const updatedComp = { ...comp, compUrl: cleanNewUrl };
+
+        const updatedComp = { ...comp, urlSEO: cleanNewUrl };
         const token = import.meta.env.PUBLIC_TOKEN_META;
-        
+
         try {
           const response = await fetch(crearCompoMetaPHP, {
             method: 'POST',
@@ -155,7 +153,7 @@ export const checkIfCompUrlAlreadyExist = async ({url, titulo})=>{
           return false;
         }
       }
-      
+
       // Recargar datos para refrescar la interfaz de usuario
       try {
         const { loadCompsMeta } = await import("src/stores/menuFiltradoAdmin.js");
@@ -164,12 +162,12 @@ export const checkIfCompUrlAlreadyExist = async ({url, titulo})=>{
         console.error("Error al recargar menuFiltradoAdmin:", err);
       }
       await fetchAndSortComps(versionTFT.get() === "pbe" ? composMetaPBEJSON : composMetaJSON);
-      
+
       return true;
-    }else{
+    } else {
       return false
     }
-  }else{
+  } else {
     alert(`la url: ${url} esta disponible`)
     return false
   }
@@ -273,20 +271,31 @@ export const updateDataTFT = async (data) => {
     return mutator === (versionTFT.get() === "pbe" ? setMutatorPBE : setMutatorLatest)
   })).items)
   dataTFTSetData.set(setData);
-  dataTFTChampions.set((sets[versionTFT.get() === "pbe" ? setNumberPBE : setNumberLatest].champions)
-    .sort(
-      (a, b) => {
-        const nameA = a.name.toUpperCase(); // Ignore case for consistent sorting
-        const nameB = b.name.toUpperCase();
+  const allChampionsRaw = [...sets[versionTFT.get() === "pbe" ? setNumberPBE : setNumberLatest].champions];
 
-        if (nameA < nameB) {
-          return -1;
-        }
-        if (nameA > nameB) {
-          return 1;
-        }
-        return 0; // names must be equal
-      })
+  if (!allChampionsRaw.some(c => c.apiName === "TFT15_ShenSword")) {
+    allChampionsRaw.push({
+      apiName: "TFT15_ShenSword",
+      name: "Shen's Sword",
+      cost: 1,
+      traits: [],
+      tileIcon: "/assets/characters/shen/hud/icons2d/shen_q.png",
+    });
+  }
+
+  dataTFTChampions.set(allChampionsRaw.sort(
+    (a, b) => {
+      const nameA = a.name.toUpperCase(); // Ignore case for consistent sorting
+      const nameB = b.name.toUpperCase();
+
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+      return 0; // names must be equal
+    })
   );
   dataTFTTraits.set(sets[versionTFT.get() === "pbe" ? setNumberPBE : setNumberLatest].traits);
 };
@@ -372,7 +381,6 @@ export const AllCraftableItems = (todosLosItems) => {
       icon: urlDragon() + item.icon.replace(".tex", ".png").toLowerCase()
     };
   }).filter(Boolean);
-  console.log({retornando})
   return retornando
 };
 
@@ -391,8 +399,8 @@ export const AllBasicItems = (dataTFTAllItems) => {
   return dataOfBasicItems;
 }
 
-export const addRestCompsFetch = async (url)=>{
-try {
+export const addRestCompsFetch = async (url) => {
+  try {
     const response = await fetch(
       url,
       { cache: "no-cache" }
@@ -412,7 +420,7 @@ try {
     //eliminar los id que ya existen en allSorted en currentState
     const restos = allSorted.filter(comp => !currentState.some(sComp => sComp.id === comp.id));
     metaCompsTFT.set([...currentState, ...restos]);
-  }catch(error){
+  } catch (error) {
     console.error(error);
   }
 }
@@ -456,18 +464,18 @@ export const fetchAndSortComps = async (url) => {
         allSorted.push(...tierComps);
       }
     });
-     const lastModified = response.headers.get('Last-Modified');
-     if(lastModified){
+    const lastModified = response.headers.get('Last-Modified');
+    if (lastModified) {
       //transformar a dia/mes/año string, string dia = 1, mes = 0
       const date = new Date(lastModified);
       const dia = date.getDate();
       const mes = date.getMonth() + 1;
       const año = date.getFullYear();
       dataTFTLastUpdate.set(`${dia}/${mes}/${año}`);
-     }
-     metaCompsTFT.set(allSorted);
-     console.log("hace el fetch al PBE TEST")
-     await composMetaPBETest();
+    }
+    metaCompsTFT.set(allSorted);
+    console.log("hace el fetch al PBE TEST")
+    await composMetaPBETest();
     return allSorted;
   } catch (e) {
     console.error(`Error fetching from ${url}:`, e);
@@ -475,9 +483,8 @@ export const fetchAndSortComps = async (url) => {
   }
 }
 
-export const addConstantesTFT = async ({key,value}) => {
+export const addConstantesTFT = async ({ key, value }) => {
   console.log("addConstantesTFT")
-  console.log({key,value})
   const response = await fetch(constantesPHP,
     {
       method: "POST",
@@ -485,11 +492,10 @@ export const addConstantesTFT = async ({key,value}) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({key,value}),
+      body: JSON.stringify({ key, value }),
     }
   );
   const res = await response.json();
-  console.log({res})
   constantesTFT.set(res.data);
 }
 

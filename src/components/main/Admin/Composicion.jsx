@@ -16,7 +16,7 @@ import { $admin } from "@stores/auth";
 
 const Composicion = ({ id, compo, admin = useStore($admin), show = true, allwaysOpen = false, onToggle: propOnToggle, isOpen: propIsOpen }) => {
   const storeOpenId = useStore(activeCompId);
-  
+
   const isOpen = propIsOpen !== undefined ? propIsOpen : (String(storeOpenId) === String(id));
   const onToggle = propOnToggle || (() => toggleActiveComp(String(id)));
   const championsTFT = useStore(dataTFTChampions);
@@ -319,7 +319,7 @@ const Composicion = ({ id, compo, admin = useStore($admin), show = true, allways
           editTipSeo={compo.tipSeo}
           editCuandoJugar={compo.cuandoJugar}
           editCondicionVictoria={compo.condicionVictoria}
-          editCompUrl={compo.compUrl}
+          editCompUrl={compo.urlSEO}
           edittierExtra={compo.tierExtra}
         />}
       {/* {
@@ -337,7 +337,7 @@ const Composicion = ({ id, compo, admin = useStore($admin), show = true, allways
 function FooterTFT() {
   const [showMovilnetLogo, setShowMovilnetLogo] = useState(false);
   const currentVersion = useStore(versionTFT);
-const admin = useStore($admin);
+  const admin = useStore($admin);
   return (
     <div className={style.footer}
       onClick={(e) => {

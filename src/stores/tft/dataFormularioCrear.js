@@ -53,6 +53,7 @@ const defaultValuesComposicionTFT = {
   id: null,
   version: "pbe",
   ocultar:false,
+  url:"",
   nombre: "",
   tier:"S",
   tierExtra:"N/A", // H o X

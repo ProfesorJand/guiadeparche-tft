@@ -8,9 +8,9 @@ import style from "./css/FormularioCrearCompoTFT.module.css";
 // import DynamicAumentos from './DynamicAumentos';
 import ChampionsList from "@components/main/Admin/ChampionsList";
 import ItemsList from "@components/main/Admin/Items";
-import { 
-  composicionTFT as datosCompos, 
-  actualizarComposicionTFT, 
+import {
+  composicionTFT as datosCompos,
+  actualizarComposicionTFT,
   reiniciarComposicionTFT,
   dificultades,
   categorias,
@@ -31,49 +31,47 @@ const FormularioCrearCompoTFT = ({ compo = {} }) => {
 
 
   //const [composicionTFT, setComposicionTFT] = useState({});
-  useEffect(()=>{
-    if(Object.keys(compo).length){
-     actualizarComposicionTFT({
-      ...compo,
-      id: compo.id,
-      version: compo.version,
-      ocultar: compo.ocultar || compo.isHide,
-      nombre: compo.nombre || compo.titulo,
-      tier: compo.tier,
-      tierExtra: compo.tierExtra,
-      posicion: compo.posicion,
-      dificultad: dificultades.Es.includes(compo.dificultad) ? compo.dificultad:  compo.dificultad === "Easy" ? "Facil" : compo.dificultad === "Medium" ? "Medio" : "Dificil",
-      categoria: compo.categoria || compo.shadowCategory,
-      campeonMeta: compo.campeonMeta || {
-        apiNameCampeon: compo.campeonTierList.apiName || "",
-        apiNameItemsDelCampeon: compo.champItem?.map((item) => item.apiName) || [],
-        estrellas: compo.estrellas || compo.champ3Stars ? 3: 1, 
-        aumento: compo?.augmentTierList?.[0]?.apiName,
-        emblema: compo?.champTrait?.[0]?.apiName,
-      },
-      tipoDeDano: compo.tipoDeDano,
-      niveles: compo.niveles || [],
-      itemsPrio : compo.itemsPrio || Object.values(compo?.carouselItems)?.map((item)=>item.apiName) || [],
-      posicionamiento : compo.posicionamiento,
-      ordenPrioridadAumentos: compo.ordenPrioridadAumentos,
-      tipSEO: compo.tipSEO || compo.tipSeo || "",
-      urlSEO: compo.urlSEO || compo.compUrl || "",
-      campeonesEarly: compo.campeonesEarly || Object.values(compo?.boardInfo?.early?.data)?.map((champ)=>{return {apiNameCampeon: JSON.parse(champ.dataCampeon.campeon).apiName, apiNameItemsDelCampeon: champ.dataItem || []}}) || [],
-      dioses: compo.dioses || [],
-      bestBuild: compo.bestBuild?.map(b => ({
-        apiNameCampeon: b.apiNameCampeon,
-        apiNameItemsBisDelCampeon: b.apiNameItemsBisDelCampeon || (b.apiNameItemsDelCampeon ? [b.apiNameItemsDelCampeon.slice(0, 3)] : [["", "", ""]]),
-        apiNameItemsSpecialBisDelCampeon: b.apiNameItemsSpecialBisDelCampeon || [["", "", ""]],
-      })) || [],
-      condiciones: compo.condiciones || [],
-      aumentos:compo.aumentos.every(item => typeof item === 'object') ? compo.aumentos.map((aument)=>{return {apiNameGrande: aument.apiName || aument.apiNameGrande, apiNamePequeno:aument.apiNamePequeno, early:aument.early, midLate:aument.midLate, op:aument.op}}) : compo.aumentos || [],
-      encuentros: compo.encuentros || [],
-      
+  useEffect(() => {
+    if (Object.keys(compo).length) {
+      actualizarComposicionTFT({
+        id: compo.id,
+        version: compo.version,
+        ocultar: compo.ocultar || compo.isHide,
+        nombre: compo.nombre || compo.titulo,
+        tier: compo.tier,
+        tierExtra: compo.tierExtra,
+        posicion: compo.posicion,
+        dificultad: dificultades.Es.includes(compo.dificultad) ? compo.dificultad : compo.dificultad === "Easy" ? "Facil" : compo.dificultad === "Medium" ? "Medio" : "Dificil",
+        categoria: compo.categoria || compo.shadowCategory,
+        campeonMeta: compo.campeonMeta || {
+          apiNameCampeon: compo.campeonTierList.apiName || "",
+          apiNameItemsDelCampeon: compo.champItem?.map((item) => item.apiName) || [],
+          estrellas: compo.estrellas || compo.champ3Stars ? 3 : 1,
+          aumento: compo?.augmentTierList?.[0]?.apiName,
+          emblema: compo?.champTrait?.[0]?.apiName,
+        },
+        tipoDeDano: compo.tipoDeDano,
+        niveles: compo.niveles || [],
+        itemsPrio: compo.itemsPrio || Object.values(compo?.carouselItems)?.map((item) => item.apiName) || [],
+        posicionamiento: compo.posicionamiento,
+        ordenPrioridadAumentos: compo.ordenPrioridadAumentos,
+        tipSEO: compo.tipSEO || compo.tipSeo || "",
+        urlSEO: compo.urlSEO || compo.urlSeo || compo.compUrl || "",
+        campeonesEarly: compo.campeonesEarly || Object.values(compo?.boardInfo?.early?.data)?.map((champ) => { return { apiNameCampeon: JSON.parse(champ.dataCampeon.campeon).apiName, apiNameItemsDelCampeon: champ.dataItem || [] } }) || [],
+        dioses: compo.dioses || [],
+        bestBuild: compo.bestBuild?.map(b => ({
+          apiNameCampeon: b.apiNameCampeon,
+          apiNameItemsBisDelCampeon: b.apiNameItemsBisDelCampeon || (b.apiNameItemsDelCampeon ? [b.apiNameItemsDelCampeon.slice(0, 3)] : [["", "", ""]]),
+          apiNameItemsSpecialBisDelCampeon: b.apiNameItemsSpecialBisDelCampeon || [["", "", ""]],
+        })) || [],
+        condiciones: compo.condiciones || [],
+        aumentos: compo.aumentos.every(item => typeof item === 'object') ? compo.aumentos.map((aument) => { return { apiNameGrande: aument.apiName || aument.apiNameGrande, apiNamePequeno: aument.apiNamePequeno, early: aument.early, midLate: aument.midLate, op: aument.op } }) : compo.aumentos || [],
+        encuentros: compo.encuentros || [],
 
-     });
-     console.log("Se Actualizaron los datos de la Composicion")
+
+      });
     }
-  },[compo])
+  }, [compo.id])
 
   function generadorID() {
     const a = Date.now().toString(30);
@@ -85,7 +83,6 @@ const FormularioCrearCompoTFT = ({ compo = {} }) => {
     const datos = { ...resultado, id: resultado?.id ? resultado.id : generadorID() }
     try {
       const token = import.meta.env.PUBLIC_TOKEN_META;
-      console.log({token})
       fetch(crearCompoMetaPHPTest, {
         method: 'POST',
         headers: {
@@ -116,40 +113,40 @@ const FormularioCrearCompoTFT = ({ compo = {} }) => {
   return (
     <div className={style.formContainer}>
       <p>Formulario Crear Compo TFT</p>
-      <VersionComp/>
-      <Ocultar/>
+      <VersionComp />
+      <Ocultar />
       <fieldset className={style.fieldsetCyan}>
         <legend className={style.legendCyan}>Datos Basicos</legend>
-        <FieldUrlForComp/>
-        <FieldNameForComp/>
-        <Tier/>
-        <TierExtra/>
-        <PosicionTier/>
-        <Dificultades/>
-        <Categorias/>
-        <TipoDaño/>
+        <FieldUrlForComp />
+        <FieldNameForComp />
+        <Tier />
+        <TierExtra />
+        <PosicionTier />
+        <Dificultades />
+        <Categorias />
+        <TipoDaño />
       </fieldset>
-      <CampeonMeta/>
+      <CampeonMeta />
 
       <fieldset className={style.fieldsetCyan}>
         <legend className={style.legendCyan}>Fundamentals</legend>
-        <Dioses/>
-        <ItemsPrio/>
-        <CampeonesEarly/>
+        <Dioses />
+        <ItemsPrio />
+        <CampeonesEarly />
       </fieldset>
 
-      <Condiciones/>
-      <Aumentos/>
+      <Condiciones />
+      <Aumentos />
 
-      <DynamicChampionsPerLevel/>
-      <Posicionamiento/>
+      <DynamicChampionsPerLevel />
+      <Posicionamiento />
 
-      <BestBuild/>
+      <BestBuild />
 
-      <Textareas/>
-      
+      <Textareas />
+
       <button type="button" onClick={() => guardarComposicionTFT(datosComposicionTFT)}>Guardar Compo</button>
-      
+
       <datalist id="items">
         {allItemsTFT.map((option) => (
           <option key={option.apiName} value={option.name} data-value={JSON.stringify(option)}>
@@ -157,7 +154,7 @@ const FormularioCrearCompoTFT = ({ compo = {} }) => {
           </option>
         ))}
       </datalist>
-      
+
       {/* DATALISTS GLOBALES */}
       <datalist id="listaCampeonesApiName">
         {allChampionsTFT?.map((option) => (
@@ -179,16 +176,16 @@ const FormularioCrearCompoTFT = ({ compo = {} }) => {
 
 export default FormularioCrearCompoTFT;
 
-const FieldUrlForComp = ()=>{
+const FieldUrlForComp = () => {
   const datosComposicionTFT = useStore(datosCompos);
   return (
     <label htmlFor="url">Url de la Composición
-      <input type="text" id="url" value={datosComposicionTFT.urlSEO} onChange={(e) => actualizarComposicionTFT({ url: e.target.value })} />
+      <input type="text" id="url" value={datosComposicionTFT.urlSEO} onChange={(e) => actualizarComposicionTFT({ urlSEO: e.target.value })} />
     </label>
   )
 }
 
-const FieldNameForComp = ()=>{
+const FieldNameForComp = () => {
   const datosComposicionTFT = useStore(datosCompos);
   return (
     <label htmlFor="nombreEs">Nombre de la Composición
@@ -197,22 +194,22 @@ const FieldNameForComp = ()=>{
   )
 }
 
-const VersionComp = ()=>{
+const VersionComp = () => {
   const datosComposicionTFT = useStore(datosCompos);
   return (
     <label htmlFor="">Version
-        <select id="version" value={datosComposicionTFT.version} onChange={(e) => actualizarComposicionTFT({ version: e.target.value })}>
-          {Object.keys(nameOfSet).map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
-      </label>
+      <select id="version" value={datosComposicionTFT.version} onChange={(e) => actualizarComposicionTFT({ version: e.target.value })}>
+        {Object.keys(nameOfSet).map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
+    </label>
   )
 }
 
-const Ocultar = ()=>{
+const Ocultar = () => {
   const datosComposicionTFT = useStore(datosCompos);
   return (
     <label>Ocultar
@@ -224,7 +221,7 @@ const Ocultar = ()=>{
   )
 }
 
-const Tier = ()=>{
+const Tier = () => {
   const datosComposicionTFT = useStore(datosCompos);
   return (
     <label htmlFor="tier">Tier
@@ -240,7 +237,7 @@ const Tier = ()=>{
   )
 }
 
-const TierExtra = ()=>{
+const TierExtra = () => {
   const datosComposicionTFT = useStore(datosCompos);
   return (
     <label htmlFor="tierExtra">Tier Extra "H" o "X"
@@ -256,7 +253,7 @@ const TierExtra = ()=>{
   )
 }
 
-const PosicionTier = ()=>{
+const PosicionTier = () => {
   const datosComposicionTFT = useStore(datosCompos);
   return (
     <label htmlFor="posicion">Posición en el Tier
@@ -265,7 +262,7 @@ const PosicionTier = ()=>{
   )
 }
 
-const Dificultades = ()=>{
+const Dificultades = () => {
   const datosComposicionTFT = useStore(datosCompos);
   return (
     <label htmlFor="dificultad">Dificultad
@@ -281,7 +278,7 @@ const Dificultades = ()=>{
   )
 }
 
-const Categorias = ()=>{
+const Categorias = () => {
   const datosComposicionTFT = useStore(datosCompos);
   return (
     <label htmlFor="categoria">Categorias
@@ -297,7 +294,7 @@ const Categorias = ()=>{
   )
 }
 
-const CampeonMeta = ()=>{
+const CampeonMeta = () => {
   const datosComposicionTFT = useStore(datosCompos);
   const allChampionsTFT = useStore(dataTFTChampions);
   const allItemsTFT = useStore(dataTFTAllItems);
@@ -327,13 +324,13 @@ const CampeonMeta = ()=>{
         </label>
 
         <label htmlFor="campeonEnElMeta3Stars">¿Es Campeon 3 estrellas?
-          <select id="campeonEnElMeta3Stars" value={datosComposicionTFT.campeonMeta?.estrellas || ""} onChange={(e) => actualizarComposicionTFT({campeonMeta: {...datosComposicionTFT.campeonMeta, estrellas: e.target.value === "true" }})}>
+          <select id="campeonEnElMeta3Stars" value={datosComposicionTFT.campeonMeta?.estrellas || ""} onChange={(e) => actualizarComposicionTFT({ campeonMeta: { ...datosComposicionTFT.campeonMeta, estrellas: e.target.value === "true" } })}>
             <option value="false">No</option>
             <option value="true">Si</option>
           </select>
         </label>
 
-        
+
 
         <label htmlFor="item1">Item 1
           <input type="text" list="items" id="item1" value={datosComposicionTFT.campeonMeta?.apiNameItemsDelCampeon?.[0]} onChange={(e) => {
@@ -398,9 +395,9 @@ const CampeonMeta = ()=>{
         <label>Trait / Emblema:
           <input value={datosComposicionTFT.campeonMeta?.emblema} onChange={(e) => {
             actualizarComposicionTFT({
-              campeonMeta:{
+              campeonMeta: {
                 ...datosComposicionTFT.campeonMeta,
-                emblema:e.target.value
+                emblema: e.target.value
               }
             });
           }} list="dataListChampsTraits" name="dataListChampsTraits" id="dataListChampsTraits1" placeholder="Select Trait to Show"></input>
@@ -416,36 +413,36 @@ const CampeonMeta = ()=>{
           </datalist>
         </label>
       </fieldset>
-      <div style={{display:"flex",flexDirection:"row",flexWrap:"wrap"}}>
-        <img 
-          className={style.metaImage} 
+      <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }}>
+        <img
+          className={style.metaImage}
           alt={allChampionsTFT.find((champion) => champion.apiName === datosComposicionTFT?.campeonMeta?.apiNameCampeon)?.name}
-          src={`${urlDragon()}${allChampionsTFT.find((champion) => champion.apiName === datosComposicionTFT?.campeonMeta?.apiNameCampeon)?.tileIcon.toLowerCase().replace(".tex",".png")}`}
-          />
-        <img
-        className={style.metaImage} 
-        src={`${urlDragon()}${allItemsTFT.find((item) => item.apiName === datosComposicionTFT?.campeonMeta?.apiNameItemsDelCampeon?.[0])?.icon.toLowerCase().replace(".tex",".png")}`}
-        alt="item1"
+          src={`${urlDragon()}${allChampionsTFT.find((champion) => champion.apiName === datosComposicionTFT?.campeonMeta?.apiNameCampeon)?.tileIcon.toLowerCase().replace(".tex", ".png")}`}
         />
         <img
-        className={style.metaImage} 
-        src={`${urlDragon()}${allItemsTFT.find((item) => item.apiName === datosComposicionTFT?.campeonMeta?.apiNameItemsDelCampeon?.[1])?.icon.toLowerCase().replace(".tex",".png")}`}
-        alt="item2"
+          className={style.metaImage}
+          src={`${urlDragon()}${allItemsTFT.find((item) => item.apiName === datosComposicionTFT?.campeonMeta?.apiNameItemsDelCampeon?.[0])?.icon.toLowerCase().replace(".tex", ".png")}`}
+          alt="item1"
         />
         <img
-        className={style.metaImage} 
-        src={`${urlDragon()}${allItemsTFT.find((item) => item.apiName === datosComposicionTFT?.campeonMeta?.apiNameItemsDelCampeon?.[2])?.icon.toLowerCase().replace(".tex",".png")}`}
-        alt="item3"
+          className={style.metaImage}
+          src={`${urlDragon()}${allItemsTFT.find((item) => item.apiName === datosComposicionTFT?.campeonMeta?.apiNameItemsDelCampeon?.[1])?.icon.toLowerCase().replace(".tex", ".png")}`}
+          alt="item2"
         />
         <img
-        className={style.metaImage} 
-        alt="aumento"
-        src={`${urlDragon()}${allItemsTFT.find((item) => item.apiName === datosComposicionTFT?.campeonMeta?.aumento)?.icon.toLowerCase().replace(".tex",".png")}`}
+          className={style.metaImage}
+          src={`${urlDragon()}${allItemsTFT.find((item) => item.apiName === datosComposicionTFT?.campeonMeta?.apiNameItemsDelCampeon?.[2])?.icon.toLowerCase().replace(".tex", ".png")}`}
+          alt="item3"
         />
         <img
-        className={style.metaImage} 
-        alt="emblema"
-        src={`${urlDragon()}${allItemsTFT.find((item) => item.apiName === datosComposicionTFT?.campeonMeta?.emblema)?.icon.toLowerCase().replace(".tex",".png")}`}
+          className={style.metaImage}
+          alt="aumento"
+          src={`${urlDragon()}${allItemsTFT.find((item) => item.apiName === datosComposicionTFT?.campeonMeta?.aumento)?.icon.toLowerCase().replace(".tex", ".png")}`}
+        />
+        <img
+          className={style.metaImage}
+          alt="emblema"
+          src={`${urlDragon()}${allItemsTFT.find((item) => item.apiName === datosComposicionTFT?.campeonMeta?.emblema)?.icon.toLowerCase().replace(".tex", ".png")}`}
         />
       </div>
 
@@ -455,12 +452,12 @@ const CampeonMeta = ()=>{
   )
 }
 
-const TipoDaño = ()=>{
+const TipoDaño = () => {
   const datosComposicionTFT = useStore(datosCompos);
   return (
     <label htmlFor="tipoDaño">Tipo de Daño de la Compo AD / AP / Hibrido
       <select id="tipoDaño" value={datosComposicionTFT.tipoDeDano} onChange={(e) => {
-        actualizarComposicionTFT({tipoDeDano: e.target.value });
+        actualizarComposicionTFT({ tipoDeDano: e.target.value });
       }}>
         <option value="">Selecciona el tipo de daño</option>
         {dañoTipo.Es.map((daño, idx) => (
@@ -507,7 +504,7 @@ const DynamicChampionsPerLevel = () => {
     actualizarComposicionTFT(prev => {
       const newNiveles = [...(prev.niveles || [])];
       const currentLevel = { ...newNiveles[index], [field]: value };
-      
+
       if (field === 'lv') {
         const newLv = parseInt(value) || 0;
         let campeones = [...(currentLevel.campeones || [])];
@@ -520,7 +517,7 @@ const DynamicChampionsPerLevel = () => {
         }
         currentLevel.campeones = campeones;
       }
-      
+
       newNiveles[index] = currentLevel;
       return { ...prev, niveles: newNiveles };
     });
@@ -530,12 +527,12 @@ const DynamicChampionsPerLevel = () => {
     actualizarComposicionTFT(prev => {
       const newNiveles = [...(prev.niveles || [])];
       const newCampeones = [...(newNiveles[levelIndex].campeones || [])];
-      
+
       // Ensure the array is long enough (in case it wasn't populated properly)
       while (newCampeones.length <= champIndex) {
         newCampeones.push({ apiNameCampeon: "", estrella: 1, apiNameItemsDelCampeon: [] });
       }
-      
+
       newCampeones[champIndex] = { ...newCampeones[champIndex], [field]: value };
       newNiveles[levelIndex] = { ...newNiveles[levelIndex], campeones: newCampeones };
       return { ...prev, niveles: newNiveles };
@@ -546,18 +543,18 @@ const DynamicChampionsPerLevel = () => {
     actualizarComposicionTFT(prev => {
       const newNiveles = [...(prev.niveles || [])];
       const newCampeones = [...(newNiveles[levelIndex].campeones || [])];
-      
+
       while (newCampeones.length <= champIndex) {
         newCampeones.push({ apiNameCampeon: "", estrella: 1, apiNameItemsDelCampeon: [] });
       }
-      
+
       const items = [...(newCampeones[champIndex].apiNameItemsDelCampeon || [])];
-      
+
       while (items.length <= itemIndex) {
         items.push("");
       }
       items[itemIndex] = value;
-      
+
       newCampeones[champIndex] = { ...newCampeones[champIndex], apiNameItemsDelCampeon: items };
       newNiveles[levelIndex] = { ...newNiveles[levelIndex], campeones: newCampeones };
       return { ...prev, niveles: newNiveles };
@@ -568,7 +565,7 @@ const DynamicChampionsPerLevel = () => {
     actualizarComposicionTFT(prev => {
       const newNiveles = [...(prev.niveles || [])];
       const newCampeones = [...(newNiveles[levelIndex].campeones || [])];
-      
+
       newCampeones.push({ apiNameCampeon: "", estrella: 1, apiNameItemsDelCampeon: [] });
       newNiveles[levelIndex] = { ...newNiveles[levelIndex], campeones: newCampeones };
       return { ...prev, niveles: newNiveles };
@@ -579,7 +576,7 @@ const DynamicChampionsPerLevel = () => {
     actualizarComposicionTFT(prev => {
       const newNiveles = [...(prev.niveles || [])];
       const newCampeones = [...(newNiveles[levelIndex].campeones || [])];
-      
+
       newCampeones.splice(champIndex, 1);
       newNiveles[levelIndex] = { ...newNiveles[levelIndex], campeones: newCampeones };
       return { ...prev, niveles: newNiveles };
@@ -589,7 +586,7 @@ const DynamicChampionsPerLevel = () => {
   return (
     <fieldset className={style.fieldsetCyan}>
       <legend className={style.legendCyan}>Niveles</legend>
-      
+
 
       {niveles.map((nivel, levelIndex) => (
         <div key={levelIndex} className={style.levelContainer}>
@@ -624,8 +621,8 @@ const DynamicChampionsPerLevel = () => {
           <div className={style.championsContainer}>
             <div className={style.champsHeader}>
               <strong>Campeones en este Nivel ({nivel.campeones?.length || nivel.lv || 0})</strong>
-              <button 
-                type="button" 
+              <button
+                type="button"
                 onClick={() => addChampion(levelIndex)}
                 className={style.btnSuccessSm}
               >
@@ -635,83 +632,84 @@ const DynamicChampionsPerLevel = () => {
 
             {(nivel.campeones || Array.from({ length: nivel.lv || 0 })).map((_, champIndex) => {
               const champ = nivel.campeones?.[champIndex] || { apiNameCampeon: "", estrella: 1, apiNameItemsDelCampeon: [] };
-              
+
               const champData = allChampionsTFT?.find(c => c.apiName === champ.apiNameCampeon);
               const champImgUrl = champData?.tileIcon ? (champData.tileIcon.includes("http") ? champData.tileIcon.toLowerCase().replace(".tex", ".png") : urlDragon() + champData.tileIcon.toLowerCase().replace(".tex", ".png")) : null;
 
               return (
-              <div key={champIndex} className={style.rowGap15Border}>
-                
-                {/* Visualizador del Campeón */}
-                <div className={style.champIconContainer}>
-                  {champImgUrl ? <img src={champImgUrl} alt={champ.apiNameCampeon} className={style.champIcon} /> : <span className={style.emptyChamp}>?</span>}
-                  
-                  {/* Estrellas */}
-                  <div className={style.starContainer}>
-                    {Array.from({ length: champ.estrella }).map((_, i) => (
-                      <span key={i} style={{ color: `${champ.estrella > 3 ? '#07a14cff' : 'gold'}`, fontSize: '12px', textShadow: '1px 1px 0 #000' }}>★</span>
-                    ))}
+                <div key={champIndex} className={style.rowGap15Border}>
+
+                  {/* Visualizador del Campeón */}
+                  <div className={style.champIconContainer}>
+                    {champImgUrl ? <img src={champImgUrl} alt={champ.apiNameCampeon} className={style.champIcon} /> : <span className={style.emptyChamp}>?</span>}
+
+                    {/* Estrellas */}
+                    <div className={style.starContainer}>
+                      {Array.from({ length: champ.estrella }).map((_, i) => (
+                        <span key={i} style={{ color: `${champ.estrella > 3 ? '#07a14cff' : 'gold'}`, fontSize: '12px', textShadow: '1px 1px 0 #000' }}>★</span>
+                      ))}
+                    </div>
+
+                    {/* Items */}
+                    <div className={style.itemContainer}>
+                      {[0, 1, 2].map((itemIndex) => {
+                        const apiNameItem = champ.apiNameItemsDelCampeon?.[itemIndex];
+                        if (!apiNameItem) return null;
+                        const itemData = allItemsTFT?.find(i => i.apiName === apiNameItem);
+                        const itemImgUrl = itemData?.icon ? (itemData.icon.includes("http") ? itemData.icon.toLowerCase().replace(".tex", ".png") : urlDragon() + itemData.icon.toLowerCase().replace(".tex", ".png")) : null;
+                        return itemImgUrl ? (
+                          <img key={itemIndex} src={itemImgUrl} alt={apiNameItem} className={style.itemIconSmall} />
+                        ) : null;
+                      })}
+                    </div>
                   </div>
 
-                  {/* Items */}
-                  <div className={style.itemContainer}>
-                    {[0, 1, 2].map((itemIndex) => {
-                      const apiNameItem = champ.apiNameItemsDelCampeon?.[itemIndex];
-                      if (!apiNameItem) return null;
-                      const itemData = allItemsTFT?.find(i => i.apiName === apiNameItem);
-                      const itemImgUrl = itemData?.icon ? (itemData.icon.includes("http") ? itemData.icon.toLowerCase().replace(".tex", ".png") : urlDragon() + itemData.icon.toLowerCase().replace(".tex", ".png")) : null;
-                      return itemImgUrl ? (
-                        <img key={itemIndex} src={itemImgUrl} alt={apiNameItem} className={style.itemIconSmall} />
-                      ) : null;
-                    })}
-                  </div>
-                </div>
-
-                <div className={style.flex1Gap15}>
-                  <label style={{ flex: 1, minWidth: '150px' }}>
-                    <input 
-                      type="text"
-                      list="listaCampeonesApiName"
-                      value={champ.apiNameCampeon} 
-                      onChange={(e) => updateChampion(levelIndex, champIndex, 'apiNameCampeon', e.target.value)} 
-                      placeholder="Seleccionar Campeón"
-                      className={style.inputFull} 
-                    />
-                  </label>
-
-                  <label className={style.width100}>
-                    <select value={champ.estrella} onChange={(e) => updateChampion(levelIndex, champIndex, 'estrella', parseInt(e.target.value) || 1)} className={style.width100Pad5}>
-                      <option value={1}>1 Estrella</option>
-                      <option value={2}>2 Estrellas</option>
-                      <option value={3}>3 Estrellas</option>
-                      <option value={4}>4 Estrellas</option>
-                    </select>
-                  </label>
-
-                  <div className={style.flexGap5}>
-                    {[0, 1, 2].map((itemIndex) => (
+                  <div className={style.flex1Gap15}>
+                    <label style={{ flex: 1, minWidth: '150px' }}>
                       <input
-                        key={itemIndex}
                         type="text"
-                        list="listaItemsApiName"
-                        value={champ.apiNameItemsDelCampeon?.[itemIndex] || ""}
-                        onChange={(e) => updateChampionItem(levelIndex, champIndex, itemIndex, e.target.value)}
-                        placeholder={`Item ${itemIndex + 1}`}
-                        className={style.inputSmall}
+                        list="listaCampeonesApiName"
+                        value={champ.apiNameCampeon}
+                        onChange={(e) => updateChampion(levelIndex, champIndex, 'apiNameCampeon', e.target.value)}
+                        placeholder="Seleccionar Campeón"
+                        className={style.inputFull}
                       />
-                    ))}
+                    </label>
+
+                    <label className={style.width100}>
+                      <select value={champ.estrella} onChange={(e) => updateChampion(levelIndex, champIndex, 'estrella', parseInt(e.target.value) || 1)} className={style.width100Pad5}>
+                        <option value={1}>1 Estrella</option>
+                        <option value={2}>2 Estrellas</option>
+                        <option value={3}>3 Estrellas</option>
+                        <option value={4}>4 Estrellas</option>
+                      </select>
+                    </label>
+
+                    <div className={style.flexGap5}>
+                      {[0, 1, 2].map((itemIndex) => (
+                        <input
+                          key={itemIndex}
+                          type="text"
+                          list="listaItemsApiName"
+                          value={champ?.apiNameItemsDelCampeon?.[itemIndex] || ""}
+                          onChange={(e) => updateChampionItem(levelIndex, champIndex, itemIndex, e.target.value)}
+                          placeholder={`Item ${itemIndex + 1}`}
+                          className={style.inputSmall}
+                        />
+                      ))}
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => removeChampion(levelIndex, champIndex)}
+                      className={style.btnDangerFit}
+                    >
+                      X
+                    </button>
                   </div>
-                  
-                  <button 
-                    type="button" 
-                    onClick={() => removeChampion(levelIndex, champIndex)}
-                    className={style.btnDangerFit}
-                  >
-                    X
-                  </button>
                 </div>
-              </div>
-            )})}
+              )
+            })}
           </div>
         </div>
       ))}
@@ -722,12 +720,12 @@ const DynamicChampionsPerLevel = () => {
   );
 };
 
-const ItemsPrio = ()=>{
+const ItemsPrio = () => {
   const itemsPrio = useStore(datosCompos).itemsPrio;
   const allItemsTFT = useStore(dataTFTAllItems);
-  const addItemPrio = ()=>{
+  const addItemPrio = () => {
     //max 4 items
-    if(itemsPrio.length >= 4){
+    if (itemsPrio.length >= 4) {
       alert("Maximo 4 items");
       return;
     }
@@ -748,11 +746,11 @@ const ItemsPrio = ()=>{
               type="text"
               list="listaItemsApiName"
               value={item}
-              onChange={(e) => actualizarComposicionTFT(prev => ({...prev, itemsPrio: prev.itemsPrio.map((item, i) => i === index ? e.target.value : item)}))}
+              onChange={(e) => actualizarComposicionTFT(prev => ({ ...prev, itemsPrio: prev.itemsPrio.map((item, i) => i === index ? e.target.value : item) }))}
               placeholder={`Item ${index + 1}`}
               className={style.inputSmall}
             />
-            <button type="button" onClick={() => actualizarComposicionTFT(prev => ({...prev, itemsPrio: prev.itemsPrio.filter((_, i) => i !== index)}))} className={style.btnDanger}>
+            <button type="button" onClick={() => actualizarComposicionTFT(prev => ({ ...prev, itemsPrio: prev.itemsPrio.filter((_, i) => i !== index) }))} className={style.btnDanger}>
               X
             </button>
           </div>
@@ -770,7 +768,7 @@ const ItemsPrio = ()=>{
   )
 }
 
-const Condiciones = ()=>{
+const Condiciones = () => {
   const condiciones = useStore(datosCompos).condiciones || [];
   const allChampionsTFT = useStore(dataTFTChampions);
   const allItemsTFT = useStore(dataTFTAllItems);
@@ -814,53 +812,53 @@ const Condiciones = ()=>{
     <fieldset className={style.fieldsetRed}>
       <legend>Condiciones</legend>
       {
-        condiciones.map((condicion, index)=>{
+        condiciones.map((condicion, index) => {
           return (
             <div key={index} className={style.rowGap10}>
-              <input 
-                type="text" 
+              <input
+                type="text"
                 list="opcionesCondiciones"
-                placeholder="Cuadro Grande" 
+                placeholder="Cuadro Grande"
                 value={condicion.apiNameGrande || ""}
                 onChange={(e) => updateCondicion(index, 'apiNameGrande', e.target.value)}
                 className={style.inputBase}
               />
-              <input 
-                type="text" 
+              <input
+                type="text"
                 list="opcionesCondiciones"
-                placeholder="Cuadro pequeño" 
+                placeholder="Cuadro pequeño"
                 value={condicion.apiNamePequeno || ""}
                 onChange={(e) => updateCondicion(index, 'apiNamePequeno', e.target.value)}
                 className={style.inputBase}
               />
               <label className={style.rowGap5}>
-                <input 
-                  type="checkbox" 
+                <input
+                  type="checkbox"
                   checked={!!condicion.early}
                   onChange={(e) => updateCondicion(index, 'early', e.target.checked, true)}
                 />
                 Early
               </label>
               <label className={style.rowGap5}>
-                <input 
-                  type="checkbox" 
+                <input
+                  type="checkbox"
                   checked={!!condicion.midLate}
                   onChange={(e) => updateCondicion(index, 'midLate', e.target.checked, true)}
                 />
                 Mid / Late
               </label>
               <label className={style.rowGap5}>
-                <input 
-                  type="checkbox" 
+                <input
+                  type="checkbox"
                   checked={!!condicion.op}
                   onChange={(e) => updateCondicion(index, 'op', e.target.checked, true)}
                 />
                 OP
               </label>
 
-              <button 
-                type="button" 
-                onClick={() => removeCondicion(index)} 
+              <button
+                type="button"
+                onClick={() => removeCondicion(index)}
                 className={style.btnDangerAuto}
               >
                 X
@@ -869,10 +867,10 @@ const Condiciones = ()=>{
           )
         })
       }
-      
-      <button 
-        type="button" 
-        onClick={addCondicion} 
+
+      <button
+        type="button"
+        onClick={addCondicion}
         className={style.btnRedSm}
       >
         + Añadir Condición
@@ -895,7 +893,7 @@ const Condiciones = ()=>{
   )
 }
 
-const Aumentos = ()=>{
+const Aumentos = () => {
   const aumentos = useStore(datosCompos).aumentos || [];
 
   const addAumento = () => {
@@ -937,53 +935,53 @@ const Aumentos = ()=>{
     <fieldset className={style.fieldsetPurple}>
       <legend>Aumentos</legend>
       {
-        aumentos.map((aumento, index)=>{
+        aumentos.map((aumento, index) => {
           return (
             <div key={index} className={style.rowGap10}>
-              <input 
-                type="text" 
+              <input
+                type="text"
                 list="opcionesCondiciones"
-                placeholder="Cuadro Grande" 
+                placeholder="Cuadro Grande"
                 value={aumento.apiNameGrande || ""}
                 onChange={(e) => updateAumento(index, 'apiNameGrande', e.target.value)}
                 className={style.inputBase}
               />
-              <input 
-                type="text" 
+              <input
+                type="text"
                 list="opcionesCondiciones"
-                placeholder="Cuadro pequeño" 
+                placeholder="Cuadro pequeño"
                 value={aumento.apiNamePequeno || ""}
                 onChange={(e) => updateAumento(index, 'apiNamePequeno', e.target.value)}
                 className={style.inputBase}
               />
               <label className={style.rowGap5}>
-                <input 
-                  type="checkbox" 
+                <input
+                  type="checkbox"
                   checked={!!aumento.early}
                   onChange={(e) => updateAumento(index, 'early', e.target.checked, true)}
                 />
                 Early
               </label>
               <label className={style.rowGap5}>
-                <input 
-                  type="checkbox" 
+                <input
+                  type="checkbox"
                   checked={!!aumento.midLate}
                   onChange={(e) => updateAumento(index, 'midLate', e.target.checked, true)}
                 />
                 Mid / Late
               </label>
               <label className={style.rowGap5}>
-                <input 
-                  type="checkbox" 
+                <input
+                  type="checkbox"
                   checked={!!aumento.op}
                   onChange={(e) => updateAumento(index, 'op', e.target.checked, true)}
                 />
                 OP
               </label>
 
-              <button 
-                type="button" 
-                onClick={() => removeAumento(index)} 
+              <button
+                type="button"
+                onClick={() => removeAumento(index)}
                 className={style.btnDangerAuto}
               >
                 X
@@ -992,10 +990,10 @@ const Aumentos = ()=>{
           )
         })
       }
-      
-      <button 
-        type="button" 
-        onClick={addAumento} 
+
+      <button
+        type="button"
+        onClick={addAumento}
         className={style.btnPurple}
       >
         + Añadir Aumento
@@ -1053,7 +1051,7 @@ const Dioses = () => {
           + Añadir Dios
         </button>
       </div>
-      
+
       <datalist id="opcionesDioses">
         {opcionesDiosesList?.map(opcion => (
           <option key={`opcion-dios-${opcion}`} value={opcion}>{opcion}</option>
@@ -1129,24 +1127,24 @@ const BestBuild = () => {
       {bestBuilds.map((build, rowIndex) => {
         const champData = allChampionsTFT?.find(c => c.apiName === build.apiNameCampeon);
         const champImgUrl = champData?.tileIcon ? (champData.tileIcon.includes("http") ? champData.tileIcon.toLowerCase().replace(".tex", ".png") : urlDragon() + champData.tileIcon.toLowerCase().replace(".tex", ".png")) : null;
-        
+
         return (
           <div key={rowIndex} className={style.rowGap15Border}>
             <div className={style.champIconContainer}>
               {champImgUrl ? <img src={champImgUrl} alt={build.apiNameCampeon} className={style.champIcon} /> : <span className={style.emptyChamp}>?</span>}
             </div>
-            
+
             <div className={style.flex1Gap15}>
-              <input 
+              <input
                 type="text"
                 list="listaCampeonesApiName"
-                value={build.apiNameCampeon || ""} 
-                onChange={(e) => updateBestBuildChamp(rowIndex, e.target.value)} 
+                value={build.apiNameCampeon || ""}
+                onChange={(e) => updateBestBuildChamp(rowIndex, e.target.value)}
                 placeholder="Seleccionar Campeón"
-                className={style.inputFlex1} 
+                className={style.inputFlex1}
                 style={{ alignSelf: 'flex-start', marginTop: '5px' }}
               />
-              
+
               <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', flex: '1', minWidth: '300px' }}>
                   <strong>Item BIS</strong>
@@ -1172,8 +1170,8 @@ const BestBuild = () => {
                         );
                       })}
                       {listIdx > 0 && (
-                        <button 
-                          type="button" 
+                        <button
+                          type="button"
                           onClick={() => removeItemsRowFromBestBuild(rowIndex, "apiNameItemsBisDelCampeon", listIdx)}
                           className={style.btnDangerFit}
                           style={{ marginLeft: '5px' }}
@@ -1184,10 +1182,10 @@ const BestBuild = () => {
                       )}
                     </div>
                   ))}
-                  <button 
-                    type="button" 
-                    onClick={() => addItemsRowToBestBuild(rowIndex, "apiNameItemsBisDelCampeon")} 
-                    className={style.btnCyanSm} 
+                  <button
+                    type="button"
+                    onClick={() => addItemsRowToBestBuild(rowIndex, "apiNameItemsBisDelCampeon")}
+                    className={style.btnCyanSm}
                     style={{ width: 'fit-content' }}
                   >
                     + Añadir Fila Alternativa BIS
@@ -1218,8 +1216,8 @@ const BestBuild = () => {
                         );
                       })}
                       {listIdx > 0 && (
-                        <button 
-                          type="button" 
+                        <button
+                          type="button"
                           onClick={() => removeItemsRowFromBestBuild(rowIndex, "apiNameItemsSpecialBisDelCampeon", listIdx)}
                           className={style.btnDangerFit}
                           style={{ marginLeft: '5px' }}
@@ -1230,10 +1228,10 @@ const BestBuild = () => {
                       )}
                     </div>
                   ))}
-                  <button 
-                    type="button" 
-                    onClick={() => addItemsRowToBestBuild(rowIndex, "apiNameItemsSpecialBisDelCampeon")} 
-                    className={style.btnCyanSm} 
+                  <button
+                    type="button"
+                    onClick={() => addItemsRowToBestBuild(rowIndex, "apiNameItemsSpecialBisDelCampeon")}
+                    className={style.btnCyanSm}
                     style={{ width: 'fit-content' }}
                   >
                     + Añadir Fila Alternativa Special BIS
@@ -1241,8 +1239,8 @@ const BestBuild = () => {
                 </div>
               </div>
 
-              <button 
-                type="button" 
+              <button
+                type="button"
                 onClick={() => removeBestBuildRow(rowIndex)}
                 className={style.btnDangerFit}
                 style={{ marginLeft: 'auto', marginTop: '10px' }}
@@ -1254,10 +1252,10 @@ const BestBuild = () => {
           </div>
         );
       })}
-      
-      <button 
-        type="button" 
-        onClick={addBestBuildRow} 
+
+      <button
+        type="button"
+        onClick={addBestBuildRow}
         className={style.btnSuccess}
       >
         + Añadir Best Build
@@ -1316,17 +1314,17 @@ const CampeonesEarly = () => {
             <div className={style.champIconContainer}>
               {champImgUrl ? <img src={champImgUrl} alt={champEarly.apiNameCampeon} className={style.champIcon} /> : <span className={style.emptyChamp}>?</span>}
             </div>
-            
+
             <div className={style.flex1Gap15}>
-              <input 
+              <input
                 type="text"
                 list="listaCampeonesApiName"
-                value={champEarly.apiNameCampeon || ""} 
-                onChange={(e) => updateCampeonEarlyChamp(rowIndex, e.target.value)} 
+                value={champEarly.apiNameCampeon || ""}
+                onChange={(e) => updateCampeonEarlyChamp(rowIndex, e.target.value)}
                 placeholder="Seleccionar Campeón"
-                className={style.inputFlex1} 
+                className={style.inputFlex1}
               />
-              
+
               <div className={style.flexGap5}>
                 {[0, 1, 2].map(itemIndex => {
                   const apiNameItem = champEarly.apiNameItemsDelCampeon?.[itemIndex];
@@ -1349,8 +1347,8 @@ const CampeonesEarly = () => {
                 })}
               </div>
 
-              <button 
-                type="button" 
+              <button
+                type="button"
                 onClick={() => removeCampeonEarlyRow(rowIndex)}
                 className={style.btnDangerFit}
               >
@@ -1360,10 +1358,10 @@ const CampeonesEarly = () => {
           </div>
         );
       })}
-      
-      <button 
-        type="button" 
-        onClick={addCampeonEarlyRow} 
+
+      <button
+        type="button"
+        onClick={addCampeonEarlyRow}
         className={style.btnWarning}
       >
         + Añadir Campeón Early
@@ -1378,20 +1376,19 @@ const Posicionamiento = () => {
   const [visibleCampeonesItems, setVisibleCampeonesItems] = useState(true);
 
   const renderPosicionamientoToggle = (posicion, index) => {
-    console.log({posicion, index})
     const key = `posicionamiento_${index}`;
     return (
       <div key={key} className={style.toggleBuilder}>
         <div className={style.toggleHeader}>
-          <input 
-            type="text" 
-            value={posicion.nombre} 
+          <input
+            type="text"
+            value={posicion.nombre}
             onChange={(e) => {
-               actualizarComposicionTFT(prev => {
-                  const newPosicionamiento = [...(prev.posicionamiento || [])];
-                  newPosicionamiento[index] = { ...newPosicionamiento[index], nombre: e.target.value };
-                  return { ...prev, posicionamiento: newPosicionamiento };
-               });
+              actualizarComposicionTFT(prev => {
+                const newPosicionamiento = [...(prev.posicionamiento || [])];
+                newPosicionamiento[index] = { ...newPosicionamiento[index], nombre: e.target.value };
+                return { ...prev, posicionamiento: newPosicionamiento };
+              });
             }}
             className={style.inputDark}
           />
@@ -1406,35 +1403,35 @@ const Posicionamiento = () => {
             type="button"
             onClick={() => {
               actualizarComposicionTFT(prev => {
-                  const newPosicionamiento = [...(prev.posicionamiento || [])];
-                  newPosicionamiento.splice(index, 1);
-                  return { ...prev, posicionamiento: newPosicionamiento };
-               });
+                const newPosicionamiento = [...(prev.posicionamiento || [])];
+                newPosicionamiento.splice(index, 1);
+                return { ...prev, posicionamiento: newPosicionamiento };
+              });
             }}
             className={style.btnDarkDanger}
           >
             X
           </button>
         </div>
-        
+
         <div className={style.toggleContent}>
 
-        {!visibleBuilders[key] && (
-          <div className={style.toggleLeft}>
-            <NuevoBuilderTFT posicionIndex={index} />
-          </div>
-        )}
-        {
-          !visibleBuilders[key] && (
-            <div className={style.toggleRight}>
-              <div className={style.flexOnly}>
-                <button type="button" onClick={() => setVisibleCampeonesItems(true)}>Campeones</button>
-                <button type="button" onClick={() => setVisibleCampeonesItems(false)}>Items</button>
-              </div>
-              {visibleCampeonesItems ? <ChampionsList /> : <ItemsList />}
+          {!visibleBuilders[key] && (
+            <div className={style.toggleLeft}>
+              <NuevoBuilderTFT posicionIndex={index} />
             </div>
-          )
-        }
+          )}
+          {
+            !visibleBuilders[key] && (
+              <div className={style.toggleRight}>
+                <div className={style.flexOnly}>
+                  <button type="button" onClick={() => setVisibleCampeonesItems(true)}>Campeones</button>
+                  <button type="button" onClick={() => setVisibleCampeonesItems(false)}>Items</button>
+                </div>
+                {visibleCampeonesItems ? <ChampionsList /> : <ItemsList />}
+              </div>
+            )
+          }
         </div>
 
       </div>
@@ -1446,8 +1443,8 @@ const Posicionamiento = () => {
       <legend className={style.legendCyan}>
         Posicionamiento
       </legend>
-      <img style={{width:"60%", filter: "grayscale(100%)"}}src={"https://api.guiadeparche.com/tft/composiciones/" +  datosComposicionTFT.id +"-"+datosComposicionTFT.originalComp+"-"+datosComposicionTFT.version+".webp"}></img>
-    
+      <img style={{ width: "60%", filter: "grayscale(100%)" }} src={"https://api.guiadeparche.com/tft/composiciones/" + datosComposicionTFT.id + "-" + datosComposicionTFT.originalComp + "-" + datosComposicionTFT.version + ".webp"}></img>
+
       {datosComposicionTFT?.posicionamiento?.map((pos, index) => renderPosicionamientoToggle(pos, index))}
       <button type="button" onClick={() => {
         actualizarComposicionTFT(prev => ({
@@ -1474,8 +1471,8 @@ const Textareas = () => {
         <textarea
           name="tipseo"
           type="text"
-          value={datosComposicionTFT?.tipSeo}
-          onChange={(e) => actualizarComposicionTFT({ ...datosComposicionTFT, tipSeo: e.target.value })}
+          value={datosComposicionTFT?.tipSEO}
+          onChange={(e) => actualizarComposicionTFT({ ...datosComposicionTFT, tipSEO: e.target.value })}
           placeholder="Type Tip Seo"
         />
       </label>

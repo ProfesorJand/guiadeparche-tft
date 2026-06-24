@@ -18,7 +18,7 @@ const UserMenu=()=>{
     const loadComps = async()=>{
       if(todasLasCompsPBE) return;
       await fetchAndSortComps(composMetaPBEJSON);
-      await addRestCompsFetch(composMetaJSON);
+      //await addRestCompsFetch(composMetaJSON);
     }
     loadComps();
   },[]);

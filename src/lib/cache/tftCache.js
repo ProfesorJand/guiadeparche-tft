@@ -146,3 +146,17 @@ export async function getMetadata() {
     lastUpdatePBE: formattedDate
   };
 }
+
+let tftDataPBECache = null;
+export async function getTFTDataPBE() {
+  if (tftDataPBECache) return tftDataPBECache;
+  try {
+    const response = await fetch('https://raw.communitydragon.org/pbe/cdragon/tft/es_mx.json');
+    tftDataPBECache = await response.json();
+    return tftDataPBECache;
+  } catch (err) {
+    console.error("Error fetching TFT PBE data remotely:", err);
+    return null;
+  }
+}
+
