@@ -1,13 +1,13 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import style from "./css/CardsCompos.module.css";
-import { urlDragon, crearCompoMetaPHP, composTest, composMetaPBETest,teamPlannerCode, versionTFT, setNumberLatest, setNumberPBE, setMutatorPBE, setMutatorLatest, dataTFTChampions } from "@stores/dataTFT";
-import GuiaFreeTFTMeta  from "./GuiaFreeTFTMeta.jsx";
+import { urlDragon, crearCompoMetaPHP, composTest,dataTFTAllItems, composMetaPBETest, teamPlannerCode, versionTFT, setNumberPBE, setMutatorPBE, setMutatorLatest, dataTFTChampions, compActiveId } from "@stores/dataTFT";
+import GuiaFreeTFTMeta from "./GuiaFreeTFTMeta.jsx";
 import { navigate } from "astro:transitions/client";
 import { saveScrollPosition } from "../../utils/scrollRestoration";
 import CrearCompoTFT from "@components/main/Admin/CrearCompoTFT.jsx";
 import { CapturarImagen } from "@functions/CapturarImagen.js";
 import FormularioCrearCompoTFT from "./FormularioCrearCompoTFT.jsx";
-import {useStore} from "@nanostores/react";
+import { useStore } from "@nanostores/react";
 
 import CardsMasterPlanCompos from "./master-plan/CardsMasterPlanCompos.jsx";
 // Añade aquí manualmente los apiName de los campeones que NO quieres que se muestren
@@ -21,13 +21,14 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
   const currentVersion = useStore(versionTFT);
   const codeOfChampions = useStore(teamPlannerCode);
   const championsTFT = useStore(dataTFTChampions);
+  const allItemsTFT = useStore(dataTFTAllItems);
 
   useEffect(() => {
-  // Si la tienda está vacía (no se llenó en el SSR/Layout), obtenla:
-  if (Object.keys(composTestB).length === 0) {
-    composMetaPBETest();
-  }
-}, [composTestB]);
+    // Si la tienda está vacía (no se llenó en el SSR/Layout), obtenla:
+    if (Object.keys(composTestB).length === 0) {
+      composMetaPBETest();
+    }
+  }, [composTestB]);
 
   function copyToClipboard(e, codigo) {
     e.preventDefault();
@@ -99,26 +100,24 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
   }
 
   const [openForEdit, setOpenForEdit] = useState(false);
-  const [showFormForEdit, setShowFormForEdit] = useState(false);
+  const activeEditId = useStore(compActiveId);
+  const showFormForEdit = activeEditId === comp.id;
   const containerRef = useRef(null);
   const dificultadEspañol = {
-  Easy: "Fácil",
-  Medium: "Medio",
-  Hard: "Difícil",
-};
+    Easy: "Fácil",
+    Medium: "Medio",
+    Hard: "Difícil",
+  };
 
-
-
-
-const infographicCategoriesEspañol = {
-  "Roll Lv5": "Rolear Lv5",
-  "Roll Lv6": "Rolear Lv6",
-  "Roll Lv7": "Rolear Lv7",
-  "Roll Lv8": "Rolear Lv8",
-  "Roll Lv8 y Lv9": "Rolear Lv8 y Lv9",
-  "Roll Lv9": "Rolear Lv9",
-  "Roll Lv10": "Rolear Lv10",
-};
+  const infographicCategoriesEspañol = {
+    "Roll Lv5": "Rolear Lv5",
+    "Roll Lv6": "Rolear Lv6",
+    "Roll Lv7": "Rolear Lv7",
+    "Roll Lv8": "Rolear Lv8",
+    "Roll Lv8 y Lv9": "Rolear Lv8 y Lv9",
+    "Roll Lv9": "Rolear Lv9",
+    "Roll Lv10": "Rolear Lv10",
+  };
 
   useEffect(() => {
     if (!isActive) return;
@@ -165,72 +164,109 @@ const infographicCategoriesEspañol = {
   }, [isActive]);
 
   const handleToggle = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  if (!isActive) {
-    saveScrollPosition();
-  }
-
-  const targetUrl = isActive
-    ? "/tft/meta-comps-tier-list-teamfight-tactics"
-    : `/tft/meta-comps-tier-list-teamfight-tactics/${comp.compUrl}`;
-
-  await navigate(targetUrl, {
-    scroll: false
-  });
-};
-
-const deleteComp = ({id, tier, version})=>{
-  let password = prompt('Write DELETE to continue');
-  if (password === "DELETE") {
-    let token;
-    if (import.meta.env.SSR) {
-      token = import.meta.env.TOKEN_META;
-    } else {
-      token = import.meta.env.PUBLIC_TOKEN_META;
+    if (!isActive) {
+      saveScrollPosition();
     }
-    fetch(crearCompoMetaPHP, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': `Bearer ${token}`
-      },
-      body: `id=${id}&tier=${tier}&version=${version}`, // Se envía la versión
-    })
-      .then(response => response.json())
-      .then(data => {
-        if (data.status === 'success') {
-          alert(`ID: ${id} eliminado correctamente`);
-          console.log('ID eliminado correctamente:', data.message);
-        } else {
-          console.error('Error al eliminar el ID:', data.message);
-        }
+
+    const targetUrl = isActive
+      ? "/tft/meta-comps-tier-list-teamfight-tactics"
+      : `/tft/meta-comps-tier-list-teamfight-tactics/${comp.urlSEO}`;
+
+    await navigate(targetUrl, {
+      scroll: false
+    });
+  };
+
+  const deleteComp = ({ id, tier, version }) => {
+    let password = prompt('Write DELETE to continue');
+    if (password === "DELETE") {
+      let token;
+      if (import.meta.env.SSR) {
+        token = import.meta.env.TOKEN_META;
+      } else {
+        token = import.meta.env.PUBLIC_TOKEN_META;
+      }
+      fetch(crearCompoMetaPHP, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': `Bearer ${token}`
+        },
+        body: `id=${id}&tier=${tier}&version=${version}`, // Se envía la versión
       })
-      .catch(error => {
-        console.error('Error:', error);
-      });
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'success') {
+            alert(`ID: ${id} eliminado correctamente`);
+            console.log('ID eliminado correctamente:', data.message);
+          } else {
+            console.error('Error al eliminar el ID:', data.message);
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }
   }
-}
 
   // Mapear, parsear y filtrar campeones, y debe ordenarse por "cost" que se obtiene en campeonInfo
-  const campeones = Object.keys(comp?.boardInfo?.[comp?.originalComp]?.data || {})
-    .map((key) => {
-      const { dataCampeon, dataItem, estrellas } = comp?.boardInfo?.[comp?.originalComp]?.data[key];
-      const campeonInfo = JSON.parse(dataCampeon?.campeon || "{}");
-      
-      // Si el campeón está en la lista de excluidos, no lo agregamos
-      if (EXCLUDED_API_NAMES.includes(campeonInfo?.apiName)) {
-        return null;
-      }
-      return {
-        campeon: campeonInfo,
-        items: dataItem.map((item) => JSON.parse(item?.item || "{}")),
-        estrellas: estrellas
-      };
-    })
-    .filter(Boolean) // Omitir campeones excluidos (los null)
-    .sort((a, b) => a?.campeon?.coste - b?.campeon?.coste);
+  const campeones = (comp?.posicionamiento?.[0]?.tablero || []).map((data) => {
+    const rawChamp = championsTFT?.find(champ => champ?.apiName === data.apiNameCampeon);
     
+    // Si no encuentra al campeón en la store, retornamos null
+    if (!rawChamp) return null;
+
+    const iconPath = rawChamp.squareIcon || rawChamp.tileIcon || "";
+    const cleanIconPath = iconPath.startsWith('/') ? iconPath.slice(1) : iconPath;
+
+    // Mapeamos los datos a las propiedades que el JSX espera más abajo (nombre, coste, img)
+    const campeon = {
+      nombre: rawChamp.name,
+      apiName: rawChamp.apiName,
+      coste: rawChamp.cost,
+      img: `${urlDragon()}${cleanIconPath.toLowerCase().replace(".tex", ".png")}`
+    };
+
+    let itemsData = [];
+    const build = (comp?.bestBuild || []).find(({ apiNameCampeon }) => apiNameCampeon === campeon.apiName);
+    
+    if (build && build.apiNameItemsBisDelCampeon) {
+      // apiNameItemsBisDelCampeon suele ser un array de arrays: [["item1", "item2", "item3"]]
+      // Verificamos si es un array de arrays y tomamos el primero, o lo usamos directamente si es plano
+      const itemsToMap = Array.isArray(build.apiNameItemsBisDelCampeon[0]) 
+        ? build.apiNameItemsBisDelCampeon[0] 
+        : build.apiNameItemsBisDelCampeon;
+
+      itemsData = itemsToMap.map(apiNameItem => {
+        const item = allItemsTFT.find(item => item?.apiName === apiNameItem);
+        if (item) {
+          // El JSX más abajo espera item.nombre
+          return {
+            nombre: item.name,
+            apiName: item.apiName,
+            icon: item.icon
+          };
+        }
+        return null;
+      }).filter(Boolean);
+    }
+
+    // Si el campeón está en la lista de excluidos, no lo agregamos
+    if (EXCLUDED_API_NAMES.includes(data.apiNameCampeon)) {
+      return null;
+    }
+
+    return {
+      campeon: campeon,
+      items: itemsData,
+      estrellas: data?.estrella || 1
+    };
+  })
+  .filter(Boolean) // Omitir campeones excluidos o no encontrados (los null)
+  .sort((a, b) => a?.campeon?.coste - b?.campeon?.coste);
+
   const allChampionsApiName = campeones.map(({ campeon }) => {
     return { apiName: campeon.apiName }
   });
@@ -246,7 +282,7 @@ const deleteComp = ({id, tier, version})=>{
               <span className={`${style.tierNumber} ${style[`tier-card-${comp?.tier}`]}`}>{comp?.tier}</span>
             </div>
             <div className={style.nameContainer}>
-              <h3>{numeracion}. {comp?.titulo}</h3>
+              <h3>{numeracion}. {comp?.nombre}</h3>
             </div>
 
             <div className={style.headerControls}>
@@ -267,7 +303,7 @@ const deleteComp = ({id, tier, version})=>{
               }
             </div>
           </div>
-          <p className={style.tipSeo}>{comp.tipSeo}</p>
+          <p className={style.tipSeo}>{comp.tipSEO}</p>
 
           <div className={`${style.championsContainer} ${isInfografia ? style.championsContainerInfografia : ''}`}>
             {
@@ -277,12 +313,12 @@ const deleteComp = ({id, tier, version})=>{
                     <div className={`${style.championImgItems}`}>
                       {data?.estrellas == 3 && <img src="/tft/assets/3-estrellas.webp" className={style.champThreeStars} alt="3-estrellas"></img>}
                       <div className={`${style.championImageWrapper} ${style[`champSquareCost${data?.campeon?.coste}`]}`}>
-                        <img 
-                          className={style.championImg} 
-                          src={data?.campeon?.img} 
+                        <img
+                          className={style.championImg}
+                          src={data?.campeon?.img}
                           alt={data?.campeon?.nombre}
                           crossOrigin="anonymous"
-                          ></img>
+                        ></img>
                       </div>
                       <div className={style.championInfo}>
                         <span className={style.championName}>{data?.campeon?.nombre}</span>
@@ -307,47 +343,53 @@ const deleteComp = ({id, tier, version})=>{
           </div>
         </div>
         {
-          !isInfografia && 
+          !isInfografia &&
           <div className={`${style.rightContainer} ${!isInfografia ? "hideForCapture" : ""}`}>
-          {
-            edit ? (
-              <div className={`${style.btnAdmins} ${!isInfografia ? "hideForCapture" : ""}`}>
-                
-                <button onClick={()=> setOpenForEdit(!openForEdit)}>{isActive ? "TFT Meta" : `${comp.compUrl.replace("-"," ").toUpperCase()} TFT`}</button>
-                <button onClick={(e)=>copyToClipboard(e,(currentVersion === "pbe" ? codeForPBE(allChampionsApiName) : generatorCodeBuilder(allChampionsApiName)))}>Copiar Código</button>
-                <button onClick={()=> setShowFormForEdit(!showFormForEdit)}>
-                  {showFormForEdit ? "Cerrar Edición" : "Editar"}
-                </button>
-                <button onClick={()=> deleteComp({id:comp.id, tier:comp.tier, version:comp.version || "latest"})}>
-                  Eliminar
-                </button>
-                <button
-                  onClick={
-                    ()=>CapturarImagen({
-                      backgroundRef:containerRef,
-                      nombre: `TFT_MetaComp_${comp.tier}_${comp.compUrl}`,
-                    })
-                  }
-                >
-                  Descargar
-                </button>
-              </div>
-            ):(
-              <div className={`${style.btnAdmins} ${!isInfografia ? "hideForCapture" : ""}`}>
+            {
+              edit ? (
+                <div className={`${style.btnAdmins} ${!isInfografia ? "hideForCapture" : ""}`}>
+
+                  <button onClick={() => setOpenForEdit(!openForEdit)}>{isActive ? "TFT Meta" : `${comp?.urlSEO?.replace("-", " ")?.toUpperCase()} TFT`}</button>
+                  <button onClick={(e) => copyToClipboard(e, (currentVersion === "pbe" ? codeForPBE(allChampionsApiName) : generatorCodeBuilder(allChampionsApiName)))}>Copiar Código</button>
+                  <button onClick={() => {
+                    if (showFormForEdit) {
+                      compActiveId.set(null);
+                    } else {
+                      compActiveId.set(comp.id);
+                    }
+                  }}>
+                    {showFormForEdit ? "Cerrar Edición" : "Editar"}
+                  </button>
+                  <button onClick={() => deleteComp({ id: comp.id, tier: comp.tier, version: comp.version || "latest" })}>
+                    Eliminar
+                  </button>
+                  <button
+                    onClick={
+                      () => CapturarImagen({
+                        backgroundRef: containerRef,
+                        nombre: `TFT_MetaComp_${comp.tier}_${comp.urlSEO}`,
+                      })
+                    }
+                  >
+                    Descargar
+                  </button>
+                </div>
+              ) : (
+                <div className={`${style.btnAdmins} ${!isInfografia ? "hideForCapture" : ""}`}>
                   <a
-                    href={edit && isActive ? "/tft/meta-comps-tier-list-teamfight-tactics" : `/tft/meta-comps-tier-list-teamfight-tactics/${comp.compUrl}`}
+                    href={edit && isActive ? "/tft/meta-comps-tier-list-teamfight-tactics" : `/tft/meta-comps-tier-list-teamfight-tactics/${comp.urlSEO}`}
                     className={style.buttonLink}
                     onClick={handleToggle}
                   >
-                    {isActive ? "TFT Meta ⬆" : `${comp?.compUrl?.replace("-"," ")?.toUpperCase()} TFT ⬇`}
+                    {isActive ? "TFT Meta ⬆" : `${comp?.urlSEO?.replace("-", " ")?.toUpperCase()} TFT ⬇`}
                   </a>
-                  <button className={style.buttonLink} onClick={(e)=>copyToClipboard(e,(currentVersion === "pbe" ? codeForPBE(allChampionsApiName) : generatorCodeBuilder(allChampionsApiName)))}>
+                  <button className={style.buttonLink} onClick={(e) => copyToClipboard(e, (currentVersion === "pbe" ? codeForPBE(allChampionsApiName) : generatorCodeBuilder(allChampionsApiName)))}>
                     Copiar Código
                   </button>
-              </div>
-            )
-          }
-        </div>}
+                </div>
+              )
+            }
+          </div>}
       </div>
       {(isActive || openForEdit) && (
         <div className={style.detailsWrapper}>
@@ -357,15 +399,15 @@ const deleteComp = ({id, tier, version})=>{
       )}
       {showFormForEdit &&
 
-      <>
-      <FormularioCrearCompoTFT
-        compo={comp}
-      />
-      {/* <CardsMasterPlanCompos
+        <>
+          <FormularioCrearCompoTFT
+            compo={comp}
+          />
+          {/* <CardsMasterPlanCompos
         compo={composTestB?.S?.[0]}
       /> */}
 
-        {/* <CrearCompoTFT
+          {/* <CrearCompoTFT
           edit={true}
           editId={comp.id}
           edittier={comp.tier}
@@ -395,12 +437,12 @@ const deleteComp = ({id, tier, version})=>{
           editTipSeo={comp.tipSeo}
           editCuandoJugar={comp.cuandoJugar}
           editCondicionVictoria={comp.condicionVictoria}
-          editCompUrl={comp.compUrl}
+          editCompUrl={comp.urlSEO}
           edittierExtra={comp.tierExtra}
           /> */}
         </>
-        
-        }
+
+      }
 
     </div>
   )

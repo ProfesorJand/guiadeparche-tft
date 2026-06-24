@@ -13,7 +13,7 @@ const EditarCompoTFT = () => {
   //const [constantes, setConstantes] = useState({});
   const admin = useStore($admin);
   const constantes = useStore(constantesTFT)
-  const metaComps = useStore(metaCompsTFT)
+  const metaComps = useStore(metaCompsTFT);
   // useEffect(() => {
   //   // Obtener las constantes actuales
   //   const fetchConstantes = async () => {

@@ -52,7 +52,7 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
       };
     }).filter(Boolean);
 
-    const resolvedTraits = (champData.traits || []).map(traitName => {
+    let resolvedTraits = (champData.traits || []).map(traitName => {
       const traitObj = globalTraits.find(t => t.name === traitName || t.apiName === traitName);
       if (traitObj) {
         const { effects, desc, ...rest } = traitObj;
@@ -60,6 +60,19 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
       }
       return { apiName: traitName, name: traitName, icon: "hex-default.webp" }; // fallback
     }).filter(Boolean);
+
+    // Si tiene sinergiaExtra (Miss Fortune)
+    if (champ.sinergiaExtraMissFortune) {
+      // Remover la sinergia "undetermined" o genérica de MF si existe
+      resolvedTraits = resolvedTraits.filter(t => !t.apiName.toLowerCase().includes("undetermined") && !(t.icon && t.icon.toLowerCase().includes("undetermined")));
+      
+      // Y agregar el trait de la sinergia extra
+      const extraTraitObj = globalTraits.find(t => t.apiName === champ.sinergiaExtraMissFortune || t.name === champ.sinergiaExtraMissFortune);
+      if (extraTraitObj) {
+        const { effects, desc, ...restExtra } = extraTraitObj;
+        resolvedTraits.push(restExtra);
+      }
+    }
 
     boardData[hexIndex] = {
       apiName: champData.apiName,
@@ -82,7 +95,7 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
       const currentCount = synergiesCount[trait.apiName]?.count || 0;
       synergiesCount[trait.apiName] = {count: currentCount + 1, icon: trait.icon};
     });
-    if (champion.items) {
+      if (champion.items) {
       champion.items.forEach((item) => {
         if (item.traitExtra && !collectedTraits.has(item.traitExtra.apiName)) {
           collectedTraits.add(item.traitExtra.apiName);
@@ -90,15 +103,6 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
           synergiesCount[item.traitExtra.apiName] = {count: currentCount + 1, icon: item.traitExtra.icon};
         }
       });
-    }
-    // Caso especial Miss Fortune
-    if (champion.extraSynergy) {
-      const mfTrait = globalTraits.find(t => t.apiName === champion.extraSynergy || t.name === champion.extraSynergy);
-      if (mfTrait && !collectedTraits.has(mfTrait.apiName)) {
-        collectedTraits.add(mfTrait.apiName);
-        const currentCount = synergiesCount[mfTrait.apiName]?.count || 0;
-        synergiesCount[mfTrait.apiName] = {count: currentCount + 1, icon: mfTrait.icon};
-      }
     }
   });
 
@@ -357,14 +361,6 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
                     <img className={style.imageCampeonBuilder} src={champion.imagen} alt={champion.nombre} />
 
                     <span className={style.nombreCampeon}>{champion.nombre}</span>
-
-                    {champion.extraSynergy && (
-                      <div className={style.containerSinergias}>
-                        <div className={style.containerTrait} style={{ backgroundColor: "purple", color: "white", fontSize: "10px", borderRadius: "50%", padding: "2px 4px" }}>
-                          MF
-                        </div>
-                      </div>
-                    )}
 
                     {/* <div className={style.containerItems}>
                       {champion.items.map((item, i) => (

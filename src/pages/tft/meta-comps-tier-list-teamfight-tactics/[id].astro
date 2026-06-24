@@ -1,16 +1,17 @@
 ---
 import MetaCompsLayout from "@components/TFT/MetaCompsLayout.astro";
 
-import { getComposMetaPBE, getConstantes } from "../../../lib/cache/tftCache.js";
 import {
-  urlDragon,
-  setNumberPBE
-} from "@stores/dataTFT";
+  getComposMetaPBE,
+  getConstantes,
+  getTFTDataPBE,
+} from "../../../lib/cache/tftCache.js";
+import { urlDragon, setNumberPBE } from "@stores/dataTFT";
 
 export async function getStaticPaths() {
   const todasLasCompsPBE = await getComposMetaPBE();
   return todasLasCompsPBE.map((comp) => ({
-    params: { id: String(comp.compUrl) },
+    params: { id: String(comp.urlSEO) },
     props: { comp },
   }));
 }
@@ -18,6 +19,18 @@ export async function getStaticPaths() {
 const { id } = Astro.params;
 const { comp } = Astro.props;
 const numberOfVersion = await getConstantes();
+
+// Cargar todas las composiciones para listarlas abajo
+const todasLasCompsPBE = await getComposMetaPBE();
+const top10Comps = [...todasLasCompsPBE.slice(0, 10)];
+const restComps = [...todasLasCompsPBE.slice(10)];
+
+// Obtener los campeones para extraer la imagen del campeón meta
+const tftData = await getTFTDataPBE();
+const championsPBE = tftData?.sets?.[setNumberPBE]?.champions || [];
+const targetApiName = comp?.campeonMeta?.apiNameCampeon;
+const champInfo = championsPBE.find(c => c.apiName === targetApiName);
+const resolvedTileIcon = champInfo?.tileIcon || comp?.campeonTierList?.tileIcon;
 
 // Obtener datos de video
 const getYoutubeId = (url) => {
@@ -32,16 +45,11 @@ const video = {
   title: "7 Best Meta Team Compositions in TFT - Patch 17.3",
   thumbnail: `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`,
 };
-
-// Cargar todas las composiciones para listarlas abajo
-const todasLasCompsPBE = await getComposMetaPBE();
-const top10Comps = [...todasLasCompsPBE.slice(0, 10)];
-const restComps = [...todasLasCompsPBE.slice(10)];
 ---
 
 <MetaCompsLayout
   titleMain={comp.titulo}
-  titleHighlight=`TFT Comp: Build, Items y Cómo Jugarla en el Set ${setNumberPBE}`
+  titleHighlight={`TFT Comp: Build, Items y Cómo Jugarla en el Set ${setNumberPBE}`}
   description={comp.tipSeo ||
     `Guía completa paso a paso de la composición ${comp.titulo} para el parche actual de TFT.`}
   lastUpdate={`Actualizado: Parche ${numberOfVersion.MetaCompVersionPBE || "17.3"}`}
@@ -49,9 +57,8 @@ const restComps = [...todasLasCompsPBE.slice(10)];
   top10Comps={top10Comps}
   restComps={restComps}
   activeId={id}
-  snippetImgUrl={urlDragon()+ comp.campeonTierList.tileIcon.replace(".tex",".png").toLowerCase()}
->  
-</MetaCompsLayout>
+  snippetImgUrl={resolvedTileIcon ? urlDragon() + resolvedTileIcon.replace(".tex", ".png").toLowerCase() : ""}
+/>
 
 <style>
   .compo-detail-card {

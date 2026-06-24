@@ -137,8 +137,8 @@ const AdminPanel = ()=>{
             })}
             
             <div>
-                {action === "TFT-Crear" && <CrearCompoTFT />}
-                {/* {action === "TFT-Crear" && <FormularioCrearCompoTFT />} */}
+                {/* {action === "TFT-Crear" && <CrearCompoTFT />} */}
+                {action === "TFT-Crear" && <FormularioCrearCompoTFT />}
                 {action === "TFT-Editar" && <EditarCompoTFT />}
                 {action === "TFT-Infografia Comps" && <InfografiaTFT/>}
                 {/* {action === "InfografiaTFTCompo" && <InfografiaTFTComps/>} */}
