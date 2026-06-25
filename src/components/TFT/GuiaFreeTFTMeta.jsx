@@ -119,7 +119,7 @@ const Header1 = ({comp, allChampionsTFT, allItemsTFT})=>{
             {condicionOP && (() => {
                 let busquedaGrande;
                 let busquedaPequeno;
-                const extras = ["Win Streak","Loss Streak","Orbe"];
+                const extras = ["Win Streak","Loss Streak","Orbe","3 estrellas","4 estrellas"];
                 
                 // API NAME GRANDE
                 if(extras.includes(condicionOP.apiNameGrande)){

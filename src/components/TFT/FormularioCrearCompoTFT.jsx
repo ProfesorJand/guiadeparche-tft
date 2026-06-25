@@ -880,6 +880,8 @@ const Condiciones = () => {
         <option value="Win Streak">Racha de Victorias Win Streaks</option>
         <option value="Loss Streak">Racha de Derrotas - Loss Streaks</option>
         <option value="Orbe">Orbe</option>
+        <option value="3 estrellas">Campeón 3 estrellas</option>
+        <option value="4 estrellas">Campeón 4 estrellas</option>
 
         {allChampionsTFT?.map(champ => (
           <option key={`cond-champ-${champ.apiName}`} value={champ.apiName}>{champ.name}</option>
