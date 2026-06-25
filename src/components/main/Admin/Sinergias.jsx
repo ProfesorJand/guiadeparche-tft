@@ -2,10 +2,12 @@ import React, { useEffect } from "react";
 import style from "./css/Sinergias.module.css"
 import { traitsColors, imgHex } from "src/functions/campeonestft";
 //import sinergiasData from "src/json/updates/sinergiasData";
-import { dataTFTTraits, findTraitsStyles } from "@stores/dataTFT";
+import { dataTFTTraits, findTraitsStyles, dataTFTChampions, dataTFTAllItems } from "@stores/dataTFT";
 import { useStore } from "@nanostores/react";
 const Sinergias = ({sinergias, orientacion, show, version})=>{
-  const sinergiasData = useStore(dataTFTTraits)
+  const sinergiasData = useStore(dataTFTTraits) || [];
+  const globalChampions = useStore(dataTFTChampions) || [];
+  const globalItems = useStore(dataTFTAllItems) || [];
   function checkColor(hexColor){
     if (!hexColor) return { backgroundColor: colorHex.default };
     if(hexColor === "hex-prismatic.webp"){
@@ -24,7 +26,46 @@ const Sinergias = ({sinergias, orientacion, show, version})=>{
     default:"grey"
    }
 
-  const sortable = Object.entries(sinergias || {})
+  let calculatedSinergias = {};
+  if (Array.isArray(sinergias)) {
+    const processedChampionTraits = new Set();
+    sinergias.forEach(champObj => {
+      const champData = globalChampions.find(c => c.apiName === champObj.apiNameCampeon);
+      if (!champData) return;
+
+      let resolvedTraits = (champData.traits || []).map(traitName => {
+        const traitObj = sinergiasData.find(t => t.name === traitName || t.apiName === traitName);
+        return traitObj ? traitObj.apiName : traitName;
+      });
+
+      if (champObj.sinergiaExtraMissFortune) {
+        resolvedTraits = resolvedTraits.filter(t => !t.toLowerCase().includes("undetermined"));
+        const extraObj = sinergiasData.find(t => t.name === champObj.sinergiaExtraMissFortune || t.apiName === champObj.sinergiaExtraMissFortune);
+        if(extraObj) resolvedTraits.push(extraObj.apiName);
+        else resolvedTraits.push(champObj.sinergiaExtraMissFortune);
+      }
+
+      resolvedTraits.forEach(traitApiName => {
+        const uniqueKey = `${champData.apiName}_${traitApiName}`;
+        if (!processedChampionTraits.has(uniqueKey)) {
+          processedChampionTraits.add(uniqueKey);
+          calculatedSinergias[traitApiName] = (calculatedSinergias[traitApiName] || 0) + 1;
+        }
+      });
+
+      const itemsData = (champObj.apiNameItemsDelCampeon || []).map(apiNameItem => globalItems.find(i => i.apiName === apiNameItem)).filter(Boolean);
+      itemsData.forEach(item => {
+        if (item.incompatibleTraits && item.incompatibleTraits.length > 0) {
+          const traitExtra = item.incompatibleTraits[0];
+          calculatedSinergias[traitExtra] = (calculatedSinergias[traitExtra] || 0) + 1;
+        }
+      });
+    });
+  } else {
+    calculatedSinergias = sinergias || {};
+  }
+
+  const sortable = Object.entries(calculatedSinergias)
     .sort(([,a],[,b]) => b-a)
     .reduce((r, [k, v]) => ({ ...r, [k]: v }), {});
 
@@ -87,7 +128,7 @@ const Sinergias = ({sinergias, orientacion, show, version})=>{
   return (
 
       <div className={show ? [style.containerSinergia, orientacion==="horizontal" ? style.containerSinergiaHorizontal: ""].join(" ") : style.containerSinergiaOculto }>
-    {Object.keys(sinergias || {}).length > 0 && getMinMaxTraits(sortable).map((key,i)=>{
+    {Object.keys(calculatedSinergias).length > 0 && getMinMaxTraits(sortable).map((key,i)=>{
       if(show ? i < 9 : i < 9){
         if(key.hexColor !== "hex-default.webp"){
           return (

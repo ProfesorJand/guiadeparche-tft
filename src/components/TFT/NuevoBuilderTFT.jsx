@@ -18,7 +18,7 @@ const championsColor = [
 
 const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => {
   const [activeMenu, setActiveMenu] = useState(null);
-  const version = "latest";
+  const version = "pbe";
   
   const globalChampions = useStore(dataTFTChampions) || [];
   const globalItems = useStore(dataTFTAllItems) || [];

@@ -3,7 +3,8 @@ import {dataTFTChampions, urlDragon, dataTFTAllItems,dataTFT} from "@stores/data
 import style from "./css/CampeonImgInTierList.module.css";
 import { navigate } from "astro:transitions/client";
 
-const CampeonImgInTierList = ({id, aumento, emblema, apiNameCampeon, apiNameItems, compUrl, showItems= false, estrellas, showTooltipOnHover=false})=>{
+const CampeonImgInTierList = ({id, aumento, emblema, apiNameCampeon, apiNameItems, compUrl, isInfografia=false, estrellas, showTooltipOnHover=false, onSelectForInfografia, isSelectedForInfografia})=>{
+  // const [compsSelected, setCompsSelected] = useState([])
   const championsData = useStore(dataTFTChampions);
   const itemsData = useStore(dataTFTAllItems);
   const {name, squareIcon,cost} = championsData?.find(c => c.apiName === apiNameCampeon) || {};
@@ -23,9 +24,16 @@ const CampeonImgInTierList = ({id, aumento, emblema, apiNameCampeon, apiNameItem
     await navigate(targetUrl, { scroll: false });
   };
 
+   const handleInfografia = (e)=>{
+    e.preventDefault();
+    if (onSelectForInfografia) {
+      onSelectForInfografia();
+    }
+  }
+
   if (!name) return null;
   return (
-    <a href={`/tft/meta-comps-tier-list-teamfight-tactics/${compUrl}`} onClick={handleClick} className={`${style.champTier} ${id ? style.activeComp : ""}`}>
+    <a href={`/tft/meta-comps-tier-list-teamfight-tactics/${compUrl}`} onClick={isInfografia ? handleInfografia : handleClick} className={`${style.champTier} ${isInfografia ? (isSelectedForInfografia ? style.activeComp : "") : (id ? style.activeComp : "")}`}>
       <div className={style.containerChamp}>  
       {
         (aumento || emblema) && 

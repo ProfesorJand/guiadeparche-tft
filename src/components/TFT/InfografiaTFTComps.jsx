@@ -7,7 +7,7 @@ import LogoGuiadeparche from "@components/logo/LogoGuiadeparche";
 import  CardCompos from "@components/TFT/CardsCompos.jsx";
 import style from "./css/InfografiaTFTComps.module.css";
 
-const InfografiaTFTComps = ({backgroundRef, setTituloInfografiaTFT, tituloInfografiaTFT, logoMovilnet, logoGuiadeparche, webInfografia = false}) =>{
+const InfografiaTFTComps = ({backgroundRef, compsSelected, setTituloInfografiaTFT, tituloInfografiaTFT, logoMovilnet, logoGuiadeparche, webInfografia = false}) =>{
   const colorDificulty= {Easy:"green",Medium:"orange",Hard:"red"}
   const composMeta = useStore(metaCompsTFT);
   const [composInInfographic, setComposInInfographic] = useState([]);
@@ -81,41 +81,13 @@ useEffect(() => {
 
       {/* compos metas */}
       <div className={style.body}>
-        {/* mostrar max 10 compos y que tengan el compo.isInInfographic en true */}
         {
-  composInInfographic.map((compo, i) => {
-    // const dataCampeones = Object.keys(compo.boardInfo[compo.originalComp].data).map((key) => {
-    //   const { dataCampeon, dataItem, estrellas } = compo.boardInfo[compo.originalComp].data[key];
-    //   return {
-    //     dataCampeon: dataCampeon.campeon,
-    //     dataItem,
-    //     estrellas
-    //   };
-    // });
-
-    return (
-      // <MiniInfoComp
-      //   key={i}
-      //   show={true}
-      //   open={open}
-      //   isOpen={false}
-      //   compo={compo}
-      //   admin={true}
-      //   onToggle={() => {}}
-      //   copyToClipboard={() => {}}
-      //   generatorCodeBuilder={() => {}}
-      //   colorDificulty={colorDificulty}
-      //   dataCampeones={dataCampeones}
-      //   handleEditID={() => {}}
-      //   ShowBigComp={() => {}}
-      //   deleteId={() => {}}
-      //   forInfografia={true}
-      //   webInfografia={webInfografia}
-      // />
-      <CardCompos comp={compo} numeracion={i+1} isInfografia={true} edit={false}/>
-    );
-  })
-}
+          compsSelected.map((compo, i) => {
+            return (
+              <CardCompos comp={composMeta.find((comp)=> comp.id === compo.id)} numeracion={i+1} isInfografia={true} edit={false}/>
+            );
+          })
+        }
       </div>
 
       {/* Footer */}

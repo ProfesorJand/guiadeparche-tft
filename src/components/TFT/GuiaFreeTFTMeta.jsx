@@ -38,6 +38,7 @@ const GuiaFreeTFTMeta = ({comp, isInfografia=false, edit=false}) => {
       <Header2 comp={comp} setHoveredAugment={setHoveredAugment} augmentRef={augmentRef} allChampionsTFT={allChampionsTFT} allItemsTFT={allItemsTFT} ></Header2>
       {/* <FooterTooltip augment={hoveredAugment} tooltipRef={tooltipRef} edit={edit} isInfografia={isInfografia}></FooterTooltip> */}
       <FooterBuild comp={comp}></FooterBuild>
+      <FooterLogos edit={edit} ></FooterLogos>
     </div>
   );
 };
@@ -317,7 +318,7 @@ const Posicionamiento = ({comp})=>{
     <div className={`${style.borderBlock} ${style.containerPosicionamientoBlock}`}>
       <h4>Posicionamiento</h4>
       <div className={style.containerSinergiasActivas}>
-        <Sinergias sinergias={comp?.boardInfo?.[comp?.originalComp]?.sinergias} orientacion={"vertical"} show={true} version={comp?.version} />
+        <Sinergias sinergias={comp?.posicionamiento?.[0]?.tablero} orientacion={"vertical"} show={true} version={comp?.version} />
       </div>
       <NuevoBuilderTFT customTablero={comp?.posicionamiento?.[0]?.tablero} readOnly={true} />
     </div>
@@ -503,6 +504,52 @@ const FooterBuild = ({comp})=>{
       <a href="/login" target="_blank" className={`${style.containerVerMasBuilds} ${style.containerBuild}`}>
         <img src="/web/logoGPMP.webp" alt="Logo Guiadeparche Master Plan" className={`${style.imgMasterPlan}`} />
       </a>
+      </div>
+    </div>
+  )
+}
+
+const FooterLogos = ({edit})=>{
+  if(!edit) return null;
+  const [logos, setLogos] = useState([{
+    label: "Jupeson",
+    url:"/Jupeson_LOGO_Sin_Publicidad_Sin_Bordes.png",
+    show: true
+  },{
+    label: "Guiadeparche",
+    url:"/web/logoGPSinFondo2026.webp",
+    show: true
+  },{
+    label: "Movilnet",
+    url:"/tft/assets/logoMovilnet-e-letras-blancas.png",
+    show: false
+  },{
+    label: "SetTFT",
+    url:"/tft/sets/17/logo2.webp",
+    show: true
+  }])
+  
+  return (
+    <div className={style.panelControlLogos}>
+      <div className={`hideForCapture ${style.controlesLogos}`}>
+        {logos.map((logo, index) => (
+          <div className={style.containerInputsLogo} key={index}>
+            <input 
+              type="checkbox" 
+              checked={logo.show} 
+              onChange={(e) => setLogos(logos.map((l, i) => i === index ? { ...l, show: e.target.checked } : l))}
+            />
+            <span>{logo.label}</span>
+          </div>
+        ))}
+      </div>
+      <div className={style.containersLogos}>
+      {logos.filter(logo => logo.show).map((logo, index) => (
+        <div key={index} className={style.containerLogo}>
+          <img className={`${style.imgLogo} ${logo.label === "SetTFT" ? style.imgLogoSetTFT : ''}`} src={logo.url} alt={logo.label} />
+          {logo.label === "Guiadeparche" && <img src="/textoGuiadeparcheSinEspacios.png" className={style.logoTextGuiadeparche}/>}
+        </div>
+      ))}
       </div>
     </div>
   )
