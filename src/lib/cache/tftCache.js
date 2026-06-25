@@ -1,6 +1,11 @@
 import fs from 'fs/promises';
 import path from 'path';
 
+const FETCH_HEADERS = {
+  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+  'Accept': 'application/json, text/plain, */*'
+};
+
 let composMetaPBECache = null;
 let composMetaCache = null;
 let constantesCache = null;
@@ -38,7 +43,11 @@ export async function getComposMetaPBE() {
   // }
 
   try {
-    const response = await fetch('https://api.guiadeparche.com/tft/composMetaPBETest.json', {cache: "no-store"});
+    const response = await fetch('https://api.guiadeparche.com/tft/composMetaPBETest.json', {
+      headers: FETCH_HEADERS,
+      cache: "no-store"
+    });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const data = await response.json();
     composMetaPBECache = sortComps(data);
     return composMetaPBECache;
@@ -64,7 +73,11 @@ export async function getComposMeta() {
   }
 
   try {
-    const response = await fetch('https://api.guiadeparche.com/tft/composMeta.json');
+    const response = await fetch('https://api.guiadeparche.com/tft/composMeta.json', {
+      headers: FETCH_HEADERS,
+      cache: "no-store"
+    });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const data = await response.json();
     composMetaCache = sortComps(data);
     return composMetaCache;
@@ -89,7 +102,11 @@ export async function getConstantes() {
   // }
 
   try {
-    const response = await fetch('https://api.guiadeparche.com/tft/constantes.json');
+    const response = await fetch('https://api.guiadeparche.com/tft/constantes.json', {
+      headers: FETCH_HEADERS,
+      cache: "no-store"
+    });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const data = await response.json();
     constantesCache = data;
     return constantesCache;
