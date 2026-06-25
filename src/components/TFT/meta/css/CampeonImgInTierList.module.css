@@ -96,6 +96,32 @@
     text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
   
 }
+.containerAugmentEmblema{
+  display:flex;
+  position:absolute;
+  top:0;
+  right:0;
+  width:35%;
+  height:100%;
+  flex-direction: column;
+  z-index: 2;
+}
+.imgEmblema{
+  display:flex;
+  position:relative;
+  width:100%;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-sizing: border-box;
+}
+.imgAumento{
+  display:flex;
+  position:relative;
+  width:100%;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-sizing: border-box;
+}
 
 @media only screen and (max-width: 900px) {
   .champTier{

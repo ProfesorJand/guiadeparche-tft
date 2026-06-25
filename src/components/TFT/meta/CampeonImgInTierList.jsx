@@ -3,7 +3,7 @@ import {dataTFTChampions, urlDragon, dataTFTAllItems,dataTFT} from "@stores/data
 import style from "./css/CampeonImgInTierList.module.css";
 import { navigate } from "astro:transitions/client";
 
-const CampeonImgInTierList = ({id, apiNameCampeon, apiNameItems, compUrl, showItems= false, estrellas, showTooltipOnHover=false})=>{
+const CampeonImgInTierList = ({id, aumento, emblema, apiNameCampeon, apiNameItems, compUrl, showItems= false, estrellas, showTooltipOnHover=false})=>{
   const championsData = useStore(dataTFTChampions);
   const itemsData = useStore(dataTFTAllItems);
   const {name, squareIcon,cost} = championsData?.find(c => c.apiName === apiNameCampeon) || {};
@@ -11,6 +11,8 @@ const CampeonImgInTierList = ({id, apiNameCampeon, apiNameItems, compUrl, showIt
     const foundItem = itemsData.find(item => item.apiName === apiNameItem);
     return foundItem ? { icon: foundItem.icon, name: foundItem.name } : null;
   });
+  const aumentoIcon = aumento ? itemsData?.find(c => c.apiName === aumento)?.icon : null;
+  const emblemaIcon = emblema ? itemsData?.find(c => c.apiName === emblema)?.icon : null;
   
   const handleClick = async (e) => {
     e.preventDefault();
@@ -25,6 +27,13 @@ const CampeonImgInTierList = ({id, apiNameCampeon, apiNameItems, compUrl, showIt
   return (
     <a href={`/tft/meta-comps-tier-list-teamfight-tactics/${compUrl}`} onClick={handleClick} className={`${style.champTier} ${id ? style.activeComp : ""}`}>
       <div className={style.containerChamp}>  
+      {
+        (aumento || emblema) && 
+        <div className={style.containerAugmentEmblema}>
+          {aumento && <img className={style.imgAumento} src={`${urlDragon()}${aumentoIcon?.toLowerCase().replace(".tex",".png")}`}></img>}
+          {emblema && <img className={style.imgEmblema} src={`${urlDragon()}${emblemaIcon?.toLowerCase().replace(".tex",".png")}`}></img>}
+        </div>
+      }
         <img className={`${style.champTierImg} ${style[`cost-${cost}`]}`} src={`${urlDragon()}${squareIcon.toLowerCase().replace(".tex",".png")}`} alt={name} />
         <div className={style.containerChampName}>
           <span className={style.champTierName}>{name}</span>

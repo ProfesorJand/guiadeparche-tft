@@ -16,6 +16,7 @@ const TierListMetaComps = ({todasLasComps = [], todasLasCompsPBE = []}) => {
     ).filter(group => group.length > 0);
   }, [activeComps]);
 
+  console.log({groupedComps})
   const scrollContainersRef = useRef([]);
   const numberOfChampsInTierList = 6;
   const admin = useStore($admin);
