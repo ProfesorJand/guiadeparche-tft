@@ -17,7 +17,7 @@ const UserMenu=()=>{
   useEffect(()=>{
     const loadComps = async()=>{
       if(todasLasCompsPBE) return;
-      await fetchAndSortComps(composMetaPBEJSON);
+     // await fetchAndSortComps(composMetaPBEJSON);
       //await addRestCompsFetch(composMetaJSON);
     }
     loadComps();
@@ -28,9 +28,9 @@ return (
     <ProfileSummary user={user} styles={styles}/>
 
     <Menu activeTab={activeTab} setActiveTab={setActiveTab} styles={styles} admin={admin} />
-    {activeTab==="admin" &&
+    {/* {activeTab==="admin" &&
      <TierListMetaComps todasLasCompsPBE={todasLasCompsPBE} />
-    }
+    } */}
   </aside>
  
   )
