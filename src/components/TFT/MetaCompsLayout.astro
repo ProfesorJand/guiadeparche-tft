@@ -2,9 +2,7 @@
 import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
 import CardsCompos from "@components/TFT/CardsCompos";
 import { getConstantes, getMetadata } from "src/lib/cache/tftCache.js";
-import {
-  setNumberPBE,
-} from "@stores/dataTFT";
+import { setNumberPBE } from "@stores/dataTFT";
 import { crearJSONSchema } from "src/json/schema/crearJSONSchema";
 import RegistrarseBTN from "./RegistrarseBTN.jsx";
 import Youtube from "@components/youtube/Youtube.jsx";
@@ -65,16 +63,16 @@ const tiersInfo = [
     title: "Viables",
     text: "Composiciones situacionales o que requieren una ejecución más precisa. ",
   },
-  {
-    tier: "H",
-    title: "Hero",
-    text: "Composiciones que tienen aumento de heroe.",
-  },
-  {
-    tier: "X",
-    title: "Situacional",
-    text: "Cuando cumplen ciertos requisitos.",
-  },
+  // {
+  //   tier: "H",
+  //   title: "Hero",
+  //   text: "Composiciones que tienen aumento de heroe.",
+  // },
+  // {
+  //   tier: "X",
+  //   title: "Situacional",
+  //   text: "Cuando cumplen ciertos requisitos.",
+  // },
 ];
 
 const keywords =
@@ -145,17 +143,20 @@ const urlRecursosTFT = [
       <div class="table-content">
         <h2>Contenido</h2>
         <ul class="main-toc-list">
-          <li><a href="#TierList">Comps Tier List</a>
+          <li>
+            <a href="#TierList">Comps Tier List</a>
             <ul class="toc-tier-list">
               {
                 (() => {
                   let globalIndex = 1;
                   return tiersInfo.map((tier) => {
-                    const compsInTier = [...top10Comps, ...restComps].filter((comp) => {
-                      if (tier.tier === "H") return comp.tierExtra === "H";
-                      if (tier.tier === "X") return comp.tierExtra === "X";
-                      return comp.tier === tier.tier;
-                    });
+                    const compsInTier = [...top10Comps, ...restComps].filter(
+                      (comp) => {
+                        // if (tier.tier === "H") return comp.tierExtra === "H";
+                        // if (tier.tier === "X") return comp.tierExtra === "X";
+                        return comp.tier === tier.tier;
+                      },
+                    );
 
                     if (compsInTier.length === 0) return null;
 
@@ -165,10 +166,11 @@ const urlRecursosTFT = [
                         <ul class="toc-comps-list">
                           {compsInTier.map((comp) => {
                             const currentIndex = globalIndex++;
-                            const isActive = String(comp.urlSEO) === String(activeId);
+                            const isActive =
+                              String(comp.urlSEO) === String(activeId);
                             return (
                               <li>
-                                <a 
+                                <a
                                   href={`/tft/meta-comps-tier-list-teamfight-tactics/${comp.urlSEO}`}
                                   class={`toc-comp-link ${isActive ? "active" : ""}`}
                                 >
@@ -188,7 +190,6 @@ const urlRecursosTFT = [
           <li><a href="#RecursosTFT">Recursos TFT</a></li>
         </ul>
       </div>
-
     </div>
 
     <div class="main-side">
@@ -216,12 +217,12 @@ const urlRecursosTFT = [
               <div class="container-champs-tier">
                 {[...top10Comps, ...restComps]
                   .filter((comp) => {
-                    if (tier.tier === "H") {
-                      return comp.tierExtra === "H";
-                    }
-                    if (tier.tier === "X") {
-                      return comp.tierExtra === "X";
-                    }
+                    // if (tier.tier === "H") {
+                    //   return comp.tierExtra === "H";
+                    // }
+                    // if (tier.tier === "X") {
+                    //   return comp.tierExtra === "X";
+                    // }
                     return comp.tier === tier.tier;
                   })
                   .map((comp, index) => {
@@ -230,9 +231,7 @@ const urlRecursosTFT = [
                       <CampeonImgInTierList
                         apiNameCampeon={comp?.campeonMeta?.apiNameCampeon}
                         showItems={true}
-                        apiNameItems={
-                          comp?.campeonMeta?.apiNameItemsDelCampeon
-                        }
+                        apiNameItems={comp?.campeonMeta?.apiNameItemsDelCampeon}
                         estrellas={comp?.campeonMeta?.estrellas}
                         aumento={comp?.campeonMeta?.aumento}
                         emblema={comp?.campeonMeta?.emblema}
@@ -300,14 +299,13 @@ const urlRecursosTFT = [
                     src={url}
                     client:load
                     transition:persist={`youtube-recurso-${index}`}
-                    />
+                  />
                 </div>
               );
             })
           }
         </div>
       </div>
-      
     </div>
 
     <!-- <div class="right-side">
@@ -331,7 +329,6 @@ const urlRecursosTFT = [
       </div>
     </div> -->
   </div>
-
 </LayoutMaxWidth>
 
 <script>
@@ -436,24 +433,24 @@ const urlRecursosTFT = [
     align-self: center;
     margin-bottom: 12px;
   }
-  .table-content{
-    display:flex;
-    flex-direction:column;
-    gap:1rem;
+  .table-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
     background-color: #121034;
     padding: 1rem 0;
     border-radius: 0.5rem;
-    border:1px solid rgba(255, 255, 0, 0.247);
+    border: 1px solid rgba(255, 255, 0, 0.247);
     box-sizing: border-box;
-    & h2{
+    & h2 {
       margin-block-end: 0;
       margin-block-start: 0;
     }
-    & ul{
+    & ul {
       /* list-style:""; */
-      display:flex;
-      flex-direction:column;
-      gap:0.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
     }
   }
 
@@ -463,7 +460,7 @@ const urlRecursosTFT = [
     display: flex;
     flex-direction: column;
     gap: 10px;
-    margin-block-start:0;
+    margin-block-start: 0;
   }
   .toc-tier-list {
     padding-left: 5px;
@@ -491,6 +488,10 @@ const urlRecursosTFT = [
     color: inherit;
     font-weight: normal;
     text-shadow: none;
+  }
+  .toc-comp-link:hover {
+    cursor: pointer;
+    color: #fbbf24;
   }
   .toc-comp-link.active {
     color: #fbbf24;
@@ -534,7 +535,7 @@ const urlRecursosTFT = [
     flex-direction: row;
     gap: 2rem;
     justify-content: center;
-    position:relative;
+    position: relative;
   }
   .btn-primary {
     color: var(--color-white);
@@ -615,10 +616,10 @@ const urlRecursosTFT = [
     flex-wrap: wrap;
     justify-content: center;
   }
-  .resource-card{
-    display:flex;
-    position:relative;
-    width: calc((100% - (20px * 2)) / 3)
+  .resource-card {
+    display: flex;
+    position: relative;
+    width: calc((100% - (20px * 2)) / 3);
   }
   .container-tier-text {
     display: flex;
@@ -736,80 +737,80 @@ const urlRecursosTFT = [
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    width:25%;
-    max-width:300px;
+    width: 25%;
+    max-width: 300px;
     position: sticky;
     top: var(--height-header);
     align-self: flex-start;
-    & a{
+    & a {
       text-decoration: none;
     }
-    & a:hover{
-      color:var(--text-color-white-secondary)
+    & a:hover {
+      color: #fbbf24;
     }
   }
   .main-side {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    width:75%;
+    width: 75%;
     max-width: 900px;
-      & h2{
-        margin-block-end: 0;
-      }
-  }
-  .tier-info {
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-start;
-      padding: 5px;
-      box-sizing: border-box;
-      border-radius: 0.5rem;
-      gap:5px;
-      align-items: center;
-    }
-    .tier-header {
-      display: flex;
-      flex-direction: column;
-      flex-wrap: wrap;
-      margin-block-start: 0;
+    & h2 {
       margin-block-end: 0;
     }
-    .tier-card-S {
-      background: linear-gradient(135deg, #8b000099, #3c0000cc);
-      border-color: #ff32324d;
-    }
-    .tier-card-A {
-      background: linear-gradient(135deg, #99730099, #503c00cc);
-      border-color: #ffc8324d;
-    }
-    .tier-card-B {
-      background: linear-gradient(135deg, #4b556399, #1f2937cc);
-      border-color: #9ca3af4d;
-    }
-    .tier-card-C {
-      background: linear-gradient(135deg, #6e3c1e99, #3c1e0acc);
-      border-color: #b464324d;
-    }
-    .tier-card-H {
-      background: linear-gradient(135deg, #10b98199, #064e3bcc);
-      border-color: #34d3994d;
-    }
-    .tier-card-X {
-      background: linear-gradient(135deg, #06b6d499, #164e63cc);
-      border-color: #22d3ee4d;
-    }
-    .tier-number {
-      font-size: 4rem;
-    }
-    .tier-title {
-      font-size: 2rem;
-      color: #ffc8324d;
-    }
-    .tier-text {
-      font-size: 1rem;
-      opacity: 0.8;
-    }
+  }
+  .tier-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 5px;
+    box-sizing: border-box;
+    border-radius: 0.5rem;
+    gap: 5px;
+    align-items: center;
+  }
+  .tier-header {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin-block-start: 0;
+    margin-block-end: 0;
+  }
+  .tier-card-S {
+    background: linear-gradient(135deg, #8b000099, #3c0000cc);
+    border-color: #ff32324d;
+  }
+  .tier-card-A {
+    background: linear-gradient(135deg, #99730099, #503c00cc);
+    border-color: #ffc8324d;
+  }
+  .tier-card-B {
+    background: linear-gradient(135deg, #4b556399, #1f2937cc);
+    border-color: #9ca3af4d;
+  }
+  .tier-card-C {
+    background: linear-gradient(135deg, #6e3c1e99, #3c1e0acc);
+    border-color: #b464324d;
+  }
+  .tier-card-H {
+    background: linear-gradient(135deg, #10b98199, #064e3bcc);
+    border-color: #34d3994d;
+  }
+  .tier-card-X {
+    background: linear-gradient(135deg, #06b6d499, #164e63cc);
+    border-color: #22d3ee4d;
+  }
+  .tier-number {
+    font-size: 4rem;
+  }
+  .tier-title {
+    font-size: 2rem;
+    color: #ffc8324d;
+  }
+  .tier-text {
+    font-size: 1rem;
+    opacity: 0.8;
+  }
   #ver-mas-button {
     display: flex;
     flex-direction: row;
@@ -855,20 +856,19 @@ const urlRecursosTFT = [
     }
 
     .left-side {
-      width:100%;
+      width: 100%;
       max-width: none;
-      position:relative;
-      top:unset;
+      position: relative;
+      top: unset;
     }
-    .main-side{
-      width:100%
+    .main-side {
+      width: 100%;
     }
-    .resources-body{
-      width:100%;
-      
+    .resources-body {
+      width: 100%;
     }
-    .resource-card{
-      width:100%
+    .resource-card {
+      width: 100%;
     }
 
     .three-columns {
@@ -882,8 +882,8 @@ const urlRecursosTFT = [
       flex-direction: column;
     }
 
-  .container-champs-tier{
-    grid-template-columns: repeat(5, 1fr);
+    .container-champs-tier {
+      grid-template-columns: repeat(5, 1fr);
+    }
   }
-}
 </style>
