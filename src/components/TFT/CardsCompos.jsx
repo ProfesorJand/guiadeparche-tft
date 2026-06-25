@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import style from "./css/CardsCompos.module.css";
-import { urlDragon, crearCompoMetaPHP, composTest,dataTFTAllItems, composMetaPBETest, teamPlannerCode, versionTFT, setNumberPBE, setMutatorPBE, setMutatorLatest, dataTFTChampions, compActiveId } from "@stores/dataTFT";
+import { urlDragon, crearCompoMetaPHP, composTest, dataTFTAllItems, composMetaPBETest, teamPlannerCode, versionTFT, setNumberPBE, setMutatorPBE, setMutatorLatest, dataTFTChampions, compActiveId } from "@stores/dataTFT";
 import GuiaFreeTFTMeta from "./GuiaFreeTFTMeta.jsx";
 import { navigate } from "astro:transitions/client";
 import { saveScrollPosition } from "../../utils/scrollRestoration";
@@ -130,14 +130,14 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
         if (savedOffset && containerRef.current) {
           // Obtenemos la posición absoluta actual del elemento
           const elementAbsoluteTop = containerRef.current.getBoundingClientRect().top + window.scrollY;
-          
+
           // Ajustamos el scroll al instante para que el elemento aparezca en el mismo lugar exacto de la pantalla
           const html = document.documentElement;
           const originalScrollBehavior = html.style.scrollBehavior;
           html.style.scrollBehavior = "auto";
           window.scrollTo(0, elementAbsoluteTop - parseFloat(savedOffset));
           html.style.scrollBehavior = originalScrollBehavior;
-          
+
           // Limpiamos los datos guardados
           sessionStorage.removeItem("tft-target-offset");
           sessionStorage.removeItem("tft-target-id");
@@ -214,9 +214,9 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
   const handleToggleCardContainer = (e) => {
     // Ignorar el click si se hizo sobre un botón, un enlace, una imagen (campeones/items) o el contenedor de la imagen
     if (
-      e.target.closest('button') || 
-      e.target.closest('a') || 
-      e.target.closest('img') || 
+      e.target.closest('button') ||
+      e.target.closest('a') ||
+      e.target.closest('img') ||
       e.target.closest(`.${style.championImageWrapper}`)
     ) {
       return;
@@ -225,7 +225,7 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
   };
 
   const deleteComp = ({ id, tier, version }) => {
-    let password = prompt('Write DELETE to continue.');
+    let password = prompt('Write DELETE to continue');
     if (password === "DELETE") {
       let token;
       if (import.meta.env.SSR) {
@@ -259,7 +259,7 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
   // Mapear, parsear y filtrar campeones, y debe ordenarse por "cost" que se obtiene en campeonInfo
   const campeones = (comp?.posicionamiento?.[0]?.tablero || []).map((data) => {
     const rawChamp = championsTFT?.find(champ => champ?.apiName === data.apiNameCampeon);
-    
+
     // Si no encuentra al campeón en la store, retornamos null
     if (!rawChamp) return null;
 
@@ -276,12 +276,12 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
 
     let itemsData = [];
     const build = (comp?.bestBuild || []).find(({ apiNameCampeon }) => apiNameCampeon === campeon.apiName);
-    
+
     if (build && build.apiNameItemsBisDelCampeon) {
       // apiNameItemsBisDelCampeon suele ser un array de arrays: [["item1", "item2", "item3"]]
       // Verificamos si es un array de arrays y tomamos el primero, o lo usamos directamente si es plano
-      const itemsToMap = Array.isArray(build.apiNameItemsBisDelCampeon[0]) 
-        ? build.apiNameItemsBisDelCampeon[0] 
+      const itemsToMap = Array.isArray(build.apiNameItemsBisDelCampeon[0])
+        ? build.apiNameItemsBisDelCampeon[0]
         : build.apiNameItemsBisDelCampeon;
 
       itemsData = itemsToMap.map(apiNameItem => {
@@ -309,8 +309,8 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
       estrellas: data?.estrella || 1
     };
   })
-  .filter(Boolean) // Omitir campeones excluidos o no encontrados (los null)
-  .sort((a, b) => a?.campeon?.coste - b?.campeon?.coste);
+    .filter(Boolean) // Omitir campeones excluidos o no encontrados (los null)
+    .sort((a, b) => a?.campeon?.coste - b?.campeon?.coste);
 
   const allChampionsApiName = campeones.map(({ campeon }) => {
     return { apiName: campeon.apiName }
@@ -446,49 +446,9 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
       )}
       {showFormForEdit &&
 
-        <>
           <FormularioCrearCompoTFT
             compo={comp}
           />
-          {/* <CardsMasterPlanCompos
-        compo={composTestB?.S?.[0]}
-      /> */}
-
-          {/* <CrearCompoTFT
-          edit={true}
-          editId={comp.id}
-          edittier={comp.tier}
-          editposicion={comp.posicion}
-          editdificultad={comp.dificultad}
-          edittitulo={comp.titulo}
-          editshadowCategory={comp.shadowCategory}
-          editinfographicCategory={comp.infographicCategory}
-          editaumentos={comp.aumentos}
-          editgameplay={comp.gameplay}
-          edittips={comp.tips}
-          editboardInfo={comp.boardInfo}
-          editpictureSave={comp.pictureSave}
-          editcarouselItems={comp.carouselItems}
-          editspatulaItem1={comp.spatulaItem1}
-          editspatulaItem2={comp.spatulaItem2}
-          editoriginalComp={comp.originalComp}
-          editisHide={comp?.isHide === "true" ? true : false}
-          editisInInfographic={comp.isInInfographic}
-          editCampeonTierList={comp.campeonTierList}
-          editAugmentTierList={comp.augmentTierList}
-          editCampeonItemTierList={comp.champItem}
-          editCampeonTraitTierList={comp.champTrait}
-          editChamp3Stars={comp?.champ3Stars}
-          editVersion={comp.version}
-          editradiantItem={comp?.radiantsItems || []}
-          editTipSeo={comp.tipSeo}
-          editCuandoJugar={comp.cuandoJugar}
-          editCondicionVictoria={comp.condicionVictoria}
-          editCompUrl={comp.urlSEO}
-          edittierExtra={comp.tierExtra}
-          /> */}
-        </>
-
       }
 
     </div>

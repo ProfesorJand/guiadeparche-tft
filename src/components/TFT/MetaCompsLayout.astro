@@ -144,70 +144,51 @@ const urlRecursosTFT = [
     <div class="left-side">
       <div class="table-content">
         <h2>Contenido</h2>
-        <ul>
-          <li><a href="#TierList">Tier List</a></li>
+        <ul class="main-toc-list">
+          <li><a href="#TierList">Comps Tier List</a>
+            <ul class="toc-tier-list">
+              {
+                (() => {
+                  let globalIndex = 1;
+                  return tiersInfo.map((tier) => {
+                    const compsInTier = [...top10Comps, ...restComps].filter((comp) => {
+                      if (tier.tier === "H") return comp.tierExtra === "H";
+                      if (tier.tier === "X") return comp.tierExtra === "X";
+                      return comp.tier === tier.tier;
+                    });
+
+                    if (compsInTier.length === 0) return null;
+
+                    return (
+                      <li class="toc-tier-item">
+                        <strong class="toc-tier-title">Tier {tier.tier}</strong>
+                        <ul class="toc-comps-list">
+                          {compsInTier.map((comp) => {
+                            const currentIndex = globalIndex++;
+                            const isActive = String(comp.urlSEO) === String(activeId);
+                            return (
+                              <li>
+                                <a 
+                                  href={`/tft/meta-comps-tier-list-teamfight-tactics/${comp.urlSEO}`}
+                                  class={`toc-comp-link ${isActive ? "active" : ""}`}
+                                >
+                                  {currentIndex}. {comp.nombre || comp.urlSEO}
+                                </a>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </li>
+                    );
+                  });
+                })()
+              }
+            </ul>
+          </li>
           <li><a href="#RecursosTFT">Recursos TFT</a></li>
         </ul>
       </div>
-      <!-- {
-        tiersInfo.map((tier, index) => (
-          <div class={`tier-info tier-card-${tier.tier}`}>
-            <h3 class="tier-header">
-              <div class="container-tier-text">
-                <span class={`tier-number tier-number-${tier.tier}`}>
-                  {tier.tier}
-                </span>
-                <span class={`tier-title tier-title-${tier.tier}`}>
-                  {tier.title}
-                </span>
-              </div>
-            </h3>
-            {[...top10Comps, ...restComps].length && (
-              <div class="container-champs-tier">
-                {[...top10Comps, ...restComps]
-                  .filter((comp) => {
-                    if (tier.tier === "H") {
-                      return comp.tierExtra === "H";
-                    }
-                    if (tier.tier === "X") {
-                      return comp.tierExtra === "X";
-                    }
-                    return comp.tier === tier.tier;
-                  })
-                  .map((comp, index) => {
-                    const isActive = String(comp.urlSEO) === String(activeId);
-                    return (
-                      // <div class="champ-tier" data-comp-id={comp.urlSEO} data-is-active={isActive ? "true" : "false"} data-cost={comp?.campeonMeta?.cost}>
-                      //   <img class="champ-tier-img" src={`${urlDragon()}${comp.campeonTierList.squareIcon.toLowerCase().replace(".tex",".png")}`} alt={comp.campeonTierList.name} />
-                      //   <div class="champ-tier-items">
-                      //     {
-                      //       comp.champItem.map((item, index)=>{
-                      //         return (
-                      //           <img class="champ-tier-item-img" src={`${urlDragon()}${item?.icon.toLowerCase().replace(".tex",".png")}`} alt={item?.name} />
-                      //         );
-                      //       })
-                      //     }
-                      //   </div>
-                      // </div>
-                      <CampeonImgInTierList
-                        apiNameCampeon={comp?.campeonMeta?.apiNameCampeon}
-                        showItems={true}
-                        apiNameItems={
-                          comp?.campeonMeta?.apiNameItemsDelCampeon
-                        }
-                        compUrl={comp.urlSEO}
-                        client:load
-                        transition:persist
-                      />
-                    );
-                  })}
-              </div>
-            )}
 
-            {/* <p class={`tier-text`}>{tier.text}</p> */}
-          </div>
-        ))
-      } -->
     </div>
 
     <div class="main-side">
@@ -246,18 +227,6 @@ const urlRecursosTFT = [
                   .map((comp, index) => {
                     const isActive = String(comp.urlSEO) === String(activeId);
                     return (
-                      // <div class="champ-tier" data-comp-id={comp.urlSEO} data-is-active={isActive ? "true" : "false"} data-cost={comp?.campeonMeta?.cost}>
-                      //   <img class="champ-tier-img" src={`${urlDragon()}${comp.campeonTierList.squareIcon.toLowerCase().replace(".tex",".png")}`} alt={comp.campeonTierList.name} />
-                      //   <div class="champ-tier-items">
-                      //     {
-                      //       comp.champItem.map((item, index)=>{
-                      //         return (
-                      //           <img class="champ-tier-item-img" src={`${urlDragon()}${item?.icon.toLowerCase().replace(".tex",".png")}`} alt={item?.name} />
-                      //         );
-                      //       })
-                      //     }
-                      //   </div>
-                      // </div>
                       <CampeonImgInTierList
                         apiNameCampeon={comp?.campeonMeta?.apiNameCampeon}
                         showItems={true}
@@ -486,6 +455,47 @@ const urlRecursosTFT = [
       flex-direction:column;
       gap:0.5rem;
     }
+  }
+
+  .main-toc-list {
+    padding-left: 25px;
+    list-style-type: square;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-block-start:0;
+  }
+  .toc-tier-list {
+    padding-left: 5px;
+    margin-top: 2px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    list-style-type: none;
+  }
+  .toc-tier-item {
+    margin-top: 4px;
+  }
+  .toc-tier-title {
+    color: var(--text-color-white-secondary);
+  }
+  .toc-comps-list {
+    padding-left: 0px;
+    margin-top: 2px;
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+    list-style-type: none;
+  }
+  .toc-comp-link {
+    color: inherit;
+    font-weight: normal;
+    text-shadow: none;
+  }
+  .toc-comp-link.active {
+    color: #fbbf24;
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(251, 191, 36, 0.6);
   }
   #container-info {
     display: flex;
@@ -875,4 +885,5 @@ const urlRecursosTFT = [
   .container-champs-tier{
     grid-template-columns: repeat(5, 1fr);
   }
+}
 </style>
