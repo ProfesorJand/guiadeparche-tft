@@ -318,7 +318,7 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
 
   return (
     <div ref={containerRef} className={`${style.container} ${isInfografia ? style.containerInfografia : ''}`}>
-      <div className={style.cardContainer} onClick={handleToggleCardContainer}>
+      <div className={style.cardContainer} onClick={edit? null : handleToggleCardContainer}>
         <div className={`${style.leftContainer} ${isInfografia ? style.leftContainerInfografia : ''} ${!isInfografia && edit ? style.leftContainerFullWidth : ""}`}>
 
           <div className={style.header}>
@@ -348,7 +348,7 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
               }
             </div>
           </div>
-          <p className={style.tipSeo}>{comp.tipSEO}</p>
+          {!isInfografia && <p className={`${style.tipSeo} hideForCapture`}>{comp.tipSEO}</p>}
 
           <div className={`${style.championsContainer} ${isInfografia ? style.championsContainerInfografia : ''}`}>
             {

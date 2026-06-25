@@ -16,10 +16,10 @@ interface ImageMetadata {
     <!-- src={"/web/logo-gp-2026.png"} -->
     <img
     class="logo"
-    src={"/web/GP_logo.png"} 
+    src={"/web/logoGPSinFondo2026.webp"} 
     alt="Logo Guiadeparche"
     />
-    Guiadeparche
+    <span class="textLogo">GUIADEPARCHE</span>
     <slot/>
   </a>
 </div>
@@ -41,6 +41,9 @@ interface ImageMetadata {
   .logo {
     display: flex;
     height:  var(--height-header);
+  }
+  .textLogo{
+    font-family: Fantasy, ObvioslyWideBold, sans-serif;;
   }
   .logoContainer{
     display: flex;

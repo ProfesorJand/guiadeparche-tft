@@ -1,13 +1,40 @@
 import InfografiaTFTComps from "@components/TFT/InfografiaTFTComps"
-import { useRef, useCallback, useState } from "react";
+import { useRef, useCallback, useState, useEffect } from "react";
 import { toPng } from 'html-to-image';
 import SliderButtom from "@components/inputs/SliderButtom";
 import SliderButtomLogoGuiadeparche from "@components/inputs/SliderButtomLogoGuiadeparche";
+import { metaCompsTFT } from "@stores/dataTFT";
+import { useStore } from "@nanostores/react";
+import CampeonImgInTierList from "@components/TFT/meta/CampeonImgInTierList"
 const InfografiaTFT = ()=>{
   const backgroundRef = useRef(null);
   const [tituloInfografiaTFT, setTituloInfografiaTFT] = useState("Top 4 TFT Meta Comps");
   const [logoMovilnet, setLogoMovilnet] = useState(true);
   const [logoGuiadeparche, setLogoGuiadeparche] = useState(false)
+  const [compsSelected, setCompsSelected] = useState([])
+  const metaComps = useStore(metaCompsTFT);
+  
+  const toggleCompSelection = (comp) => {
+    setCompsSelected(prev => {
+      const exists = prev.some(c => c.id === comp.id);
+      let newSelected;
+      if (exists) {
+        newSelected = prev.filter(c => c.id !== comp.id);
+      } else {
+        newSelected = [...prev, comp];
+      }
+      
+      const tierOrder = { S: 1, A: 2, B: 3, C: 4, H: 5, X: 6 };
+      newSelected.sort((a, b) => {
+        if (tierOrder[a.tier] !== tierOrder[b.tier]) {
+          return tierOrder[a.tier] - tierOrder[b.tier];
+        }
+        return (a.posicion || 0) - (b.posicion || 0);
+      });
+      return newSelected;
+    });
+  };
+  
   const loadAllImages = (container) => {
     const images = container.querySelectorAll("img");
     const promises = [];
@@ -69,8 +96,35 @@ const InfografiaTFT = ()=>{
 
 
   return (
-    <div>
+    <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto", margin:"0 auto", flexWrap:"wrap", gap:"1rem"}}>
       {/* Seleccionar las compos que van en la infografia */}
+      <span>hola</span>
+      {['S', 'A', 'B', 'C'].map(tierLetter => {
+        const tierComps = metaComps.filter(c => c.tier === tierLetter);
+        if (tierComps.length === 0) return null;
+        return (
+          <div key={tierLetter} style={{ marginBottom: "20px" }}>
+            <h2>Tier {tierLetter}</h2>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(10, 1fr)", gap: "10px", flexWrap: "wrap", alignItems: "center" }}>
+              {tierComps.map(comp => (
+                <CampeonImgInTierList
+                  key={comp.id}
+                  id={comp.id}
+                  apiNameCampeon={comp?.campeonMeta?.apiNameCampeon}
+                  apiNameItems={comp?.campeonMeta?.apiNameItemsDelCampeon}
+                  estrellas={comp?.campeonMeta?.estrellas}
+                  aumento={comp?.campeonMeta?.aumento}
+                  emblema={comp?.campeonMeta?.emblema}
+                  compUrl={comp.urlSEO}
+                  isInfografia={true}
+                  isSelectedForInfografia={compsSelected.some(c => c.id === comp.id)}
+                  onSelectForInfografia={() => toggleCompSelection(comp)}
+                />
+              ))}
+            </div>
+          </div>
+        )
+      })}
       <div>
         {/*Boton para capturar imagen de la InfografiaTFTComps */}
         <button onClick={()=>{
@@ -87,7 +141,7 @@ const InfografiaTFT = ()=>{
         
       </div>
 
-      <InfografiaTFTComps backgroundRef={backgroundRef} setTituloInfografiaTFT={setTituloInfografiaTFT} tituloInfografiaTFT={tituloInfografiaTFT} logoMovilnet={logoMovilnet} logoGuiadeparche={logoGuiadeparche} webInfografia={true}/>
+      <InfografiaTFTComps backgroundRef={backgroundRef} compsSelected={compsSelected} setTituloInfografiaTFT={setTituloInfografiaTFT} tituloInfografiaTFT={tituloInfografiaTFT} logoMovilnet={logoMovilnet} logoGuiadeparche={logoGuiadeparche} webInfografia={true}/>
     </div>
   )
 }

@@ -700,6 +700,58 @@
     gap:12px;
     justify-content: center;
   }
+.panelControlLogos{
+  display:flex;
+  flex-direction:column;
+  width:100%;
+  position:relative;
+}
+.controlesLogos{
+  display:flex;
+  flex-direction: row;
+  align-items: center;
+  gap:20px;
+}
+.containerInputsLogo{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap:20px;
+}
+.containersLogos{
+  display: flex;
+  width: 100%;
+  gap: 20px;
+  height: 100px;
+  flex-direction: row;
+  /* flex-wrap: wrap; */
+  /* justify-content: center; */
+  /* align-items: center; */
+  box-sizing: border-box;
+  position: relative;
+}
+.containerLogo{
+  display: flex;
+  flex-direction: row;
+  width: calc((100% - 40px) / 3);
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  position: relative;
+  gap: 5px;
+}
+.imgLogo{
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+.imgLogoSetTFT{
+  width:70%
+}
+.logoTextGuiadeparche{
+  position:relative;
+  width:60%;
+}
 
 @keyframes fadeIn {
   from {
