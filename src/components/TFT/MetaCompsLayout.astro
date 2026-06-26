@@ -8,7 +8,7 @@ import RegistrarseBTN from "./RegistrarseBTN.jsx";
 import Youtube from "@components/youtube/Youtube.jsx";
 import CampeonImgInTierList from "@components/TFT/meta/CampeonImgInTierList.jsx";
 import TableOfContent from "@layouts/sidebar/TableOfContent.astro";
-
+import DynamicSection from "@layouts/sections/DynamicSection.astro";
 const constantes = await getConstantes();
 const metadata = await getMetadata();
 
@@ -167,17 +167,8 @@ const tableOfContentData = [
       /> -->
     </div>
   </div>
-
-  <div class="two-columns header-section">
-    <div class="left-side">
-      <div class="table-content">
-        <h2>Contenido</h2>
-        <TableOfContent items={tableOfContentData} />
-      </div>
-    </div>
-
-    <div class="main-side">
-      <!-- Aquí es donde se inyectará el componente de detalles si estamos en la vista de detalle -->
+  <DynamicSection>
+    <div slot="main">
       <h2 id="TierList">Mejores TFT Comps del Meta Actual</h2>
       <p>
         Las compos están ordenadas por fuerza dentro del meta actual, desde las
@@ -290,28 +281,12 @@ const tableOfContentData = [
         </div>
       </div>
     </div>
-
-    <!-- <div class="right-side">
-      <div id="resources">
-        <div class="resources-header">
-          <h2 id="resource-title">Recursos TFT</h2>
-        </div>
-        <div class="resources-body">
-          {
-            urlRecursosTFT.map((url, index) => {
-              return (
-                <Youtube
-                  src={url}
-                  client:load
-                  transition:persist={`youtube-recurso-${index}`}
-                />
-              );
-            })
-          }
-        </div>
-      </div>
-    </div> -->
-  </div>
+    <div slot="sidebar">
+      <TableOfContent items={tableOfContentData} />
+    </div>
+      
+    
+  </DynamicSection>
 </LayoutMaxWidth>
 
 <script>
