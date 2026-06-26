@@ -2,7 +2,7 @@ import fs from 'fs/promises';
 import path from 'path';
 
 const FETCH_HEADERS = {
-  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+  'User-Agent': 'Astro-Build-Process/1.0',
   'Accept': 'application/json, text/plain, */*'
 };
 
@@ -53,7 +53,7 @@ export async function getComposMetaPBE() {
     return composMetaPBECache;
   } catch (err) {
     console.error("Error fetching composMetaPBE.json remotely:", err);
-    return [];
+    throw err; // Hacemos que el build falle si no hay datos
   }
 }
 
@@ -83,7 +83,7 @@ export async function getComposMeta() {
     return composMetaCache;
   } catch (err) {
     console.error("Error fetching composMeta.json remotely:", err);
-    return [];
+    throw err; // Hacemos que el build falle si no hay datos
   }
 }
 
@@ -112,7 +112,7 @@ export async function getConstantes() {
     return constantesCache;
   } catch (err) {
     console.error("Error fetching constantes.json remotely:", err);
-    return {};
+    throw err; // Hacemos que el build falle si no hay datos
   }
 }
 
@@ -137,7 +137,7 @@ export async function getValorantConstantes() {
     return valorantConstantesCache;
   } catch (err) {
     console.error("Error fetching valorantConstantes.json remotely:", err);
-    return {};
+    throw err; // Hacemos que el build falle si no hay datos
   }
 }
 
