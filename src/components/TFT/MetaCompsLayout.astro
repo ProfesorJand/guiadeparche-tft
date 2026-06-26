@@ -7,6 +7,7 @@ import { crearJSONSchema } from "src/json/schema/crearJSONSchema";
 import RegistrarseBTN from "./RegistrarseBTN.jsx";
 import Youtube from "@components/youtube/Youtube.jsx";
 import CampeonImgInTierList from "@components/TFT/meta/CampeonImgInTierList.jsx";
+import TableOfContent from "@layouts/sidebar/TableOfContent.astro";
 
 const constantes = await getConstantes();
 const metadata = await getMetadata();
@@ -90,6 +91,40 @@ const urlRecursosTFT = [
   "https://youtu.be/qoV9hH9s9RI",
   "https://youtu.be/nD-1exiSgnE",
 ];
+
+let globalIndex = 1;
+const tierChildren = tiersInfo.map((tier) => {
+  const compsInTier = [...top10Comps, ...restComps].filter(
+    (comp) => comp.tier === tier.tier
+  );
+
+  if (compsInTier.length === 0) return null;
+
+  return {
+    label: `Tier ${tier.tier}`,
+    children: compsInTier.map((comp) => {
+      const currentIndex = globalIndex++;
+      const isActive = String(comp.urlSEO) === String(activeId);
+      return {
+        label: `${currentIndex}. ${comp.nombre || comp.urlSEO}`,
+        href: `/tft/meta-comps-tier-list-teamfight-tactics/${comp.urlSEO}`,
+        isActive: isActive
+      };
+    })
+  };
+}).filter(Boolean);
+
+const tableOfContentData = [
+  {
+    label: "Comps Tier List",
+    href: "#TierList",
+    children: tierChildren
+  },
+  {
+    label: "Recursos TFT",
+    href: "#RecursosTFT"
+  }
+];
 ---
 
 <LayoutMaxWidth
@@ -137,53 +172,7 @@ const urlRecursosTFT = [
     <div class="left-side">
       <div class="table-content">
         <h2>Contenido</h2>
-        <ul class="main-toc-list">
-          <li>
-            <a href="#TierList">Comps Tier List</a>
-            <ul class="toc-tier-list">
-              {
-                (() => {
-                  let globalIndex = 1;
-                  return tiersInfo.map((tier) => {
-                    const compsInTier = [...top10Comps, ...restComps].filter(
-                      (comp) => {
-                        // if (tier.tier === "H") return comp.tierExtra === "H";
-                        // if (tier.tier === "X") return comp.tierExtra === "X";
-                        return comp.tier === tier.tier;
-                      },
-                    );
-
-                    if (compsInTier.length === 0) return null;
-
-                    return (
-                      <li class="toc-tier-item">
-                        <strong class="toc-tier-title">Tier {tier.tier}</strong>
-                        <ul class="toc-comps-list">
-                          {compsInTier.map((comp) => {
-                            const currentIndex = globalIndex++;
-                            const isActive =
-                              String(comp.urlSEO) === String(activeId);
-                            return (
-                              <li>
-                                <a
-                                  href={`/tft/meta-comps-tier-list-teamfight-tactics/${comp.urlSEO}`}
-                                  class={`toc-comp-link ${isActive ? "active" : ""}`}
-                                >
-                                  {currentIndex}. {comp.nombre || comp.urlSEO}
-                                </a>
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      </li>
-                    );
-                  });
-                })()
-              }
-            </ul>
-          </li>
-          <li><a href="#RecursosTFT">Recursos TFT</a></li>
-        </ul>
+        <TableOfContent items={tableOfContentData} />
       </div>
     </div>
 

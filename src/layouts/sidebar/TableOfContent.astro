@@ -1,0 +1,143 @@
+---
+const { items = [], depth = 0 } = Astro.props;
+---
+
+<ul class={`toc-list depth-${depth}`}>
+  {depth === 0 && 
+  <h2 class="title-sidebar">Contenido</h2>
+  }
+  {
+    items.map((item) => (
+      <li class={`toc-item ${item.children && item.children.length > 0 ? 'has-children is-open' : 'no-children'}`}>
+        {/* Contenedor del título para que actúe como área de click */}
+        <div class="toc-item-header">
+          {item.href ? (
+            <a
+              href={item.href}
+              class={`toc-link ${item.isActive ? "active" : ""}`}
+            >
+              {item.label}
+            </a>
+          ) : (
+            <strong class="toc-title">{item.label}</strong>
+          )}
+        </div>
+
+        {item.children && item.children.length > 0 && (
+          <div class="children-container">
+            <Astro.self items={item.children} depth={depth + 1} />
+          </div>
+        )}
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .title-sidebar{
+    text-align: center;
+    font-size: 1.5rem;
+    margin-block: 0
+  }
+  .toc-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-left: 1rem;
+  }
+  
+  .toc-item.has-children {
+    cursor: pointer;
+  }
+
+  .toc-item.has-children.is-closed {
+    list-style-type: disclosure-closed;
+  }
+  
+  .toc-item.has-children.is-open {
+    list-style-type: disclosure-open;
+  }
+  
+  .toc-item.no-children {
+    list-style-type: inherit ;
+  }
+
+  .toc-item.has-children.is-closed > .children-container {
+    display: none;
+  }
+  
+  .toc-item.has-children.is-open > .children-container {
+    display: block;
+  }
+
+  /* Evitar que el texto se seleccione al hacer doble click rápido */
+  .toc-item-header {
+    user-select: none;
+  }
+  
+  .depth-1, .depth-2, .depth-3 {
+    padding-left: 1rem;
+    margin-top: 0.25rem;
+  }
+
+  .toc-title {
+    color: var(--text-color-white-secondary, #ccc);
+    font-size: 0.9rem;
+    display: block;
+    margin-top: 0.5rem;
+  }
+
+  .toc-link {
+    color: inherit;
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 0.2s ease;
+  }
+
+  .toc-link:hover {
+    color: #fbbf24;
+  }
+
+  .toc-link.active {
+    color: #fbbf24;
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(251, 191, 36, 0.6);
+  }
+  .toc-item{
+    list-style-type: inherit;
+    margin-bottom: 0;
+  }
+</style>
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const tocItems = document.querySelectorAll(".toc-item");
+    
+    tocItems.forEach(item => {
+      // Evitar que se asignen múltiples eventos por las transiciones de Astro
+      if (item.dataset.listenerAttached) return;
+      item.dataset.listenerAttached = "true";
+
+      item.addEventListener("click", (e) => {
+        // Prevenir que el click en un hijo se propague y cierre al padre accidentalmente
+        e.stopPropagation();
+
+        // Si se hace click en el texto, el e.target es el div, a, o strong.
+        // El pseudo-elemento ::marker (la flecha/circulo) forma parte del <li>.
+        // Por lo tanto, si e.target === item, significa que clickeó exactamente en el marcador.
+        if (e.target === item) {
+          if (item.classList.contains("has-children")) {
+            // Hacemos el toggle de las clases
+            if (item.classList.contains("is-closed")) {
+              item.classList.remove("is-closed");
+              item.classList.add("is-open");
+            } else {
+              item.classList.remove("is-open");
+              item.classList.add("is-closed");
+            }
+          }
+        }
+      });
+    });
+  });
+</script>

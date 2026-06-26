@@ -1,0 +1,58 @@
+---
+const { className, style } = Astro.props;
+const tieneMain = Astro.slots.has("main");
+const tieneSidebar = Astro.slots.has("sidebar");
+---
+
+<section class={`default ${className ? className.join(" ") : ""}`} style={style}>
+  <slot />
+  {
+    tieneMain && 
+    <div class="mainContent">
+      <slot name="main"/>
+    </div>
+  }
+  {
+    tieneSidebar && 
+    <aside>
+      <slot name="sidebar"/>
+    </aside>
+  }
+</section>
+
+<style>
+  section{
+    gap:1rem;
+  }
+.default{
+  display: flex;
+  position:relative;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  max-width: 1200px;
+  box-sizing: border-box;
+}
+.mainContent{
+  order:1;
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+}
+aside{
+  order:2;
+  display: flex;
+  flex-direction: column;
+  width: 25%;
+  position: sticky;
+  top: var(--height-header);
+  align-self: flex-start;
+  max-width:300px;
+  gap:1rem;
+  background: #191f33;
+  padding: 1rem;
+  border-radius: .5rem;
+  border: 1px solid rgba(255, 255, 0, .247);
+  box-sizing: border-box;
+}
+</style>
