@@ -44,6 +44,7 @@ const paragraphs = Array.isArray(textInfo)
         </div>
       </div>
       <div class={`${styles.bodyContainer} ${layoutClass}`}>
+        <slot/>
         {hasLeft && 
           <div class={styles.colLeft}>
             <slot name="bodyContainerLeft"/>

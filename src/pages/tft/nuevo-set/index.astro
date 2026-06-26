@@ -4,6 +4,8 @@ import { crearJSONSchema } from "@json/schema/crearJSONSchema";
 import PaginaBaseMaxWidth from "@components/TFT/paginas/PaginaBaseMaxWidth.astro";
 import Youtube from "@components/youtube/Youtube.jsx";
 import RegistrarseBTN from "@components/TFT/RegistrarseBTN";
+import DynamicSection from "@layouts/sections/DynamicSection.astro";
+import TableOfContent from "@layouts/sidebar/TableOfContent.astro";
 
 const topTitle = "Nuevo Set TFT:";
 const lowerTitle = "Todo sobre el Set 17 de Teamfight Tactics";
@@ -20,6 +22,65 @@ const baseSchema = JSON.parse(
 );
 const JSONSchema = JSON.stringify(baseSchema);
 
+const SIDEBAR= [
+  {
+    label:"¿Qué es el Set 17 de TFT?",
+    href:"#que-es-set-17"
+  },
+  {
+    label:"Mecánica del Set",
+    href:"#mecanica-del-set",
+    children: [
+      {
+        label:"¿Qué hace cada Dios Espacial en TFT Set 17?",
+        href:"#que-hace-cada-dios-espacial-en-tft-set-17",
+        children:[
+          {
+            label:"Ahri",
+            href:"#ahri"
+          },
+          {
+            label:"Aurelion Sol",
+            href:"#aurelion-sol"
+          },
+          {
+            label:"Ekko",
+            href:"#ekko"
+          },
+          {
+            label:"Evelynn",
+            href:"#evelynn"
+          },
+          {
+            label:"Kayle",
+            href:"#kayle"
+          },
+          {
+            label:"Soraka",
+            href:"#soraka"
+          },
+          {
+            label:"Thresh",
+            href:"#thresh"
+          },
+          {
+            label:"Varus",
+            href:"#varus"
+          },
+          {
+            label:"Yasuo",
+            href:"#yasuo"
+          },
+        ]
+      }
+    ]
+  },
+  {
+    label:"Fechas del Set",
+    href:"#fechas-del-set",
+  }
+]
+
 ---
 
 <LayoutMaxWidth
@@ -34,139 +95,172 @@ const JSONSchema = JSON.stringify(baseSchema);
     lowerTitle={lowerTitle}
     textInfo={description}
   >
-    <div slot="bodyContainerLeft">
-      <!-- Columna izquierda vacía para consistencia -->
-    </div>
-
-    <div slot="bodyContainerMid" class="bodyContainerMid">
       
-      <!-- Seccion 1: ¿Qué es el Set 17 de TFT? -->
-      <article id="que-es-set-17">
-        <h2>¿Qué es el Set 17 de TFT?</h2>
+      <DynamicSection>
+        <div slot="main">
+          <h2 id="que-es-set-17">¿Qué es el Set 17 de TFT?</h2>
+          <p>
+            El Set 17 de Teamfight Tactics, titulado oficialmente <strong>TFT: Dioses del Espacio / Deidades Siderales</strong> (o <em>Space Gods</em> en inglés), sumerge a los estrategas en una auténtica odisea intergaláctica con un diseño celestial, campeones galácticos y bendiciones de los dioses.
+          </p>
+            
+          <RegistrarseBTN
+            text="Estamos construyendo una nueva herramienta para ayudarte a elegir mejor tus composiciones."
+            buttonText="Únete a la lista →"
+            layout="column"
+            className="mb-20"
+          />
+    
+          <!-- Cards de Navegación de Secciones -->
+          <div class="cards-grid">
+            <a href="/tft/nuevo-set/consejos-tips-para-mejorar" class="nav-card">
+              <div class="nav-card-icon">💡</div>
+              <div class="nav-card-info">
+                <h3>Consejos del Set TFT</h3>
+                <p>Aprende de estos tips de Jupeson para subir de elo fácilmente en Teamfight Tactics.</p>
+              </div>
+            </a>
+            <a href="/tft/mejores-comps-tier-list-teamfight-tactics" class="nav-card">
+              <div class="nav-card-icon">🏆</div>
+              <div class="nav-card-info">
+                <h3>Mejores Composiciones del Set Actual de TFT</h3>
+                <p>Consulta el tier list y las mejores configuraciones para subir de rango.</p>
+              </div>
+            </a>
+          </div>
+          <h2 id="mecanica-del-set">Mecánica del Set</h2>
+          <p>El Set 17 de TFT introduce la mecánica de Dioses Espaciales, se eliminan los carruseles y son reemplazado por el reino de los Dioses. Acá tendrás que elegir entre 2 dioses que son diferentes en cada partida (más el dios pengu que siempre esta presente), y te darán ofrendas si los eliges.</p>
+
+          <h3 id="que-hace-cada-dios-espacial-en-tft-set-17">¿Qué hace cada Dios Espacial en TFT Set 17?</h3>
+          <p>Tendrás 3 encuentros con los dioses, y en cada uno deberás elegir un dios con su ofrenda. El dios que elijas 2 o más veces te dará también un <strong>"boon"</strong> o <strong>"bendición"</strong> acorde a su arquetipo. A continuación te explico los detalles de cada Dios:</p>
+          
+          <ul>
+            <li><h4 id="ahri"><strong>Ahri</strong>:</h4>
+              <ul>
+                <li>Otorga economía (Oro, experiencia y actualización de tienda "roll")</li>
+                <li>Bendición: Daño de ataque y Daño de Habilidad por nivel, puntos de experiencia por ronda</li>
+              </ul>
+            </li>
+          </ul>
+
+          <ul>
+            <li><h4 id="aurelion-sol"><strong>Aurelion Sol</strong>:</h4>
+              <ul>
+                <li>Te da misiones a cambio de recompensas y su bendición depende de que misión hayas elegido.</li>
+                <li><strong>Misión de atributo</strong>: Tras desplegar 6 atributos que no sean únicos en un combate contra un jugador, obtienes un emblema aleatorio y 1 Reforjador.</li>
+                <li><strong>Misión de riqueza</strong>: Al acumular 50 de oro, obtienes 1 yunque de componente y 4 de oro.</li>
+                <li><strong>Misión estelar</strong>: La próxima vez que subas el nivel de estrellas de un campeón, obtienes 10 de oro.</li>
+                <li><strong>Misión de nivel</strong>: Cuando alcanzas el nivel 9, obtienes 20 de oro.</li>
+                <li><strong>Misión de poca vida</strong>: La primera vez que tu vida descienda a 30, obtienes 18 de oro.</li>
+                <li><strong>Misión de reroll</strong>: Tras cambiar la tienda 15 veces, obtienes 2 yunques de componente.</li>
+              </ul>
+            </li>
+          </ul>
+
+          <ul>
+            <li><h4 id="ekko"><strong>Ekko</strong>:</h4>
+              <ul>
+                <li>Sus recompensas tienen valor a largo plazo (escurridizos, artefactos u objetos, campeones coste 4 y 5, mejoras en estadísticas, Oro en rondas y botines)</li>
+                <li>Bendición de anomalía: objeto que evoluciona según el roll de tus campeones</li>
+              </ul>
+            </li>
+          </ul>
+
+          <ul>
+            <li><h4 id="evelynn"><strong>Evelynn</strong>:</h4>
+              <ul>
+                <li>Perfecto para jugar tempo, otorga poderosas recompensas a cambio de puntos de vida del estratega.</li>
+                <li>Bendición: Otorga durabilidad a tu equipo, pero si pierdes un combate pierdes 1 vida de estratega adicional.</li>
+              </ul>
+            </li>
+          </ul>
+
+          <ul>
+            <li><h4 id="kayle"><strong>Kayle</strong>:</h4>
+              <ul>
+                <li>Otorga objetos y/o yunques de componentes.</li>
+                <li>Bendición: Por cada objeto completo que tenga tu equipo obtienes % de daño de ataque y de poder de habilidad.</li>
+              </ul>
+            </li>
+          </ul>
+
+          <ul>
+            <li><h4 id="soraka"><strong>Soraka</strong>:</h4>
+              <ul>
+                <li>Otorga supervivencia ya sea con vida o escudos a tus campeones, objetos de vida o vida extra a tu estratega.</li>
+                <li>Bendición: tu equipo obtiene vida por cada punto de vida faltante de tu estratega. Al principio de cada combate otorga vida a tu estratega por ronda.</li>
+              </ul>
+            </li>
+          </ul>
+
+          <ul>
+            <li><h4 id="thresh"><strong>Thresh</strong>:</h4>
+              <ul>
+                <li>Obtienes botines misteriosos, o una gracia de los otros dioses y oro.</li>
+                <li>Bendición: en cada ronda tira un dado. Recibes una bonificación acorde al resultado de los dados. Mayor numero, mayor recompensa.</li>
+              </ul>
+            </li>
+          </ul>
+
+          <ul>
+            <li><h4 id="varus"><strong>Varus</strong>:</h4>
+              <ul>
+                <li>Ideal para subir a tus campeones a 3 estrellas ya que otorga duplicadores y campeones o tienda mejoradas.</li>
+                <li>Bendición: Tu equipo obtiene 15 de vida por cada nivel de estrellas de tus campeones, y las probabilidades de obtener campeones de coste 5 aumentan un 2%.</li>
+              </ul>
+            </li>
+          </ul>
+
+          <ul>
+            <li><h4 id="yasuo"><strong>Yasuo</strong>:</h4>
+              <ul>
+                <li>Otorga potenciar hexágonos para tus campeones tanques, daño o utilidad.</li>
+                <li>Bendición: Aumenta el poder de los hexágonos de Yasuo en un 50%. Si solo tienes 2 hexágonos, obtienes 8 de oro.</li>
+              </ul>
+            </li>
+          </ul>
+
+        <h2 id="fechas-del-set">Fechas del Set 17 de TFT</h2>
         <p>
-          El Set 17 de Teamfight Tactics, titulado oficialmente <strong>TFT: Dioses del Espacio / Deidades Siderales</strong> (o <em>Space Gods</em> en inglés), sumerge a los estrategas en una auténtica odisea intergaláctica con un diseño celestial, campeones galácticos y bendiciones de los dioses.
+          Lleva el registro de las fases de desarrollo y duración oficial del Set 17. Esta información es crucial para planificar tu escalada competitiva antes de las finales del set.
         </p>
         
-      </article>
-      <RegistrarseBTN
-        text="Estamos construyendo una nueva herramienta para ayudarte a elegir mejor tus composiciones."
-        buttonText="Únete a la lista →"
-        layout="column"
-        className="mb-20"
-      />
-
-      <!-- Cards de Navegación de Secciones -->
-      <div class="cards-grid">
-        <a href="/tft/nuevo-set/consejos-tips-para-mejorar" class="nav-card">
-          <div class="nav-card-icon">💡</div>
-          <div class="nav-card-info">
-            <h3>Consejos del Set TFT</h3>
-            <p>Aprende de estos tips de Jupeson para subir de elo fácilmente en Teamfight Tactics.</p>
-          </div>
-        </a>
-        <a href="/tft/mejores-comps-tier-list-teamfight-tactics" class="nav-card">
-          <div class="nav-card-icon">🏆</div>
-          <div class="nav-card-info">
-            <h3>Mejores Composiciones del Set Actual de TFT</h3>
-            <p>Consulta el tier list y las mejores configuraciones para subir de rango.</p>
-          </div>
-        </a>
-      </div>
-
-      <article>
-        <h2>Mecánica del Set</h2>
-        <p>El Set 17 de TFT introduce la mecánica de Dioses Espaciales, se eliminan los carruseles y son reemplazado por el reino de los Dioses. Acá tendrás que elegir entre 2 dioses que son diferentes en cada partida (más el dios pengu que siempre esta presente), y te darán ofrendas si los eliges.</p>
-
-        <h3>¿Qué hace cada Dios Espacial en TFT Set 17?</h3>
-        <p>Tendrás 3 encuentros con los dioses, y en cada uno deberás elegir un dios con su ofrenda. El dios que elijas 2 o más veces te dará también un <strong>"boon"</strong> o <strong>"bendición"</strong> acorde a su arquetipo. A continuación te explico los detalles de cada Dios:</p>
-        
-        <ul>
-          <li><h4><strong>Ahri</strong>:</h4>
-            <ul>
-              <li>Otorga economía (Oro, experiencia y actualización de tienda "roll")</li>
-              <li>Bendición: Daño de ataque y Daño de Habilidad por nivel, puntos de experiencia por ronda</li>
-            </ul>
-          </li>
-        </ul>
-
-        <ul>
-          <li><h4><strong>Aurelion Sol</strong>:</h4>
-            <ul>
-              <li>Te da misiones a cambio de recompensas y su bendición depende de que misión hayas elegido.</li>
-              <li><strong>Misión de atributo</strong>: Tras desplegar 6 atributos que no sean únicos en un combate contra un jugador, obtienes un emblema aleatorio y 1 Reforjador.</li>
-              <li><strong>Misión de riqueza</strong>: Al acumular 50 de oro, obtienes 1 yunque de componente y 4 de oro.</li>
-              <li><strong>Misión estelar</strong>: La próxima vez que subas el nivel de estrellas de un campeón, obtienes 10 de oro.</li>
-              <li><strong>Misión de nivel</strong>: Cuando alcanzas el nivel 9, obtienes 20 de oro.</li>
-              <li><strong>Misión de poca vida</strong>: La primera vez que tu vida descienda a 30, obtienes 18 de oro.</li>
-              <li><strong>Misión de reroll</strong>: Tras cambiar la tienda 15 veces, obtienes 2 yunques de componente.</li>
-            </ul>
-          </li>
-        </ul>
-
-        <ul>
-          <li><h4><strong>Ekko</strong>:</h4>
-            <ul>
-              <li>Sus recompensas tienen valor a largo plazo (escurridizos, artefactos u objetos, campeones coste 4 y 5, mejoras en estadísticas, Oro en rondas y botines)</li>
-              <li>Bendición de anomalía: objeto que evoluciona según el roll de tus campeones</li>
-            </ul>
-          </li>
-        </ul>
-
-        <ul>
-          <li><h4><strong>Evelynn</strong>:</h4>
-            <ul>
-              <li>Perfecto para jugar tempo, otorga poderosas recompensas a cambio de puntos de vida del estratega.</li>
-              <li>Bendición: Otorga durabilidad a tu equipo, pero si pierdes un combate pierdes 1 vida de estratega adicional.</li>
-            </ul>
-          </li>
-        </ul>
-
-        <ul>
-          <li><h4><strong>Kayle</strong>:</h4>
-            <ul>
-              <li>Otorga objetos y/o yunques de componentes.</li>
-              <li>Bendición: Por cada objeto completo que tenga tu equipo obtienes % de daño de ataque y de poder de habilidad.</li>
-            </ul>
-          </li>
-        </ul>
-
-        <ul>
-          <li><h4><strong>Soraka</strong>:</h4>
-            <ul>
-              <li>Otorga supervivencia ya sea con vida o escudos a tus campeones, objetos de vida o vida extra a tu estratega.</li>
-              <li>Bendición: tu equipo obtiene vida por cada punto de vida faltante de tu estratega. Al principio de cada combate otorga vida a tu estratega por ronda.</li>
-            </ul>
-          </li>
-        </ul>
-
-        <ul>
-          <li><h4><strong>Thresh</strong>:</h4>
-            <ul>
-              <li>Obtienes botines misteriosos, o una gracia de los otros dioses y oro.</li>
-              <li>Bendición: en cada ronda tira un dado. Recibes una bonificación acorde al resultado de los dados. Mayor numero, mayor recompensa.</li>
-            </ul>
-          </li>
-        </ul>
-
-        <ul>
-          <li><h4><strong>Varus</strong>:</h4>
-            <ul>
-              <li>Ideal para subir a tus campeones a 3 estrellas ya que otorga duplicadores y campeones o tienda mejoradas.</li>
-              <li>Bendición: Tu equipo obtiene 15 de vida por cada nivel de estrellas de tus campeones, y las probabilidades de obtener campeones de coste 5 aumentan un 2%.</li>
-            </ul>
-          </li>
-        </ul>
-
-        <ul>
-          <li><h4><strong>Yasuo</strong>:</h4>
-            <ul>
-              <li>Otorga potenciar hexágonos para tus campeones tanques, daño o utilidad.</li>
-              <li>Bendición: Aumenta el poder de los hexágonos de Yasuo en un 50%. Si solo tienes 2 hexágonos, obtienes 8 de oro.</li>
-            </ul>
-          </li>
-        </ul>
-
-      </article>
+        <div class="table-container">
+          <table class="dates-table">
+            <thead>
+              <tr>
+                <th>Fase / Evento</th>
+                <th>Fecha / Detalle</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Lanzamiento PBE (Pruebas)</strong></td>
+                <td>31 de Marzo 2026</td>
+              </tr>
+              <tr>
+                <td><strong>Lanzamiento Servidor Oficial</strong></td>
+                <td>15 de Abril 2026</td>
+              </tr>
+              <tr>
+                <td><strong>Fin Estimado del Set</strong></td>
+                <td>15 de Agosto 2026</td>
+              </tr>
+              <tr>
+                <td><strong>Duración Aproximada</strong></td>
+                <td>4 Meses</td>
+              </tr>
+              <tr>
+                <td><strong>Siguiente Set (Set 18) Estimado</strong></td>
+                <td>16 de Agosto 2026</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        </div>
+        <div slot="sidebar">
+          <TableOfContent items={SIDEBAR}/>
+        </div>
+      </DynamicSection>
 
       
 
@@ -204,45 +298,7 @@ const JSONSchema = JSON.stringify(baseSchema);
       </article> -->
 
       <!-- Seccion 6: Fechas del Set -->
-      <article id="fechas-set">
-        <h2>Fechas del Set 17 de TFT</h2>
-        <p>
-          Lleva el registro de las fases de desarrollo y duración oficial del Set 17. Esta información es crucial para planificar tu escalada competitiva antes de las finales del set.
-        </p>
-        
-        <div class="table-container">
-          <table class="dates-table">
-            <thead>
-              <tr>
-                <th>Fase / Evento</th>
-                <th>Fecha / Detalle</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>Lanzamiento PBE (Pruebas)</strong></td>
-                <td>31 de Marzo 2026</td>
-              </tr>
-              <tr>
-                <td><strong>Lanzamiento Servidor Oficial</strong></td>
-                <td>15 de Abril 2026</td>
-              </tr>
-              <tr>
-                <td><strong>Fin Estimado del Set</strong></td>
-                <td>15 de Agosto 2026</td>
-              </tr>
-              <tr>
-                <td><strong>Duración Aproximada</strong></td>
-                <td>4 Meses</td>
-              </tr>
-              <tr>
-                <td><strong>Siguiente Set (Set 18) Estimado</strong></td>
-                <td>16 de Agosto 2026</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </article>
+     
 
       <!-- Seccion 7: Preguntas Frecuentes -->
       <!-- <article id="preguntas-frecuentes" class="faq-section">
@@ -300,14 +356,6 @@ const JSONSchema = JSON.stringify(baseSchema);
 
         </div>
       </article> -->
-
-      
-
-    </div>
-
-    <div slot="bodyContainerRight">
-      <!-- Columna derecha vacía para consistencia -->
-    </div>
   </PaginaBaseMaxWidth>
 </LayoutMaxWidth>
 

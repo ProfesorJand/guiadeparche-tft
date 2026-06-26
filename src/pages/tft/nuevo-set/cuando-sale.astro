@@ -4,6 +4,8 @@ import { crearJSONSchema } from "@json/schema/crearJSONSchema";
 import PaginaBaseMaxWidth from "@components/TFT/paginas/PaginaBaseMaxWidth.astro";
 import Youtube from "@components/youtube/Youtube.jsx";
 import VideoComponent from "@components/youtube/VideoComponent";
+import DynamicSection from "@layouts/sections/DynamicSection.astro";
+import TableOfContent from "@layouts/sidebar/TableOfContent.astro";
 
 const topTitle = "¿Cuándo Sale el Set 18 de TFT?";
 const lowerTitle = "Fecha Oficial de Lanzamiento";
@@ -24,6 +26,28 @@ const baseSchema = JSON.parse(
 const JSONSchema = JSON.stringify(baseSchema);
 
 const currentPath = Astro.url.pathname;
+const SIDEBAR =[
+  {
+    label:"Fecha de lanzamiento del Set 18 de TFT",
+    href:"#fecha-lanzamiento-set-18"
+  },
+  {
+    label:"Cuándo sale el nuevo Set de TFT",
+    href:"#cuando-sale-nuevo-set"
+  },
+  {
+    label:"Qué sabemos del Set 18 Bosque Misterioso",
+    href:"#set-18-bosque-misterioso"
+  },
+  {
+    label:"Recursos del Set 18",
+    href:"#recursos-set-18"
+  },
+  {
+    label:"¿Quieres dominar el Set 17?",
+    href:"#dominar-tft-set-17"
+  }
+]
 ---
 
 <LayoutMaxWidth
@@ -38,118 +62,80 @@ const currentPath = Astro.url.pathname;
     lowerTitle={lowerTitle}
     textInfo={description}
   >
-    <div slot="bodyContainerLeft">
-      <!-- Columna izquierda vacía para consistencia -->
-    </div>
-
-    <div slot="bodyContainerMid" class="bodyContainerMid">
-      <img style={{width:"50%", alignSelf:"center"}} src="/tft/sets/18/TFT-Set-18-lanzamiento-cuando-sale-confirmado.webp" alt="TFT Set 18 lanzamiento cuando sale confirmado" />
-      <!-- <Youtube src="https://www.youtube.com/watch?v=YlivZPdB69I" client:load /> -->
-      <article>
-        <h2>Fecha de Lanzamiento del Set 18 de TFT</h2>
-        <p>
-          El Set 18 de Teamfight Tactics llegará oficialmente el 12 de agosto de 2026 junto con el parche 18.1 en todos los servidores del mundo.
-        </p>
-        <p>
-          Como ocurre con cada lanzamiento importante de TFT, los jugadores podrán probar el contenido antes de su llegada oficial a través del entorno público de pruebas (PBE). 
-        </p>
-      </article>
-
-      <article>
-        <h2>¿Cuándo Sale el Set 18 en el PBE?</h2>
-        <p>Antes de llegar a los servidores oficiales, el Set 18 estará disponible en el PBE durante aproximadamente dos semanas.</p>
-        <p>
-          La llegada al PBE está prevista, programado para el 14 de Julio de 2026, permitiendo a los jugadores probar las nuevas mecánicas y campeones durante 4 semana antes del lanzamiento global.
-        </p>        
-          <Youtube src="https://www.youtube.com/watch?v=WnB0H48FE6Q" client:load />
-      </article>
-
-      <article>
-        <h2>¿Qué Sabemos del Set 18 Bosque Misterioso?</h2>
-        <p>
-          Riot ha confirmado que la temática principal del Set 18 será de Bosque Misterioso. Aunque todavía no se han revelado todos los detalles, se espera una nueva mecánica central, campeones inéditos dentro del ecosistema de TFT y un conjunto completamente renovado de sinergias y estrategias.
-        </p>
-        <p>
-          Además Teamfight Tactics hará en este Set su migración a cliente propio (separado de League of Legends) y cambiará su motor tecnológico a Unreal Engine, detalles del cambio en el siguiente video:
-        </p>
-      </article>
-
-      <articule>
-        <h2>Recursos del Set 18</h2>
-        <div class="cards-grid">
-        <a href="/tft/nuevo-set" class="nav-card">
-          <div class="nav-card-icon">✨</div>
-          <div class="nav-card-info">
-            <h3>Nuevo Set TFT</h3>
-            <p>Todo sobre el nuevo set de TFT.</p>
+      <DynamicSection>
+        <div slot="main">
+          <img style={{width:"50%", alignSelf:"center"}} src="/tft/sets/18/TFT-Set-18-lanzamiento-cuando-sale-confirmado.webp" alt="TFT Set 18 lanzamiento cuando sale confirmado" />
+          <!-- <Youtube src="https://www.youtube.com/watch?v=YlivZPdB69I" client:load /> -->
+            <h2 id="fecha-lanzamiento-set-18">Fecha de Lanzamiento del Set 18 de TFT</h2>
+            <p>
+              El Set 18 de Teamfight Tactics llegará oficialmente el 12 de agosto de 2026 junto con el parche 18.1 en todos los servidores del mundo.
+            </p>
+            <p>
+              Como ocurre con cada lanzamiento importante de TFT, los jugadores podrán probar el contenido antes de su llegada oficial a través del entorno público de pruebas (PBE). 
+            </p>
+    
+            <h2 id="cuando-sale-nuevo-set">¿Cuándo Sale el Set 18 en el PBE?</h2>
+            <p>Antes de llegar a los servidores oficiales, el Set 18 estará disponible en el PBE durante aproximadamente dos semanas.</p>
+            <p>
+              La llegada al PBE está prevista, programado para el 14 de Julio de 2026, permitiendo a los jugadores probar las nuevas mecánicas y campeones durante 4 semana antes del lanzamiento global.
+            </p>        
+              <Youtube src="https://www.youtube.com/watch?v=WnB0H48FE6Q" client:load />
+    
+            <h2 id="set-18-bosque-misterioso">¿Qué Sabemos del Set 18 Bosque Misterioso?</h2>
+            <p>
+              Riot ha confirmado que la temática principal del Set 18 será de Bosque Misterioso. Aunque todavía no se han revelado todos los detalles, se espera una nueva mecánica central, campeones inéditos dentro del ecosistema de TFT y un conjunto completamente renovado de sinergias y estrategias.
+            </p>
+            <p>
+              Además Teamfight Tactics hará en este Set su migración a cliente propio (separado de League of Legends) y cambiará su motor tecnológico a Unreal Engine, detalles del cambio en el siguiente video:
+            </p>
+    
+            <h2 id="recursos-set-18">Recursos del Set 18</h2>
+            <div class="cards-grid">
+            <a href="/tft/nuevo-set" class="nav-card">
+              <div class="nav-card-icon">✨</div>
+              <div class="nav-card-info">
+                <h3>Nuevo Set TFT</h3>
+                <p>Todo sobre el nuevo set de TFT.</p>
+              </div>
+            </a>
+            <a href="/tft/nuevo-set/consejos-tips-para-mejorar" class="nav-card">
+              <div class="nav-card-icon">💡</div>
+              <div class="nav-card-info">
+                <h3>Consejos del Set</h3>
+                <p>Aprende de estos tips de Jupeson para subir de elo fácilmente en Teamfight Tactics.</p>
+              </div>
+            </a>
+            <a href="/tft/meta-comps-tier-list-teamfight-tactics" class="nav-card">
+              <div class="nav-card-icon">🏆</div>
+              <div class="nav-card-info">
+                <h3>Mejores Composiciones TFT</h3>
+                <p>Consulta el tier list y las mejores configuraciones para subir de rango.</p>
+              </div>
+            </a>
+            <a href="/tft/como-jugar" class="nav-card">
+              <div class="nav-card-icon">📚</div>
+              <div class="nav-card-info">
+                <h3>Cómo Jugar TFT</h3>
+                <p>Aprende cómo jugar TFT con esta guía completa de Teamfight Tactics para principiantes y jugadores que quieren mejorar.</p>
+              </div>
+            </a>
           </div>
-        </a>
-        <a href="/tft/nuevo-set/consejos-tips-para-mejorar" class="nav-card">
-          <div class="nav-card-icon">💡</div>
-          <div class="nav-card-info">
-            <h3>Consejos del Set</h3>
-            <p>Aprende de estos tips de Jupeson para subir de elo fácilmente en Teamfight Tactics.</p>
-          </div>
-        </a>
-        <a href="/tft/meta-comps-tier-list-teamfight-tactics" class="nav-card">
-          <div class="nav-card-icon">🏆</div>
-          <div class="nav-card-info">
-            <h3>Mejores Composiciones TFT</h3>
-            <p>Consulta el tier list y las mejores configuraciones para subir de rango.</p>
-          </div>
-        </a>
-        <a href="/tft/como-jugar" class="nav-card">
-          <div class="nav-card-icon">📚</div>
-          <div class="nav-card-info">
-            <h3>Cómo Jugar TFT</h3>
-            <p>Aprende cómo jugar TFT con esta guía completa de Teamfight Tactics para principiantes y jugadores que quieren mejorar.</p>
-          </div>
-        </a>
-      </div>
-        <!-- Cards o enlaces: -->
-        <!-- Nuevo Set TFT → /tft/nuevo-set -->
-        <!-- Consejos del Set → /tft/nuevo-set/consejos -->
-        <!-- Mejores Composiciones → /tft/meta-comps-tier-list-teamfight-tactics/ -->
-        <!-- Cómo Jugar TFT → /tft/como-jugar -->
-         <!-- <CardList items={[
-      {
-        title: "Mejores Composiciones TFT",
-        description: "Descubre las composiciones más fuertes y versátiles del Set actual, con estrategias detalladas para cada enfrentamiento.",
-        href: "/tft/meta-comps-tier-list-teamfight-tactics/",
-        cta: "Ver Composiciones"
-      },
-      {
-        title: "Guía de Campeones",
-        description: "Conoce estadísticas, habilidades, costes, estadísticas y las mejores composiciones para cada campeón del Set 17.",
-        href: "/tft/campeones/lista-completa-de-campeones-tft-set-17/",
-        cta: "Ver Campeones"
-      },
-      {
-        title: "Mejores Objetos TFT",
-        description: "Domina el sistema de objetos del Set 17 con información completa sobre combinaciones, estadísticas y cuándo construir cada objeto.",
-        href: "/tft/objetos/mejores-objetos-tft-set-17/",
-        cta: "Ver Objetos"
-      }
-    ]} /> -->
-      </articule>
-        
-      <article>
-        <h2>¿Quieres dominar el Set 17?</h2>
-        <p>
-          Estos son solo algunos de los consejos más importantes del Set actual. Si buscas las composiciones más fuertes del meta,
-          los mejores objetos, aumentos recomendados y guías completas actualizadas tras cada parche, consulta nuestra Tier List
-          de TFT y las guías detalladas de cada composición.
-        </p>
-        <a href="/tft/meta-comps-tier-list-teamfight-tactics/" class="cta-button" >
-          Ver Mejores Composiciones del Set 17
-        </a>
-      </article>
-    </div>
+            
+          <h2 id="dominar-tft-set-17">¿Quieres dominar el Set 17?</h2>
+          <p>
+            Estos son solo algunos de los consejos más importantes del Set actual. Si buscas las composiciones más fuertes del meta,
+            los mejores objetos, aumentos recomendados y guías completas actualizadas tras cada parche, consulta nuestra Tier List
+            de TFT y las guías detalladas de cada composición.
+          </p>
+          <a href="/tft/meta-comps-tier-list-teamfight-tactics/" class="cta-button" >
+            Ver Mejores Composiciones del Set 17
+          </a>
+        </div>
+        <div slot="sidebar">
+          <TableOfContent items={SIDEBAR} />
+        </div>
+      </DynamicSection>
 
-    <div slot="bodyContainerRight">
-      <!-- Columna derecha vacía para consistencia -->
-       
-    </div>
   </PaginaBaseMaxWidth>
 </LayoutMaxWidth>
 
@@ -239,7 +225,7 @@ const currentPath = Astro.url.pathname;
   }
 
 
-  @media (max-width: 768px) {
+  @media (max-width: 900px) {
     .cards-grid {
       grid-template-columns: 1fr;
     }

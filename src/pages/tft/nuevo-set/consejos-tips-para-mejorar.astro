@@ -3,6 +3,8 @@ import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
 import { crearJSONSchema } from "@json/schema/crearJSONSchema";
 import PaginaBaseMaxWidth from "@components/TFT/paginas/PaginaBaseMaxWidth.astro";
 import Youtube from "@components/youtube/Youtube.jsx";
+import DynamicSection from "@layouts/sections/DynamicSection.astro";
+import TableOfContent from "@layouts/sidebar/TableOfContent.astro";
 
 const topTitle = "Consejos del Set TFT";
 const lowerTitle = "";
@@ -23,6 +25,43 @@ const baseSchema = JSON.parse(
 const JSONSchema = JSON.stringify(baseSchema);
 
 const currentPath = Astro.url.pathname;
+const SIDEBAR =[
+  {
+    label:"Consejos destacados del Set 17",
+    href:"#consejos-destacados",
+    children:[
+      {
+        label:"Mejor inicio de partida",
+        href:"#mejor-inicio"
+      },
+      {
+        label:"Mejores objetos para tanques",
+        href:"#mejores-objetos-tanques"
+      },
+      {
+        label:"Cómo aprovechar Nova",
+        href:"#aprovechar-nova"
+      },
+      {
+        label:"Secretos de Zed y Shen",
+        href:"#secretos-zed-shen"
+      },
+      {
+        label:"Cómo usar el Huevo Dorado",
+        href:"#usar-huevo-dorado"
+      },
+      {
+        label:"Interacciones especiales del Set",
+        href:"#interacciones-especiales"
+      }
+    ]
+  },
+  {
+    label:"¿Quieres dominar el Set 17?",
+    href:"#dominar-tft"
+  }
+
+]
 ---
 
 <LayoutMaxWidth
@@ -37,77 +76,72 @@ const currentPath = Astro.url.pathname;
     lowerTitle={lowerTitle}
     textInfo={description}
   >
-    <div slot="bodyContainerLeft">
-      <!-- Columna izquierda vacía para consistencia -->
-    </div>
+      <DynamicSection>
+        <div slot="main">
+          <h2 id="consejos-destacados">Consejos destacados del Set 17</h2>
+          <Youtube src="https://www.youtube.com/watch?v=YlivZPdB69I" client:load />
+        
+          <h3 id="mejor-inicio">1. Mejor inicio de partida</h3>
+          <p>
+            Las primeras rondas del Set 17 ofrecen varias formas de generar ventaja antes de llegar al juego medio.
+            Algunas unidades de coste 1 como Aatrox, Briar, Leona, Nasus, Rek'Sai o Talon pueden superar las rondas
+            neutrales en solitario si les equipas un Cinturón de Gigante, permitiéndote conservar más recursos en el banco.
+            Además, Time Breaker recompensa las derrotas con roleos gratuitos, mientras que Primordiano puede generar
+            campeones adicionales para acelerar tu desarrollo durante el early game.
+          </p>
+          <h3 id="mejores-objetos-tanques">2. Mejores objetos para tanques</h3>
+          <p>
+            Los cambios del Set 17 han consolidado algunos objetos defensivos como las opciones más consistentes para la
+            línea frontal. Corona y Juramento del Protector destacan por ofrecer una combinación excelente de resistencia,
+            supervivencia y utilidad en prácticamente cualquier composición. Si buscas construir un tanque sólido capaz de
+            aguantar durante todo el combate, estos objetos deberían estar entre tus prioridades durante la partida.
+          </p>
+          <h3 id="aprovechar-nova">3. Cómo aprovechar Nova</h3>
+          <p>
+            Nova es uno de los rasgos más eficientes del Set 17 gracias a las ventajas que aporta a todo el equipo.
+            Con dos unidades Nova activas, Aatrox puede reducir la armadura y resistencia mágica de los enemigos,
+            eliminando en muchos casos la necesidad de objetos de penetración como Último Suspiro o Rompecascos. Además,
+            Akali proporciona precisión adicional, permitiendo que las habilidades puedan realizar golpes críticos y aumentando
+            significativamente el daño total del equipo.
+          </p>
+          <h3 id="secretos-zed-shen">4. Secretos de Zed y Shen</h3>
+          <p>
+            El Set 17 incluye varias interacciones ocultas entre campeones, y una de las más curiosas involucra a Zed y Shen.
+            Si consigues jugar Zed mediante su aumento correspondiente y colocas a Shen en el mismo tablero, ambos personajes
+            activarán una interacción especial exclusiva donde se enfrentarán entre sí. No afecta directamente a la estrategia,
+            pero es uno de los easter eggs más interesantes del Set.
+          </p>
+          <h3 id="usar-huevo-dorado">5. Cómo usar el Huevo Dorado</h3>
+          <p>
+            El aumento prismático del Huevo Dorado puede ofrecer recompensas extremadamente poderosas si se utiliza correctamente.
+            Una interacción poco conocida permite colocar el huevo en una ranura de clonación cuando dispones de siete Meeples.
+            Tras completar su proceso de incubación, el juego generará una copia adicional del huevo, permitiéndote duplicar las
+            recompensas obtenidas y aumentando considerablemente el valor del aumento.
+          </p>
+          <h3 id="interacciones-especiales">6. Interacciones especiales del Set</h3>
+          <p>
+            El Set 17 incorpora numerosas mecánicas únicas que pueden marcar la diferencia en partidas igualadas.
+            Bardo tiene la capacidad de secuestrar al Dragón Ancestral durante las etapas 5 y 6 para incorporarlo a tu
+            tablero como unidad de apoyo. Fiora mantiene una poderosa pasiva que la convierte en una amenaza prácticamente
+            imbatible en situaciones de uno contra uno. Además, el nuevo sistema de rendición permite que la ronda continúe
+            después de abandonar la partida, evitando errores relacionados con daño recibido, economía o activación de rasgos
+            durante el combate.
+          </p>        
 
-    <div slot="bodyContainerMid" class="bodyContainerMid">
-      <Youtube src="https://www.youtube.com/watch?v=YlivZPdB69I" client:load />
-      <article>
-        <h2>Consejos destacados del Set 17</h2>
-        <h3>1. Mejor inicio de partida</h3>
-        <p>
-          Las primeras rondas del Set 17 ofrecen varias formas de generar ventaja antes de llegar al juego medio.
-          Algunas unidades de coste 1 como Aatrox, Briar, Leona, Nasus, Rek'Sai o Talon pueden superar las rondas
-          neutrales en solitario si les equipas un Cinturón de Gigante, permitiéndote conservar más recursos en el banco.
-          Además, Time Breaker recompensa las derrotas con roleos gratuitos, mientras que Primordiano puede generar
-          campeones adicionales para acelerar tu desarrollo durante el early game.
-        </p>
-        <h3>2. Mejores objetos para tanques</h3>
-        <p>
-          Los cambios del Set 17 han consolidado algunos objetos defensivos como las opciones más consistentes para la
-          línea frontal. Corona y Juramento del Protector destacan por ofrecer una combinación excelente de resistencia,
-          supervivencia y utilidad en prácticamente cualquier composición. Si buscas construir un tanque sólido capaz de
-          aguantar durante todo el combate, estos objetos deberían estar entre tus prioridades durante la partida.
-        </p>
-        <h3>3. Cómo aprovechar Nova</h3>
-        <p>
-          Nova es uno de los rasgos más eficientes del Set 17 gracias a las ventajas que aporta a todo el equipo.
-          Con dos unidades Nova activas, Aatrox puede reducir la armadura y resistencia mágica de los enemigos,
-          eliminando en muchos casos la necesidad de objetos de penetración como Último Suspiro o Rompecascos. Además,
-          Akali proporciona precisión adicional, permitiendo que las habilidades puedan realizar golpes críticos y aumentando
-          significativamente el daño total del equipo.
-        </p>
-        <h3>4. Secretos de Zed y Shen</h3>
-        <p>
-          El Set 17 incluye varias interacciones ocultas entre campeones, y una de las más curiosas involucra a Zed y Shen.
-          Si consigues jugar Zed mediante su aumento correspondiente y colocas a Shen en el mismo tablero, ambos personajes
-          activarán una interacción especial exclusiva donde se enfrentarán entre sí. No afecta directamente a la estrategia,
-          pero es uno de los easter eggs más interesantes del Set.
-        </p>
-        <h3>5. Cómo usar el Huevo Dorado</h3>
-        <p>
-          El aumento prismático del Huevo Dorado puede ofrecer recompensas extremadamente poderosas si se utiliza correctamente.
-          Una interacción poco conocida permite colocar el huevo en una ranura de clonación cuando dispones de siete Meeples.
-          Tras completar su proceso de incubación, el juego generará una copia adicional del huevo, permitiéndote duplicar las
-          recompensas obtenidas y aumentando considerablemente el valor del aumento.
-        </p>
-        <h3>6. Interacciones especiales del Set</h3>
-        <p>
-          El Set 17 incorpora numerosas mecánicas únicas que pueden marcar la diferencia en partidas igualadas.
-          Bardo tiene la capacidad de secuestrar al Dragón Ancestral durante las etapas 5 y 6 para incorporarlo a tu
-          tablero como unidad de apoyo. Fiora mantiene una poderosa pasiva que la convierte en una amenaza prácticamente
-          imbatible en situaciones de uno contra uno. Además, el nuevo sistema de rendición permite que la ronda continúe
-          después de abandonar la partida, evitando errores relacionados con daño recibido, economía o activación de rasgos
-          durante el combate.
-        </p>        
-      </article>
-      <article>
-        <h2>¿Quieres dominar el Set 17?</h2>
-        <p>
-          Estos son solo algunos de los consejos más importantes del Set actual. Si buscas las composiciones más fuertes del meta,
-          los mejores objetos, aumentos recomendados y guías completas actualizadas tras cada parche, consulta nuestra Tier List
-          de TFT y las guías detalladas de cada composición.
-        </p>
-        <a href="/tft/meta-comps-tier-list-teamfight-tactics/" class="cta-button" >
-          Ver Mejores Composiciones del Set 17
-        </a>
-      </article>
-    </div>
-
-    <div slot="bodyContainerRight">
-      <!-- Columna derecha vacía para consistencia -->
-    </div>
+          <h2 id="dominar-tft">¿Quieres dominar el Set 17?</h2>
+          <p>
+            Estos son solo algunos de los consejos más importantes del Set actual. Si buscas las composiciones más fuertes del meta,
+            los mejores objetos, aumentos recomendados y guías completas actualizadas tras cada parche, consulta nuestra Tier List
+            de TFT y las guías detalladas de cada composición.
+          </p>
+          <a href="/tft/meta-comps-tier-list-teamfight-tactics/" class="cta-button" >
+            Ver Mejores Composiciones del Set 17
+          </a>
+        </div>
+        <div slot="sidebar">
+          <TableOfContent items={SIDEBAR} />
+        </div>
+    </DynamicSection>
   </PaginaBaseMaxWidth>
 </LayoutMaxWidth>
 
