@@ -21,7 +21,7 @@ interface Props {
 const { title, JSONSchema, description, keywords, image, canonical, hide=false, snippetImgUrl } = Astro.props;
 
 // Si no se define snippetImgUrl, usamos image o la ruta por defecto del logo en la carpeta public
-const resolvedSnippetImgUrl = snippetImgUrl || image || "/web/GP_logo.png";
+const resolvedSnippetImgUrl = snippetImgUrl || image || "/web/logoGP2026.png";
 const absoluteSnippetImgUrl = new URL(resolvedSnippetImgUrl, Astro.site || "https://guiadeparche.com").href;
 
 console.log({admin})
