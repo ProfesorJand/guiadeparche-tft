@@ -30,7 +30,7 @@ const tftData = await getTFTDataPBE();
 const championsPBE = tftData?.sets?.[setNumberPBE]?.champions || [];
 const targetApiName = comp?.campeonMeta?.apiNameCampeon;
 const champInfo = championsPBE.find(c => c.apiName === targetApiName);
-const resolvedTileIcon = champInfo?.tileIcon || comp?.campeonTierList?.tileIcon;
+const resolvedTileIcon = urlDragon()+champInfo?.tileIcon.replace(".tex",".png").toLowerCase();
 
 // Obtener datos de video
 const getYoutubeId = (url) => {
@@ -48,9 +48,9 @@ const video = {
 ---
 
 <MetaCompsLayout
-  titleMain={comp.nombre}
-  titleHighlight={`TFT Comp: Build, Items y Cómo Jugarla en el Set ${setNumberPBE}`}
-  description={comp.tipSeo ||
+  titleMain={`${comp.urlSEO.toUpperCase()} TFT Comp & Items Build - Set ${setNumberPBE}`}
+  titleHighlight={``}
+  description={comp.tipSEO ||
     `Guía completa paso a paso de la composición ${comp.titulo} para el parche actual de TFT.`}
   lastUpdate={`Actualizado: Parche ${numberOfVersion.MetaCompVersionPBE || "17.3"}`}
   video={video}
