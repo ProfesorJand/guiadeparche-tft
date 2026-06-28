@@ -32,10 +32,11 @@ const tieneSidebar = Astro.slots.has("sidebar");
   width: 100%;
   max-width: 1200px;
   box-sizing: border-box;
+  flex-wrap: wrap;
 }
 .mainContent{
   order:1;
-  width: 75%;
+  width: calc((100% - (1rem)) / 10 * 7.5 );
   display: flex;
   flex-direction: column;
 }
@@ -43,7 +44,7 @@ aside{
   order:2;
   display: flex;
   flex-direction: column;
-  width: 25%;
+  width: calc((100% - (1rem)) / 10 * 2.5 );
   position: sticky;
   top: var(--height-header);
   align-self: flex-start;
@@ -54,5 +55,14 @@ aside{
   border-radius: .5rem;
   border: 1px solid rgba(255, 255, 0, .247);
   box-sizing: border-box;
+}
+@media only screen and (max-width: 900px) {
+  .mainContent{
+    width: 100%;
+    order:1;
+  }
+  aside{
+    display:none;
+  }
 }
 </style>
