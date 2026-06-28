@@ -146,9 +146,9 @@ export async function getMetadata() {
 
   if (typeof window === 'undefined') {
     try {
-      const filePath = path.join(process.cwd(), 'src/data/metadata.json');
-      const fileContent = await fs.readFile(filePath, 'utf-8');
-      metadataCache = JSON.parse(fileContent);
+      const fileContent = await fetch('https://api.guiadeparche.com/tft/composMetaPBETest.json');
+      const data = await fileContent.json();
+      metadataCache = data;
       return metadataCache;
     } catch (err) {
       console.warn("Could not read local metadata.json, using defaults...", err.message);
