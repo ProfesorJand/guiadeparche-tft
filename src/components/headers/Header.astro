@@ -1,6 +1,9 @@
 ---
 import Menu from './Menu.jsx';
 import UserMenu from './UserMenu.jsx';
+import { getComposMetaPBE } from "@lib/cache/tftCache.js";
+
+const allCompsPBE = await getComposMetaPBE()
 
 const menus = [
 
@@ -9,11 +12,27 @@ const menus = [
     link:"/tft/meta-comps-tier-list-teamfight-tactics/",
     linkPrincipal:"tft",
     img:"/tft/assets/t-logo.png",
-    // submenus:[
-    //   {nombre:"Patch Dates",link:"/tft/patch-dates/"},
-    //   {nombre:"Tier List",link:"/tft/items/"},
-    //   {nombre:"Items",link:"/tft/tier-list/"},
-    // ]
+    submenus:[
+      {
+        nombre:"TFT Meta Comps",
+        link:"/tft/meta-comps-tier-list-teamfight-tactics/",
+        submenus:allCompsPBE.map((comp)=>{
+          return {
+            nombre:comp.nombre,
+            link:`/tft/meta-comps-tier-list-teamfight-tactics/${comp.urlSEO}/`,
+          }
+        })
+      },
+      {
+        nombre:"Aprender TFT",
+        link:"/tft/como-jugar/"},
+      {
+        nombre:"Set 17",
+        link:"/tft/nuevo-set/"},
+      {
+        nombre:"Set 18",
+        link:"/tft/nuevo-set/cuando-sale/"},
+    ]
   },
   {
     nombre:"League of Legends",

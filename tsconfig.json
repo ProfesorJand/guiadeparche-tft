@@ -12,6 +12,7 @@
       "@json/*":["src/json/*"],
       "@functions/*":["src/functions/*"],
       "@utils/*":["src/utils/*"],
+      "@lib/*":["src/lib/*"],
       "@spotify-data":["spotify-data.json"],
       "@spotify-data-global":["spotify-data-global.json"],
       "@spotify-data-global-music":["spotify-data-global-music.json"],
