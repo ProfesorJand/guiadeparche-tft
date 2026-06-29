@@ -3,36 +3,42 @@ import Menu from './Menu.jsx';
 import UserMenu from './UserMenu.jsx';
 import { getComposMetaPBE } from "@lib/cache/tftCache.js";
 
-const allCompsPBE = await getComposMetaPBE()
+//const allCompsPBE = await getComposMetaPBE();
+const menusIzquierda = [
+  {
+    nombre:"TFT Meta Comps",
+    link:"/tft/meta-comps-tier-list-teamfight-tactics/",
+    linkPrincipal:"tft",
+    // submenus:allCompsPBE.map((comp)=>{
+    //   return {
+    //     nombre:comp.nombre,
+    //     link:`/tft/meta-comps-tier-list-teamfight-tactics/${comp.urlSEO}/`,
+    //   }
+    // })
+  },
+  {
+    nombre:"Aprender TFT",
+    link:"/tft/como-jugar/",
+    linkPrincipal:"tft"
+  },
+  {
+    nombre:"Set 17",
+    link:"/tft/nuevo-set/",
+    linkPrincipal:"tft"
+  },
+  {
+    nombre:"Set 18",
+    link:"/tft/nuevo-set/cuando-sale/",
+    linkPrincipal:"tft"
+  },
+]
 
 const menus = [
-
   {
     nombre:"Teamfight Tactics",
     link:"/tft/meta-comps-tier-list-teamfight-tactics/",
     linkPrincipal:"tft",
     img:"/tft/assets/t-logo.png",
-    submenus:[
-      {
-        nombre:"TFT Meta Comps",
-        link:"/tft/meta-comps-tier-list-teamfight-tactics/",
-        submenus:allCompsPBE.map((comp)=>{
-          return {
-            nombre:comp.nombre,
-            link:`/tft/meta-comps-tier-list-teamfight-tactics/${comp.urlSEO}/`,
-          }
-        })
-      },
-      {
-        nombre:"Aprender TFT",
-        link:"/tft/como-jugar/"},
-      {
-        nombre:"Set 17",
-        link:"/tft/nuevo-set/"},
-      {
-        nombre:"Set 18",
-        link:"/tft/nuevo-set/cuando-sale/"},
-    ]
   },
   {
     nombre:"League of Legends",
@@ -110,7 +116,7 @@ const menus = [
 <nav>
     <div class="menuContainer">
       {
-        menus.map((menu) => {
+        menusIzquierda.map((menu) => {
           return <Menu linkPrincipal={menu.linkPrincipal} link={menu.link} nombre={menu.nombre} submenus={menu?.submenus} img={menu.img} onlyAdmin={menu.onlyAdmin} client:only="react" />;
         })
       }
@@ -130,7 +136,7 @@ const menus = [
           </svg>
       </div>
       {
-        menus.map((menu) => {
+        menusIzquierda.map((menu) => {
           return <Menu linkPrincipal={menu.linkPrincipal} link={menu.link} nombre={menu.nombre} img={menu.img}  />;
         })
       }
@@ -167,9 +173,9 @@ const menus = [
     height: 100vh;
     flex-direction: column;
     z-index: 99;
-    background-color: rgb(var(--bg-primary-rgb) / 0.8);
+    background-color: var(--bg-main-secondary);
     padding: 0px;
-    backdrop-filter: blur(80%);
+    /* backdrop-filter: blur(80%); */
   }
   .menuMobile{
     display:flex;

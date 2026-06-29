@@ -79,7 +79,7 @@ const absoluteSnippetImgUrl = new URL(resolvedSnippetImgUrl, Astro.site || "http
         }
       })();
     </script>
-    <link rel="icon" type="image/webp" href={"/web/logoGP2026.webp"} />
+    <link rel="icon" type="image/webp" href={"/web/logoGPPestana2026.webp"} />
     <!-- <link rel="icon" type="image/png" href={"/web/logo-gp-2026.png"} /> -->
     <meta name="generator" content={Astro.generator} />
     <link rel="sitemap" href="/sitemap-index.xml" />
@@ -100,10 +100,12 @@ const absoluteSnippetImgUrl = new URL(resolvedSnippetImgUrl, Astro.site || "http
   <body>
     <PageLoader client:only="react" />
     <div class="bodyLayout">
-      <header class="bodyHeader">
-        <Logo></Logo>
-        <Header transition:persist/>
-      </header> 
+      <div class="headerContainer">
+        <header class="bodyHeader">
+          <Logo></Logo>
+          <Header transition:persist/>
+        </header> 
+      </div>
       <main class="bodyMain">
           <slot></slot>
       </main>
@@ -299,19 +301,20 @@ const absoluteSnippetImgUrl = new URL(resolvedSnippetImgUrl, Astro.site || "http
       width: 100%;
       flex-direction: column;
     }
+    .headerContainer{
+      display: flex;
+      flex-direction: row;
+      height: var(--height-header);
+      position: sticky;
+      background-color: #191f32;
+      z-index:999999;
+      top:0;  
+      width: 100%;
+    }
     .bodyHeader{
       display: flex;
-      position: sticky;
-      z-index: 9;
-      top:0;
-      width: 100%;
-      max-width: 100%;
-      height: var(--height-header);
-      flex-direction: row;
-      background-color: #191f32;
-      /* background-image: radial-gradient(circle, #000000 1px, transparent 1px);
-      background-size: 4px 4px;
-      opacity: 1; */
+      max-width: 1200px;
+      width:100%;
     }
     .bodyInfo{
       display: flex;
@@ -376,21 +379,20 @@ const absoluteSnippetImgUrl = new URL(resolvedSnippetImgUrl, Astro.site || "http
       box-sizing: border-box;
       /* padding-bottom: var(--height-footer); */
     }
+    .headerContainer{
+      display: flex;
+      flex-direction: row;
+      height: var(--height-header);
+      position: sticky;
+      background-color: #191f32;
+      z-index:999999;
+      top:0;  
+      width: 100%;
+    }
     .bodyHeader{
       display: flex;
-      position: sticky;
-      z-index: 9;
-      top:0;
-      width: 100%;
-      max-width: 100%;
-      height: var(--height-header);
-      flex-direction: row;
-      background-color: #191f32;
-      /* background-image: radial-gradient(circle, #000000 1px, transparent 1px);
-      background-size: 4px 4px; */
-      opacity: 1;
-      padding: 0 2rem;
-      box-sizing: border-box;
+      max-width: 1200px;
+      width:100%;
     }
     .bodyInfo{
       display: flex;
