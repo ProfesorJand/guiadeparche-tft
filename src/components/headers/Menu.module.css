@@ -27,7 +27,7 @@
   position: absolute;
   top: 100%;
   left: 0;
-  background-color: var(--bg-secondary);
+  background-color: var(--bg-main-secondary);
   padding: 0;
   margin: 0;
   list-style: none;
@@ -37,19 +37,32 @@
   min-width: 200px;
 }
 
-.menuContainer:hover .submenu {
+.menuContainer:hover > .submenu {
   display: block;
 }
 
-.submenuItem {
+.submenuLi {
+  position: relative;
+  border-bottom: 1px solid #ffffff21;
+}
+
+.submenuLi:hover > .submenu {
   display: block;
+  top: 0;
+  left: 100%;
+}
+
+.submenuItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 0.75rem 1rem;
   text-decoration: none;
   color: var(--color-secondary);
 }
 
 .submenuItem:hover {
-  background-color: var(--bg-tertiary);
+  background-color: var(--bg-primary-solid);
 }
 
 .submenuItem.active {
@@ -62,4 +75,31 @@
   width: auto;
   display: block;
   margin: 0 auto;
+}
+
+.arrow {
+  font-size: 0.6em;
+  margin-left: 0.5rem;
+  opacity: 0.7;
+}
+
+.scrollableSubmenu {
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+/* Custom Scrollbar for Webkit */
+.scrollableSubmenu::-webkit-scrollbar {
+  width: 6px;
+}
+.scrollableSubmenu::-webkit-scrollbar-track {
+  background: var(--bg-main-secondary);
+  border-radius: 0 8px 8px 0;
+}
+.scrollableSubmenu::-webkit-scrollbar-thumb {
+  background-color: var(--bg-purple-primary, #321139);
+  border-radius: 4px;
+}
+.scrollableSubmenu::-webkit-scrollbar-thumb:hover {
+  background-color: var(--bg-purple-hover-primary, #4d1657);
 }
