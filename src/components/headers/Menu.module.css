@@ -2,7 +2,8 @@
   position: relative;
   display: flex;
   height: var(--height-header);
-  aspect-ratio: 1 / 1;
+  align-items: center;
+  /* aspect-ratio: 1 / 1; */
 }
 
 .menuItem {
@@ -86,6 +87,8 @@
 .scrollableSubmenu {
   max-height: 60vh;
   overflow-y: auto;
+  scrollbar-gutter: stable;
+
 }
 
 /* Custom Scrollbar for Webkit */

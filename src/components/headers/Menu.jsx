@@ -1,7 +1,7 @@
 import style from "./Menu.module.css";
 import { useEffect, useState } from 'react';
 
-const SubmenuList = ({ items, currentPath, level = 1 }) => {
+const SubmenuList = ({ items, currentPath, level = 2 }) => {
   if (!items || items.length === 0) return null;
   return (
     <ul className={[style.submenu, level > 1 ? style.scrollableSubmenu : ''].join(' ').trim()}>

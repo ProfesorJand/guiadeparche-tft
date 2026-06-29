@@ -78,6 +78,8 @@ const baseSchema = JSON.parse(
   crearJSONSchema({
     title: titleMain + " " + titleHighlight,
     description: description,
+    imgPost: snippetImgUrl,
+    thumbnail: snippetImgUrl,
   }),
 );
 const JSONSchema = JSON.stringify(baseSchema);
@@ -387,9 +389,10 @@ const tableOfContentData = [
 
 <style>
   .header-section {
-    width: calc(100% * 4 / 6);
+    width: 100%;
     align-self: center;
     margin-bottom: 12px;
+    max-width:1200px;
   }
   .table-content {
     display: flex;
