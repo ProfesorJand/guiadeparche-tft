@@ -191,7 +191,7 @@ export const urlDragon = () => {
 
 
 // version: latest / pbe ---- idioma: en / es --- pais: mx /es /gb /us
-export const loadDataTFTFromAPI = ({ version = versionTFT.get(), idioma = "en", pais = "us" }) => {
+export const loadDataTFTFromAPI = ({ version = versionTFT.get(), idioma = "es", pais = "ar" }) => {
   task(async () => {
     try {
       const urlDragon = `https://raw.communitydragon.org/${version}/cdragon/tft/${idioma}_${pais}.json`
@@ -486,7 +486,6 @@ export const fetchAndSortComps = async (url) => {
       dataTFTLastUpdate.set(`${dia}/${mes}/${año}`);
     }
     metaCompsTFT.set(allSorted);
-    console.log("hace el fetch al PBE TEST")
     await composMetaPBETest();
     return allSorted;
   } catch (e) {
@@ -496,7 +495,6 @@ export const fetchAndSortComps = async (url) => {
 }
 
 export const addConstantesTFT = async ({ key, value }) => {
-  console.log("addConstantesTFT")
   const response = await fetch(constantesPHP,
     {
       method: "POST",
