@@ -79,7 +79,13 @@ export { datosTFTIngles, championsTFTIngles, itemsDataIngles };
 // export const meta = await fetchMeta.json();
 let meta = {};
 try {
-  const fetchMeta = await fetch(metaTFTComposicionesJSON, {cache:"reload"});
+  const fetchMeta = await fetch(metaTFTComposicionesJSON, {
+    cache: "reload",
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+      'Accept': 'application/json, text/plain, */*'
+    }
+  });
   meta = await fetchMeta.json();
 } catch (e) {
   console.error("Error loading meta in constantesLatest.js, using default:", e);

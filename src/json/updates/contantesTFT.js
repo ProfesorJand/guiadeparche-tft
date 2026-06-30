@@ -99,10 +99,18 @@ export { traitsTFTIngles, itemsDataIngles };
 // export const meta = await fetchMeta.json();
 let meta = {};
 try {
-  const fetchMeta = await fetch(metaTFTComposicionesJSON, {cache:"reload"});
+  const fetchMeta = await fetch(metaTFTComposicionesJSON, {
+    cache: "reload",
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+      'Accept': 'application/json, text/plain, */*'
+    }
+  });
+  if (!fetchMeta.ok) throw new Error(`HTTP Error ${fetchMeta.status} fetching ${metaTFTComposicionesJSON}`);
   meta = await fetchMeta.json();
 } catch (e) {
-  console.error("Error loading meta in contantesTFT.js, using default:", e);
+  console.error("Error loading meta in contantesTFT.js, cancelando el build:", e);
+  throw e;
 }
 export { meta };
 
