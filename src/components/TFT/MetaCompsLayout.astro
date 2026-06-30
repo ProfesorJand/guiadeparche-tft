@@ -1,7 +1,7 @@
 ---
 import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
 import CardsCompos from "@components/TFT/CardsCompos";
-import { getConstantes, getMetadata } from "src/lib/cache/tftCache.js";
+import { getConstantes, getMetadata, getLastUpdateDate } from "src/lib/cache/tftCache.js";
 import { setNumberPBE } from "@stores/dataTFT";
 import { crearJSONSchema } from "src/json/schema/crearJSONSchema";
 import RegistrarseBTN from "./RegistrarseBTN.jsx";
@@ -12,8 +12,7 @@ import DynamicSection from "@layouts/sections/DynamicSection.astro";
 const constantes = await getConstantes();
 const metadata = await getMetadata();
 
-const lastUpdateComps = metadata.lastUpdatePBE;
-
+const lastUpdateComps = await getLastUpdateDate();
 interface Props {
   titleMain?: string;
   titleHighlight?: string;
@@ -158,19 +157,20 @@ const tableOfContentData = [
       </h1>
       <p>{description}</p>
       <div class="two-columns space-between">
-        <div class="info">
+        {!isIndividual &&
+          <div class="info">
           <p>
             Última actualización: {lastUpdate}
-            <!-- por
-              <a
-                href="https://www.twitch.tv/jupeson"
-                target="_blank">Jupeson</a> y Xpirit -->
           </p>
         </div>
+        }
+        
+        
         <RegistrarseBTN
-          text="¿Quieres probar el TFT Master Plan antes que nadie?"
-          buttonText="Pre-regístrate gratis →"
+          text={isIndividual ? "¿Quieres ver más composiciones de TFT?" : "¿Quieres probar el TFT Master Plan antes que nadie?"}
+          buttonText={isIndividual ? "Meta Comps TFT →" : "Pre-regístrate gratis →"}
           layout="row"
+          link={isIndividual ? "/tft/meta-comps-tier-list-teamfight-tactics/" : "/login"}
         />
       </div>
     </div>
