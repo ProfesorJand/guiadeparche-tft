@@ -276,12 +276,14 @@
     flex-wrap: nowrap;
     align-items: center;
     height:stretch;
+    justify-content: center;
+
     
 }
 
 .carouselItem{
   display:flex;
-  flex: 1;
+  width: calc((100% - ((5px + ( 7.5cqw)) * 3)) / 4 );
   min-width: 0;
   position:relative;
 }
