@@ -1,70 +1,42 @@
 import { SanitizedComponent, replaceVariables } from "./functions.jsx";
-import TooltipPortal from "./TooltipPortal";
-import { useEffect, useRef, useState } from "react";
-import style from "./tooltips.module.css"
-const TooltipItem = ({desc = null, effects, name, nombre, isVisible}) => {
-  const triggerRef = useRef(null);
-  const tooltipRef = useRef(null);
-  const [pos, setPos] = useState({ top: 0, left: 0 });
+import style from "./tooltips.module.css";
+import { urlDragon, dataTFTAllItems } from "@stores/dataTFT.js";
+import { useStore } from "@nanostores/react";
 
-  useEffect(() => {
-    if (!isVisible || !triggerRef.current || !tooltipRef.current) return;
-
-    const triggerRect = triggerRef.current.getBoundingClientRect();
-    const tooltipRect = tooltipRef.current.getBoundingClientRect();
-
-    let left = triggerRect.left;
-    let top = triggerRect.bottom + 6;
-
-    const viewportWidth = document.documentElement.clientWidth;
-    const margin = 8;
-
-    // 👉 si se sale a la derecha
-    if (left + tooltipRect.width + margin > viewportWidth) {
-      left = triggerRect.right - tooltipRect.width;
-    }
-
-    // 👉 clamp final
-    if (left < margin) left = margin;
-
-    setPos({ top, left });
-  }, [isVisible]);
-
+const TooltipItem = ({desc = null, effects, name, nombre, icon, composition}) => {
+  const $dataTFTAllItems = useStore(dataTFTAllItems);
   return (
-    <>
-      {/* elemento "ancla" invisible */}
-      <span ref={triggerRef} />
-
-      {isVisible && (
-        <TooltipPortal>
-          <div
-            ref={tooltipRef}
-            className={`${style.tooltip} ${style.visible}`}
-            style={{
-              position: "fixed",
-              top: `${pos.top}px`,
-              left: `${pos.left}px`,
-            }}
-          >
-            <div className={style.tooltipTitle}>
-              {name || nombre}
+    <div className={style.tooltipContent}>
+      <div className={style.tooltipImageContainer}>
+        <img className={style.tooltipImage} src={urlDragon() + icon.replace(".tex",".png").toLowerCase()} alt={name} />
+        {
+          composition.length > 0 && 
+          <div className={style.compositionItemContainer}>
+            {composition.map((item, i) => (
+              <img key={i} className={style.tooltipImage} src={urlDragon() + $dataTFTAllItems.find((data)=>data.apiName === item).icon.replace(".tex",".png").toLowerCase()} alt={item} />
+            ))}
             </div>
+        }
+      </div>
+      
+      <div className={style.tooltipDataContainer}>
+      <div className={style.tooltipTitle}>
+        {name || nombre}
+      </div>
 
-            <SanitizedComponent
-              htmlContent={replaceVariables(desc, effects)}
-            />
+      <SanitizedComponent
+        htmlContent={replaceVariables(desc, effects)}
+        />
 
-            {effects &&
-              Object.keys(effects).map((variable, i) => (
-                <div key={i} className={style.effects}>
-                  <span className={style.variableName}>{variable}</span>:{" "}
-                  <span>{effects[variable]}</span>
-                </div>
-              ))}
+      {/* {effects &&
+        Object.keys(effects).map((variable, i) => (
+          <div key={i} className={style.effects}>
+          <span className={style.variableName}>{variable}</span>:{" "}
+          <span>{effects[variable]}</span>
           </div>
-        </TooltipPortal>
-      )}
-    </>
+          ))} */}
+      </div>
+    </div>
   );
 };
 

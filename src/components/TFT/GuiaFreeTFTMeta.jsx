@@ -4,14 +4,17 @@ import Sinergias from "@components/main/Admin/Sinergias";
 import { useState, useRef, useEffect } from "react";
 import { useStore } from "@nanostores/react";
 import NuevoBuilderTFT from "./NuevoBuilderTFT";
-
-const GuiaFreeTFTMeta = ({comp, isInfografia=false, edit=false}) => {
+import Tooltip from "@components/tooltips";
+const GuiaFreeTFTMeta = ({comp, isInfografia=false, edit=false, isIndividual=false}) => {
   const [hoveredAugment, setHoveredAugment] = useState(null);
   const augmentRef = useRef(null);
   const tooltipRef = useRef(null);
   const allChampionsTFT = useStore(dataTFTChampions);
   const allItemsTFT = useStore(dataTFTAllItems);
+  const [isMounted, setIsMounted] = useState(false);
+
   useEffect(() => {
+    setIsMounted(true);
     function handleClickOutside(event) {
       // Si se hace clic fuera del contenedor de aumentos Y fuera del tooltip, limpiamos el estado
       if (
@@ -32,10 +35,13 @@ const GuiaFreeTFTMeta = ({comp, isInfografia=false, edit=false}) => {
     };
   }, []);
 
+  const safeChampionsTFT = isMounted ? allChampionsTFT : [];
+  const safeItemsTFT = isMounted ? allItemsTFT : [];
+
   return(
     <div className={style.container}>
-      <Header1 comp={comp} allChampionsTFT={allChampionsTFT} allItemsTFT={allItemsTFT} ></Header1>
-      <Header2 comp={comp} setHoveredAugment={setHoveredAugment} augmentRef={augmentRef} allChampionsTFT={allChampionsTFT} allItemsTFT={allItemsTFT} ></Header2>
+      <Header1 comp={comp} allChampionsTFT={safeChampionsTFT} allItemsTFT={safeItemsTFT} ></Header1>
+      <Header2 comp={comp} setHoveredAugment={setHoveredAugment} augmentRef={augmentRef} allChampionsTFT={safeChampionsTFT} allItemsTFT={safeItemsTFT} ></Header2>
       {/* <FooterTooltip augment={hoveredAugment} tooltipRef={tooltipRef} edit={edit} isInfografia={isInfografia}></FooterTooltip> */}
       <FooterBuild comp={comp}></FooterBuild>
       <FooterLogos edit={edit} ></FooterLogos>
@@ -149,7 +155,9 @@ const Header1 = ({comp, allChampionsTFT, allItemsTFT})=>{
                 );
             })()}
             <a href="/login" target="_blank" className={style.condicionOpEarly}>
+              <Tooltip type="default" text="Master Plan">
               <img src="/web/logoGPMP.webp" alt="Master Plan" className={style.imgMasterPlan}/>
+              </Tooltip>
             </a>
           </div>
       </div>
@@ -162,11 +170,13 @@ const Header1 = ({comp, allChampionsTFT, allItemsTFT})=>{
               const itemData = allItemsTFT.find(i => i.apiName === itemName);
               return itemData ? [
                 <div key={`itemPrio-${index}`} className={style.carouselItem}>
-                  <img
-                    className={style.bigItemImg}
-                    src={itemData?.icon?.includes("http") ? itemData?.icon : urlDragon() + itemData?.icon?.toLowerCase().replace(".tex", ".png")}
-                    alt={itemData?.name}
-                  />
+                  <Tooltip type="item" item={itemData}>
+                    <img
+                      className={style.bigItemImg}
+                      src={itemData?.icon?.includes("http") ? itemData?.icon : urlDragon() + itemData?.icon?.toLowerCase().replace(".tex", ".png")}
+                      alt={itemData?.name}
+                      />
+                  </Tooltip>
                 </div>,
                 index < itemsPrio.length - 1 ? <span key={`itemPrio-gt-${index}`} className={style.mayorQue}>{'>'}</span> : null
               ] : null;
@@ -224,7 +234,9 @@ const Header2 = ({comp, setHoveredAugment, augmentRef,  allChampionsTFT, allItem
                   if(extras.includes(augmentRaw?.apiNameGrande)){
                     return (
                       <div className={style.augmentContainer} key={index}>
-                        <img className={style.augmentImg} src={`/tft/assets/${augmentRaw.apiNameGrande.replace(" ","")}.webp`} alt={augmentRaw.apiNameGrande}/>
+                        <Tooltip type="default" text={augmentRaw?.apiNameGrande}>
+                          <img className={style.augmentImg} src={`/tft/assets/${augmentRaw.apiNameGrande.replace(" ","")}.webp`} alt={augmentRaw.apiNameGrande}/>
+                        </Tooltip>
                       </div>
                     )
                   }
@@ -238,24 +250,29 @@ const Header2 = ({comp, setHoveredAugment, augmentRef,  allChampionsTFT, allItem
                     onMouseLeave={handleMouseLeave}
                     onClick={() => handleClick(augment)}
                   >
-                    <img 
-                      className={style.augmentImg} 
-                      src={
-                        urlDragon() +
-                        augment?.icon
-                        .toLowerCase()
-                        .replace(".tex", ".png")
-                        .replace("/augments/hexcore/","/augments/choiceui/")
-                      } 
-                      alt={augment?.name}
-                    />
+                    <Tooltip type="item" item={augment}>
+
+                      <img 
+                        className={style.augmentImg} 
+                        src={
+                          urlDragon() +
+                          augment?.icon
+                          .toLowerCase()
+                          .replace(".tex", ".png")
+                          .replace("/augments/hexcore/","/augments/choiceui/")
+                        } 
+                        alt={augment?.name}
+                        />
+                    </Tooltip>
                   </div>
                 )
               })
             }
-            <a href="/login" target="_blank"className={style.augmentContainer}>
-              <img src={"/web/logoGPMP.webp"} className={style.imgMasterPlan}/>
-            </a>
+              <a href="/login" target="_blank"className={style.augmentContainer}>
+            <Tooltip type="default" text="Master Plan">
+                <img src={"/web/logoGPMP.webp"} className={style.imgMasterPlan}/>
+            </Tooltip>
+              </a>
           </div>
         </div>
         <div className={`${style.borderBlock} ${style.blockColumn}`}>
@@ -295,7 +312,9 @@ const Header2 = ({comp, setHoveredAugment, augmentRef,  allChampionsTFT, allItem
               );
             })()}
             <a href="/login" target="_blank" className={style.containerOp}>
+              <Tooltip type="default" text="Master Plan">
               <img src="/web/logoGPMP.webp" alt="Master Plan" className={style.imgMasterPlan}/>
+              </Tooltip>
             </a>
           </div>
         </div>
@@ -303,7 +322,9 @@ const Header2 = ({comp, setHoveredAugment, augmentRef,  allChampionsTFT, allItem
         <div className={`${style.borderBlock} ${style.blockRow}`}>
           <h4>Plan B</h4>
           <a href="/login" target="_blank" className={style.planBContainer}>
+            <Tooltip type="default" text="Master Plan">
             <img src="/web/logoGPMP.webp" alt="Master Plan" className={style.imgMasterPlan}/>
+            </Tooltip>
           </a>
         </div>
       </div>
@@ -447,6 +468,15 @@ const FooterTooltip = ({augment, tooltipRef, edit=false, isInfografia=false})=>{
 const FooterBuild = ({comp})=>{
   const allChampionsTFT = useStore(dataTFTChampions);
   const allItemsTFT = useStore(dataTFTAllItems);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const safeChampionsTFT = isMounted ? allChampionsTFT : [];
+  const safeItemsTFT = isMounted ? allItemsTFT : [];
+
   return (
     <div className={`${style.containerFooterBuild} ${style.borderBlock} ${style.blockColumn}`}>
       <h4>Mejores Builds/Objetos para Carry y Tanque</h4>
@@ -454,11 +484,11 @@ const FooterBuild = ({comp})=>{
       {
         comp?.bestBuild?.length > 0 &&
         comp?.bestBuild.map((data,index)=>{
-          const buildChampionData = allChampionsTFT.find(c => c.apiName === data?.apiNameCampeon);
+          const buildChampionData = safeChampionsTFT.find(c => c.apiName === data?.apiNameCampeon);
           
           // Flatten first arrays of BIS and Special BIS to render in the Footer
-          const bisItemsData = (data.apiNameItemsBisDelCampeon?.[0] || []).slice(0, 3).map(itemName => allItemsTFT.find(i => i.apiName === itemName)).filter(Boolean);
-          const specialBisItemsData = (data.apiNameItemsSpecialBisDelCampeon?.[0] || []).slice(0, 3).map(itemName => allItemsTFT.find(i => i.apiName === itemName)).filter(Boolean);
+          const bisItemsData = (data.apiNameItemsBisDelCampeon?.[0] || []).slice(0, 3).map(itemName => safeItemsTFT.find(i => i.apiName === itemName)).filter(Boolean);
+          const specialBisItemsData = (data.apiNameItemsSpecialBisDelCampeon?.[0] || []).slice(0, 3).map(itemName => safeItemsTFT.find(i => i.apiName === itemName)).filter(Boolean);
 
           return (
             <div key={index} className={style.containerBuild}>
@@ -475,23 +505,26 @@ const FooterBuild = ({comp})=>{
                     <div className={style.containerBuildItemImg}>
                       {/* {bisItemsData.length > 0 && <span className={style.buildItemText}>BIS</span>} */}
                       {bisItemsData.map((item, idx) => (
+                        <Tooltip type="item" item={item} key={`build-item-bis-${idx}`}>
+
                         <img 
-                          key={`build-item-bis-${idx}`} 
                           src={urlDragon() + item?.icon?.toLowerCase().replace(".tex", ".png")} 
                           alt={item?.name} 
                           className={style.buildItemImg}
-                        />
+                          />
+                        </Tooltip>
                       ))}
                     </div>
                     <div className={style.containerBuildItemImg}>
                       {/* {specialBisItemsData.length > 0 && <span className={style.buildItemText}>BIS ESPECIAL</span>} */}
                       {specialBisItemsData.map((item, idx) => (
+                        <Tooltip type="item" item={item} key={`build-item-special-${idx}`}>
                           <img 
-                            key={`build-item-special-${idx}`} 
                             src={urlDragon() + item?.icon?.toLowerCase().replace(".tex", ".png")} 
                             alt={item?.name} 
                             className={style.buildItemImg}
-                          />
+                            />
+                          </Tooltip>
                         ))}
                     </div>
                   </div>
@@ -502,7 +535,9 @@ const FooterBuild = ({comp})=>{
         })
       }
       <a href="/login" target="_blank" className={`${style.containerVerMasBuilds} ${style.containerBuild}`}>
+        <Tooltip type="default" text="Master Plan">
         <img src="/web/logoGPMP.webp" alt="Logo Guiadeparche Master Plan" className={`${style.imgMasterPlan}`} />
+        </Tooltip>
       </a>
       </div>
     </div>

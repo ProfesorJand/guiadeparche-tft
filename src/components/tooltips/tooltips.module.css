@@ -1,9 +1,10 @@
 /* Tooltip oculto por defecto */
 .tooltip {
-  background-color: var(--bg-main);
+  background-color: var(--bg-main-secondary);
   border: 1px solid grey;
   padding: 5px;
-  min-width: 350px;
+  border-radius: 5px;
+  min-width: 250px;
   max-width: 420px;
   z-index: 99999;
   pointer-events: none;
@@ -27,8 +28,8 @@
 
 
 .tooltipTitle{
-  font-size: smaller;
-  color:gold
+  color:rgb(255, 255, 255);
+  font-weight: bold;
 }
 
 .tooltipDesc{
@@ -42,6 +43,26 @@
 .variableName{
   color:gold
 }
+.tooltipContent{
+  display:flex;
+  flex-direction: row;
+  gap:5px;
+}
+.tooltipDataContainer{
+  display: flex;
+  width: calc(100% - 40px);
+  flex-direction: column;
+  gap: 5px; 
+}
+.compositionItemContainer{
+  display:flex;
+  position:relative;
+  height :20px;
+}
+.compositionItemContainer .tooltipImage{
+  width: 50%;
+  height: 100%;
+}
 
 @media only screen and (max-width:900px) {
   .tooltip{
@@ -54,4 +75,77 @@
   word-break: break-word;        /* fallback */
   overflow-wrap: anywhere;       /* moderno, ideal */
   word-wrap: break-word;         /* Safari viejo */
+}
+
+/* Champion Description Tags */
+.magicDamage { color: #3b82f6; }
+.physicalDamage { color: #f97316; }
+.trueDamage { color: #f8fafc; }
+.scaleHealth { color: #22c55e; }
+.healing { color: #22c55e; }
+.scaleAP { color: #3b82f6; }
+.scaleAD { color: #f97316; }
+.scaleArmor { color: #eab308; }
+.scaleMR { color: #c084fc; }
+.scaleMana { color: #60a5fa; }
+.scaleAS { color: #fbbf24; }
+
+/* Tooltip Campeon Styles */
+.tooltipHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 8px;
+}
+
+
+.tooltipImageContainer{
+  display:flex;
+  align-items: center;
+  width:40px;
+  flex-direction: column;
+}
+
+.tooltipImage{
+  width: 100%;
+  border-radius: 4px;
+}
+
+.abilityContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.abilityHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.abilityIcon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid gold;
+}
+
+.abilityName {
+  font-weight: bold;
+  color: gold;
+  font-size: 0.95rem;
+}
+
+.statIcon {
+  height: 1.1em;
+  vertical-align: text-bottom;
+  display: inline-block;
+  margin: 0 0.1em;
+}
+
+.defaultContent{
+  min-width:max-content
 }

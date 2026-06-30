@@ -24,6 +24,7 @@ interface Props {
   restComps: any[];
   activeId?: string;
   snippetImgUrl: string;
+  isIndividual:boolean;
 }
 
 const {
@@ -36,6 +37,7 @@ const {
   restComps = [],
   activeId = null,
   snippetImgUrl,
+  isIndividual=false
 } = Astro.props;
 
 const tiersInfo = [
@@ -71,9 +73,11 @@ const tiersInfo = [
   // },
 ];
 
-const keywords =
+let keywords =
   "TFT Meta, Meta comps, comps TFT, comp TFT, Meta TFT, composiciones TFT, build TFT, tft comps, compos tft";
-
+if(activeId){
+  keywords += `, ${activeId.toUpperCase().replaceAll("-", " ")}`;
+}
 const baseSchema = JSON.parse(
   crearJSONSchema({
     title: titleMain + " " + titleHighlight,
@@ -115,18 +119,28 @@ const tierChildren = tiersInfo.map((tier) => {
     })
   };
 }).filter(Boolean);
-
-const tableOfContentData = [
+const tableOfContentIndividual = [
   {
+    label:[...top10Comps, ...restComps].find((comp) => String(comp.urlSEO) === String(activeId))?.nombre || "composición",
+    href:`#${activeId}`,
+    
+  },
+  {
+    label:"Tier List TFT",
+    href:"#TierList"
+  }
+]
+const tableOfContentData = [
+  !isIndividual && {
     label: "Comps Tier List",
     href: "#TierList",
     children: tierChildren
   },
-  {
+  !isIndividual && {
     label: "Recursos TFT",
     href: "#RecursosTFT"
   }
-];
+].filter(Boolean);
 ---
 
 <LayoutMaxWidth
@@ -169,14 +183,34 @@ const tableOfContentData = [
       /> -->
     </div>
   </div>
-  <DynamicSection>
+  <DynamicSection hasSidebar={!isIndividual}>
     <div slot="main">
-      <h2 id="TierList">Mejores TFT Comps del Meta Actual (Parche {constantes.MetaCompVersionPBE})</h2>
-      <p>
+      {
+        !isIndividual && 
+
+        <h2 id="TierList">Mejores TFT Comps del Meta Actual (Parche {constantes.MetaCompVersionPBE})</h2>
+        <p>
         Las compos están ordenadas por fuerza dentro del meta actual, desde las
         mejores opciones para subir elo hasta alternativas viables según tu
         spot.
       </p>
+      }
+      {
+        isIndividual && [...top10Comps, ...restComps].filter((comp) => comp.urlSEO === activeId).map((comp, index) => (
+          <article id={comp.urlSEO} class={`comp-card`}>
+            <CardsCompos
+              comp={comp}
+              isActive={String(comp.urlSEO) === String(activeId)}
+              client:load
+              isIndividual={isIndividual}
+            />
+          </article>
+        ))
+      }
+      {
+        isIndividual && 
+        <h2 id={"TierList"}>Tier List TFT</h2>
+      }
       {
         tiersInfo.map((tier, index) => (
           <div class={`tier-info tier-card-${tier.tier}`}>
@@ -225,7 +259,7 @@ const tableOfContentData = [
         ))
       }
       {
-        top10Comps.map((comp, index) => (
+        !isIndividual && top10Comps.map((comp, index) => (
           <article class={`comp-card`}>
             <CardsCompos
               comp={comp}
@@ -237,14 +271,14 @@ const tableOfContentData = [
         ))
       }
       {
-        restComps.length > 0 && (
+        !isIndividual && restComps.length > 0 && (
           <button id="ver-mas-button" data-expanded="false">
             Ver todas las composiciones
           </button>
         )
       }
       {
-        restComps &&
+        !isIndividual &&restComps &&
           restComps.map((comp, index) => {
             const isCurrentActive = String(comp.urlSEO) === String(activeId);
             return (
@@ -262,29 +296,32 @@ const tableOfContentData = [
             );
           })
       }
-      <div id="RecursosTFT">
-        <div class="resources-header">
-          <h2 id="resource-title">Recursos TFT</h2>
+      {
+        !isIndividual &&
+        <div id="RecursosTFT">
+          <div class="resources-header">
+            <h2 id="resource-title">Recursos TFT</h2>
+          </div>
+          <div class="resources-body">
+            {
+              urlRecursosTFT.map((url, index) => {
+                return (
+                  <div class="resource-card">
+                    <Youtube
+                      src={url}
+                      client:load
+                      transition:persist={`youtube-recurso-${index}`}
+                    />
+                  </div>
+                );
+              })
+            }
+          </div>
         </div>
-        <div class="resources-body">
-          {
-            urlRecursosTFT.map((url, index) => {
-              return (
-                <div class="resource-card">
-                  <Youtube
-                    src={url}
-                    client:load
-                    transition:persist={`youtube-recurso-${index}`}
-                  />
-                </div>
-              );
-            })
-          }
-        </div>
-      </div>
+      }
     </div>
     <div slot="sidebar">
-      <TableOfContent items={tableOfContentData} />
+      <TableOfContent items={isIndividual ? tableOfContentIndividual : tableOfContentData} />
     </div>
       
     

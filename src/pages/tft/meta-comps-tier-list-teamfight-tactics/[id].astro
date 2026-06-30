@@ -48,7 +48,7 @@ const video = {
 ---
 
 <MetaCompsLayout
-  titleMain={`${comp.urlSEO.toUpperCase()} TFT Comp & Items Build - Set ${setNumberPBE}`}
+  titleMain={`${comp.urlSEO.toUpperCase().replace("-"," ")} TFT Comp & Items Build - Set ${setNumberPBE}`}
   titleHighlight={``}
   description={comp.tipSEO ||
     `Guía completa paso a paso de la composición ${comp.titulo} para el parche actual de TFT.`}
@@ -58,6 +58,7 @@ const video = {
   restComps={restComps}
   activeId={id}
   snippetImgUrl={resolvedTileIcon}
+  isIndividual={true}
 />
 
 <style>

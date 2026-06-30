@@ -3,11 +3,10 @@ import style from "./css/CardsCompos.module.css";
 import { urlDragon, crearCompoMetaPHP, composTest, dataTFTAllItems, composMetaPBETest, teamPlannerCode, versionTFT, setNumberPBE, setMutatorPBE, setMutatorLatest, dataTFTChampions, compActiveId } from "@stores/dataTFT";
 import GuiaFreeTFTMeta from "./GuiaFreeTFTMeta.jsx";
 import { navigate } from "astro:transitions/client";
-import { saveScrollPosition } from "../../utils/scrollRestoration";
-import CrearCompoTFT from "@components/main/Admin/CrearCompoTFT.jsx";
 import { CapturarImagen } from "@functions/CapturarImagen.js";
 import FormularioCrearCompoTFT from "./FormularioCrearCompoTFT.jsx";
 import { useStore } from "@nanostores/react";
+import Tooltip from "@components/tooltips/index.jsx"
 
 import CardsMasterPlanCompos from "./master-plan/CardsMasterPlanCompos.jsx";
 // Añade aquí manualmente los apiName de los campeones que NO quieres que se muestren
@@ -16,7 +15,7 @@ const EXCLUDED_API_NAMES = [
   "TFT15_ShenSword"
 ];
 
-const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = false }) => {
+const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = false, isIndividual = false }) => {
   const composTestB = useStore(composTest);
   const currentVersion = useStore(versionTFT);
   const codeOfChampions = useStore(teamPlannerCode);
@@ -98,6 +97,11 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
     championsCode = championsCode.concat(currentVersion === "pbe" ? setMutatorPBE : setMutatorLatest);
     return championsCode;
   }
+
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const [openForEdit, setOpenForEdit] = useState(false);
   const activeEditId = useStore(compActiveId);
@@ -327,7 +331,12 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
               <span className={`${style.tierNumber} ${style[`tier-card-${comp?.tier}`]}`}>{comp?.tier}</span>
             </div>
             <div className={style.nameContainer}>
-              <h3>{numeracion}. {comp?.nombre}</h3>
+              {isIndividual && <h2>
+                {comp?.nombre}
+              </h2>}
+              {!isIndividual && <h3>
+                {numeracion ? numeracion +". ": ""}{comp?.nombre}
+              </h3>}
             </div>
 
             <div className={style.headerControls}>
@@ -348,24 +357,26 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
               }
             </div>
           </div>
-          {!isInfografia && <p className={`${style.tipSeo} hideForCapture`}>{comp.tipSEO}</p>}
+          {(!isInfografia && !isIndividual) && <p className={`${style.tipSeo} hideForCapture`}>{comp.tipSEO}</p>}
 
           <div className={`${style.championsContainer} ${isInfografia ? style.championsContainerInfografia : ''}`}>
             {
-              campeones?.map((data, index) => {
+              (isMounted ? campeones : [])?.map((data, index) => {
                 return (
                   <div key={`champInit-${index}`} className={style.championContainer}>
+                    {/* <Tooltip type="campeon" campeon={championsTFT.find(c => c.apiName === data?.campeon?.apiName)}>  */}
                     <div className={`${style.championImgItems}`}>
                       {data?.estrellas == 3 && <img src="/tft/assets/3-estrellas.webp" className={style.champThreeStars} alt="3-estrellas"></img>}
                       <div className={`${style.championImageWrapper} ${style[`champSquareCost${data?.campeon?.coste}`]}`}>
-                        <img
-                          className={style.championImg}
-                          src={data?.campeon?.img}
-                          alt={data?.campeon?.nombre}
-                          crossOrigin="anonymous"
-                          loading="lazy"
-                          decoding="async"
-                        ></img>
+
+                          <img
+                            className={style.championImg}
+                            src={data?.campeon?.img}
+                            alt={data?.campeon?.nombre}
+                            crossOrigin="anonymous"
+                            loading="lazy"
+                            decoding="async"
+                            ></img>
                       </div>
                       <div className={style.championInfo}>
                         <span className={style.championName}>{data?.campeon?.nombre}</span>
@@ -377,11 +388,14 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
                       <div className={style.itemsContainer}>
                         {
                           data?.items?.map((item, index) => (
-                            <img key={`champ-items-${index}`} className={style.itemImg} src={item?.icon.includes("http") ? item?.icon : urlDragon() + item?.icon.toLowerCase().replace(".tex", ".png")} alt={item?.nombre}></img>
+                            <Tooltip type="item" item={allItemsTFT.find(i => i?.apiName === item?.apiName)}>
+                              <img key={`champ-items-${index}`} className={style.itemImg} src={item?.icon.includes("http") ? item?.icon : urlDragon() + item?.icon.toLowerCase().replace(".tex", ".png")} alt={item?.nombre}></img>
+                            </Tooltip>
                           ))
                         }
                       </div>
                     }
+                    {/* </Tooltip> */}
                   </div>
                 )
               })
@@ -441,7 +455,7 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
       {(isActive || openForEdit) && (
         <div className={style.detailsWrapper}>
           {/* <GuiaFreeTFTMeta comp={composTestB?.S?.[0]} isInfografia={false} edit={false} /> */}
-          <GuiaFreeTFTMeta comp={comp} isInfografia={isInfografia} edit={edit} />
+          <GuiaFreeTFTMeta comp={comp} isInfografia={isInfografia} edit={edit} isIndividual={isIndividual} />
         </div>
       )}
       {showFormForEdit &&
