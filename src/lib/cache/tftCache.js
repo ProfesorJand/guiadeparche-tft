@@ -141,6 +141,21 @@ export async function getValorantConstantes() {
   }
 }
 
+export async function getLastUpdateDate(url = 'https://api.guiadeparche.com/tft/composMetaPBETest.json') {
+  try {
+    const response = await fetch(url, { method: 'HEAD', cache: 'no-store' });
+    const lastModified = response.headers.get('Last-Modified');
+    if (lastModified) {
+      const date = new Date(lastModified);
+      return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+    }
+  } catch (err) {
+    console.warn("Could not get Last-Modified header, using today...", err.message);
+  }
+  const today = new Date();
+  return `${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}`;
+}
+
 export async function getMetadata() {
   if (metadataCache) return metadataCache;
 
