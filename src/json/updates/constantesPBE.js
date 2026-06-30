@@ -55,7 +55,13 @@ export { datosTFT, championsTFT, aumentos };
 
 
 export async function fetchingMetaTFTPBE(){
-    const fetching = await fetch(metaTFTComposicionesJSON, {cache:"reload"});
+    const fetching = await fetch(metaTFTComposicionesJSON, {
+      cache: "reload",
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'application/json, text/plain, */*'
+      }
+    });
     const datos = await fetching.json();
     return datos;
 }
