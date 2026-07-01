@@ -9,10 +9,10 @@ import Youtube from "@components/youtube/Youtube.jsx";
 import CampeonImgInTierList from "@components/TFT/meta/CampeonImgInTierList.jsx";
 import TableOfContent from "@layouts/sidebar/TableOfContent.astro";
 import DynamicSection from "@layouts/sections/DynamicSection.astro";
-const constantes = await getConstantes();
-const metadata = await getMetadata();
-
-const lastUpdateComps = await getLastUpdateDate();
+const [constantes, lastUpdateComps] = await Promise.all([
+  getConstantes(),
+  getLastUpdateDate()
+]);
 interface Props {
   titleMain?: string;
   titleHighlight?: string;
@@ -31,7 +31,6 @@ const {
   titleHighlight = ``,
   description = `Descubre las mejores TFT comps y composiciones TFT del Set ${setNumberPBE} actualizadas para el parche ${constantes.MetaCompVersionPBE}. Aquí encontrarás builds, objetos BIS, aumentos y estrategias para jugar las compos más fuertes del meta de Teamfight Tactics y subir elo más rápido.`,
   lastUpdate = lastUpdateComps || null,
-  video,
   top10Comps,
   restComps = [],
   activeId = null,
@@ -98,7 +97,7 @@ const urlRecursosTFT = [
 ];
 
 let globalIndex = 1;
-const tierChildren = tiersInfo.map((tier) => {
+const tierChildren = !isIndividual ? tiersInfo.map((tier) => {
   const compsInTier = [...top10Comps, ...restComps].filter(
     (comp) => comp.tier === tier.tier
   );
@@ -117,7 +116,7 @@ const tierChildren = tiersInfo.map((tier) => {
       };
     })
   };
-}).filter(Boolean);
+}).filter(Boolean) : [];
 const tableOfContentIndividual = [
   {
     label:[...top10Comps, ...restComps].find((comp) => String(comp.urlSEO) === String(activeId))?.nombre || "composición",
@@ -203,6 +202,7 @@ const tableOfContentData = [
               isActive={String(comp.urlSEO) === String(activeId)}
               client:load
               isIndividual={isIndividual}
+              transition:persist
             />
           </article>
         ))
@@ -266,6 +266,7 @@ const tableOfContentData = [
               numeracion={index + 1}
               isActive={String(comp.urlSEO) === String(activeId)}
               client:load
+              transition:persist
             />
           </article>
         ))
@@ -291,6 +292,7 @@ const tableOfContentData = [
                   numeracion={index + 11}
                   isActive={isCurrentActive}
                   client:load
+                  transition:persist
                 />
               </div>
             );

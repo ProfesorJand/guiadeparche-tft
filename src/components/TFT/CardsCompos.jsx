@@ -16,18 +16,10 @@ const EXCLUDED_API_NAMES = [
 ];
 
 const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = false, isIndividual = false }) => {
-  const composTestB = useStore(composTest);
   const currentVersion = useStore(versionTFT);
   const codeOfChampions = useStore(teamPlannerCode);
   const championsTFT = useStore(dataTFTChampions);
   const allItemsTFT = useStore(dataTFTAllItems);
-
-  useEffect(() => {
-    // Si la tienda está vacía (no se llenó en el SSR/Layout), obtenla:
-    if (Object.keys(composTestB).length === 0) {
-      composMetaPBETest();
-    }
-  }, [composTestB]);
 
   function copyToClipboard(e, codigo) {
     e.preventDefault();
@@ -388,8 +380,8 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
                       <div className={style.itemsContainer}>
                         {
                           data?.items?.map((item, index) => (
-                            <Tooltip type="item" item={allItemsTFT.find(i => i?.apiName === item?.apiName)}>
-                              <img key={`champ-items-${index}`} className={style.itemImg} src={item?.icon.includes("http") ? item?.icon : urlDragon() + item?.icon.toLowerCase().replace(".tex", ".png")} alt={item?.nombre}></img>
+                            <Tooltip key={`champ-items-${index}`} type="item" item={allItemsTFT.find(i => i?.apiName === item?.apiName)}>
+                              <img className={style.itemImg} src={item?.icon.includes("http") ? item?.icon : urlDragon() + item?.icon.toLowerCase().replace(".tex", ".png")} alt={item?.nombre}></img>
                             </Tooltip>
                           ))
                         }

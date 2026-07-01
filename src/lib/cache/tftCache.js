@@ -182,9 +182,35 @@ export async function getMetadata() {
 let tftDataPBECache = null;
 export async function getTFTDataPBE() {
   if (tftDataPBECache) return tftDataPBECache;
+  
+  const filePath = path.join(process.cwd(), 'src/data/tftDataPBE.json');
+
+  if (typeof window === 'undefined') {
+    try {
+      const fileContent = await fs.readFile(filePath, 'utf-8');
+      tftDataPBECache = JSON.parse(fileContent);
+      return tftDataPBECache;
+    } catch (err) {
+      // Si el archivo local no existe, continuamos para hacer fetch y guardarlo
+      console.warn("Archivo tftDataPBE.json local no encontrado, procediendo a descargar...");
+    }
+  }
+
   try {
     const response = await fetch('https://raw.communitydragon.org/pbe/cdragon/tft/es_mx.json');
-    tftDataPBECache = await response.json();
+    const data = await response.json();
+    
+    if (typeof window === 'undefined') {
+      try {
+        await fs.mkdir(path.dirname(filePath), { recursive: true });
+        await fs.writeFile(filePath, JSON.stringify(data), 'utf-8');
+        console.log("Datos de TFT PBE descargados y guardados localmente con éxito.");
+      } catch (writeErr) {
+        console.warn("No se pudo guardar tftDataPBE.json localmente:", writeErr.message);
+      }
+    }
+    
+    tftDataPBECache = data;
     return tftDataPBECache;
   } catch (err) {
     console.error("Error fetching TFT PBE data remotely:", err);
