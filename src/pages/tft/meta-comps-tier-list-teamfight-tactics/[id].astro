@@ -10,41 +10,42 @@ import { urlDragon, setNumberPBE } from "@stores/dataTFT";
 
 export async function getStaticPaths() {
   const todasLasCompsPBE = await getComposMetaPBE();
+  
+  const top10Comps = [...todasLasCompsPBE.slice(0, 10)];
+  const restComps = [...todasLasCompsPBE.slice(10)];
+
   return todasLasCompsPBE.map((comp) => ({
     params: { id: String(comp.urlSEO) },
-    props: { comp },
+    props: { comp, top10Comps, restComps },
   }));
 }
 
 const { id } = Astro.params;
-const { comp } = Astro.props;
-const numberOfVersion = await getConstantes();
+const { comp, top10Comps, restComps } = Astro.props;
 
-// Cargar todas las composiciones para listarlas abajo
-const todasLasCompsPBE = await getComposMetaPBE();
-const top10Comps = [...todasLasCompsPBE.slice(0, 10)];
-const restComps = [...todasLasCompsPBE.slice(10)];
+const [numberOfVersion, tftData] = await Promise.all([
+  getConstantes(),
+  getTFTDataPBE()
+]);
 
-// Obtener los campeones para extraer la imagen del campeón meta
-const tftData = await getTFTDataPBE();
 const championsPBE = tftData?.sets?.[setNumberPBE]?.champions || [];
 const targetApiName = comp?.campeonMeta?.apiNameCampeon;
 const champInfo = championsPBE.find(c => c.apiName === targetApiName);
-const resolvedTileIcon = urlDragon()+champInfo?.tileIcon.replace(".tex",".png").toLowerCase();
+const resolvedTileIcon = champInfo?.tileIcon ? urlDragon() + champInfo.tileIcon.replace(".tex", ".png").toLowerCase() : "";
 
 // Obtener datos de video
-const getYoutubeId = (url) => {
-  const match = url.match(/(?:youtube\.com\/.*v=|youtu\.be\/)([^"&?/ ]{11})/);
-  return match ? match[1] : null;
-};
+// const getYoutubeId = (url) => {
+//   const match = url.match(/(?:youtube\.com\/.*v=|youtu\.be\/)([^"&?/ ]{11})/);
+//   return match ? match[1] : null;
+// };
 
-const videoId = getYoutubeId("https://www.youtube.com/watch?v=-xeetqszewY");
+// const videoId = getYoutubeId("https://www.youtube.com/watch?v=-xeetqszewY");
 
-const video = {
-  id: videoId,
-  title: "7 Best Meta Team Compositions in TFT - Patch 17.3",
-  thumbnail: `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`,
-};
+// const video = {
+//   id: videoId,
+//   title: "7 Best Meta Team Compositions in TFT - Patch 17.3",
+//   thumbnail: `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`,
+// };
 ---
 
 <MetaCompsLayout
@@ -53,7 +54,6 @@ const video = {
   description={comp.tipSEO ||
     `Guía completa paso a paso de la composición ${comp.titulo} para el parche actual de TFT.`}
   lastUpdate={`Actualizado: Parche ${numberOfVersion.MetaCompVersionPBE || "17.3"}`}
-  video={video}
   top10Comps={top10Comps}
   restComps={restComps}
   activeId={id}

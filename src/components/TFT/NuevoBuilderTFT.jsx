@@ -18,12 +18,18 @@ const championsColor = [
 
 const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => {
   const [activeMenu, setActiveMenu] = useState(null);
+  const [isMounted, setIsMounted] = React.useState(false);
+  React.useEffect(() => { setIsMounted(true); }, []);
   const version = "pbe";
   
   const globalChampions = useStore(dataTFTChampions) || [];
   const globalItems = useStore(dataTFTAllItems) || [];
   const globalTraits = useStore(dataTFTTraits) || [];
   const globalComposicion = useStore(datosCompos);
+
+  const safeGlobalChampions = isMounted ? globalChampions : [];
+  const safeGlobalItems = isMounted ? globalItems : [];
+  const safeGlobalTraits = isMounted ? globalTraits : [];
 
   const tableroArray = customTablero || globalComposicion.posicionamiento?.[posicionIndex]?.tablero || [];
   
@@ -32,17 +38,17 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
   tableroArray.forEach(champ => {
     const hexIndex = champ.fila * 10 + champ.col;
     
-    const champData = globalChampions.find(c => c.apiName === champ?.apiNameCampeon);
+    const champData = safeGlobalChampions.find(c => c.apiName === champ?.apiNameCampeon);
     if (!champData) return;
 
     const itemsData = (champ.apiNameItemsDelCampeon || []).map(apiNameItem => {
       if (!apiNameItem) return null;
-      const itemData = globalItems.find(i => i.apiName === apiNameItem);
+      const itemData = safeGlobalItems.find(i => i.apiName === apiNameItem);
       if (!itemData) return null;
       
       let traitExtra = null;
       if (itemData.incompatibleTraits && itemData.incompatibleTraits.length > 0) {
-        traitExtra = globalTraits.find((t) => t.apiName === itemData.incompatibleTraits[0]);
+        traitExtra = safeGlobalTraits.find((t) => t.apiName === itemData.incompatibleTraits[0]);
       }
 
       return {
@@ -53,7 +59,7 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
     }).filter(Boolean);
 
     let resolvedTraits = (champData.traits || []).map(traitName => {
-      const traitObj = globalTraits.find(t => t.name === traitName || t.apiName === traitName);
+      const traitObj = safeGlobalTraits.find(t => t.name === traitName || t.apiName === traitName);
       if (traitObj) {
         const { effects, desc, ...rest } = traitObj;
         return rest;
@@ -67,7 +73,7 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
       resolvedTraits = resolvedTraits.filter(t => !t.apiName.toLowerCase().includes("undetermined") && !(t.icon && t.icon.toLowerCase().includes("undetermined")));
       
       // Y agregar el trait de la sinergia extra
-      const extraTraitObj = globalTraits.find(t => t.apiName === champ.sinergiaExtraMissFortune || t.name === champ.sinergiaExtraMissFortune);
+      const extraTraitObj = safeGlobalTraits.find(t => t.apiName === champ.sinergiaExtraMissFortune || t.name === champ.sinergiaExtraMissFortune);
       if (extraTraitObj) {
         const { effects, desc, ...restExtra } = extraTraitObj;
         resolvedTraits.push(restExtra);

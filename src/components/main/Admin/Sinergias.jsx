@@ -5,9 +5,17 @@ import { traitsColors, imgHex } from "src/functions/campeonestft";
 import { dataTFTTraits, findTraitsStyles, dataTFTChampions, dataTFTAllItems } from "@stores/dataTFT";
 import { useStore } from "@nanostores/react";
 const Sinergias = ({sinergias, orientacion, show, version})=>{
+  const [isMounted, setIsMounted] = React.useState(false);
+  React.useEffect(() => { setIsMounted(true); }, []);
+
   const sinergiasData = useStore(dataTFTTraits) || [];
   const globalChampions = useStore(dataTFTChampions) || [];
   const globalItems = useStore(dataTFTAllItems) || [];
+
+  const safeSinergiasData = isMounted ? sinergiasData : [];
+  const safeGlobalChampions = isMounted ? globalChampions : [];
+  const safeGlobalItems = isMounted ? globalItems : [];
+
   function checkColor(hexColor){
     if (!hexColor) return { backgroundColor: colorHex.default };
     if(hexColor === "hex-prismatic.webp"){
@@ -30,17 +38,17 @@ const Sinergias = ({sinergias, orientacion, show, version})=>{
   if (Array.isArray(sinergias)) {
     const processedChampionTraits = new Set();
     sinergias.forEach(champObj => {
-      const champData = globalChampions.find(c => c.apiName === champObj.apiNameCampeon);
+      const champData = safeGlobalChampions.find(c => c.apiName === champObj.apiNameCampeon);
       if (!champData) return;
 
       let resolvedTraits = (champData.traits || []).map(traitName => {
-        const traitObj = sinergiasData.find(t => t.name === traitName || t.apiName === traitName);
+        const traitObj = safeSinergiasData.find(t => t.name === traitName || t.apiName === traitName);
         return traitObj ? traitObj.apiName : traitName;
       });
 
       if (champObj.sinergiaExtraMissFortune) {
         resolvedTraits = resolvedTraits.filter(t => !t.toLowerCase().includes("undetermined"));
-        const extraObj = sinergiasData.find(t => t.name === champObj.sinergiaExtraMissFortune || t.apiName === champObj.sinergiaExtraMissFortune);
+        const extraObj = safeSinergiasData.find(t => t.name === champObj.sinergiaExtraMissFortune || t.apiName === champObj.sinergiaExtraMissFortune);
         if(extraObj) resolvedTraits.push(extraObj.apiName);
         else resolvedTraits.push(champObj.sinergiaExtraMissFortune);
       }
@@ -53,7 +61,7 @@ const Sinergias = ({sinergias, orientacion, show, version})=>{
         }
       });
 
-      const itemsData = (champObj.apiNameItemsDelCampeon || []).map(apiNameItem => globalItems.find(i => i.apiName === apiNameItem)).filter(Boolean);
+      const itemsData = (champObj.apiNameItemsDelCampeon || []).map(apiNameItem => safeGlobalItems.find(i => i.apiName === apiNameItem)).filter(Boolean);
       itemsData.forEach(item => {
         if (item.incompatibleTraits && item.incompatibleTraits.length > 0) {
           const traitExtra = item.incompatibleTraits[0];
@@ -74,7 +82,7 @@ const Sinergias = ({sinergias, orientacion, show, version})=>{
     const result = [];
     Object.entries(traits).forEach(([trait, value]) => {
       const traitData = findTraitsStyles(trait);
-      const data = sinergiasData.find(({apiName})=>{
+      const data = safeSinergiasData.find(({apiName})=>{
         return apiName === trait
       })
       const hasLevels = traitData && Object.keys(traitData).length > 0;
@@ -125,14 +133,21 @@ const Sinergias = ({sinergias, orientacion, show, version})=>{
     return result;
   }
 
-  return (
+  const [isMobile, setIsMobile] = React.useState(false);
+  React.useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 900);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
+  return (
       <div className={show ? [style.containerSinergia, orientacion==="horizontal" ? style.containerSinergiaHorizontal: ""].join(" ") : style.containerSinergiaOculto }>
     {Object.keys(calculatedSinergias).length > 0 && getMinMaxTraits(sortable).map((key,i)=>{
       if(show ? i < 9 : i < 9){
         if(key.hexColor !== "hex-default.webp"){
           return (
-            <div key={i} className={show ? style.containerSinergiaHex : style.containerSinergiaHexOculto} style={typeof window !== 'undefined' && window.innerWidth < 900 ? checkColor(key.hexColor) : {}}>
+            <div key={i} className={show ? style.containerSinergiaHex : style.containerSinergiaHexOculto} style={isMobile ? checkColor(key.hexColor) : {}}>
               <span className={style.borderHex} style={checkColor(key.hexColor)}></span> 
               <img className={style.imgSinergia} src={`https://raw.communitydragon.org/${version}/game/${key.icon}`} alt="Trait_Icon" loading="lazy"/>
               <div className={style.infoSinergia}>{key.hexLevel}</div>
