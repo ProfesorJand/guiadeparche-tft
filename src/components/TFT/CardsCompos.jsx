@@ -9,6 +9,8 @@ import { useStore } from "@nanostores/react";
 import Tooltip from "@components/tooltips/index.jsx"
 
 import CardsMasterPlanCompos from "./master-plan/CardsMasterPlanCompos.jsx";
+import ImgCampeon from "./ImgCampeon.jsx";
+import ImgItem from "./ImgItem.jsx";
 // Añade aquí manualmente los apiName de los campeones que NO quieres que se muestren
 const EXCLUDED_API_NAMES = [
   "TFT17_Summon",
@@ -264,10 +266,10 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
 
     // Mapeamos los datos a las propiedades que el JSX espera más abajo (nombre, coste, img)
     const campeon = {
-      nombre: rawChamp.name,
+      name: rawChamp.name,
       apiName: rawChamp.apiName,
-      coste: rawChamp.cost,
-      img: `${urlDragon()}${cleanIconPath.toLowerCase().replace(".tex", ".png")}`
+      cost: rawChamp.cost,
+      tileIcon: rawChamp.tileIcon
     };
 
     let itemsData = [];
@@ -283,12 +285,7 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
       itemsData = itemsToMap.map(apiNameItem => {
         const item = allItemsTFT.find(item => item?.apiName === apiNameItem);
         if (item) {
-          // El JSX más abajo espera item.nombre
-          return {
-            nombre: item.name,
-            apiName: item.apiName,
-            icon: item.icon
-          };
+          return item;
         }
         return null;
       }).filter(Boolean);
@@ -353,44 +350,55 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
 
           <div className={`${style.championsContainer} ${isInfografia ? style.championsContainerInfografia : ''}`}>
             {
-              (isMounted ? campeones : [])?.map((data, index) => {
-                return (
-                  <div key={`champInit-${index}`} className={style.championContainer}>
-                    {/* <Tooltip type="campeon" campeon={championsTFT.find(c => c.apiName === data?.campeon?.apiName)}>  */}
-                    <div className={`${style.championImgItems}`}>
-                      {data?.estrellas == 3 && <img src="/tft/assets/3-estrellas.webp" className={style.champThreeStars} alt="3-estrellas"></img>}
-                      <div className={`${style.championImageWrapper} ${style[`champSquareCost${data?.campeon?.coste}`]}`}>
+              campeones.length > 0 ? (
+                campeones.map((data, index) => {
+                  return (
+                    <div key={`champInit-${index}`} className={style.championContainer}>
+                      {/* <Tooltip type="campeon" campeon={championsTFT.find(c => c.apiName === data?.campeon?.apiName)}>  */}
+                      <div className={`${style.championImgItems}`}>
+                        <ImgCampeon championData={data?.campeon} items={data?.items} />
+                        {/* {data?.estrellas == 3 && <img src="/tft/assets/3-estrellas.webp" className={style.champThreeStars} alt="3-estrellas"></img>}
+                        <div className={`${style.championImageWrapper} ${style[`champSquareCost${data?.campeon?.coste}`]}`}>
 
-                          <img
-                            className={style.championImg}
-                            src={data?.campeon?.img}
-                            alt={data?.campeon?.nombre}
-                            crossOrigin="anonymous"
-                            loading="lazy"
-                            decoding="async"
-                            ></img>
-                      </div>
-                      <div className={style.championInfo}>
-                        <span className={style.championName}>{data?.campeon?.nombre}</span>
-                      </div>
+                            <img
+                              className={style.championImg}
+                              src={data?.campeon?.img}
+                              alt={data?.campeon?.nombre}
+                              crossOrigin="anonymous"
+                              loading="lazy"
+                              decoding="async"
+                              ></img>
+                        </div>
+                        <div className={style.championInfo}>
+                          <span className={style.championName}>{data?.campeon?.nombre}</span>
+                        </div>
+                        */}
 
+                      </div>
+                      {
+                        data?.items.length > 0 &&
+                        <div className={style.itemsContainer}>
+                          {
+                            data?.items?.map((item, index) => (
+                              <div key={index} className={style.itemContainer}>
+                                <ImgItem  item={item} />
+                              </div>
+                            ))
+                          }
+                        </div>
+                      }
                     </div>
-                    {
-                      data?.items.length > 0 &&
-                      <div className={style.itemsContainer}>
-                        {
-                          data?.items?.map((item, index) => (
-                            <Tooltip key={`champ-items-${index}`} type="item" item={allItemsTFT.find(i => i?.apiName === item?.apiName)}>
-                              <img className={style.itemImg} src={item?.icon.includes("http") ? item?.icon : urlDragon() + item?.icon.toLowerCase().replace(".tex", ".png")} alt={item?.nombre}></img>
-                            </Tooltip>
-                          ))
-                        }
-                      </div>
-                    }
-                    {/* </Tooltip> */}
+                  )
+                })
+              ) : (
+                Array.from({ length: 9 }).map((_, index) => (
+                  <div key={`skeleton-${index}`} className={style.championContainer}>
+                    <div className={`${style.championImgItems}`}>
+                      <ImgCampeon championData={null} />
+                    </div>
                   </div>
-                )
-              })
+                ))
+              )
             }
 
           </div>

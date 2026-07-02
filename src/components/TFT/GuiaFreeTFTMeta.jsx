@@ -5,6 +5,8 @@ import { useState, useRef, useEffect } from "react";
 import { useStore } from "@nanostores/react";
 import NuevoBuilderTFT from "./NuevoBuilderTFT";
 import Tooltip from "@components/tooltips";
+import CampeonesNivel from "@components/TFT/elementosInfografia/CampeonesNivel"
+import ImgItem from "./ImgItem";
 const GuiaFreeTFTMeta = ({comp, isInfografia=false, edit=false, isIndividual=false}) => {
   const [hoveredAugment, setHoveredAugment] = useState(null);
   const augmentRef = useRef(null);
@@ -72,7 +74,8 @@ const Header1 = ({comp, allChampionsTFT, allItemsTFT})=>{
       <div className={`${style.blockEarlyGame} ${style.borderBlock}`}>
         <h4>Mejores Salida de Campeones Early</h4>
         <div className={style.earlyChampionsContainer}>
-          {
+          <CampeonesNivel comp={comp} isEarly={true}/>
+          {/* {
             niveles?.map((data, index) => {
               const championData = allChampionsTFT.find(c => c.apiName === data?.apiNameCampeon || data.apiName);
               if (!championData) return null;
@@ -114,7 +117,7 @@ const Header1 = ({comp, allChampionsTFT, allItemsTFT})=>{
               </div>
               )
             })
-          }
+          } */}
         </div>
       </div>
       
@@ -170,13 +173,14 @@ const Header1 = ({comp, allChampionsTFT, allItemsTFT})=>{
               const itemData = allItemsTFT.find(i => i.apiName === itemName);
               return itemData ? [
                 <div key={`itemPrio-${index}`} className={style.carouselItem}>
-                  <Tooltip type="item" item={itemData}>
+                  {/* <Tooltip type="item" item={itemData}>
                     <img
                       className={style.bigItemImg}
                       src={itemData?.icon?.includes("http") ? itemData?.icon : urlDragon() + itemData?.icon?.toLowerCase().replace(".tex", ".png")}
                       alt={itemData?.name}
                       />
-                  </Tooltip>
+                  </Tooltip> */}
+                  <ImgItem item={itemData} />
                 </div>,
                 index < itemsPrio.length - 1 ? <span key={`itemPrio-gt-${index}`} className={style.mayorQue}>{'>'}</span> : null
               ] : null;
@@ -234,9 +238,7 @@ const Header2 = ({comp, setHoveredAugment, augmentRef,  allChampionsTFT, allItem
                   if(extras.includes(augmentRaw?.apiNameGrande)){
                     return (
                       <div className={style.augmentContainer} key={index}>
-                        <Tooltip type="default" text={augmentRaw?.apiNameGrande}>
-                          <img className={style.augmentImg} src={`/tft/assets/${augmentRaw.apiNameGrande.replace(" ","")}.webp`} alt={augmentRaw.apiNameGrande}/>
-                        </Tooltip>
+                        <ImgItem item={augmentRaw}></ImgItem>
                       </div>
                     )
                   }
@@ -250,20 +252,7 @@ const Header2 = ({comp, setHoveredAugment, augmentRef,  allChampionsTFT, allItem
                     onMouseLeave={handleMouseLeave}
                     onClick={() => handleClick(augment)}
                   >
-                    <Tooltip type="item" item={augment}>
-
-                      <img 
-                        className={style.augmentImg} 
-                        src={
-                          urlDragon() +
-                          augment?.icon
-                          .toLowerCase()
-                          .replace(".tex", ".png")
-                          .replace("/augments/hexcore/","/augments/choiceui/")
-                        } 
-                        alt={augment?.name}
-                        />
-                    </Tooltip>
+                    <ImgItem item={augment}/>
                   </div>
                 )
               })
@@ -505,26 +494,12 @@ const FooterBuild = ({comp})=>{
                     <div className={style.containerBuildItemImg}>
                       {/* {bisItemsData.length > 0 && <span className={style.buildItemText}>BIS</span>} */}
                       {bisItemsData.map((item, idx) => (
-                        <Tooltip type="item" item={item} key={`build-item-bis-${idx}`}>
-
-                        <img 
-                          src={urlDragon() + item?.icon?.toLowerCase().replace(".tex", ".png")} 
-                          alt={item?.name} 
-                          className={style.buildItemImg}
-                          />
-                        </Tooltip>
-                      ))}
+                        <ImgItem item={item} key={`build-item-${idx}`} />                      ))}
                     </div>
                     <div className={style.containerBuildItemImg}>
                       {/* {specialBisItemsData.length > 0 && <span className={style.buildItemText}>BIS ESPECIAL</span>} */}
                       {specialBisItemsData.map((item, idx) => (
-                        <Tooltip type="item" item={item} key={`build-item-special-${idx}`}>
-                          <img 
-                            src={urlDragon() + item?.icon?.toLowerCase().replace(".tex", ".png")} 
-                            alt={item?.name} 
-                            className={style.buildItemImg}
-                            />
-                          </Tooltip>
+                        <ImgItem item={item} key={`build-item-special-${idx}`} />
                         ))}
                     </div>
                   </div>
