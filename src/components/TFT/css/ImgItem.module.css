@@ -1,0 +1,21 @@
+.itemContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1/1;
+  position: relative;
+  box-sizing: border-box;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.itemIcon {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}

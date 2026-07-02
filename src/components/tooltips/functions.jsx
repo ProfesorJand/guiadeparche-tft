@@ -28,7 +28,7 @@ export const replaceIcons = (desc) => {
 export const replaceVariables = (desc, effects) => {
   if (!desc) return desc;
   
-  let result = desc;
+  let result = desc.replace(/<\/?li[^>]*>/gi, '');
   if (effects) {
     // Convert effects keys to lowercase for case-insensitive matching
     const lowerEffects = Object.keys(effects).reduce((acc, key) => {
@@ -59,6 +59,8 @@ export const replaceVariables = (desc, effects) => {
 export const formatChampionDescription = (desc, variablesArray) => {
   if (!desc) return "";
   
+  desc = desc.replace(/<\/?li[^>]*>/gi, '');
+
   // 1. Convertir el array de variables en un diccionario para fácil acceso
   const effects = {};
   if (Array.isArray(variablesArray)) {

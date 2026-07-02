@@ -10,7 +10,7 @@ const TooltipItem = ({desc = null, effects, name, nombre, icon, composition}) =>
       <div className={style.tooltipImageContainer}>
         <img className={style.tooltipImage} src={urlDragon() + icon.replace(".tex",".png").toLowerCase()} alt={name} />
         {
-          composition.length > 0 && 
+          composition?.length > 0 && 
           <div className={style.compositionItemContainer}>
             {composition.map((item, i) => (
               <img key={i} className={style.tooltipImage} src={urlDragon() + $dataTFTAllItems.find((data)=>data.apiName === item).icon.replace(".tex",".png").toLowerCase()} alt={item} />

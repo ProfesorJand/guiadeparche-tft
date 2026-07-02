@@ -1,0 +1,30 @@
+.cardChampEarly{
+  display:flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  --gapChamp: 5px;
+  --cantidadMaxChamp: 5;
+  gap:var(--gapChamp);
+  width:100%;
+  position: relative;
+  box-sizing: border-box;
+  justify-content: center;
+}
+.cChampEarly{
+  width:calc((100% - ( var(--gapChamp) * (var(--cantidadMaxChamp) - 1) )) / var(--cantidadMaxChamp));
+  flex-shrink: 0;
+  aspect-ratio: 1 / 1;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+.cChampEarlySkeleton{
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.2s ease;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+.cChampLevelMP{
+  justify-content: flex-start;
+}
+@media only screen and (max-width:900px){
+
+}

@@ -19,6 +19,7 @@ import {
   dañoTipo,
   dioses as opcionesDiosesList
 } from "@stores/tft/dataFormularioCrear.js";
+import InfografiaMPTFT from "@components/TFT/master-plan/InfografiaMPTFT";
 
 // const allChampionsTFT = useStore(dataTFTChampions);
 // const allItemsTFT = useStore(dataTFTAllItems);
@@ -146,7 +147,7 @@ const FormularioCrearCompoTFT = ({ compo = {} }) => {
       <Textareas />
 
       <button type="button" onClick={() => guardarComposicionTFT(datosComposicionTFT)}>Guardar Compo</button>
-
+      <InfografiaMPTFT comp={datosComposicionTFT} />
       <datalist id="items">
         {allItemsTFT.map((option) => (
           <option key={option.apiName} value={option.name} data-value={JSON.stringify(option)}>

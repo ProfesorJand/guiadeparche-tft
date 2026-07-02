@@ -1,0 +1,45 @@
+.cardsMPCompContainer{
+  display:flex;
+  width: 100%;
+  position:relative;
+  gap:20px;
+  flex-direction: column;
+
+}
+
+.cCondicionOpEarly{
+  display:flex;
+  width: 100%;
+  position:relative;
+  gap:5px;
+  flex-direction: row;
+}
+
+.cCondicionOP{
+  display:flex;
+  width: calc((100% - (5px * 3)) / 4);
+  position:relative;
+  flex-direction: row;
+}
+
+.cCondicionGrande{
+  display:flex;
+  width:100%;
+  position:relative;
+}
+
+.cCondicionPequeno{
+  display:flex;
+  width:50%;
+  position:absolute;
+  top:0;
+  left:0;
+}
+
+.cNiveles{
+  display:flex;
+  position:relative;
+  width:100%;
+  flex-direction: column;
+  gap:10px;
+}
