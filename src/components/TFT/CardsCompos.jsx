@@ -303,7 +303,7 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
     };
   })
     .filter(Boolean) // Omitir campeones excluidos o no encontrados (los null)
-    .sort((a, b) => a?.campeon?.coste - b?.campeon?.coste);
+    .sort((a, b) => (a?.campeon?.cost || 0) - (b?.campeon?.cost || 0));
 
   const allChampionsApiName = campeones.map(({ campeon }) => {
     return { apiName: campeon.apiName }
