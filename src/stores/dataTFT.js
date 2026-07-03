@@ -200,8 +200,15 @@ export const loadDataTFTFromAPI = ({ version = versionTFT.get(), idioma = "es", 
       updateDataTFT(data)
       await loadConstantes();
     } catch (e) {
-      console.error("Error loading TFT data from API:", e);
-      throw e;
+      console.warn("Fetch de communitydragon bloqueado o fallido. Intentando fallback local...", e);
+      try {
+        const { default: localData } = await import("../data/setData.json");
+        const dataToUse = Array.isArray(localData) ? localData[0] : localData;
+        updateDataTFT(dataToUse);
+        await loadConstantes();
+      } catch (fallbackError) {
+        console.error("El fallback local también falló:", fallbackError);
+      }
     }
   })
 }

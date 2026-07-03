@@ -16,8 +16,8 @@ const DOWNLOADS = [
   //   saveHeader: 'lastUpdate'
   // },
   {
-    url: 'https://api.guiadeparche.com/tft/composMetaPBE.json',
-    filename: 'composMetaPBE.json',
+    url: 'https://api.guiadeparche.com/tft/composMetaPBETest.json',
+    filename: 'composMetaPBETest.json',
     isCritical: true,
     saveHeader: 'lastUpdatePBE'
   },
