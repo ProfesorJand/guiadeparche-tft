@@ -283,7 +283,7 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
         : build.apiNameItemsBisDelCampeon;
 
       itemsData = itemsToMap.map(apiNameItem => {
-        const item = allItemsTFT.find(item => item?.apiName === apiNameItem);
+        const item = (allItemsTFT || []).find(item => item?.apiName === apiNameItem);
         if (item) {
           return item;
         }
