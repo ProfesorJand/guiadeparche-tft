@@ -285,25 +285,39 @@ const generateCraftableList = (allItems, setItemNames, setNumber) => {
 export const updateDataTFT = async (data) => {
   const { items, setData, sets } = data;
   dataTFT.set(data);
-  dataTFTAllItems.set(items);
+  
+  // Si items viene vacío (como en el fallback simple), juntamos todos los items de todos los sets
+  let allItems = items;
+  if (!allItems || allItems.length === 0) {
+    allItems = [];
+    if (setData && Array.isArray(setData)) {
+      setData.forEach(set => {
+        if (set.items) {
+          allItems.push(...set.items);
+        }
+      });
+    }
+  }
+  dataTFTAllItems.set(allItems || []);
 
-  const setLatest = setData.find(({ mutator }) => mutator === setMutatorLatest);
-  const setPBE = setData.find(({ mutator }) => mutator === setMutatorPBE);
+  const setLatest = setData?.find(({ mutator }) => mutator === setMutatorLatest);
+  const setPBE = setData?.find(({ mutator }) => mutator === setMutatorPBE);
 
-  if (setLatest) {
-    const list = generateCraftableList(items, setLatest.items, setNumberLatest);
+  if (setLatest && allItems) {
+    const list = generateCraftableList(allItems, setLatest.items || [], setNumberLatest);
     apiNameOfCraftableItems.set(list);
   }
-  if (setPBE) {
-    const list = generateCraftableList(items, setPBE.items, setNumberPBE);
+  if (setPBE && allItems) {
+    const list = generateCraftableList(allItems, setPBE.items || [], setNumberPBE);
     apiNameOfCraftableItemsPBE.set(list);
   }
 
-  dataTFTItemsBySet.set((setData.find(({ mutator }) => {
-    return mutator === (versionTFT.get() === "pbe" ? setMutatorPBE : setMutatorLatest)
-  })).items)
-  dataTFTSetData.set(setData);
-  const allChampionsRaw = [...sets[versionTFT.get() === "pbe" ? setNumberPBE : setNumberLatest].champions];
+  const foundSet = setData?.find(({ mutator }) => mutator === (versionTFT.get() === "pbe" ? setMutatorPBE : setMutatorLatest));
+  dataTFTItemsBySet.set(foundSet?.items || []);
+  dataTFTSetData.set(setData || []);
+
+  const currentSet = sets?.[versionTFT.get() === "pbe" ? setNumberPBE : setNumberLatest];
+  const allChampionsRaw = currentSet?.champions ? [...currentSet.champions] : [];
 
   if (!allChampionsRaw.some(c => c.apiName === "TFT15_ShenSword")) {
     allChampionsRaw.push({
@@ -317,7 +331,7 @@ export const updateDataTFT = async (data) => {
 
   dataTFTChampions.set(allChampionsRaw.sort(
     (a, b) => {
-      const nameA = a.name.toUpperCase(); // Ignore case for consistent sorting
+      const nameA = a.name.toUpperCase();
       const nameB = b.name.toUpperCase();
 
       if (nameA < nameB) {
@@ -326,10 +340,10 @@ export const updateDataTFT = async (data) => {
       if (nameA > nameB) {
         return 1;
       }
-      return 0; // names must be equal
+      return 0; 
     })
   );
-  dataTFTTraits.set(sets[versionTFT.get() === "pbe" ? setNumberPBE : setNumberLatest].traits);
+  dataTFTTraits.set(currentSet?.traits || []);
 };
 
 export const swapVersionTFT = (data) => {
