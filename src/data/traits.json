@@ -199,7 +199,7 @@
         }
       }
     ],
-    "icon": "ASSETS/UX/TraitIcons/Trait_Icon_12_Vanguard.TFT_Set12.tex",
+    "icon": "ASSETS/UX/TraitIcons/Trait_Icon_12_Vanguard.tex",
     "name": "Vanguard"
   },
   {
@@ -353,6 +353,7 @@
         "minUnits": 3,
         "style": 1,
         "variables": {
+          "PairsPartnerWinMultiplier": 0.8500000238418579,
           "TechBreakpoint": 100,
           "TechPerCombat": 20,
           "TechPerCombat_DU": 20,
@@ -360,8 +361,7 @@
           "TechPerKill": 2,
           "TechPerLoss": 5,
           "TechPerLoss_DU": 5,
-          "TechPerRound_PVE": 20,
-          "{18a09431}": 0.8500000238418579
+          "TechPerRound_PVE": 20
         }
       },
       {
@@ -369,6 +369,7 @@
         "minUnits": 6,
         "style": 5,
         "variables": {
+          "PairsPartnerWinMultiplier": 0.8500000238418579,
           "TechBreakpoint": 100,
           "TechPerCombat": 20,
           "TechPerCombat_DU": 20,
@@ -376,8 +377,7 @@
           "TechPerKill": 2,
           "TechPerLoss": 5,
           "TechPerLoss_DU": 5,
-          "TechPerRound_PVE": 20,
-          "{18a09431}": 0.8500000238418579
+          "TechPerRound_PVE": 20
         }
       }
     ],
@@ -549,7 +549,7 @@
           "Serpent_DR": 0.05000000074505806,
           "Serpent_DR_Teamwide": 0.05000000074505806,
           "Serpent_Duration": 3,
-          "Serpent_Poison": 0.18000000715255737
+          "Serpent_Poison": 0.25
         }
       },
       {
@@ -560,7 +560,7 @@
           "Serpent_DR": 0.10000000149011612,
           "Serpent_DR_Teamwide": 0.05000000074505806,
           "Serpent_Duration": 3,
-          "Serpent_Poison": 0.3499999940395355
+          "Serpent_Poison": 0.44999998807907104
         }
       },
       {
@@ -571,7 +571,7 @@
           "Serpent_DR": 0.15000000596046448,
           "Serpent_DR_Teamwide": 0.05000000074505806,
           "Serpent_Duration": 3,
-          "Serpent_Poison": 0.5
+          "Serpent_Poison": 0.6000000238418579
         }
       }
     ],
@@ -607,11 +607,11 @@
         "minUnits": 3,
         "style": 1,
         "variables": {
-          "MaxStacks": null,
-          "{13a2a786}": 4,
-          "{8d19f5db}": 2,
-          "{d7e6d620}": 0.009999999776482582,
-          "{f2840aed}": 0.029999999329447746
+          "Fountain_HealthRegen": 0.029999999329447746,
+          "Fountain_HealthRegen_Teamwide": 0.009999999776482582,
+          "Fountain_Interval": 2,
+          "Fountain_StackingADAP": 4,
+          "MaxStacks": null
         }
       },
       {
@@ -619,11 +619,11 @@
         "minUnits": 5,
         "style": 5,
         "variables": {
-          "MaxStacks": null,
-          "{13a2a786}": 9,
-          "{8d19f5db}": 2,
-          "{d7e6d620}": 0.009999999776482582,
-          "{f2840aed}": 0.029999999329447746
+          "Fountain_HealthRegen": 0.029999999329447746,
+          "Fountain_HealthRegen_Teamwide": 0.009999999776482582,
+          "Fountain_Interval": 2,
+          "Fountain_StackingADAP": 9,
+          "MaxStacks": null
         }
       }
     ],
@@ -804,7 +804,7 @@
         "style": 5,
         "variables": {
           "ADAPPerSecond": 5,
-          "EffectBonus": 15,
+          "EffectBonus": 10,
           "StartOfCombatDuration": 4
         }
       },
@@ -1253,8 +1253,8 @@
         "minUnits": 4,
         "style": 3,
         "variables": {
-          "AD": 0.44999998807907104,
-          "AP": 45,
+          "AD": 0.4000000059604645,
+          "AP": 40,
           "TeamSize": 1,
           "TransformedPercentHealth": 0.4000000059604645
         }
@@ -1264,8 +1264,8 @@
         "minUnits": 6,
         "style": 5,
         "variables": {
-          "AD": 0.3499999940395355,
-          "AP": 35,
+          "AD": 0.4000000059604645,
+          "AP": 40,
           "TeamSize": 1,
           "TransformedPercentHealth": 0.4000000059604645
         }
@@ -1302,6 +1302,9 @@
           "Family_BaseSharePercent": 0.10000000149011612,
           "Family_HexesToReveal_TOOLTIPONLY": 3,
           "Family_Stats": 10,
+          "Fountain_HealthRegen": 0.03999999910593033,
+          "Fountain_HealthRegen_Teamwide": 0.019999999552965164,
+          "Fountain_StackingADAP": 2,
           "Huntress_AS": 0.30000001192092896,
           "Huntress_AS_Teamwide": 0.15000000596046448,
           "Huntress_Heal": 0.05000000074505806,
@@ -1326,7 +1329,6 @@
           "Wolf_Gold": 1,
           "Wolf_Health": 0.019999999552965164,
           "Wolf_Health_Teamwide": 0.07999999821186066,
-          "{13a2a786}": 2,
           "{326db998}": 0.15000000596046448,
           "{37204635}": 10,
           "{3d49cc86}": 20,
@@ -1339,10 +1341,8 @@
           "{abed8603}": 1.2999999523162842,
           "{b44d11c3}": 0.10000000149011612,
           "{c32af02f}": 0.05000000074505806,
-          "{d7e6d620}": 0.019999999552965164,
           "{e5275a69}": 0.019999999552965164,
-          "{e8338a44}": 0.15000000596046448,
-          "{f2840aed}": 0.03999999910593033
+          "{e8338a44}": 0.15000000596046448
         }
       },
       {
@@ -1353,6 +1353,9 @@
           "Family_BaseSharePercent": 0.10000000149011612,
           "Family_HexesToReveal_TOOLTIPONLY": 2,
           "Family_Stats": 35,
+          "Fountain_HealthRegen": 0.03999999910593033,
+          "Fountain_HealthRegen_Teamwide": 0.019999999552965164,
+          "Fountain_StackingADAP": 4,
           "Huntress_AS": 0.44999998807907104,
           "Huntress_AS_Teamwide": 0.15000000596046448,
           "Huntress_Heal": 0.07999999821186066,
@@ -1376,7 +1379,6 @@
           "Wolf_Gold": 2,
           "Wolf_Health": 0.07999999821186066,
           "Wolf_Health_Teamwide": 0.07999999821186066,
-          "{13a2a786}": 4,
           "{326db998}": 0.25,
           "{37204635}": 10,
           "{3d49cc86}": 30,
@@ -1389,10 +1391,8 @@
           "{abed8603}": 1.5,
           "{b44d11c3}": 0.10000000149011612,
           "{c32af02f}": 0.05000000074505806,
-          "{d7e6d620}": 0.019999999552965164,
           "{e5275a69}": 0.029999999329447746,
-          "{e8338a44}": 0.15000000596046448,
-          "{f2840aed}": 0.03999999910593033
+          "{e8338a44}": 0.15000000596046448
         }
       },
       {
@@ -1403,6 +1403,9 @@
           "Family_BaseSharePercent": 0.10000000149011612,
           "Family_EmpoweredSharePercent": 0.30000001192092896,
           "Family_Stats": 35,
+          "Fountain_HealthRegen": 0.03999999910593033,
+          "Fountain_HealthRegen_Teamwide": 0.019999999552965164,
+          "Fountain_StackingADAP": 4,
           "Huntress_AS": 0.6000000238418579,
           "Huntress_AS_Teamwide": 0.15000000596046448,
           "Huntress_Heal": 0.10000000149011612,
@@ -1429,7 +1432,6 @@
           "Wolf_Gold": 4,
           "Wolf_Health": 0.15000000596046448,
           "Wolf_Health_Teamwide": 0.07999999821186066,
-          "{13a2a786}": 4,
           "{326db998}": 0.3499999940395355,
           "{37204635}": 10,
           "{3d49cc86}": 40,
@@ -1444,10 +1446,8 @@
           "{b44d11c3}": 0.10000000149011612,
           "{c32af02f}": 0.05000000074505806,
           "{c4d51662}": 2,
-          "{d7e6d620}": 0.019999999552965164,
           "{e5275a69}": 0.03999999910593033,
-          "{e8338a44}": 0.15000000596046448,
-          "{f2840aed}": 0.03999999910593033
+          "{e8338a44}": 0.15000000596046448
         }
       },
       {
@@ -1456,6 +1456,8 @@
         "style": 5,
         "variables": {
           "Family_BaseSharePercent": 0.10000000149011612,
+          "Fountain_HealthRegen": 0.03999999910593033,
+          "Fountain_HealthRegen_Teamwide": 0.019999999552965164,
           "Huntress_AS_Teamwide": 0.15000000596046448,
           "MaxStacks": null,
           "Medallion_IncreasePer3Star": 20,
@@ -1486,9 +1488,7 @@
           "{aa686d69}": 10,
           "{b44d11c3}": 0.10000000149011612,
           "{c32af02f}": 0.05000000074505806,
-          "{d7e6d620}": 0.019999999552965164,
-          "{e8338a44}": 0.15000000596046448,
-          "{f2840aed}": 0.03999999910593033
+          "{e8338a44}": 0.15000000596046448
         }
       },
       {
@@ -1497,6 +1497,8 @@
         "style": 5,
         "variables": {
           "Family_BaseSharePercent": 0.10000000149011612,
+          "Fountain_HealthRegen": 0.03999999910593033,
+          "Fountain_HealthRegen_Teamwide": 0.019999999552965164,
           "Huntress_AS_Teamwide": 0.15000000596046448,
           "MaxStacks": null,
           "Medallion_IncreasePer3Star": 20,
@@ -1522,9 +1524,7 @@
           "{aa686d69}": 10,
           "{b44d11c3}": 0.10000000149011612,
           "{c32af02f}": 0.05000000074505806,
-          "{d7e6d620}": 0.019999999552965164,
-          "{e8338a44}": 0.15000000596046448,
-          "{f2840aed}": 0.03999999910593033
+          "{e8338a44}": 0.15000000596046448
         }
       },
       {
@@ -1533,6 +1533,8 @@
         "style": 5,
         "variables": {
           "Family_BaseSharePercent": 0.10000000149011612,
+          "Fountain_HealthRegen": 0.03999999910593033,
+          "Fountain_HealthRegen_Teamwide": 0.019999999552965164,
           "Huntress_AS_Teamwide": 0.15000000596046448,
           "MaxStacks": null,
           "Medallion_IncreasePer3Star": 20,
@@ -1558,9 +1560,7 @@
           "{aa686d69}": 10,
           "{b44d11c3}": 0.10000000149011612,
           "{c32af02f}": 0.05000000074505806,
-          "{d7e6d620}": 0.019999999552965164,
-          "{e8338a44}": 0.15000000596046448,
-          "{f2840aed}": 0.03999999910593033
+          "{e8338a44}": 0.15000000596046448
         }
       }
     ],
@@ -1694,7 +1694,7 @@
         }
       }
     ],
-    "icon": "ASSETS/UX/TraitIcons/Trait_Icon_12_Arcana.TFT_Set12.tex",
+    "icon": "ASSETS/UX/TraitIcons/Trait_Icon_12_Arcana.tex",
     "name": "Oracle"
   },
   {
@@ -1761,7 +1761,7 @@
         "style": 4,
         "variables": {
           "Durability": 0.03999999910593033,
-          "{816175b9}": 0.10000000149011612
+          "TransformedDurability": 0.10000000149011612
         }
       }
     ],

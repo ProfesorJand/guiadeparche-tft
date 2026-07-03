@@ -44,17 +44,17 @@
   {
     "ability": {
       "desc": "<spellPassive>Passive:</spellPassive> Occasionally dash around the board.",
-      "icon": "ASSETS/Characters/TFT9_SLIME_Crab/HUD/Icons2D/TFT9_SLIME_Crab_Spell.TFT_Set13.tex",
+      "icon": "ASSETS/Characters/TFT9_SLIME_Crab/HUD/Icons2D/TFT9_SLIME_Crab_Spell.tex",
       "name": "Swimming Speed",
       "variables": []
     },
     "apiName": "TFT9_SLIME_Crab",
     "characterName": "TFT9_SLIME_Crab",
     "cost": 1,
-    "icon": "ASSETS/UX/TFT/ChampionSplashes/TFT_ScuttleCrab.TFT_Set13.tex",
+    "icon": "ASSETS/UX/TFT/ChampionSplashes/TFT_ScuttleCrab.tex",
     "name": "Rift Scuttler",
     "role": null,
-    "squareIcon": "ASSETS/UX/TFT/ChampionSplashes/TFT_ScuttleCrab_Mobile.TFT_Set13.tex",
+    "squareIcon": "ASSETS/UX/TFT/ChampionSplashes/TFT_ScuttleCrab_Mobile.tex",
     "stats": {
       "armor": 10,
       "attackSpeed": 0.800000011920929,
@@ -67,7 +67,7 @@
       "mana": 100,
       "range": 1
     },
-    "tileIcon": "ASSETS/Characters/TFT9_SLIME_Crab/HUD/Icons2D/TFT9_SLIME_Crab_Spell.TFT_Set13.tex",
+    "tileIcon": "ASSETS/Characters/TFT9_SLIME_Crab/HUD/Icons2D/TFT9_SLIME_Crab_Spell.tex",
     "traits": []
   },
   {
@@ -726,10 +726,10 @@
           "name": "NovaDamagePerSecond",
           "value": [
             12,
-            12,
-            18,
-            24,
-            30,
+            15,
+            22,
+            28,
+            34,
             22,
             22
           ]
@@ -1440,7 +1440,7 @@
       "attackSpeed": 0.75,
       "critChance": 0.25,
       "critMultiplier": 1.399999976158142,
-      "damage": 50,
+      "damage": 48,
       "hp": 550,
       "initialMana": 0,
       "magicResist": 20,
@@ -2164,13 +2164,13 @@
         {
           "name": "NovaHeadshotModifier",
           "value": [
-            0.4000000059604645,
-            0.4000000059604645,
-            0.4000000059604645,
-            0.4000000059604645,
-            0.4000000059604645,
-            0.4000000059604645,
-            0.4000000059604645
+            0.5,
+            0.5,
+            0.5,
+            0.5,
+            0.5,
+            0.5,
+            0.5
           ]
         }
       ]
@@ -2386,13 +2386,13 @@
         {
           "name": "NovaDamageAmp",
           "value": [
-            0.10000000149011612,
-            0.10000000149011612,
-            0.10000000149011612,
-            0.10000000149011612,
-            0.10000000149011612,
-            0.10000000149011612,
-            0.10000000149011612
+            0.15000000596046448,
+            0.15000000596046448,
+            0.15000000596046448,
+            0.15000000596046448,
+            0.15000000596046448,
+            0.15000000596046448,
+            0.15000000596046448
           ]
         }
       ]
@@ -2549,8 +2549,8 @@
           "name": "Damage",
           "value": [
             0,
-            570,
-            855,
+            630,
+            945,
             5000,
             6000,
             0,
@@ -2930,8 +2930,8 @@
           "name": "DamagePerSecond",
           "value": [
             250,
-            320,
-            480,
+            335,
+            505,
             2000,
             2000,
             1650,
@@ -3116,9 +3116,9 @@
           "name": "Damage",
           "value": [
             200,
-            190,
-            290,
-            500,
+            200,
+            300,
+            530,
             850,
             505,
             505
@@ -3266,8 +3266,8 @@
           "name": "DamageAD",
           "value": [
             60,
-            50,
-            75,
+            55,
+            85,
             600,
             720,
             450,
@@ -3782,13 +3782,13 @@
         {
           "name": "StunDuration",
           "value": [
-            1.25,
-            1.25,
-            1.25,
-            1.25,
-            1.25,
-            1.25,
-            1.25
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
           ]
         }
       ]
@@ -3809,7 +3809,7 @@
       "hp": 650,
       "initialMana": 0,
       "magicResist": 25,
-      "mana": 60,
+      "mana": 65,
       "range": 6
     },
     "tileIcon": "ASSETS/Characters/TFT17_Samira/HUD/TFT17_Samira_Square.TFT_Set17.tex",
@@ -3909,8 +3909,8 @@
           "name": "Damage",
           "value": [
             260,
-            440,
-            660,
+            460,
+            690,
             5000,
             3600,
             4000,
@@ -3933,8 +3933,8 @@
           "name": "FirstBounceDamage",
           "value": [
             120,
-            110,
-            165,
+            125,
+            185,
             1000,
             2000,
             1200,
@@ -4178,10 +4178,10 @@
           "name": "DamageMin",
           "value": [
             180,
-            190,
-            285,
-            430,
-            730,
+            205,
+            305,
+            460,
+            800,
             500,
             500
           ]
@@ -4190,10 +4190,10 @@
           "name": "DamageMax",
           "value": [
             330,
-            380,
-            570,
-            860,
-            1460,
+            410,
+            610,
+            920,
+            1565,
             1000,
             1000
           ]
@@ -4784,7 +4784,7 @@
   },
   {
     "ability": {
-      "desc": "<spellPassive>Passive:</spellPassive> On cast, attacks gain <magicDamage>@ModifiedBonusDamage@&nbsp;(%i:scaleHealth%%i:scaleAP%)</magicDamage> stacking bonus magic damage. Starting from the third cast, gain <trueDamage>true damage</trueDamage> instead.<br><br><spellActive>Active:</spellActive> Gain <TFTBonus>@ModifiedShield@&nbsp;(%i:scaleHealth%%i:scaleAP%)</TFTBonus> Shield for @ShieldDuration@ seconds, then slice open a rift on the largest group of champions dealing the Passive's bonus damage to all enemies within. Enemies have their Attack Speed slowed by <TFTBonus>@ASSlow*100@%</TFTBonus> while allies within gain <TFTBonus>@BonusAS*100@%</TFTBonus> Attack Speed, both rapidly decaying over @BuffDebuffDuration@ seconds.",
+      "desc": "<spellPassive>Passive:</spellPassive> On cast, attacks gain <magicDamage>@ModifiedBonusDamage@&nbsp;(%i:scaleHealth%%i:scaleAP%)</magicDamage> stacking bonus magic damage. Starting from the third cast, gain <trueDamage>true damage</trueDamage> instead.<br><br><spellActive>Active:</spellActive> Gain <TFTBonus>@ModifiedShield@&nbsp;(%i:scaleHealth%%i:scaleAP%)</TFTBonus> Shield for @ShieldDuration@ seconds, then slice open a rift on the largest group of champions dealing the Passive's bonus damage to all enemies within. Enemies have their Attack Speed slowed by <TFTBonus>@ASSlow*100@%</TFTBonus> while allies within gain <TFTBonus>@BonusAS*100@%</TFTBonus> Attack Speed, both rapidly decaying over @BuffDebuffDuration@ seconds. Shen always gains his rift's full bonus for this duration.",
       "icon": "ASSETS/Characters/TFT17_Shen/HUD/Icons2D/TFT17_Shen_RShield.TFT_Set17.tex",
       "name": "Reality Tear",
       "variables": [
@@ -5434,8 +5434,8 @@
           "name": "BasicAttackDamage",
           "value": [
             0,
-            62,
-            93,
+            66,
+            99,
             250,
             450,
             0,
@@ -5458,8 +5458,8 @@
           "name": "BoltDamage",
           "value": [
             0,
-            85,
-            130,
+            95,
+            145,
             750,
             540,
             0,
@@ -5758,9 +5758,9 @@
           "name": "Shield",
           "value": [
             0,
-            125,
-            300,
-            300,
+            100,
+            275,
+            460,
             525,
             0,
             0
@@ -5781,13 +5781,13 @@
         {
           "name": "BonusAP",
           "value": [
-            20,
-            20,
-            20,
-            20,
-            20,
-            20,
-            20
+            15,
+            15,
+            15,
+            15,
+            15,
+            15,
+            15
           ]
         },
         {
@@ -5795,9 +5795,9 @@
           "value": [
             200,
             200,
-            200,
-            200,
-            200,
+            230,
+            275,
+            300,
             200,
             200
           ]
@@ -5991,9 +5991,9 @@
           "value": [
             0,
             350,
-            425,
-            550,
-            650,
+            450,
+            625,
+            775,
             200,
             240
           ]
@@ -6003,9 +6003,9 @@
           "value": [
             0,
             75,
-            90,
-            105,
-            120,
+            100,
+            115,
+            130,
             0,
             0
           ]
@@ -6754,8 +6754,8 @@
           "name": "APHealthGain",
           "value": [
             0,
-            525,
-            625,
+            600,
+            700,
             2500,
             2500,
             2500,
@@ -6826,8 +6826,8 @@
           "name": "APHealing",
           "value": [
             0,
-            100,
-            150,
+            125,
+            185,
             3000,
             0,
             0,
