@@ -2,18 +2,25 @@ import { useStore } from "@nanostores/react";
 import {dataTFTChampions, urlDragon, dataTFTAllItems,dataTFT} from "@stores/dataTFT.js"
 import style from "./css/CampeonImgInTierList.module.css";
 import { navigate } from "astro:transitions/client";
+import { useState, useEffect } from "react";
 
 const CampeonImgInTierList = ({id, aumento, emblema, apiNameCampeon, apiNameItems, compUrl, isInfografia=false, estrellas, showTooltipOnHover=false, onSelectForInfografia, isSelectedForInfografia})=>{
-  // const [compsSelected, setCompsSelected] = useState([])
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => { setIsMounted(true); }, []);
+
   const championsData = useStore(dataTFTChampions);
   const itemsData = useStore(dataTFTAllItems);
-  const {name, squareIcon,cost} = championsData?.find(c => c.apiName === apiNameCampeon) || {};
+
+  const safeChampionsData = isMounted ? championsData : [];
+  const safeItemsData = isMounted ? itemsData : [];
+
+  const {name, squareIcon,cost} = safeChampionsData?.find(c => c.apiName === apiNameCampeon) || {};
   const items = apiNameItems?.map(apiNameItem => {
-    const foundItem = itemsData.find(item => item.apiName === apiNameItem);
+    const foundItem = safeItemsData.find(item => item.apiName === apiNameItem);
     return foundItem ? { icon: foundItem.icon, name: foundItem.name } : null;
   });
-  const aumentoIcon = aumento ? itemsData?.find(c => c.apiName === aumento)?.icon : null;
-  const emblemaIcon = emblema ? itemsData?.find(c => c.apiName === emblema)?.icon : null;
+  const aumentoIcon = aumento ? safeItemsData?.find(c => c.apiName === aumento)?.icon : null;
+  const emblemaIcon = emblema ? safeItemsData?.find(c => c.apiName === emblema)?.icon : null;
   
   const handleClick = async (e) => {
     e.preventDefault();
@@ -33,8 +40,8 @@ const CampeonImgInTierList = ({id, aumento, emblema, apiNameCampeon, apiNameItem
 
   if (!name) return (
     <a href={`/tft/meta-comps-tier-list-teamfight-tactics/${compUrl}`} className={`${style.champTier} ${isInfografia ? (isSelectedForInfografia ? style.activeComp : "") : (id ? style.activeComp : "")}`}>
-      <div className={style.containerChamp}>
-        <div className={style.champTierImg} style={{width: "100%", height: "100%", backgroundColor: "rgba(255,255,255,0.1)", borderRadius: "0.5rem", aspectRatio: "1/1"}}></div>
+      <div className={style.containerChamp} style={{ width: "100%" }}>
+        <div className={style.champTierImg} style={{width: "100%", minWidth: "45px", height: "100%", minHeight: "45px", backgroundColor: "rgba(255,255,255,0.1)", borderRadius: "0.5rem", aspectRatio: "1/1"}}></div>
       </div>
     </a>
   );
