@@ -375,10 +375,8 @@ export const loadConstantes = async () => {
   }
 }
 
-if (typeof window !== 'undefined') {
-  loadDataTFTFromAPI({})
-}
-
+// La llamada inicial redundante a loadDataTFTFromAPI fue eliminada
+// porque versionTFT.subscribe (arriba) ya dispara la primera llamada automáticamente al inicializarse.
 
 export const apiNamesCrafteableItems = () => {
   return versionTFT.get() === "pbe" ? apiNameOfCraftableItemsPBE.get() : apiNameOfCraftableItems.get();
