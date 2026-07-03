@@ -36,12 +36,6 @@ const absoluteSnippetImgUrl = new URL(resolvedSnippetImgUrl, Astro.site || "http
     {!admin && 
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-69PWGWV8LZ"></script>
     <script>
-      declare global {
-        interface Window {
-          dataLayer: any[];
-          gtag: (...args: any[]) => void; 
-        }
-      }
       window.dataLayer = window.dataLayer || [];
       window.gtag = function gtag(){window.dataLayer.push(arguments);}  // Añadir gtag a window
       window.gtag('js', new Date());

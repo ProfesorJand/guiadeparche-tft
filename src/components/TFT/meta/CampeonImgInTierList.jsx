@@ -31,7 +31,13 @@ const CampeonImgInTierList = ({id, aumento, emblema, apiNameCampeon, apiNameItem
     }
   }
 
-  if (!name) return null;
+  if (!name) return (
+    <a href={`/tft/meta-comps-tier-list-teamfight-tactics/${compUrl}`} className={`${style.champTier} ${isInfografia ? (isSelectedForInfografia ? style.activeComp : "") : (id ? style.activeComp : "")}`}>
+      <div className={style.containerChamp}>
+        <div className={style.champTierImg} style={{width: "100%", height: "100%", backgroundColor: "rgba(255,255,255,0.1)", borderRadius: "0.5rem", aspectRatio: "1/1"}}></div>
+      </div>
+    </a>
+  );
   return (
     <a href={`/tft/meta-comps-tier-list-teamfight-tactics/${compUrl}`} onClick={isInfografia ? handleInfografia : handleClick} className={`${style.champTier} ${isInfografia ? (isSelectedForInfografia ? style.activeComp : "") : (id ? style.activeComp : "")}`}>
       <div className={style.containerChamp}>  

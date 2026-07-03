@@ -255,7 +255,7 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
   }
 
   // Mapear, parsear y filtrar campeones, y debe ordenarse por "cost" que se obtiene en campeonInfo
-  const campeones = (comp?.posicionamiento?.[0]?.tablero || []).map((data) => {
+  const campeones = !isMounted ? [] : (comp?.posicionamiento?.[0]?.tablero || []).map((data) => {
     const rawChamp = championsTFT?.find(champ => champ?.apiName === data.apiNameCampeon);
 
     // Si no encuentra al campeón en la store, retornamos null
