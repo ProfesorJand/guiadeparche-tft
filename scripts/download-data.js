@@ -126,6 +126,11 @@ async function run() {
     const { data } = await fetchUrl(CDRAGON_URL);
     console.log('Parsing Community Dragon JSON...');
     const cdragonData = JSON.parse(data);
+    fs.writeFileSync(
+        path.join(DATA_DIR, 'cdragonData.json'),
+        JSON.stringify(cdragonData, null, 2),
+        'utf-8'
+      );
 
     // Extract items
     if (cdragonData.items) {

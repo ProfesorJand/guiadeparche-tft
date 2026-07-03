@@ -202,22 +202,9 @@ export const loadDataTFTFromAPI = ({ version = versionTFT.get(), idioma = "es", 
     } catch (e) {
       console.warn("Fetch de communitydragon bloqueado o fallido. Intentando fallback local...", e);
       try {
-        const { default: localData } = await import("../data/setData.json");
-        const setArray = Array.isArray(localData) ? localData : [localData];
-        
-        // El fallback debe simular la estructura completa de la API de CommunityDragon
-        const mockSets = {};
-        setArray.forEach(set => {
-          mockSets[set.number] = set;
-        });
+        const { default: cdragonData } = await import("../data/cdragonData.json");
 
-        const dataToUse = {
-          items: setArray[0]?.items || [],
-          setData: setArray,
-          sets: mockSets
-        };
-        
-        updateDataTFT(dataToUse);
+        updateDataTFT(cdragonData);
         await loadConstantes();
       } catch (fallbackError) {
         console.error("El fallback local también falló:", fallbackError);
@@ -284,6 +271,7 @@ const generateCraftableList = (allItems, setItemNames, setNumber) => {
 
 export const updateDataTFT = async (data) => {
   const { items, setData, sets } = data;
+  console.log({data})
   dataTFT.set(data);
   
   // Si items viene vacío (como en el fallback simple), juntamos todos los items de todos los sets
@@ -298,6 +286,7 @@ export const updateDataTFT = async (data) => {
       });
     }
   }
+  console.log({allItems})
   dataTFTAllItems.set(allItems || []);
 
   const setLatest = setData?.find(({ mutator }) => mutator === setMutatorLatest);
