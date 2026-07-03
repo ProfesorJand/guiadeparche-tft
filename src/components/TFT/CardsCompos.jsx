@@ -192,21 +192,30 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
   const handleToggle = async (e) => {
     e.preventDefault();
 
-    if (containerRef.current) {
-      // Guardar siempre a qué distancia de la pantalla estaba este elemento al hacer click
-      // y guardar el ID para saber cuál tarjeta debe reajustar el scroll en la siguiente página
-      const offsetTop = containerRef.current.getBoundingClientRect().top;
-      sessionStorage.setItem("tft-target-offset", offsetTop.toString());
-      sessionStorage.setItem("tft-target-id", comp.id.toString());
+    try {
+      if (containerRef.current) {
+        // Guardar siempre a qué distancia de la pantalla estaba este elemento al hacer click
+        // y guardar el ID para saber cuál tarjeta debe reajustar el scroll en la siguiente página
+        const offsetTop = containerRef.current.getBoundingClientRect().top;
+        sessionStorage.setItem("tft-target-offset", offsetTop.toString());
+        sessionStorage.setItem("tft-target-id", comp.id.toString());
+      }
+    } catch (err) {
+      console.warn("No se pudo usar sessionStorage en handleToggle:", err);
     }
 
     const targetUrl = isActive
       ? "/tft/meta-comps-tier-list-teamfight-tactics"
       : `/tft/meta-comps-tier-list-teamfight-tactics/${comp.urlSEO}`;
 
-    await navigate(targetUrl, {
-      scroll: false
-    });
+    try {
+      await navigate(targetUrl, {
+        scroll: false
+      });
+    } catch (err) {
+      console.error("Error con Astro navigate:", err);
+      window.location.href = targetUrl; // Fallback navigation
+    }
   };
 
   const handleToggleCardContainer = (e) => {
@@ -441,7 +450,7 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
                     Copiar Código
                   </button>
                   <a
-                    href={edit && isActive ? "/tft/meta-comps-tier-list-teamfight-tactics" : `/tft/meta-comps-tier-list-teamfight-tactics/${comp.urlSEO}`}
+                    href={isActive ? "/tft/meta-comps-tier-list-teamfight-tactics" : `/tft/meta-comps-tier-list-teamfight-tactics/${comp.urlSEO}`}
                     className={style.buttonLink}
                     onClick={handleToggle}
                   >

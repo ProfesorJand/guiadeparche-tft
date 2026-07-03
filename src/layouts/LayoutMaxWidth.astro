@@ -31,14 +31,14 @@ const absoluteSnippetImgUrl = new URL(resolvedSnippetImgUrl, Astro.site || "http
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <!-- DEBUG SCRIPT FOR IOS -->
-    <script is:inline>
+    <!-- <script is:inline>
       window.addEventListener('error', function(event) {
         alert("Error JS: " + event.message + "\nEn: " + event.filename + "\nLinea: " + event.lineno);
       });
       window.addEventListener('unhandledrejection', function(event) {
         alert("Promesa rechazada: " + (event.reason ? event.reason.message || event.reason : "Desconocido"));
       });
-    </script>
+    </script> -->
     <!-- google search console -->
     {!admin && <meta name="google-site-verification" content="VXzuc6CSTiTOeduk03n_uh0IUkgaBHkJAhQdtam2md0" />}
     <!-- google analitics -->
