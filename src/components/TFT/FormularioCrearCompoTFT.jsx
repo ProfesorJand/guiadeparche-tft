@@ -1,6 +1,13 @@
 import { useState, useEffect } from "react";
 import { useStore } from "@nanostores/react";
-import { crearCompoMetaPHPTest, dataTFTChampions, nameOfSet, dataTFTAllItems, urlDragon } from "@stores/dataTFT"
+import { 
+  crearCompoMetaPHPTest,
+  dataTFTChampions,
+  nameOfSet,
+  dataTFTAllItems,
+  urlDragon,
+  dataTFTAllAugments,
+} from "@stores/dataTFT"
 import NuevoBuilderTFT from "./NuevoBuilderTFT";
 // import ChampTierList from "./ChampTierList";
 import style from "./css/FormularioCrearCompoTFT.module.css";
@@ -27,7 +34,7 @@ import InfografiaMPTFT from "@components/TFT/master-plan/InfografiaMPTFT";
 const FormularioCrearCompoTFT = ({ compo = {} }) => {
   const allChampionsTFT = useStore(dataTFTChampions);
   const allItemsTFT = useStore(dataTFTAllItems);
-
+  const allAugmentsTFT = useStore(dataTFTAllAugments)
   const datosComposicionTFT = useStore(datosCompos);
 
 
@@ -55,7 +62,6 @@ const FormularioCrearCompoTFT = ({ compo = {} }) => {
         niveles: compo.niveles || [],
         itemsPrio: compo.itemsPrio || Object.values(compo?.carouselItems)?.map((item) => item.apiName) || [],
         posicionamiento: compo.posicionamiento,
-        ordenPrioridadAumentos: compo.ordenPrioridadAumentos,
         tipSEO: compo.tipSEO || compo.tipSeo || "",
         urlSEO: compo.urlSEO || compo.urlSeo || compo.compUrl || "",
         campeonesEarly: compo.campeonesEarly || Object.values(compo?.boardInfo?.early?.data)?.map((champ) => { return { apiNameCampeon: JSON.parse(champ.dataCampeon.campeon).apiName, apiNameItemsDelCampeon: champ.dataItem || [] } }) || [],
@@ -111,6 +117,33 @@ const FormularioCrearCompoTFT = ({ compo = {} }) => {
     }
   }
 
+  // A FUTURO: Función para guardar en Base de Datos
+  const guardarComposicionEnBDTFT = async (datos) => {
+    try {
+      console.log("Guardando en BD...", datos);
+      const token = import.meta.env.PUBLIC_TOKEN_META;
+      const urlAPI = `https://api.guiadeparche.com/tft/composicionesBD.php`; 
+      const response = await fetch(urlAPI, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(datos),
+      });
+      const data = await response.json();
+      if (data.status === 'success') {
+        alert('Composición guardada exitosamente en la Base de Datos');
+      } else {
+        console.error('Error al guardar en BD:', data.message);
+        alert('Error al guardar en BD: ' + data.message);
+      }
+    } catch (err) {
+      console.error("Error en fetch a BD:", err);
+      alert('Error de red al intentar guardar en BD');
+    }
+  };
+
   return (
     <div className={style.formContainer}>
       <p>Formulario Crear Compo TFT</p>
@@ -144,9 +177,14 @@ const FormularioCrearCompoTFT = ({ compo = {} }) => {
 
       <BestBuild />
 
+      <MejoresItems />
+
       <Textareas />
 
-      <button type="button" onClick={() => guardarComposicionTFT(datosComposicionTFT)}>Guardar Compo</button>
+      <div style={{ display: "flex", gap: "10px", marginTop: "15px", marginBottom: "15px" }}>
+        <button type="button" onClick={() => guardarComposicionTFT(datosComposicionTFT)} className={style.btnSuccess}>Guardar Compo</button>
+        <button type="button" onClick={() => guardarComposicionEnBDTFT(datosComposicionTFT)} className={style.btnPrimary}>Guardar en BD</button>
+      </div>
       <InfografiaMPTFT comp={datosComposicionTFT} />
       <datalist id="items">
         {allItemsTFT.map((option) => (
@@ -299,7 +337,7 @@ const CampeonMeta = () => {
   const datosComposicionTFT = useStore(datosCompos);
   const allChampionsTFT = useStore(dataTFTChampions);
   const allItemsTFT = useStore(dataTFTAllItems);
-  console.log(allChampionsTFT.find((champion) => champion.apiName === datosComposicionTFT?.campeonMeta?.apiNameCampeon)?.tileIcon)
+  const allAugmentsTFT = useStore(dataTFTAllAugments)
   return (
     <div className={style.toggleContent}>
       <fieldset className={style.fieldsetCyan}>
@@ -385,7 +423,8 @@ const CampeonMeta = () => {
             });
           }} />
           <datalist id="aumentos">
-            {allItemsTFT.map((option) => (
+            <option value="">Selecciona el aumento</option>
+            {allAugmentsTFT.map((option) => (
               <option key={option.apiName} value={option.apiName}>
                 {option.name}
               </option>
@@ -438,7 +477,7 @@ const CampeonMeta = () => {
         <img
           className={style.metaImage}
           alt="aumento"
-          src={`${urlDragon()}${allItemsTFT.find((item) => item.apiName === datosComposicionTFT?.campeonMeta?.aumento)?.icon.toLowerCase().replace(".tex", ".png")}`}
+          src={`${urlDragon()}${allAugmentsTFT.find((item) => item.apiName === datosComposicionTFT?.campeonMeta?.aumento)?.icon.toLowerCase().replace(".tex", ".png")}`}
         />
         <img
           className={style.metaImage}
@@ -773,6 +812,7 @@ const Condiciones = () => {
   const condiciones = useStore(datosCompos).condiciones || [];
   const allChampionsTFT = useStore(dataTFTChampions);
   const allItemsTFT = useStore(dataTFTAllItems);
+  const allAugmentsTFT = useStore(dataTFTAllAugments)
 
   const addCondicion = () => {
     actualizarComposicionTFT(prev => ({
@@ -891,6 +931,10 @@ const Condiciones = () => {
         {allItemsTFT?.map(item => (
           <option key={`cond-item-${item.apiName}`} value={item.apiName}>{item.name}</option>
         ))}
+
+        {allAugmentsTFT?.map(augment => (
+          <option key={`cond-augment-${augment.apiName}`} value={augment.apiName}>{augment.name}</option>
+        ))}
       </datalist>
     </fieldset>
   )
@@ -898,7 +942,7 @@ const Condiciones = () => {
 
 const Aumentos = () => {
   const aumentos = useStore(datosCompos).aumentos || [];
-
+  const allAugmentsTFT = useStore(dataTFTAllAugments);
   const addAumento = () => {
     actualizarComposicionTFT(prev => ({
       ...prev,
@@ -1068,6 +1112,7 @@ const BestBuild = () => {
   const bestBuilds = useStore(datosCompos).bestBuild || [];
   const allChampionsTFT = useStore(dataTFTChampions);
   const allItemsTFT = useStore(dataTFTAllItems);
+  const [visibleCampeonesItems, setVisibleCampeonesItems] = useState(true);
 
   const addBestBuildRow = () => {
     actualizarComposicionTFT(prev => ({
@@ -1127,142 +1172,563 @@ const BestBuild = () => {
   return (
     <fieldset className={style.fieldsetGreen}>
       <legend>Best Build</legend>
-      {bestBuilds.map((build, rowIndex) => {
-        const champData = allChampionsTFT?.find(c => c.apiName === build.apiNameCampeon);
-        const champImgUrl = champData?.tileIcon ? (champData.tileIcon.includes("http") ? champData.tileIcon.toLowerCase().replace(".tex", ".png") : urlDragon() + champData.tileIcon.toLowerCase().replace(".tex", ".png")) : null;
+      <div style={{display:"flex", flexDirection:"row", width:"100%",alignItems:"stretch"}}>
+        <div style={{display:"flex", flexDirection:"column", width:"50%", position:"relative"}}>
+          <div style={{position:"absolute",top:"0",bottom: 0, left: 0, right: 0, overflowY: "auto"}}>
 
-        return (
-          <div key={rowIndex} className={style.rowGap15Border}>
-            <div className={style.champIconContainer}>
-              {champImgUrl ? <img src={champImgUrl} alt={build.apiNameCampeon} className={style.champIcon} /> : <span className={style.emptyChamp}>?</span>}
-            </div>
 
-            <div className={style.flex1Gap15}>
-              <input
-                type="text"
-                list="listaCampeonesApiName"
-                value={build.apiNameCampeon || ""}
-                onChange={(e) => updateBestBuildChamp(rowIndex, e.target.value)}
-                placeholder="Seleccionar Campeón"
-                className={style.inputFlex1}
-                style={{ alignSelf: 'flex-start', marginTop: '5px' }}
-              />
+        
+            {bestBuilds.map((build, rowIndex) => {
+              const champData = allChampionsTFT?.find(c => c.apiName === build.apiNameCampeon);
+              const champImgUrl = champData?.tileIcon ? (champData.tileIcon.includes("http") ? champData.tileIcon.toLowerCase().replace(".tex", ".png") : urlDragon() + champData.tileIcon.toLowerCase().replace(".tex", ".png")) : null;
 
-              <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', flex: '1', minWidth: '300px' }}>
-                  <strong>Item BIS</strong>
-                  {(build.apiNameItemsBisDelCampeon || [["", "", ""]]).map((itemList, listIdx) => (
-                    <div key={listIdx} className={style.flexGap5} style={{ alignItems: 'center' }}>
-                      {[0, 1, 2].map(itemIndex => {
-                        const apiNameItem = itemList[itemIndex];
-                        const itemData = allItemsTFT?.find(i => i.apiName === apiNameItem);
-                        const itemImgUrl = itemData?.icon ? (itemData.icon.includes("http") ? itemData.icon.toLowerCase().replace(".tex", ".png") : urlDragon() + itemData.icon.toLowerCase().replace(".tex", ".png")) : null;
+              return (
+                <div key={rowIndex} className={style.rowGap15Border}>
+                  <div 
+                    className={style.champIconContainer}
+                    onDragOver={(e) => e.preventDefault()}
+                    onDrop={(e) => {
+                      e.preventDefault();
+                      const dataCampeonRaw = e.dataTransfer.getData("campeon");
+                      if (dataCampeonRaw) {
+                        const champ = JSON.parse(dataCampeonRaw);
+                        updateBestBuildChamp(rowIndex, champ.apiName || champ.name);
+                      }
+                    }}
+                    onDoubleClick={() => updateBestBuildChamp(rowIndex, "")}
+                    title="Arrastra un campeón aquí. Doble clic para limpiar."
+                    style={{ cursor: 'pointer', border: !champImgUrl ? '1px dashed #ccc' : 'none', minWidth: '60px', minHeight: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                  >
+                    {champImgUrl ? (
+                      <img 
+                        src={champImgUrl} 
+                        alt={build.apiNameCampeon} 
+                        className={style.champIcon} 
+                        draggable
+                        onDragStart={(e) => {
+                          e.dataTransfer.setData("campeon", JSON.stringify(champData || { apiName: build.apiNameCampeon }));
+                        }}
+                        onDragEnd={(e) => {
+                          if (e.dataTransfer.dropEffect === "none") {
+                            updateBestBuildChamp(rowIndex, "");
+                          }
+                        }}
+                      />
+                    ) : <span className={style.emptyChamp}>?</span>}
+                  </div>
 
-                        return (
-                          <div key={itemIndex} className={style.colCenterGap5}>
-                            <input
-                              type="text"
-                              list="listaItemsApiName"
-                              value={apiNameItem || ""}
-                              onChange={(e) => updateBestBuildItem(rowIndex, "apiNameItemsBisDelCampeon", listIdx, itemIndex, e.target.value)}
-                              placeholder={`Item ${itemIndex + 1}`}
-                              className={style.inputFull}
-                            />
-                            {itemImgUrl && <img src={itemImgUrl} alt={apiNameItem} className={style.itemIconMed} />}
+                  <div className={style.flex1Gap15}>
+                    <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', marginTop: '10px' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', flex: '1', width: '50%' }}>
+                        <strong>Item BIS</strong>
+                        {(build.apiNameItemsBisDelCampeon || [["", "", ""]]).map((itemList, listIdx) => (
+                          <div key={listIdx} className={style.flexGap5} style={{ alignItems: 'center' }}>
+                            {[0, 1, 2].map(itemIndex => {
+                              const apiNameItem = itemList[itemIndex];
+                              const itemData = allItemsTFT?.find(i => i.apiName === apiNameItem);
+                              const itemImgUrl = itemData?.icon ? (itemData.icon.includes("http") ? itemData.icon.toLowerCase().replace(".tex", ".png") : urlDragon() + itemData.icon.toLowerCase().replace(".tex", ".png")) : null;
+
+                              return (
+                                <div 
+                                  key={itemIndex} 
+                                  className={style.colCenterGap5}
+                                  onDragOver={(e) => e.preventDefault()}
+                                  onDrop={(e) => {
+                                    e.preventDefault();
+                                    const dataItemRaw = e.dataTransfer.getData("item");
+                                    if (dataItemRaw) {
+                                      const item = JSON.parse(dataItemRaw);
+                                      updateBestBuildItem(rowIndex, "apiNameItemsBisDelCampeon", listIdx, itemIndex, item.apiName || item.name);
+                                    }
+                                  }}
+                                  onDoubleClick={() => updateBestBuildItem(rowIndex, "apiNameItemsBisDelCampeon", listIdx, itemIndex, "")}
+                                  title={`Item ${itemIndex + 1}. Arrastra un item aquí. Doble clic para limpiar.`}
+                                  style={{ cursor: 'pointer' }}
+                                >
+                                  {itemImgUrl ? (
+                                    <img 
+                                      src={itemImgUrl} 
+                                      alt={apiNameItem} 
+                                      className={style.itemIconMed} 
+                                      draggable
+                                      onDragStart={(e) => {
+                                        e.dataTransfer.setData("item", JSON.stringify(itemData || { apiName: apiNameItem }));
+                                      }}
+                                      onDragEnd={(e) => {
+                                        if (e.dataTransfer.dropEffect === "none") {
+                                          updateBestBuildItem(rowIndex, "apiNameItemsBisDelCampeon", listIdx, itemIndex, "");
+                                        }
+                                      }}
+                                    />
+                                  ) : (
+                                    <div className={style.itemIconMed} style={{ border: '1px dashed #ccc', minWidth: '32px', minHeight: '32px', backgroundColor: 'rgba(0,0,0,0.1)', borderRadius: '4px' }} />
+                                  )}
+                                </div>
+                              );
+                            })}
+                              <button
+                                type="button"
+                                onClick={() => removeItemsRowFromBestBuild(rowIndex, "apiNameItemsBisDelCampeon", listIdx)}
+                                className={style.btnDangerFit}
+                                style={{ marginLeft: '5px' }}
+                                title="Eliminar esta fila de items BIS"
+                              >
+                                - Fila
+                              </button>
                           </div>
-                        );
-                      })}
-                      {listIdx > 0 && (
+                        ))}
                         <button
                           type="button"
-                          onClick={() => removeItemsRowFromBestBuild(rowIndex, "apiNameItemsBisDelCampeon", listIdx)}
-                          className={style.btnDangerFit}
-                          style={{ marginLeft: '5px' }}
-                          title="Eliminar esta fila de items BIS"
+                          onClick={() => addItemsRowToBestBuild(rowIndex, "apiNameItemsBisDelCampeon")}
+                          className={style.btnCyanSm}
+                          style={{ width: 'fit-content' }}
                         >
-                          - Fila
+                          + Añadir Fila Alternativa BIS
                         </button>
-                      )}
-                    </div>
-                  ))}
-                  <button
-                    type="button"
-                    onClick={() => addItemsRowToBestBuild(rowIndex, "apiNameItemsBisDelCampeon")}
-                    className={style.btnCyanSm}
-                    style={{ width: 'fit-content' }}
-                  >
-                    + Añadir Fila Alternativa BIS
-                  </button>
-                </div>
+                      </div>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', flex: '1', minWidth: '300px' }}>
-                  <strong>Special BIS</strong>
-                  {(build.apiNameItemsSpecialBisDelCampeon || [["", "", ""]]).map((itemList, listIdx) => (
-                    <div key={listIdx} className={style.flexGap5} style={{ alignItems: 'center' }}>
-                      {[0, 1, 2].map(itemIndex => {
-                        const apiNameItem = itemList[itemIndex];
-                        const itemData = allItemsTFT?.find(i => i.apiName === apiNameItem);
-                        const itemImgUrl = itemData?.icon ? (itemData.icon.includes("http") ? itemData.icon.toLowerCase().replace(".tex", ".png") : urlDragon() + itemData.icon.toLowerCase().replace(".tex", ".png")) : null;
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', flex: '1', width: '50%' }}>
+                        <strong>Special BIS</strong>
+                        {(build.apiNameItemsSpecialBisDelCampeon || [["", "", ""]]).map((itemList, listIdx) => (
+                          <div key={listIdx} className={style.flexGap5} style={{ alignItems: 'center' }}>
+                            {[0, 1, 2].map(itemIndex => {
+                              const apiNameItem = itemList[itemIndex];
+                              const itemData = allItemsTFT?.find(i => i.apiName === apiNameItem);
+                              const itemImgUrl = itemData?.icon ? (itemData.icon.includes("http") ? itemData.icon.toLowerCase().replace(".tex", ".png") : urlDragon() + itemData.icon.toLowerCase().replace(".tex", ".png")) : null;
 
-                        return (
-                          <div key={itemIndex} className={style.colCenterGap5}>
-                            <input
-                              type="text"
-                              list="listaItemsApiName"
-                              value={apiNameItem || ""}
-                              onChange={(e) => updateBestBuildItem(rowIndex, "apiNameItemsSpecialBisDelCampeon", listIdx, itemIndex, e.target.value)}
-                              placeholder={`Item ${itemIndex + 1}`}
-                              className={style.inputFull}
-                            />
-                            {itemImgUrl && <img src={itemImgUrl} alt={apiNameItem} className={style.itemIconMed} />}
+                              return (
+                                <div 
+                                  key={itemIndex} 
+                                  className={style.colCenterGap5}
+                                  onDragOver={(e) => e.preventDefault()}
+                                  onDrop={(e) => {
+                                    e.preventDefault();
+                                    const dataItemRaw = e.dataTransfer.getData("item");
+                                    if (dataItemRaw) {
+                                      const item = JSON.parse(dataItemRaw);
+                                      updateBestBuildItem(rowIndex, "apiNameItemsSpecialBisDelCampeon", listIdx, itemIndex, item.apiName || item.name);
+                                    }
+                                  }}
+                                  onDoubleClick={() => updateBestBuildItem(rowIndex, "apiNameItemsSpecialBisDelCampeon", listIdx, itemIndex, "")}
+                                  title={`Item ${itemIndex + 1}. Arrastra un item aquí. Doble clic para limpiar.`}
+                                  style={{ cursor: 'pointer' }}
+                                >
+                                  {itemImgUrl ? (
+                                    <img 
+                                      src={itemImgUrl} 
+                                      alt={apiNameItem} 
+                                      className={style.itemIconMed} 
+                                      draggable
+                                      onDragStart={(e) => {
+                                        e.dataTransfer.setData("item", JSON.stringify(itemData || { apiName: apiNameItem }));
+                                      }}
+                                      onDragEnd={(e) => {
+                                        if (e.dataTransfer.dropEffect === "none") {
+                                          updateBestBuildItem(rowIndex, "apiNameItemsSpecialBisDelCampeon", listIdx, itemIndex, "");
+                                        }
+                                      }}
+                                    />
+                                  ) : (
+                                    <div className={style.itemIconMed} style={{ border: '1px dashed #ccc', minWidth: '32px', minHeight: '32px', backgroundColor: 'rgba(0,0,0,0.1)', borderRadius: '4px' }} />
+                                  )}
+                                </div>
+                              );
+                            })}
+
+                              <button
+                                type="button"
+                                onClick={() => removeItemsRowFromBestBuild(rowIndex, "apiNameItemsSpecialBisDelCampeon", listIdx)}
+                                className={style.btnDangerFit}
+                                style={{ marginLeft: '5px' }}
+                                title="Eliminar esta fila de items Special BIS"
+                              >
+                                - Fila
+                              </button>
+                            
                           </div>
-                        );
-                      })}
-                      {listIdx > 0 && (
+                        ))}
                         <button
                           type="button"
-                          onClick={() => removeItemsRowFromBestBuild(rowIndex, "apiNameItemsSpecialBisDelCampeon", listIdx)}
-                          className={style.btnDangerFit}
-                          style={{ marginLeft: '5px' }}
-                          title="Eliminar esta fila de items Special BIS"
+                          onClick={() => addItemsRowToBestBuild(rowIndex, "apiNameItemsSpecialBisDelCampeon")}
+                          className={style.btnCyanSm}
+                          style={{ width: 'fit-content' }}
                         >
-                          - Fila
+                          + Añadir Fila Alternativa Special BIS
                         </button>
-                      )}
+                      </div>
                     </div>
-                  ))}
-                  <button
-                    type="button"
-                    onClick={() => addItemsRowToBestBuild(rowIndex, "apiNameItemsSpecialBisDelCampeon")}
-                    className={style.btnCyanSm}
-                    style={{ width: 'fit-content' }}
-                  >
-                    + Añadir Fila Alternativa Special BIS
-                  </button>
-                </div>
-              </div>
 
-              <button
-                type="button"
-                onClick={() => removeBestBuildRow(rowIndex)}
-                className={style.btnDangerFit}
-                style={{ marginLeft: 'auto', marginTop: '10px' }}
-                title="Eliminar este Campeón"
-              >
-                X Campeón
-              </button>
-            </div>
+                    <button
+                      type="button"
+                      onClick={() => removeBestBuildRow(rowIndex)}
+                      className={style.btnDangerFit}
+                      style={{ marginLeft: 'auto', marginTop: '10px' }}
+                      title="Eliminar este Campeón"
+                    >
+                      X Campeón
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+            
+            <button
+              type="button"
+              onClick={addBestBuildRow}
+              className={style.btnSuccess}
+              style={{ marginTop: '15px' }}
+            >
+              + Añadir Best Build
+            </button>
           </div>
-        );
-      })}
+          
+        </div>
+        <div style={{ display:"flex",width:"50%", flexDirection:"column",marginBottom: '20px', padding: '10px', border: '1px solid #444', borderRadius: '8px' }}>
+          <p style={{ margin: '0 0 10px 0', fontSize: '14px', color: '#ccc' }}>Arrastra los campeones y los ítems a los contenedores abajo.</p>
+          <div className={style.flexOnly}>
+            <button type="button" onClick={() => setVisibleCampeonesItems(true)}>Campeones</button>
+            <button type="button" onClick={() => setVisibleCampeonesItems(false)}>Items</button>
+          </div>
+          <div style={{ marginTop: '10px' }}>
+            {visibleCampeonesItems ? <ChampionsList /> : <ItemsList />}
+          </div>
+        </div>
+      </div>
+    </fieldset>
+  );
+};
+const MejoresItems = () => {
+  const mejoresItems = useStore(datosCompos).mejoresItems || {
+    Artefactos: [],
+    Radiantes: [],
+    Emblemas: [],
+    Especiales: []
+  };
+  const allChampionsTFT = useStore(dataTFTChampions);
+  const allItemsTFT = useStore(dataTFTAllItems);
+  const [visibleCampeonesItems, setVisibleCampeonesItems] = useState(true);
 
-      <button
-        type="button"
-        onClick={addBestBuildRow}
-        className={style.btnSuccess}
-      >
-        + Añadir Best Build
-      </button>
+  const handleUpdate = (newMejoresItems) => {
+    actualizarComposicionTFT(prev => ({ ...prev, mejoresItems: newMejoresItems }));
+  };
+
+  const addChampionRow = (category) => {
+    const newData = { ...mejoresItems };
+    newData[category] = [...(newData[category] || []), { apiNameCampeon: "", apiNameItemsDelCampeon: [] }];
+    handleUpdate(newData);
+  };
+
+  const removeChampionRow = (category, rowIndex) => {
+    const newData = { ...mejoresItems };
+    const newList = [...(newData[category] || [])];
+    newList.splice(rowIndex, 1);
+    newData[category] = newList;
+    handleUpdate(newData);
+  };
+
+  const updateChampion = (category, rowIndex, apiName) => {
+    const newData = { ...mejoresItems };
+    const newList = [...(newData[category] || [])];
+    newList[rowIndex] = { ...newList[rowIndex], apiNameCampeon: apiName };
+    newData[category] = newList;
+    handleUpdate(newData);
+  };
+
+  const updateItem = (category, rowIndex, itemIndex, apiNameItem) => {
+    const newData = { ...mejoresItems };
+    const newList = [...(newData[category] || [])];
+    const newItems = [...newList[rowIndex].apiNameItemsDelCampeon];
+    newItems[itemIndex] = apiNameItem;
+    
+    if (apiNameItem === "") {
+       newItems.splice(itemIndex, 1);
+    }
+    
+    newList[rowIndex] = { ...newList[rowIndex], apiNameItemsDelCampeon: newItems };
+    newData[category] = newList;
+    handleUpdate(newData);
+  };
+
+  const appendItem = (category, rowIndex, apiNameItem) => {
+    const newData = { ...mejoresItems };
+    const newList = [...(newData[category] || [])];
+    const newItems = [...newList[rowIndex].apiNameItemsDelCampeon];
+    newItems.push(apiNameItem);
+    newList[rowIndex] = { ...newList[rowIndex], apiNameItemsDelCampeon: newItems };
+    newData[category] = newList;
+    handleUpdate(newData);
+  };
+
+  const guardarMejoresItems = async () => {
+    try {
+      const token = import.meta.env.PUBLIC_TOKEN_META;
+      
+      const championsToSave = {};
+      const categorias = ["Artefactos", "Radiantes", "Emblemas", "Especiales"];
+      
+      categorias.forEach(cat => {
+        (mejoresItems[cat] || []).forEach(row => {
+          if (!row.apiNameCampeon) return;
+          if (!championsToSave[row.apiNameCampeon]) {
+            championsToSave[row.apiNameCampeon] = { Artefactos: [], Radiantes: [], Emblemas: [], Especiales: [] };
+          }
+          championsToSave[row.apiNameCampeon][cat] = [
+            ...championsToSave[row.apiNameCampeon][cat],
+            ...(row.apiNameItemsDelCampeon || [])
+          ];
+        });
+      });
+
+      const campeonesArray = Object.keys(championsToSave).map(apiName => ({
+        apiNameCampeon: apiName,
+        itemsData: championsToSave[apiName]
+      }));
+
+      if (campeonesArray.length === 0) {
+        alert("No hay campeones con ítems para guardar.");
+        return;
+      }
+
+      const res = await fetch("https://api.guiadeparche.com/tft/mejoresItemsCampeon.php", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ campeones: campeonesArray })
+      });
+      const data = await res.json();
+      alert("Guardado: " + (data.message || "Éxito"));
+    } catch (err) {
+      alert("Error al guardar: " + err.message);
+    }
+  };
+
+  const [championsFromDB, setChampionsFromDB] = useState({});
+  const [selectedChampionToImport, setSelectedChampionToImport] = useState("");
+
+  const cargarListaCampeonesDB = async () => {
+    try {
+      const token = import.meta.env.PUBLIC_TOKEN_META;
+      const res = await fetch("https://api.guiadeparche.com/tft/mejoresItemsCampeon.php", {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      const data = await res.json();
+      if (data.campeones) {
+        setChampionsFromDB(data.campeones);
+        alert("Lista cargada. Selecciona un campeón en el desplegable.");
+      }
+    } catch (err) {
+      alert("Error al cargar la lista: " + err.message);
+    }
+  };
+
+  const importarCampeon = () => {
+    if (!selectedChampionToImport || !championsFromDB[selectedChampionToImport]) {
+      alert("Selecciona un campeón válido primero.");
+      return;
+    }
+    const itemsData = championsFromDB[selectedChampionToImport];
+    const categorias = ["Artefactos", "Radiantes", "Emblemas", "Especiales"];
+    
+    let newData = { ...mejoresItems };
+    
+    categorias.forEach(cat => {
+      newData[cat] = (newData[cat] || []).filter(row => row.apiNameCampeon !== selectedChampionToImport);
+    });
+
+    categorias.forEach(cat => {
+      if (itemsData[cat] && itemsData[cat].length > 0) {
+        newData[cat].push({
+          apiNameCampeon: selectedChampionToImport,
+          apiNameItemsDelCampeon: itemsData[cat]
+        });
+      }
+    });
+
+    handleUpdate(newData);
+    alert(`Se han importado los ítems de ${selectedChampionToImport}`);
+  };
+
+  const categorias = ["Artefactos", "Radiantes", "Emblemas", "Especiales"];
+
+  return (
+    <fieldset className={style.fieldsetPurple}>
+      <legend>Mejores Items</legend>
+      
+      <div style={{ display:"flex", gap: "10px", marginBottom: "15px", alignItems: "center" }}>
+        <button type="button" className={style.btnSuccess} onClick={guardarMejoresItems} title="Guarda los ítems de los campeones actuales en la BD">Guardar Campeones en BD</button>
+        
+        <div style={{ borderLeft: "1px solid #666", margin: "0 10px", height: "30px" }}></div>
+        
+        <button type="button" className={style.btnCyanSm} onClick={cargarListaCampeonesDB}>1. Obtener de BD</button>
+        
+        <select 
+          className={style.inputBase} 
+          value={selectedChampionToImport} 
+          onChange={(e) => setSelectedChampionToImport(e.target.value)}
+          style={{ padding: "8px", minWidth: "150px" }}
+        >
+          <option value="">-- Seleccionar Campeón --</option>
+          {Object.keys(championsFromDB).map(apiName => {
+             const champObj = allChampionsTFT?.find(c => c.apiName === apiName);
+             return (
+               <option key={apiName} value={apiName}>{champObj ? champObj.name : apiName}</option>
+             )
+          })}
+        </select>
+
+        <button type="button" className={style.btnPurple} onClick={importarCampeon}>2. Añadir a Compo</button>
+      </div>
+
+      <div style={{ display:"flex", flexDirection:"row", width:"100%",alignItems:"stretch" }}>
+        <div style={{ display:"flex", flexDirection:"column", width:"50%", position:"relative", paddingRight: "10px" }}>
+          <div style={{ position:"absolute", top:"0", bottom: 0, left: 0, right: 0, overflowY: "auto", paddingRight: "10px" }}>
+            
+            {categorias.map(cat => (
+              <div key={cat} style={{ marginBottom: "20px", border: "1px solid #666", padding: "10px", borderRadius: "8px", backgroundColor: "rgba(0,0,0,0.1)" }}>
+                <h3 style={{ marginTop: 0, marginBottom: "10px", color: "#ddd", textTransform: "uppercase", fontSize: "16px" }}>{cat}</h3>
+                
+                {(mejoresItems[cat] || []).map((row, rowIndex) => {
+                  const champData = allChampionsTFT?.find(c => c.apiName === row.apiNameCampeon);
+                  const champImgUrl = champData?.tileIcon ? (champData.tileIcon.includes("http") ? champData.tileIcon.toLowerCase().replace(".tex", ".png") : urlDragon() + champData.tileIcon.toLowerCase().replace(".tex", ".png")) : null;
+
+                  return (
+                    <div key={rowIndex} className={style.rowGap15Border} style={{ padding: "10px", backgroundColor: "rgba(0,0,0,0.2)", borderRadius: "5px", marginBottom: "10px" }}>
+                      <div 
+                        className={style.champIconContainer}
+                        onDragOver={(e) => e.preventDefault()}
+                        onDrop={(e) => {
+                          e.preventDefault();
+                          const dataCampeonRaw = e.dataTransfer.getData("campeon");
+                          if (dataCampeonRaw) {
+                            const champ = JSON.parse(dataCampeonRaw);
+                            updateChampion(cat, rowIndex, champ.apiName || champ.name);
+                          }
+                        }}
+                        onDoubleClick={() => updateChampion(cat, rowIndex, "")}
+                        title="Arrastra un campeón aquí. Doble clic para limpiar."
+                        style={{ cursor: 'pointer', border: !champImgUrl ? '1px dashed #ccc' : 'none', minWidth: '60px', minHeight: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                      >
+                        {champImgUrl ? (
+                          <img 
+                            src={champImgUrl} 
+                            alt={row.apiNameCampeon} 
+                            className={style.champIcon} 
+                            draggable
+                            onDragStart={(e) => {
+                              e.dataTransfer.setData("campeon", JSON.stringify(champData || { apiName: row.apiNameCampeon }));
+                            }}
+                            onDragEnd={(e) => {
+                              if (e.dataTransfer.dropEffect === "none") {
+                                updateChampion(cat, rowIndex, "");
+                              }
+                            }}
+                          />
+                        ) : <span className={style.emptyChamp}>?</span>}
+                      </div>
+
+                      <div className={style.flex1Gap15} style={{ alignItems: "center" }}>
+                        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', flex: 1 }}>
+                          {(row.apiNameItemsDelCampeon || []).map((apiNameItem, itemIndex) => {
+                            const itemData = allItemsTFT?.find(i => i.apiName === apiNameItem);
+                            const itemImgUrl = itemData?.icon ? (itemData.icon.includes("http") ? itemData.icon.toLowerCase().replace(".tex", ".png") : urlDragon() + itemData.icon.toLowerCase().replace(".tex", ".png")) : null;
+                            
+                            return (
+                              <div 
+                                key={itemIndex} 
+                                className={style.colCenterGap5}
+                                style={{ flex: "0 0 auto" }}
+                                onDragOver={(e) => e.preventDefault()}
+                                onDrop={(e) => {
+                                  e.preventDefault();
+                                  const dataItemRaw = e.dataTransfer.getData("item");
+                                  if (dataItemRaw) {
+                                    const item = JSON.parse(dataItemRaw);
+                                    updateItem(cat, rowIndex, itemIndex, item.apiName || item.name);
+                                  }
+                                }}
+                                onDoubleClick={() => updateItem(cat, rowIndex, itemIndex, "")}
+                                title={`Doble clic o arrastrar fuera para eliminar.`}
+                              >
+                                {itemImgUrl ? (
+                                  <img 
+                                    src={itemImgUrl} 
+                                    alt={apiNameItem} 
+                                    className={style.itemIconMed} 
+                                    style={{ width: "40px", height: "40px", cursor: "pointer", objectFit: "cover", borderRadius: "4px" }}
+                                    draggable
+                                    onDragStart={(e) => {
+                                      e.dataTransfer.setData("item", JSON.stringify(itemData || { apiName: apiNameItem }));
+                                    }}
+                                    onDragEnd={(e) => {
+                                      if (e.dataTransfer.dropEffect === "none") {
+                                        updateItem(cat, rowIndex, itemIndex, "");
+                                      }
+                                    }}
+                                  />
+                                ) : (
+                                  <div className={style.itemIconMed} style={{ border: '1px dashed #ccc', minWidth: '40px', minHeight: '40px', backgroundColor: 'rgba(0,0,0,0.1)', borderRadius: '4px' }} />
+                                )}
+                              </div>
+                            );
+                          })}
+
+                          {/* Dropzone para agregar un nuevo item a este campeon */}
+                          <div
+                            onDragOver={(e) => e.preventDefault()}
+                            onDrop={(e) => {
+                              e.preventDefault();
+                              const dataItemRaw = e.dataTransfer.getData("item");
+                              if (dataItemRaw) {
+                                const item = JSON.parse(dataItemRaw);
+                                appendItem(cat, rowIndex, item.apiName || item.name);
+                              }
+                            }}
+                            title="Arrastra un item aquí para añadirlo"
+                            style={{ width: "40px", height: "40px", border: "1px dashed #00ff00", borderRadius: "4px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "#00ff00", fontSize: "20px" }}
+                          >
+                            +
+                          </div>
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={() => removeChampionRow(cat, rowIndex)}
+                          className={style.btnDangerFit}
+                          title="Eliminar este Campeón"
+                          style={{ marginLeft: "auto" }}
+                        >
+                          X
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+                <button
+                  type="button"
+                  onClick={() => addChampionRow(cat)}
+                  className={style.btnPurple}
+                  style={{ marginTop: '10px' }}
+                >
+                  + Añadir Campeón a {cat}
+                </button>
+              </div>
+            ))}
+
+          </div>
+        </div>
+        <div style={{ display:"flex",width:"50%", flexDirection:"column", padding: '10px', border: '1px solid #444', borderRadius: '8px' }}>
+          <p style={{ margin: '0 0 10px 0', fontSize: '14px', color: '#ccc' }}>Arrastra los campeones y los ítems a los contenedores de la izquierda.</p>
+          <div className={style.flexOnly}>
+            <button type="button" onClick={() => setVisibleCampeonesItems(true)}>Campeones</button>
+            <button type="button" onClick={() => setVisibleCampeonesItems(false)}>Items</button>
+          </div>
+          <div style={{ marginTop: '10px' }}>
+            {visibleCampeonesItems ? <ChampionsList /> : <ItemsList />}
+          </div>
+        </div>
+      </div>
     </fieldset>
   );
 };

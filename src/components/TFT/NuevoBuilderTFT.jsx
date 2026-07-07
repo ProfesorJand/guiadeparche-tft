@@ -368,7 +368,7 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
 
                     <span className={style.nombreCampeon}>{champion.nombre}</span>
 
-                    {/* <div className={style.containerItems}>
+                    <div className={style.containerItems}>
                       {champion.items.map((item, i) => (
                         <div 
                           key={i} 
@@ -382,7 +382,7 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
                           <img className={style.imgItem} src={item.imagen} alt={item.apiName} />
                         </div>
                       ))}
-                    </div> */}
+                    </div>
 
                     {activeMenu === hexIndex && (
                       <ContextMenuBuilderNew

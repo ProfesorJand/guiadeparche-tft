@@ -3,7 +3,7 @@ import style from "./tooltips.module.css";
 import { urlDragon, dataTFTAllItems } from "@stores/dataTFT.js";
 import { useStore } from "@nanostores/react";
 
-const TooltipItem = ({desc = null, effects, name, nombre, icon, composition}) => {
+const TooltipItem = ({desc_item = null, effects, name, nombre, icon, composition}) => {
   const $dataTFTAllItems = useStore(dataTFTAllItems);
   return (
     <div className={style.tooltipContent}>
@@ -25,7 +25,7 @@ const TooltipItem = ({desc = null, effects, name, nombre, icon, composition}) =>
       </div>
 
       <SanitizedComponent
-        htmlContent={replaceVariables(desc, effects)}
+        htmlContent={replaceVariables(desc_item, effects)}
         />
 
       {/* {effects &&

@@ -1,5 +1,5 @@
 import { useStore } from "@nanostores/react";
-import {dataTFTChampions, urlDragon, dataTFTAllItems,dataTFT} from "@stores/dataTFT.js"
+import {dataTFTChampions, urlDragon, dataTFTAllItems,dataTFT, dataTFTAllAugments} from "@stores/dataTFT.js"
 import style from "./css/CampeonImgInTierList.module.css";
 import { navigate } from "astro:transitions/client";
 import { useState, useEffect } from "react";
@@ -7,21 +7,23 @@ import { useState, useEffect } from "react";
 const CampeonImgInTierList = ({id, aumento, emblema, apiNameCampeon, apiNameItems, compUrl, isInfografia=false, estrellas, showTooltipOnHover=false, onSelectForInfografia, isSelectedForInfografia})=>{
   const [isMounted, setIsMounted] = useState(false);
   useEffect(() => { setIsMounted(true); }, []);
+  
 
   const championsData = useStore(dataTFTChampions);
   const itemsData = useStore(dataTFTAllItems);
+  const aumentosData = useStore(dataTFTAllAugments);
 
   const safeChampionsData = isMounted ? championsData : [];
   const safeItemsData = isMounted ? itemsData : [];
+  const safeAugmentsData = isMounted ? aumentosData : [];
 
   const {name, squareIcon,cost} = safeChampionsData?.find(c => c.apiName === apiNameCampeon) || {};
   const items = apiNameItems?.map(apiNameItem => {
     const foundItem = safeItemsData.find(item => item.apiName === apiNameItem);
     return foundItem ? { icon: foundItem.icon, name: foundItem.name } : null;
   });
-  const aumentoIcon = aumento ? safeItemsData?.find(c => c.apiName === aumento)?.icon : null;
+  const aumentoIcon = aumento ? safeAugmentsData?.find(c => c.apiName === aumento)?.icon : null;
   const emblemaIcon = emblema ? safeItemsData?.find(c => c.apiName === emblema)?.icon : null;
-  
   const handleClick = async (e) => {
     e.preventDefault();
     // Guardamos la posición absoluta del scroll actual para evitar que la página salte arriba
