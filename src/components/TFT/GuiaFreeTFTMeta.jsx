@@ -328,7 +328,7 @@ const Posicionamiento = ({comp})=>{
     <div className={`${style.borderBlock} ${style.containerPosicionamientoBlock}`}>
       <h4>Posicionamiento</h4>
       <div className={style.containerSinergiasActivas}>
-        <Sinergias sinergias={comp?.posicionamiento?.[0]?.tablero} orientacion={"vertical"} show={true} version={comp?.version} />
+        <Sinergias sinergias={comp?.posicionamiento?.[0]?.tablero} orientacion={"vertical"} show={true} version={"latest" || comp?.version} />
       </div>
       <NuevoBuilderTFT customTablero={comp?.posicionamiento?.[0]?.tablero} readOnly={true} />
     </div>
@@ -494,12 +494,17 @@ const FooterBuild = ({comp})=>{
                     <div className={style.containerBuildItemImg}>
                       {/* {bisItemsData.length > 0 && <span className={style.buildItemText}>BIS</span>} */}
                       {bisItemsData.map((item, idx) => (
-                        <ImgItem item={item} key={`build-item-${idx}`} />                      ))}
+                        <div key={`build-item-${idx}`} className={style.cItemBuild}>
+                          <ImgItem item={item}/>                      
+                        </div>
+                      ))}
                     </div>
                     <div className={style.containerBuildItemImg}>
                       {/* {specialBisItemsData.length > 0 && <span className={style.buildItemText}>BIS ESPECIAL</span>} */}
                       {specialBisItemsData.map((item, idx) => (
-                        <ImgItem item={item} key={`build-item-special-${idx}`} />
+                        <div key={`build-item-special-${idx}`} className={style.cItemBuild}>
+                          <ImgItem item={item} />
+                        </div>
                         ))}
                     </div>
                   </div>

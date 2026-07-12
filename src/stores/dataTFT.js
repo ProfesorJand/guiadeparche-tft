@@ -12,15 +12,15 @@ const initialStateDataTFTSets = [];
 const initialStateDataTFTChampions = [];
 const initialStateVersion = "pbe";
 const initialStateTeamPlannerCode = [];
-const initialTFT_SET = "pbe";
+const initialTFT_SET = "latest";
 
 export const setNumberPBE = "17";
 export const setMutatorPBE = "TFTSet17";
-export const setNumberLatest = "16";
-export const setMutatorLatest = "TFTSet16";
+export const setNumberLatest = "17";
+export const setMutatorLatest = "TFTSet17";
 export const nameOfSet = {
   "pbe": "Space Gods",
-  "latest": "Lore & Legends"
+  "latest": "Space Gods"
 }
 
 const orderedBaseItems = [
@@ -51,9 +51,9 @@ export const constantesJSON = `${apiGPTFT}constantes.json`;
 export const constantesPHP = `${apiGPTFT}constantes.php`;
 export const urlComposiciones = `${apiGPTFT}composiciones/`;
 export const metaTFTComposicionesJSON = `${apiGPTFT}metaTFTComposiciones.json`;
-export const composMetaJSON = `${apiGPTFT}composMeta.json`;
-export const composMetaPBEJSON = `${apiGPTFT}composMetaPBE.json`;
-export const composMetaPBETestJSON = `${apiGPTFT}composMetaPBETest.json`;
+export const composMetaJSON = `${apiGPTFT}composicionesBD.php`;
+export const composMetaPBEJSON = `${apiGPTFT}composicionesBD.php`;
+export const composMetaPBETestJSON = `${apiGPTFT}composicionesBD.php`;
 export const composTest = atom({})
 
 let fetchingComposPromise = null;
@@ -73,6 +73,16 @@ export const composMetaPBETest = async () => {
   })
     .then(response => response.json())
     .then(COMPOSTEST => {
+      if (COMPOSTEST.status === "success" && Array.isArray(COMPOSTEST.data)) {
+        const grouped = {};
+        COMPOSTEST.data.forEach(compo => {
+          if (compo.ocultar) return;
+          const tier = compo.tier || "B";
+          if (!grouped[tier]) grouped[tier] = [];
+          grouped[tier].push(compo);
+        });
+        COMPOSTEST = grouped;
+      }
       composTest.set(COMPOSTEST);
       fetchingComposPromise = null;
       return COMPOSTEST;
@@ -89,6 +99,7 @@ export const assets3Estrellas = `${apiGPTFT}3-estrellas.webp`;
 
 export const dataTFT = deepMap(initialStateDataTFT)
 export const dataTFTAllItems = atom(initialStateDataTFTItems);
+export const dataTFTAllAugments = atom([]);
 export const dataTFTSetData = atom(initialStateDataTFTSetData);
 export const dataTFTChampions = atom(initialStateDataTFTChampions);
 export const dataTFTTraits = atom([]);
@@ -194,13 +205,14 @@ export const urlDragon = () => {
 export const loadDataTFTFromAPI = ({ version = versionTFT.get(), idioma = "es", pais = "ar" }) => {
   task(async () => {
     try {
-      const urlDragon = `https://raw.communitydragon.org/${version}/cdragon/tft/${idioma}_${pais}.json`
-      const response = await fetch(urlDragon);
+      // Usamos el endpoint PHP propio en lugar de CommunityDragon
+      const urlAPI = `https://api.guiadeparche.com/tft/getDataTFT.php`;
+      const response = await fetch(urlAPI);
       const data = await response.json();
       updateDataTFT(data)
       await loadConstantes();
     } catch (e) {
-      console.warn("Fetch de communitydragon bloqueado o fallido. Intentando fallback local...", e);
+      console.warn("Fetch del backend PHP fallido. Intentando fallback local...", e);
       try {
         const { default: cdragonData } = await import("../data/cdragonData.json");
 
@@ -270,43 +282,49 @@ const generateCraftableList = (allItems, setItemNames, setNumber) => {
 };
 
 export const updateDataTFT = async (data) => {
-  const { items, setData, sets } = data;
-  console.log({data})
-  dataTFT.set(data);
+  // Soporte para la nueva estructura de la BD (data.data) o la vieja (CommunityDragon fallback)
+  const isFromDB = !!data.data;
+  const payload = isFromDB ? data.data : data;
+
+  const items = payload.items || [];
+  const augments = payload.aumentos || []; // Nuevo para los aumentos
+  const champions = isFromDB ? payload.champions : payload.sets?.[versionTFT.get() === "pbe" ? setNumberPBE : setNumberLatest]?.champions;
+  const traits = isFromDB ? payload.traits : payload.sets?.[versionTFT.get() === "pbe" ? setNumberPBE : setNumberLatest]?.traits;
+
+  console.log({ payload });
+  dataTFT.set(payload);
   
-  // Si items viene vacío (como en el fallback simple), juntamos todos los items de todos los sets
   let allItems = items;
   if (!allItems || allItems.length === 0) {
     allItems = [];
-    if (setData && Array.isArray(setData)) {
-      setData.forEach(set => {
+    if (!isFromDB && payload.setData && Array.isArray(payload.setData)) {
+      payload.setData.forEach(set => {
         if (set.items) {
           allItems.push(...set.items);
         }
       });
     }
   }
-  console.log({allItems})
+  console.log({ allItems });
   dataTFTAllItems.set(allItems || []);
+  console.log({augments})
+  dataTFTAllAugments.set(augments || []);
 
-  const setLatest = setData?.find(({ mutator }) => mutator === setMutatorLatest);
-  const setPBE = setData?.find(({ mutator }) => mutator === setMutatorPBE);
+  const allItemNames = (allItems || []).map(i => i.apiName);
 
-  if (setLatest && allItems) {
-    const list = generateCraftableList(allItems, setLatest.items || [], setNumberLatest);
-    apiNameOfCraftableItems.set(list);
-  }
-  if (setPBE && allItems) {
-    const list = generateCraftableList(allItems, setPBE.items || [], setNumberPBE);
-    apiNameOfCraftableItemsPBE.set(list);
-  }
+  // Generar items crafteables directamente con todos los items
+  // ignorando el filtro por set (ya que la DB de este backend es específica del set)
+  const listLatest = generateCraftableList(allItems || [], allItemNames, setNumberLatest);
+  apiNameOfCraftableItems.set(listLatest);
+  
+  const listPBE = generateCraftableList(allItems || [], allItemNames, setNumberPBE);
+  apiNameOfCraftableItemsPBE.set(listPBE);
 
-  const foundSet = setData?.find(({ mutator }) => mutator === (versionTFT.get() === "pbe" ? setMutatorPBE : setMutatorLatest));
-  dataTFTItemsBySet.set(foundSet?.items || []);
-  dataTFTSetData.set(setData || []);
+  // Guardar items por set
+  dataTFTItemsBySet.set(allItems || []);
+  dataTFTSetData.set(payload.setData || []);
 
-  const currentSet = sets?.[versionTFT.get() === "pbe" ? setNumberPBE : setNumberLatest];
-  const allChampionsRaw = currentSet?.champions ? [...currentSet.champions] : [];
+  const allChampionsRaw = champions ? [...champions] : [];
 
   if (!allChampionsRaw.some(c => c.apiName === "TFT15_ShenSword")) {
     allChampionsRaw.push({
@@ -332,7 +350,7 @@ export const updateDataTFT = async (data) => {
       return 0; 
     })
   );
-  dataTFTTraits.set(currentSet?.traits || []);
+  dataTFTTraits.set(traits || []);
 };
 
 export const swapVersionTFT = (data) => {
@@ -438,7 +456,19 @@ export const addRestCompsFetch = async (url) => {
       url,
       { cache: "no-cache" }
     );
-    const data = await response.json();
+    let data = await response.json();
+    
+    if (data.status === "success" && Array.isArray(data.data)) {
+      const grouped = {};
+      data.data.forEach(compo => {
+        if (compo.ocultar) return;
+        const tier = compo.tier || "B";
+        if (!grouped[tier]) grouped[tier] = [];
+        grouped[tier].push(compo);
+      });
+      data = grouped;
+    }
+
     const hierarchy = ["S", "A", "B", "C", "D", "MEME"];
     const allSorted = [];
 
@@ -487,7 +517,19 @@ export const fetchAndSortComps = async (url) => {
       url,
       { cache: "no-cache" }
     );
-    const data = await response.json();
+    let data = await response.json();
+    
+    if (data.status === "success" && Array.isArray(data.data)) {
+      const grouped = {};
+      data.data.forEach(compo => {
+        if (compo.ocultar) return;
+        const tier = compo.tier || "B";
+        if (!grouped[tier]) grouped[tier] = [];
+        grouped[tier].push(compo);
+      });
+      data = grouped;
+    }
+
     const hierarchy = ["S", "A", "B", "C", "D", "MEME"];
     const allSorted = [];
 

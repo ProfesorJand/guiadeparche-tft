@@ -98,7 +98,7 @@ return JSON.parse(json);
 }
 
 export async function getMazosMeta(){
-	const response = await fetch(`https://api.guiadeparche.com/riftbound/mazosMeta.json?t=${Date.now()}`, { cache: 'no-store' })
+	const response = await fetch(`https://api.guiadeparche.com/riftbound/mazosMeta.json?t=${Date.now()}`, { cache: 'reload' })
 	const data = await response.json()
 	return data
 }

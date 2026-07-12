@@ -45,7 +45,7 @@ export async function getComposMetaPBE() {
   try {
     const response = await fetch('https://api.guiadeparche.com/tft/composMetaPBETest.json', {
       headers: FETCH_HEADERS,
-      cache: "no-store"
+      cache: "reload"
     });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const data = await response.json();
@@ -54,6 +54,39 @@ export async function getComposMetaPBE() {
   } catch (err) {
     console.error("Error fetching composMetaPBE.json remotely:", err);
     throw err; // Hacemos que el build falle si no hay datos
+  }
+}
+
+let composDBPBECache = null;
+export async function getComposFromDB() {
+  if (composDBPBECache) return composDBPBECache;
+
+  try {
+    const response = await fetch('https://api.guiadeparche.com/tft/composicionesBD.php', {
+      headers: FETCH_HEADERS,
+      cache: "reload"
+    });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const result = await response.json();
+    
+    const allComposArray = result.data || [];
+    
+    // Agrupamos por tier para que sea compatible con la función sortComps original
+    const groupedByTier = {};
+    allComposArray.forEach(compo => {
+      if (compo.ocultar) return; // Si la compo está oculta, no la añadimos
+      const tier = compo.tier || "B";
+      if (!groupedByTier[tier]) {
+        groupedByTier[tier] = [];
+      }
+      groupedByTier[tier].push(compo);
+    });
+    
+    composDBPBECache = sortComps(groupedByTier);
+    return composDBPBECache;
+  } catch (err) {
+    console.error("Error fetching composicionesBD.php remotely:", err);
+    throw err;
   }
 }
 
@@ -75,7 +108,7 @@ export async function getComposMeta() {
   try {
     const response = await fetch('https://api.guiadeparche.com/tft/composMeta.json', {
       headers: FETCH_HEADERS,
-      cache: "no-store"
+      cache: "reload"
     });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const data = await response.json();
@@ -104,7 +137,7 @@ export async function getConstantes() {
   try {
     const response = await fetch('https://api.guiadeparche.com/tft/constantes.json', {
       headers: FETCH_HEADERS,
-      cache: "no-store"
+      cache: "reload"
     });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const data = await response.json();
@@ -143,7 +176,7 @@ export async function getValorantConstantes() {
 
 export async function getLastUpdateDate(url = 'https://api.guiadeparche.com/tft/composMetaPBETest.json') {
   try {
-    const response = await fetch(url, { method: 'HEAD', cache: 'no-store' });
+    const response = await fetch(url, { method: 'HEAD', cache: 'reload' });
     const lastModified = response.headers.get('Last-Modified');
     if (lastModified) {
       const date = new Date(lastModified);
@@ -197,7 +230,7 @@ export async function getTFTDataPBE() {
   }
 
   try {
-    const response = await fetch('https://raw.communitydragon.org/pbe/cdragon/tft/es_mx.json');
+    const response = await fetch('https://raw.communitydragon.org/pbe/cdragon/tft/es_ar.json');
     const data = await response.json();
     
     if (typeof window === 'undefined') {

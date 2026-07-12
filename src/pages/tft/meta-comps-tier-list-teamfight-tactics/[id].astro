@@ -2,14 +2,14 @@
 import MetaCompsLayout from "@components/TFT/MetaCompsLayout.astro";
 
 import {
-  getComposMetaPBE,
+  getComposFromDB,
   getConstantes,
   getTFTDataPBE,
 } from "../../../lib/cache/tftCache.js";
 import { urlDragon, setNumberPBE } from "@stores/dataTFT";
 
 export async function getStaticPaths() {
-  const todasLasCompsPBE = await getComposMetaPBE();
+  const todasLasCompsPBE = await getComposFromDB();
   
   const top10Comps = [...todasLasCompsPBE.slice(0, 10)];
   const restComps = [...todasLasCompsPBE.slice(10)];

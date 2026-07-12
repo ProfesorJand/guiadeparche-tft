@@ -25,7 +25,7 @@ const MejoresMazosRiftbound = ()=>{
   useEffect(() => {
     console.log(mazo);
     const gettingDataRiftboundCards = async()=>{
-      const data = await fetch("https://api.guiadeparche.com/riftbound/data_nov_2025.json",{cache: 'no-store'});
+      const data = await fetch("https://api.guiadeparche.com/riftbound/data_nov_2025.json",{cache: 'reload'});
       const res = await data.json();
       const allCardsInJson = res.sets.flatMap(set => set.cards);
       console.log({allCardsInJson})

@@ -2,25 +2,68 @@
   display:flex;
   width: 100%;
   position:relative;
-  gap:20px;
   flex-direction: column;
-
+  --gapBoxRow:20px;
+  --gapBoxColumn:20px;
+  --gapTitleInfo:5px;
+  --gapInside:5px;
+  gap:var(--gapBoxColumn);
 }
 
-.cCondicionOpEarly{
+.cBoxTitleInfo{
+  flex-direction: column;
+  gap:var(--gapTitleInfo);
+  border: 2px solid #000;
+  box-sizing: border-box;
+}
+
+
+.cBoxRow{
   display:flex;
   width: 100%;
   position:relative;
-  gap:5px;
   flex-direction: row;
+  gap:var(--gapBoxRow);
+}
+
+.cCondicionOpEarly{
+  width: calc((100% - (var(--gapBoxRow) * 1)) / 3);
+}
+
+.cCondicionOpEarlyImg{
+  display:flex;
+  flex-direction: row;
+  gap:var(--gapInside);
+}
+.cFundamentals{
+  width:calc((100% - (var(--gapBoxRow) * 1)) / 3 * 2);
+}
+.cFundamentalsInfo{
+  display:flex;
+  flex-direction: row;
+  gap:var(--gapBoxColumn);
+  box-sizing: border-box;
+  width:100%; 
+}
+
+.cCampeonesPrio{
+  display:flex;
+  width:50%;
+}
+.cCampeonesEarly{
+  display:flex;
+  flex-direction:row;
+  width:100%;
+  gap:var(--gapInside);
 }
 
 .cCondicionOP{
   display:flex;
-  width: calc((100% - (5px * 3)) / 4);
+  width: calc((100% - (var(--gapInside) * 3)) / 4);
   position:relative;
   flex-direction: row;
 }
+
 
 .cCondicionGrande{
   display:flex;
@@ -36,10 +79,107 @@
   left:0;
 }
 
-.cNiveles{
+.cPrioridadObjetos{
   display:flex;
+  width:50%;
+}
+.cPrioridadObjetosInfo{
+  display:flex;
+  flex-direction:row;
+  gap:var(--gapInside);
+  width:100%;
+}
+
+.carouselItem{
+  display:flex;
+  position: relative;
+  width:calc((100% - (var(--gapInside) * 4)) / 5);
+
+}
+.mayorQue{
+  display:flex;
+}
+
+.cAumentos{
+  width:100%;
+}
+.cAumentosInfo{
+  display:flex;
+  width: 100%;
+  flex-direction: row;
+  gap:var(--gapInside);
+}
+.cAumento{
+  display: flex;
+  width:calc((100% - (var(--gapInside) * 8)) / 9);
   position:relative;
+}
+
+.opAumento{
+  display:flex;
+  position:absolute;
+  width:20%;
+  top:0%;
+  right:0%;
+  z-index: 2;
+}
+.textOP{
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.cNiveles{
+  width:30%;
+}
+
+.cPosicionamiento{
+  width:70%;
+}
+.cBestItemComp{
+  width:25%;
+}
+.cBestItemCompInfo{
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap:var(--gapInside);
+}
+
+.cBestItems{
+  width:75%;
+}
+.cBestItemsInfo{
+  display:flex;
+  width: 100%;
+  flex-direction: row;
+  gap:var(--gapInside);
+}
+
+.cardCampeonBIS{
+  display: flex;
+  width:calc((100% - (var(--gapInside) * 4)) / 5);
+  position:relative;
+  flex-direction:column;
+}
+.cardCampeonBISItems{
+  display: flex;
+  flex-direction: column;
+  gap:var(--gapInside);
+}
+.cItems{
   width:100%;
   flex-direction: column;
-  gap:10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.cItemsInfo{
+  display:flex;
+  flex-direction:row;
+  width:100%;
+  justify-content: center;
+}
+.cItem{
+  display:flex;
+  width:calc((100% - (var(--gapInside) * 4)) / 5);
 }
