@@ -6,7 +6,7 @@ import style from "./css/ImgItem.module.css";
 const ImgAugment = ({ augment, className = "", type="augment" }) => {
 	if (!augment) return null;
 	return (
-		<Tooltip type="augment" item={augment}>
+		<Tooltip type={type} augment={augment}>
 			<div className={`${style.itemContainer} ${className}`.trim()}>
 				{augment.icon && (
 					<img 

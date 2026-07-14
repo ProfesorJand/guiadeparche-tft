@@ -141,7 +141,6 @@ const Header1 = ({comp, allChampionsTFT, allItemsTFT, allAugmentsTFT})=>{
                 let isChampionPequeno;
                 let tipoPequeno;
                 let tipoGrande;
-                console.log({condicionOP})
                 const extras = ["Win Streak","Loss Streak","Orbe","3 estrellas","4 estrellas"];
                 
                 // API NAME GRANDE
@@ -153,7 +152,6 @@ const Header1 = ({comp, allChampionsTFT, allItemsTFT, allAugmentsTFT})=>{
                   isChampionGrande = allChampionsTFT.find((x) => x.apiName === condicionOP.apiNameGrande);
                   tipoGrande = isAugmentGrande ? "augment" : isItemGrande ? "item" : isChampionGrande ? "champion" : "";
                   const filtradoGrande = (isItemGrande || isChampionGrande || isAugmentGrande)?.icon;
-                  console.log({isAugmentGrande})
                   busquedaGrande = filtradoGrande ? getLocalTftImage(filtradoGrande, 'augments/choiceui') : "";
                 }
                 
@@ -166,7 +164,6 @@ const Header1 = ({comp, allChampionsTFT, allItemsTFT, allAugmentsTFT})=>{
                   isChampionPequeno = allChampionsTFT.find((x) => x.apiName === condicionOP.apiNamePequeno);
                   tipoPequeno = isAugmentPequeno ? "augment" : isItemPequeno ? "item" : isChampionPequeno ? "champion" : "";
                   const filtradoPequeno = (isItemPequeno || isChampionPequeno || isAugmentPequeno)?.icon;
-                  console.log({isChampionPequeno})
                   busquedaPequeno = filtradoPequeno ? getLocalTftImage(filtradoPequeno, 'augments/choiceui') : "";
                 }
 
@@ -207,7 +204,6 @@ const Header1 = ({comp, allChampionsTFT, allItemsTFT, allAugmentsTFT})=>{
           <div className={style.itemsCarouselContainer}>
             {itemsPrio.map((itemName, index) => {
               const itemData = allItemsTFT.find(i => i.apiName === itemName);
-              console.log({itemData})
               return itemData ? [
                 <div key={`itemPrio-${index}`} className={style.carouselItem}>
                   {/* <Tooltip type="item" item={itemData}>
