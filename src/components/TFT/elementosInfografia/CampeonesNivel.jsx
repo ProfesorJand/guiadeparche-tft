@@ -1,16 +1,12 @@
 import React from "react";
 import style from "./css/CampeonesNivel.module.css";
-import {dataTFTChampions, dataTFTAllItems, urlDragon} from "@stores/dataTFT";
+import {dataTFTChampions, dataTFTAllItems} from "@stores/dataTFT";
 import { useStore } from "@nanostores/react";
-import Tooltip from "@components/tooltips";
-import { isNonNullExpression } from "typescript";
 import ImgCampeon from "../ImgCampeon";
-import styleImgCampeon from "../css/ImgCampeon.module.css";
 
 const CampeonesNivel = ({comp, isMP = false, isEarly = false}) => {
 	const [isMounted, setIsMounted] = React.useState(false);
 	React.useEffect(() => { setIsMounted(true); }, []);
-	console.log({comp})
 	const championsTFT = useStore(dataTFTChampions) || [];
 	const allItemsTFT = useStore(dataTFTAllItems) || [];
 
@@ -140,7 +136,7 @@ const CampeonesNivel = ({comp, isMP = false, isEarly = false}) => {
 						<h4 style={{ margin: "10px 0 15px 0", display: "flex", alignItems: "center", gap: "8px", fontSize: "16px", color: "var(--text-color)" }}>
 							Lv {nivel.level} <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18l6-6-6-6"/></svg> ronda {nivel.etapa}-{nivel.ronda}
 							{nivel.roll && 
-								<span>(Roll)</span>
+								<span className={style.highlightText}>(Roll)</span>
 							}
 						</h4>
 						<div 

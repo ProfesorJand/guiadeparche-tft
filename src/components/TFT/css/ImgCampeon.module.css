@@ -53,6 +53,12 @@
   z-index: 2;
 }
 
+.imgEstrella{
+  display:flex;
+  width:100%;
+  filter: drop-shadow(2px 0px 0px #0e0300) drop-shadow(-2px 0px 0px #0e0300) drop-shadow(0px 2px 0px #0e0300) drop-shadow(0px -2px 0px #0e0300);
+}
+
 .itemsContainer {
   position: absolute;
   bottom: 15px; /* Above the name */

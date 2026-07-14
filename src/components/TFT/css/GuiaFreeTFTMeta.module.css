@@ -230,6 +230,7 @@
   position:relative;
 }
 
+
 .condicionGrandeImg{
   width:100%;
   background-color: #0000007e;
@@ -285,6 +286,10 @@
   width: calc((100% - ((5px + ( 7.5cqw)) * 3)) / 4 );
   min-width: 0;
   position:relative;
+  border-radius: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .bigItemImg{

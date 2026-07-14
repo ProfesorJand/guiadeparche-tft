@@ -3,7 +3,8 @@ import style from "./css/CardsMasterPlanCompos.module.css"
 import { useStore } from "@nanostores/react";
 import Tooltip from "@components/tooltips";
 
-import {urlDragon, dataTFTAllItems, dataTFTChampions} from "@stores/dataTFT"
+import { dataTFTAllItems, dataTFTChampions } from "@stores/dataTFT";
+import { getLocalTftImage } from "@utils/images";
 const CardsMasterPlanCompos = ({compo})=>{
   const allItemsTFT = useStore(dataTFTAllItems);
   const allChampionsTFT = useStore(dataTFTChampions);
@@ -39,17 +40,17 @@ const CardsMasterPlanCompos = ({compo})=>{
               {compo.campeonMeta.aumento &&
                 <img 
                 className={style.imgAumentoCard} 
-                src={urlDragon()+allItemsTFT.find(x => x.apiName === compo.campeonMeta.aumento)?.icon.toLowerCase().replace(".tex",".png")} 
+                src={getLocalTftImage(allItemsTFT.find(x => x.apiName === compo.campeonMeta.aumento)?.icon, 'augments/choiceui')} 
                 alt="aumento del campeon meta"/>}
               {compo.campeonMeta.emblema &&
                 <img 
                 className={style.imgEmblemaCard} 
-                src={urlDragon()+allItemsTFT.find(x => x.apiName === compo.campeonMeta.emblema)?.icon.toLowerCase().replace(".tex",".png")} 
+                src={getLocalTftImage(allItemsTFT.find(x => x.apiName === compo.campeonMeta.emblema)?.icon, 'items')} 
                 alt="emblema del campeon meta"/>}
             </div>
           <img 
             className={style.imgCampeonCard} 
-            src={urlDragon()+allChampionsTFT.find(x => x.apiName === compo?.campeonMeta?.apiNameCampeon)?.squareIcon.toLowerCase().replace(".tex",".png")} 
+            src={getLocalTftImage(allChampionsTFT.find(x => x.apiName === compo?.campeonMeta?.apiNameCampeon)?.squareIcon, 'champions/squareIcon')} 
             alt="Img Campeon"/>
         </div>
         <div className={style.initialFundamentalDioses}>
@@ -63,7 +64,7 @@ const CardsMasterPlanCompos = ({compo})=>{
                     <Tooltip type="item" item={allItemsTFT.find(x => x.apiName === nombreItem)}>
                       <img 
                       className={style.imgItemsPrio} 
-                      src={urlDragon()+allItemsTFT.find(x => x.apiName === nombreItem)?.icon.toLowerCase().replace(".tex",".png")} 
+                      src={getLocalTftImage(allItemsTFT.find(x => x.apiName === nombreItem)?.icon, 'items')} 
                       alt="items del campeon"/>
                     </Tooltip>
                   </div>
@@ -75,7 +76,7 @@ const CardsMasterPlanCompos = ({compo})=>{
                 return (
                   <div key={index} className={style.campeonEarly}>
                     <Tooltip type="campeon" campeon={allChampionsTFT.find(x => x.apiName === campeon?.apiNameCampeon)}>
-                      <img className={style.imgCampeonEarly} src={urlDragon()+allChampionsTFT.find(x => x.apiName === campeon?.apiNameCampeon)?.tileIcon.toLowerCase().replace(".tex",".png")} alt="Campeon early 1"/>
+                      <img className={style.imgCampeonEarly} src={getLocalTftImage(allChampionsTFT.find(x => x.apiName === campeon?.apiNameCampeon)?.tileIcon, 'champions/tileIcon')} alt="Campeon early 1"/>
                     </Tooltip>
                     <div className={style.containerItemsCampeonEarly}>
                       {campeon.apiNameItemsDelCampeon.map((item,index)=>{
@@ -84,7 +85,7 @@ const CardsMasterPlanCompos = ({compo})=>{
                           <Tooltip key={`item-early-${index}`}  type="item" item={allItemsTFT.find(x => x.apiName === item)}>
                             <img 
                               className={style.imgItemsCampeonEarly} 
-                              src={urlDragon()+allItemsTFT.find(x => x.apiName === item)?.icon.toLowerCase().replace(".tex",".png")} 
+                              src={getLocalTftImage(allItemsTFT.find(x => x.apiName === item)?.icon, 'items')} 
                               alt="item early 1"/>
                           </Tooltip>
                         )
@@ -131,7 +132,7 @@ const CardsMasterPlanCompos = ({compo})=>{
                 const rapido = allItemsTFT.find((x) => x.apiName === condicion.apiNameGrande) || allChampionsTFT.find((x) => x.apiName === condicion.apiNameGrande)
                 console.log({rapido})
                 const filtrado = allItemsTFT.find((x) => x.apiName === condicion.apiNameGrande)?.icon || allChampionsTFT.find((x) => x.apiName === condicion.apiNameGrande)?.tileIcon
-                busquedaGrande = filtrado ? urlDragon()+filtrado.toLowerCase().replace(".tex",".png").replace("/augments/hexcore/","/augments/choiceui/") : ""
+                busquedaGrande = filtrado ? getLocalTftImage(filtrado, 'augments/choiceui') : ""
                 textoGrande= rapido?.name;
               }
               if(extras.includes(condicion.apiNamePequeno)){
@@ -141,7 +142,7 @@ const CardsMasterPlanCompos = ({compo})=>{
                 const rapido = allItemsTFT.find((x) => x.apiName === condicion.apiNamePequeno) || allChampionsTFT.find((x) => x.apiName === condicion.apiNamePequeno)
                 console.log({rapido})
                 const filtrado = allItemsTFT.find((x) => x.apiName === condicion.apiNamePequeno)?.icon || allChampionsTFT.find((x) => x.apiName === condicion.apiNamePequeno)?.tileIcon
-                busquedaPequeno = filtrado ? urlDragon()+filtrado.toLowerCase().replace(".tex",".png").replace("/augments/hexcore/","/augments/choiceui/") : ""
+                busquedaPequeno = filtrado ? getLocalTftImage(filtrado, 'augments/choiceui') : ""
                 textoPequeño= rapido?.name;
               }
               if(condicion.early)
@@ -179,13 +180,13 @@ const CardsMasterPlanCompos = ({compo})=>{
                 busquedaGrande = `/tft/assets/${aumento.apiNameGrande.replace(" ","")}.webp`
               }else{
                 const filtrado = allItemsTFT.find((x) => x.apiName === aumento.apiNameGrande)?.icon || allChampionsTFT.find((x) => x.apiName === aumento.apiNameGrande)?.tileIcon
-                busquedaGrande = filtrado ? urlDragon()+filtrado.toLowerCase().replace(".tex",".png").replace("/augments/hexcore/","/augments/choiceui/") : ""
+                busquedaGrande = filtrado ? getLocalTftImage(filtrado, 'augments/choiceui') : ""
               }
               if(extras.includes(aumento.apiNamePequeno)){
                 busquedaPequeno = `/tft/assets/${aumento.apiNamePequeno.replace(" ","")}.webp`
               }else{
                 const filtrado = allItemsTFT.find((x) => x.apiName === aumento.apiNamePequeno)?.icon || allChampionsTFT.find((x) => x.apiName === aumento.apiNamePequeno)?.tileIcon
-                busquedaPequeno = filtrado ? urlDragon()+filtrado.toLowerCase().replace(".tex",".png").replace("/augments/hexcore/","/augments/choiceui/") : ""
+                busquedaPequeno = filtrado ? getLocalTftImage(filtrado, 'augments/choiceui') : ""
               }
               if(aumento.early)
                 return (

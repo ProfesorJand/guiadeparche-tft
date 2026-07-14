@@ -3,9 +3,10 @@ import TooltipPortal from "./TooltipPortal";
 import TooltipItem from "./items";
 import TooltipCampeon from "./campeon";
 import TooltipDefault from "./default";
+import TooltipAugment from "./augment";
 import style from "./tooltips.module.css";
 
-const Tooltip = ({ type = "default", text, item, campeon, children }) => {
+const Tooltip = ({ type = "default", text, item, campeon, augment, children }) => {
   const [isVisible, setIsVisible] = useState(false);
   const triggerRef = useRef(null);
   const tooltipRef = useRef(null);
@@ -71,6 +72,7 @@ const Tooltip = ({ type = "default", text, item, campeon, children }) => {
           >
             {type === "item" && item && <TooltipItem {...item} />}
             {type === "campeon" && campeon && <TooltipCampeon campeon={campeon} />}
+            {type === "augment" && augment && <TooltipAugment augment={augment} />}
             {type === "default" && text && <TooltipDefault text={text} />}
           </div>
         </TooltipPortal>

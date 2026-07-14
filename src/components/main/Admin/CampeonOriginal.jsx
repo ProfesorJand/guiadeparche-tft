@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import style from "./css/CampeonOriginal.module.css";
 import TooltipItem from "@components/tooltips/items";
-import { versionTFT, urlDragon } from "@stores/dataTFT";
+import { versionTFT } from "@stores/dataTFT";
+import { getLocalTftImage } from "@utils/images";
 import { useStore } from "@nanostores/react";
 
 const CampeonOriginal = ({ dataCampeon, dataItem, estrellas, show, forInfografia, infoChampHeight }) => {
@@ -90,8 +91,8 @@ const CampeonOriginal = ({ dataCampeon, dataItem, estrellas, show, forInfografia
                 className={style.imgItem}
                 src={
                   img
-                    ? img.includes("http") ? img.toLowerCase().replace(".tex", ".png") : urlDragon() + img.toLowerCase().replace(".tex", ".png")
-                    : icon.includes("http") ? icon.toLowerCase().replace(".tex", ".png") : urlDragon() + icon.toLowerCase().replace(".tex", ".png")
+                    ? img.includes("http") ? img.toLowerCase().replace(".tex", ".png") : getLocalTftImage(img, 'items')
+                    : icon.includes("http") ? icon.toLowerCase().replace(".tex", ".png") : getLocalTftImage(icon, 'items')
                 }
                 alt={nombre}
               />

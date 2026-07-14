@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import style from "./css/Items.module.css";
 import {urlDragon, versionTFT, dataTFTSetData, dataTFTItemsBySet, dataTFTAllItems, apiNamesCrafteableItems, AllCraftableItems, setNumberPBE, setNumberLatest, AllBasicItems } from "@stores/dataTFT";
+import { getLocalTftImage } from "@utils/images";
 import { useStore } from "@nanostores/react";
 export const Items = ()=>{
   const version = useStore(versionTFT);
@@ -26,7 +27,8 @@ export const Items = ()=>{
   const [tooltip, setTooltip] = useState(null);
   const allItemsApiNames = useStore(dataTFTItemsBySet);
   const allItemsInfo = useStore(dataTFTAllItems);
-  const [allEmblemsItemsApiNames, setAllEmblemsItemsApiName] = useState(null);
+  console.log({allItemsInfo, allItemsApiNames})
+  const [allEmblemsItems, setAllEmblemsItems] = useState(null);
   const [allSupportsItems, setAllSupportsItems] = useState(null);
   const [allChemBaronItems, setAllChemBaronItems] = useState(null);
   const [allChemtechItems, setAllChemtechItems] = useState(null);
@@ -39,23 +41,21 @@ export const Items = ()=>{
   //const [allCraftableItems, setAllCraftableItems] = useState(null);
   const [MatrixCraftableItems, setMatrixCraftableItems] = useState([]);
   useEffect(()=>{
+    console.log({Emblemas:allItemsInfo.filter((item)=>{
+        return item?.apiName?.includes("Emblem")
+        })})
     const getAllItems = async ()=>{
-      const apiNames = apiNamesCrafteableItems();
-      console.log({allEmblemsItemsApiName: allItemsApiNames.filter((apiName)=>{
-        return apiName.includes("EmblemItem")
-      })})
-      setAllEmblemsItemsApiName(allItemsApiNames.filter((apiName)=>{
-        return apiName.includes("EmblemItem")
+      setAllEmblemsItems(allItemsInfo.filter((item)=>{
+        return item?.apiName?.includes("Emblem")
         })
       )
-
-      setAllPsionicItems(allItemsApiNames.filter((apiName)=>{
-        return apiName.includes("TFT17_Item_PsyOps_") && !apiName.includes("_Radiant") // not Include apiname que tenga _Radiant
+      setAllPsionicItems(allItemsInfo.filter((item)=>{
+        return item?.apiName?.includes("TFT17_Item_PsyOps_") && !item?.apiName?.includes("_Radiant") // not Include apiname que tenga _Radiant
       }))
-      setAllGodsArtifacts(allItemsApiNames.filter((apiName)=>{
-        return apiName.includes("TFT17_Item_Artifact_");
+      setAllGodsArtifacts(allItemsInfo.filter((item)=>{
+        return item?.apiName?.includes("TFT17_Item_Artifact_");
       }))
-      setAllBilgewaterItems(allItemsApiNames.filter((apiName)=>{
+      setAllBilgewaterItems(allItemsInfo.filter((item)=>{
         const listaBilgewaterItemsBaneados = [
           "TFT16_Item_Bilgewater_HealthTier1",
           "TFT16_Item_Bilgewater_HealthTier2",
@@ -80,15 +80,15 @@ export const Items = ()=>{
           "TFT16_Item_Bilgewater_FirstFreeAS",
           "TFT16_Item_Bilgewater_FirstFreeHealth",
         ]
-        if(listaBilgewaterItemsBaneados.includes(apiName)){
+        if(listaBilgewaterItemsBaneados.includes(item.apiName)){
           return false;
         }
-        return apiName.includes("TFT16_Item_Bilgewater_");
+        return item.apiName.includes("TFT16_Item_Bilgewater_");
       }))
-      setAllVoidItems(allItemsInfo.filter(({apiName})=>{
-        return apiName.includes("TFT16_Consumable_Void_");
+      setAllVoidItems(allItemsInfo.filter((item)=>{
+        return item.apiName.includes("TFT16_Consumable_Void_");
       }))
-      setAllSupportsItems(allItemsInfo.filter(({apiName})=>{
+      setAllSupportsItems(allItemsInfo.filter((item)=>{
         const apiNameOfSupportsItems = [
           "TFT_Item_BansheesVeil",
           "TFT_Item_AegisOfTheLegion",
@@ -108,9 +108,9 @@ export const Items = ()=>{
           "TFT_Item_Zephyr",
           "TFT5_Item_ZzRotPortalRadiant"
         ]
-        return apiNameOfSupportsItems.some((item)=> item.includes(apiName))
+        return apiNameOfSupportsItems.some((itemName)=> itemName.includes(item.apiName))
       }))
-      setAllChemBaronItems(allItemsInfo.filter(({apiName})=>{
+      setAllChemBaronItems(allItemsInfo.filter((item)=>{
         const apiNameOfChemBaronItems = [
           "TFT13_Crime_Bronze_ChemGrips",
           "TFT13_Crime_Bronze_MageGuard",
@@ -140,9 +140,9 @@ export const Items = ()=>{
           "TFT13_Crime_Gold_VoltaicSaber",
           "TFT13_Crime_Prismatic_VoltaicSaber"
         ]
-        return apiNameOfChemBaronItems.some((item) => item === apiName);
+        return apiNameOfChemBaronItems.some((itemName)=> itemName.includes(item.apiName))
       }))  
-      setAllChemtechItems(allItemsInfo.filter(({apiName})=>{
+      setAllChemtechItems(allItemsInfo.filter((item)=>{
         const apiNameOfChemtechItems = [
           "TFT14_JaxCyberneticItem",
           "TFT14_NaafiriCyberneticItem",
@@ -159,10 +159,13 @@ export const Items = ()=>{
           "TFT14_SejuaniCyberneticItem_Radiant",
           "TFT14_ZeriCyberneticItem_Radiant",
         ]
-        return apiNameOfChemtechItems.some((item) => item === apiName);
+        return apiNameOfChemtechItems.some((itemName)=> itemName.includes(item.apiName))
       })) 
-      setAllGarenModItems(allItemsInfo.filter(({apiName})=>{
-        return apiName.includes("NetGodItem");
+      setAllGarenModItems(allItemsInfo.filter((item)=>{
+        const apiNameOfGarenModItems = [
+          "TFT16_NetGodItem",
+        ]
+        return apiNameOfGarenModItems.some((itemName)=> itemName.includes(item.apiName))
       })) 
     }
     getAllItems();
@@ -411,8 +414,8 @@ export const Items = ()=>{
           <button onClick={(e) => { e.preventDefault(); handlePestana(0) }} className={style.btn}>Craftable</button>
           <button onClick={(e) => { e.preventDefault(); handlePestana(1) }} className={style.btn}>Radiants</button>
           <button onClick={(e) => { e.preventDefault(); handlePestana(2) }} className={style.btn}>Emblems</button>
-          <button onClick={(e) => { e.preventDefault(); handlePestana(3) }} className={style.btn}>{version === "pbe" ? "Psionic" : "Bilgewater"}</button>
-          <button onClick={(e) => { e.preventDefault(); handlePestana(6) }} className={style.btn}>{version === "pbe" ? "God Artifacts" : "ChemBaron"}</button>
+          <button onClick={(e) => { e.preventDefault(); handlePestana(3) }} className={style.btn}>{version === "latest" ? "Psionic" : "Bilgewater"}</button>
+          <button onClick={(e) => { e.preventDefault(); handlePestana(6) }} className={style.btn}>{version === "latest" ? "God Artifacts" : "ChemBaron"}</button>
           
           <button onClick={(e) => { e.preventDefault(); handlePestana(4) }} className={style.btn}>Artefacts</button>
           <button onClick={(e) => { e.preventDefault(); handlePestana(5) }} className={style.btn}>Supports</button>
@@ -467,7 +470,7 @@ export const Items = ()=>{
                 return (
                   <div className={style.itemsDropRadiants} key={index2+"-"+index}>
                     <img
-                      src={`https://raw.communitydragon.org/${version}/game/`+resultado.icon.replace(".tex",".png").toLowerCase()}
+                      src={getLocalTftImage(resultado.icon, 'items')}
                       alt={`Basic Item TFT ${resultado.name}`}
                       className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}}
                       onClick={()=>{setItemOver(resultado.apiName)}}
@@ -486,17 +489,16 @@ export const Items = ()=>{
   
           <div className={style.containerItemsHorizontal}>
             {pestana === 2 &&
-              allEmblemsItemsApiNames.map((dataItem,index)=>{
-                const resultado = allItemsInfo.find(({apiName})=> apiName === dataItem)
-                const icono = urlDragon() + resultado.icon.replace(".tex",".png").toLowerCase();
+              allEmblemsItems.map((dataItem,index)=>{
+                const icono = getLocalTftImage(dataItem?.icon, 'items');
                 return (
                   <div className={style.itemsDropOtros} key={index}>
                     <img  
                       src={icono} 
-                      alt={`Basic Item TFT ${resultado.name}`} className={style.imgItems} 
+                      alt={`Basic Item TFT ${dataItem.name}`} className={style.imgItems} 
                       onDragStart={(e)=>{handleDragStart(e)}} 
-                      onClick={()=>{setItemOver(resultado.apiName)}} 
-                      data-item={JSON.stringify(resultado)} 
+                      onClick={()=>{setItemOver(dataItem.apiName)}} 
+                      data-item={JSON.stringify(dataItem)} 
                       data-from="itemList" 
                       draggable="true"></img>
                   </div>
@@ -506,25 +508,16 @@ export const Items = ()=>{
           </div>
           <div className={style.containerItemsHorizontal}>
             {pestana === 3 &&
-              // allBilgewaterItems.map((dataItem,index)=>{
-              //   const resultado = allItemsInfo.find(({apiName})=> apiName === dataItem)
-              //   return (
-              //     <div className={style.itemsDropOtros} key={index}>
-              //       <img  src={`https://raw.communitydragon.org/${version}/game/`+resultado.icon.replace(".tex",".png").toLowerCase()} alt={`Basic Item TFT ${resultado.name}`} className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}} onClick={()=>{setItemOver(resultado.apiName)}} data-item={JSON.stringify(resultado)} data-from="itemList" draggable="true"></img>
-              //     </div>
-              //   )
-              // })
               allPsionicItems.map((dataItem,index)=>{
-                const resultado = allItemsInfo.find(({apiName})=> apiName === dataItem)
-                const icono = urlDragon() + resultado.icon.replace(".tex",".png").toLowerCase();
+                const icono = getLocalTftImage(dataItem.icon, 'items');
                 return (
                   <div className={style.itemsDropOtros} key={index}>
                     <img  
                       src={icono} 
-                      alt={`Basic Item TFT ${resultado.name}`} className={style.imgItems} 
+                      alt={`Basic Item TFT ${dataItem.name}`} className={style.imgItems} 
                       onDragStart={(e)=>{handleDragStart(e)}} 
-                      onClick={()=>{setItemOver(resultado.apiName)}} 
-                      data-item={JSON.stringify(resultado)} 
+                      onClick={()=>{setItemOver(dataItem.apiName)}} 
+                      data-item={JSON.stringify(dataItem)} 
                       data-from="itemList" 
                       draggable="true"></img>
                   </div>
@@ -532,43 +525,6 @@ export const Items = ()=>{
               })
             }
           </div>
-          {/* <div className={style.containerItemsHorizontal}>
-            {pestana === 3 && (version === "pbe" ? 
-              allChemtechItems.sort(function(a, b){
-                if(a.apiName < b.apiName) { return -1; }
-                if(a.apiName > b.apiName) { return 1; }
-                return 0;
-              }).map((dataItem,index)=>{
-                return ( 
-                <div className={style.itemsDropOtros} key={`otrosItems`+index}>
-                  <img 
-                  src={dataItem?.img || `https://raw.communitydragon.org/${version}/game/`+dataItem.icon.replace(".tex",".png").toLowerCase()}
-                  alt={`Chem Baron Item TFT ${dataItem.name}`}
-                  className={style.imgItems}
-                  onDragStart={(e)=>{handleDragStart(e)}}
-                  onClick={()=>{setItemOver(dataItem.apiName)}}
-                  data-item={JSON.stringify(dataItem)} //allItemsInfo.find(({apiName})=>apiName === dataItem.apiName)
-                  data-from="itemList"
-                  draggable="true"></img>
-                </div>)
-              })
-            :
-              OTROS_ITEMS.map((dataItem,index)=>{
-                return ( 
-                <div className={style.itemsDropOtros} key={`otrosItems`+index}>
-                  <img 
-                    src={dataItem.img}
-                    alt={`Basic Item TFT ${dataItem.nombre}`}
-                    className={style.imgItems}
-                    onDragStart={(e)=>{handleDragStart(e)}}
-                    onClick={()=>{setItemOver(dataItem.apiName)}}
-                    data-item={JSON.stringify(allItemsInfo.find(({apiName})=>{return apiName === dataItem.apiName}))}// 
-                    data-from="itemList"
-                    draggable="true"></img>
-                </div>)
-              }))
-            }
-          </div> */}
   
           <div className={style.containerItemsHorizontalOtros}>
             {pestana === 4 && 
@@ -577,7 +533,7 @@ export const Items = ()=>{
                   return dataItem.apiName === apiName
                 })
                 if (!dataItemInfo) return null; // Evita el error
-                const img = `https://raw.communitydragon.org/${version}/game/${dataItemInfo?.icon.replace(".tex",".png").toLowerCase()}`
+                const img = getLocalTftImage(dataItemInfo?.icon, 'items');
                 dataItemInfo.img = img
                 return ( 
                 <div className={style.itemsDropOtros} key={`otrosItems`+index}>
@@ -600,7 +556,7 @@ export const Items = ()=>{
                 return ( 
                 <div className={style.itemsDropOtros} key={`otrosItems`+index}>
                   <img 
-                  src={dataItem?.img || `https://raw.communitydragon.org/${version}/game/`+dataItem.icon.replace(".tex",".png").toLowerCase()}
+                  src={dataItem?.img || getLocalTftImage(dataItem.icon, 'items')}
                   alt={`Support Item TFT ${dataItem.name}`}
                   className={style.imgItems}
                   onDragStart={(e)=>{handleDragStart(e)}}
@@ -616,7 +572,7 @@ export const Items = ()=>{
             {pestana === 6 && (version === "pbe" ? 
               allGodsArtifacts.map((dataItem,index)=>{
                 const resultado = allItemsInfo.find(({apiName})=> apiName === dataItem)
-                const icono = urlDragon() + resultado.icon.replace(".tex",".png").toLowerCase();
+                const icono = getLocalTftImage(resultado.icon, 'items');
                 return (
                   <div className={style.itemsDropOtros} key={index}>
                     <img  

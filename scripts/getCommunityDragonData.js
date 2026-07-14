@@ -60,7 +60,33 @@ async function main() {
         name: "Shen's Sword",
         cost: 1,
         traits: [],
-        tileIcon: "/assets/characters/shen/hud/icons2d/shen_q.png",
+        tileIcon: "/assets/characters/shen/hud/icons2d/shen_q.png", // Nota: este no está en el Set 17, se recomienda usar otra imagen o descargarla manual
+      });
+    }
+    // Agregar TFT17_Summon si no existe (lógica que usas en dataTFT.js)
+    if (!allChampionsRaw.some(c => c.apiName === "TFT17_Summon")) {
+      allChampionsRaw.push({
+        apiName: "TFT17_Summon",
+        name: "Bia y Bayin",
+        cost: 8,
+        traits: [],
+        // Coincide con lo que baja CDragon en tileIcon
+        tileIcon: "/assets/characters/tft17_summon/hud/tft17_summon_square.tft_set17.tex",
+        // Coincide con lo que baja CDragon en squareIcon (shiro_small)
+        squareIcon: "/assets/characters/tft17_summon/skins/base/images/shiro_small.tft_set17.tex",
+      });
+    }
+    // Agregar Dragón Ancestral Cósmico si no existe (lógica que usas en dataTFT.js)
+    if (!allChampionsRaw.some(c => c.apiName === "TFT17_PVE_ElderDragon")) {
+      allChampionsRaw.push({
+        apiName: "TFT17_PVE_ElderDragon",
+        name: "Dragón Ancestral Cósmico",
+        cost: 8,
+        traits: [],
+        // Coincide con lo que baja CDragon en tileIcon
+        tileIcon: "/assets/characters/tft17_pve_elderdragon/hud/tft17_pve_elderdragon_square.tft_set17.tex",
+        // Coincide con lo que baja CDragon en squareIcon
+        squareIcon: "/assets/ux/tft/championsplashes/tft17_elderdragonsquare.tft_set17.tex",
       });
     }
 

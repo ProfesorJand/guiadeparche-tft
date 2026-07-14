@@ -1,19 +1,23 @@
 import { SanitizedComponent, replaceVariables } from "./functions.jsx";
 import style from "./tooltips.module.css";
 import { urlDragon, dataTFTAllItems } from "@stores/dataTFT.js";
+import { getLocalTftImage } from "@utils/images.js";
 import { useStore } from "@nanostores/react";
 
 const TooltipItem = ({desc_item = null, effects, name, nombre, icon, composition}) => {
   const $dataTFTAllItems = useStore(dataTFTAllItems);
+  console.log({icon})
   return (
     <div className={style.tooltipContent}>
-      <div className={style.tooltipImageContainer}>
-        <img className={style.tooltipImage} src={urlDragon() + icon.replace(".tex",".png").toLowerCase()} alt={name} />
+      <div className={style.tooltipHeader}>
+        <div className={style.tooltipImageContainer}>
+          <img className={style.tooltipImage} src={getLocalTftImage(icon, 'items')} alt={name} />
+        </div>
         {
           composition?.length > 0 && 
           <div className={style.compositionItemContainer}>
             {composition.map((item, i) => (
-              <img key={i} className={style.tooltipImage} src={urlDragon() + $dataTFTAllItems.find((data)=>data.apiName === item).icon.replace(".tex",".png").toLowerCase()} alt={item} />
+              <img key={i} className={style.tooltipImage} src={getLocalTftImage($dataTFTAllItems.find((data)=>data.apiName === item)?.icon, 'items')} alt={item} />
             ))}
             </div>
         }

@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import style from "../main/Admin/css/Builder.module.css";
 import { useStore } from "@nanostores/react";
-import { dataTFTChampions, dataTFTAllItems, dataTFTTraits, findTraitsStyles, urlDragon } from "@stores/dataTFT";
+import { dataTFTChampions,initialTFT_SET, dataTFTAllItems, dataTFTTraits, findTraitsStyles } from "@stores/dataTFT";
+import { getLocalTftImage } from "@utils/images";
 import { composicionTFT as datosCompos, actualizarComposicionTFT } from "@stores/tft/dataFormularioCrear.js";
 import { traitsColors } from "@functions/campeonestft.js";
 import ContextMenuBuilderNew from "./ContextMenuBuilderNew.jsx";
 
+import ImgItem from "./ImgItem.jsx";
 const championsColor = [
   "var(--color-hex-cost-default)",
   "var(--color-hex-cost-1)",
@@ -20,7 +22,7 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
   const [activeMenu, setActiveMenu] = useState(null);
   const [isMounted, setIsMounted] = React.useState(false);
   React.useEffect(() => { setIsMounted(true); }, []);
-  const version = "pbe";
+  const version = "latest";
   
   const globalChampions = useStore(dataTFTChampions) || [];
   const globalItems = useStore(dataTFTAllItems) || [];
@@ -53,7 +55,7 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
 
       return {
         apiName: itemData.apiName || itemData.name,
-        imagen: itemData.icon.startsWith("http") ? itemData.icon.toLowerCase().replace(".tex", ".png") : urlDragon() + itemData.icon.toLowerCase().replace(".tex", ".png"),
+        imagen: itemData.icon.startsWith("http") ? itemData.icon.toLowerCase().replace(".tex", ".png") : getLocalTftImage(itemData.icon, itemData.apiName?.includes('Augment') ? 'augments/choiceui' : 'items'),
         traitExtra
       };
     }).filter(Boolean);
@@ -83,7 +85,8 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
     boardData[hexIndex] = {
       apiName: champData.apiName,
       nombre: champData.name,
-      imagen: champData.tileIcon.includes("http") ? champData.tileIcon.toLowerCase().replace(".tex", ".png") : urlDragon() + champData.tileIcon.toLowerCase().replace(".tex", ".png"),
+      //itemData.icon.startsWith("http") ? itemData.icon.toLowerCase().replace(".tex", ".png") : getLocalTftImage(itemData.icon, itemData.apiName?.includes('Augment') ? 'augments/choiceui' : 'items'),
+      imagen: champData.tileIcon.includes("http") ? champData.tileIcon.toLowerCase().replace(".tex", ".png") : getLocalTftImage(champData.tileIcon, 'champions/tileIcon'),
       coste: champData.cost,
       traits: resolvedTraits,
       items: itemsData,
@@ -370,6 +373,7 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
 
                     <div className={style.containerItems}>
                       {champion.items.map((item, i) => (
+                        
                         <div 
                           key={i} 
                           draggable={!readOnly}
@@ -379,7 +383,7 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
                           style={{ cursor: readOnly ? 'default' : 'grab' }}
                           onContextMenu={(e) => { if (readOnly) return; e.preventDefault(); e.stopPropagation(); handleRemoveItem(hexIndex, i); }}
                         >
-                          <img className={style.imgItem} src={item.imagen} alt={item.apiName} />
+                          <ImgItem type="item" item={safeGlobalItems.find(({apiName})=>apiName === item.apiName)}/>
                         </div>
                       ))}
                     </div>
