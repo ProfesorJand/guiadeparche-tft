@@ -35,7 +35,6 @@ const championsPBE = dataTFTChampions.get();
 const targetApiName = comp?.campeonMeta?.apiNameCampeon;
 const champInfo = championsPBE.find(c => c.apiName === targetApiName);
 const resolvedTileIcon = champInfo?.tileIcon ? getLocalTftImage(champInfo.tileIcon, 'champions/tileIcon') : "";
-console.log({resolvedTileIcon})
 // Obtener datos de video
 // const getYoutubeId = (url) => {
 //   const match = url.match(/(?:youtube\.com\/.*v=|youtu\.be\/)([^"&?/ ]{11})/);
