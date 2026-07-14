@@ -1,5 +1,6 @@
 import { useStore } from "@nanostores/react";
-import {dataTFTChampions, urlDragon, dataTFTAllItems,dataTFT, dataTFTAllAugments} from "@stores/dataTFT.js"
+import {dataTFTChampions, dataTFTAllItems,dataTFT, dataTFTAllAugments} from "@stores/dataTFT.js"
+import { getLocalTftImage } from "@utils/images";
 import style from "./css/CampeonImgInTierList.module.css";
 import { navigate } from "astro:transitions/client";
 import { useState, useEffect } from "react";
@@ -53,11 +54,11 @@ const CampeonImgInTierList = ({id, aumento, emblema, apiNameCampeon, apiNameItem
       {
         (aumento || emblema) && 
         <div className={style.containerAugmentEmblema}>
-          {aumento && <img className={style.imgAumento} src={`${urlDragon()}${aumentoIcon?.toLowerCase().replace(".tex",".png")}`}></img>}
-          {emblema && <img className={style.imgEmblema} src={`${urlDragon()}${emblemaIcon?.toLowerCase().replace(".tex",".png")}`}></img>}
+          {aumento && <img className={style.imgAumento} src={getLocalTftImage(aumentoIcon, 'augments/hexcore')}></img>}
+          {emblema && <img className={style.imgEmblema} src={getLocalTftImage(emblemaIcon, 'items')}></img>}
         </div>
       }
-        <img className={`${style.champTierImg} ${style[`cost-${cost}`]}`} src={`${urlDragon()}${squareIcon.toLowerCase().replace(".tex",".png")}`} alt={name} />
+        <img className={`${style.champTierImg} ${style[`cost-${cost}`]}`} src={getLocalTftImage(squareIcon, 'champions/squareIcon')} alt={name} />
         <div className={style.containerChampName}>
           <span className={style.champTierName}>{name}</span>
         </div>
@@ -67,7 +68,7 @@ const CampeonImgInTierList = ({id, aumento, emblema, apiNameCampeon, apiNameItem
         {
           items?.map((item, index)=>{
             return (
-              <img key={`item-${index}`} className={style.champTierItemImg} src={`${urlDragon()}${item?.icon.toLowerCase().replace(".tex",".png")}`} alt={item?.name} />
+              <img key={`item-${index}`} className={style.champTierItemImg} src={getLocalTftImage(item?.icon, 'items')} alt={item?.name} />
             );
           })
         }

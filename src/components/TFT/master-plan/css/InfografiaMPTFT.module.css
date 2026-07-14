@@ -13,8 +13,12 @@
 .cBoxTitleInfo{
   flex-direction: column;
   gap:var(--gapTitleInfo);
-  border: 2px solid #000;
+  border: 2px solid var(--border-purple-color);
   box-sizing: border-box;
+  padding:5px;
+  border-radius: 8px;
+  display:flex;
+  align-items: center;
 }
 
 
@@ -28,12 +32,14 @@
 
 .cCondicionOpEarly{
   width: calc((100% - (var(--gapBoxRow) * 1)) / 3);
+  height: stretch;
 }
 
 .cCondicionOpEarlyImg{
   display:flex;
   flex-direction: row;
   gap:var(--gapInside);
+  width:100%;
 }
 .cFundamentals{
   width:calc((100% - (var(--gapBoxRow) * 1)) / 3 * 2);
@@ -111,21 +117,43 @@
 }
 .cAumento{
   display: flex;
-  width:calc((100% - (var(--gapInside) * 8)) / 9);
+  width:calc((100% - (var(--gapInside) * 11)) / 12);
   position:relative;
 }
 
-.opAumento{
-  display:flex;
-  position:absolute;
-  width:20%;
-  top:0%;
-  right:0%;
+.opAumento {
+  display: flex;
+  position: absolute;
+  top: 0px;
+  right: 0px;
   z-index: 2;
+  justify-content: flex-end;
 }
-.textOP{
-  font-size: 12px;
-  font-weight: bold;
+.textOP {
+  font-size: 11px;
+  font-weight: 900;
+  color: #ffffff;
+  background: linear-gradient(45deg, #ff9d00, #ff0055, #bd00ff);
+  background-size: 200% 200%;
+  padding: 2px 4px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 215, 0, 0.6);
+  box-shadow: 0 0 6px rgba(255, 157, 0, 0.8), inset 0 0 4px rgba(255, 0, 85, 0.5);
+  animation: shineOP 3s ease infinite;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9);
+  font-style: italic;
+  letter-spacing: 0.5px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+@keyframes shineOP {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 .cNiveles{
@@ -134,6 +162,12 @@
 
 .cPosicionamiento{
   width:70%;
+}
+.cPosicionamientoInfo{
+  display:flex;
+  width:100%;
+  flex-direction:column;
+  gap:var(--gapInside);
 }
 .cBestItemComp{
   width:25%;
@@ -160,6 +194,9 @@
   width:calc((100% - (var(--gapInside) * 4)) / 5);
   position:relative;
   flex-direction:column;
+  gap: var(--gapInside);
+  border: 1px solid var(--border-purple-color);
+  border-radius: 8px;
 }
 .cardCampeonBISItems{
   display: flex;
@@ -178,8 +215,57 @@
   flex-direction:row;
   width:100%;
   justify-content: center;
+  border: 1px solid transparent;
+  padding: 2px;
+  border-radius: 6px;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
 }
 .cItem{
   display:flex;
   width:calc((100% - (var(--gapInside) * 4)) / 5);
+  position:relative;
+}
+
+.cChampWithItems {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  width: 100%;
+}
+
+.cChampWrapper {
+  display:flex;
+  position:absolute;
+  top:0;
+  left:0;
+  width: 50%;
+  z-index: 2;
+}
+
+.containerImgItems {
+  position: relative;
+  display: flex;
+  width: 100%;
+  gap:var(--gapInside)
+}
+
+.cBestItemCompItem{
+  display:flex;
+  flex-direction:column;
+  width:100%;
+  gap:var(--gapInside);
+  border: 1px solid var(--border-purple-color);
+  align-items: center;
+  box-sizing: border-box;
+  border-radius: 8px;
+}
+
+.highlightedItem {
+  border-color: #ff0000;
+  box-shadow: 0 0 10px #ff0000;
+  background-color: rgba(255, 0, 0, 0.2);
+  z-index: 10;
 }

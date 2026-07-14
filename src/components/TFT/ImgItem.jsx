@@ -1,6 +1,6 @@
 import React from "react";
-import { urlDragon } from "@stores/dataTFT";
 import Tooltip from "@components/tooltips";
+import { getLocalTftImage } from "@utils/images";
 import style from "./css/ImgItem.module.css";
 
 const ImgItem = ({ item, className = "", type="item" }) => {
@@ -10,7 +10,7 @@ const ImgItem = ({ item, className = "", type="item" }) => {
 			<div className={`${style.itemContainer} ${className}`.trim()}>
 				{item.icon && (
 					<img 
-						src={urlDragon() + item.icon.toLowerCase().replace(".tex", ".png")} 
+						src={getLocalTftImage(item.icon, item.apiName?.includes('Augment') ? 'augments/hexcore' : 'items')} 
 						alt={`${item.name}`} 
 						crossOrigin="anonymous" 
 						className={style.itemIcon}

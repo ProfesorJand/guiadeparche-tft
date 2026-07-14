@@ -1,6 +1,7 @@
 import React from 'react';
 import style from './tooltips.module.css';
 import { urlDragon } from '@stores/dataTFT';
+import { getLocalTftImage } from '@utils/images';
 import { SanitizedComponent, formatChampionDescription } from './functions.jsx';
 
 const TooltipCampeon = ({ campeon }) => {
@@ -10,7 +11,7 @@ const TooltipCampeon = ({ campeon }) => {
     <div className={style.tooltipContent}>
       <div className={style.tooltipHeader}>
         <div className={style.tooltipImage}>
-          <img src={`${urlDragon()}${campeon.icon?.replace(".tex", ".png").toLowerCase()}`} alt={campeon.name} />
+          <img src={getLocalTftImage(campeon.icon, 'champions/icon')} alt={campeon.name} />
         </div>
         <div className={style.tooltipTitle}>
           {campeon.name || "Campeón"}
@@ -22,7 +23,7 @@ const TooltipCampeon = ({ campeon }) => {
           <div className={style.abilityHeader}>
             <img 
               className={style.abilityIcon} 
-              src={`${urlDragon()}${campeon.ability.icon?.replace(".tex", ".png").toLowerCase()}`} 
+              src={getLocalTftImage(campeon.ability.icon, 'champions/abilities')} 
               alt={campeon.ability.name} 
             />
             <span className={style.abilityName}>{campeon.ability.name}</span>

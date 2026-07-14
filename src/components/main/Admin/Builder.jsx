@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import style from "./css/Builder.module.css";
 import ContextMenuBuilder from "./ContextMenuBuilder.jsx";
 import { traitsColors, imgHex } from "../../../functions/campeonestft.js";
-import { versionTFT, findTraitsStyles, urlDragon } from "src/stores/dataTFT.js";
+import { versionTFT, findTraitsStyles } from "src/stores/dataTFT.js";
+import { getLocalTftImage } from "src/utils/images.js";
 import { useStore } from "@nanostores/react"
 
 const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
@@ -108,7 +109,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
               const sinergiaImg = document.createElement("img");
               sinergiaImg.className = style.sinergia;
               sinergiaImg.style.filter = "invert(1)";
-              sinergiaImg.src = "https://raw.communitydragon.org/pbe/game/" + siner.icon.toLowerCase().replace(".tex", ".png");
+              sinergiaImg.src = getLocalTftImage(siner.icon, 'traits');
               sinergiaImg.alt = siner.name;
 
               const backgroundSinergia = document.createElement("img");
@@ -141,7 +142,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
               containerItem.className = style.containerItem;
               const imgItem = document.createElement("img");
               imgItem.className = style.imgItem;
-              imgItem.src = dataItem.icon.startsWith("http") ? dataItem.icon.replace(".tex", ".png").toLowerCase() : urlDragon() + dataItem.icon.replace(".tex", ".png").toLowerCase();
+              imgItem.src = dataItem.icon.startsWith("http") ? dataItem.icon.replace(".tex", ".png").toLowerCase() : getLocalTftImage(dataItem.icon, dataItem.apiName?.includes('Augment') ? 'augments/choiceui' : 'items');
               imgItem.alt = dataItem.nombre ? dataItem.nombre : dataItem.name;
               imgItem.setAttribute("draggable", true);
               imgItem.dataset.item = JSON.stringify(dataItem);
@@ -252,7 +253,7 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
         const sinergia = document.createElement("img");
         sinergia.className = style.sinergia;
         sinergia.style.filter = "invert(1)";
-        sinergia.src = `https://raw.communitydragon.org/${currentVersion}/game/` + sinergiasCampeon?.[1].icon.toLowerCase().replace(".tex", ".png");
+        sinergia.src = getLocalTftImage(sinergiasCampeon?.[1].icon, 'traits');
         sinergia.alt = sinergiasCampeon?.[1].name;
         const backgroundSinergia = document.createElement("img");
         backgroundSinergia.classList.add(style.backgroundSinergia);

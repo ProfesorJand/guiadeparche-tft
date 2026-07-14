@@ -1,5 +1,6 @@
 import { deepMap, atom, task } from "nanostores";
 import { useStore } from "@nanostores/react";
+import { getLocalTftImage } from "../utils/images.js";
 import { cachedFetch } from "../utils/cachedFetch.js";
 //import metaCompsTFTPBE from "../utils/metaCompsTFTPBE.json";
 import { constantesTFTLocal } from "../utils/constantesTFT.js";
@@ -12,7 +13,7 @@ const initialStateDataTFTSets = [];
 const initialStateDataTFTChampions = [];
 const initialStateVersion = "pbe";
 const initialStateTeamPlannerCode = [];
-const initialTFT_SET = "latest";
+export const initialTFT_SET = "latest";
 
 export const setNumberPBE = "17";
 export const setMutatorPBE = "TFTSet17";
@@ -429,7 +430,7 @@ export const AllCraftableItems = (todosLosItems) => {
     return {
       ...item,
       combine,
-      icon: urlDragon() + item.icon.replace(".tex", ".png").toLowerCase()
+      icon: getLocalTftImage(item.icon, 'items')
     };
   }).filter(Boolean);
   return retornando
@@ -443,7 +444,7 @@ export const AllBasicItems = (dataTFTAllItems) => {
 
       return {
         ...item,
-        icon: urlDragon() + item.icon.replace(".tex", ".png").toLowerCase()
+        icon: getLocalTftImage(item.icon, 'items')
       };
     })
     .filter(Boolean); // elimina los que no encontró

@@ -5,9 +5,9 @@ import {
   dataTFTChampions,
   nameOfSet,
   dataTFTAllItems,
-  urlDragon,
   dataTFTAllAugments,
-} from "@stores/dataTFT"
+ } from "@stores/dataTFT"
+import { getLocalTftImage } from "@utils/images";
 import NuevoBuilderTFT from "./NuevoBuilderTFT";
 // import ChampTierList from "./ChampTierList";
 import style from "./css/FormularioCrearCompoTFT.module.css";
@@ -74,6 +74,7 @@ const FormularioCrearCompoTFT = ({ compo = {} }) => {
         condiciones: compo.condiciones || [],
         aumentos: compo.aumentos.every(item => typeof item === 'object') ? compo.aumentos.map((aument) => { return { apiNameGrande: aument.apiName || aument.apiNameGrande, apiNamePequeno: aument.apiNamePequeno, early: aument.early, midLate: aument.midLate, op: aument.op } }) : compo.aumentos || [],
         encuentros: compo.encuentros || [],
+        mejoresItems: compo.mejoresItems,
 
 
       });
@@ -146,6 +147,7 @@ const FormularioCrearCompoTFT = ({ compo = {} }) => {
 
   return (
     <div className={style.formContainer}>
+      <InfografiaMPTFT comp={datosComposicionTFT} />
       <p>Formulario Crear Compo TFT</p>
       <VersionComp />
       <Ocultar />
@@ -185,7 +187,7 @@ const FormularioCrearCompoTFT = ({ compo = {} }) => {
         <button type="button" onClick={() => guardarComposicionTFT(datosComposicionTFT)} className={style.btnSuccess}>Guardar Compo</button>
         <button type="button" onClick={() => guardarComposicionEnBDTFT(datosComposicionTFT)} className={style.btnPrimary}>Guardar en BD</button>
       </div>
-      <InfografiaMPTFT comp={datosComposicionTFT} />
+      
       <datalist id="items">
         {allItemsTFT.map((option) => (
           <option key={option.apiName} value={option.name} data-value={JSON.stringify(option)}>
@@ -457,32 +459,32 @@ const CampeonMeta = () => {
         <img
           className={style.metaImage}
           alt={allChampionsTFT.find((champion) => champion.apiName === datosComposicionTFT?.campeonMeta?.apiNameCampeon)?.name}
-          src={`${urlDragon()}${allChampionsTFT.find((champion) => champion.apiName === datosComposicionTFT?.campeonMeta?.apiNameCampeon)?.tileIcon.toLowerCase().replace(".tex", ".png")}`}
+          src={getLocalTftImage(allChampionsTFT.find((champion) => champion.apiName === datosComposicionTFT?.campeonMeta?.apiNameCampeon)?.tileIcon, 'champions/tileIcon')}
         />
         <img
           className={style.metaImage}
-          src={`${urlDragon()}${allItemsTFT.find((item) => item.apiName === datosComposicionTFT?.campeonMeta?.apiNameItemsDelCampeon?.[0])?.icon.toLowerCase().replace(".tex", ".png")}`}
+          src={getLocalTftImage(allItemsTFT.find((item) => item.apiName === datosComposicionTFT?.campeonMeta?.apiNameItemsDelCampeon?.[0])?.icon, 'items')}
           alt="item1"
         />
         <img
           className={style.metaImage}
-          src={`${urlDragon()}${allItemsTFT.find((item) => item.apiName === datosComposicionTFT?.campeonMeta?.apiNameItemsDelCampeon?.[1])?.icon.toLowerCase().replace(".tex", ".png")}`}
+          src={getLocalTftImage(allItemsTFT.find((item) => item.apiName === datosComposicionTFT?.campeonMeta?.apiNameItemsDelCampeon?.[1])?.icon, 'items')}
           alt="item2"
         />
         <img
           className={style.metaImage}
-          src={`${urlDragon()}${allItemsTFT.find((item) => item.apiName === datosComposicionTFT?.campeonMeta?.apiNameItemsDelCampeon?.[2])?.icon.toLowerCase().replace(".tex", ".png")}`}
+          src={getLocalTftImage(allItemsTFT.find((item) => item.apiName === datosComposicionTFT?.campeonMeta?.apiNameItemsDelCampeon?.[2])?.icon, 'items')}
           alt="item3"
         />
         <img
           className={style.metaImage}
           alt="aumento"
-          src={`${urlDragon()}${allAugmentsTFT.find((item) => item.apiName === datosComposicionTFT?.campeonMeta?.aumento)?.icon.toLowerCase().replace(".tex", ".png")}`}
+          src={getLocalTftImage(allAugmentsTFT.find((item) => item.apiName === datosComposicionTFT?.campeonMeta?.aumento)?.icon, 'augments/choiceui')}
         />
         <img
           className={style.metaImage}
           alt="emblema"
-          src={`${urlDragon()}${allItemsTFT.find((item) => item.apiName === datosComposicionTFT?.campeonMeta?.emblema)?.icon.toLowerCase().replace(".tex", ".png")}`}
+          src={getLocalTftImage(allItemsTFT.find((item) => item.apiName === datosComposicionTFT?.campeonMeta?.emblema)?.icon, 'items')}
         />
       </div>
 
@@ -674,7 +676,7 @@ const DynamicChampionsPerLevel = () => {
               const champ = nivel.campeones?.[champIndex] || { apiNameCampeon: "", estrella: 1, apiNameItemsDelCampeon: [] };
 
               const champData = allChampionsTFT?.find(c => c.apiName === champ.apiNameCampeon);
-              const champImgUrl = champData?.tileIcon ? (champData.tileIcon.includes("http") ? champData.tileIcon.toLowerCase().replace(".tex", ".png") : urlDragon() + champData.tileIcon.toLowerCase().replace(".tex", ".png")) : null;
+              const champImgUrl = champData?.tileIcon ? (champData.tileIcon.includes("http") ? champData.tileIcon.toLowerCase().replace(".tex", ".png") : getLocalTftImage(champData.tileIcon, 'champions/tileIcon')) : null;
 
               return (
                 <div key={champIndex} className={style.rowGap15Border}>
@@ -696,7 +698,7 @@ const DynamicChampionsPerLevel = () => {
                         const apiNameItem = champ.apiNameItemsDelCampeon?.[itemIndex];
                         if (!apiNameItem) return null;
                         const itemData = allItemsTFT?.find(i => i.apiName === apiNameItem);
-                        const itemImgUrl = itemData?.icon ? (itemData.icon.includes("http") ? itemData.icon.toLowerCase().replace(".tex", ".png") : urlDragon() + itemData.icon.toLowerCase().replace(".tex", ".png")) : null;
+                        const itemImgUrl = itemData?.icon ? (itemData.icon.includes("http") ? itemData.icon.toLowerCase().replace(".tex", ".png") : getLocalTftImage(itemData.icon, 'items')) : null;
                         return itemImgUrl ? (
                           <img key={itemIndex} src={itemImgUrl} alt={apiNameItem} className={style.itemIconSmall} />
                         ) : null;
@@ -801,7 +803,7 @@ const ItemsPrio = () => {
       </div>
       <div>
         {itemsPrio.map((itemPrio, index) => (
-          <img key={index} src={urlDragon() + allItemsTFT.find(item => item.apiName === itemPrio)?.icon.toLowerCase().replace(".tex", ".png")} alt={itemPrio} className={style.itemIconLg} />
+          <img key={index} src={getLocalTftImage(allItemsTFT.find(item => item.apiName === itemPrio)?.icon, 'items')} alt={itemPrio} className={style.itemIconLg} />
         ))}
       </div>
     </fieldset>
@@ -1180,7 +1182,7 @@ const BestBuild = () => {
         
             {bestBuilds.map((build, rowIndex) => {
               const champData = allChampionsTFT?.find(c => c.apiName === build.apiNameCampeon);
-              const champImgUrl = champData?.tileIcon ? (champData.tileIcon.includes("http") ? champData.tileIcon.toLowerCase().replace(".tex", ".png") : urlDragon() + champData.tileIcon.toLowerCase().replace(".tex", ".png")) : null;
+              const champImgUrl = champData?.tileIcon ? (champData.tileIcon.includes("http") ? champData.tileIcon.toLowerCase().replace(".tex", ".png") : getLocalTftImage(champData.tileIcon, 'champions/tileIcon')) : null;
 
               return (
                 <div key={rowIndex} className={style.rowGap15Border}>
@@ -1226,7 +1228,7 @@ const BestBuild = () => {
                             {[0, 1, 2].map(itemIndex => {
                               const apiNameItem = itemList[itemIndex];
                               const itemData = allItemsTFT?.find(i => i.apiName === apiNameItem);
-                              const itemImgUrl = itemData?.icon ? (itemData.icon.includes("http") ? itemData.icon.toLowerCase().replace(".tex", ".png") : urlDragon() + itemData.icon.toLowerCase().replace(".tex", ".png")) : null;
+                              const itemImgUrl = itemData?.icon ? (itemData.icon.includes("http") ? itemData.icon.toLowerCase().replace(".tex", ".png") : getLocalTftImage(itemData.icon, 'items')) : null;
 
                               return (
                                 <div 
@@ -1294,7 +1296,7 @@ const BestBuild = () => {
                             {[0, 1, 2].map(itemIndex => {
                               const apiNameItem = itemList[itemIndex];
                               const itemData = allItemsTFT?.find(i => i.apiName === apiNameItem);
-                              const itemImgUrl = itemData?.icon ? (itemData.icon.includes("http") ? itemData.icon.toLowerCase().replace(".tex", ".png") : urlDragon() + itemData.icon.toLowerCase().replace(".tex", ".png")) : null;
+                              const itemImgUrl = itemData?.icon ? (itemData.icon.includes("http") ? itemData.icon.toLowerCase().replace(".tex", ".png") : getLocalTftImage(itemData.icon, 'items')) : null;
 
                               return (
                                 <div 
@@ -1591,7 +1593,7 @@ const MejoresItems = () => {
                 
                 {(mejoresItems[cat] || []).map((row, rowIndex) => {
                   const champData = allChampionsTFT?.find(c => c.apiName === row.apiNameCampeon);
-                  const champImgUrl = champData?.tileIcon ? (champData.tileIcon.includes("http") ? champData.tileIcon.toLowerCase().replace(".tex", ".png") : urlDragon() + champData.tileIcon.toLowerCase().replace(".tex", ".png")) : null;
+                  const champImgUrl = champData?.tileIcon ? (champData.tileIcon.includes("http") ? champData.tileIcon.toLowerCase().replace(".tex", ".png") : getLocalTftImage(champData.tileIcon, 'champions/tileIcon')) : null;
 
                   return (
                     <div key={rowIndex} className={style.rowGap15Border} style={{ padding: "10px", backgroundColor: "rgba(0,0,0,0.2)", borderRadius: "5px", marginBottom: "10px" }}>
@@ -1632,7 +1634,7 @@ const MejoresItems = () => {
                         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', flex: 1 }}>
                           {(row.apiNameItemsDelCampeon || []).map((apiNameItem, itemIndex) => {
                             const itemData = allItemsTFT?.find(i => i.apiName === apiNameItem);
-                            const itemImgUrl = itemData?.icon ? (itemData.icon.includes("http") ? itemData.icon.toLowerCase().replace(".tex", ".png") : urlDragon() + itemData.icon.toLowerCase().replace(".tex", ".png")) : null;
+                            const itemImgUrl = itemData?.icon ? (itemData.icon.includes("http") ? itemData.icon.toLowerCase().replace(".tex", ".png") : getLocalTftImage(itemData.icon, 'items')) : null;
                             
                             return (
                               <div 
@@ -1776,7 +1778,7 @@ const CampeonesEarly = () => {
       <legend>Campeones Early - Master plan</legend>
       {campeonesEarly.map((champEarly, rowIndex) => {
         const champData = allChampionsTFT?.find(c => c.apiName === champEarly.apiNameCampeon);
-        const champImgUrl = champData?.tileIcon ? (champData.tileIcon.includes("http") ? champData.tileIcon.toLowerCase().replace(".tex", ".png") : urlDragon() + champData.tileIcon.toLowerCase().replace(".tex", ".png")) : null;
+        const champImgUrl = champData?.tileIcon ? (champData.tileIcon.includes("http") ? champData.tileIcon.toLowerCase().replace(".tex", ".png") : getLocalTftImage(champData.tileIcon, 'champions/tileIcon')) : null;
 
         return (
           <div key={rowIndex} className={style.rowGap15Border}>
@@ -1798,7 +1800,7 @@ const CampeonesEarly = () => {
                 {[0, 1, 2].map(itemIndex => {
                   const apiNameItem = champEarly.apiNameItemsDelCampeon?.[itemIndex];
                   const itemData = allItemsTFT?.find(i => i.apiName === apiNameItem);
-                  const itemImgUrl = itemData?.icon ? (itemData.icon.includes("http") ? itemData.icon.toLowerCase().replace(".tex", ".png") : urlDragon() + itemData.icon.toLowerCase().replace(".tex", ".png")) : null;
+                  const itemImgUrl = itemData?.icon ? (itemData.icon.includes("http") ? itemData.icon.toLowerCase().replace(".tex", ".png") : getLocalTftImage(itemData.icon, 'items')) : null;
 
                   return (
                     <div key={itemIndex} className={style.colCenterGap5}>

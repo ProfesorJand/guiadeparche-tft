@@ -25,6 +25,9 @@
 .cChampLevelMP{
   justify-content: flex-start;
 }
+.highlightText{
+  color:yellow;
+}
 @media only screen and (max-width:900px){
 
 }

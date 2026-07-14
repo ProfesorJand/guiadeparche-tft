@@ -6,7 +6,8 @@ import {
   getConstantes,
   getTFTDataPBE,
 } from "../../../lib/cache/tftCache.js";
-import { urlDragon, setNumberPBE } from "@stores/dataTFT";
+import { setNumberPBE } from "@stores/dataTFT";
+import { getLocalTftImage } from "@utils/images";
 
 export async function getStaticPaths() {
   const todasLasCompsPBE = await getComposFromDB();
@@ -31,7 +32,7 @@ const [numberOfVersion, tftData] = await Promise.all([
 const championsPBE = tftData?.sets?.[setNumberPBE]?.champions || [];
 const targetApiName = comp?.campeonMeta?.apiNameCampeon;
 const champInfo = championsPBE.find(c => c.apiName === targetApiName);
-const resolvedTileIcon = champInfo?.tileIcon ? urlDragon() + champInfo.tileIcon.replace(".tex", ".png").toLowerCase() : "";
+const resolvedTileIcon = champInfo?.tileIcon ? getLocalTftImage(champInfo.tileIcon, 'champions/tileIcon') : "";
 
 // Obtener datos de video
 // const getYoutubeId = (url) => {

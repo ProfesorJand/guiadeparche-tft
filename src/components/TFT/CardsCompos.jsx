@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import style from "./css/CardsCompos.module.css";
-import { urlDragon, crearCompoMetaPHP, composTest, dataTFTAllItems, composMetaPBETest, teamPlannerCode, versionTFT, setNumberPBE, setMutatorPBE, setMutatorLatest, dataTFTChampions, compActiveId } from "@stores/dataTFT";
+import { crearCompoMetaPHP, composTest, dataTFTAllItems, composMetaPBETest, teamPlannerCode, versionTFT, setNumberPBE, setMutatorPBE, setMutatorLatest, dataTFTChampions, compActiveId } from "@stores/dataTFT";
 import GuiaFreeTFTMeta from "./GuiaFreeTFTMeta.jsx";
 import { navigate } from "astro:transitions/client";
 import { CapturarImagen } from "@functions/CapturarImagen.js";
@@ -281,30 +281,14 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
       tileIcon: rawChamp.tileIcon
     };
 
-    let itemsData = [];
-    const build = (comp?.bestBuild || []).find(({ apiNameCampeon }) => apiNameCampeon === campeon.apiName);
-
-    if (build && build.apiNameItemsBisDelCampeon) {
-      // apiNameItemsBisDelCampeon suele ser un array de arrays: [["item1", "item2", "item3"]]
-      // Verificamos si es un array de arrays y tomamos el primero, o lo usamos directamente si es plano
-      const itemsToMap = Array.isArray(build.apiNameItemsBisDelCampeon[0])
-        ? build.apiNameItemsBisDelCampeon[0]
-        : build.apiNameItemsBisDelCampeon;
-
-      itemsData = itemsToMap.map(apiNameItem => {
-        const item = (allItemsTFT || []).find(item => item?.apiName === apiNameItem);
-        if (item) {
-          return item;
-        }
-        return null;
-      }).filter(Boolean);
-    }
-
+    // se consigue ahora los items de los campeones por tablero.apiNameItemsDelCampeon que es un array de apiNames de items
+    let itemsData = data.apiNameItemsDelCampeon.map(item => {
+      return allItemsTFT?.find(rawItem => rawItem.apiName === item);
+    });
     // Si el campeón está en la lista de excluidos, no lo agregamos
     if (EXCLUDED_API_NAMES.includes(data.apiNameCampeon)) {
       return null;
     }
-
     return {
       campeon: campeon,
       items: itemsData,
@@ -365,7 +349,7 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
                     <div key={`champInit-${index}`} className={style.championContainer}>
                       {/* <Tooltip type="campeon" campeon={championsTFT.find(c => c.apiName === data?.campeon?.apiName)}>  */}
                       <div className={`${style.championImgItems}`}>
-                        <ImgCampeon championData={data?.campeon} items={data?.items} />
+                        <ImgCampeon championData={data?.campeon} items={data?.items} stars={data?.estrellas} />
                         {/* {data?.estrellas == 3 && <img src="/tft/assets/3-estrellas.webp" className={style.champThreeStars} alt="3-estrellas"></img>}
                         <div className={`${style.championImageWrapper} ${style[`champSquareCost${data?.campeon?.coste}`]}`}>
 

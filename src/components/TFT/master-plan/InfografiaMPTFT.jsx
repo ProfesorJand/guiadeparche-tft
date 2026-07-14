@@ -1,3 +1,4 @@
+import { useState } from "react";
 import style from "./css/InfografiaMPTFT.module.css";
 import { dataTFTAllAugments, dataTFTAllItems, dataTFTChampions } from "@stores/dataTFT";
 import { useStore } from "@nanostores/react";
@@ -6,10 +7,22 @@ import CampeonesNivel from "../elementosInfografia/CampeonesNivel";
 import Sinergias from "@components/main/Admin/Sinergias.jsx";
 import NuevoBuilderTFT from "../NuevoBuilderTFT";
 import ImgCampeon from "../ImgCampeon";
+import ImgAugment from "../ImgAugment"
 const InfografiaMPTFT = ({comp}) => {
   const AllItems = useStore(dataTFTAllItems);
   const AllChampions = useStore(dataTFTChampions);
-  const AllAugments = useStore(dataTFTAllAugments)
+  const AllAugments = useStore(dataTFTAllAugments);
+
+  const [hoveredItemApiName, setHoveredItemApiName] = useState(null);
+
+  const handleBestItemHelper = (apiName, action) => {
+    if (action === "show") {
+      console.log({apiName})
+      setHoveredItemApiName(apiName);
+    } else {
+      setHoveredItemApiName(null);
+    }
+  };
   return (
     <div className={style.cardsMPCompContainer}>
       <div className={style.cBoxRow}>
@@ -22,15 +35,31 @@ const InfografiaMPTFT = ({comp}) => {
                 if(condicion.early){
                   const condicionGrande= condicion.apiNameGrande;
                   const condicionPequeno = condicion.ApiNamePequeno;
+                  console.log({condicion})
+                  const isCondicionGrandeAugment = AllAugments.some((item) => item.apiName === condicionGrande);
+                  const isCondicionPequenoAugment = AllAugments.some((item) => item.apiName === condicionPequeno);
+                  const isCondicionGrandeItem = AllItems.some((item) => item.apiName === condicionGrande);
+                  const isCondicionPequenoItem = AllItems.some((item) => item.apiName === condicionPequeno);
                   const extras = ["Win Streak","Loss Streak","Orbe","3 estrellas","4 estrellas"];
+                  const isCondicionGrandeExtra = extras.some((item) => item === condicionGrande);
+                  const isCondicionPequenoExtra = extras.some((item) => item === condicionPequeno);
                 // aca debe de haber varias condiciones si es un aumento o item o emblema o encuentro
                   return (
                     <div key={condicionGrande} className={style.cCondicionOP}>
                       <div className={style.cCondicionGrande}>
-                        <ImgItem item={AllAugments.find((item) => item.apiName === condicionGrande) || AllItems.find((item) => item.apiName === condicionGrande)}/>
+                        {isCondicionGrandeAugment && <ImgAugment augment={AllAugments.find((item) => item.apiName === condicionGrande)}/>}
+                        {isCondicionGrandeItem && <ImgItem item={AllItems.find((item) => item.apiName === condicionGrande)}/>}
+                        {isCondicionGrandeExtra && <span className={style.textExtra}>{condicionGrande}</span>}
+                        {condicion.op && (
+                        <div className={style.opAumento}>
+                          <span className={style.textOP}>OP</span>
+                        </div>
+                         )}
                       </div>
                       <div className={style.cCondicionPequeno}>
-                        <ImgItem item={AllAugments.find((item) => item.apiName === condicionPequeno) || AllItems.find((item) => item.apiName === condicionPequeno)}/>
+                        {isCondicionPequenoAugment && <ImgAugment augment={AllAugments.find((item) => item.apiName === condicionPequeno)}/>}
+                        {isCondicionPequenoItem && <ImgItem item={AllItems.find((item) => item.apiName === condicionPequeno)}/>}
+                        {isCondicionPequenoExtra && <span className={style.textExtra}>{condicionPequeno}</span>}
                       </div>
                     </div>
                   )
@@ -75,7 +104,7 @@ const InfografiaMPTFT = ({comp}) => {
             if(aumento.early){
               return (
                 <div key={index} className={style.cAumento}>
-                  <ImgItem item={AllAugments.find((item) => item.apiName === aumento.apiNameGrande)}/>
+                  <ImgAugment augment={AllAugments.find((item) => item.apiName === aumento.apiNameGrande)}/>
                   {aumento.op && (
                     <div className={style.opAumento}>
                     <span className={style.textOP}>OP</span>
@@ -95,7 +124,7 @@ const InfografiaMPTFT = ({comp}) => {
             if(!aumento.early){
               return (
                 <div key={index} className={style.cAumento}>
-                <ImgItem item={AllAugments.find((item) => item.apiName === aumento.apiNameGrande)}/>
+                <ImgAugment augment={AllAugments.find((item) => item.apiName === aumento.apiNameGrande)}/>
                 {aumento.op && (
                   <div className={style.opAumento}>
                     <span className={style.textOP}>OP</span>
@@ -126,14 +155,41 @@ const InfografiaMPTFT = ({comp}) => {
         <div className={`${style.cBoxTitleInfo} ${style.cBestItemComp}`}>
           <span className={style.tBox}>Mejores Objetos de la composition</span>
           <div className={style.cBestItemCompInfo}>
-            <span>ARTEFACTOS</span>
-            <span>RADIANTES</span>
-            <span>EMBLEMAS</span>
-            <span>ESPECIALES</span>
+            {
+              Object.keys(comp?.mejoresItems || {}).map((key, index)=>{
+                return (
+                  <div key={index} className={style.cBestItemCompItem}>
+                    <span className={style.tBox}>{key}</span>
+                    <div className={style.cBestItemsInfo}>
+                    {
+                      comp?.mejoresItems[key].map((data, index) => {
+                        return (
+                          <div key={index} className={style.cChampWithItems}>
+                            <div className={style.containerImgItems}>
+                              {data.apiNameItemsDelCampeon.map((itemApiName, itemIndex) => {
+                                return (
+                                  <div key={itemIndex} className={style.cItem} onMouseEnter={()=>handleBestItemHelper(itemApiName, "show")} onMouseLeave={()=>handleBestItemHelper(itemApiName, "hide")}>
+                                    <ImgItem item={AllItems.find((item) => item.apiName === itemApiName)}/>
+                                    {/* <div className={style.cChampWrapper}>
+                                      <ImgCampeon showName={false} championData={AllChampions.find((champ) => champ.apiName === data.apiNameCampeon)} />
+                                    </div> */}
+                                  </div>
+                                )
+                              })}
+                            </div>
+                          </div>
+                        )
+                      })
+                    }
+                    </div>
+                  </div>
+                )
+              })
+            }
           </div>
         </div>
         <div className={`${style.cBoxTitleInfo} ${style.cBestItems}`}>
-          <span className={style.tBox}>Mejores Objetos</span>
+          <span className={style.tBox}>Mejores Builds</span>
           <div className={style.cBestItemsInfo}>
             {comp.bestBuild.map((info, index) => {
                 const itemsData = info.apiNameItemsBisDelCampeon.map((itemsName) => {
@@ -147,21 +203,21 @@ const InfografiaMPTFT = ({comp}) => {
                 });
                 const campeonData = AllChampions.find((campeon) => campeon.apiName === info.apiNameCampeon);
                 return (
-                  <div key={index} className={style.cardCampeonBIS}>
+                  <div key={index} className={`${style.cardCampeonBIS}`} style={{ borderColor: `var(--color-hex-cost-${campeonData?.cost}, var(--border-purple-color))` }}>
                     
-                    {campeonData?.name}
-                    <ImgCampeon championData={campeonData} imgType="icon" showName={false}/>
+                    {/* {campeonData?.name} */}
+                    <ImgCampeon championData={campeonData} imgType="icon" showName={true}/>
                     <div className={style.cardCampeonBISItems}>
                     {
                       itemsData.map((itemsData, index) => {
 
                         return (
                           <div key={index} className={style.cItems}>
-                            <span>BIS</span>
-                            <div className={style.cItemsInfo}>
-                            {itemsData.map((itemData, index) => {
+                            {/* <span>BIS</span> */}
+                            <div className={`${style.cItemsInfo} ${hoveredItemApiName && itemsData.some(item => item?.apiName === hoveredItemApiName) ? style.highlightedItem : ''}`}>
+                            {itemsData.map((itemData, idx) => {
                               return (
-                                <div key={index} className={style.cItem}>
+                                <div key={idx} className={style.cItem}>
                                   <ImgItem item={itemData} />
                                 </div>
                               )
@@ -177,12 +233,12 @@ const InfografiaMPTFT = ({comp}) => {
                       itemsDataSpecial.map((itemsData, index) => {
                         return (
                           <div key={index} className={style.cItems}>
-                            <span>Especial Bis</span>
-                            <div className={style.cItemsInfo}>
-                            {itemsData.map((itemData, index) => {
+                            {/* <span>Especial Bis</span> */}
+                            <div className={`${style.cItemsInfo} ${hoveredItemApiName && itemsData.some(item => item?.apiName === hoveredItemApiName) ? style.highlightedItem : ''}`}>
+                            {itemsData.map((itemData, idx) => {
                               return (
-                                <div key={index} className={style.cItem}>
-                                  <ImgItem item={itemData} key={index} />
+                                <div key={idx} className={style.cItem}>
+                                  <ImgItem item={itemData} />
                                 </div>
                               )
                             })}
