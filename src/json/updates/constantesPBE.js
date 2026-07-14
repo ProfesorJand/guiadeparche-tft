@@ -24,12 +24,12 @@ export async function fetchingPBEVersionTFT(){
 // export const pbeVersionLog = (await fetchingPBEVersionTFT()).version.split(".");
 // export const pbeVersion = pbeVersionLog[0]+"."+pbeVersionLog[1];
 let pbeVersion = "17.5";
-try {
-  const pbeVersionLog = (await fetchingPBEVersionTFT()).version.split(".");
-  pbeVersion = pbeVersionLog[0]+"."+pbeVersionLog[1];
-} catch (e) {
-  console.error("Error loading pbeVersion in constantesPBE.js:", e);
-}
+// try {
+//   const pbeVersionLog = (await fetchingPBEVersionTFT()).version.split(".");
+//   pbeVersion = pbeVersionLog[0]+"."+pbeVersionLog[1];
+// } catch (e) {
+//   console.error("Error loading pbeVersion in constantesPBE.js:", e);
+// }
 export { pbeVersion };
 
 // NOTA PARA EL FUTURO:
@@ -42,15 +42,15 @@ export { pbeVersion };
 let datosTFT = null;
 let championsTFT = [];
 let aumentos = [];
-try {
-  datosTFT = await fetchingDataTFT({version,idioma,pais});
-  championsTFT = datosTFT?.sets?.[setPBE]?.champions || [];
-  aumentos = (datosTFT?.items || []).filter((e)=>{
-    return e.icon.indexOf("/Augments/")>=0 && e?.apiName?.indexOf("TFT12")>=0;
-  });
-} catch (e) {
-  console.error("Error loading datosTFT in constantesPBE.js:", e);
-}
+// try {
+//   datosTFT = await fetchingDataTFT({version,idioma,pais});
+//   championsTFT = datosTFT?.sets?.[setPBE]?.champions || [];
+//   aumentos = (datosTFT?.items || []).filter((e)=>{
+//     return e.icon.indexOf("/Augments/")>=0 && e?.apiName?.indexOf("TFT12")>=0;
+//   });
+// } catch (e) {
+//   console.error("Error loading datosTFT in constantesPBE.js:", e);
+// }
 export { datosTFT, championsTFT, aumentos };
 
 
@@ -70,9 +70,9 @@ export async function fetchingMetaTFTPBE(){
 // El fetch original de metaPBE era:
 // export const metaPBE = await fetchingMetaTFTPBE();
 let metaPBE = {};
-try {
-    metaPBE = await fetchingMetaTFTPBE();
-} catch (e) {
-    console.error("Error loading metaPBE in constantesPBE.js:", e);
-}
+// try {
+//     metaPBE = await fetchingMetaTFTPBE();
+// } catch (e) {
+//     console.error("Error loading metaPBE in constantesPBE.js:", e);
+// }
 export { metaPBE };
