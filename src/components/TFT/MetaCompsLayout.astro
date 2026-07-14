@@ -76,12 +76,14 @@ let keywords =
 if(activeId){
   keywords += `, ${activeId.toUpperCase().replaceAll("-", " ")}`;
 }
+const absoluteSnippetImgUrl = snippetImgUrl ? new URL(snippetImgUrl, Astro.site || "https://guiadeparche.com").href : "https://guiadeparche.com/web/logoGP2026.webp";
+
 const baseSchema = JSON.parse(
   crearJSONSchema({
     title: titleMain + " " + titleHighlight,
     description: description,
-    imgPost: snippetImgUrl,
-    thumbnail: snippetImgUrl,
+    imgPost: absoluteSnippetImgUrl,
+    thumbnail: absoluteSnippetImgUrl,
   }),
 );
 const JSONSchema = JSON.stringify(baseSchema);

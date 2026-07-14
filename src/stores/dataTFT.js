@@ -1,3 +1,4 @@
+//dataTFT.js
 import { deepMap, atom, task } from "nanostores";
 import { useStore } from "@nanostores/react";
 import { getLocalTftImage } from "../utils/images.js";
@@ -203,27 +204,29 @@ export const urlDragon = () => {
 
 
 // version: latest / pbe ---- idioma: en / es --- pais: mx /es /gb /us
-export const loadDataTFTFromAPI = ({ version = versionTFT.get(), idioma = "es", pais = "ar" }) => {
-  task(async () => {
-    try {
-      // Usamos el endpoint PHP propio en lugar de CommunityDragon
-      const urlAPI = `https://api.guiadeparche.com/tft/getDataTFT.php`;
-      const response = await fetch(urlAPI);
-      const data = await response.json();
-      updateDataTFT(data)
-      await loadConstantes();
-    } catch (e) {
-      console.warn("Fetch del backend PHP fallido. Intentando fallback local...", e);
+export const loadDataTFTFromAPI = ({ version = versionTFT.get(), idioma = "es", pais = "ar" } = {}) => {
+  return new Promise((resolve) => {
+    task(async () => {
       try {
-        const { default: cdragonData } = await import("../data/cdragonData.json");
-
-        updateDataTFT(cdragonData);
+        // Usamos el endpoint PHP propio en lugar de CommunityDragon
+        const urlAPI = `https://api.guiadeparche.com/tft/getDataTFT.php`;
+        const response = await fetch(urlAPI);
+        const data = await response.json();
+        updateDataTFT(data);
         await loadConstantes();
-      } catch (fallbackError) {
-        console.error("El fallback local también falló:", fallbackError);
+      } catch (e) {
+        console.warn("Fetch del backend PHP fallido. Intentando fallback local...", e);
+        try {
+          const { default: cdragonData } = await import("../data/cdragonData.json");
+          updateDataTFT(cdragonData);
+          await loadConstantes();
+        } catch (fallbackError) {
+          console.error("El fallback local también falló:", fallbackError);
+        }
       }
-    }
-  })
+      resolve();
+    });
+  });
 }
 
 
@@ -291,8 +294,6 @@ export const updateDataTFT = async (data) => {
   const augments = payload.aumentos || []; // Nuevo para los aumentos
   const champions = isFromDB ? payload.champions : payload.sets?.[versionTFT.get() === "pbe" ? setNumberPBE : setNumberLatest]?.champions;
   const traits = isFromDB ? payload.traits : payload.sets?.[versionTFT.get() === "pbe" ? setNumberPBE : setNumberLatest]?.traits;
-
-  console.log({ payload });
   dataTFT.set(payload);
   
   let allItems = items;
@@ -306,9 +307,7 @@ export const updateDataTFT = async (data) => {
       });
     }
   }
-  console.log({ allItems });
   dataTFTAllItems.set(allItems || []);
-  console.log({augments})
   dataTFTAllAugments.set(augments || []);
 
   const allItemNames = (allItems || []).map(i => i.apiName);

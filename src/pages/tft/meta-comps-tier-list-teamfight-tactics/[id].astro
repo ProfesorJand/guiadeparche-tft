@@ -4,9 +4,8 @@ import MetaCompsLayout from "@components/TFT/MetaCompsLayout.astro";
 import {
   getComposFromDB,
   getConstantes,
-  getTFTDataPBE,
 } from "../../../lib/cache/tftCache.js";
-import { setNumberPBE } from "@stores/dataTFT";
+import { setNumberPBE, dataTFTChampions, loadDataTFTFromAPI } from "@stores/dataTFT";
 import { getLocalTftImage } from "@utils/images";
 
 export async function getStaticPaths() {
@@ -24,16 +23,19 @@ export async function getStaticPaths() {
 const { id } = Astro.params;
 const { comp, top10Comps, restComps } = Astro.props;
 
-const [numberOfVersion, tftData] = await Promise.all([
-  getConstantes(),
-  getTFTDataPBE()
+const [numberOfVersion] = await Promise.all([
+  getConstantes()
 ]);
 
-const championsPBE = tftData?.sets?.[setNumberPBE]?.champions || [];
+if (dataTFTChampions.get().length === 0) {
+  await loadDataTFTFromAPI();
+}
+
+const championsPBE = dataTFTChampions.get();
 const targetApiName = comp?.campeonMeta?.apiNameCampeon;
 const champInfo = championsPBE.find(c => c.apiName === targetApiName);
 const resolvedTileIcon = champInfo?.tileIcon ? getLocalTftImage(champInfo.tileIcon, 'champions/tileIcon') : "";
-
+console.log({resolvedTileIcon})
 // Obtener datos de video
 // const getYoutubeId = (url) => {
 //   const match = url.match(/(?:youtube\.com\/.*v=|youtu\.be\/)([^"&?/ ]{11})/);
