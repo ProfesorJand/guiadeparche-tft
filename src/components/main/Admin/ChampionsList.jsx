@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import style from "./css/ChampionsList.module.css";
 import { versionTFT, setNumberLatest, setNumberPBE, dataTFTChampions, dataTFTTraits } from "@stores/dataTFT";
 import { useStore } from "@nanostores/react";
+import { getLocalTftImage } from "@utils/images";
 // import {listaCampeones} from "../../../functions/campeonestft.js";
 // import { fetchingDataTFT } from "src/json/updates/constantesPBE.js";
 // import { championsTFTIngles, traitsTFTIngles } from "src/json/updates/contantesTFT.js";
@@ -10,6 +11,7 @@ const Champions = ()=>{
     const [championsList, setChampionsList]=useState(null);
     const [sortBy, setSortBy] = useState("coste");
     const currentVersion = useStore(versionTFT);
+    const versionNumber = currentVersion === "latest" ? setNumberLatest : setNumberPBE
     const champio = useStore(dataTFTChampions);
     const tftTraits = useStore(dataTFTTraits)
     function handleDragStart(e){
@@ -56,14 +58,14 @@ const Champions = ()=>{
                         coste:cost,
                         sinergia:traitsData(),
                         stats,
-                        img: `https://raw.communitydragon.org/${currentVersion}/game/`+ tileIcon.replace(".tex",".png").toLowerCase(),
+                        img: getLocalTftImage(tileIcon, 'champions/tileIcon', versionNumber),
                         ability,
                     }
                     championsList.push(data)
                     
                 }
                 else{
-                    const img = `https://raw.communitydragon.org/${currentVersion}/game/`+ (squareIcon || tileIcon)?.replace(".tex",".png").toLowerCase();
+                    const img = getLocalTftImage(squareIcon || tileIcon, 'champions/tileIcon', versionNumber);
                     const data = {
                         apiName,
                         nombre:name,

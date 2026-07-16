@@ -14,7 +14,8 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    gap:5px;
+    --gapChampion: 5px;
+    gap:var(--gapChampion);
     width: 100%;
 }
 
@@ -26,7 +27,7 @@
 .containerChampion{
     display: flex;
     position:relative;
-    width: calc((100%/10) - 5px + (5px / 10));
+    width: calc((100% - (var(--gapChampion) * 7)) / 8);
     height: auto;
     aspect-ratio: 1/1;
     border: 3px solid;

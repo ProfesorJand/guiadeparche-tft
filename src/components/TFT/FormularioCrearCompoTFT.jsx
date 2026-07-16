@@ -75,6 +75,7 @@ const FormularioCrearCompoTFT = ({ compo = {} }) => {
         aumentos: compo.aumentos.every(item => typeof item === 'object') ? compo.aumentos.map((aument) => { return { apiNameGrande: aument.apiName || aument.apiNameGrande, apiNamePequeno: aument.apiNamePequeno, early: aument.early, midLate: aument.midLate, op: aument.op } }) : compo.aumentos || [],
         encuentros: compo.encuentros || [],
         mejoresItems: compo.mejoresItems,
+        proTip: compo.proTip || {},
 
 
       });
@@ -119,7 +120,8 @@ const FormularioCrearCompoTFT = ({ compo = {} }) => {
   }
 
   // A FUTURO: Función para guardar en Base de Datos
-  const guardarComposicionEnBDTFT = async (datos) => {
+  const guardarComposicionEnBDTFT = async (resultado) => {
+    const datos = { ...resultado, id: resultado?.id ? resultado.id : generadorID() }
     try {
       console.log("Guardando en BD...", datos);
       const token = import.meta.env.PUBLIC_TOKEN_META;
@@ -169,6 +171,7 @@ const FormularioCrearCompoTFT = ({ compo = {} }) => {
         <Dioses />
         <ItemsPrio />
         <CampeonesEarly />
+        <ProTip tip={"fundamentals"}/>
       </fieldset>
 
       <Condiciones />
@@ -216,6 +219,42 @@ const FormularioCrearCompoTFT = ({ compo = {} }) => {
 }
 
 export default FormularioCrearCompoTFT;
+
+const ProTip = ({ tip }) => {
+  const datosComposicionTFT = useStore(datosCompos);
+  const [localText, setLocalText] = useState(datosComposicionTFT.proTip?.[tip] || "");
+  
+  useEffect(() => {
+    setLocalText(datosComposicionTFT.proTip?.[tip] || "");
+  }, [datosComposicionTFT.proTip?.[tip]]);
+
+  const handleTextProTip = (e) => {
+    setLocalText(e.target.value);
+  };
+
+  const handleBlur = () => {
+    actualizarComposicionTFT({
+      proTip: {
+        ...datosComposicionTFT.proTip,
+        [tip]: localText
+      }
+    });
+  };
+
+  return (
+    <fieldset className={style.fieldsetCyan}>
+      <legend className={style.legendCyan}>Pro Tip {tip}</legend>
+      <div className={style.cProTip}>
+        <textarea 
+          className={style.tProTip} 
+          value={localText} 
+          onChange={handleTextProTip} 
+          onBlur={handleBlur}
+        />
+      </div>
+    </fieldset>
+  )
+}
 
 const FieldUrlForComp = () => {
   const datosComposicionTFT = useStore(datosCompos);
@@ -625,139 +664,188 @@ const DynamicChampionsPerLevel = () => {
     });
   };
 
+  const [visibleCampeonesItems, setVisibleCampeonesItems] = useState(true);
+
   return (
     <fieldset className={style.fieldsetCyan}>
       <legend className={style.legendCyan}>Niveles</legend>
 
+      <div style={{display:"flex", flexDirection:"row", width:"100%",alignItems:"stretch", gap: "20px"}}>
+        <div style={{display:"flex", flexDirection:"column", width:"50%", position:"relative"}}>
+          <div style={{position:"absolute",top:"0",bottom: 0, left: 0, right: 0, overflowY: "auto", paddingRight: "10px"}}>
+            {niveles.map((nivel, levelIndex) => (
+              <div key={levelIndex} className={style.levelContainer} style={{ marginBottom: "20px" }}>
+                <div className={style.levelHeader}>
+                  <label>Configuración Nivel {nivel.lv}</label>
+                  <button type="button" onClick={() => removeLevel(levelIndex)} className={style.btnDanger}>
+                    Eliminar Nivel
+                  </button>
+                </div>
 
-      {niveles.map((nivel, levelIndex) => (
-        <div key={levelIndex} className={style.levelContainer}>
-          <div className={style.levelHeader}>
-            <label>Configuración Nivel {nivel.lv}</label>
-            <button type="button" onClick={() => removeLevel(levelIndex)} className={style.btnDanger}>
-              Eliminar Nivel
-            </button>
-          </div>
-
-          <div className={style.levelInputs}>
-            <label className={style.flexCol}>
-              <span>Nivel (lv)</span>
-              <input type="number" min="1" max="10" value={nivel.lv} onChange={(e) => updateLevel(levelIndex, 'lv', parseInt(e.target.value) || 0)} className={style.inputTiny} />
-            </label>
-            <label className={style.flexCol}>
-              <span>Etapa</span>
-              <input type="number" min="1" max="9" value={nivel.etapa} onChange={(e) => updateLevel(levelIndex, 'etapa', parseInt(e.target.value) || 0)} className={style.inputTiny} />
-            </label>
-            <label className={style.flexCol}>
-              <span>Ronda</span>
-              <input type="number" min="1" max="7" value={nivel.ronda} onChange={(e) => updateLevel(levelIndex, 'ronda', parseInt(e.target.value) || 0)} className={style.inputTiny} />
-            </label>
-            <label className={style.flexColEnd}>
-              <div className={style.checkboxRow}>
-                <input type="checkbox" checked={nivel.roll} onChange={(e) => updateLevel(levelIndex, 'roll', e.target.checked)} />
-                <span>¿Hacer Roll?</span>
-              </div>
-            </label>
-          </div>
-
-          <div className={style.championsContainer}>
-            <div className={style.champsHeader}>
-              <strong>Campeones en este Nivel ({nivel.campeones?.length || nivel.lv || 0})</strong>
-              <button
-                type="button"
-                onClick={() => addChampion(levelIndex)}
-                className={style.btnSuccessSm}
-              >
-                + Añadir Campeón
-              </button>
-            </div>
-
-            {(nivel.campeones || Array.from({ length: nivel.lv || 0 })).map((_, champIndex) => {
-              const champ = nivel.campeones?.[champIndex] || { apiNameCampeon: "", estrella: 1, apiNameItemsDelCampeon: [] };
-
-              const champData = allChampionsTFT?.find(c => c.apiName === champ.apiNameCampeon);
-              const champImgUrl = champData?.tileIcon ? (champData.tileIcon.includes("http") ? champData.tileIcon.toLowerCase().replace(".tex", ".png") : getLocalTftImage(champData.tileIcon, 'champions/tileIcon')) : null;
-
-              return (
-                <div key={champIndex} className={style.rowGap15Border}>
-
-                  {/* Visualizador del Campeón */}
-                  <div className={style.champIconContainer}>
-                    {champImgUrl ? <img src={champImgUrl} alt={champ.apiNameCampeon} className={style.champIcon} /> : <span className={style.emptyChamp}>?</span>}
-
-                    {/* Estrellas */}
-                    <div className={style.starContainer}>
-                      {Array.from({ length: champ.estrella }).map((_, i) => (
-                        <span key={i} style={{ color: `${champ.estrella > 3 ? '#07a14cff' : 'gold'}`, fontSize: '12px', textShadow: '1px 1px 0 #000' }}>★</span>
-                      ))}
+                <div className={style.levelInputs}>
+                  <label className={style.flexCol}>
+                    <span>Nivel (lv)</span>
+                    <input type="number" min="1" max="10" value={nivel.lv} onChange={(e) => updateLevel(levelIndex, 'lv', parseInt(e.target.value) || 0)} className={style.inputTiny} />
+                  </label>
+                  <label className={style.flexCol}>
+                    <span>Etapa</span>
+                    <input type="number" min="1" max="9" value={nivel.etapa} onChange={(e) => updateLevel(levelIndex, 'etapa', parseInt(e.target.value) || 0)} className={style.inputTiny} />
+                  </label>
+                  <label className={style.flexCol}>
+                    <span>Ronda</span>
+                    <input type="number" min="1" max="7" value={nivel.ronda} onChange={(e) => updateLevel(levelIndex, 'ronda', parseInt(e.target.value) || 0)} className={style.inputTiny} />
+                  </label>
+                  <label className={style.flexColEnd}>
+                    <div className={style.checkboxRow}>
+                      <input type="checkbox" checked={nivel.roll} onChange={(e) => updateLevel(levelIndex, 'roll', e.target.checked)} />
+                      <span>¿Hacer Roll?</span>
                     </div>
+                  </label>
+                </div>
 
-                    {/* Items */}
-                    <div className={style.itemContainer}>
-                      {[0, 1, 2].map((itemIndex) => {
-                        const apiNameItem = champ.apiNameItemsDelCampeon?.[itemIndex];
-                        if (!apiNameItem) return null;
-                        const itemData = allItemsTFT?.find(i => i.apiName === apiNameItem);
-                        const itemImgUrl = itemData?.icon ? (itemData.icon.includes("http") ? itemData.icon.toLowerCase().replace(".tex", ".png") : getLocalTftImage(itemData.icon, 'items')) : null;
-                        return itemImgUrl ? (
-                          <img key={itemIndex} src={itemImgUrl} alt={apiNameItem} className={style.itemIconSmall} />
-                        ) : null;
-                      })}
-                    </div>
-                  </div>
-
-                  <div className={style.flex1Gap15}>
-                    <label style={{ flex: 1, minWidth: '150px' }}>
-                      <input
-                        type="text"
-                        list="listaCampeonesApiName"
-                        value={champ.apiNameCampeon}
-                        onChange={(e) => updateChampion(levelIndex, champIndex, 'apiNameCampeon', e.target.value)}
-                        placeholder="Seleccionar Campeón"
-                        className={style.inputFull}
-                      />
-                    </label>
-
-                    <label className={style.width100}>
-                      <select value={champ.estrella} onChange={(e) => updateChampion(levelIndex, champIndex, 'estrella', parseInt(e.target.value) || 1)} className={style.width100Pad5}>
-                        <option value={1}>1 Estrella</option>
-                        <option value={2}>2 Estrellas</option>
-                        <option value={3}>3 Estrellas</option>
-                        <option value={4}>4 Estrellas</option>
-                      </select>
-                    </label>
-
-                    <div className={style.flexGap5}>
-                      {[0, 1, 2].map((itemIndex) => (
-                        <input
-                          key={itemIndex}
-                          type="text"
-                          list="listaItemsApiName"
-                          value={champ?.apiNameItemsDelCampeon?.[itemIndex] || ""}
-                          onChange={(e) => updateChampionItem(levelIndex, champIndex, itemIndex, e.target.value)}
-                          placeholder={`Item ${itemIndex + 1}`}
-                          className={style.inputSmall}
-                        />
-                      ))}
-                    </div>
-
+                <div className={style.championsContainer}>
+                  <div className={style.champsHeader}>
+                    <strong>Campeones en este Nivel ({nivel.campeones?.length || nivel.lv || 0})</strong>
                     <button
                       type="button"
-                      onClick={() => removeChampion(levelIndex, champIndex)}
-                      className={style.btnDangerFit}
+                      onClick={() => addChampion(levelIndex)}
+                      className={style.btnSuccessSm}
                     >
-                      X
+                      + Añadir Campeón
                     </button>
                   </div>
+
+                  {(nivel.campeones || Array.from({ length: nivel.lv || 0 })).map((_, champIndex) => {
+                    const champ = nivel.campeones?.[champIndex] || { apiNameCampeon: "", estrella: 1, apiNameItemsDelCampeon: [] };
+
+                    const champData = allChampionsTFT?.find(c => c.apiName === champ.apiNameCampeon);
+                    const champImgUrl = champData?.tileIcon ? (champData.tileIcon.includes("http") ? champData.tileIcon.toLowerCase().replace(".tex", ".png") : getLocalTftImage(champData.tileIcon, 'champions/tileIcon')) : null;
+
+                    return (
+                      <div key={champIndex} className={style.rowGap15Border} style={{ alignItems: 'center' }}>
+                        
+                        {/* Visualizador y Drag & Drop del Campeón */}
+                        <div 
+                          className={style.champIconContainer}
+                          onDragOver={(e) => e.preventDefault()}
+                          onDrop={(e) => {
+                            e.preventDefault();
+                            const dataCampeonRaw = e.dataTransfer.getData("campeon");
+                            if (dataCampeonRaw) {
+                              const c = JSON.parse(dataCampeonRaw);
+                              updateChampion(levelIndex, champIndex, 'apiNameCampeon', c.apiName || c.name);
+                            }
+                          }}
+                          onDoubleClick={() => updateChampion(levelIndex, champIndex, 'apiNameCampeon', "")}
+                          title="Arrastra un campeón aquí. Doble clic para limpiar."
+                          style={{ cursor: 'pointer', border: !champImgUrl ? '1px dashed #ccc' : 'none', minWidth: '60px', minHeight: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                        >
+                          {champImgUrl ? (
+                            <img 
+                              src={champImgUrl} 
+                              alt={champ.apiNameCampeon} 
+                              className={style.champIcon} 
+                              draggable
+                              onDragStart={(e) => {
+                                e.dataTransfer.setData("campeon", JSON.stringify(champData || { apiName: champ.apiNameCampeon }));
+                              }}
+                              onDragEnd={(e) => {
+                                if (e.dataTransfer.dropEffect === "none") {
+                                  updateChampion(levelIndex, champIndex, 'apiNameCampeon', "");
+                                }
+                              }}
+                            />
+                          ) : <span className={style.emptyChamp}>?</span>}
+                        </div>
+
+                        {/* Items Drop Zones */}
+                        <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flex: 1 }}>
+                          {[0, 1, 2].map((itemIndex) => {
+                            const apiNameItem = champ.apiNameItemsDelCampeon?.[itemIndex];
+                            const itemData = apiNameItem ? allItemsTFT?.find(i => i.apiName === apiNameItem) : null;
+                            const itemImgUrl = itemData?.icon ? (itemData.icon.includes("http") ? itemData.icon.toLowerCase().replace(".tex", ".png") : getLocalTftImage(itemData.icon, 'items')) : null;
+
+                            return (
+                              <div 
+                                key={itemIndex} 
+                                className={style.colCenterGap5}
+                                onDragOver={(e) => e.preventDefault()}
+                                onDrop={(e) => {
+                                  e.preventDefault();
+                                  const dataItemRaw = e.dataTransfer.getData("item");
+                                  if (dataItemRaw) {
+                                    const item = JSON.parse(dataItemRaw);
+                                    updateChampionItem(levelIndex, champIndex, itemIndex, item.apiName || item.name);
+                                  }
+                                }}
+                                onDoubleClick={() => updateChampionItem(levelIndex, champIndex, itemIndex, "")}
+                                title={`Item ${itemIndex + 1}. Arrastra un item aquí. Doble clic para limpiar.`}
+                                style={{ cursor: 'pointer', border: !itemImgUrl ? '1px dashed #ccc' : 'none', minWidth: '40px', minHeight: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#222', borderRadius: '4px' }}
+                              >
+                                {itemImgUrl ? (
+                                  <img 
+                                    src={itemImgUrl} 
+                                    alt={apiNameItem} 
+                                    className={style.itemIconMed} 
+                                    draggable
+                                    onDragStart={(e) => {
+                                      e.dataTransfer.setData("item", JSON.stringify(itemData || { apiName: apiNameItem }));
+                                    }}
+                                    onDragEnd={(e) => {
+                                      if (e.dataTransfer.dropEffect === "none") {
+                                        updateChampionItem(levelIndex, champIndex, itemIndex, "");
+                                      }
+                                    }}
+                                  />
+                                ) : <span style={{ color: '#666', fontSize: '10px' }}>{itemIndex + 1}</span>}
+                              </div>
+                            );
+                          })}
+                        </div>
+
+                        <div className={style.flexGap15} style={{ alignItems: 'center', marginLeft: 'auto' }}>
+                          <label className={style.width100}>
+                            <select value={champ.estrella} onChange={(e) => updateChampion(levelIndex, champIndex, 'estrella', parseInt(e.target.value) || 1)} className={style.width100Pad5}>
+                              <option value={1}>1 Estrella</option>
+                              <option value={2}>2 Estrellas</option>
+                              <option value={3}>3 Estrellas</option>
+                              <option value={4}>4 Estrellas</option>
+                            </select>
+                          </label>
+
+                          <button
+                            type="button"
+                            onClick={() => removeChampion(levelIndex, champIndex)}
+                            className={style.btnDangerFit}
+                          >
+                            X
+                          </button>
+                        </div>
+
+                      </div>
+                    )
+                  })}
                 </div>
-              )
-            })}
+              </div>
+            ))}
+            
+            <button type="button" onClick={addLevel} className={style.btnPrimaryNoWidth} style={{ marginBottom: "20px" }}>
+              + Añadir Nivel
+            </button>
           </div>
         </div>
-      ))}
-      <button type="button" onClick={addLevel} className={style.btnPrimaryNoWidth}>
-        + Añadir Nivel
-      </button>
+
+        <div style={{ display:"flex",width:"50%", flexDirection:"column",marginBottom: '20px', padding: '10px', border: '1px solid #444', borderRadius: '8px' }}>
+          <p style={{ margin: '0 0 10px 0', fontSize: '14px', color: '#ccc' }}>Arrastra los campeones y los ítems a los contenedores de la izquierda.</p>
+          <div className={style.flexOnly}>
+            <button type="button" onClick={() => setVisibleCampeonesItems(true)}>Campeones</button>
+            <button type="button" onClick={() => setVisibleCampeonesItems(false)}>Items</button>
+          </div>
+          <div style={{ marginTop: '10px' }}>
+            {visibleCampeonesItems ? <ChampionsList /> : <ItemsList />}
+          </div>
+        </div>
+      </div>
     </fieldset>
   );
 };
