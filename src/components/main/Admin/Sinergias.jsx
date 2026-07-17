@@ -2,8 +2,9 @@ import React, { useEffect } from "react";
 import style from "./css/Sinergias.module.css"
 import { traitsColors, imgHex } from "src/functions/campeonestft";
 //import sinergiasData from "src/json/updates/sinergiasData";
-import { dataTFTTraits, findTraitsStyles, dataTFTChampions, dataTFTAllItems } from "@stores/dataTFT";
+import { dataTFTTraits, versionTFT, setNumberLatest, setNumberPBE, findTraitsStyles, dataTFTChampions, dataTFTAllItems } from "@stores/dataTFT";
 import { useStore } from "@nanostores/react";
+import { getLocalTftImage } from "@utils/images";
 const Sinergias = ({sinergias, orientacion, show, version})=>{
   const [isMounted, setIsMounted] = React.useState(false);
   React.useEffect(() => { setIsMounted(true); }, []);
@@ -11,6 +12,9 @@ const Sinergias = ({sinergias, orientacion, show, version})=>{
   const sinergiasData = useStore(dataTFTTraits) || [];
   const globalChampions = useStore(dataTFTChampions) || [];
   const globalItems = useStore(dataTFTAllItems) || [];
+  const currentVersion = useStore(versionTFT);
+  const versionNumber = currentVersion === "latest" ? setNumberLatest : setNumberPBE
+  
 
   const safeSinergiasData = isMounted ? sinergiasData : [];
   const safeGlobalChampions = isMounted ? globalChampions : [];
@@ -110,7 +114,6 @@ const Sinergias = ({sinergias, orientacion, show, version})=>{
             }
           }
         }
-        
         result.push({
           trait:data?.name,
           min: minLevel,
@@ -149,7 +152,7 @@ const Sinergias = ({sinergias, orientacion, show, version})=>{
           return (
             <div key={i} className={show ? style.containerSinergiaHex : style.containerSinergiaHexOculto} style={isMobile ? checkColor(key.hexColor) : {}}>
               <span className={style.borderHex} style={checkColor(key.hexColor)}></span> 
-              <img className={style.imgSinergia} src={`https://raw.communitydragon.org/${version}/game/${key.icon}`} alt="Trait_Icon" loading="lazy"/>
+              <img className={style.imgSinergia} src={getLocalTftImage(key.icon, 'traits', versionNumber)} alt="Trait_Icon" loading="lazy"/>
               <div className={style.infoSinergia}>{key.hexLevel}</div>
             </div>
           )
