@@ -19,7 +19,8 @@ import DeckBuilder from "@components/riftbound/DeckBuilder.jsx"
 import { $admin, logOut } from "@stores/auth";
 import {useStore} from "@nanostores/react";
 import FormularioCrearCompoTFT from "@components/TFT/FormularioCrearCompoTFT.jsx";
-// import Formulario2XKO from "@components/2xko/Formulario2XKO.jsx";
+import FormularioVisualTFT from "@components/TFT/FormularioVisualTFT.jsx";
+
 const AdminPanel = ()=>{
     const admin = useStore($admin);
     const [adminName, setAdminName] = useState("");
@@ -138,7 +139,7 @@ const AdminPanel = ()=>{
             
             <div>
                 {/* {action === "TFT-Crear" && <CrearCompoTFT />} */}
-                {action === "TFT-Crear" && <FormularioCrearCompoTFT />}
+                {action === "TFT-Crear" && <><FormularioVisualTFT /><FormularioCrearCompoTFT /></>}
                 {action === "TFT-Editar" && <EditarCompoTFT />}
                 {action === "TFT-Infografia Comps" && <InfografiaTFT/>}
                 {/* {action === "InfografiaTFTCompo" && <InfografiaTFTComps/>} */}

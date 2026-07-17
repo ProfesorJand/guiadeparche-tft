@@ -3,11 +3,16 @@ import style from "./css/CardsMasterPlanCompos.module.css"
 import { useStore } from "@nanostores/react";
 import Tooltip from "@components/tooltips";
 
-import { dataTFTAllItems, dataTFTChampions } from "@stores/dataTFT";
+import { dataTFTAllItems, dataTFTChampions, dataTFTAllAugments } from "@stores/dataTFT";
 import { getLocalTftImage } from "@utils/images";
+import ImgAugment from "@components/TFT/ImgAugment";
+import ImgItem from "@components/TFT/ImgItem";
+import ImgCampeon from "@components/TFT/ImgCampeon";
+
 const CardsMasterPlanCompos = ({compo})=>{
   const allItemsTFT = useStore(dataTFTAllItems);
   const allChampionsTFT = useStore(dataTFTChampions);
+  const allAugmentsTFT = useStore(dataTFTAllAugments);
   return (
     <div className={style.container} >
       <div className={style.header}>
@@ -120,79 +125,66 @@ const CardsMasterPlanCompos = ({compo})=>{
           <span className={style.titleMiniInfoCard}>Condiciones</span>
           <div className={style.containerCondicion}>
             {compo.condiciones.map((condicion, index)=>{
-              let busquedaGrande;
-              let busquedaPequeno;
-              let textoGrande;
-              let textoPequeño;
-              const extras = ["Win Streak","Loss Streak","Orbe"]
-              if(extras.includes(condicion.apiNameGrande)){
-                busquedaGrande = `/tft/assets/${condicion.apiNameGrande.replace(" ","")}.webp`
-                textoGrande= condicion.apiNameGrande;
-              }else{
-                const rapido = allItemsTFT.find((x) => x.apiName === condicion.apiNameGrande) || allChampionsTFT.find((x) => x.apiName === condicion.apiNameGrande)
-                console.log({rapido})
-                const filtrado = allItemsTFT.find((x) => x.apiName === condicion.apiNameGrande)?.icon || allChampionsTFT.find((x) => x.apiName === condicion.apiNameGrande)?.tileIcon
-                busquedaGrande = filtrado ? getLocalTftImage(filtrado, 'augments/choiceui') : ""
-                textoGrande= rapido?.name;
-              }
-              if(extras.includes(condicion.apiNamePequeno)){
-                busquedaPequeno = `/tft/assets/${condicion.apiNamePequeno.replace(" ","")}.webp`
-                textoPequeño = condicion.apiNamePequeno;
-              }else{
-                const rapido = allItemsTFT.find((x) => x.apiName === condicion.apiNamePequeno) || allChampionsTFT.find((x) => x.apiName === condicion.apiNamePequeno)
-                console.log({rapido})
-                const filtrado = allItemsTFT.find((x) => x.apiName === condicion.apiNamePequeno)?.icon || allChampionsTFT.find((x) => x.apiName === condicion.apiNamePequeno)?.tileIcon
-                busquedaPequeno = filtrado ? getLocalTftImage(filtrado, 'augments/choiceui') : ""
-                textoPequeño= rapido?.name;
-              }
-              if(condicion.early)
-              return (
-                <Tooltip key={`condicion-${index}`} type="default" text={[textoGrande,textoPequeño]} >
+              if(condicion.early){
 
+                const condicionGrande= condicion.apiNameGrande;
+                const condicionPequeno = condicion.ApiNamePequeno;
+                const isCondicionGrandeAugment = allAugmentsTFT.some((item) => item.apiName === condicionGrande);
+                const isCondicionPequenoAugment = allAugmentsTFT.some((item) => item.apiName === condicionPequeno);
+                const isCondicionGrandeCampeon = allChampionsTFT.some((item) => item.apiName === condicionGrande);
+                const isCondicionPequenoCampeon = allChampionsTFT.some((item) => item.apiName === condicionPequeno);
+                const isCondicionGrandeItem = allItemsTFT.some((item) => item.apiName === condicionGrande);
+                const isCondicionPequenoItem = allItemsTFT.some((item) => item.apiName === condicionPequeno);
+                const extras = ["Win Streak","Loss Streak","Orbe","3 estrellas","4 estrellas"];
+                const isCondicionGrandeExtra = extras.some((item) => item === condicionGrande);
+                const isCondicionPequenoExtra = extras.some((item) => item === condicionPequeno);
+                return (
                   <div className={style.containerCuadrosCondicion}>
-                    {condicion.apiNameGrande && condicion.early && busquedaGrande && 
-                      <img 
-                        className={style.imgCondicionGrande} 
-                        src={busquedaGrande} 
-                        alt="cuadro grande"/>
-                    }
-                    {condicion.apiNamePequeno && condicion.early && busquedaPequeno &&
-                      <img 
-                        className={style.imgCondicionPequeno} 
-                        src={busquedaPequeno} 
-                        alt="cuadro pequeño"/>
-                    }
+
+                    {isCondicionGrandeAugment && <ImgAugment augment={allAugmentsTFT.find((item) => item.apiName === condicionGrande)}/>}
+                    {isCondicionGrandeItem && <ImgItem item={allItemsTFT.find((item) => item.apiName === condicionGrande)}/>}
+                    {isCondicionGrandeCampeon && <ImgCampeon championData={allChampionsTFT.find((champ) => champ.apiName === condicionGrande)} imgType="icon" showName={false}/>}
+                    {isCondicionGrandeExtra && <span className={style.textExtra}>{condicionGrande}</span>}
+
+                    {isCondicionPequenoAugment && <ImgAugment augment={allAugmentsTFT.find((item) => item.apiName === condicionPequeno)}/>}
+                    {isCondicionPequenoItem && <ImgItem item={allItemsTFT.find((item) => item.apiName === condicionPequeno)}/>}
+                    {isCondicionPequenoCampeon && <ImgCampeon championData={allChampionsTFT.find((champ) => champ.apiName === condicionPequeno)} imgType="icon" showName={false}/>}
+                    {isCondicionPequenoExtra && <span className={style.textExtra}>{condicionPequeno}</span>}
                     {condicion.op && <span className={style.opText}>OP</span>}
                   </div>
-                </Tooltip>
               )
+            }
             })}
           </div>
         </div>
         <div className={style.initialAumentos}>
           <span className={style.titleMiniInfoCard}>Aumentos</span>
           <div className={style.containerAumentos}>
-            {compo.aumentos.map((aumento, index)=>{
+            {compo.aumentos
+              .filter(aumento => aumento.op || aumento.early)
+              .sort((a, b) => (b.op ? 1 : 0) - (a.op ? 1 : 0))
+              .slice(0, 4)
+              .map((aumento, index) => {
+              console.log({aumento})
               let busquedaGrande;
               let busquedaPequeno;
               const extras = ["Win Streak","Loss Streak","Orbe"]
               if(extras.includes(aumento.apiNameGrande)){
                 busquedaGrande = `/tft/assets/${aumento.apiNameGrande.replace(" ","")}.webp`
               }else{
-                const filtrado = allItemsTFT.find((x) => x.apiName === aumento.apiNameGrande)?.icon || allChampionsTFT.find((x) => x.apiName === aumento.apiNameGrande)?.tileIcon
+                const filtrado = allAugmentsTFT.find((x) => x.apiName === aumento.apiNameGrande)?.icon || allChampionsTFT.find((x) => x.apiName === aumento.apiNameGrande)?.tileIcon
                 busquedaGrande = filtrado ? getLocalTftImage(filtrado, 'augments/choiceui') : ""
               }
               if(extras.includes(aumento.apiNamePequeno)){
                 busquedaPequeno = `/tft/assets/${aumento.apiNamePequeno.replace(" ","")}.webp`
               }else{
-                const filtrado = allItemsTFT.find((x) => x.apiName === aumento.apiNamePequeno)?.icon || allChampionsTFT.find((x) => x.apiName === aumento.apiNamePequeno)?.tileIcon
+                const filtrado = allAugmentsTFT.find((x) => x.apiName === aumento.apiNamePequeno)?.icon || allChampionsTFT.find((x) => x.apiName === aumento.apiNamePequeno)?.tileIcon
                 busquedaPequeno = filtrado ? getLocalTftImage(filtrado, 'augments/choiceui') : ""
               }
-              if(aumento.early)
-                return (
-              <div key={`aumento-${index}`} className={style.containerCuadrosAumentos}>
-                  {aumento.apiNameGrande && aumento.early && busquedaGrande && <img className={style.imgAumentoCuadroGrande} src={busquedaGrande} alt="item aumento cuadro grande"/>}
-                  {aumento.apiNamePequeno && aumento.early &&  busquedaPequeno && <img className={style.imgAumentoCuadroPequeno} src={busquedaPequeno} alt="item aumento cuadro pequeño"/>}
+              return (
+                <div key={`aumento-${index}`} className={style.containerCuadrosAumentos}>
+                  {aumento.apiNameGrande && busquedaGrande && <img className={style.imgAumentoCuadroGrande} src={busquedaGrande} alt="item aumento cuadro grande"/>}
+                  {aumento.apiNamePequeno && busquedaPequeno && <img className={style.imgAumentoCuadroPequeno} src={busquedaPequeno} alt="item aumento cuadro pequeño"/>}
                   {aumento.op && <span className={style.opText}>OP</span>}
                 </div>
               )

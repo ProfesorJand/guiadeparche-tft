@@ -1,5 +1,5 @@
 :root{
-  --containerItemsInfo-width : calc(100%/2);
+  --containerItemsInfo-width : 100%;
   --itemsNumber-width: calc(100%/10);
   --itemsRadiantsNumber-width: calc(100%/8);
   --itemsOtrosNumber-width: calc(100%/12);
@@ -13,6 +13,7 @@
 .containerBtn{
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   gap:5px;
   box-sizing: border-box;
 }
@@ -49,7 +50,7 @@
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
-  width: 50%;
+  width: 100%;
 }
 
 .itemsDrop{

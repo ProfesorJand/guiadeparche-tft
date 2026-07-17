@@ -1,14 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import style from "./css/CardsCompos.module.css";
-import { crearCompoMetaPHP, composTest, dataTFTAllItems, composMetaPBETest, teamPlannerCode, versionTFT, setNumberPBE, setMutatorPBE, setMutatorLatest, dataTFTChampions, compActiveId } from "@stores/dataTFT";
+import { crearCompoMetaPHP, dataTFTAllItems, teamPlannerCode, versionTFT, setMutatorPBE, setMutatorLatest, dataTFTChampions, compActiveId } from "@stores/dataTFT";
 import GuiaFreeTFTMeta from "./GuiaFreeTFTMeta.jsx";
 import { navigate } from "astro:transitions/client";
 import { CapturarImagen } from "@functions/CapturarImagen.js";
-import FormularioCrearCompoTFT from "./FormularioCrearCompoTFT.jsx";
+//import FormularioCrearCompoTFT from "./FormularioCrearCompoTFT.jsx";
+import FormularioVisualTFT from "./FormularioVisualTFT.jsx"
 import { useStore } from "@nanostores/react";
-import Tooltip from "@components/tooltips/index.jsx"
 
-import CardsMasterPlanCompos from "./master-plan/CardsMasterPlanCompos.jsx";
 import ImgCampeon from "./ImgCampeon.jsx";
 import ImgItem from "./ImgItem.jsx";
 // Añade aquí manualmente los apiName de los campeones que NO quieres que se muestren
@@ -452,10 +451,9 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
         </div>
       )}
       {showFormForEdit &&
-
-          <FormularioCrearCompoTFT
-            compo={comp}
-          />
+      <>
+          <FormularioVisualTFT compo={comp} />
+      </>
       }
 
     </div>

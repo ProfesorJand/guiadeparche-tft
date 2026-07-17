@@ -15,9 +15,9 @@ export async function getStaticPaths() {
   const restComps = [...todasLasCompsPBE.slice(10)];
 
   return todasLasCompsPBE.map((comp) => ({
-    params: { id: String(comp.urlSEO) },
-    props: { comp, top10Comps, restComps },
-  }));
+      params: { id: String(comp.urlSEO) },
+      props: { comp, top10Comps, restComps },
+    }));
 }
 
 const { id } = Astro.params;
