@@ -6,6 +6,7 @@ import Adsense from '../components/adsense/Adsense.jsx';
 import { ViewTransitions } from 'astro:transitions';
 import PageLoader from '@components/PageLoader';
 import Youtube from '@components/youtube/Youtube.jsx';
+import UserMenu from '@components/headers/UserMenu';
 const admin = typeof window !== "undefined" ? window.localStorage.getItem("user") : false;
 console.log({admin})
 interface Props {
@@ -102,6 +103,7 @@ console.log({admin})
       <header class="bodyHeader">
         <Logo>Guiadeparche</Logo>
         <Header transition:persist/>
+        <UserMenu client:only="react"/>
       </header> 
 
       <div class="bodyInfo">

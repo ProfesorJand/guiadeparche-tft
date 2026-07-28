@@ -7,7 +7,7 @@ import AumentosCompos from "./AumentosCompos";
 import PosicionamientoCompos from "./PosicionamientoCompos";
 import CrearCompoTFT from "./CrearCompoTFT";
 //import { championsTFT as otrosChampions} from "src/json/updates/constantesLatest.js";
-import { teamPlannerCode, dataTFTChampions, versionTFT, setNumberLatest, setNumberPBE, loadDataTFTFromAPI, getTeamPlannerCodeAPI, crearCompoMetaPHP, setMutatorPBE, setMutatorLatest } from "@stores/dataTFT";
+import { composMetaJSON, teamPlannerCode, dataTFTChampions, versionTFT, setNumberLatest, setNumberPBE, loadDataTFTFromAPI, getTeamPlannerCodeAPI, crearCompoMetaPHP, setMutatorPBE, setMutatorLatest } from "@stores/dataTFT";
 import RadiantsItems from "./RadiantsItems";
 import { useStore } from "@nanostores/react";
 import MiniInfoComp from "@components/TFT/MiniInfoComp";
@@ -174,13 +174,13 @@ const Composicion = ({ id, compo, admin = useStore($admin), show = true, allways
       } else {
         token = import.meta.env.PUBLIC_TOKEN_META;
       }
-      fetch(crearCompoMetaPHP, {
+      fetch(composMetaJSON, {
         method: 'DELETE',
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: `id=${id}&tier=${tier}&version=${version}`, // Se envía la versión
+        body: JSON.stringify({ id, tier, version }), // Se envía la versión
       })
         .then(response => response.json())
         .then(data => {

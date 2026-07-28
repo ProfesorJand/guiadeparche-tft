@@ -1,7 +1,141 @@
 ---
-import Redirect from "@components/Redirect";
-import LayoutMidOnly from "@layouts/LayoutMidOnly.astro";
+import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
+import { crearJSONSchema } from "@json/schema/crearJSONSchema";
+import PaginaBaseMaxWidth from "@components/TFT/paginas/PaginaBaseMaxWidth.astro";
+import Youtube from "@components/youtube/Youtube.jsx";
+import Cards from "@components/TFT/como-jugar/Cards";
+const topTitle="TFT: Qué es Teamfight Tactics, Cómo descargar, Modos de juego";
+const lowerTitle = "";
+const title = `${topTitle}${lowerTitle ? " " + lowerTitle: ""}`;
+const description ="Aprende qué es TFT y cómo empezar a jugar: Interfaz, comprar y vender campeones, subir de nivel y de estrellas, sinergias, aumentos y el builder";
+const keywords ="Guía Principiante TFT, Cómo Descargar TFT, Qué es TFT, Cómo Jugar TFT, Teamfight Tactics, TFT PC, TFT Mobile, que son los aumentos en TFT, interfaz TFT, consejos TFT";
+const imgUrl ="";
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const baseSchema = JSON.parse(
+  crearJSONSchema({title, description:description})
+)
+const JSONSchema = JSON.stringify(baseSchema);
+const body=null;
+const currentPath = Astro.url.pathname;
+const indice = [
+  {
+    id:"como-jugar-tft",
+    titulo:"",
+    subtitulos:[
+      {
+        id:"que-es-tft",
+        titulo:"¿Qué es Teamfight Tactics?"
+      },
+      {
+        id:"descargar-tft",
+        titulo:"¿Cómo Descargar TFT en PC, Mac y Mobile?"
+      },
+      {
+        id:"ganar-tft",
+        titulo:"¿Cómo Ganar en TFT: Reglas y Sistema de ELO?"
+      },
+      {
+        id:"modos-juego",
+        titulo:"Modos de Juego: Normales, Ranked y Double Up"
+      },
+    ],
+  },
+]
 ---
-<LayoutMidOnly title="Teamfight Tactics">
-  <Redirect client:only="react" to="/tft/meta-comps-tier-list-teamfight-tactics/" />
-</LayoutMidOnly>
+
+<LayoutMaxWidth
+  title={title}
+  description={description}
+  keywords={keywords}
+  JSONSchema={JSONSchema}
+  canonical={canonical}
+>
+<PaginaBaseMaxWidth
+  topTitle={topTitle}
+  lowerTitle={lowerTitle}
+  videoHeadersLength={2}
+>
+    
+  <div slot="bodyContainerLeft">
+    <!-- Puedes poner contenido aquí para la columna izquierda en el futuro -->
+  </div>
+  <div slot="bodyContainerMid" class="bodyContainerMid">
+    <div class="indiceColumna">
+      <ol>
+        <li>
+          <a href={`#${indice[0]?.subtitulos?.[0].id}`}><strong>{indice[0].titulo}</strong></a>
+          <ol>
+            {
+              indice[0]?.subtitulos?.map((subitem, index)=>{
+                return (
+                  <li><a href={`#${subitem.id}`}>{index + 1}. {subitem.titulo}</a></li>
+                )
+              })
+            }
+          </ol>
+        </li>
+      </ol>
+      <Youtube  src={"https://www.youtube.com/watch?v=hsU_1u38dOY"}  client:load transition:persist/>
+    </div>
+
+    
+    <article id= "que-es-tft">
+      <h2>1. ¿Qué es Teamfight Tactics?</h2>
+      <p>
+          TFT, es un juego de estrategia Autobattler de Riot Games.
+          Imagina un tablero de ajedrez donde tú no mueves las piezas, sino que eres el Director Técnico.
+          Tu misión es reclutar a los mejores campeones de League of Legends,
+          armarlos con objetos poderosos y ponerlos en la formación correcta.
+          Una vez que suena la campana, ellos pelean solos por ti.
+          Acá tu cerebro y preparación le gana a los reflejos.
+      </p>
+    </article>
+    <article id="descargar-tft">  
+      <h2>2. ¿Cómo Descargar TFT en PC, Mac y Mobile?</h2>
+      <p>Teamfight Tactics es gratis y tiene <a href="#cross-play">Cross-Play</a>.
+        Puedes empezar una partida en tu PC y terminarla en tu celular mientras vas en el bus. Para descargar:</p>
+        <ul>
+          <li>En PC y Mac: <a href="https://teamfighttactics.leagueoflegends.com/" target="_blank">Descarga el Riot Client</a> desde la web oficial o búscalo en la Epic Games Store. Ojo: Si ya juegas LoL, ¡ya tienes TFT instalado! Solo entra y cambia de pestaña.</li>
+          <li>En Mobile: Búscalo como Teamfight Tactics en la <a href="https://play.google.com/store/apps/details?id=com.riotgames.league.teamfighttactics&hl=en" target="_blank">Google Play Store</a> o <a href="https://apps.apple.com/us/app/tft-teamfight-tactics/id1480616748" target="_blank">Apple Store</a>. Y recuerda que una sola cuenta para todo.</li>
+        </ul>
+    </article>
+    <article id="ganar-tft">
+      <h2>3. ¿Cómo Ganar en TFT: Reglas y Sistema de ELO?</h2>
+      <p>
+        En TFT te enfrentas a otros 7 jugadores en una batalla de supervivencia.
+        Todos empiezan con 100 puntos de vida. Si tu equipo pierde la ronda, tu vida baja.
+      </p>
+      <p>
+        Regla de Oro: Tu objetivo es ser el último en pie, pero en TFT,
+        quedar en el Top 4 es ganar. Si quedas entre los 4 mejores, ganas puntos (LP) o ELO
+      </p>
+      <p>
+        El Elo en League of Legends y TFT es un sistema de puntuación matemático oculto
+        (técnicamente llamado MMR o Matchmaking Rating) que mide la habilidad relativa de un jugador
+        para emparejarlo con otros de nivel similar. Aunque se refleja visualmente en rangos (Hierro a Retador),
+        el Elo numérico determina a quién te enfrentas y cuánto subes; osea subir de rango que van desde Hierro hasta Retador,
+        el camino es largo, pero no te preocupes, que aquí te voy a enseñar a escalar esa montaña.
+      </p>
+    </article>
+    <article id="modos-juego">
+      <h2>4. Modos de Juego: Normales, Ranked y Double Up</h2>
+      <p>
+        Cuando entres al cliente ve jugar y a la sección de TFT y verás 3 modos principales:
+      </p>
+      <ol>
+        <li><strong>Normales</strong>: Para probar cosas locas sin miedo a perder puntos.</li>
+        <li><strong>Ranked</strong>: Donde la cosa se pone seria y subes de rango.</li>
+        <li><strong>Double Up</strong>: Mi favorito para jugar con un amigo en duo y mandarse refuerzos.</li>
+      </ol>
+    </article>
+    
+    
+    <h2 class="cards-title">Guías y Tutoriales de TFT</h2>
+    <Cards currentPath={currentPath} client:load transition:persist />
+  </div>
+  <div slot="bodyContainerRight">
+    <!-- Puedes poner contenido aquí para la columna derecha en el futuro -->
+  </div>
+</PaginaBaseMaxWidth>
+
+</LayoutMaxWidth>
