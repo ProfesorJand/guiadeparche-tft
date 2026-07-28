@@ -6,6 +6,12 @@ import { getComposMetaPBE } from "@lib/cache/tftCache.js";
 //const allCompsPBE = await getComposMetaPBE();
 const menusIzquierda = [
   {
+    nombre:"",
+    img:"/tft/assets/t-logo.png",
+    link:"/tft",
+    linkPrincipal:"tft",
+  },
+  {
     nombre:"TFT Meta Comps",
     link:"/tft/meta-comps-tier-list-teamfight-tactics/",
     linkPrincipal:"tft",
@@ -117,20 +123,20 @@ const menus = [
     <div class="menuContainer">
       {
         menusIzquierda.map((menu) => {
-          return <Menu linkPrincipal={menu.linkPrincipal} link={menu.link} nombre={menu.nombre} submenus={menu?.submenus} img={menu.img} onlyAdmin={menu.onlyAdmin} client:only="react" />;
+          return <Menu linkPrincipal={menu.linkPrincipal} link={menu.link} img={menu.img} nombre={menu.nombre} submenus={menu?.submenus} img={menu.img} onlyAdmin={menu.onlyAdmin} client:only="react" />;
         })
       }
-      <UserMenu client:only="react" />
+      <!-- <UserMenu client:only="react" /> -->
     </div>
     <div class:list={["menuMobile"]}>
-      <UserMenu client:only="react" />
+      <!-- <UserMenu client:only="react" /> -->
       <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0,0,256,256">
         <g fill="#ffffff" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(5.12,5.12)"><path d="M5,8c-0.72127,-0.0102 -1.39216,0.36875 -1.75578,0.99175c-0.36361,0.623 -0.36361,1.39351 0,2.01651c0.36361,0.623 1.0345,1.00195 1.75578,0.99175h40c0.72127,0.0102 1.39216,-0.36875 1.75578,-0.99175c0.36361,-0.623 0.36361,-1.39351 0,-2.01651c-0.36361,-0.623 -1.0345,-1.00195 -1.75578,-0.99175zM5,23c-0.72127,-0.0102 -1.39216,0.36875 -1.75578,0.99175c-0.36361,0.623 -0.36361,1.39351 0,2.01651c0.36361,0.623 1.0345,1.00195 1.75578,0.99175h40c0.72127,0.0102 1.39216,-0.36875 1.75578,-0.99175c0.36361,-0.623 0.36361,-1.39351 0,-2.01651c-0.36361,-0.623 -1.0345,-1.00195 -1.75578,-0.99175zM5,38c-0.72127,-0.0102 -1.39216,0.36875 -1.75578,0.99175c-0.36361,0.623 -0.36361,1.39351 0,2.01651c0.36361,0.623 1.0345,1.00195 1.75578,0.99175h40c0.72127,0.0102 1.39216,-0.36875 1.75578,-0.99175c0.36361,-0.623 0.36361,-1.39351 0,-2.01651c-0.36361,-0.623 -1.0345,-1.00195 -1.75578,-0.99175z"></path></g></g>
         </svg>
     </div>
     <div class:list={["hide","sideMenu"]}>
       <div class:list={["menuMobile"]}>
-        <UserMenu client:only="react" />
+        <!-- <UserMenu client:only="react" /> -->
         <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0,0,256,256">
           <g fill="#ffffff" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal"><g transform="scale(5.12,5.12)"><path d="M5,8c-0.72127,-0.0102 -1.39216,0.36875 -1.75578,0.99175c-0.36361,0.623 -0.36361,1.39351 0,2.01651c0.36361,0.623 1.0345,1.00195 1.75578,0.99175h40c0.72127,0.0102 1.39216,-0.36875 1.75578,-0.99175c0.36361,-0.623 0.36361,-1.39351 0,-2.01651c-0.36361,-0.623 -1.0345,-1.00195 -1.75578,-0.99175zM5,23c-0.72127,-0.0102 -1.39216,0.36875 -1.75578,0.99175c-0.36361,0.623 -0.36361,1.39351 0,2.01651c0.36361,0.623 1.0345,1.00195 1.75578,0.99175h40c0.72127,0.0102 1.39216,-0.36875 1.75578,-0.99175c0.36361,-0.623 0.36361,-1.39351 0,-2.01651c-0.36361,-0.623 -1.0345,-1.00195 -1.75578,-0.99175zM5,38c-0.72127,-0.0102 -1.39216,0.36875 -1.75578,0.99175c-0.36361,0.623 -0.36361,1.39351 0,2.01651c0.36361,0.623 1.0345,1.00195 1.75578,0.99175h40c0.72127,0.0102 1.39216,-0.36875 1.75578,-0.99175c0.36361,-0.623 0.36361,-1.39351 0,-2.01651c-0.36361,-0.623 -1.0345,-1.00195 -1.75578,-0.99175z"></path></g></g>
           </svg>
@@ -159,7 +165,7 @@ const menus = [
   nav{
     display: flex;
     position: relative;
-    width: var(--width-main);
+    width: 1200px;
   }
   .menuContainer {
     display: none;
@@ -204,7 +210,7 @@ const menus = [
       width: 100%;
       gap: 10px;
       align-items: flex-end;
-      justify-content: flex-end;
+      justify-content: center;
       box-sizing: border-box;
       height: var(--height-header);
     }
