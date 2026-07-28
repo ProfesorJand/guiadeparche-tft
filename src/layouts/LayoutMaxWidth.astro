@@ -7,6 +7,7 @@ import Adsense from '../components/adsense/Adsense.jsx';
 import { ViewTransitions } from 'astro:transitions';
 import PageLoader from '@components/PageLoader';
 import Youtube from '@components/youtube/Youtube.jsx';
+import UserMenu from '@components/headers/UserMenu';
 const admin = typeof window !== "undefined" ? window.localStorage.getItem("gp_admin") : false;
 interface Props {
   title: string;
@@ -107,6 +108,7 @@ const absoluteSnippetImgUrl = new URL(resolvedSnippetImgUrl, Astro.site || "http
         <header class="bodyHeader">
           <Logo></Logo>
           <Header transition:persist/>
+          <UserMenu client:only="react"/>
         </header> 
       </div>
       <main class="bodyMain">
@@ -173,8 +175,19 @@ const absoluteSnippetImgUrl = new URL(resolvedSnippetImgUrl, Astro.site || "http
       rgb(var(--accent-light)) 30%,
       white 60%
     );
+    --color-hex-cost-default: #252f3c;
+
+    --color-hex-cost-1: grey;
+    --color-hex-cost-2: green;
+    --color-hex-cost-3: aqua;
+    --color-hex-cost-4: purple;
+    --color-hex-cost-5: gold;
+    --color-hex-cost-6: rgb(219, 13, 13);
+    --color-hex-cost-11: rgb(219, 13, 13);
+    --text-shadow: 1px 0 #000, -1px 0 #000, 0 1px #000, 0 -1px #000, 1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
     font-family: Sans-serif;
     color: var(--text-color-white-primary);
+
   }
 
   @font-face {
@@ -397,7 +410,7 @@ const absoluteSnippetImgUrl = new URL(resolvedSnippetImgUrl, Astro.site || "http
     }
     .bodyHeader{
       display: flex;
-      max-width: 1200px;
+      max-width: 100%;
       width:100%;
     }
     .bodyInfo{

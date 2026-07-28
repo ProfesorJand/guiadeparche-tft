@@ -19,7 +19,7 @@ const Cards = () => {
     title:"Cómo jugar desde cero",
     desc:"Aprende qué es TFT y cómo empezar a jugar",
     icon:"https://i.ytimg.com/vi/hsU_1u38dOY/maxresdefault.jpg",
-    url:"/tft/como-jugar/desde-cero"
+    url:"/tft"
   },
   {
     title:"Fundamentos",

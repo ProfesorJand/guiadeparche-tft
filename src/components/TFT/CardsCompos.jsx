@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import style from "./css/CardsCompos.module.css";
-import { crearCompoMetaPHP, dataTFTAllItems, teamPlannerCode, versionTFT, setMutatorPBE, setMutatorLatest, dataTFTChampions, compActiveId } from "@stores/dataTFT";
+import { composMetaJSON, dataTFTAllItems, teamPlannerCode, versionTFT, setMutatorPBE, setMutatorLatest, dataTFTChampions, compActiveId } from "@stores/dataTFT";
 import GuiaFreeTFTMeta from "./GuiaFreeTFTMeta.jsx";
 import { navigate } from "astro:transitions/client";
 import { CapturarImagen } from "@functions/CapturarImagen.js";
@@ -239,13 +239,13 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
       } else {
         token = import.meta.env.PUBLIC_TOKEN_META;
       }
-      fetch(crearCompoMetaPHP, {
+      fetch(composMetaJSON, {
         method: 'DELETE',
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: `id=${id}&tier=${tier}&version=${version}`, // Se envía la versión
+        body: JSON.stringify({ id, tier, version }), // Se envía la versión
       })
         .then(response => response.json())
         .then(data => {
@@ -403,7 +403,7 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
                 <div className={`${style.btnAdmins} ${!isInfografia ? "hideForCapture" : ""}`}>
 
                   <button onClick={() => setOpenForEdit(!openForEdit)}>{isActive ? "TFT Meta" : `${comp?.urlSEO?.replace("-", " ")?.toUpperCase()} TFT`}</button>
-                  <button onClick={(e) => copyToClipboard(e, (currentVersion === "pbe" ? codeForPBE(allChampionsApiName) : generatorCodeBuilder(allChampionsApiName)))}>Copiar Código</button>
+                  <button onClick={(e) => copyToClipboard(e, (currentVersion === "pbe" ? codeForPBE(allChampionsApiName) : codeForPBE(allChampionsApiName)))}>Copiar Código</button>
                   <button onClick={() => {
                     if (showFormForEdit) {
                       compActiveId.set(null);
@@ -429,7 +429,7 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
                 </div>
               ) : (
                 <div className={`${style.btnAdmins} ${!isInfografia ? "hideForCapture" : ""}`}>
-                  <button className={`${style.buttonLink} ${style.buttonLinkCopy}`} onClick={(e) => copyToClipboard(e, (currentVersion === "pbe" ? codeForPBE(allChampionsApiName) : generatorCodeBuilder(allChampionsApiName)))}>
+                  <button className={`${style.buttonLink} ${style.buttonLinkCopy}`} onClick={(e) => copyToClipboard(e, (currentVersion === "pbe" ? codeForPBE(allChampionsApiName) : codeForPBE(allChampionsApiName)))}>
                     Copiar Código
                   </button>
                   <a

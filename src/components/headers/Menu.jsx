@@ -38,9 +38,9 @@ const Menu = ({link, linkPrincipal, nombre, submenus = [], img = "", onlyAdmin=f
   }
 
   return (
-    <div className={style.menuContainer}>
+    <div className={`${style.menuContainer}`}>
       <a
-        className={[style.menuItem, currentPath === linkPrincipal ? style.active : ''].join(" ")}
+        className={[style.menuItem, currentPath === linkPrincipal ? style.active : '', img ? style.menuImgContainer : ''].join(" ")}
         href={currentPath === link ? null : link}
         target="_self"
       >
