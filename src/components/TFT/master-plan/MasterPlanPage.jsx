@@ -145,40 +145,6 @@ export default function MasterPlanPage() {
     });
   }, [allItems]);
 
-  const softChampionsList = useMemo(() => {
-    const uniqueMap = new Map();
-    allCompos.forEach(comp => {
-      if (comp.campeonesEarly && Array.isArray(comp.campeonesEarly)) {
-        comp.campeonesEarly.forEach(early => {
-          const apiName = typeof early === 'object' && early !== null ? early.apiNameCampeon : early;
-          if (apiName && !uniqueMap.has(apiName)) {
-            const champ = allChampions.find(c => c.apiName === apiName);
-            uniqueMap.set(apiName, {
-              apiName,
-              name: champ?.name || champ?.nombre || apiName,
-              icon: champ ? getLocalTftImage(champ.img || champ.tileIcon, 'champions/tileIcon', versionNumber) : null,
-              cost: champ?.cost || champ?.coste || 1
-            });
-          }
-        });
-      }
-    });
-    return Array.from(uniqueMap.values());
-  }, [allCompos, allChampions, versionNumber]);
-
-  const softChampionsByCost = useMemo(() => {
-    const groups = {};
-    softChampionsList.forEach(champ => {
-      const c = champ.cost || 1;
-      if (!groups[c]) groups[c] = [];
-      groups[c].push(champ);
-    });
-    Object.keys(groups).forEach(cost => {
-      groups[cost].sort((a, b) => a.name.localeCompare(b.name));
-    });
-    return groups;
-  }, [softChampionsList]);
-
   const [selectedSoftItems, setSelectedSoftItems] = useState([]);
   const [selectedSoftChampions, setSelectedSoftChampions] = useState([]);
   const [selectedSoftTraits, setSelectedSoftTraits] = useState([]);
@@ -357,6 +323,58 @@ console.log({selectedSoftItems})
       return true;
     });
   }, [allCompos, selectedCategory, selectedDifficulty, selectedTier, selectedDamageType, selectedItems, selectedChampions, selectedExtras, selectedSinergias, selectedAumentoResAleatorio, selectedAumentoEspecifico]);
+
+  const availableSoftItemApiNames = useMemo(() => {
+    const set = new Set();
+    filteredCompos.forEach(comp => {
+      if (comp.itemsPrio && Array.isArray(comp.itemsPrio)) {
+        comp.itemsPrio.forEach(prio => {
+          const nombreItem = typeof prio === 'object' && prio !== null ? prio.apiName : prio;
+          if (!nombreItem) return;
+          set.add(nombreItem);
+          const itemData = allItems.find(x => x.apiName === nombreItem);
+          if (itemData?.composition && Array.isArray(itemData.composition)) {
+            itemData.composition.forEach(compApiName => set.add(compApiName));
+          }
+        });
+      }
+    });
+    return set;
+  }, [filteredCompos, allItems]);
+
+  const softChampionsList = useMemo(() => {
+    const uniqueMap = new Map();
+    filteredCompos.forEach(comp => {
+      if (comp.campeonesEarly && Array.isArray(comp.campeonesEarly)) {
+        comp.campeonesEarly.forEach(early => {
+          const apiName = typeof early === 'object' && early !== null ? early.apiNameCampeon : early;
+          if (apiName && !uniqueMap.has(apiName)) {
+            const champ = allChampions.find(c => c.apiName === apiName);
+            uniqueMap.set(apiName, {
+              apiName,
+              name: champ?.name || champ?.nombre || apiName,
+              icon: champ ? getLocalTftImage(champ.img || champ.tileIcon, 'champions/tileIcon', versionNumber) : null,
+              cost: champ?.cost || champ?.coste || 1
+            });
+          }
+        });
+      }
+    });
+    return Array.from(uniqueMap.values());
+  }, [filteredCompos, allChampions, versionNumber]);
+
+  const softChampionsByCost = useMemo(() => {
+    const groups = {};
+    softChampionsList.forEach(champ => {
+      const c = champ.cost || 1;
+      if (!groups[c]) groups[c] = [];
+      groups[c].push(champ);
+    });
+    Object.keys(groups).forEach(cost => {
+      groups[cost].sort((a, b) => a.name.localeCompare(b.name));
+    });
+    return groups;
+  }, [softChampionsList]);
 
   const FiltroHard = ()=>{
     return(
@@ -579,18 +597,31 @@ console.log({selectedSoftItems})
       <div className={style.filterInputGroup}>
         <label>Objetos</label>
         <div className={style.filterButtonsContainer} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '8px' }}>
-          {softItemsList.map(item => (
-            <button
-              key={item.apiName}
-              type="button"
-              title={item.name}
-              className={`${style.filterOptionBox} ${selectedSoftItems.some(i => (typeof i === 'object' ? i.apiName : i) === item.apiName) ? style.filterOptionBoxActive : ''}`}
-              onClick={() => toggleSoftItem(item)}
-              style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '6px' }}
-            >
-              {item.icon && <img src={item.icon} alt={item.name} style={{ width: '32px', height: '32px', objectFit: 'contain', borderRadius: '4px' }} />}
-            </button>
-          ))}
+          {softItemsList.map(item => {
+            const isAvailable = availableSoftItemApiNames.has(item.apiName);
+            const isSelected = selectedSoftItems.some(i => (typeof i === 'object' ? i.apiName : i) === item.apiName);
+            return (
+              <button
+                key={item.apiName}
+                type="button"
+                title={item.name}
+                disabled={!isAvailable}
+                className={`${style.filterOptionBox} ${isSelected ? style.filterOptionBoxActive : ''}`}
+                onClick={() => isAvailable && toggleSoftItem(item)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: '6px',
+                  opacity: isAvailable ? 1 : 0.25,
+                  filter: isAvailable ? 'none' : 'grayscale(100%)',
+                  cursor: isAvailable ? 'pointer' : 'not-allowed'
+                }}
+              >
+                {item.icon && <img src={item.icon} alt={item.name} style={{ width: '32px', height: '32px', objectFit: 'contain', borderRadius: '4px' }} />}
+              </button>
+            );
+          })}
         </div>
       </div>
 

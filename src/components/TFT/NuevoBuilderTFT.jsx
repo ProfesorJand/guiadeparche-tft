@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import style from "../main/Admin/css/Builder.module.css";
 import { useStore } from "@nanostores/react";
-import { dataTFTChampions,initialTFT_SET, dataTFTAllItems, dataTFTTraits, findTraitsStyles } from "@stores/dataTFT";
+import { dataTFTChampions, initialTFT_SET, dataTFTAllItems, dataTFTTraits, findTraitsStyles } from "@stores/dataTFT";
 import { getLocalTftImage } from "@utils/images";
 import { composicionTFT as datosCompos, actualizarComposicionTFT } from "@stores/tft/dataFormularioCrear.js";
 import { traitsColors } from "@functions/campeonestft.js";
@@ -23,7 +23,7 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
   const [isMounted, setIsMounted] = React.useState(false);
   React.useEffect(() => { setIsMounted(true); }, []);
   const version = "latest";
-  
+
   const globalChampions = useStore(dataTFTChampions) || [];
   const globalItems = useStore(dataTFTAllItems) || [];
   const globalTraits = useStore(dataTFTTraits) || [];
@@ -34,12 +34,12 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
   const safeGlobalTraits = isMounted ? globalTraits : [];
 
   const tableroArray = customTablero || globalComposicion.posicionamiento?.[posicionIndex]?.tablero || [];
-  
+
   // Reconstruct boardData from state array
   const boardData = {};
   tableroArray.forEach(champ => {
     const hexIndex = champ.fila * 10 + champ.col;
-    
+
     const champData = safeGlobalChampions.find(c => c.apiName === champ?.apiNameCampeon);
     if (!champData) return;
 
@@ -47,7 +47,7 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
       if (!apiNameItem) return null;
       const itemData = safeGlobalItems.find(i => i.apiName === apiNameItem);
       if (!itemData) return null;
-      
+
       let traitExtra = null;
       if (itemData.incompatibleTraits && itemData.incompatibleTraits.length > 0) {
         traitExtra = safeGlobalTraits.find((t) => t.apiName === itemData.incompatibleTraits[0]);
@@ -73,7 +73,7 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
     if (champ.sinergiaExtraMissFortune) {
       // Remover la sinergia "undetermined" o genérica de MF si existe
       resolvedTraits = resolvedTraits.filter(t => !t.apiName.toLowerCase().includes("undetermined") && !(t.icon && t.icon.toLowerCase().includes("undetermined")));
-      
+
       // Y agregar el trait de la sinergia extra
       const extraTraitObj = safeGlobalTraits.find(t => t.apiName === champ.sinergiaExtraMissFortune || t.name === champ.sinergiaExtraMissFortune);
       if (extraTraitObj) {
@@ -102,14 +102,14 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
     champion.traits.forEach((trait) => {
       collectedTraits.add(trait.apiName);
       const currentCount = synergiesCount[trait.apiName]?.count || 0;
-      synergiesCount[trait.apiName] = {count: currentCount + 1, icon: trait.icon};
+      synergiesCount[trait.apiName] = { count: currentCount + 1, icon: trait.icon };
     });
-      if (champion.items) {
+    if (champion.items) {
       champion.items.forEach((item) => {
         if (item.traitExtra && !collectedTraits.has(item.traitExtra.apiName)) {
           collectedTraits.add(item.traitExtra.apiName);
           const currentCount = synergiesCount[item.traitExtra.apiName]?.count || 0;
-          synergiesCount[item.traitExtra.apiName] = {count: currentCount + 1, icon: item.traitExtra.icon};
+          synergiesCount[item.traitExtra.apiName] = { count: currentCount + 1, icon: item.traitExtra.icon };
         }
       });
     }
@@ -151,14 +151,14 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
     if (itemMoveRaw) {
       const itemMove = JSON.parse(itemMoveRaw);
       if (newBoard[hexIndex] && newBoard[hexIndex].items.length < 3) {
-         if (fromHexIndexItem !== hexIndex.toString()) {
-            newBoard[fromHexIndexItem].items.splice(fromItemIndex, 1);
-            newBoard[hexIndex].items.push(itemMove);
-            updateTablero(newBoard);
-         }
+        if (fromHexIndexItem !== hexIndex.toString()) {
+          newBoard[fromHexIndexItem].items.splice(fromItemIndex, 1);
+          newBoard[hexIndex].items.push(itemMove);
+          updateTablero(newBoard);
+        }
       } else if (!newBoard[hexIndex]) {
-         newBoard[fromHexIndexItem].items.splice(fromItemIndex, 1);
-         updateTablero(newBoard);
+        newBoard[fromHexIndexItem].items.splice(fromItemIndex, 1);
+        updateTablero(newBoard);
       }
       return;
     }
@@ -168,8 +168,8 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
       if (newBoard[hexIndex] && newBoard[hexIndex].items.length < 3) {
         const itemImageUrl = item.icon.startsWith("http")
           ? item.icon.replace(".tex", ".png").toLowerCase()
-          : "https://raw.communitydragon.org/latest/game/" + item.icon.replace(".tex", ".png").toLowerCase();
-        
+          : getLocalTftImage(item.icon, item.apiName?.includes('Augment') ? 'augments/choiceui' : 'items');
+
         let traitExtra = null;
         if (item.incompatibleTraits && item.incompatibleTraits.length > 0) {
           traitExtra = globalTraits.find((t) => t.apiName === item.incompatibleTraits[0]);
@@ -177,8 +177,8 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
 
         newBoard[hexIndex] = {
           ...newBoard[hexIndex],
-          items: [...newBoard[hexIndex].items, { 
-            apiName: item.apiName || item.name, 
+          items: [...newBoard[hexIndex].items, {
+            apiName: item.apiName || item.name,
             imagen: itemImageUrl,
             traitExtra
           }]
@@ -291,11 +291,11 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
       }
     }
 
-    if(traitType === "BlackRose") traitType = "Black Rose";
-    if(traitType === "FormSwapper") traitType = "Form Swapper";
-    if(traitType === "HighRoller") traitType = "High Roller";
-    if(traitType === "JunkerKing") traitType = "Junker King";
-    if(traitType === "PitFighter") traitType = "Pit Fighter";
+    if (traitType === "BlackRose") traitType = "Black Rose";
+    if (traitType === "FormSwapper") traitType = "Form Swapper";
+    if (traitType === "HighRoller") traitType = "High Roller";
+    if (traitType === "JunkerKing") traitType = "Junker King";
+    if (traitType === "PitFighter") traitType = "Pit Fighter";
 
     if (traitsColors[traitType]) {
       const traitLevels = Object.keys(traitsColors[traitType]).map(Number).sort((a, b) => a - b);
@@ -310,7 +310,7 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
 
   const renderHexagons = () => {
     const hexes = [];
-    
+
     const rows = [
       [11, 12, 13, 14, 15, 16, 17],
       [21, 22, 23, 24, 25, 26, 27],
@@ -356,12 +356,12 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
                         const traitSVG = findClosestTraitImage(syn.apiName.replace(" ", ""), count);
                         const iconUrl = syn.icon.startsWith("http")
                           ? syn.icon.toLowerCase().replace(".tex", ".png")
-                          : `https://raw.communitydragon.org/${version}/game/` + syn.icon.toLowerCase().replace(".tex", ".png");
+                          : getLocalTftImage(syn.icon, 'traits');
 
                         return (
                           <div key={idx} className={style.containerTrait}>
                             <img className={`${style.backgroundSinergia} ${syn.apiName.replace(" ", "")}`} src={`/hexagonos/${traitSVG}`} alt="hex" />
-                            <img className={style.sinergia} src={iconUrl} alt={syn.name}/>
+                            <img className={style.sinergia} src={iconUrl} alt={syn.name} />
                           </div>
                         );
                       })}
@@ -373,17 +373,17 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
 
                     <div className={style.containerItems}>
                       {champion.items.map((item, i) => (
-                        
-                        <div 
-                          key={i} 
+
+                        <div
+                          key={i}
                           draggable={!readOnly}
                           onDragStart={readOnly ? undefined : (e) => handleDragStartItem(e, hexIndex, i, item)}
                           onDragEnd={readOnly ? undefined : (e) => handleDragEndItem(e, hexIndex, i)}
-                          className={style.containerItem} 
+                          className={style.containerItem}
                           style={{ cursor: readOnly ? 'default' : 'grab' }}
                           onContextMenu={(e) => { if (readOnly) return; e.preventDefault(); e.stopPropagation(); handleRemoveItem(hexIndex, i); }}
                         >
-                          <ImgItem type="item" item={safeGlobalItems.find(({apiName})=>apiName === item.apiName)}/>
+                          <ImgItem type="item" item={safeGlobalItems.find(({ apiName }) => apiName === item.apiName)} />
                         </div>
                       ))}
                     </div>
@@ -418,19 +418,20 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
           const count = synergiesCount[trait].count || 1;
           const traitSVG = findClosestTraitImage(trait.replace(" ", ""), count);
           if (traitSVG === "hex-default.webp") return null;
-           const iconUrl = synergiesCount[trait]?.icon.startsWith("http")
-              ? synergiesCount[trait]?.icon.toLowerCase().replace(".tex", ".png")
-              : `https://raw.communitydragon.org/${version}/game/` + synergiesCount[trait]?.icon.toLowerCase().replace(".tex", ".png");
+          const iconUrl = synergiesCount[trait]?.icon?.startsWith("http")
+            ? synergiesCount[trait]?.icon.toLowerCase().replace(".tex", ".png")
+            : getLocalTftImage(synergiesCount[trait]?.icon, 'traits');
 
-          return(
-          <div key={idx} className={style.containerTraitShow}>
-            <div className={style.containerTraitShowIcon}>
-            <img className={style.backgroundSinergiaShow} src={`/hexagonos/${traitSVG}`} alt="hex" />
-            <img className={style.sinergiaShow} src={iconUrl} alt={trait} />
+          return (
+            <div key={idx} className={style.containerTraitShow}>
+              <div className={style.containerTraitShowIcon}>
+                <img className={style.backgroundSinergiaShow} src={`/hexagonos/${traitSVG}`} alt="hex" />
+                <img className={style.sinergiaShow} src={iconUrl} alt={trait} />
+              </div>
+              <span>{count}</span>
             </div>
-            <span>{count}</span>
-          </div>
-        )})}
+          )
+        })}
       </div>
     );
   }
