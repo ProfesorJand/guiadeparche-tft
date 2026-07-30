@@ -21,6 +21,9 @@
     background: linear-gradient(to bottom, transparent, rgb(0, 0, 0));
     pointer-events: none;
 }
+.campeonContainer.noName::after {
+    display: none;
+}
 
 .imgChampion{
   width: 100%;

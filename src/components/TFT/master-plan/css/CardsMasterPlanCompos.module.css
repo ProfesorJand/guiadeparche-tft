@@ -4,11 +4,12 @@
   flex-wrap: wrap;
   gap:10px;
   padding:10px;
-  width:calc(100% / 3);
-  background-color: rgb(17, 8, 26);
+  width:100%;
+  border-radius: 8px;
   position:relative;
   box-sizing:border-box;
   container-type:size;
+  height: fit-content;
   aspect-ratio: 4 / 5;
 }
 
@@ -19,7 +20,19 @@
   justify-content: space-between;
   align-items: center;
   height: calc( (100% - (10px * 2)) / 12 * 1);
+  gap:10px;
   container-type: size;
+}
+.containerName{
+  display:flex;
+  flex-direction:column;
+  width:100%;
+  flex: 1;
+  container-type:inline-size;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  box-sizing: border-box;
 }
 .body{
   display:flex;
@@ -40,6 +53,12 @@
   font-size:45cqh;
   font-family: 'ObvioslyWideBold', sans-serif;
 }
+.containerCampeonMeta{
+  display:flex;
+  width: 100%;
+  aspect-ratio: 1/1;
+  position:relative
+}
 
 .initialInfoComp{
   display:flex;
@@ -52,23 +71,26 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 20%;
+  width: 100%;
   z-index: 2;
 }
 .imgCampeonCard{
   position: relative;
-  height: 100%;
+  width: 100%;
   z-index: 1;
   object-fit: cover;
 }
 .containerTags{
   display:flex;
-  position:absolute;
-  flex-direction: column;
+  position:relative;
+  flex-direction: row;
   width:100%;
   height:100%;
   gap:5px;
   container-type:size;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
 }
 /* .imgItemsCard{
   position: relative;
@@ -81,7 +103,9 @@
   /* padding: 8px 8px; */
   font-weight: 900;
   text-align: left;
-  font-size: 100cqh;
+  /* font-size: 100cqh; */
+  text-fit:grow;
+  width:calc((100% - 5px) / 12 );
   text-transform: uppercase;
   /* font-family: 'Inter', system-ui, sans-serif; */
   letter-spacing: 2px;
@@ -117,75 +141,101 @@
   background-image: linear-gradient(135deg, #e3a985, #b87333); 
   filter: drop-shadow(0px 0px 8px rgba(184, 115, 51, 0.6)) drop-shadow(2px 4px 4px rgba(0,0,0,0.8));
 }
-
+.textFillSize{
+  letter-spacing: 1px;
+  font-family: 'ObvioslyWideBold', sans-serif;
+  text-transform: uppercase;
+  color: white;
+  font-size: 12px;
+  text-align: center;
+  text-wrap: balance;
+  word-break: break-word;
+  line-height: 1.2;
+}
 .dificultadCard{
   position:relative;
   z-index:2;
-  padding: 8px 8px;
+  padding: 4px 4px;
   width:fit-content;
   border-radius: 4px;
   color: white;
   font-weight: bold;
   text-align: center;
   text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  border: 1px solid black;
+  box-sizing: border-box;
 }
-.dificultadCard[data-dificultad="Facil"], .dificultadCard[data-dificultad="Easy"] { background-color: #2ecc71; } /* Verde */
-.dificultadCard[data-dificultad="Medio"], .dificultadCard[data-dificultad="Medium"] { background-color: #e67e22; } /* Naranja */
+.dificultadCard[data-dificultad="Facil"], .dificultadCard[data-dificultad="Easy"] { background-color: #1ba716; } /* Verde */
+.dificultadCard[data-dificultad="Medio"], .dificultadCard[data-dificultad="Medium"] { background-color: #cc6104; } /* Naranja */
 .dificultadCard[data-dificultad="Dificil"], .dificultadCard[data-dificultad="Hard"] { background-color: #e00000; } /* Rojo */
 
 .categoriaCard{
   position:relative;
   z-index:2;
-  padding: 8px 8px;
+  padding: 4px 4px;
   width:fit-content;
   border-radius: 4px;
   color: white;
   font-weight: bold;
   text-align: center;
   text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  border: 1px solid black;
+  box-sizing: border-box;
 }
-.categoriaCard[data-categoria="Fast 8"] { background-color: #44095c; } /* Morado */
-.categoriaCard[data-categoria="Fast 9"] { background-color: #a75207; } /* Anaranjado */
-.categoriaCard[data-categoria="3 Estrellas"], .categoriaCard[data-categoria="3 Stars"] { background-color: #b18f06; color: black; text-shadow: none; } /* Amarillo */
+.categoriaCard[data-categoria="Fast 8"] { background-color: #cc6104; } 
+.categoriaCard[data-categoria="Fast 9"] { background-color: #e00000; }
+.categoriaCard[data-categoria="3 Estrellas"], .categoriaCard[data-categoria="3 Stars"] { background-color: #1ba716; } /* Amarillo */
 
 .dañoCard{
   position:relative;
   z-index:2;
-  padding: 8px 8px;
+  padding: 4px 4px;
   width:fit-content;
   border-radius: 4px;
   color: white;
   font-weight: bold;
   text-align: center;
   text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  border: 1px solid black;
+  box-sizing: border-box;
 }
 
 .dañoCard[data-tipoDeDano="AP"] {background-color: #8a0a8a}
-.dañoCard[data-tipoDeDano="AD"] {background-color: #d4481e}
-.dañoCard[data-tipoDeDano="Hibrido"] {background-color: #1ba716}
+.dañoCard[data-tipoDeDano="AD"] {background-color: #d43504}
+.dañoCard[data-tipoDeDano="Híbrido"] {background-color: #1ba716}
 
 .imgAumentoCard{
   position: absolute;
-  top: 20%;
-  transform: translateY(-50%);
+  top: 0%;
   right: 0;
-  height: 20%;
-  width:20%;
+  height: 25%;
+  width:25%;
   z-index: 2;
   background-color:red;
 }
 .imgEmblemaCard{
   position: absolute;
-  top: 40%;
-  transform: translateY(-50%);
+  top: 25%;
   right: 0;
-  height: 20%;
-  width:20%;
+  height: 25%;
+  width:25%;
   z-index: 2;
   background-color:green;
 }
+.tipSEO{
+  display:flex;
+  position:relative;
+  width:100%;
+  color:white;
+  font-size:12px;
+  overflow: hidden;            /* 1. Hides the content that exceeds the line limit */
+  display: -webkit-box;        /* 2. Required legacy layout engine for line-clamping */
+  -webkit-box-orient: vertical;/* 3. Sets the box layout direction to vertical */
+  -webkit-line-clamp: 5;       /* 4. Change this number to your desired line count */
 
-.initialFundamentalDioses{
+}
+
+.initialFundamentals{
   display:flex;
   flex-direction: column;
   width:calc((100% - 2cqh) / 12 * 7);
@@ -194,19 +244,25 @@
   gap:2cqh;
   height:100%;
 }
-.initialFundamentals{
+.containerFundamentalsItems{
   display:flex;
+  flex:1;
+  position:relative;
   flex-direction: column;
-  width:100%;
-  border: 1px solid rgba(255, 0, 0, 0.5);
-  box-sizing: border-box;
-  padding:2cqh 2cqh 4cqh 2cqh;
-  gap:2cqh;
-  container-type:inline-size;
-  height:calc((100% - (2cqh)) / 12 * 8 );
+}
+.containerFundamentalsCampeones{
+  display:flex;
+  flex:1;
+  position:relative;
+  flex-direction: column;
+  
 }
 .titleMiniInfoCard{
   text-align:center;
+  /* font-family: 'ObvioslyWideBold', sans-serif; */
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 .containerItemsPrio{
   display:flex;
@@ -214,11 +270,38 @@
   gap:2cqh;
   width:100%;
   flex-wrap: wrap;
-  height:30cqh;
+  align-content: center;
+  height: 90%;
+  position: relative;
 }
 .containerItemPrio{
   display:flex;
-  width:calc((100% - (2cqh * 3)) / 4)
+  width: calc((100% - (2cqh * 3)) / 4);
+  aspect-ratio: 1/1;
+  position: relative; /* Necesario para posicionar el brillo */
+  box-sizing: border-box;
+  border-radius:8px;
+}
+.highlightable {
+  border: 1px solid transparent;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+.highlightable::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  border-radius: inherit; /* Copia las esquinas redondeadas de tu contenedor */
+  pointer-events: none; /* No interfiere con los clicks */
+  
+  /* La animación corre INFINITAMENTE desde el inicio para estar sincronizada */
+  animation: pulse-glow 1s ease-in-out infinite;
+  
+  /* Oculto por defecto */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 10;
 }
 .imgItemsPrio{
   position: relative;
@@ -229,7 +312,8 @@
   display:flex;
   width:100%;
   gap:2cqh;
-  height:60%;
+  height: 90%;
+  align-items: center;
 }
 .campeonEarly{
   display:flex;
@@ -270,6 +354,34 @@
   justify-content: center;
   overflow: hidden;
 
+}
+.highlight{
+  border-color: currentColor;
+}
+.highlight::before {
+  opacity: 1; /* Al volverse visible, ya está sincronizado con los demás */
+}
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 10px 0px rgb(255, 238, 0);
+  }
+  50% {
+    box-shadow: 0 0 10px 2px rgb(9, 255, 0);
+  }
+}
+.containerCuadroCondicionGrande{
+  display: flex;
+  flex-direction: row;
+}
+.containerCuadroCondicionPequeno{
+  display: flex;
+  flex-direction: row;
+  position:absolute;
+  top:0;
+  left:0;
+  height: 50%;
+  width: 50%;
+  z-index: 2;
 }
 .containerDios{
   display:flex;
@@ -324,6 +436,7 @@
   position:relative;
   height: calc((100% - 5cqh) / 2);
   background-color:rgba(0, 0, 0, 0.50);
+  aspect-ratio: 1 / 1;
 }
 .imgCondicionGrande{
   position: relative;
@@ -388,7 +501,8 @@
   /* Second Ring: Blue */
   -4px -4px 0 #0000ff,  4px -4px 0 #0000ff, -4px  4px 0 #0000ff,  4px  4px 0 #0000ff,
     0px -4px 0 #0000ff,  0px  4px 0 #0000ff, -4px  0px 0 #0000ff,  4px  0px 0 #0000ff;
-  font-size:8cqh;
+  font-size:11px;
+  top: -3px;
   right:0;
   position:absolute;
   text-align: left; 
@@ -416,6 +530,18 @@
   right: 0px;
   z-index: 2;
   justify-content: flex-end;
+}
+
+.borderContainer{
+  border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid #000000;
+    /* background: linear-gradient(#727272 0 0) padding-box, linear-gradient(135deg, #000000 0%, #000000 100%) border-box; */
+    box-sizing: border-box;
+    backdrop-filter: blur(20px);
+    background-color: rgb(0 0 0 / 59%);
+    backdrop-filter: blur(10px);
+    padding: 2cqh;
 }
 
 @keyframes tooltipFadeIn {

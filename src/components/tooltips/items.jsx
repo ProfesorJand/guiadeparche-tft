@@ -6,7 +6,6 @@ import { useStore } from "@nanostores/react";
 
 const TooltipItem = ({desc_item = null, effects, name, nombre, icon, composition}) => {
   const $dataTFTAllItems = useStore(dataTFTAllItems);
-  console.log({icon})
   return (
     <div className={style.tooltipContent}>
       <div className={style.tooltipHeader}>

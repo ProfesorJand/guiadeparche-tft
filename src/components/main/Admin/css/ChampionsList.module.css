@@ -5,6 +5,16 @@
     flex-wrap: wrap;
     gap:5px
 }
+.containerChampion{
+    --gapChampion: 5px;
+    display: flex;
+    position:relative;
+    width: calc((100% - (var(--gapChampion) * 7)) / 8);
+    height: auto;
+    aspect-ratio: 1/1;
+    border: 3px solid;
+    box-sizing: border-box;
+}
 
 .containerChampionsListByCost{
     flex-direction:column;
@@ -24,15 +34,6 @@
     width: 100%;
 }
 
-.containerChampion{
-    display: flex;
-    position:relative;
-    width: calc((100% - (var(--gapChampion) * 7)) / 8);
-    height: auto;
-    aspect-ratio: 1/1;
-    border: 3px solid;
-    box-sizing: border-box;
-}
 
 .containerChampion:hover{
     cursor:grab

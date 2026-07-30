@@ -14,7 +14,9 @@ export async function getStaticPaths() {
   const top10Comps = [...todasLasCompsPBE.slice(0, 10)];
   const restComps = [...todasLasCompsPBE.slice(10)];
 
-  return todasLasCompsPBE.map((comp) => ({
+  return todasLasCompsPBE
+    .filter((comp) => comp.urlSEO && String(comp.urlSEO).trim() !== "")
+    .map((comp) => ({
       params: { id: String(comp.urlSEO) },
       props: { comp, top10Comps, restComps },
     }));

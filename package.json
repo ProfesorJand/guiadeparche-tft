@@ -8,7 +8,9 @@
     "dev": "astro dev",
     "build": "astro build --remote",
     "preview": "astro preview",
-    "start": "astro dev"
+    "start": "astro dev",
+    "download:set17": "node scripts/downloadTFTImages.mjs",
+    "download:set18": "node scripts/downloadTFTImagesSet18.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.6.0",

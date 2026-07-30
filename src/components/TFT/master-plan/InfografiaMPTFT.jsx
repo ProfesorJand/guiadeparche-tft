@@ -1,18 +1,22 @@
 import { useState } from "react";
 import style from "./css/InfografiaMPTFT.module.css";
-import { dataTFTAllAugments, dataTFTAllItems, dataTFTChampions } from "@stores/dataTFT";
+import { dataTFTAllAugments, dataTFTAllItems, dataTFTChampions,teamPlannerCode,setMutatorPBE,setMutatorLatest,versionTFT } from "@stores/dataTFT";
 import { useStore } from "@nanostores/react";
 import ImgItem from "@components/TFT/ImgItem";
 import CampeonesNivel from "../elementosInfografia/CampeonesNivel";
 import Sinergias from "@components/main/Admin/Sinergias.jsx";
 import NuevoBuilderTFT from "../NuevoBuilderTFT";
 import ImgCampeon from "../ImgCampeon";
-import ImgAugment from "../ImgAugment"
+import ImgAugment from "../ImgAugment";
+import copyToClipboard from "@functions/copyToClipboard.js";
 const InfografiaMPTFT = ({comp}) => {
   const AllItems = useStore(dataTFTAllItems);
   const AllChampions = useStore(dataTFTChampions);
   const AllAugments = useStore(dataTFTAllAugments);
+  const codeOfChampions = useStore(teamPlannerCode);
+  const currentVersion = useStore(versionTFT)
   const [hoveredItemApiName, setHoveredItemApiName] = useState(null);
+  console.log({comp})
 
   const handleBestItemHelper = (apiName, action) => {
     if (action === "show") {
@@ -21,6 +25,33 @@ const InfografiaMPTFT = ({comp}) => {
       setHoveredItemApiName(null);
     }
   };
+  const Header= ()=>{
+    function codeForPBE(allChampionsApiName) {
+    let sinDuplicados = [...new Set(allChampionsApiName)];
+    let championsCode = "02";
+    let cantidadDeCampeones = sinDuplicados.length;
+    sinDuplicados.forEach(( apiName) => {
+      championsCode = championsCode.concat(codeOfChampions[apiName] || "")
+    })
+    let espaciosVacios = 10 - cantidadDeCampeones;
+    if (espaciosVacios > 0) {
+      championsCode = championsCode.concat("000".repeat(espaciosVacios));
+    }
+    championsCode = championsCode.concat(currentVersion === "pbe" ? setMutatorPBE : setMutatorLatest)
+    return championsCode
+  }
+    return (
+      <div className={style.headerInfografia}>
+        <span className={style.titleInfografia}>{comp.nombre}</span>
+        <span className={style.dificultadCard} data-dificultad={comp.dificultad}>{comp.dificultad}</span>
+        <span className={style.categoriaCard} data-categoria={comp.categoria}>{comp.categoria}</span>
+        <span className={style.dañoCard} data-tipoDeDano={comp.tipoDeDano}>{comp.tipoDeDano}</span>
+        <div className={style.containerTextoInfoPrimarioCode} onClick={(e)=>copyToClipboard(e, "codigo copiado", codeForPBE(comp.posicionamiento[0].tablero.map((info)=>info.apiNameCampeon)))}> {/* (currentVersion === "pbe" ? codeForPBE(allChampionsApiName) : generatorCodeBuilder(allChampionsApiName)) */}
+          {"COPIAR CODIGO 📋"}
+        </div>
+      </div>
+    )
+  }
   const AumentosOP = ()=>{
    return (
     <div className={`${style.cBoxTitleInfo} ${style.cCondicionOpEarly}`}>
@@ -74,19 +105,26 @@ const InfografiaMPTFT = ({comp}) => {
           <div className={`${style.cBoxTitleInfo} ${style.cCampeonesPrio}`}> 
             <span className={style.tBox}>Campeones Prio en Early</span>
             <div className={style.cCampeonesPrioInfo}>
-              <div className={style.cCampeonesEarly}>
+              {/* <div className={style.cCampeonesEarly}> */}
                 <CampeonesNivel comp={comp} isMP={true} isEarly={true}/>
-              </div>
+              {/* </div> */}
             </div>
           </div>
           <div className={`${style.cBoxTitleInfo} ${style.cPrioridadObjetos}`}> 
             <span className={style.tBox}>Priodidad de Objetos</span>
             <div className={style.cPrioridadObjetosInfo}>
-              {comp.itemsPrio.map((itemName, index) => {
+              {comp.itemsPrio.map((itemEntry, index) => {
+                  const itemName = typeof itemEntry === 'object' && itemEntry !== null ? itemEntry.apiName : itemEntry;
+                  const isOp = typeof itemEntry === 'object' && itemEntry !== null ? !!itemEntry.op : false;
                   const itemData = AllItems.find(i => i.apiName === itemName);
                   return itemData ? [
                     <div key={`itemPrio-${index}`} className={style.carouselItem}>
                       <ImgItem item={itemData} />
+                      {isOp && (
+                        <div className={style.opAumento}>
+                          <span className={style.textOP}>OP</span>
+                        </div>
+                      )}
                     </div>,
                     index < comp.itemsPrio.length - 1 ? <span key={`itemPrio-gt-${index}`} className={style.mayorQue}>{'>'}</span> : null
                   ] : null;
@@ -168,12 +206,13 @@ const InfografiaMPTFT = ({comp}) => {
     )
   }
   const MejoresItems = ()=>{
+    console.log({mejoresItems: comp?.mejoresItems})
     return (
       <div className={`${style.cBoxTitleInfo} ${style.cBestItemComp}`}>
         <span className={style.tBox}>Mejores Objetos de la composition</span>
         <div className={style.cBestItemCompInfo}>
           {
-            Object.keys(comp?.mejoresItems || {}).map((key, index)=>{
+            Object.keys(comp?.mejoresItems).map((key, index)=>{
               return (
                 <div key={index} className={style.cBestItemCompItem}>
                   <span className={style.tBox}>{key}</span>
@@ -224,10 +263,10 @@ const InfografiaMPTFT = ({comp}) => {
               });
               const campeonData = AllChampions.find((campeon) => campeon.apiName === info.apiNameCampeon);
               return (
-                <div key={index} className={`${style.cardCampeonBIS}`} style={{ borderColor: `var(--color-hex-cost-${campeonData?.cost}, var(--border-purple-color))` }}>
+                <div key={index} className={`${style.cardCampeonBIS}`} style={{ borderColor: `var(--color-hex-cost-${campeonData?.cost}, var(--border-purple-color))`,backgroundColor: `rgba(0, 0, 0, 0.5)` }}>
                   
                   {/* {campeonData?.name} */}
-                  <ImgCampeon championData={campeonData} imgType="icon" showName={true}/>
+                  <ImgCampeon championData={campeonData} imgType="icon" showName={true} borderColor={false}/>
                   <div className={style.cardCampeonBISItems}>
                   {
                     itemsData.map((itemsData, index) => {
@@ -278,19 +317,20 @@ const InfografiaMPTFT = ({comp}) => {
   }
   return (
     <div className={style.cardsMPCompContainer}>
+      <Header/>
       <div className={style.cBoxRow}>
-        {comp.condiciones.some(condicion => condicion.op) && <AumentosOP/>}   
-        <Fundamentals/>
+        {comp.condiciones.some(condicion => condicion.op) && AumentosOP()}   
+        {Fundamentals()}
       </div>            
-      {comp.aumentos?.some(aumento => aumento.early) && <AumentosEarly/>}
-      {comp.aumentos?.some(aumento => aumento.midLate) && <AumentosMidLate/>}
+      {comp.aumentos?.some(aumento => aumento.early) && AumentosEarly()}
+      {comp.aumentos?.some(aumento => aumento.midLate) && AumentosMidLate()}
       <div className={style.cBoxRow}>
-        <Niveles/>
-        <Posicionamiento/>
+        {Niveles()}
+        {Posicionamiento()}
       </div>
       <div className={style.cBoxRow}>
-        <MejoresItems/>
-        <MejoresBuilds/>
+        {Object.keys(comp?.mejoresItems).length > 0 && MejoresItems()}
+        {MejoresBuilds()}
       </div>
       
     </div>

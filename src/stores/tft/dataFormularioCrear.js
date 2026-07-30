@@ -30,8 +30,8 @@ const rachaTipos = {
   En: ["Win Streak", "Loss Streak"]
 };
 export const categorias = {
-  Es: ["Fast 8", "3 Estrellas", "Fast 9"],
-  En: ["Fast 8", "3 Stars", "Fast 9"]
+  Es: ["3 Estrellas", "Fast 8", "Fast 9"],
+  En: ["3 Stars", "Fast 8", "Fast 9"]
 };
 export const dioses = ["Thresh", "Yasuo", "Ahri", "Evelynn", "Kayle", "Aurelion Sol", "Soraka", "Ekko", "Varus"]
 const tempo = {

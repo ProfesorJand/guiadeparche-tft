@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import style from "./master-plan/css/InfografiaMPTFT.module.css";
 import styleForm from "./css/FormularioCrearCompoTFT.module.css";
-import { dataTFTAllAugments, dataTFTAllItems, dataTFTChampions } from "@stores/dataTFT";
+import { dataTFTAllAugments, dataTFTAllItems, dataTFTChampions, dataTFTTraits, versionTFT, setNumberLatest, setNumberPBE } from "@stores/dataTFT";
 import { useStore } from "@nanostores/react";
 import ImgItem from "./ImgItem";
 import CampeonesNivel from "./elementosInfografia/CampeonesNivel";
@@ -12,7 +12,8 @@ import ImgAugment from "./ImgAugment";
 import ChampionsList from "@components/main/Admin/ChampionsList";
 import { Items as ItemsList } from "@components/main/Admin/Items";
 import AugmentsList from "@components/main/Admin/AugmentsList";
-import { composicionTFT as datosCompos, actualizarComposicionTFT, reiniciarComposicionTFT, dificultades, categorias, tiers, tiersExtras, dañoTipo } from "@stores/tft/dataFormularioCrear.js";
+import TraitsList, { getTraitDisplayName } from "@components/main/Admin/TraitsList";
+import { composicionTFT as datosCompos, actualizarComposicionTFT, reiniciarComposicionTFT, dificultades, categorias, tiers, tiersExtras, dañoTipo, dioses as listaDioses } from "@stores/tft/dataFormularioCrear.js";
 import { getLocalTftImage } from "@utils/images";
 import CardsMasterPlanCompos from "@components/TFT/master-plan/CardsMasterPlanCompos.jsx";
 
@@ -20,90 +21,99 @@ import CardsMasterPlanCompos from "@components/TFT/master-plan/CardsMasterPlanCo
 import localStyle from "./css/FormularioVisualTFT.module.css";
 const DatosBasicosVisual = () => {
   const comp = useStore(datosCompos);
-  return <div className={`${style.cBoxTitleInfo} ${localStyle.styleBox1}`}>
+  return (
+    <div className={`${style.cBoxTitleInfo} ${localStyle.styleBox1}`}>
       <span className={style.tBox}>Datos Básicos</span>
-      <div className={localStyle.styleBox2}>
-        
-        <label className={localStyle.styleBox3}>
-          <span className={localStyle.styleBox4}>Nombre de la Composición:</span>
-          <input type="text" value={comp.nombre || ""} onChange={e => actualizarComposicionTFT({
-          nombre: e.target.value
-        })} className={localStyle.styleBox5} />
-        </label>
-        
-        <label className={localStyle.styleBox3}>
-          <span className={localStyle.styleBox4}>Url de la Composición:</span>
-          <input type="text" value={comp.urlSEO || ""} onChange={e => actualizarComposicionTFT({
-          urlSEO: e.target.value
-        })} className={localStyle.styleBox5} />
-        </label>
+      <div className={style.cBoxRow}>
+          
 
-        <label className={localStyle.styleBox3}>
-          <span className={localStyle.styleBox4}>Tier:</span>
-          <select value={comp.tier || ""} onChange={e => actualizarComposicionTFT({
-          tier: e.target.value
-        })} className={localStyle.styleBox5}>
-            <option value="">Seleccionar Tier</option>
-            {tiers.map(option => <option key={option} value={option}>{option}</option>)}
-          </select>
-        </label>
+        <div className={localStyle.styleBox1}>
+          
+          <label className={localStyle.styleBox3}>
+            <span className={localStyle.styleBox4}>Nombre de la Composición:</span>
+            <input type="text" value={comp.nombre || ""} onChange={e => actualizarComposicionTFT({
+              nombre: e.target.value
+            })} className={localStyle.styleBox5} />
+          </label>
+          
+          <label className={localStyle.styleBox3}>
+            <span className={localStyle.styleBox4}>Url de la Composición:</span>
+            <input type="text" value={comp.urlSEO || ""} onChange={e => actualizarComposicionTFT({
+            urlSEO: e.target.value.replace(/\s+/g, "-")
+          })} className={localStyle.styleBox5} />
+          </label>
 
-        <label className={localStyle.styleBox3}>
-          <span className={localStyle.styleBox4}>Tier Extra "H" o "X":</span>
-          <select value={comp.tierExtra || ""} onChange={e => actualizarComposicionTFT({
-          tierExtra: e.target.value
-        })} className={localStyle.styleBox5}>
-            <option value={comp.tierExtra || "N/A"}>{comp.tierExtra || "Seleccionar Tier Extra"}</option>
-            {tiersExtras.map(option => <option key={option} value={option}>{option}</option>)}
-          </select>
-        </label>
-        
-        <label className={localStyle.styleBox3}>
-          <span className={localStyle.styleBox4}>Posición en el Tier:</span>
-          <input type="number" min={1} max={15} value={comp.posicion || 0} onChange={e => actualizarComposicionTFT({
-          posicion: e.target.value
-        })} className={localStyle.styleBox5} />
-        </label>
-        
-        <label className={localStyle.styleBox3}>
-          <span className={localStyle.styleBox4}>Dificultad:</span>
-          <select value={comp.dificultad || ""} onChange={e => actualizarComposicionTFT({
-          dificultad: e.target.value
-        })} className={localStyle.styleBox5}>
-            <option value="">Seleccionar Dificultad</option>
-            {dificultades.Es.map(option => <option key={option} value={option}>{option}</option>)}
-          </select>
-        </label>
+          <label className={localStyle.styleBox3}>
+            <span className={localStyle.styleBox4}>Tier:</span>
+            <select value={comp.tier || ""} onChange={e => actualizarComposicionTFT({
+            tier: e.target.value
+          })} className={localStyle.styleBox5}>
+              <option value="">Seleccionar Tier</option>
+              {tiers.map(option => <option key={option} value={option}>{option}</option>)}
+            </select>
+          </label>
 
-        <label className={localStyle.styleBox3}>
-          <span className={localStyle.styleBox4}>Categoría:</span>
-          <select value={comp.categoria || ""} onChange={e => actualizarComposicionTFT({
-          categoria: e.target.value
-        })} className={localStyle.styleBox5}>
-            <option value="">Seleccionar Categoría</option>
-            {categorias.Es.map(option => <option key={option} value={option}>{option}</option>)}
-          </select>
-        </label>
+          <label className={localStyle.styleBox3}>
+            <span className={localStyle.styleBox4}>Tier Extra "H" o "X":</span>
+            <select value={comp.tierExtra || ""} onChange={e => actualizarComposicionTFT({
+            tierExtra: e.target.value
+          })} className={localStyle.styleBox5}>
+              <option value={comp.tierExtra || "N/A"}>{comp.tierExtra || "Seleccionar Tier Extra"}</option>
+              {tiersExtras.map(option => <option key={option} value={option}>{option}</option>)}
+            </select>
+          </label>
+          
+          <label className={localStyle.styleBox3}>
+            <span className={localStyle.styleBox4}>Posición en el Tier:</span>
+            <input type="number" min={1} max={15} value={comp.posicion || 0} onChange={e => actualizarComposicionTFT({
+            posicion: e.target.value
+          })} className={localStyle.styleBox5} />
+          </label>
+          
+          <label className={localStyle.styleBox3}>
+            <span className={localStyle.styleBox4}>Dificultad:</span>
+            <select value={comp.dificultad || ""} onChange={e => actualizarComposicionTFT({
+            dificultad: e.target.value
+          })} className={localStyle.styleBox5}>
+              <option value="">Seleccionar Dificultad</option>
+              {dificultades.Es.map(option => <option key={option} value={option}>{option}</option>)}
+            </select>
+          </label>
 
-        <label className={localStyle.styleBox3}>
-          <span className={localStyle.styleBox4}>Tipo de Daño:</span>
-          <select value={comp.tipoDeDano || ""} onChange={e => actualizarComposicionTFT({
-          tipoDeDano: e.target.value
-        })} className={localStyle.styleBox5}>
-            <option value="">Seleccionar Daño</option>
-            {dañoTipo.Es.map((option, idx) => <option key={idx} value={option}>{option}</option>)}
-          </select>
-        </label>
+          <label className={localStyle.styleBox3}>
+            <span className={localStyle.styleBox4}>Categoría:</span>
+            <select value={comp.categoria || ""} onChange={e => actualizarComposicionTFT({
+            categoria: e.target.value
+          })} className={localStyle.styleBox5}>
+              <option value="">Seleccionar Categoría</option>
+              {categorias.Es.map(option => <option key={option} value={option}>{option}</option>)}
+            </select>
+          </label>
 
-        <label className={localStyle.styleBox6}>
-          <input type="checkbox" checked={comp.ocultar} onChange={e => actualizarComposicionTFT({
-          ocultar: e.target.checked
-        })} />
-          <span className={localStyle.styleBox4}>¿Ocultar Composición?</span>
-        </label>
-        
+          <label className={localStyle.styleBox3}>
+            <span className={localStyle.styleBox4}>Tipo de Daño:</span>
+            <select value={comp.tipoDeDano || ""} onChange={e => actualizarComposicionTFT({
+            tipoDeDano: e.target.value
+          })} className={localStyle.styleBox5}>
+              <option value="">Seleccionar Daño</option>
+              {dañoTipo.Es.map((option, idx) => <option key={idx} value={option}>{option}</option>)}
+            </select>
+          </label>
+
+          <label className={localStyle.styleBox6}>
+            <input type="checkbox" checked={comp.ocultar} onChange={e => actualizarComposicionTFT({
+            ocultar: e.target.checked
+          })} />
+            <span className={localStyle.styleBox4}>¿Ocultar Composición?</span>
+          </label>
+          
+        </div>
+        <div className={localStyle.styleBox1}>
+          <CardsMasterPlanCompos compo={comp} />
+        </div>
       </div>
-    </div>;
+    </div>
+    );
 };
 
 // 0. Campeón Meta
@@ -141,7 +151,13 @@ const CampeonMetaVisual = () => {
         
         {/* Campeón */}
         <div className={localStyle.styleBox9}>
-          <span className={localStyle.styleBox4}>Campeón</span>
+          <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', marginBottom: '4px'}}>
+            <span className={localStyle.styleBox4}>Campeón</span>
+            <label style={{display: 'flex', alignItems: 'center', gap: '4px', fontSize: '10px', color: '#ccc', cursor: 'pointer'}}>
+              <input type="checkbox" checked={estrellas} onChange={e => updateField("estrellas", e.target.checked ? 3 : 1)} style={{ cursor: 'pointer' }} /> 
+              3 Estrellas
+            </label>
+          </div>
           <div onDragOver={e => e.preventDefault()} onDrop={e => {
           e.preventDefault();
           const c = e.dataTransfer.getData("campeon");
@@ -213,30 +229,84 @@ const CampeonMetaVisual = () => {
     </div>;
 };
 
-// 1. Preliminares OP (Condiciones)
-const PreliminaresOPVisual = () => {
+export const EXTRAS_ITEMS = [
+  { apiName: 'winstreak', name: 'Win Streak', icon: '/tft/assets/WinStreak.webp' },
+  { apiName: 'lossstreak', name: 'Loss Streak', icon: '/tft/assets/LossStreak.webp' },
+  { apiName: 'orbedecampeon', name: 'Orbe de Campeón', icon: '/tft/assets/Orbe.webp' }
+];
+
+const ExtrasList = () => {
+  return (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', padding: '12px' }}>
+      {EXTRAS_ITEMS.map((item, index) => (
+        <div
+          key={index}
+          draggable
+          onDragStart={(e) => {
+            e.dataTransfer.setData("extra", JSON.stringify(item));
+            e.dataTransfer.setData("text/plain", item.apiName);
+          }}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            cursor: 'grab',
+            width: '75px',
+            background: '#222',
+            padding: '10px 5px',
+            borderRadius: '6px',
+            border: '1px solid #333'
+          }}
+          title={item.name}
+        >
+          <img src={item.icon} alt={item.name} style={{ width: '45px', height: '45px', objectFit: 'contain' }} />
+          <span style={{ fontSize: '11px', color: '#ccc', textAlign: 'center', marginTop: '6px', lineHeight: '1.2', fontWeight: '500' }}>{item.name}</span>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+// 1. Preliminares OP (Condiciones) - Soporta múltiples tipos (Campeon, Item, Extra, Sinergia, Aumento)
+const PreliminaresOPVisual = ({ title = "Preliminares OP", condTypeGrande, condTypePequeno, condType }) => {
   const comp = useStore(datosCompos);
   const AllItems = useStore(dataTFTAllItems);
   const AllAugments = useStore(dataTFTAllAugments);
   const allChampionsTFT = useStore(dataTFTChampions);
-  const addCondicion = (tipo, apiName, index = null) => {
+  const AllTraits = useStore(dataTFTTraits);
+  const currentVersion = useStore(versionTFT);
+  const versionNumber = currentVersion === "latest" ? setNumberLatest : setNumberPBE;
+  const mainType = condTypeGrande || condType || "Aumento";
+
+  const addCondicion = (tamano, apiName, index = null, droppedType = null) => {
     const newCondiciones = [...(comp.condiciones || [])];
+    const targetType = droppedType || mainType;
     if (index === null) {
-      const isEarly = true; // Por defecto lo metemos en early? No, esto es OP. Las OP son 'early' y 'op: true'.
       newCondiciones.push({
-        apiNameGrande: tipo === 'grande' ? apiName : "",
-        ApiNamePequeno: tipo === 'pequeno' ? apiName : "",
+        apiNameGrande: tamano === 'grande' ? apiName : "",
+        ApiNamePequeno: tamano === 'pequeno' ? apiName : "",
         op: true,
-        early: true
+        early: true,
+        condType: mainType,
+        condTypeGrande: tamano === 'grande' ? mainType : "",
+        condTypePequeno: tamano === 'pequeno' ? targetType : "",
       });
     } else {
-      if (tipo === 'grande') newCondiciones[index].apiNameGrande = apiName;
-      if (tipo === 'pequeno') newCondiciones[index].ApiNamePequeno = apiName;
+      if (tamano === 'grande') {
+        newCondiciones[index].apiNameGrande = apiName;
+        newCondiciones[index].condTypeGrande = mainType;
+        newCondiciones[index].condType = mainType;
+      }
+      if (tamano === 'pequeno') {
+        newCondiciones[index].ApiNamePequeno = apiName;
+        newCondiciones[index].condTypePequeno = targetType;
+      }
     }
     actualizarComposicionTFT({
       condiciones: newCondiciones
     });
   };
+
   const removeCondicion = index => {
     const newCondiciones = [...(comp.condiciones || [])];
     newCondiciones.splice(index, 1);
@@ -244,75 +314,170 @@ const PreliminaresOPVisual = () => {
       condiciones: newCondiciones
     });
   };
-  return <div className={`${style.cBoxTitleInfo} ${style.cCondicionOpEarly} ${localStyle.styleBox17}`}>
-      <span className={style.tBox}>Preliminares OP</span>
+
+  const renderIcon = (apiName, showName = true, explicitType = null) => {
+    if (!apiName) return null;
+
+    const checkChamp = () => {
+      const champObj = allChampionsTFT?.find(champ => champ.apiName === apiName);
+      if (champObj) return <ImgCampeon championData={champObj} imgType="tileIcon" showName={showName} />;
+      return null;
+    };
+    const checkAugment = () => {
+      const augObj = AllAugments?.find(item => item.apiName === apiName);
+      if (augObj) return <ImgAugment augment={augObj} />;
+      return null;
+    };
+    const checkItem = () => {
+      const itemObj = AllItems?.find(item => item.apiName === apiName);
+      if (itemObj) return <ImgItem item={itemObj} />;
+      return null;
+    };
+    const checkTrait = () => {
+      const traitObj = AllTraits?.find(trait => trait.apiName === apiName);
+      if (traitObj) {
+        const traitImgUrl = traitObj.icon ? (traitObj.icon.includes("http") ? traitObj.icon.replace(".tex", ".png").toLowerCase() : getLocalTftImage(traitObj.icon, 'traits', versionNumber)) : "";
+        const displayName = getTraitDisplayName(traitObj);
+        return <img src={traitImgUrl} alt={displayName} style={{ width: '100%', height: '100%', objectFit: 'contain' }} title={displayName} />;
+      }
+      return null;
+    };
+    const checkExtra = () => {
+      const extraObj = EXTRAS_ITEMS.find(item => item.apiName === apiName);
+      if (extraObj) {
+        return <img src={extraObj.icon} alt={extraObj.name} style={{ width: '100%', height: '100%', objectFit: 'contain' }} title={extraObj.name} />;
+      }
+      return null;
+    };
+
+    if (explicitType === "Campeon") { const r = checkChamp(); if (r) return r; }
+    if (explicitType === "Aumento") { const r = checkAugment(); if (r) return r; }
+    if (explicitType === "Item") { const r = checkItem(); if (r) return r; }
+    if (explicitType === "Sinergia") { const r = checkTrait(); if (r) return r; }
+    if (explicitType === "Extra") { const r = checkExtra(); if (r) return r; }
+
+    return checkChamp() || checkItem() || checkAugment() || checkTrait() || checkExtra() || null;
+  };
+
+  const handleDragStartBox = (e, apiName) => {
+    if (!apiName) return;
+    const augObj = AllAugments?.find(item => item.apiName === apiName);
+    if (augObj) {
+      e.dataTransfer.setData("augment", JSON.stringify(augObj));
+      e.dataTransfer.setData("aumento", JSON.stringify(augObj));
+    }
+    const itemObj = AllItems?.find(item => item.apiName === apiName);
+    if (itemObj) e.dataTransfer.setData("item", JSON.stringify(itemObj));
+    const champObj = allChampionsTFT?.find(champ => champ.apiName === apiName);
+    if (champObj) e.dataTransfer.setData("campeon", JSON.stringify(champObj));
+    const traitObj = AllTraits?.find(trait => trait.apiName === apiName);
+    if (traitObj) {
+      e.dataTransfer.setData("sinergia", JSON.stringify(traitObj));
+      e.dataTransfer.setData("trait", JSON.stringify(traitObj));
+    }
+    const extraObj = EXTRAS_ITEMS.find(item => item.apiName === apiName);
+    if (extraObj) e.dataTransfer.setData("extra", JSON.stringify(extraObj));
+    e.dataTransfer.setData("text/plain", apiName);
+  };
+
+  const handleDropBox = (e, tamano, index = null) => {
+    e.preventDefault();
+    const aug = e.dataTransfer.getData("augment") || e.dataTransfer.getData("aumento");
+    const item = e.dataTransfer.getData("item");
+    const champ = e.dataTransfer.getData("campeon");
+    const sinergia = e.dataTransfer.getData("sinergia") || e.dataTransfer.getData("trait");
+    const extra = e.dataTransfer.getData("extra");
+    const plain = e.dataTransfer.getData("text/plain");
+
+    let droppedType = mainType;
+    if (aug) droppedType = "Aumento";
+    else if (item) droppedType = "Item";
+    else if (champ) droppedType = "Campeon";
+    else if (sinergia) droppedType = "Sinergia";
+    else if (extra) droppedType = "Extra";
+
+    if (aug) addCondicion(tamano, JSON.parse(aug).apiName, index, droppedType);
+    else if (item) addCondicion(tamano, JSON.parse(item).apiName, index, droppedType);
+    else if (champ) addCondicion(tamano, JSON.parse(champ).apiName || JSON.parse(champ).name, index, droppedType);
+    else if (sinergia) addCondicion(tamano, JSON.parse(sinergia).apiName, index, droppedType);
+    else if (extra) addCondicion(tamano, JSON.parse(extra).apiName, index, droppedType);
+    else if (plain) addCondicion(tamano, plain, index, droppedType);
+  };
+
+  return (
+    <div className={`${style.cBoxTitleInfo} ${style.cCondicionOpEarly} ${localStyle.boxCondiciones}`}>
+      <span className={style.tBox}>{title}</span>
       <div className={`${style.cCondicionOpEarlyImg} ${localStyle.styleBox18}`}>
         {(comp.condiciones || []).map((condicion, index) => {
-        if (condicion.early && condicion.op) {
-          const condicionGrande = condicion.apiNameGrande;
-          const condicionPequeno = condicion.ApiNamePequeno;
-          const isCondicionGrandeAugment = AllAugments?.some(item => item.apiName === condicionGrande);
-          const isCondicionPequenoAugment = AllAugments?.some(item => item.apiName === condicionPequeno);
-          const isCondicionGrandeItem = AllItems?.some(item => item.apiName === condicionGrande);
-          const isCondicionPequenoItem = AllItems?.some(item => item.apiName === condicionPequeno);
-          const isCondicionGrandeChamp = allChampionsTFT?.some(champ => champ.apiName === condicionGrande);
-          const isCondicionPequenoChamp = allChampionsTFT?.some(champ => champ.apiName === condicionPequeno);
-          return <div key={index} className={`${style.cCondicionOP} ${localStyle.styleBox19}`}>
-                <div className={`${style.cCondicionGrande} ${localStyle.styleBox20}`} onDragOver={e => e.preventDefault()} onDrop={e => {
-              e.preventDefault();
-              const aug = e.dataTransfer.getData("augment");
-              const item = e.dataTransfer.getData("item");
-              const champ = e.dataTransfer.getData("campeon");
-              if (aug) addCondicion('grande', JSON.parse(aug).apiName, index);
-              if (item) addCondicion('grande', JSON.parse(item).apiName, index);
-              if (champ) addCondicion('grande', JSON.parse(champ).apiName || JSON.parse(champ).name, index);
-            }} onDoubleClick={() => addCondicion('grande', "", index)} style={{
-              border: !condicionGrande ? '1px dashed #777' : 'none'
-            }}>
-                  {isCondicionGrandeAugment && <ImgAugment augment={AllAugments.find(item => item.apiName === condicionGrande)} />}
-                  {isCondicionGrandeItem && <ImgItem item={AllItems.find(item => item.apiName === condicionGrande)} />}
-                  {isCondicionGrandeChamp && <ImgCampeon championData={allChampionsTFT.find(champ => champ.apiName === condicionGrande)} imgType="icon" />}
+          const itemCondType = condicion.condType || condicion.type || 'Aumento';
+          if (condicion.early && condicion.op && itemCondType === mainType) {
+            const condicionGrande = condicion.apiNameGrande;
+            const condicionPequeno = condicion.ApiNamePequeno;
+            return (
+              <div key={index} className={`${style.cCondicionOP} ${localStyle.boxCondicionesInfo}`}>
+                <div 
+                  className={`${style.cCondicionGrande} ${localStyle.styleBox20}`} 
+                  draggable={!!condicionGrande} 
+                  onDragStart={e => handleDragStartBox(e, condicionGrande)} 
+                  onDragEnd={e => {
+                    if (e.dataTransfer.dropEffect === "none") {
+                      addCondicion('grande', "", index, mainType);
+                    }
+                  }} 
+                  onDragOver={e => e.preventDefault()} 
+                  onDrop={e => handleDropBox(e, 'grande', index)} 
+                  onDoubleClick={() => addCondicion('grande', "", index, mainType)} 
+                  style={{
+                    border: !condicionGrande ? '1px dashed #777' : 'none',
+                    cursor: condicionGrande ? 'grab' : 'default'
+                  }}
+                >
+                  {renderIcon(condicionGrande, true, condicion.condTypeGrande || condicion.condType || mainType)}
                   {!condicionGrande && <span className={localStyle.styleBox16}>Grande</span>}
                   <div className={style.opAumento}>
                     <span className={style.textOP}>OP</span>
                   </div>
                 </div>
                 
-                <div className={`${style.cCondicionPequeno} ${localStyle.styleBox21}`} onDragOver={e => e.preventDefault()} onDrop={e => {
-              e.preventDefault();
-              const aug = e.dataTransfer.getData("augment");
-              const item = e.dataTransfer.getData("item");
-              const champ = e.dataTransfer.getData("campeon");
-              if (aug) addCondicion('pequeno', JSON.parse(aug).apiName, index);
-              if (item) addCondicion('pequeno', JSON.parse(item).apiName, index);
-              if (champ) addCondicion('pequeno', JSON.parse(champ).apiName || JSON.parse(champ).name, index);
-            }} onDoubleClick={() => addCondicion('pequeno', "", index)} style={{
-              border: !condicionPequeno ? '1px dashed #777' : 'none'
-            }}>
-                  {isCondicionPequenoAugment && <ImgAugment augment={AllAugments.find(item => item.apiName === condicionPequeno)} />}
-                  {isCondicionPequenoItem && <ImgItem item={AllItems.find(item => item.apiName === condicionPequeno)} />}
-                  {isCondicionPequenoChamp && <ImgCampeon championData={allChampionsTFT.find(champ => champ.apiName === condicionPequeno)} imgType="tileIcon" showName={false} />}
+                <div 
+                  className={`${style.cCondicionPequeno} ${localStyle.styleBox21}`} 
+                  draggable={!!condicionPequeno} 
+                  onDragStart={e => handleDragStartBox(e, condicionPequeno)} 
+                  onDragEnd={e => {
+                    if (e.dataTransfer.dropEffect === "none") {
+                      addCondicion('pequeno', "", index, mainType);
+                    }
+                  }} 
+                  onDragOver={e => e.preventDefault()} 
+                  onDrop={e => handleDropBox(e, 'pequeno', index)} 
+                  onDoubleClick={() => addCondicion('pequeno', "", index, mainType)} 
+                  style={{
+                    border: !condicionPequeno ? '1px dashed #777' : 'none',
+                    cursor: condicionPequeno ? 'grab' : 'default'
+                  }}
+                >
+                  {renderIcon(condicionPequeno, false, condicion.condTypePequeno)}
                   {!condicionPequeno && <span className={localStyle.styleBox16}>Pequeño</span>}
                 </div>
                 
                 <button onClick={() => removeCondicion(index)} className={localStyle.styleBox22}>X</button>
-              </div>;
-        }
-        return null;
-      })}
+              </div>
+            );
+          }
+          return null;
+        })}
 
         {/* Zona para añadir una nueva Condición OP */}
-        <div onDragOver={e => e.preventDefault()} onDrop={e => {
-        e.preventDefault();
-        const aug = e.dataTransfer.getData("augment");
-        const item = e.dataTransfer.getData("item");
-        if (aug) addCondicion('grande', JSON.parse(aug).apiName);
-        if (item) addCondicion('grande', JSON.parse(item).apiName);
-      }} className={localStyle.styleBox23}>
+        <div 
+          onDragOver={e => e.preventDefault()} 
+          onDrop={e => handleDropBox(e, 'grande', null)} 
+          className={localStyle.styleBox23}
+        >
           <span className={localStyle.styleBox24}>Soltar aquí</span>
         </div>
       </div>
-    </div>;
+    </div>
+  );
 };
 const FundamentalsVisual = () => {
   const comp = useStore(datosCompos);
@@ -337,7 +502,10 @@ const FundamentalsVisual = () => {
   };
   const addItemPrio = apiName => {
     const newItemsPrio = [...(comp.itemsPrio || [])];
-    newItemsPrio.push(apiName);
+    newItemsPrio.push({
+      apiName: apiName,
+      op: false
+    });
     actualizarComposicionTFT({
       itemsPrio: newItemsPrio
     });
@@ -345,6 +513,19 @@ const FundamentalsVisual = () => {
   const removeItemPrio = index => {
     const newItemsPrio = [...(comp.itemsPrio || [])];
     newItemsPrio.splice(index, 1);
+    actualizarComposicionTFT({
+      itemsPrio: newItemsPrio
+    });
+  };
+  const toggleOpItemPrio = (index, e) => {
+    e.preventDefault();
+    const newItemsPrio = [...(comp.itemsPrio || [])];
+    const currentItem = newItemsPrio[index];
+    if (typeof currentItem === "object" && currentItem !== null) {
+      newItemsPrio[index] = { ...currentItem, op: !currentItem.op };
+    } else {
+      newItemsPrio[index] = { apiName: currentItem, op: true };
+    }
     actualizarComposicionTFT({
       itemsPrio: newItemsPrio
     });
@@ -379,11 +560,16 @@ const FundamentalsVisual = () => {
         <div className={`${style.cBoxTitleInfo} ${style.cPrioridadObjetos}`}>
           <span className={style.tBox}>Prioridad de Objetos</span>
           <div className={`${style.cPrioridadObjetosInfo} ${localStyle.styleBox30}`}>
-            {(comp.itemsPrio || []).map((itemName, index) => {
+            {(comp.itemsPrio || []).map((itemEntry, index) => {
+            const itemName = typeof itemEntry === "object" && itemEntry !== null ? itemEntry.apiName : itemEntry;
+            const isOp = typeof itemEntry === "object" && itemEntry !== null ? !!itemEntry.op : false;
             const itemData = allItemsTFT?.find(i => i.apiName === itemName);
             return itemData ? <React.Fragment key={index}>
-                  <div className={`${style.carouselItem} ${localStyle.styleBox31}`}>
+                  <div className={`${style.carouselItem} ${localStyle.styleBox31}`} onContextMenu={e => toggleOpItemPrio(index, e)} title="Click derecho para marcar como OP">
                     <ImgItem item={itemData} />
+                    {isOp && <div className={style.opAumento}>
+                        <span className={style.textOP}>OP</span>
+                      </div>}
                     <button onClick={() => removeItemPrio(index)} className={localStyle.styleBox22}>X</button>
                   </div>
                   {index < (comp.itemsPrio || []).length - 1 && <span className={style.mayorQue}>{'>'}</span>}
@@ -452,7 +638,7 @@ const AumentosVisual = ({
       });
     }
   };
-  return <div className={`${style.cBoxTitleInfo} ${style.cAumentos} ${localStyle.styleBox17}`}>
+  return <div className={`${style.cBoxTitleInfo} ${style.cAumentos}`}>
       <span className={style.tBox}>{title}</span>
       <div className={`${style.cAumentosInfo} ${localStyle.styleBox18}`}>
         {(comp.aumentos || []).map((aumento, globalIndex) => {
@@ -894,6 +1080,74 @@ const BestBuildYMejoresItemsVisual = () => {
       </div>
     </div>;
 };
+
+// const DiosesVisual = () => {
+//   const comp = useStore(datosCompos);
+//   const updateDios = (idx, diosName) => {
+//     const newDioses = [...(comp.dioses || [])];
+//     newDioses[idx] = diosName;
+//     actualizarComposicionTFT({ dioses: newDioses });
+//   };
+
+//   const diosesSeleccionados = comp.dioses || ["", "", ""];
+//   const displayDioses = [diosesSeleccionados[0] || "", diosesSeleccionados[1] || "", diosesSeleccionados[2] || ""];
+
+//   return (
+//     <div className={`${style.cBoxTitleInfo} ${localStyle.styleBox7}`}>
+//       <span className={style.tBox}>Dioses (Master Plan)</span>
+//       <div className={localStyle.styleBox8}>
+//         <div className={localStyle.styleBox3}>
+//           <span className={localStyle.styleBox13}>Dioses</span>
+//           <div className={localStyle.styleBox14}>
+//             {[0, 1, 2].map(idx => {
+//               const diosName = displayDioses[idx];
+//               const isDiosValid = listaDioses?.includes(diosName);
+//               return (
+//                 <div key={idx} onDragOver={e => e.preventDefault()} onDrop={e => {
+//                   e.preventDefault();
+//                   const d = e.dataTransfer.getData("dios");
+//                   if (d) updateDios(idx, d);
+//                 }} onDoubleClick={() => updateDios(idx, "")} style={{
+//                   border: !isDiosValid ? '2px dashed #777' : 'none',
+//                   width: '50px',
+//                   height: '50px',
+//                   display: 'flex',
+//                   alignItems: 'center',
+//                   justifyContent: 'center',
+//                   overflow: 'hidden',
+//                   borderRadius: '4px',
+//                   background: '#222'
+//                 }} title="Arrastra el dios. Doble clic para borrar." className={localStyle.styleBox15}>
+//                   {isDiosValid && <img src={`/tft/sets/17/dioses/${diosName.toLowerCase().replace(/\s+/g, '-')}.webp`} alt={diosName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
+//                   {!isDiosValid && <span className={localStyle.styleBox16}>{idx + 1}</span>}
+//                 </div>
+//               );
+//             })}
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// const DiosesList = () => {
+//   return (
+//     <div className={localStyle.styleBox86} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', padding: '10px' }}>
+//       {listaDioses.map(dios => (
+//         <div
+//           key={dios}
+//           draggable
+//           onDragStart={e => e.dataTransfer.setData("dios", dios)}
+//           style={{ cursor: 'grab', textAlign: 'center', width: '60px' }}
+//         >
+//           <img src={`/tft/sets/17/dioses/${dios.toLowerCase().replace(/\s+/g, '-')}.webp`} alt={dios} style={{ width: '100%', height: 'auto', borderRadius: '4px' }} />
+//           <span style={{ fontSize: '10px', color: '#ccc', textTransform: 'capitalize' }}>{dios}</span>
+//         </div>
+//       ))}
+//     </div>
+//   );
+// };
+
 export default function FormularioVisualTFT({
   compo = {}
 }) {
@@ -921,7 +1175,18 @@ export default function FormularioVisualTFT({
         },
         tipoDeDano: compo.tipoDeDano,
         niveles: compo.niveles || [],
-        itemsPrio: compo.itemsPrio || (compo?.carouselItems ? Object.values(compo.carouselItems).map(item => item.apiName) : []),
+        itemsPrio: (compo.itemsPrio || (compo?.carouselItems ? Object.values(compo.carouselItems) : [])).map(item => {
+          if (typeof item === 'object' && item !== null) {
+            return {
+              apiName: item.apiName || "",
+              op: !!item.op
+            };
+          }
+          return {
+            apiName: item || "",
+            op: false
+          };
+        }),
         posicionamiento: compo.posicionamiento,
         tipSEO: compo.tipSEO || compo.tipSeo || "",
         urlSEO: compo.urlSEO || compo.urlSeo || compo.compUrl || "",
@@ -995,8 +1260,18 @@ export default function FormularioVisualTFT({
           <div className={style.cBoxRow}>
             <CampeonMetaVisual />
           </div>
+          {/* <div className={style.cBoxRow}>
+            <DiosesVisual />
+          </div> */}
+          <div className={style.cBoxRow} style={{ flexWrap: 'wrap', gap: '10px' }}>
+            <PreliminaresOPVisual title="Condición OP Campeones" condTypeGrande="Campeon" condType="Campeon" />
+            <PreliminaresOPVisual title="Condición OP Items" condTypeGrande="Item" condType="Item" />
+            <PreliminaresOPVisual title="Condición OP Extras" condTypeGrande="Extra" condType="Extra" />
+            <PreliminaresOPVisual title="Condición OP Sinergias" condTypeGrande="Sinergia" condType="Sinergia" />
+            <PreliminaresOPVisual title="Condición OP Aumentos Resultado Aleatorio" condTypeGrande="AumentoResAleatorio" condType="AumentoResAleatorio" />
+            <PreliminaresOPVisual title="Condición OP Aumentos Especificos" condTypeGrande="AumentoEspecifico" condType="AumentoEspecifico" />
+          </div>
           <div className={style.cBoxRow}>
-            <PreliminaresOPVisual />
             <FundamentalsVisual />
           </div>
           <AumentosVisual title="Aumentos Early (has click derecho para que sea OP)" isEarly={true} />
@@ -1082,15 +1357,25 @@ export default function FormularioVisualTFT({
           </label>
         </div>
 
+        {/* Botones de acción general */}
+      <div className={localStyle.styleBox79}>
+        <button onClick={() => {
+        if (window.confirm("¿Seguro que deseas reiniciar el formulario?")) {
+          reiniciarComposicionTFT();
+        }
+      }} className={localStyle.styleBox80}>
+          Reiniciar Formulario
+        </button>
         <button onClick={guardarComposicion} className={localStyle.styleBox81}>
           Guardar Composición en BD
         </button>
-        <CardsMasterPlanCompos compo={comp} />
+      </div>
+
       </div>
 
       {/* Columna Derecha: Panel de Herramientas Flotante / Sticky */}
       <div className={localStyle.styleBox82}>
-        <div className={localStyle.styleBox83}>
+        <div className={localStyle.styleBox83} style={{ flexWrap: 'wrap' }}>
           <button onClick={() => setPanelActivo("campeones")} style={{
           background: panelActivo === 'campeones' ? '#0af' : '#222'
         }} className={localStyle.styleBox84}>Campeones</button>
@@ -1100,12 +1385,20 @@ export default function FormularioVisualTFT({
           <button onClick={() => setPanelActivo("aumentos")} style={{
           background: panelActivo === 'aumentos' ? '#0af' : '#222'
         }} className={localStyle.styleBox84}>Aumentos</button>
+          <button onClick={() => setPanelActivo("sinergias")} style={{
+          background: panelActivo === 'sinergias' ? '#0af' : '#222'
+        }} className={localStyle.styleBox84}>Sinergias</button>
+          <button onClick={() => setPanelActivo("extras")} style={{
+          background: panelActivo === 'extras' ? '#0af' : '#222'
+        }} className={localStyle.styleBox84}>Extra</button>
         </div>
 
         <div className={localStyle.styleBox85}>
           {panelActivo === 'campeones' && <ChampionsList />}
           {panelActivo === 'items' && <ItemsList />}
           {panelActivo === 'aumentos' && <AugmentsList />}
+          {panelActivo === 'sinergias' && <TraitsList />}
+          {panelActivo === 'extras' && <ExtrasList />}
         </div>
       </div>
     </div>;

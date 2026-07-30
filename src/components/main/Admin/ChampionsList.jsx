@@ -7,7 +7,7 @@ import { getLocalTftImage } from "@utils/images";
 // import { fetchingDataTFT } from "src/json/updates/constantesPBE.js";
 // import { championsTFTIngles, traitsTFTIngles } from "src/json/updates/contantesTFT.js";
 
-const Champions = ()=>{
+const Champions = ({ onSelectChampion })=>{
     const [championsList, setChampionsList]=useState(null);
     const [sortBy, setSortBy] = useState("coste");
     const currentVersion = useStore(versionTFT);
@@ -130,6 +130,7 @@ const Champions = ()=>{
                                 data-campeon={JSON.stringify(campeon)}
                                 data-from={"championList"}
                                 onDragStart={(e)=>{handleDragStart(e)}}
+                                onClick={()=>{ onSelectChampion && onSelectChampion(campeon) }}
                                 draggable="true"
                                 />
                             <span>{campeon.nombre}</span>
@@ -149,6 +150,7 @@ const Champions = ()=>{
                                     data-campeon={JSON.stringify(campeon)}
                                     data-from={"championList"}
                                     onDragStart={(e)=>{handleDragStart(e)}}
+                                    onClick={()=>{ onSelectChampion && onSelectChampion(campeon) }}
                                     draggable="true"
                                     />
                                 <span>{campeon.nombre}</span>
@@ -170,6 +172,7 @@ const Champions = ()=>{
                                 data-campeon={JSON.stringify(campeon)}
                                 data-from={"championList"}
                                 onDragStart={(e)=>{handleDragStart(e)}}
+                                onClick={()=>{ onSelectChampion && onSelectChampion(campeon) }}
                                 draggable="true"
                                 />
                             <span>{campeon.nombre}</span>
@@ -191,6 +194,7 @@ const Champions = ()=>{
                                 data-campeon={JSON.stringify(campeon)}
                                 data-from={"championList"}
                                 onDragStart={(e)=>{handleDragStart(e)}}
+                                onClick={()=>{ onSelectChampion && onSelectChampion(campeon) }}
                                 draggable="true"
                                 />
                             <span>{campeon.nombre}</span>
@@ -212,6 +216,7 @@ const Champions = ()=>{
                                 data-campeon={JSON.stringify(campeon)}
                                 data-from={"championList"}
                                 onDragStart={(e)=>{handleDragStart(e)}}
+                                onClick={()=>{ onSelectChampion && onSelectChampion(campeon) }}
                                 draggable="true"
                                 />
                             <span>{campeon.nombre}</span>
@@ -233,6 +238,7 @@ const Champions = ()=>{
                                 data-campeon={JSON.stringify(campeon)}
                                 data-from={"championList"}
                                 onDragStart={(e)=>{handleDragStart(e)}}
+                                onClick={()=>{ onSelectChampion && onSelectChampion(campeon) }}
                                 draggable="true"
                                 />
                             <span>{campeon.nombre}</span>
@@ -254,6 +260,7 @@ const Champions = ()=>{
                                 data-campeon={JSON.stringify(campeon)}
                                 data-from={"championList"}
                                 onDragStart={(e)=>{handleDragStart(e)}}
+                                onClick={()=>{ onSelectChampion && onSelectChampion(campeon) }}
                                 draggable="true"
                                 />
                             <span>{campeon.nombre}</span>
@@ -275,6 +282,7 @@ const Champions = ()=>{
                                 data-campeon={JSON.stringify(campeon)}
                                 data-from={"championList"}
                                 onDragStart={(e)=>{handleDragStart(e)}}
+                                onClick={()=>{ onSelectChampion && onSelectChampion(campeon) }}
                                 draggable="true"
                                 />
                             <span>{campeon.nombre}</span>
