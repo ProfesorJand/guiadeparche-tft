@@ -113,7 +113,7 @@ useEffect(() => {
         {
           logoGuiadeparche && 
           <div className={style.logoWrapper}>
-            <LogoGuiadeparche/>
+            <LogoGuiadeparche mostrarTexto={true} styles={{maxHeight:"80%"}}/>
           </div>
         }
 

@@ -110,6 +110,7 @@ async function main() {
     // ==========================================
     // CONEXIÓN Y GUARDADO EN MYSQL (phpMyAdmin)
     // ==========================================
+    const onlyItems = process.argv.includes('--only-items');
     console.log('Conectando a la base de datos de GoDaddy...');
     const connection = await mysql.createConnection({
       host: process.env.DB_HOST,
@@ -128,7 +129,8 @@ async function main() {
         desc_item TEXT,
         icon VARCHAR(255),
         effects TEXT,
-        composition TEXT
+        composition TEXT,
+        incompatibleTraits TEXT
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
     `);
 
@@ -177,22 +179,32 @@ async function main() {
 
     console.log('Tablas listas. Insertando/Actualizando datos...');
 
+    // Asegurar automáticamente que la columna incompatibleTraits exista en GoDaddy
+    try {
+      await connection.execute(`ALTER TABLE items_tft ADD COLUMN incompatibleTraits TEXT NULL AFTER composition;`);
+      console.log('✅ Columna "incompatibleTraits" añadida en la tabla items_tft');
+    } catch (e) {
+      // Si ya existe (error 1060), se ignora
+    }
+
     // --- Guardar Items ---
     for (const item of itemsTFT) {
       if (!item.apiName) continue;
       const query = `
-        INSERT INTO items_tft (apiName, name, desc_item, icon, effects, composition) 
-        VALUES (?, ?, ?, ?, ?, ?) 
+        INSERT INTO items_tft (apiName, name, desc_item, icon, effects, composition, incompatibleTraits) 
+        VALUES (?, ?, ?, ?, ?, ?, ?) 
         ON DUPLICATE KEY UPDATE 
           name = VALUES(name),
           desc_item = VALUES(desc_item),
           icon = VALUES(icon),
           effects = VALUES(effects),
-          composition = VALUES(composition)
+          composition = VALUES(composition),
+          incompatibleTraits = VALUES(incompatibleTraits)
       `;
       const descItem = item.desc || "";
       const effectsStr = item.effects ? JSON.stringify(item.effects) : "{}";
       const compositionStr = item.composition ? JSON.stringify(item.composition) : "[]";
+      const incompatibleTraitsStr = item.incompatibleTraits ? JSON.stringify(item.incompatibleTraits) : "[]";
 
       await connection.execute(query, [
         item.apiName, 
@@ -200,115 +212,118 @@ async function main() {
         descItem, 
         item.icon || "", 
         effectsStr, 
-        compositionStr
+        compositionStr,
+        incompatibleTraitsStr
       ]);
     }
     console.log('✅ Items guardados en "items_tft"');
 
-    // --- Guardar Aumentos ---
-    for (const aug of aumentosTFT) {
-      if (!aug.apiName) continue;
-      const query = `
-        INSERT INTO aumentos_tft (apiName, name, desc_item, icon, effects, associatedTraits, incompatibleTraits, tags) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?) 
-        ON DUPLICATE KEY UPDATE 
-          name = VALUES(name),
-          desc_item = VALUES(desc_item),
-          icon = VALUES(icon),
-          effects = VALUES(effects),
-          associatedTraits = VALUES(associatedTraits),
-          incompatibleTraits = VALUES(incompatibleTraits),
-          tags = VALUES(tags)
-      `;
-      const descAug = aug.desc || "";
-      const effectsStr = aug.effects ? JSON.stringify(aug.effects) : "{}";
-      const associatedTraitsStr = aug.associatedTraits ? JSON.stringify(aug.associatedTraits) : "[]";
-      const incompatibleTraitsStr = aug.incompatibleTraits ? JSON.stringify(aug.incompatibleTraits) : "[]";
-      // Algunos aumentos pueden no tener tags, nos aseguramos
-      const tagsStr = aug.tags ? JSON.stringify(aug.tags) : "[]";
+    if (!onlyItems) {
+      // --- Guardar Aumentos ---
+      for (const aug of aumentosTFT) {
+        if (!aug.apiName) continue;
+        const query = `
+          INSERT INTO aumentos_tft (apiName, name, desc_item, icon, effects, associatedTraits, incompatibleTraits, tags) 
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?) 
+          ON DUPLICATE KEY UPDATE 
+            name = VALUES(name),
+            desc_item = VALUES(desc_item),
+            icon = VALUES(icon),
+            effects = VALUES(effects),
+            associatedTraits = VALUES(associatedTraits),
+            incompatibleTraits = VALUES(incompatibleTraits),
+            tags = VALUES(tags)
+        `;
+        const descAug = aug.desc || "";
+        const effectsStr = aug.effects ? JSON.stringify(aug.effects) : "{}";
+        const associatedTraitsStr = aug.associatedTraits ? JSON.stringify(aug.associatedTraits) : "[]";
+        const incompatibleTraitsStr = aug.incompatibleTraits ? JSON.stringify(aug.incompatibleTraits) : "[]";
+        // Algunos aumentos pueden no tener tags, nos aseguramos
+        const tagsStr = aug.tags ? JSON.stringify(aug.tags) : "[]";
 
-      await connection.execute(query, [
-        aug.apiName, 
-        aug.name || "", 
-        descAug, 
-        aug.icon || "", 
-        effectsStr, 
-        associatedTraitsStr,
-        incompatibleTraitsStr,
-        tagsStr
-      ]);
-    }
-    console.log('✅ Aumentos guardados en "aumentos_tft"');
+        await connection.execute(query, [
+          aug.apiName, 
+          aug.name || "", 
+          descAug, 
+          aug.icon || "", 
+          effectsStr, 
+          associatedTraitsStr,
+          incompatibleTraitsStr,
+          tagsStr
+        ]);
+      }
+      console.log('✅ Aumentos guardados en "aumentos_tft"');
 
-    // --- Guardar Campeones ---
-    for (const champ of campeonesTFT) {
-      if (!champ.apiName) continue;
-      const query = `
-        INSERT INTO campeones_tft (apiName, name, cost, traits, tileIcon, icon, squareIcon, role, ability_name, ability_desc, ability_icon, ability_variables) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) 
-        ON DUPLICATE KEY UPDATE 
-          name = VALUES(name),
-          cost = VALUES(cost),
-          traits = VALUES(traits),
-          tileIcon = VALUES(tileIcon),
-          icon = VALUES(icon),
-          squareIcon = VALUES(squareIcon),
-          role = VALUES(role),
-          ability_name = VALUES(ability_name),
-          ability_desc = VALUES(ability_desc),
-          ability_icon = VALUES(ability_icon),
-          ability_variables = VALUES(ability_variables)
-      `;
-      const traitsStr = champ.traits ? JSON.stringify(champ.traits) : "[]";
-      
-      // Extraer datos de la habilidad (ability)
-      const ability = champ.ability || {};
-      const abilityName = ability.name || "";
-      const abilityDesc = ability.desc || "";
-      const abilityIcon = ability.icon || "";
-      const abilityVariables = ability.variables ? JSON.stringify(ability.variables) : "[]";
-      
-      await connection.execute(query, [
-        champ.apiName, 
-        champ.name || "", 
-        champ.cost || 0, 
-        traitsStr, 
-        champ.tileIcon || "",
-        champ.icon || "",
-        champ.squareIcon || "",
-        champ.role || "",
-        abilityName,
-        abilityDesc,
-        abilityIcon,
-        abilityVariables
-      ]);
-    }
-    console.log('✅ Campeones guardados en "campeones_tft"');
+      // --- Guardar Campeones ---
+      for (const champ of campeonesTFT) {
+        if (!champ.apiName) continue;
+        const query = `
+          INSERT INTO campeones_tft (apiName, name, cost, traits, tileIcon, icon, squareIcon, role, ability_name, ability_desc, ability_icon, ability_variables) 
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) 
+          ON DUPLICATE KEY UPDATE 
+            name = VALUES(name),
+            cost = VALUES(cost),
+            traits = VALUES(traits),
+            tileIcon = VALUES(tileIcon),
+            icon = VALUES(icon),
+            squareIcon = VALUES(squareIcon),
+            role = VALUES(role),
+            ability_name = VALUES(ability_name),
+            ability_desc = VALUES(ability_desc),
+            ability_icon = VALUES(ability_icon),
+            ability_variables = VALUES(ability_variables)
+        `;
+        const costVal = champ.cost !== undefined ? champ.cost : 0;
+        const traitsStr = champ.traits ? JSON.stringify(champ.traits) : "[]";
+        
+        // Extraer datos de la habilidad (ability)
+        const ability = champ.ability || {};
+        const abilityVariablesStr = ability.variables ? JSON.stringify(ability.variables) : "[]";
+        
+        await connection.execute(query, [
+          champ.apiName, 
+          champ.name || "", 
+          costVal, 
+          traitsStr, 
+          champ.tileIcon || "",
+          champ.icon || "",
+          champ.squareIcon || "",
+          champ.role || "",
+          ability.name || "",
+          ability.desc || "",
+          ability.icon || "",
+          abilityVariablesStr
+        ]);
+      }
+      console.log('✅ Campeones guardados en "campeones_tft"');
 
-    // --- Guardar Traits ---
-    for (const trait of traitsTFT) {
-      if (!trait.apiName) continue;
-      const query = `
-        INSERT INTO tratis_TFT (apiName, name, desc_trait, icon, effects) 
-        VALUES (?, ?, ?, ?, ?) 
-        ON DUPLICATE KEY UPDATE 
-          name = VALUES(name),
-          desc_trait = VALUES(desc_trait),
-          icon = VALUES(icon),
-          effects = VALUES(effects)
-      `;
-      const descTrait = trait.desc || "";
-      const effectsTraitStr = trait.effects ? JSON.stringify(trait.effects) : "[]";
-      
-      await connection.execute(query, [
-        trait.apiName, 
-        trait.name || "", 
-        descTrait, 
-        trait.icon || "", 
-        effectsTraitStr
-      ]);
+      // --- Guardar Traits ---
+      for (const trait of traitsTFT) {
+        if (!trait.apiName) continue;
+        const query = `
+          INSERT INTO tratis_TFT (apiName, name, desc_trait, icon, effects) 
+          VALUES (?, ?, ?, ?, ?) 
+          ON DUPLICATE KEY UPDATE 
+            name = VALUES(name),
+            desc_trait = VALUES(desc_trait),
+            icon = VALUES(icon),
+            effects = VALUES(effects)
+        `;
+        const descTrait = trait.desc || "";
+        const effectsTraitStr = trait.effects ? JSON.stringify(trait.effects) : "[]";
+        
+        await connection.execute(query, [
+          trait.apiName, 
+          trait.name || "", 
+          descTrait, 
+          trait.icon || "", 
+          effectsTraitStr
+        ]);
+      }
+      console.log('✅ Traits guardados en "tratis_TFT"');
+    } else {
+      console.log('⏩ Omitiendo Aumentos, Campeones y Traits (flag --only-items activo)');
     }
-    console.log('✅ Traits guardados en "tratis_TFT"');
 
     await connection.end();
     console.log('Proceso finalizado correctamente.');

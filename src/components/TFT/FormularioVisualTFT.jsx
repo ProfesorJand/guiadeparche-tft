@@ -268,7 +268,7 @@ const ExtrasList = () => {
 };
 
 // 1. Preliminares OP (Condiciones) - Soporta múltiples tipos (Campeon, Item, Extra, Sinergia, Aumento)
-const PreliminaresOPVisual = ({ title = "Preliminares OP", condTypeGrande, condTypePequeno, condType }) => {
+const PreliminaresOPVisual = ({ title = "Preliminares OP", condTypeGrande, condTypePequeno, condType, isFaltante = false }) => {
   const comp = useStore(datosCompos);
   const AllItems = useStore(dataTFTAllItems);
   const AllAugments = useStore(dataTFTAllAugments);
@@ -313,6 +313,61 @@ const PreliminaresOPVisual = ({ title = "Preliminares OP", condTypeGrande, condT
     actualizarComposicionTFT({
       condiciones: newCondiciones
     });
+  };
+
+  const isCondicionFaltante = cond => {
+    if (!cond || typeof cond !== 'object') return true;
+    if (!cond.op || !cond.early || !cond.condType) return true;
+    if (cond.apiNameGrande && !cond.condTypeGrande) return true;
+    if (cond.ApiNamePequeno && !cond.condTypePequeno) return true;
+    return false;
+  };
+
+  const detectType = apiName => {
+    if (!apiName) return "Aumento";
+    if (allChampionsTFT?.some(c => c.apiName === apiName)) return "Campeon";
+    if (AllItems?.some(i => i.apiName === apiName)) return "Item";
+    if (AllTraits?.some(t => t.apiName === apiName)) return "Sinergia";
+    if (EXTRAS_ITEMS.some(e => e.apiName === apiName)) return "Extra";
+    return "Aumento";
+  };
+
+  const faltantesList = [];
+  if (isFaltante) {
+    (comp.condiciones || []).forEach((cond, idx) => {
+      if (isCondicionFaltante(cond)) {
+        faltantesList.push({ cond, idx, source: 'condiciones' });
+      }
+    });
+    (comp.condicion || []).forEach((cond, idx) => {
+      faltantesList.push({ cond, idx, source: 'condicion' });
+    });
+  }
+
+  useEffect(() => {
+    if (isFaltante && faltantesList.length === 0) {
+      const hasOldCondicion = Array.isArray(comp.condicion) && comp.condicion.length > 0;
+      const hasFaltanteInCondiciones = (comp.condiciones || []).some(isCondicionFaltante);
+      if (hasOldCondicion || hasFaltanteInCondiciones) {
+        const validCondiciones = (comp.condiciones || []).filter(c => !isCondicionFaltante(c));
+        actualizarComposicionTFT({
+          condiciones: validCondiciones,
+          condicion: []
+        });
+      }
+    }
+  }, [isFaltante, comp.condicion, comp.condiciones]);
+
+  const removeFaltante = (idx, source) => {
+    if (source === 'condicion') {
+      const newOld = [...(comp.condicion || [])];
+      newOld.splice(idx, 1);
+      actualizarComposicionTFT({ condicion: newOld });
+    } else {
+      const newConds = [...(comp.condiciones || [])];
+      newConds.splice(idx, 1);
+      actualizarComposicionTFT({ condiciones: newConds });
+    }
   };
 
   const renderIcon = (apiName, showName = true, explicitType = null) => {
@@ -404,13 +459,77 @@ const PreliminaresOPVisual = ({ title = "Preliminares OP", condTypeGrande, condT
     else if (plain) addCondicion(tamano, plain, index, droppedType);
   };
 
+  if (isFaltante) {
+    if (faltantesList.length === 0) return null;
+    return (
+      <div className={`${style.cBoxTitleInfo} ${style.cCondicionOpEarly} ${localStyle.boxCondiciones}`} style={{ border: '2px solid #ff9800', background: '#1c150c' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px', padding: '0 4px' }}>
+          <span className={style.tBox} style={{ color: '#ffb74d', fontWeight: 'bold' }}>{title} ({faltantesList.length})</span>
+          <button
+            type="button"
+            onClick={() => {
+              const validCondiciones = (comp.condiciones || []).filter(c => !isCondicionFaltante(c));
+              actualizarComposicionTFT({ condiciones: validCondiciones, condicion: [] });
+            }}
+            style={{ padding: '3px 8px', fontSize: '0.75rem', background: '#d32f2f', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+            title="Limpiar todas las condiciones faltantes"
+          >
+            Limpiar faltantes
+          </button>
+        </div>
+        <div className={`${style.cCondicionOpEarlyImg} ${localStyle.styleBox18}`} style={{ flexWrap: 'wrap', gap: '8px' }}>
+          {faltantesList.map(({ cond, idx, source }, i) => {
+            const apiNameG = typeof cond === 'object' && cond !== null ? (cond.apiNameGrande || cond.apiName || cond.ApiNamePequeno || "") : cond;
+            const apiNameP = typeof cond === 'object' && cond !== null ? (cond.ApiNamePequeno || "") : "";
+            const typeG = (typeof cond === 'object' && cond !== null ? (cond.condTypeGrande || cond.condType || cond.type) : null) || detectType(apiNameG);
+            const typeP = (typeof cond === 'object' && cond !== null ? cond.condTypePequeno : null) || detectType(apiNameP);
+            return (
+              <div key={`${source}-${idx}-${i}`} className={`${style.cCondicionOP} ${localStyle.boxCondicionesInfo}`} style={{ border: '1px dashed #ff9800', background: '#2a1e10' }}>
+                {apiNameG && (
+                  <div 
+                    className={`${style.cCondicionGrande} ${localStyle.styleBox20}`}
+                    draggable={true}
+                    onDragStart={e => handleDragStartBox(e, apiNameG)}
+                    style={{ cursor: 'grab', border: 'none' }}
+                    title="Arrastra y suelta en su respectiva caja OP"
+                  >
+                    {renderIcon(apiNameG, true, typeG)}
+                  </div>
+                )}
+                {apiNameP && apiNameP !== apiNameG && (
+                  <div 
+                    className={`${style.cCondicionPequeno} ${localStyle.styleBox21}`}
+                    draggable={true}
+                    onDragStart={e => handleDragStartBox(e, apiNameP)}
+                    style={{ cursor: 'grab', border: 'none' }}
+                    title="Arrastra y suelta en su respectiva caja OP"
+                  >
+                    {renderIcon(apiNameP, false, typeP)}
+                  </div>
+                )}
+                <button 
+                  type="button"
+                  onClick={() => removeFaltante(idx, source)} 
+                  className={localStyle.styleBox22}
+                  title="Eliminar condición faltante"
+                >
+                  X
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={`${style.cBoxTitleInfo} ${style.cCondicionOpEarly} ${localStyle.boxCondiciones}`}>
       <span className={style.tBox}>{title}</span>
       <div className={`${style.cCondicionOpEarlyImg} ${localStyle.styleBox18}`}>
         {(comp.condiciones || []).map((condicion, index) => {
           const itemCondType = condicion.condType || condicion.type || 'Aumento';
-          if (condicion.early && condicion.op && itemCondType === mainType) {
+          if (condicion.early && condicion.op && itemCondType === mainType && !isCondicionFaltante(condicion)) {
             const condicionGrande = condicion.apiNameGrande;
             const condicionPequeno = condicion.ApiNamePequeno;
             return (
@@ -1202,7 +1321,8 @@ export default function FormularioVisualTFT({
           apiNameItemsBisDelCampeon: b.apiNameItemsBisDelCampeon || (b.apiNameItemsDelCampeon ? [b.apiNameItemsDelCampeon.slice(0, 3)] : [["", "", ""]]),
           apiNameItemsSpecialBisDelCampeon: b.apiNameItemsSpecialBisDelCampeon || [["", "", ""]]
         })) || [],
-        condiciones: compo.condiciones || [],
+        condiciones: compo.condiciones || compo.condicion || [],
+        condicion: compo.condicion || [],
         aumentos: compo.aumentos?.every(item => typeof item === 'object') ? compo.aumentos.map(aument => {
           return {
             apiNameGrande: aument.apiName || aument.apiNameGrande,
@@ -1270,6 +1390,7 @@ export default function FormularioVisualTFT({
             <PreliminaresOPVisual title="Condición OP Sinergias" condTypeGrande="Sinergia" condType="Sinergia" />
             <PreliminaresOPVisual title="Condición OP Aumentos Resultado Aleatorio" condTypeGrande="AumentoResAleatorio" condType="AumentoResAleatorio" />
             <PreliminaresOPVisual title="Condición OP Aumentos Especificos" condTypeGrande="AumentoEspecifico" condType="AumentoEspecifico" />
+            <PreliminaresOPVisual title="todas las condiciones faltantes" isFaltante={true} />
           </div>
           <div className={style.cBoxRow}>
             <FundamentalsVisual />

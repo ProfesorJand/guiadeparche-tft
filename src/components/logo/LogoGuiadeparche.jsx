@@ -1,10 +1,15 @@
 import style from "./css/LogoGuiadeparche.module.css"
-const LogoGuiadeparche = ({mostrarTexto, alignTexto = "left"})=>{
+const LogoGuiadeparche = ({mostrarTexto, alignTexto = "left", styles})=>{
   return(
+    <>
       <img
-       className={style.textoGuiadeparche}
+       className={style.logoGuiadeparche}
        src="/web/logoGPSinFondo2026.webp"
-      ></img>
+       style={styles}
+       ></img>
+      {mostrarTexto && <span className={style.textoGuiadeparche}>GUIADEPARCHE.COM</span>}
+    </>
+
   )
 }
 
