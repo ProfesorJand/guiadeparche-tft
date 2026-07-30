@@ -3,83 +3,153 @@ import style from "./css/CardsMasterPlanCompos.module.css"
 import { useStore } from "@nanostores/react";
 import Tooltip from "@components/tooltips";
 
-import { dataTFTAllItems, dataTFTChampions, dataTFTAllAugments } from "@stores/dataTFT";
+import { dataTFTAllItems, dataTFTChampions, dataTFTAllAugments, dataTFTTraits, versionTFT, setNumberLatest, setNumberPBE } from "@stores/dataTFT";
 import { getLocalTftImage } from "@utils/images";
+import { getTraitDisplayName } from "@components/main/Admin/TraitsList";
 import ImgAugment from "@components/TFT/ImgAugment";
 import ImgItem from "@components/TFT/ImgItem";
 import ImgCampeon from "@components/TFT/ImgCampeon";
 
-const CardsMasterPlanCompos = ({compo})=>{
+const CardsMasterPlanCompos = ({compo, filtroSoft={}})=>{
   const allItemsTFT = useStore(dataTFTAllItems);
   const allChampionsTFT = useStore(dataTFTChampions);
   const allAugmentsTFT = useStore(dataTFTAllAugments);
+  const allTraitsTFT = useStore(dataTFTTraits);
+  const currentVersion = useStore(versionTFT);
+  const versionNumber = currentVersion === "latest" ? setNumberLatest : setNumberPBE;
+
+  const renderCondicionElement = (apiName, isGrande) => {
+    if (!apiName) return null;
+    const augObj = allAugmentsTFT?.find((item) => item.apiName === apiName);
+    if (augObj) return <ImgAugment augment={augObj} />;
+    const itemObj = allItemsTFT?.find((item) => item.apiName === apiName);
+    if (itemObj) return <ImgItem item={itemObj} />;
+    const champObj = allChampionsTFT?.find((champ) => champ.apiName === apiName);
+    if (champObj) return <ImgCampeon showBorderColor={false} championData={champObj} imgType="tileIcon" showName={false} />;
+    const traitObj = allTraitsTFT?.find((trait) => trait.apiName === apiName);
+    if (traitObj) {
+      const traitImgUrl = traitObj.icon ? (traitObj.icon.includes("http") ? traitObj.icon.replace(".tex", ".png").toLowerCase() : getLocalTftImage(traitObj.icon, 'traits', versionNumber)) : "";
+      const displayName = getTraitDisplayName(traitObj);
+      return <img src={traitImgUrl} alt={displayName} title={displayName} style={{ width: isGrande ? '32px' : '24px', height: isGrande ? '32px' : '24px', objectFit: 'contain' }} />;
+    }
+    const extraMap = {
+      'winstreak': { name: 'Win Streak', icon: '/tft/assets/WinStreak.webp' },
+      'lossstreak': { name: 'Loss Streak', icon: '/tft/assets/LossStreak.webp' },
+      'orbedecampeon': { name: 'Orbe de Campeón', icon: '/tft/assets/Orbe.webp' },
+      'Win Streak': { name: 'Win Streak', icon: '/tft/assets/WinStreak.webp' },
+      'Loss Streak': { name: 'Loss Streak', icon: '/tft/assets/LossStreak.webp' },
+      'Orbe': { name: 'Orbe', icon: '/tft/assets/Orbe.webp' }
+    };
+    if (extraMap[apiName]) {
+      const ex = extraMap[apiName];
+      return <img src={ex.icon} alt={ex.name} title={ex.name} className={style.textExtra} />;
+    }
+    return <span className={style.textExtra}>{apiName}</span>;
+  };
+
+  const cardColorTier = {
+    "S": "linear-gradient(135deg, #aa444499, #751616cc)",
+    "A": "linear-gradient(135deg, #aa871e99, #5c480ecc)",
+    "B": "linear-gradient(135deg, #4b556399, #1f2937cc)",
+    "C": "linear-gradient(135deg, #6e3c1e99, #3c1e0acc)",
+  };
+  console.log({compo})
+  console.log({filtroSoft})
+
+  const isItemHighlighted = (nombreItem) => {
+    if (!filtroSoft?.selectedSoftItems || filtroSoft.selectedSoftItems.length === 0) return false;
+    const itemData = allItemsTFT.find(x => x.apiName === nombreItem);
+    return filtroSoft.selectedSoftItems.some(x => {
+      const selApiName = typeof x === 'object' && x !== null ? x.apiName : x;
+      if (nombreItem === selApiName) return true;
+      if (itemData?.composition && Array.isArray(itemData.composition)) {
+        return itemData.composition.includes(selApiName);
+      }
+      return false;
+    });
+  };
+
+  const isChampionHighlighted = (apiNameCampeon) => {
+    if (!filtroSoft?.selectedSoftChampions || filtroSoft.selectedSoftChampions.length === 0) return false;
+    return filtroSoft.selectedSoftChampions.some(x => {
+      const selApiName = typeof x === 'object' && x !== null ? x.apiName : x;
+      return apiNameCampeon === selApiName;
+    });
+  };
+
   return (
-    <div className={style.container} >
+    <div className={style.container} style={{background: cardColorTier[compo.tier]}}>
       <div className={style.header}>
             <span
               className={style.tierCard}
               data-tier={compo.tier}
             >{compo.tier}
             </span>
-        <span className={style.titleComp}>{compo.titulo}</span>
+              <div className={style.containerTags}>
+                <span 
+                  className={style.dificultadCard}
+                  data-dificultad={compo.dificultad}
+                >{compo.dificultad}
+                </span>
+                <span 
+                  className={style.categoriaCard}
+                  data-categoria={compo.categoria}
+                >{compo.categoria}
+                </span>
+                {compo.tipoDeDano && <span className={style.dañoCard} data-tipoDeDano={compo.tipoDeDano}>{compo.tipoDeDano}</span>}
+              </div>
+        {/* <span className={style.titleComp} style={{fontSize: compo?.titulo?.length > 10 ? "8px" : "10px"}}>{compo.titulo}</span> */}
       </div>
       <div className={style.body}>
-        <div className={style.initialInfoComp}>
-          {compo?.campeonMeta?.estrellas === 3 &&
+        <div className={`${style.initialInfoComp} ${style.borderContainer}`}>
+          <div className={style.containerCampeonMeta}>
             <img 
-            className={style.imgEstrellasCard} 
-            src="/tft/assets/3-estrellas.webp" 
-            alt="estrellas del campeon"/>}
-            <div className={style.containerTags}>
-              <span 
-                className={style.dificultadCard}
-                data-dificultad={compo.dificultad}
-              >{compo.dificultad}
-              </span>
-              <span 
-                className={style.categoriaCard}
-                data-categoria={compo.categoria}
-              >{compo.categoria}
-              </span>
-              <span className={style.dañoCard} data-tipoDeDano={compo.tipoDeDano}>{compo.tipoDeDano}</span>
-              {compo.campeonMeta.aumento &&
+              className={style.imgCampeonCard} 
+              src={getLocalTftImage(allChampionsTFT.find(x => x.apiName === compo?.campeonMeta?.apiNameCampeon)?.tileIcon, 'champions/tileIcon')} 
+              alt="Img Campeon"/>
+            {compo?.campeonMeta?.estrellas &&
+              <img 
+              className={style.imgEstrellasCard} 
+              src="/tft/assets/3-estrellas.webp" 
+              alt="estrellas del campeon"/>}
+            {compo.campeonMeta.aumento &&
                 <img 
                 className={style.imgAumentoCard} 
                 src={getLocalTftImage(allItemsTFT.find(x => x.apiName === compo.campeonMeta.aumento)?.icon, 'augments/choiceui')} 
                 alt="aumento del campeon meta"/>}
-              {compo.campeonMeta.emblema &&
-                <img 
-                className={style.imgEmblemaCard} 
-                src={getLocalTftImage(allItemsTFT.find(x => x.apiName === compo.campeonMeta.emblema)?.icon, 'items')} 
-                alt="emblema del campeon meta"/>}
-            </div>
-          <img 
-            className={style.imgCampeonCard} 
-            src={getLocalTftImage(allChampionsTFT.find(x => x.apiName === compo?.campeonMeta?.apiNameCampeon)?.squareIcon, 'champions/squareIcon')} 
-            alt="Img Campeon"/>
+            {compo.campeonMeta.emblema &&
+              <img 
+              className={style.imgEmblemaCard} 
+              src={getLocalTftImage(allItemsTFT.find(x => x.apiName === compo.campeonMeta.emblema)?.icon, 'items')} 
+              alt="emblema del campeon meta"/>}
+          </div>
+          <div className={style.containerName}>
+              <span className={`${style.textFillSize}`}>{compo.nombre}</span>
+          </div>
+          
         </div>
-        <div className={style.initialFundamentalDioses}>
-          <div className={style.initialFundamentals}>
-            <span className={style.titleMiniInfoCard}>Fundamentals</span>
-            
+        <div className={`${style.initialFundamentals}` }>
+          <div className={`${style.containerFundamentalsItems} ${style.borderContainer}`}>
+            <span className={style.titleMiniInfoCard}>Objetos Prio</span>    
             <div className={style.containerItemsPrio}>
-              {compo.itemsPrio.map((nombreItem, index)=>{
+              {compo.itemsPrio.map((itemEntry, index)=>{
+                const nombreItem = typeof itemEntry === 'object' && itemEntry !== null ? itemEntry.apiName : itemEntry;
+                const isOp = typeof itemEntry === 'object' && itemEntry !== null ? !!itemEntry.op : false;
                 return (
-                  <div key={index} className={style.containerItemPrio}>
-                    <Tooltip type="item" item={allItemsTFT.find(x => x.apiName === nombreItem)}>
-                      <img 
-                      className={style.imgItemsPrio} 
-                      src={getLocalTftImage(allItemsTFT.find(x => x.apiName === nombreItem)?.icon, 'items')} 
-                      alt="items del campeon"/>
-                    </Tooltip>
+                  <div key={index} className={`${style.containerItemPrio} ${style.highlightable} ${isItemHighlighted(nombreItem) ? style.highlight : ""}`}>
+                    <ImgItem item={allItemsTFT.find(x => x.apiName === nombreItem)}/>
+                    {isOp && <span className={style.opText}>OP</span>}
                   </div>
                 )
               })}
             </div>
+          </div>
+          <div className={`${style.containerFundamentalsCampeones} ${style.borderContainer}`}>
+            <span className={style.titleMiniInfoCard}>Campeones Early</span>
             <div className={style.containerCampeonesEarly}>
               {compo.campeonesEarly.map((campeon, index)=>{
                 return (
-                  <div key={index} className={style.campeonEarly}>
+                  <div key={index} className={`${style.campeonEarly} ${style.highlightable} ${isChampionHighlighted(campeon?.apiNameCampeon) ? style.highlight : ""}`}>
                     <Tooltip type="campeon" campeon={allChampionsTFT.find(x => x.apiName === campeon?.apiNameCampeon)}>
                       <img className={style.imgCampeonEarly} src={getLocalTftImage(allChampionsTFT.find(x => x.apiName === campeon?.apiNameCampeon)?.tileIcon, 'champions/tileIcon')} alt="Campeon early 1"/>
                     </Tooltip>
@@ -101,63 +171,33 @@ const CardsMasterPlanCompos = ({compo})=>{
                 })}
             </div>        
           </div>
-          <div className={style.initialDioses}>
-              <span className={style.titleMiniInfoCard}>Dioses</span>
-              <div className={style.containerDioses}>
-                {compo.dioses.map((dios, index)=>{
-                  return (
-                    <div key={index} className={style.containerDios}>
-                    
-                    <Tooltip type="default" text={dios}>
-                      <div className={style.containerImgDios}>
-                        <img className={style.imgDios} src={"/tft/sets/17/dioses/"+dios.toLowerCase()+".webp"} alt="dios"/>
-                      </div>
-                    </Tooltip>
-                    {/* <span className={style.nombreDios}>{dios}</span> */}
-                  </div>)
-                })}
-              </div>
-          </div>
         </div>
       </div>
       <div className={style.footer}>
-        <div className={style.initialCondiciones}>
+        <div className={`${style.initialCondiciones} ${style.borderContainer}`}>
           <span className={style.titleMiniInfoCard}>Condiciones</span>
           <div className={style.containerCondicion}>
             {compo.condiciones.map((condicion, index)=>{
               if(condicion.early){
 
-                const condicionGrande= condicion.apiNameGrande;
+                const condicionGrande = condicion.apiNameGrande;
                 const condicionPequeno = condicion.ApiNamePequeno;
-                const isCondicionGrandeAugment = allAugmentsTFT.some((item) => item.apiName === condicionGrande);
-                const isCondicionPequenoAugment = allAugmentsTFT.some((item) => item.apiName === condicionPequeno);
-                const isCondicionGrandeCampeon = allChampionsTFT.some((item) => item.apiName === condicionGrande);
-                const isCondicionPequenoCampeon = allChampionsTFT.some((item) => item.apiName === condicionPequeno);
-                const isCondicionGrandeItem = allItemsTFT.some((item) => item.apiName === condicionGrande);
-                const isCondicionPequenoItem = allItemsTFT.some((item) => item.apiName === condicionPequeno);
-                const extras = ["Win Streak","Loss Streak","Orbe","3 estrellas","4 estrellas"];
-                const isCondicionGrandeExtra = extras.some((item) => item === condicionGrande);
-                const isCondicionPequenoExtra = extras.some((item) => item === condicionPequeno);
                 return (
-                  <div className={style.containerCuadrosCondicion}>
-
-                    {isCondicionGrandeAugment && <ImgAugment augment={allAugmentsTFT.find((item) => item.apiName === condicionGrande)}/>}
-                    {isCondicionGrandeItem && <ImgItem item={allItemsTFT.find((item) => item.apiName === condicionGrande)}/>}
-                    {isCondicionGrandeCampeon && <ImgCampeon championData={allChampionsTFT.find((champ) => champ.apiName === condicionGrande)} imgType="icon" showName={false}/>}
-                    {isCondicionGrandeExtra && <span className={style.textExtra}>{condicionGrande}</span>}
-
-                    {isCondicionPequenoAugment && <ImgAugment augment={allAugmentsTFT.find((item) => item.apiName === condicionPequeno)}/>}
-                    {isCondicionPequenoItem && <ImgItem item={allItemsTFT.find((item) => item.apiName === condicionPequeno)}/>}
-                    {isCondicionPequenoCampeon && <ImgCampeon championData={allChampionsTFT.find((champ) => champ.apiName === condicionPequeno)} imgType="icon" showName={false}/>}
-                    {isCondicionPequenoExtra && <span className={style.textExtra}>{condicionPequeno}</span>}
+                  <div key={index} className={style.containerCuadrosCondicion}>
+                    <div className={style.containerCuadroCondicionGrande}>
+                      {renderCondicionElement(condicionGrande, true)}
+                    </div>
+                    <div className={style.containerCuadroCondicionPequeno}>
+                      {renderCondicionElement(condicionPequeno, false)}
+                    </div>
                     {condicion.op && <span className={style.opText}>OP</span>}
                   </div>
-              )
+                );
             }
             })}
           </div>
         </div>
-        <div className={style.initialAumentos}>
+        <div className={`${style.initialAumentos} ${style.borderContainer}`}>
           <span className={style.titleMiniInfoCard}>Aumentos</span>
           <div className={style.containerAumentos}>
             {compo.aumentos

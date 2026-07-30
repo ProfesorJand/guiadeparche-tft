@@ -42,7 +42,7 @@ const CampeonesNivel = ({comp, isMP = false, isEarly = false}) => {
 								key={champ.apiName || champ.apiNameCampeon || index} 
 								championData={champ}
 								items={itemsPerChamp[index] || []}
-								className={style.cChampEarly}
+								
 							/>
 						</div>
 					))
@@ -83,7 +83,7 @@ const CampeonesNivel = ({comp, isMP = false, isEarly = false}) => {
 						<ImgCampeon
 							championData={champ.champData}
 							items={champ.itemsChamp}
-							className={style.cChampEarly}
+							showName={false}
 						/>
 						</div>
 					))
@@ -156,7 +156,6 @@ const CampeonesNivel = ({comp, isMP = false, isEarly = false}) => {
 											championData={champ.champData}
 											items={champ.itemsChamp}
 											showName={false}
-											className={style.cChampEarly}
 										/>
 									</div>
 								))

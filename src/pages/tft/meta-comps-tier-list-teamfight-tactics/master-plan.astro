@@ -1,0 +1,32 @@
+---
+import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
+import { crearJSONSchema } from "@json/schema/crearJSONSchema";
+
+import PaginaBaseMaxWidth from "@components/TFT/paginas/PaginaBaseMaxWidth.astro";
+import MasterPlanPage from "@components/TFT/master-plan/MasterPlanPage";
+
+const topTitle="Master Plan";
+const lowerTitle="La herramienta definitiva para tomar mejores decisiones en TFT";
+const title=`${topTitle}: ${lowerTitle}`;
+const description="Descubre todo sobre el Master Plan de TFT: qué es, cómo funciona y cómo conseguirlo.";
+const keywords="tft, master plan, teamfight tactics";
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
+const baseSchema = JSON.parse(
+  crearJSONSchema({title, description: description})
+);
+const JSONSchema = JSON.stringify(baseSchema);
+
+// TODO: Cambia esta variable por tu lógica real de autenticación/suscripción
+//const hasMasterPlanActive = true; 
+---
+<LayoutMaxWidth 
+  title={title}
+  description={description}
+  keywords={keywords}
+  JSONSchema={JSONSchema}
+  canonical={canonicalURL}
+  >
+  <MasterPlanPage client:load />
+</LayoutMaxWidth>
+

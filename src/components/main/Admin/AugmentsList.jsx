@@ -3,8 +3,9 @@ import style from "./css/AugmentsList.module.css";
 import { dataTFTAllAugments, versionTFT, setNumberLatest, setNumberPBE } from "@stores/dataTFT";
 import { useStore } from "@nanostores/react";
 import { getLocalTftImage } from "@utils/images";
+import ImgAugment from "@components/TFT/ImgAugment";
 
-const AugmentsList = () => {
+const AugmentsList = ({ onSelectAugment, showName= false }) => {
     const [search, setSearch] = useState("");
     const allAugments = useStore(dataTFTAllAugments);
     const currentVersion = useStore(versionTFT);
@@ -41,8 +42,9 @@ const AugmentsList = () => {
                             draggable
                             onDragStart={(e) => handleDragStart(e, augment)}
                             title={augment.name}
+                            onClick={() => { if(onSelectAugment) onSelectAugment(augment); }}
                         >
-                            {imgUrl ? <img src={imgUrl} alt={augment.name} /> : <span>{augment.name}</span>}
+                            {imgUrl ? <ImgAugment  augment={augment}/> : <span>{augment.name}</span>}
                         </div>
                     );
                 })}

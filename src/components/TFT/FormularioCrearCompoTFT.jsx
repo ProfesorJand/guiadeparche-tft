@@ -60,7 +60,18 @@ const FormularioCrearCompoTFT = ({ compo = {} }) => {
         },
         tipoDeDano: compo.tipoDeDano,
         niveles: compo.niveles || [],
-        itemsPrio: compo.itemsPrio || Object.values(compo?.carouselItems)?.map((item) => item.apiName) || [],
+        itemsPrio: (compo.itemsPrio || (compo?.carouselItems ? Object.values(compo.carouselItems) : [])).map(item => {
+          if (typeof item === 'object' && item !== null) {
+            return {
+              apiName: item.apiName || "",
+              op: !!item.op
+            };
+          }
+          return {
+            apiName: item || "",
+            op: false
+          };
+        }),
         posicionamiento: compo.posicionamiento,
         tipSEO: compo.tipSEO || compo.tipSeo || "",
         urlSEO: compo.urlSEO || compo.urlSeo || compo.compUrl || "",
@@ -870,29 +881,35 @@ const ItemsPrio = () => {
     <fieldset className={style.fieldsetRed}>
       <legend>Items Prioritarios</legend>
       <div className={style.rowGap15}>
-        {itemsPrio.map((item, index) => (
-          <div key={index} className={style.rowGap5Norm}>
-            <input
-              type="text"
-              list="listaItemsApiName"
-              value={item}
-              onChange={(e) => actualizarComposicionTFT(prev => ({ ...prev, itemsPrio: prev.itemsPrio.map((item, i) => i === index ? e.target.value : item) }))}
-              placeholder={`Item ${index + 1}`}
-              className={style.inputSmall}
-            />
-            <button type="button" onClick={() => actualizarComposicionTFT(prev => ({ ...prev, itemsPrio: prev.itemsPrio.filter((_, i) => i !== index) }))} className={style.btnDanger}>
-              X
-            </button>
-          </div>
-        ))}
+        {itemsPrio.map((item, index) => {
+          const apiNameVal = typeof item === 'object' && item !== null ? item.apiName : item;
+          return (
+            <div key={index} className={style.rowGap5Norm}>
+              <input
+                type="text"
+                list="listaItemsApiName"
+                value={apiNameVal}
+                onChange={(e) => actualizarComposicionTFT(prev => ({ ...prev, itemsPrio: prev.itemsPrio.map((it, i) => i === index ? (typeof it === 'object' && it !== null ? { ...it, apiName: e.target.value } : e.target.value) : it) }))}
+                placeholder={`Item ${index + 1}`}
+                className={style.inputSmall}
+              />
+              <button type="button" onClick={() => actualizarComposicionTFT(prev => ({ ...prev, itemsPrio: prev.itemsPrio.filter((_, i) => i !== index) }))} className={style.btnDanger}>
+                X
+              </button>
+            </div>
+          );
+        })}
         <button type="button" onClick={addItemPrio} className={style.btnRedSm}>
           + Añadir Item
         </button>
       </div>
       <div>
-        {itemsPrio.map((itemPrio, index) => (
-          <img key={index} src={getLocalTftImage(allItemsTFT.find(item => item.apiName === itemPrio)?.icon, 'items')} alt={itemPrio} className={style.itemIconLg} />
-        ))}
+        {itemsPrio.map((itemPrio, index) => {
+          const apiNameVal = typeof itemPrio === 'object' && itemPrio !== null ? itemPrio.apiName : itemPrio;
+          return (
+            <img key={index} src={getLocalTftImage(allItemsTFT.find(item => item.apiName === apiNameVal)?.icon, 'items')} alt={apiNameVal} className={style.itemIconLg} />
+          );
+        })}
       </div>
     </fieldset>
   )

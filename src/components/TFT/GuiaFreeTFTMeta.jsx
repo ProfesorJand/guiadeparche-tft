@@ -202,18 +202,18 @@ const Header1 = ({comp, allChampionsTFT, allItemsTFT, allAugmentsTFT})=>{
       <div className={`${style.blockItems} ${style.borderBlock}`}>
           <h4>Prioridad de Objetos</h4>
           <div className={style.itemsCarouselContainer}>
-            {itemsPrio.map((itemName, index) => {
+            {itemsPrio.map((itemEntry, index) => {
+              const itemName = typeof itemEntry === 'object' && itemEntry !== null ? itemEntry.apiName : itemEntry;
+              const isOp = typeof itemEntry === 'object' && itemEntry !== null ? !!itemEntry.op : false;
               const itemData = allItemsTFT.find(i => i.apiName === itemName);
               return itemData ? [
                 <div key={`itemPrio-${index}`} className={style.carouselItem}>
-                  {/* <Tooltip type="item" item={itemData}>
-                    <img
-                      className={style.bigItemImg}
-                      src={itemData?.icon?.includes("http") ? itemData?.icon : urlDragon() + itemData?.icon?.toLowerCase().replace(".tex", ".png")}
-                      alt={itemData?.name}
-                      />
-                  </Tooltip> */}
                   <ImgItem item={itemData} />
+                  {isOp && (
+                    <div className={style.opAumento}>
+                      <span className={style.textOP}>OP</span>
+                    </div>
+                  )}
                 </div>,
                 index < itemsPrio.length - 1 ? <span key={`itemPrio-gt-${index}`} className={style.mayorQue}>{'>'}</span> : null
               ] : null;

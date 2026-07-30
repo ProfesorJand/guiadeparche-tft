@@ -21,7 +21,94 @@
   align-items: center;
 }
 
+.tBox {
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 14px;
+  color: var(--text-color-white-primary, #ffffff);
+  width: 100%;
+  display: block;
+}
 
+.headerInfografia{
+  display:flex;
+  flex-direction: row;
+  padding:20px 0;
+  gap:20px;
+  align-items: center;
+  justify-content: flex-start;
+}
+.titleInfografia{
+  font-size: 25px;
+  font-weight: bold;
+}
+.dificultadCard{
+  position:relative;
+  z-index:2;
+  padding: 4px 4px;
+  width:fit-content;
+  border-radius: 4px;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  border: 1px solid black;
+  box-sizing: border-box;
+}
+.dificultadCard[data-dificultad="Facil"], .dificultadCard[data-dificultad="Easy"] { background-color: #1ba716; } /* Verde */
+.dificultadCard[data-dificultad="Medio"], .dificultadCard[data-dificultad="Medium"] { background-color: #cc6104; } /* Naranja */
+.dificultadCard[data-dificultad="Dificil"], .dificultadCard[data-dificultad="Hard"] { background-color: #e00000; } /* Rojo */
+
+.categoriaCard{
+  position:relative;
+  z-index:2;
+  padding: 4px 4px;
+  width:fit-content;
+  border-radius: 4px;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  border: 1px solid black;
+  box-sizing: border-box;
+}
+.categoriaCard[data-categoria="Fast 8"] { background-color: #cc6104; } 
+.categoriaCard[data-categoria="Fast 9"] { background-color: #e00000; }
+.categoriaCard[data-categoria="3 Estrellas"], .categoriaCard[data-categoria="3 Stars"] { background-color: #1ba716; } /* Amarillo */
+
+.dañoCard{
+  position:relative;
+  z-index:2;
+  padding: 4px 4px;
+  width:fit-content;
+  border-radius: 4px;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  border: 1px solid black;
+  box-sizing: border-box;
+}
+
+.dañoCard[data-tipoDeDano="AP"] {background-color: #8a0a8a}
+.dañoCard[data-tipoDeDano="AD"] {background-color: #d43504}
+.dañoCard[data-tipoDeDano="Híbrido"] {background-color: #1ba716}
+
+.containerTextoInfoPrimarioCode {
+  display: flex;
+  padding: 4px 4px;
+  width:fit-content;
+  border-radius: 4px;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  border: 1px solid black;
+  box-sizing: border-box;
+  background-color: var(--bg-purple-primary);
+  cursor:pointer;
+}
 .cBoxRow{
   display:flex;
   width: 100%;
@@ -32,7 +119,6 @@
 
 .cCondicionOpEarly{
   width: calc((100% - (var(--gapBoxRow) * 1)) / 3);
-  height: stretch;
 }
 
 .cCondicionOpEarlyImg{
@@ -84,6 +170,10 @@
   top:0;
   left:0;
 }
+.cCampeonesPrioInfo{
+  display:flex;
+  width:100%;
+}
 
 .cPrioridadObjetos{
   display:flex;
@@ -94,16 +184,26 @@
   flex-direction:row;
   gap:var(--gapInside);
   width:100%;
+  container-type:inline-size;
+  justify-content: center;
 }
 
 .carouselItem{
-  display:flex;
-  position: relative;
-  width:calc((100% - (var(--gapInside) * 4)) / 5);
+      display: flex;
+    width: calc((100% - ((5px + (7.5cqw)) * 3)) / 4);
+    min-width: 0;
+    position: relative;
+    border-radius: 8px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    box-sizing: border-box;
 
 }
 .mayorQue{
   display:flex;
+  align-items: center;
+  font-size: 7.5cqw;
+  color: rgba(255, 255, 255, 0.466);
 }
 
 .cAumentos{
@@ -180,7 +280,7 @@
 }
 
 .cBestItems{
-  width:75%;
+  flex: 1;
 }
 .cBestItemsInfo{
   display:flex;
@@ -197,6 +297,7 @@
   gap: var(--gapInside);
   border: 1px solid var(--border-purple-color);
   border-radius: 8px;
+  box-sizing: border-box;
 }
 .cardCampeonBISItems{
   display: flex;
@@ -268,4 +369,56 @@
   box-shadow: 0 0 10px #ff0000;
   background-color: rgba(255, 0, 0, 0.2);
   z-index: 10;
+}
+
+@media only screen and (max-width:900px){
+  .headerInfografia{
+    flex-wrap: wrap;
+    gap:10px;
+  }
+  .tBox{
+    font-size: smaller;
+  }
+  .cBoxRow{
+    flex-direction: column;
+  }
+  .cCondicionOpEarly{
+    width:100%;
+  }
+  .cFundamentals{
+    width: 100%;
+  }
+  .cFundamentalsInfo{
+    flex-direction: column;
+  }
+  .cCampeonesPrio{
+    width:100%;
+  }
+  .cPrioridadObjetos{
+    width:100%;
+  }
+  .cAumentosInfo{
+    flex-wrap: wrap;
+  }
+  .cAumento{
+    width: calc((100% - (var(--gapInside) * 5)) / 6);
+  }
+  .cNiveles{
+    width:100%;
+  }
+  .cPosicionamiento{
+    width:100%;
+  }
+  .cBestItemComp{
+    width:100%;
+  }
+  .cBestItemComp{
+    flex-wrap: wrap;
+  }
+  .cardCampeonBIS{
+    width:calc((100% - (var(--gapInside) * 1)) / 2);
+  }
+  .cBestItemsInfo{
+    flex-wrap: wrap;
+  }
 }

@@ -120,7 +120,7 @@ useEffect(() => {
         {/* logo ko coliseum tft */}
         <div className={style.logoWrapper}>
           <img 
-            src={`/tft/sets/${currentVersion === "pbe" ? setNumberPBE : setNumberLatest}/logo2.${currentVersion === "pbe" ? "webp" : "png"}`}
+            src={`/tft/sets/${currentVersion === "pbe" ? setNumberPBE : setNumberLatest}/logo2.${currentVersion === "pbe" ? "webp" : "webp"}`}
             alt="Logo" 
             className={style.logoImage}
           />

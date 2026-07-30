@@ -7,7 +7,8 @@ const ImgCampeon = ({
 	imgType = "tileIcon",
 	showName = true,
 	stars = 0,
-	className = ""
+	className = "",
+	showBorderColor =true,
 }) => {
 	if (!championData) {
 		return (
@@ -43,8 +44,8 @@ const ImgCampeon = ({
 	return (
 		<Tooltip type="default" text={name}>
 			<div 
-				className={`${style.campeonContainer} ${className}`.trim()} 
-				style={{ borderColor: `var(--color-hex-cost-${cost})` }}
+				className={`${style.campeonContainer} ${!showName ? style.noName : ""} ${className}`.trim()} 
+				style={{ borderColor: showBorderColor ? `var(--color-hex-cost-${cost})` : "transparent" }}
 			>
 				{imageSrc && (
 					<img 

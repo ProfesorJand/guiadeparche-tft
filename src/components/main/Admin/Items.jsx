@@ -3,7 +3,7 @@ import style from "./css/Items.module.css";
 import {urlDragon, versionTFT, dataTFTSetData, dataTFTItemsBySet, dataTFTAllItems, apiNamesCrafteableItems, AllCraftableItems, setNumberPBE, setNumberLatest, AllBasicItems } from "@stores/dataTFT";
 import { getLocalTftImage } from "@utils/images";
 import { useStore } from "@nanostores/react";
-export const Items = ()=>{
+export const Items = ({ onSelectItem })=>{
   const version = useStore(versionTFT);
 
   const primerItem = {
@@ -431,7 +431,7 @@ export const Items = ()=>{
                     alt={`Basic Item TFT ${dataItem.name}`}
                     className={style.imgItems}
                     onDragStart={(e) => { handleDragStart(e) }}
-                    onClick={() => { setItemOver(dataItem.apiName) }}
+                    onClick={() => { setItemOver(dataItem.apiName); if(onSelectItem) onSelectItem(dataItem); }}
                     data-item={JSON.stringify(dataItem)}
                     data-from="itemList"
                     draggable="true"></img>
@@ -451,7 +451,7 @@ export const Items = ()=>{
                     alt={`Craftable Item TFT ${dataItem.name}`}
                     className={style.imgItems}
                     onDragStart={(e) => { handleDragStart(e) }}
-                    onClick={() => { setItemOver(dataItem.apiName) }}
+                    onClick={() => { setItemOver(dataItem.apiName); if(onSelectItem) onSelectItem(dataItem); }}
                     data-item={JSON.stringify(dataItem)}
                     data-from="itemList"
                     draggable="true"
@@ -473,7 +473,7 @@ export const Items = ()=>{
                       src={getLocalTftImage(resultado.icon, 'items')}
                       alt={`Basic Item TFT ${resultado.name}`}
                       className={style.imgItems} onDragStart={(e)=>{handleDragStart(e)}}
-                      onClick={()=>{setItemOver(resultado.apiName)}}
+                      onClick={()=>{setItemOver(resultado.apiName); if(onSelectItem) onSelectItem(resultado); }}
                       data-item={JSON.stringify(resultado)}
                       data-from="itemList"
                       draggable="true"
@@ -497,7 +497,7 @@ export const Items = ()=>{
                       src={icono} 
                       alt={`Basic Item TFT ${dataItem.name}`} className={style.imgItems} 
                       onDragStart={(e)=>{handleDragStart(e)}} 
-                      onClick={()=>{setItemOver(dataItem.apiName)}} 
+                      onClick={()=>{setItemOver(dataItem.apiName); if(onSelectItem) onSelectItem(dataItem); }} 
                       data-item={JSON.stringify(dataItem)} 
                       data-from="itemList" 
                       draggable="true"></img>
@@ -516,7 +516,7 @@ export const Items = ()=>{
                       src={icono} 
                       alt={`Basic Item TFT ${dataItem.name}`} className={style.imgItems} 
                       onDragStart={(e)=>{handleDragStart(e)}} 
-                      onClick={()=>{setItemOver(dataItem.apiName)}} 
+                      onClick={()=>{setItemOver(dataItem.apiName); if(onSelectItem) onSelectItem(dataItem); }} 
                       data-item={JSON.stringify(dataItem)} 
                       data-from="itemList" 
                       draggable="true"></img>
@@ -542,7 +542,7 @@ export const Items = ()=>{
                   alt={`Basic Item TFT ${dataItemInfo.name}`}
                   className={style.imgItems}
                   onDragStart={(e)=>{handleDragStart(e)}}
-                  onClick={()=>{setItemOver(dataItemInfo.apiName)}}
+                  onClick={()=>{setItemOver(dataItemInfo.apiName); if(onSelectItem) onSelectItem(dataItemInfo); }}
                   data-item={JSON.stringify(dataItemInfo)}
                   data-from="itemList"
                   draggable="true"></img>
@@ -560,7 +560,7 @@ export const Items = ()=>{
                   alt={`Support Item TFT ${dataItem.name}`}
                   className={style.imgItems}
                   onDragStart={(e)=>{handleDragStart(e)}}
-                  onClick={()=>{setItemOver(dataItem.apiName)}}
+                  onClick={()=>{setItemOver(dataItem.apiName); if(onSelectItem) onSelectItem(dataItem); }}
                   data-item={JSON.stringify(dataItem)}
                   data-from="itemList"
                   draggable="true"></img>
@@ -579,7 +579,7 @@ export const Items = ()=>{
                       src={icono} 
                       alt={`Basic Item TFT ${resultado.name}`} className={style.imgItems} 
                       onDragStart={(e)=>{handleDragStart(e)}} 
-                      onClick={()=>{setItemOver(resultado.apiName)}} 
+                      onClick={()=>{setItemOver(resultado.apiName); if(onSelectItem) onSelectItem(resultado); }} 
                       data-item={JSON.stringify(resultado)} 
                       data-from="itemList" 
                       draggable="true"></img>
@@ -617,7 +617,7 @@ export const Items = ()=>{
                   alt={`Chem Baron Item TFT ${dataItem.name}`}
                   className={style.imgItems}
                   onDragStart={(e)=>{handleDragStart(e)}}
-                  onClick={()=>{setItemOver(dataItem.apiName)}}
+                  onClick={()=>{setItemOver(dataItem.apiName); if(onSelectItem) onSelectItem(dataItem); }}
                   data-item={JSON.stringify(dataItem)} //allItemsInfo.find(({apiName})=>apiName === dataItem.apiName)
                   data-from="itemList"
                   draggable="true"></img>
@@ -625,7 +625,7 @@ export const Items = ()=>{
               }))
             }
           </div>
-          <div className={style.tooltip}>
+          {/* <div className={style.tooltip}>
             {tooltip ?
               <div className={style.tooltipContainer}>
                 <div className={style.tooltipContainerImg}>
@@ -640,7 +640,7 @@ export const Items = ()=>{
                 </div>
                 <div className={style.tooltipContainerText}>
                   <span className={style.tooltipContainerTextTitle}>{tooltip.name}</span>
-                  <span className={style.tooltipContainerDesc}>{(new DOMParser()).parseFromString(tooltip.desc, "text/html").body.innerText}</span>
+                  <span className={style.tooltipContainerDesc}>{typeof window !== 'undefined' ? (new DOMParser()).parseFromString(tooltip.desc, "text/html").body.innerText : tooltip.desc.replace(/<[^>]*>?/gm, '')}</span>
                   {Object.keys(tooltip.effects).map((key, index)=>{
                     return (
                       <span key={index} className={style.tooltipContainerEffects}>
@@ -665,7 +665,7 @@ export const Items = ()=>{
                 </div>
                 <div className={style.tooltipContainerText}>
                   <span className={style.tooltipContainerTextTitle}>{primerItem.name}</span>
-                  <span className={style.tooltipContainerDesc}>{(new DOMParser()).parseFromString(primerItem.desc, "text/html").body.innerText}</span>
+                  <span className={style.tooltipContainerDesc}>{typeof window !== 'undefined' ? (new DOMParser()).parseFromString(primerItem.desc, "text/html").body.innerText : primerItem.desc.replace(/<[^>]*>?/gm, '')}</span>
                   {Object.keys(primerItem.effects).map((key, index)=>{
                     return (
                       <span key={index} className={style.tooltipContainerEffects}>
@@ -677,7 +677,7 @@ export const Items = ()=>{
                 
               </div>
             }
-          </div>
+          </div> */}
       </div>
     )
 }
