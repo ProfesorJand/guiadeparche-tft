@@ -46,7 +46,7 @@
 .dificultadCard{
   position:relative;
   z-index:2;
-  padding: 4px 4px;
+  padding: 6px 4px;
   width:fit-content;
   border-radius: 4px;
   color: white;
@@ -55,6 +55,8 @@
   text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
   border: 1px solid black;
   box-sizing: border-box;
+  align-items: center;
+  min-width:50px;
 }
 .dificultadCard[data-dificultad="Facil"], .dificultadCard[data-dificultad="Easy"] { background-color: #1ba716; } /* Verde */
 .dificultadCard[data-dificultad="Medio"], .dificultadCard[data-dificultad="Medium"] { background-color: #cc6104; } /* Naranja */
@@ -63,7 +65,7 @@
 .categoriaCard{
   position:relative;
   z-index:2;
-  padding: 4px 4px;
+  padding: 6px 4px;
   width:fit-content;
   border-radius: 4px;
   color: white;
@@ -72,6 +74,7 @@
   text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
   border: 1px solid black;
   box-sizing: border-box;
+  min-width: 50px;
 }
 .categoriaCard[data-categoria="Fast 8"] { background-color: #cc6104; } 
 .categoriaCard[data-categoria="Fast 9"] { background-color: #e00000; }
@@ -80,7 +83,7 @@
 .dañoCard{
   position:relative;
   z-index:2;
-  padding: 4px 4px;
+  padding: 6px 4px;
   width:fit-content;
   border-radius: 4px;
   color: white;
@@ -89,6 +92,8 @@
   text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
   border: 1px solid black;
   box-sizing: border-box;
+  align-items: center;
+  min-width: 50px;
 }
 
 .dañoCard[data-tipoDeDano="AP"] {background-color: #8a0a8a}
@@ -369,6 +374,18 @@
   box-shadow: 0 0 10px #ff0000;
   background-color: rgba(255, 0, 0, 0.2);
   z-index: 10;
+}
+
+.containerTitleInfo{
+  display:flex;
+  flex-direction: column;
+  width: 100%;
+  gap:20px;
+}
+.containerTopInfo{
+  display:flex;
+  flex-direction: row;
+  gap:20px;
 }
 
 @media only screen and (max-width:900px){
