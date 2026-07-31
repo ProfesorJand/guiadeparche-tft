@@ -9,6 +9,7 @@ import NuevoBuilderTFT from "../NuevoBuilderTFT";
 import ImgCampeon from "../ImgCampeon";
 import ImgAugment from "../ImgAugment";
 import copyToClipboard from "@functions/copyToClipboard.js";
+import { getLocalTftImage } from "@utils/images.js";
 const InfografiaMPTFT = ({comp}) => {
   const AllItems = useStore(dataTFTAllItems);
   const AllChampions = useStore(dataTFTChampions);
@@ -42,12 +43,17 @@ const InfografiaMPTFT = ({comp}) => {
   }
     return (
       <div className={style.headerInfografia}>
-        <span className={style.titleInfografia}>{comp.nombre}</span>
-        <span className={style.dificultadCard} data-dificultad={comp.dificultad}>{comp.dificultad}</span>
-        <span className={style.categoriaCard} data-categoria={comp.categoria}>{comp.categoria}</span>
-        <span className={style.dañoCard} data-tipoDeDano={comp.tipoDeDano}>{comp.tipoDeDano}</span>
-        <div className={style.containerTextoInfoPrimarioCode} onClick={(e)=>copyToClipboard(e, "codigo copiado", codeForPBE(comp.posicionamiento[0].tablero.map((info)=>info.apiNameCampeon)))}> {/* (currentVersion === "pbe" ? codeForPBE(allChampionsApiName) : generatorCodeBuilder(allChampionsApiName)) */}
-          {"COPIAR CODIGO 📋"}
+        <img className={style.backgroundComp} src={getLocalTftImage(AllChampions.find((apiName)=>apiName.apiName===comp.campeonMeta.apiNameCampeon).tileIcon, "champions/tileIcon")} alt={comp.nombre} />
+        <div className={style.containerTitleInfo}>
+          <span className={style.titleInfografia}>{comp.nombre}</span>
+          <div className={style.containerTopInfo}>
+            <span className={style.dificultadCard} data-dificultad={comp.dificultad}>{comp.dificultad}</span>
+            <span className={style.categoriaCard} data-categoria={comp.categoria}>{comp.categoria}</span>
+            <span className={style.dañoCard} data-tipoDeDano={comp.tipoDeDano}>{comp.tipoDeDano}</span>
+            <div className={style.containerTextoInfoPrimarioCode} onClick={(e)=>copyToClipboard(e, "codigo copiado", codeForPBE(comp.posicionamiento[0].tablero.map((info)=>info.apiNameCampeon)))}> {/* (currentVersion === "pbe" ? codeForPBE(allChampionsApiName) : generatorCodeBuilder(allChampionsApiName)) */}
+              {"COPIAR CODIGO 📋"}
+            </div>
+          </div>
         </div>
       </div>
     )

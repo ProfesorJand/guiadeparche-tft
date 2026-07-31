@@ -242,82 +242,80 @@ console.log({selectedSoftItems})
     }
   };
 
-  // Filtrado de las composiciones
   const filteredCompos = useMemo(() => {
     return allCompos.filter(compo => {
-      // Filtro de Categoría
       if (selectedCategory.length > 0 && !selectedCategory.includes(compo.categoria)) return false;
-      
-      // Filtro de Dificultad
       if (selectedDifficulty.length > 0 && !selectedDifficulty.includes(compo.dificultad)) return false;
-
-      // Filtro de Tier
       if (selectedTier.length > 0 && !selectedTier.includes(compo.tier)) return false;
-
-      // Filtro de Tipo de Daño
       if (selectedDamageType.length > 0 && !selectedDamageType.includes(compo.tipoDeDano)) return false;
 
-      // Filtro de Objetos (Debe incluir TODOS los objetos seleccionados)
-      if (selectedItems.length > 0) {
-        const hasAllItems = selectedItems.every(item => 
-          compo.itemsPrio?.some(i => (typeof i === 'object' && i !== null ? i.apiName : i) === item.apiName) || 
-          compo.campeonMeta?.apiNameItemsDelCampeon?.includes(item.apiName) ||
-          compo.posicionamiento?.[0]?.tablero?.some(champ => champ.apiNameItemsDelCampeon?.includes(item.apiName)) ||
-          (compo.condiciones || []).some(c => c.apiNameGrande === item.apiName || c.ApiNamePequeno === item.apiName)
-        );
-        if (!hasAllItems) return false;
-      }
+      const hasAnyConditionSelected = 
+        selectedItems.length > 0 ||
+        selectedChampions.length > 0 ||
+        selectedExtras.length > 0 ||
+        selectedSinergias.length > 0 ||
+        selectedAumentoResAleatorio.length > 0 ||
+        selectedAumentoEspecifico.length > 0;
 
-      // Filtro de Campeones (Debe incluir TODOS los campeones seleccionados)
-      if (selectedChampions.length > 0) {
-        const boardChampions = compo.posicionamiento?.[0]?.tablero?.map(c => c.apiNameCampeon) || [];
-        const hasAllChamps = selectedChampions.every(champ => 
-          boardChampions.includes(champ.apiName) || 
-          compo.campeonMeta?.apiNameCampeon === champ.apiName ||
-          compo.campeonesEarly?.some(early => early.apiNameCampeon === champ.apiName) ||
-          (compo.condiciones || []).some(c => c.apiNameGrande === champ.apiName || c.ApiNamePequeno === champ.apiName)
-        );
-        if (!hasAllChamps) return false;
-      }
+      if (hasAnyConditionSelected) {
+        let matchesAnySelectedCondition = false;
 
+        if (selectedItems.length > 0) {
+          const matchItem = selectedItems.some(item => 
+            compo.itemsPrio?.some(i => (typeof i === 'object' && i !== null ? i.apiName : i) === item.apiName) || 
+            compo.campeonMeta?.apiNameItemsDelCampeon?.includes(item.apiName) ||
+            compo.posicionamiento?.[0]?.tablero?.some(champ => champ.apiNameItemsDelCampeon?.includes(item.apiName)) ||
+            (compo.condiciones || []).some(c => c.apiNameGrande === item.apiName || c.ApiNamePequeno === item.apiName)
+          );
+          if (matchItem) matchesAnySelectedCondition = true;
+        }
 
+        if (!matchesAnySelectedCondition && selectedChampions.length > 0) {
+          const boardChampions = compo.posicionamiento?.[0]?.tablero?.map(c => c.apiNameCampeon) || [];
+          const matchChamp = selectedChampions.some(champ => 
+            boardChampions.includes(champ.apiName) || 
+            compo.campeonMeta?.apiNameCampeon === champ.apiName ||
+            compo.campeonesEarly?.some(early => early.apiNameCampeon === champ.apiName) ||
+            (compo.condiciones || []).some(c => c.apiNameGrande === champ.apiName || c.ApiNamePequeno === champ.apiName)
+          );
+          if (matchChamp) matchesAnySelectedCondition = true;
+        }
 
-      // Filtro de Extras
-      if (selectedExtras.length > 0) {
-        const hasAllExtras = selectedExtras.every(apiName =>
-          (compo.condiciones || []).some(c => c.apiNameGrande === apiName || c.ApiNamePequeno === apiName)
-        );
-        if (!hasAllExtras) return false;
-      }
+        if (!matchesAnySelectedCondition && selectedExtras.length > 0) {
+          const matchExtra = selectedExtras.some(apiName =>
+            (compo.condiciones || []).some(c => c.apiNameGrande === apiName || c.ApiNamePequeno === apiName)
+          );
+          if (matchExtra) matchesAnySelectedCondition = true;
+        }
 
-      // Filtro de Sinergia
-      if (selectedSinergias.length > 0) {
-        const compoTraits = (compo.sinergias || []).map(s => s.apiName || s.apiNameSinergia).filter(Boolean);
-        const hasAllSinergias = selectedSinergias.every(apiName =>
-          compoTraits.includes(apiName) ||
-          (compo.condiciones || []).some(c => c.apiNameGrande === apiName || c.ApiNamePequeno === apiName)
-        );
-        if (!hasAllSinergias) return false;
-      }
+        if (!matchesAnySelectedCondition && selectedSinergias.length > 0) {
+          const compoTraits = (compo.sinergias || []).map(s => s.apiName || s.apiNameSinergia).filter(Boolean);
+          const matchSinergia = selectedSinergias.some(apiName =>
+            compoTraits.includes(apiName) ||
+            (compo.condiciones || []).some(c => c.apiNameGrande === apiName || c.ApiNamePequeno === apiName)
+          );
+          if (matchSinergia) matchesAnySelectedCondition = true;
+        }
 
-      // Filtro de Aumentos Resultado Aleatorio
-      if (selectedAumentoResAleatorio.length > 0) {
-        const compoAugments = (compo.aumentos || []).map(a => typeof a === 'object' ? a.apiName : a).filter(Boolean);
-        const hasAllAumentosAleatorio = selectedAumentoResAleatorio.every(apiName =>
-          compoAugments.includes(apiName) ||
-          (compo.condiciones || []).some(c => c.apiNameGrande === apiName || c.ApiNamePequeno === apiName)
-        );
-        if (!hasAllAumentosAleatorio) return false;
-      }
+        if (!matchesAnySelectedCondition && selectedAumentoResAleatorio.length > 0) {
+          const compoAugments = (compo.aumentos || []).map(a => typeof a === 'object' ? a.apiName : a).filter(Boolean);
+          const matchAugAleatorio = selectedAumentoResAleatorio.some(apiName =>
+            compoAugments.includes(apiName) ||
+            (compo.condiciones || []).some(c => c.apiNameGrande === apiName || c.ApiNamePequeno === apiName)
+          );
+          if (matchAugAleatorio) matchesAnySelectedCondition = true;
+        }
 
-      // Filtro de Aumentos Especificos
-      if (selectedAumentoEspecifico.length > 0) {
-        const compoAugments = (compo.aumentos || []).map(a => typeof a === 'object' ? a.apiName : a).filter(Boolean);
-        const hasAllAumentosEspecifico = selectedAumentoEspecifico.every(apiName =>
-          compoAugments.includes(apiName) ||
-          (compo.condiciones || []).some(c => c.apiNameGrande === apiName || c.ApiNamePequeno === apiName)
-        );
-        if (!hasAllAumentosEspecifico) return false;
+        if (!matchesAnySelectedCondition && selectedAumentoEspecifico.length > 0) {
+          const compoAugments = (compo.aumentos || []).map(a => typeof a === 'object' ? a.apiName : a).filter(Boolean);
+          const matchAugEspecifico = selectedAumentoEspecifico.some(apiName =>
+            compoAugments.includes(apiName) ||
+            (compo.condiciones || []).some(c => c.apiNameGrande === apiName || c.ApiNamePequeno === apiName)
+          );
+          if (matchAugEspecifico) matchesAnySelectedCondition = true;
+        }
+
+        if (!matchesAnySelectedCondition) return false;
       }
 
       return true;
@@ -642,7 +640,7 @@ console.log({selectedSoftItems})
                       onClick={() => toggleSoftChampion(champ)}
                       style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '8px 10px', minWidth: '70px', gap: '6px' }}
                     >
-                      {champ.icon && <img src={champ.icon} alt={champ.name} style={{ width: '42px', height: '42px', objectFit: 'contain', borderRadius: '4px' }} />}
+                      {champ.icon && <img src={champ.icon} alt={champ.name} style={{ width: '42px', height: '42px', objectFit: 'contain', borderRadius: '4px', border: `2px solid var(--color-hex-cost-${champ.cost || cost})`, boxSizing: 'border-box' }} />}
                       <span style={{ fontSize: '0.78rem', textAlign: 'center', lineHeight: '1.1' }}>{champ.name}</span>
                     </button>
                   ))}

@@ -10,7 +10,8 @@
     "preview": "astro preview",
     "start": "astro dev",
     "download:set17": "node scripts/downloadTFTImages.mjs",
-    "download:set18": "node scripts/downloadTFTImagesSet18.mjs"
+    "download:set18": "node scripts/downloadTFTImagesSet18.mjs",
+    "download:champs-cd": "node scripts/communityDragonDownloadChamps.js"
   },
   "dependencies": {
     "@astrojs/check": "^0.6.0",

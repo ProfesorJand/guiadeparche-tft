@@ -46,7 +46,7 @@
 }
 .filtersSectionSoft{
   display:flex;
-  width:calc((100% - 20px) / 2);
+  width:100%;
 }
 .hardFiltersGrid {
   display:flex;
@@ -255,6 +255,9 @@
   gap:10px;
   height: 800px;
   overflow-y: auto;
+  box-sizing: border-box;
+  border: 2px solid var(--border-purple-color);
+  padding: 5px;
 }
 .cardContainer{
   display:flex;
