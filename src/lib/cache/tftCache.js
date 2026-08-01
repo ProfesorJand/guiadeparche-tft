@@ -120,33 +120,52 @@ export async function getComposMeta() {
   }
 }
 
+let constantesCacheTimestamp = 0;
+let fetchingConstantesPromise = null;
+
 export async function getConstantes() {
-  if (constantesCache) return constantesCache;
+  const isDev = typeof import.meta !== 'undefined' && import.meta.env ? import.meta.env.DEV : process.env.NODE_ENV !== 'production';
+  // En dev: TTL de 3 segundos para ver cambios inmediatamente al recargar. En build/prod: TTL de 60 segundos para no saturar la API en la generación estática.
+  const TTL = isDev ? 3000 : 60000;
 
-  // if (typeof window === 'undefined') {
-  //   try {
-  //     const filePath = path.join(process.cwd(), 'src/data/constantes.json');
-  //     const fileContent = await fs.readFile(filePath, 'utf-8');
-  //     constantesCache = JSON.parse(fileContent);
-  //     return constantesCache;
-  //   } catch (err) {
-  //     console.warn("Could not read local constantes.json, fetching remote...", err.message);
-  //   }
-  // }
-
-  try {
-    const response = await fetch('https://api.guiadeparche.com/tft/constantes.json', {
-      headers: FETCH_HEADERS,
-      cache: "reload"
-    });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const data = await response.json();
-    constantesCache = data;
+  if (constantesCache && (Date.now() - constantesCacheTimestamp < TTL)) {
     return constantesCache;
-  } catch (err) {
-    console.error("Error fetching constantes.json remotely:", err);
-    throw err; // Hacemos que el build falle si no hay datos
   }
+
+  // Deduplicación: si ya hay una petición en vuelo, devolvemos la misma promesa
+  if (fetchingConstantesPromise) {
+    return fetchingConstantesPromise;
+  }
+
+  fetchingConstantesPromise = (async () => {
+    try {
+      // Añadimos cache-busting (?_t=...) y cabeceras para que Cloudflare y proxys intermedios entreguen el valor fresco
+      const url = `https://api.guiadeparche.com/tft/constantes.json?_t=${Date.now()}`;
+      const response = await fetch(url, {
+        headers: {
+          ...FETCH_HEADERS,
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        },
+        cache: "reload"
+      });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      const data = await response.json();
+      constantesCache = data;
+      constantesCacheTimestamp = Date.now();
+      return constantesCache;
+    } catch (err) {
+      console.error("Error fetching constantes.json remotely:", err);
+      // Fallback seguro al caché en memoria si la petición falla
+      if (constantesCache) return constantesCache;
+      throw err; // Solo falla el build si nunca se ha podido obtener datos
+    } finally {
+      fetchingConstantesPromise = null;
+    }
+  })();
+
+  return fetchingConstantesPromise;
 }
 
 export async function getValorantConstantes() {
