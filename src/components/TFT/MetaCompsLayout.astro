@@ -2,7 +2,7 @@
 import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
 import CardsCompos from "@components/TFT/CardsCompos";
 import { getConstantes, getMetadata, getLastUpdateDate } from "src/lib/cache/tftCache.js";
-import { setNumberPBE } from "@stores/dataTFT";
+import { setNumberPBE, setNumberLatest } from "@stores/dataTFT";
 import { crearJSONSchema } from "src/json/schema/crearJSONSchema";
 import RegistrarseBTN from "./RegistrarseBTN.jsx";
 import Youtube from "@components/youtube/Youtube.jsx";
@@ -13,6 +13,7 @@ const [constantes, lastUpdateComps] = await Promise.all([
   getConstantes(),
   getLastUpdateDate()
 ]);
+console.log({constantes, setNumberLatest})
 interface Props {
   titleMain?: string;
   titleHighlight?: string;
@@ -27,9 +28,9 @@ interface Props {
 }
 
 const {
-  titleMain = `TFT Meta Comps: Mejores Composiciones & Builds Set ${setNumberPBE}`,
+  titleMain = `TFT Meta Comps: Mejores Composiciones & Builds Set ${setNumberLatest}`,
   titleHighlight = ``,
-  description = `Descubre las mejores TFT comps y composiciones TFT del Set ${setNumberPBE} actualizadas para el parche ${constantes.MetaCompVersionPBE}. Aquí encontrarás builds, objetos BIS, aumentos y estrategias para jugar las compos más fuertes del meta de Teamfight Tactics y subir elo más rápido.`,
+  description = `Descubre las mejores TFT comps y composiciones TFT del Set ${setNumberLatest} actualizadas para el parche ${constantes.MetaCompVersion}. Aquí encontrarás builds, objetos BIS, aumentos y estrategias para jugar las compos más fuertes del meta de Teamfight Tactics y subir elo más rápido.`,
   lastUpdate = lastUpdateComps || null,
   top10Comps,
   restComps = [],
@@ -189,7 +190,7 @@ const tableOfContentData = [
       {
         !isIndividual && 
 
-        <h2 id="TierList">Mejores TFT Comps del Meta Actual (Parche {constantes.MetaCompVersionPBE})</h2>
+        <h2 id="TierList">Mejores TFT Comps del Meta Actual (Parche {constantes.MetaCompVersion})</h2>
         <p>
         Las compos están ordenadas por fuerza dentro del meta actual, desde las
         mejores opciones para subir elo hasta alternativas viables según tu
