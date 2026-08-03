@@ -1,15 +1,22 @@
-import { useEffect, lazy, Suspense } from 'react';
-import { $user, $admin, logOut, $activeTab, setActiveTab } from "@stores/auth";
+import { useState, useEffect, lazy, Suspense } from 'react';
+import { $user, $admin, logOut, $activeTab, setActiveTab, setUser } from "@stores/auth";
 import { useStore } from "@nanostores/react";
 import styles from './PerfilUsuario.module.css';
 import {fetchAndSortComps, composMetaPBEJSON, composMetaPBETestJSON, addRestCompsFetch} from "@stores/dataTFT";
+import { countryAreaCodes } from '../../utils/countries';
 
 const AdminPanel = lazy(() => import("@components/main/Admin/Admin.jsx"));
 
 const PerfilUsuario = () => {
   const user = useStore($user);
-  const admin = useStore($admin)
+  const admin = useStore($admin);
   const activeTab = useStore($activeTab);
+  const [showAddPhone, setShowAddPhone] = useState(false);
+  const [newPhone, setNewPhone] = useState('');
+  const [phoneLoading, setPhoneLoading] = useState(false);
+  const [phoneError, setPhoneError] = useState(null);
+  const [phoneSuccess, setPhoneSuccess] = useState(null);
+
   useEffect(() => {
     const loadData = async () => {
       if(admin){
@@ -30,6 +37,49 @@ const PerfilUsuario = () => {
   if (!user) {
     window.location.href = '/login';
   }
+
+  const handleSavePhone = async (e) => {
+    e.preventDefault();
+    const cleanPhone = newPhone.trim();
+    if (!cleanPhone || /^\+\d{1,4}$/.test(cleanPhone)) {
+      setPhoneError('Por favor ingresa tu número celular completo.');
+      return;
+    }
+
+    setPhoneLoading(true);
+    setPhoneError(null);
+    setPhoneSuccess(null);
+
+    try {
+      const response = await fetch('https://api.guiadeparche.com/update-user-phone.php', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${import.meta.env.PUBLIC_TOKEN_META}`
+        },
+        body: JSON.stringify({ 
+          email: user.email, 
+          cel: cleanPhone 
+        })
+      });
+
+      const result = await response.json();
+      if (result.status === 'success') {
+        setUser({
+          ...user,
+          cel: cleanPhone
+        });
+        setPhoneSuccess('¡Número celular guardado correctamente!');
+        setShowAddPhone(false);
+      } else {
+        setPhoneError(result.message || 'Error al guardar el número de celular.');
+      }
+    } catch (err) {
+      setPhoneError('Error de conexión con el servidor.');
+    } finally {
+      setPhoneLoading(false);
+    }
+  };
 
   const renderUserData = () => (
     <div className={styles.tabContent}>
@@ -53,6 +103,66 @@ const PerfilUsuario = () => {
         <div className={styles.infoCard}>
           <span className={styles.infoLabel}>País</span>
           <div className={styles.infoValue}>{user.country || 'No especificado'}</div>
+        </div>
+        <div className={styles.infoCard}>
+          <span className={styles.infoLabel}>Número Celular</span>
+          {user.cel || user.phone ? (
+            <div className={styles.infoValue}>{user.cel || user.phone || ''}</div>
+          ) : (
+            <div className={styles.addPhoneContainer}>
+              <div className={styles.noPhoneHeader}>
+                <span className={styles.noPhoneText}>No especificado</span>
+                {!showAddPhone && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const initialCode = user.country && countryAreaCodes[user.country]
+                        ? `${countryAreaCodes[user.country]} `
+                        : '';
+                      setNewPhone(initialCode);
+                      setPhoneError(null);
+                      setShowAddPhone(true);
+                    }}
+                    className={styles.addPhoneBtn}
+                  >
+                    + Añadir número
+                  </button>
+                )}
+              </div>
+
+              {showAddPhone && (
+                <form onSubmit={handleSavePhone} className={styles.phoneForm}>
+                  <input
+                    type="tel"
+                    value={newPhone}
+                    onChange={(e) => setNewPhone(e.target.value)}
+                    placeholder="+54 11 1234 5678"
+                    className={styles.phoneInput}
+                    disabled={phoneLoading}
+                    autoFocus
+                  />
+                  <div className={styles.phoneActions}>
+                    <button type="submit" className={styles.savePhoneBtn} disabled={phoneLoading}>
+                      {phoneLoading ? 'Guardando...' : 'Guardar'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowAddPhone(false);
+                        setPhoneError(null);
+                      }}
+                      className={styles.cancelPhoneBtn}
+                      disabled={phoneLoading}
+                    >
+                      Cancelar
+                    </button>
+                  </div>
+                </form>
+              )}
+              {phoneError && <div className={styles.phoneErrorMsg}>{phoneError}</div>}
+              {phoneSuccess && <div className={styles.phoneSuccessMsg}>{phoneSuccess}</div>}
+            </div>
+          )}
         </div>
       </div>
     </div>

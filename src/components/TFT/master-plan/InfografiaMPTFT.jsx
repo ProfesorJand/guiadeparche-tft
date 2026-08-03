@@ -10,7 +10,7 @@ import ImgCampeon from "../ImgCampeon";
 import ImgAugment from "../ImgAugment";
 import copyToClipboard from "@functions/copyToClipboard.js";
 import { getLocalTftImage } from "@utils/images.js";
-const InfografiaMPTFT = ({comp}) => {
+const InfografiaMPTFT = ({comp = {}}) => {
   const AllItems = useStore(dataTFTAllItems);
   const AllChampions = useStore(dataTFTChampions);
   const AllAugments = useStore(dataTFTAllAugments);
@@ -41,16 +41,18 @@ const InfografiaMPTFT = ({comp}) => {
     championsCode = championsCode.concat(currentVersion === "pbe" ? setMutatorPBE : setMutatorLatest)
     return championsCode
   }
+    const campeonMetaObj = comp?.campeonMeta?.apiNameCampeon ? AllChampions.find((apiName)=>apiName.apiName===comp.campeonMeta.apiNameCampeon) : null;
+    const tableroArray = comp?.posicionamiento?.[0]?.tablero || [];
     return (
       <div className={style.headerInfografia}>
-        <img className={style.backgroundComp} src={getLocalTftImage(AllChampions.find((apiName)=>apiName.apiName===comp.campeonMeta.apiNameCampeon).tileIcon, "champions/tileIcon")} alt={comp.nombre} />
+        <img className={style.backgroundComp} src={getLocalTftImage(campeonMetaObj?.tileIcon, "champions/tileIcon")} alt={comp?.nombre || "Nueva Composición"} />
         <div className={style.containerTitleInfo}>
-          <span className={style.titleInfografia}>{comp.nombre}</span>
+          <span className={style.titleInfografia}>{comp?.nombre || "Nueva Composición"}</span>
           <div className={style.containerTopInfo}>
-            <span className={style.dificultadCard} data-dificultad={comp.dificultad}>{comp.dificultad}</span>
-            <span className={style.categoriaCard} data-categoria={comp.categoria}>{comp.categoria}</span>
-            <span className={style.dañoCard} data-tipoDeDano={comp.tipoDeDano}>{comp.tipoDeDano}</span>
-            <div className={style.containerTextoInfoPrimarioCode} onClick={(e)=>copyToClipboard(e, "codigo copiado", codeForPBE(comp.posicionamiento[0].tablero.map((info)=>info.apiNameCampeon)))}> {/* (currentVersion === "pbe" ? codeForPBE(allChampionsApiName) : generatorCodeBuilder(allChampionsApiName)) */}
+            <span className={style.dificultadCard} data-dificultad={comp?.dificultad}>{comp?.dificultad}</span>
+            <span className={style.categoriaCard} data-categoria={comp?.categoria}>{comp?.categoria}</span>
+            <span className={style.dañoCard} data-tipoDeDano={comp?.tipoDeDano}>{comp?.tipoDeDano}</span>
+            <div className={style.containerTextoInfoPrimarioCode} onClick={(e)=>copyToClipboard(e, "codigo copiado", codeForPBE(tableroArray.map((info)=>info.apiNameCampeon)))}>
               {"COPIAR CODIGO 📋"}
             </div>
           </div>
@@ -64,7 +66,7 @@ const InfografiaMPTFT = ({comp}) => {
       <span className={style.tBox}>Preliminares OP</span>
       <div className={style.cCondicionOpEarlyImg}>
       {
-        comp.condiciones.map((condicion) => {
+        (comp?.condiciones || []).map((condicion) => {
           if(condicion.early){
             const condicionGrande= condicion.apiNameGrande;
             const condicionPequeno = condicion.ApiNamePequeno;
@@ -119,7 +121,7 @@ const InfografiaMPTFT = ({comp}) => {
           <div className={`${style.cBoxTitleInfo} ${style.cPrioridadObjetos}`}> 
             <span className={style.tBox}>Priodidad de Objetos</span>
             <div className={style.cPrioridadObjetosInfo}>
-              {comp.itemsPrio.map((itemEntry, index) => {
+              {(comp?.itemsPrio || []).map((itemEntry, index) => {
                   const itemName = typeof itemEntry === 'object' && itemEntry !== null ? itemEntry.apiName : itemEntry;
                   const isOp = typeof itemEntry === 'object' && itemEntry !== null ? !!itemEntry.op : false;
                   const itemData = AllItems.find(i => i.apiName === itemName);
@@ -132,7 +134,7 @@ const InfografiaMPTFT = ({comp}) => {
                         </div>
                       )}
                     </div>,
-                    index < comp.itemsPrio.length - 1 ? <span key={`itemPrio-gt-${index}`} className={style.mayorQue}>{'>'}</span> : null
+                    index < (comp?.itemsPrio?.length || 0) - 1 ? <span key={`itemPrio-gt-${index}`} className={style.mayorQue}>{'>'}</span> : null
                   ] : null;
                 })}
             </div>
@@ -147,7 +149,7 @@ const InfografiaMPTFT = ({comp}) => {
         <span className={style.tBox}>Aumentos Early</span>
         <div className={style.cAumentosInfo}>
           {
-            comp.aumentos?.map((aumento, index) => {
+            (comp?.aumentos || []).map((aumento, index) => {
               console.log({aumento})
               if(aumento.early){
                 return (
@@ -172,7 +174,7 @@ const InfografiaMPTFT = ({comp}) => {
         <span className={style.tBox}>Aumentos Mid/Late</span>
         <div className={style.cAumentosInfo}>
         {
-          comp.aumentos?.map((aumento, index) => {
+          (comp?.aumentos || []).map((aumento, index) => {
             if(!aumento.early){
               return (
                 <div key={index} className={style.cAumento}>
@@ -218,17 +220,17 @@ const InfografiaMPTFT = ({comp}) => {
         <span className={style.tBox}>Mejores Objetos de la composition</span>
         <div className={style.cBestItemCompInfo}>
           {
-            Object.keys(comp?.mejoresItems).map((key, index)=>{
+            Object.keys(comp?.mejoresItems || {}).map((key, index)=>{
               return (
                 <div key={index} className={style.cBestItemCompItem}>
                   <span className={style.tBox}>{key}</span>
                   <div className={style.cBestItemsInfo}>
                   {
-                    comp?.mejoresItems[key].map((data, index) => {
+                    (comp?.mejoresItems?.[key] || []).map((data, index) => {
                       return (
                         <div key={index} className={style.cChampWithItems}>
                           <div className={style.containerImgItems}>
-                            {data.apiNameItemsDelCampeon.map((itemApiName, itemIndex) => {
+                            {(data?.apiNameItemsDelCampeon || []).map((itemApiName, itemIndex) => {
                               return (
                                 <div key={itemIndex} className={style.cItem} onMouseEnter={()=>handleBestItemHelper(itemApiName, "show")} onMouseLeave={()=>handleBestItemHelper(itemApiName, "hide")}>
                                   <ImgItem item={AllItems.find((item) => item.apiName === itemApiName)}/>
@@ -257,14 +259,14 @@ const InfografiaMPTFT = ({comp}) => {
       <div className={`${style.cBoxTitleInfo} ${style.cBestItems}`}>
         <span className={style.tBox}>Mejores Builds</span>
         <div className={style.cBestItemsInfo}>
-          {comp.bestBuild.map((info, index) => {
-              const itemsData = info.apiNameItemsBisDelCampeon.map((itemsName) => {
+          {(comp?.bestBuild || []).map((info, index) => {
+              const itemsData = (info?.apiNameItemsBisDelCampeon || []).map((itemsName) => {
                 
-                const infoItems = itemsName.map((itemName)=>AllItems.find(i => i.apiName === itemName))
+                const infoItems = (itemsName || []).map((itemName)=>AllItems.find(i => i.apiName === itemName))
                 return infoItems
               });
-              const itemsDataSpecial = info.apiNameItemsSpecialBisDelCampeon.map((itemsName) => {
-                const infoItems = itemsName.map((itemName)=>AllItems.find(i => i.apiName === itemName))
+              const itemsDataSpecial = (info?.apiNameItemsSpecialBisDelCampeon || []).map((itemsName) => {
+                const infoItems = (itemsName || []).map((itemName)=>AllItems.find(i => i.apiName === itemName))
                 return infoItems
               });
               const campeonData = AllChampions.find((campeon) => campeon.apiName === info.apiNameCampeon);
@@ -325,18 +327,18 @@ const InfografiaMPTFT = ({comp}) => {
     <div className={style.cardsMPCompContainer}>
       <Header/>
       <div className={style.cBoxRow}>
-        {comp.condiciones.some(condicion => condicion.op) && AumentosOP()}   
+        {(comp?.condiciones || []).some(condicion => condicion.op) && AumentosOP()}   
         {Fundamentals()}
       </div>            
-      {comp.aumentos?.some(aumento => aumento.early) && AumentosEarly()}
-      {comp.aumentos?.some(aumento => aumento.midLate) && AumentosMidLate()}
+      {(comp?.aumentos || []).some(aumento => aumento.early) && AumentosEarly()}
+      {(comp?.aumentos || []).some(aumento => aumento.midLate) && AumentosMidLate()}
       <div className={style.cBoxRow}>
         {Niveles()}
         {Posicionamiento()}
       </div>
       <div className={style.cBoxRow}>
-        {Object.keys(comp?.mejoresItems).length > 0 && MejoresItems()}
-        {MejoresBuilds()}
+        {comp?.mejoresItems && Object.keys(comp.mejoresItems).length > 0 && MejoresItems()}
+        {(comp?.bestBuild || []).length > 0 && MejoresBuilds()}
       </div>
       
     </div>
@@ -344,4 +346,3 @@ const InfografiaMPTFT = ({comp}) => {
 }
 
 export default InfografiaMPTFT;
-

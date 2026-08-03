@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import style from "./master-plan/css/InfografiaMPTFT.module.css";
 import styleForm from "./css/FormularioCrearCompoTFT.module.css";
-import { dataTFTAllAugments, dataTFTAllItems, dataTFTChampions, dataTFTTraits, versionTFT, setNumberLatest, setNumberPBE } from "@stores/dataTFT";
+import { dataTFTAllAugments, dataTFTAllItems, dataTFTChampions, dataTFTTraits, versionTFT, swapVersionTFT, setNumberLatest, setNumberPBE } from "@stores/dataTFT";
 import { useStore } from "@nanostores/react";
 import ImgItem from "./ImgItem";
 import CampeonesNivel from "./elementosInfografia/CampeonesNivel";
@@ -1271,6 +1271,7 @@ export default function FormularioVisualTFT({
   compo = {}
 }) {
   const comp = useStore(datosCompos);
+  const currentVersion = useStore(versionTFT);
   const [panelActivo, setPanelActivo] = useState("campeones"); // campeones, items, aumentos, datos basicos
 
   useEffect(() => {
@@ -1496,6 +1497,67 @@ export default function FormularioVisualTFT({
 
       {/* Columna Derecha: Panel de Herramientas Flotante / Sticky */}
       <div className={localStyle.styleBox82}>
+        {/* Selector de versión Set 17 (Latest) vs Set 18 (PBE) */}
+        <div style={{
+          display: 'flex',
+          gap: '8px',
+          padding: '10px 15px',
+          background: 'rgba(18, 18, 28, 0.95)',
+          borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          borderRadius: '8px 8px 0 0',
+          marginBottom: '8px'
+        }}>
+          <span style={{ fontSize: '13px', fontWeight: 'bold', color: '#ccc', letterSpacing: '0.5px' }}>
+            SET ACTIVO:
+          </span>
+          <div style={{ display: 'flex', gap: '6px' }}>
+            <button
+              type="button"
+              onClick={() => {
+                swapVersionTFT("latest");
+                actualizarComposicionTFT({ version: "latest" });
+              }}
+              style={{
+                padding: '6px 14px',
+                borderRadius: '6px',
+                border: currentVersion === 'latest' ? '1px solid #00ffc4' : '1px solid rgba(255,255,255,0.15)',
+                background: currentVersion === 'latest' ? 'rgba(0, 255, 196, 0.15)' : '#1a1a24',
+                color: currentVersion === 'latest' ? '#00ffc4' : '#888',
+                fontWeight: currentVersion === 'latest' ? '700' : '500',
+                fontSize: '12px',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                boxShadow: currentVersion === 'latest' ? '0 0 10px rgba(0, 255, 196, 0.25)' : 'none'
+              }}
+            >
+              {`Set ${setNumberLatest} (Latest)`}
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                swapVersionTFT("pbe");
+                actualizarComposicionTFT({ version: "pbe" });
+              }}
+              style={{
+                padding: '6px 14px',
+                borderRadius: '6px',
+                border: currentVersion === 'pbe' ? '1px solid #ff00a0' : '1px solid rgba(255,255,255,0.15)',
+                background: currentVersion === 'pbe' ? 'rgba(255, 0, 160, 0.15)' : '#1a1a24',
+                color: currentVersion === 'pbe' ? '#ff00a0' : '#888',
+                fontWeight: currentVersion === 'pbe' ? '700' : '500',
+                fontSize: '12px',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                boxShadow: currentVersion === 'pbe' ? '0 0 10px rgba(255, 0, 160, 0.25)' : 'none'
+              }}
+            >
+              {`Set ${setNumberPBE} (PBE)`}
+            </button>
+          </div>
+        </div>
+
         <div className={localStyle.styleBox83} style={{ flexWrap: 'wrap' }}>
           <button onClick={() => setPanelActivo("campeones")} style={{
           background: panelActivo === 'campeones' ? '#0af' : '#222'

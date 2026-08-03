@@ -9,6 +9,8 @@
     "build": "astro build --remote",
     "preview": "astro preview",
     "start": "astro dev",
+    "db:set17": "node scripts/getCommunityDragonData.js",
+    "db:set18": "node scripts/getCommunityDragonData.js --set18",
     "download:set17": "node scripts/downloadTFTImages.mjs",
     "download:set18": "node scripts/downloadTFTImagesSet18.mjs",
     "download:champs-cd": "node scripts/communityDragonDownloadChamps.js"

@@ -83,6 +83,7 @@ const defaultValuesComposicionTFT = {
     },// opcion de añadir mas niveles
   ],
   itemsPrio:[], // apiNameItems
+  mejoresItems: {}, // objeto de mejores items del campeón
   // bestRadiants:[], // por ahora no se muestra radiante
   posicionamiento:[
     {
