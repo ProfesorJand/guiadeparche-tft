@@ -10,19 +10,35 @@ const IDIOMA = 'es';
 const PAIS = 'ar';
 
 // Constantes de sets (puedes actualizarlas según corresponda)
-const SET_NUMBER_PBE = '17';
+const SET_NUMBER_PBE = '18';
 const SET_NUMBER_LATEST = '17';
 
 async function main() {
   try {
-    console.log(`Descargando datos de CommunityDragon (${VERSION}, ${IDIOMA}_${PAIS})...`);
-    const urlDragon = `https://raw.communitydragon.org/${VERSION}/cdragon/tft/${IDIOMA}_${PAIS}.json`;
+    const isSet18 = process.argv.includes('--set18') || process.argv.includes('--pbe') || process.argv.includes('--set=18');
+    const versionCD = isSet18 ? 'pbe' : VERSION;
+    const currentSetNumber = isSet18 ? '18' : (VERSION === 'pbe' ? SET_NUMBER_PBE : SET_NUMBER_LATEST);
+    const mutatorName = `TFTSet${currentSetNumber}`;
+    const tableSuffix = isSet18 ? '_set_18' : '';
+
+    const tableItems = `items_tft${tableSuffix}`;
+    const tableAumentos = `aumentos_tft${tableSuffix}`;
+    const tableCampeones = `campeones_tft${tableSuffix}`;
+    const tableTraits = `tratis_TFT${tableSuffix}`;
+
+    console.log(`====================================================`);
+    console.log(`🚀 Iniciando descarga de datos CDragon TFT`);
+    console.log(`➡️  Set Objetivo: ${currentSetNumber} (${isSet18 ? 'Set 18 (PBE)' : 'Set 17 (Latest)'})`);
+    console.log(`➡️  Versión CDragon: ${versionCD}`);
+    console.log(`➡️  Tablas MySQL: ${tableItems}, ${tableAumentos}, ${tableCampeones}, ${tableTraits}`);
+    console.log(`====================================================`);
+
+    console.log(`Descargando datos de CommunityDragon (${versionCD}, ${IDIOMA}_${PAIS})...`);
+    const urlDragon = `https://raw.communitydragon.org/${versionCD}/cdragon/tft/${IDIOMA}_${PAIS}.json`;
     const response = await fetch(urlDragon);
     const data = await response.json();
 
     const { items, setData, sets } = data;
-    const currentSetNumber = VERSION === 'pbe' ? SET_NUMBER_PBE : SET_NUMBER_LATEST;
-    const mutatorName = `TFTSet${currentSetNumber}`;
 
     // 1. Encontrar los apiNames permitidos para el Set actual usando el mutator
     const validItemNames = new Set();
@@ -53,8 +69,8 @@ async function main() {
     const currentSet = sets?.[currentSetNumber];
     const allChampionsRaw = currentSet?.champions ? [...currentSet.champions] : [];
 
-    // Agregar Shen's Sword si no existe (lógica que usas en dataTFT.js)
-    if (!allChampionsRaw.some(c => c.apiName === "TFT15_ShenSword")) {
+    // Agregar Shen's Sword si no existe (lógica que usas en dataTFT.js - sólo en Set 17)
+    if (!isSet18 && !allChampionsRaw.some(c => c.apiName === "TFT15_ShenSword")) {
       allChampionsRaw.push({
         apiName: "TFT15_ShenSword",
         name: "Shen's Sword",
@@ -63,8 +79,8 @@ async function main() {
         tileIcon: "/assets/characters/shen/hud/icons2d/shen_q.png", // Nota: este no está en el Set 17, se recomienda usar otra imagen o descargarla manual
       });
     }
-    // Agregar TFT17_Summon si no existe (lógica que usas en dataTFT.js)
-    if (!allChampionsRaw.some(c => c.apiName === "TFT17_Summon")) {
+    // Agregar TFT17_Summon si no existe (lógica que usas en dataTFT.js - sólo en Set 17)
+    if (!isSet18 && !allChampionsRaw.some(c => c.apiName === "TFT17_Summon")) {
       allChampionsRaw.push({
         apiName: "TFT17_Summon",
         name: "Bia y Bayin",
@@ -76,8 +92,8 @@ async function main() {
         squareIcon: "/assets/characters/tft17_summon/skins/base/images/shiro_small.tft_set17.tex",
       });
     }
-    // Agregar Dragón Ancestral Cósmico si no existe (lógica que usas en dataTFT.js)
-    if (!allChampionsRaw.some(c => c.apiName === "TFT17_PVE_ElderDragon")) {
+    // Agregar Dragón Ancestral Cósmico si no existe (lógica que usas en dataTFT.js - sólo en Set 17)
+    if (!isSet18 && !allChampionsRaw.some(c => c.apiName === "TFT17_PVE_ElderDragon")) {
       allChampionsRaw.push({
         apiName: "TFT17_PVE_ElderDragon",
         name: "Dragón Ancestral Cósmico",
@@ -123,7 +139,7 @@ async function main() {
 
     // Crear tabla items_tft
     await connection.execute(`
-      CREATE TABLE IF NOT EXISTS items_tft (
+      CREATE TABLE IF NOT EXISTS ${tableItems} (
         apiName VARCHAR(150) PRIMARY KEY,
         name VARCHAR(150),
         desc_item TEXT,
@@ -136,7 +152,7 @@ async function main() {
 
     // Crear tabla aumentos_tft
     await connection.execute(`
-      CREATE TABLE IF NOT EXISTS aumentos_tft (
+      CREATE TABLE IF NOT EXISTS ${tableAumentos} (
         apiName VARCHAR(150) PRIMARY KEY,
         name VARCHAR(150),
         desc_item TEXT,
@@ -150,7 +166,7 @@ async function main() {
 
     // Crear tabla campeones_tft
     await connection.execute(`
-      CREATE TABLE IF NOT EXISTS campeones_tft (
+      CREATE TABLE IF NOT EXISTS ${tableCampeones} (
         apiName VARCHAR(150) PRIMARY KEY,
         name VARCHAR(150),
         cost INT,
@@ -168,7 +184,7 @@ async function main() {
 
     // Crear tabla tratis_TFT
     await connection.execute(`
-      CREATE TABLE IF NOT EXISTS tratis_TFT (
+      CREATE TABLE IF NOT EXISTS ${tableTraits} (
         apiName VARCHAR(150) PRIMARY KEY,
         name VARCHAR(150),
         desc_trait TEXT,
@@ -181,8 +197,8 @@ async function main() {
 
     // Asegurar automáticamente que la columna incompatibleTraits exista en GoDaddy
     try {
-      await connection.execute(`ALTER TABLE items_tft ADD COLUMN incompatibleTraits TEXT NULL AFTER composition;`);
-      console.log('✅ Columna "incompatibleTraits" añadida en la tabla items_tft');
+      await connection.execute(`ALTER TABLE ${tableItems} ADD COLUMN incompatibleTraits TEXT NULL AFTER composition;`);
+      console.log(`✅ Columna "incompatibleTraits" verificada en la tabla ${tableItems}`);
     } catch (e) {
       // Si ya existe (error 1060), se ignora
     }
@@ -191,7 +207,7 @@ async function main() {
     for (const item of itemsTFT) {
       if (!item.apiName) continue;
       const query = `
-        INSERT INTO items_tft (apiName, name, desc_item, icon, effects, composition, incompatibleTraits) 
+        INSERT INTO ${tableItems} (apiName, name, desc_item, icon, effects, composition, incompatibleTraits) 
         VALUES (?, ?, ?, ?, ?, ?, ?) 
         ON DUPLICATE KEY UPDATE 
           name = VALUES(name),
@@ -216,14 +232,14 @@ async function main() {
         incompatibleTraitsStr
       ]);
     }
-    console.log('✅ Items guardados en "items_tft"');
+    console.log(`✅ Items guardados en "${tableItems}"`);
 
     if (!onlyItems) {
       // --- Guardar Aumentos ---
       for (const aug of aumentosTFT) {
         if (!aug.apiName) continue;
         const query = `
-          INSERT INTO aumentos_tft (apiName, name, desc_item, icon, effects, associatedTraits, incompatibleTraits, tags) 
+          INSERT INTO ${tableAumentos} (apiName, name, desc_item, icon, effects, associatedTraits, incompatibleTraits, tags) 
           VALUES (?, ?, ?, ?, ?, ?, ?, ?) 
           ON DUPLICATE KEY UPDATE 
             name = VALUES(name),
@@ -252,13 +268,13 @@ async function main() {
           tagsStr
         ]);
       }
-      console.log('✅ Aumentos guardados en "aumentos_tft"');
+      console.log(`✅ Aumentos guardados en "${tableAumentos}"`);
 
       // --- Guardar Campeones ---
       for (const champ of campeonesTFT) {
         if (!champ.apiName) continue;
         const query = `
-          INSERT INTO campeones_tft (apiName, name, cost, traits, tileIcon, icon, squareIcon, role, ability_name, ability_desc, ability_icon, ability_variables) 
+          INSERT INTO ${tableCampeones} (apiName, name, cost, traits, tileIcon, icon, squareIcon, role, ability_name, ability_desc, ability_icon, ability_variables) 
           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) 
           ON DUPLICATE KEY UPDATE 
             name = VALUES(name),
@@ -295,13 +311,13 @@ async function main() {
           abilityVariablesStr
         ]);
       }
-      console.log('✅ Campeones guardados en "campeones_tft"');
+      console.log(`✅ Campeones guardados en "${tableCampeones}"`);
 
       // --- Guardar Traits ---
       for (const trait of traitsTFT) {
         if (!trait.apiName) continue;
         const query = `
-          INSERT INTO tratis_TFT (apiName, name, desc_trait, icon, effects) 
+          INSERT INTO ${tableTraits} (apiName, name, desc_trait, icon, effects) 
           VALUES (?, ?, ?, ?, ?) 
           ON DUPLICATE KEY UPDATE 
             name = VALUES(name),
@@ -320,7 +336,7 @@ async function main() {
           effectsTraitStr
         ]);
       }
-      console.log('✅ Traits guardados en "tratis_TFT"');
+      console.log(`✅ Traits guardados en "${tableTraits}"`);
     } else {
       console.log('⏩ Omitiendo Aumentos, Campeones y Traits (flag --only-items activo)');
     }

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { $user, setUser } from '../../stores/auth';
 import { useStore } from '@nanostores/react';
 import styles from './LoginForm.module.css';
-import { countries } from '../../utils/countries';
+import { countries, countryAreaCodes } from '../../utils/countries';
 
 // For Google Identity Services (GIS)
 const GOOGLE_CLIENT_ID = import.meta.env.PUBLIC_ID_CLIENT_GOOGLE_CLOUD_OAUTH;
@@ -22,6 +22,7 @@ const LoginForm = () => {
     surname: '',
     dob: '',
     country: '',
+    cel: '',
     newsletter: false,
     termsAccepted: false
   });
@@ -98,8 +99,10 @@ const LoginForm = () => {
             surname: datosUsuario.apellido, 
             country: datosUsuario.pais, 
             dob: datosUsuario.fecha_nacimiento, 
+            cel: datosUsuario.cel || '',
             loginType: typeLogin,
-            isAdmin: result.isAdmin,
+            isAdmin: result.isAdmin || datosUsuario.admin == 1 || datosUsuario.superAdmin == 1,
+            isSuperAdmin: result.isSuperAdmin || datosUsuario.superAdmin == 1,
             termsAccepted: datosUsuario.termsAccepted,
           });
           setEmail(datosUsuario.email);
@@ -280,6 +283,28 @@ const LoginForm = () => {
     );
   };
 
+  const handleCountryChange = (e) => {
+    const selectedCountry = e.target.value;
+    const newAreaCode = countryAreaCodes[selectedCountry] || '';
+
+    let updatedPhone = formData.cel;
+    if (newAreaCode) {
+      if (!updatedPhone || /^\+\d{1,4}\s*$/.test(updatedPhone)) {
+        updatedPhone = `${newAreaCode} `;
+      } else if (/^\+\d{1,4}\s+/.test(updatedPhone)) {
+        updatedPhone = updatedPhone.replace(/^\+\d{1,4}\s+/, `${newAreaCode} `);
+      } else {
+        updatedPhone = `${newAreaCode} ${updatedPhone}`;
+      }
+    }
+
+    setFormData({
+      ...formData,
+      country: selectedCountry,
+      cel: updatedPhone
+    });
+  };
+
   const handleProfileSubmit = async (e) => {
     e.preventDefault();
 
@@ -304,8 +329,14 @@ const LoginForm = () => {
     const dateInArgentina = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Argentina/Buenos_Aires" }));
     const termsAcceptedAtStr = `${dateInArgentina.getFullYear()}-${String(dateInArgentina.getMonth() + 1).padStart(2, '0')}-${String(dateInArgentina.getDate()).padStart(2, '0')} ${String(dateInArgentina.getHours()).padStart(2, '0')}:${String(dateInArgentina.getMinutes()).padStart(2, '0')}:${String(dateInArgentina.getSeconds()).padStart(2, '0')}`;
 
+    let phoneToSend = formData.cel ? formData.cel.trim() : '';
+    if (/^\+\d{1,4}$/.test(phoneToSend)) {
+      phoneToSend = '';
+    }
+
     const submissionData = {
       ...formData,
+      cel: phoneToSend,
       termsAcceptedAt: termsAcceptedAtStr
     };
 
@@ -447,7 +478,7 @@ const LoginForm = () => {
           <label>País</label>
           <select
             value={formData.country}
-            onChange={(e) => setFormData({ ...formData, country: e.target.value })}
+            onChange={handleCountryChange}
             required
             className={styles.select}
             disabled={loading}
@@ -459,6 +490,20 @@ const LoginForm = () => {
               </option>
             ))}
           </select>
+        </div>
+
+        <div className={styles.form_group}>
+          <label>
+            Número de celular <span style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: 400 }}>(Opcional)</span>
+          </label>
+          <input
+            type="tel"
+            value={formData.cel}
+            onChange={(e) => setFormData({ ...formData, cel: e.target.value })}
+            placeholder="+54 11 1234 5678"
+            className={styles.input}
+            disabled={loading}
+          />
         </div>
 
         <div className={styles.checkbox_group}>

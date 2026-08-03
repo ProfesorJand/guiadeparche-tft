@@ -16,8 +16,8 @@ const initialStateVersion = "pbe";
 const initialStateTeamPlannerCode = [];
 export const initialTFT_SET = "latest";
 
-export const setNumberPBE = "17";
-export const setMutatorPBE = "TFTSet17";
+export const setNumberPBE = "18";
+export const setMutatorPBE = "TFTSet18";
 export const setNumberLatest = "17";
 export const setMutatorLatest = "TFTSet17";
 export const nameOfSet = {
