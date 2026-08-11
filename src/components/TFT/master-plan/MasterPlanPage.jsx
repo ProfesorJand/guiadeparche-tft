@@ -11,6 +11,7 @@ import AugmentsList from '@components/main/Admin/AugmentsList';
 import style from './css/MasterPlanPage.module.css';
 import { getLocalTftImage } from '@utils/images';
 import InfografiaMPTFT from "./InfografiaMPTFT"
+import { getTraitDisplayName } from '../../main/Admin/TraitsList';
 
 export const CHECK_FILTERS = [
   { apiName: 'hero_augment', label: 'Aumento de Héroe' },
@@ -32,6 +33,10 @@ export default function MasterPlanPage() {
 
   const allAugments = useStore(dataTFTAllAugments) || [];
   const allTraits = useStore(dataTFTTraits) || [];
+
+  const listaAumentosHeroes =[
+    "TFT17_Augment_GragasCarry"
+  ];
 
   // Función para obtener nombres amigables de un apiName según el tipo
   const getConditionDisplayName = (apiName, type) => {
@@ -56,11 +61,16 @@ export default function MasterPlanPage() {
       if (item) return getLocalTftImage(item.icon, 'items');
     }
     if (t === 'aumento' || t === 'aumentoresaleatorio' || t === 'aumentoespecifico') {
+      
       const aug = allAugments.find(a => a.apiName === apiName);
-      if (aug && aug.icon) return aug.icon.includes("http") ? aug.icon.replace(".tex", ".png").toLowerCase() : getLocalTftImage(aug.icon, 'augments', versionNumber);
+
+      if (aug && aug.icon) {
+        return aug.icon.includes("http") ? aug.icon.replace(".tex", ".png").toLowerCase() : getLocalTftImage(aug.icon, 'augments', versionNumber);
+      }
     }
     if (t === 'sinergia') {
       const tr = allTraits.find(tr => tr.apiName === apiName);
+      console.log({apiName, tr})
       if (tr && tr.icon) return tr.icon.includes("http") ? tr.icon.replace(".tex", ".png").toLowerCase() : getLocalTftImage(tr.icon, 'traits', versionNumber);
     }
     if (t === 'extra') {
@@ -81,10 +91,10 @@ export default function MasterPlanPage() {
       if (!cond) return;
       const tGrande = (cond.condTypeGrande || cond.typeGrande || cond.condType || "").toLowerCase();
 
-      // Solo verificar grande
       if (tGrande === target && cond.apiNameGrande && !uniqueMap.has(cond.apiNameGrande)) {
         uniqueMap.set(cond.apiNameGrande, {
           apiName: cond.apiNameGrande,
+          apiNamePequeno: cond.ApiNamePequeno || cond.apiNamePequeno,
           name: getConditionDisplayName(cond.apiNameGrande, targetType),
           icon: getConditionIconUrl(cond.apiNameGrande, targetType),
           type: targetType
@@ -460,7 +470,7 @@ console.log({selectedSoftItems})
                   onClick={() => toggleSelectedItem(item)}
                   style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
                 >
-                  {item.icon && <img src={item.icon} alt={item.name} style={{ width: '20px', height: '20px', objectFit: 'contain', borderRadius: '3px' }} />}
+                  {item.icon && <img src={item.icon} alt={item.name} style={{ width: '40px', height: '40px', objectFit: 'contain', borderRadius: '3px' }} />}
                   <span>{item.name}</span>
                 </button>
               ))
@@ -482,7 +492,7 @@ console.log({selectedSoftItems})
                   onClick={() => toggleSelectedChampion(champ)}
                   style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
                 >
-                  {champ.icon && <img src={champ.icon} alt={champ.name} style={{ width: '20px', height: '20px', objectFit: 'contain', borderRadius: '3px' }} />}
+                  {champ.icon && <img src={champ.icon} alt={champ.name} style={{ width: '40px', height: '40px', objectFit: 'contain', borderRadius: '3px' }} />}
                   <span>{champ.name}</span>
                 </button>
               ))
@@ -504,7 +514,7 @@ console.log({selectedSoftItems})
                   onClick={() => toggleArrayFilter(setSelectedExtras, extra.apiName)}
                   style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
                 >
-                  {extra.icon && <img src={extra.icon} alt={extra.name} style={{ width: '20px', height: '20px', objectFit: 'contain', borderRadius: '3px' }} />}
+                  {extra.icon && <img src={extra.icon} alt={extra.name} style={{ width: '40px', height: '40px', objectFit: 'contain', borderRadius: '3px' }} />}
                   <span>{extra.name}</span>
                 </button>
               ))
@@ -526,8 +536,8 @@ console.log({selectedSoftItems})
                   onClick={() => toggleArrayFilter(setSelectedSinergias, sinergia.apiName)}
                   style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
                 >
-                  {sinergia.icon && <img src={sinergia.icon} alt={sinergia.name} style={{ width: '20px', height: '20px', objectFit: 'contain', borderRadius: '3px' }} />}
-                  <span>{sinergia.name}</span>
+                  {sinergia.icon && <img src={sinergia.icon} alt={sinergia.name} style={{ width: '40px', height: '40px', objectFit: 'contain', borderRadius: '3px' }} />}
+                  <span>{getTraitDisplayName(sinergia)}</span>
                 </button>
               ))
             ) : (
@@ -548,7 +558,7 @@ console.log({selectedSoftItems})
                   onClick={() => toggleArrayFilter(setSelectedAumentoResAleatorio, aum.apiName)}
                   style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
                 >
-                  {aum.icon && <img src={aum.icon} alt={aum.name} style={{ width: '20px', height: '20px', objectFit: 'contain', borderRadius: '3px' }} />}
+                  {aum.icon && <img src={aum.icon} alt={aum.name} style={{ width: '40px', height: '40px', objectFit: 'contain', borderRadius: '3px' }} />}
                   <span>{aum.name}</span>
                 </button>
               ))
@@ -561,8 +571,10 @@ console.log({selectedSoftItems})
         <div className={style.filterInputGroup}>
           <label>Aumentos Específicos</label>
           <div className={style.filterButtonsContainer} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '8px' }}>
-            {condicionesGrandeAumentoEspecifico.length > 0 ? (
-              condicionesGrandeAumentoEspecifico.map(aum => (
+            {condicionesGrandeAumentoEspecifico.filter(aum => !listaAumentosHeroes.includes(aum.apiName)).length > 0 ? (
+              condicionesGrandeAumentoEspecifico
+                .filter(aum => !listaAumentosHeroes.includes(aum.apiName))
+                .map(aum => (
                 <button
                   key={aum.apiName}
                   type="button"
@@ -570,12 +582,39 @@ console.log({selectedSoftItems})
                   onClick={() => toggleArrayFilter(setSelectedAumentoEspecifico, aum.apiName)}
                   style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
                 >
-                  {aum.icon && <img src={aum.icon} alt={aum.name} style={{ width: '20px', height: '20px', objectFit: 'contain', borderRadius: '3px' }} />}
+                  {aum.icon && <img src={aum.icon} alt={aum.name} style={{ width: '40px', height: '40px', objectFit: 'contain', borderRadius: '3px' }} />}
                   <span>{aum.name}</span>
                 </button>
               ))
             ) : (
               <span style={{ color: '#ccc', fontStyle: 'italic', fontSize: '0.85rem' }}>No hay aumentos específicos disponibles</span>
+            )}
+          </div>
+        </div>
+
+        <div className={style.filterInputGroup}>
+          <label>Aumentos Específicos de Héroes</label>
+          <div className={style.filterButtonsContainer} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '8px' }}>
+            {condicionesGrandeAumentoEspecifico.filter(aum => listaAumentosHeroes.includes(aum.apiName)).length > 0 ? (
+              condicionesGrandeAumentoEspecifico
+                .filter(aum => listaAumentosHeroes.includes(aum.apiName))
+                .map(aum => (
+                <button
+                  key={aum.apiName}
+                  type="button"
+                  className={`${style.filterOptionBox} ${selectedAumentoEspecifico.includes(aum.apiName) ? style.filterOptionBoxActive : ''}`}
+                  onClick={() => toggleArrayFilter(setSelectedAumentoEspecifico, aum.apiName)}
+                  style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
+                >
+                  {aum.icon && <img src={aum.icon} alt={aum.name} style={{ width: '40px', height: '40px', objectFit: 'contain', borderRadius: '3px' }} />}
+                  {aum.apiNamePequeno && getConditionIconUrl(aum.apiNamePequeno, 'campeon') && (
+                    <img src={getConditionIconUrl(aum.apiNamePequeno, 'campeon')} alt={aum.apiNamePequeno} style={{ width: '40px', height: '40px', objectFit: 'contain', borderRadius: '3px' }} />
+                  )}
+                  <span>{aum.name}</span>
+                </button>
+              ))
+            ) : (
+              <span style={{ color: '#ccc', fontStyle: 'italic', fontSize: '0.85rem' }}>No hay aumentos específicos de héroes disponibles</span>
             )}
           </div>
         </div>
@@ -616,7 +655,7 @@ console.log({selectedSoftItems})
                   cursor: isAvailable ? 'pointer' : 'not-allowed'
                 }}
               >
-                {item.icon && <img src={item.icon} alt={item.name} style={{ width: '32px', height: '32px', objectFit: 'contain', borderRadius: '4px' }} />}
+                {item.icon && <img src={item.icon} alt={item.name} style={{ width: '40px', height: '40px', objectFit: 'contain', borderRadius: '4px' }} />}
               </button>
             );
           })}
@@ -640,7 +679,7 @@ console.log({selectedSoftItems})
                       onClick={() => toggleSoftChampion(champ)}
                       style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '8px 10px', minWidth: '70px', gap: '6px' }}
                     >
-                      {champ.icon && <img src={champ.icon} alt={champ.name} style={{ width: '42px', height: '42px', objectFit: 'contain', borderRadius: '4px', border: `2px solid var(--color-hex-cost-${champ.cost || cost})`, boxSizing: 'border-box' }} />}
+                      {champ.icon && <img src={champ.icon} alt={champ.name} style={{ width: '40px', height: '40px', objectFit: 'contain', borderRadius: '4px', border: `2px solid var(--color-hex-cost-${champ.cost || cost})`, boxSizing: 'border-box' }} />}
                       <span style={{ fontSize: '0.78rem', textAlign: 'center', lineHeight: '1.1' }}>{champ.name}</span>
                     </button>
                   ))}

@@ -208,8 +208,18 @@ export const loadDataTFTFromAPI = ({ version = versionTFT.get(), idioma = "es", 
   return new Promise((resolve) => {
     task(async () => {
       try {
-        // Usamos el endpoint PHP propio en lugar de CommunityDragon
-        const urlAPI = `https://api.guiadeparche.com/tft/getDataTFT.php`;
+        // Determinamos el número de set según si la versión es "pbe", "latest" o un número directo
+        let targetSet = setNumberLatest;
+        if (version === "pbe") {
+          targetSet = setNumberPBE;
+        } else if (version === "latest") {
+          targetSet = setNumberLatest;
+        } else if (!isNaN(version)) {
+          targetSet = String(version);
+        }
+
+        // Usamos el endpoint PHP propio enviando el set correspondiente en la URL
+        const urlAPI = `https://api.guiadeparche.com/tft/getDataTFT.php?set=${targetSet}`;
         const response = await fetch(urlAPI);
         const data = await response.json();
         updateDataTFT(data);
@@ -295,7 +305,7 @@ export const updateDataTFT = async (data) => {
   const champions = isFromDB ? payload.champions : payload.sets?.[versionTFT.get() === "pbe" ? setNumberPBE : setNumberLatest]?.champions;
   const traits = isFromDB ? payload.traits : payload.sets?.[versionTFT.get() === "pbe" ? setNumberPBE : setNumberLatest]?.traits;
   dataTFT.set(payload);
-  
+
   let allItems = items;
   if (!allItems || allItems.length === 0) {
     allItems = [];
@@ -316,7 +326,7 @@ export const updateDataTFT = async (data) => {
   // ignorando el filtro por set (ya que la DB de este backend es específica del set)
   const listLatest = generateCraftableList(allItems || [], allItemNames, setNumberLatest);
   apiNameOfCraftableItems.set(listLatest);
-  
+
   const listPBE = generateCraftableList(allItems || [], allItemNames, setNumberPBE);
   apiNameOfCraftableItemsPBE.set(listPBE);
 
@@ -347,14 +357,16 @@ export const updateDataTFT = async (data) => {
       if (nameA > nameB) {
         return 1;
       }
-      return 0; 
+      return 0;
     })
   );
   dataTFTTraits.set(traits || []);
 };
 
 export const swapVersionTFT = (data) => {
-  versionTFT.set(data)
+  console.log("se hizo swap")
+  versionTFT.set(data);
+  loadDataTFTFromAPI({ version: data });
 }
 
 export const getTeamPlannerCodeAPI = async () => {
@@ -457,7 +469,7 @@ export const addRestCompsFetch = async (url) => {
       { cache: "no-cache" }
     );
     let data = await response.json();
-    
+
     if (data.status === "success" && Array.isArray(data.data)) {
       const grouped = {};
       data.data.forEach(compo => {
@@ -518,7 +530,7 @@ export const fetchAndSortComps = async (url) => {
       { cache: "no-cache" }
     );
     let data = await response.json();
-    
+
     if (data.status === "success" && Array.isArray(data.data)) {
       const grouped = {};
       data.data.forEach(compo => {

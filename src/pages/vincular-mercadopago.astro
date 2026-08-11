@@ -1,0 +1,13 @@
+---
+import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
+import Main from '@components/main/Main.astro';
+import VincularMercadopago from '@components/mercado-pago/vincularMercadopago.jsx';
+---
+
+<LayoutMaxWidth title="Vinculando Suscripción | Guiadeparche">
+  <Main backgroundColor="none">
+    <div style="padding-top: 50px;">
+      <VincularMercadopago client:only="react" />
+    </div>
+  </Main>
+</LayoutMaxWidth>

@@ -1,16 +1,17 @@
 import { useState } from "react"
 import CrearCompoIlluvium from "./CrearCompoIlluvium";
 import PreviewInfografias from "./PreviewInfografias";
-import { $admin } from "@stores/auth";
+import { $admin, $superAdmin } from "@stores/auth";
 import { useStore } from "@nanostores/react";
 const MetaCompsIlluvium = ()=>{
   const pestanas = ["crear", "meta"]
   const [selectedPestana, setSelectedPestana] = useState(pestanas[1]);
   const admin = useStore($admin);
+  const superAdmin = useStore($superAdmin);
   return (
     <div>
       {
-        admin && 
+        (admin || superAdmin) && 
         <div>
           {
             pestanas.map((pestana, i)=>{

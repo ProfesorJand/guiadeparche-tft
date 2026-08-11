@@ -12,9 +12,9 @@ import RadiantsItems from "./RadiantsItems";
 import { useStore } from "@nanostores/react";
 import MiniInfoComp from "@components/TFT/MiniInfoComp";
 import { activeCompId, toggleActiveComp } from "@stores/menuFiltradoAdmin";
-import { $admin } from "@stores/auth";
+import { $admin, $superAdmin } from "@stores/auth";
 
-const Composicion = ({ id, compo, admin = useStore($admin), show = true, allwaysOpen = false, onToggle: propOnToggle, isOpen: propIsOpen }) => {
+const Composicion = ({ id, compo, admin = useStore($admin), superAdmin = useStore($superAdmin), show = true, allwaysOpen = false, onToggle: propOnToggle, isOpen: propIsOpen }) => {
   const storeOpenId = useStore(activeCompId);
 
   const isOpen = propIsOpen !== undefined ? propIsOpen : (String(storeOpenId) === String(id));
@@ -227,7 +227,7 @@ const Composicion = ({ id, compo, admin = useStore($admin), show = true, allways
         isOpen={isOpen}
         setOpen={setOpen}
         compo={compo}
-        admin={admin}
+        admin={admin || superAdmin}
         onToggle={onToggle}
         copyToClipboard={copyToClipboard}
         generatorCodeBuilder={generatorCodeBuilder}
@@ -338,11 +338,12 @@ function FooterTFT() {
   const [showMovilnetLogo, setShowMovilnetLogo] = useState(false);
   const currentVersion = useStore(versionTFT);
   const admin = useStore($admin);
+  const superAdmin = useStore($superAdmin);
   return (
     <div className={style.footer}
       onClick={(e) => {
         e.stopPropagation(); // 🔥 evita conflictos
-        admin && setShowMovilnetLogo(v => !v);
+        (admin || superAdmin) && setShowMovilnetLogo(v => !v);
       }}>
       {showMovilnetLogo &&
         <div className={style.divWebMovilnetLogo}>
@@ -357,7 +358,7 @@ function FooterTFT() {
         <div className={style.divWebLogo}
           onClick={(e) => {
             e.stopPropagation(); // 🔥 evita conflictos
-            admin && setShowMovilnetLogo(v => !v);
+            (admin || superAdmin) && setShowMovilnetLogo(v => !v);
           }}>
           {/* <img className={style.imgWebLogo} src="/tft/assets/GP_logo.png" alt="logo Guiadeparche"></img> */}
           <span className={style.textoWeb}>

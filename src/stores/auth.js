@@ -1,21 +1,63 @@
-import { atom } from 'nanostores';
+import { atom, computed } from 'nanostores';
 
 export const $admin = atom(false);
 export const $superAdmin = atom(false);
 export const $user = atom(null);
 export const $authError = atom(null);
 export const $authLoading = atom(false);
-export const $activeTab = atom('data');
 
-export const setUser = (user) => {
+// Estado derivado: Se actualiza AUTOMÁTICAMENTE cuando $user cambia
+export const $hasMasterPlan = computed([$user, $admin, $superAdmin], (user, admin, superAdmin) => {
+  if (!user) return false;
+  return !!(
+    admin || 
+    superAdmin || 
+    user.master_plan === 1 || 
+    user.master_plan === '1'
+  );
+});
+let initialTab = 'data';
+if (typeof window !== 'undefined') {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('tab')) {
+    initialTab = params.get('tab');
+  }
+}
+export const $activeTab = atom(initialTab);
+
+// Función para validar si el Master Plan expiró usando la hora de Argentina
+const checkMasterPlanExpiration = (userData) => {
+  if (userData && userData.master_plan == 1 && userData.master_plan_expiration_date) {
+    try {
+      // 1. Obtener la hora actual simulando que el navegador está en Argentina
+      const argTimeStr = new Date().toLocaleString("en-US", {timeZone: "America/Argentina/Buenos_Aires"});
+      const nowArg = new Date(argTimeStr);
+      
+      // 2. Convertir la fecha de MySQL (ej. "2024-06-25 10:30:00") a objeto Date local
+      const expStr = userData.master_plan_expiration_date.replace(' ', 'T');
+      const expDate = new Date(expStr);
+      
+      // 3. Comparar ambas horas "locales"
+      if (nowArg > expDate) {
+        userData.master_plan = 0; // Expiró
+      }
+    } catch(e) {
+      console.error("Error comprobando expiración:", e);
+    }
+  }
+  return userData;
+};
+
+export const setUser = (userRaw) => {
+  const user = checkMasterPlanExpiration(userRaw);
   $user.set(user);
+  console.log({user})
 
   // 1. Verificamos si es superAdmin desde la base de datos (superAdmin == 1 o isSuperAdmin)
   const isSuperAdmin = !!(user?.superAdmin == 1 || user?.isSuperAdmin || user?.super_admin == 1);
   
   // 2. Verificamos si es admin normal desde la base de datos (admin == 1 o isAdmin).
-  // Nota: Si es superAdmin, también es admin automáticamente (hereda todos los accesos).
-  const isAdmin = !!(user?.admin == 1 || user?.isAdmin || isSuperAdmin);
+  const isAdmin = !!(user?.admin == 1 || user?.isAdmin);
 
   $admin.set(isAdmin);
   $superAdmin.set(isSuperAdmin);
@@ -46,11 +88,14 @@ if (typeof window !== 'undefined') {
   
   if (savedUser) {
     try {
-      const userData = JSON.parse(savedUser);
+      const userDataRaw = JSON.parse(savedUser);
+      console.log({savedUser})
+      const userData = checkMasterPlanExpiration(userDataRaw);
       $user.set(userData);
+      console.log({userData})
       
       const isSuper = !!(userData.isSuperAdmin || userData.superAdmin == 1 || userData.super_admin == 1);
-      const isAdminNormal = !!(userData.isAdmin || userData.admin == 1 || isSuper);
+      const isAdminNormal = !!(userData.isAdmin || userData.admin == 1);
 
       $admin.set(isAdminNormal);
       $superAdmin.set(isSuper);
@@ -67,7 +112,6 @@ if (typeof window !== 'undefined') {
     if (savedAdmin === 'true') $admin.set(true);
     if (savedSuper === 'true') {
       $superAdmin.set(true);
-      $admin.set(true); // SuperAdmin siempre tiene acceso de Admin normal
     }
   }
 }

@@ -7,7 +7,7 @@ import {
   urlSaveConstantes2xko, 
   urlSaveMeta2xko,
 } from "@stores/data2xko";
-import { $admin } from "@stores/auth";
+import { $admin, $superAdmin } from "@stores/auth";
 import { useStore } from "@nanostores/react";
 import Infografia from "./Infografia";
 import SliderButtom from "@components/inputs/SliderButtom";
@@ -15,6 +15,7 @@ import SliderButtomLogoGuiadeparche from "@components/inputs/SliderButtomLogoGui
 
 const Formulario2XKO = ()=>{
   const admin = useStore($admin);
+  const superAdmin = useStore($superAdmin);
   const constantes2xko = useStore(Constantes2xko);
   const champsMeta2xko = useStore(ChampsMeta2xko);
   const [titulo, setTitulo] = useState("");
@@ -175,7 +176,7 @@ const saveConstantes2xko = async () => {
   return (
     <div>
       {
-        admin && 
+        (admin || superAdmin) && 
         <div>
       <h2>Selecciona el tier que quieres editar:</h2>
       {
@@ -323,7 +324,7 @@ const saveConstantes2xko = async () => {
         version={version}
         logoMovilnet={logoMovilnet}
         logoGuiadeparche={logoGuiadeparche}
-        admin={admin}
+        admin={admin || superAdmin}
       ></Infografia>
     </div>
   )

@@ -2,7 +2,7 @@ import { useEffect, useRef, useCallback, useMemo } from "react";
 import { useStore } from "@nanostores/react";
 import style from "./css/TierListMetaComps.module.css";
 import ChampTierList from "./ChampTierList.jsx";
-import { $admin } from "@stores/auth.js";
+import { $admin, $superAdmin } from "@stores/auth.js";
 
 const TierListMetaComps = ({todasLasComps = [], todasLasCompsPBE = []}) => {
  const activeComps = todasLasCompsPBE; // currentVersion === "pbe" ? todasLasCompsPBE : todasLasComps;
@@ -16,10 +16,10 @@ const TierListMetaComps = ({todasLasComps = [], todasLasCompsPBE = []}) => {
     ).filter(group => group.length > 0);
   }, [activeComps]);
 
-  console.log({groupedComps})
   const scrollContainersRef = useRef([]);
   const numberOfChampsInTierList = 6;
   const admin = useStore($admin);
+  const superAdmin = useStore($superAdmin);
   const backgroundRef = useRef(null);
   useEffect(() => {
     scrollContainersRef.current.forEach((scrollContainer) => {
@@ -111,7 +111,7 @@ const TierListMetaComps = ({todasLasComps = [], todasLasCompsPBE = []}) => {
 
   return (
     <>
-    {admin && <button onClick={(e)=>{onButtonClick(e)}}>Guardar Meta</button>}
+    {(admin || superAdmin) && <button onClick={(e)=>{onButtonClick(e)}}>Guardar Meta</button>}
     <div className={style.containerTierListMetaComps} ref={backgroundRef}>
       {groupedComps.length > 0 ? (
         groupedComps.map((comps, index) => {

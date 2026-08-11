@@ -135,6 +135,7 @@ const CardsMasterPlanCompos = ({compo, filtroSoft={}})=>{
               {compo.itemsPrio.map((itemEntry, index)=>{
                 const nombreItem = typeof itemEntry === 'object' && itemEntry !== null ? itemEntry.apiName : itemEntry;
                 const isOp = typeof itemEntry === 'object' && itemEntry !== null ? !!itemEntry.op : false;
+                if (!nombreItem) return null;
                 return (
                   <div key={index} className={`${style.containerItemPrio} ${style.highlightable} ${isItemHighlighted(nombreItem) ? style.highlight : ""}`}>
                     <ImgItem item={allItemsTFT.find(x => x.apiName === nombreItem)}/>
@@ -148,6 +149,7 @@ const CardsMasterPlanCompos = ({compo, filtroSoft={}})=>{
             <span className={style.titleMiniInfoCard}>Campeones Early</span>
             <div className={style.containerCampeonesEarly}>
               {compo.campeonesEarly.map((campeon, index)=>{
+                if (!campeon?.apiNameCampeon) return null;
                 return (
                   <div key={index} className={`${style.campeonEarly} ${style.highlightable} ${isChampionHighlighted(campeon?.apiNameCampeon) ? style.highlight : ""}`}>
                     <Tooltip type="campeon" campeon={allChampionsTFT.find(x => x.apiName === campeon?.apiNameCampeon)}>

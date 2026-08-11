@@ -3,6 +3,7 @@ import Header from '../components/headers/Header.astro';
 import Footer from '../components/footer/Footer.astro';
 import Logo from '../components/logo/Logo.astro';
 import Adsense from '../components/adsense/Adsense.jsx';
+import Breadcrumbs from '../components/navigation/Breadcrumbs.astro';
 import { ViewTransitions } from 'astro:transitions';
 import PageLoader from '@components/PageLoader';
 import Youtube from '@components/youtube/Youtube.jsx';
@@ -103,6 +104,7 @@ const mainBgSize = mainBackground === "solid" ? "none" : "4px 4px";
         <Logo>Guiadeparche</Logo>
         <Header transition:persist/>
       </header> 
+      <Breadcrumbs />
 
       <div class="bodyInfo">
         <aside class="bodyAside">
