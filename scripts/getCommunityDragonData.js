@@ -1,13 +1,12 @@
 import fs from 'fs';
-import mysql from 'mysql2/promise';
 import dotenv from 'dotenv';
 
 // Cargar variables de entorno (asegúrate de tener DB_HOST, DB_USER, DB_PASSWORD, DB_NAME en tu .env)
 dotenv.config();
 
 const VERSION = 'latest'; // o 'latest'
-const IDIOMA = 'es';
-const PAIS = 'ar';
+const IDIOMA = 'en';
+const PAIS = 'us';
 
 // Constantes de sets (puedes actualizarlas según corresponda)
 const SET_NUMBER_PBE = '18';
@@ -17,7 +16,7 @@ async function main() {
   try {
     const isSet18 = process.argv.includes('--set18') || process.argv.includes('--pbe') || process.argv.includes('--set=18');
     const versionCD = isSet18 ? 'pbe' : VERSION;
-    const currentSetNumber = isSet18 ? '18' : (VERSION === 'pbe' ? SET_NUMBER_PBE : SET_NUMBER_LATEST);
+    const currentSetNumber = isSet18 ? SET_NUMBER_PBE : (VERSION === 'pbe' ? SET_NUMBER_PBE : SET_NUMBER_LATEST);
     const mutatorName = `TFTSet${currentSetNumber}`;
     const tableSuffix = isSet18 ? '_set_18' : '';
 
@@ -44,7 +43,7 @@ async function main() {
     const validItemNames = new Set();
     const validAugmentNames = new Set();
     const validOtherNames = new Set(); // Para champions y traits si se requiere
-    
+
     if (setData && Array.isArray(setData)) {
       const currentSetData = setData.find(s => s.mutator === mutatorName);
       if (currentSetData) {
@@ -59,7 +58,7 @@ async function main() {
     let allItems = items || [];
     let itemsTFT = [];
     let aumentosTFT = [];
-    
+
     if (validItemNames.size > 0 || validAugmentNames.size > 0) {
       itemsTFT = allItems.filter(item => validItemNames.has(item.apiName));
       aumentosTFT = allItems.filter(item => validAugmentNames.has(item.apiName));
@@ -67,7 +66,12 @@ async function main() {
 
     // 3. Extraer Campeones (igual que en updateDataTFT)
     const currentSet = sets?.[currentSetNumber];
-    const allChampionsRaw = currentSet?.champions ? [...currentSet.champions] : [];
+    const currentSetData = (setData && Array.isArray(setData)) ? setData.find(s => s.mutator === mutatorName) : null;
+    
+    let allChampionsRaw = currentSet?.champions ? [...currentSet.champions] : [];
+    if (allChampionsRaw.length < (currentSetData?.champions?.length || 0)) {
+      allChampionsRaw = [...(currentSetData.champions || [])];
+    }
 
     // Agregar Shen's Sword si no existe (lógica que usas en dataTFT.js - sólo en Set 17)
     if (!isSet18 && !allChampionsRaw.some(c => c.apiName === "TFT15_ShenSword")) {
@@ -114,234 +118,88 @@ async function main() {
       return 0;
     });
 
-    // 4. Extraer Traits
-    let traitsTFT = currentSet?.traits || [];
-    // Filtrar traits si hay información
-    if (validOtherNames.size > 0 && traitsTFT.length > 0) {
-       traitsTFT = traitsTFT.filter(t => validOtherNames.has(t.apiName));
-    }
+    // 4. Extraer Traits (tomamos de currentSet.traits o de currentSetData.traits si el primero está vacío)
+    let traitsTFT = (currentSet?.traits && currentSet.traits.length > 0) 
+      ? [...currentSet.traits] 
+      : [...(currentSetData?.traits || [])];
 
     console.log(`Extracción completa: ${itemsTFT.length} items, ${aumentosTFT.length} aumentos, ${campeonesTFT.length} campeones, ${traitsTFT.length} traits.`);
 
     // ==========================================
-    // CONEXIÓN Y GUARDADO EN MYSQL (phpMyAdmin)
+    // ENVÍO DE DATOS A LA API INTERMEDIA
     // ==========================================
     const onlyItems = process.argv.includes('--only-items');
-    console.log('Conectando a la base de datos de GoDaddy...');
-    const connection = await mysql.createConnection({
-      host: process.env.DB_HOST,
-      user: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME,
-    });
+    
+    const apiUrl = "https://api.guiadeparche.com/update_tft_data.php";
+    const apiToken = process.env.TOKEN_META;
+    console.log({apiToken})
 
-    console.log('Conexión exitosa. Verificando/Creando tablas si no existen...');
-
-    // Crear tabla items_tft
-    await connection.execute(`
-      CREATE TABLE IF NOT EXISTS ${tableItems} (
-        apiName VARCHAR(150) PRIMARY KEY,
-        name VARCHAR(150),
-        desc_item TEXT,
-        icon VARCHAR(255),
-        effects TEXT,
-        composition TEXT,
-        incompatibleTraits TEXT
-      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-    `);
-
-    // Crear tabla aumentos_tft
-    await connection.execute(`
-      CREATE TABLE IF NOT EXISTS ${tableAumentos} (
-        apiName VARCHAR(150) PRIMARY KEY,
-        name VARCHAR(150),
-        desc_item TEXT,
-        icon VARCHAR(255),
-        effects TEXT,
-        associatedTraits TEXT,
-        incompatibleTraits TEXT,
-        tags TEXT
-      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-    `);
-
-    // Crear tabla campeones_tft
-    await connection.execute(`
-      CREATE TABLE IF NOT EXISTS ${tableCampeones} (
-        apiName VARCHAR(150) PRIMARY KEY,
-        name VARCHAR(150),
-        cost INT,
-        traits TEXT,
-        tileIcon VARCHAR(255),
-        icon VARCHAR(255),
-        squareIcon VARCHAR(255),
-        role VARCHAR(150),
-        ability_name VARCHAR(150),
-        ability_desc TEXT,
-        ability_icon VARCHAR(255),
-        ability_variables TEXT
-      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-    `);
-
-    // Crear tabla tratis_TFT
-    await connection.execute(`
-      CREATE TABLE IF NOT EXISTS ${tableTraits} (
-        apiName VARCHAR(150) PRIMARY KEY,
-        name VARCHAR(150),
-        desc_trait TEXT,
-        icon VARCHAR(255),
-        effects TEXT
-      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-    `);
-
-    console.log('Tablas listas. Insertando/Actualizando datos...');
-
-    // Asegurar automáticamente que la columna incompatibleTraits exista en GoDaddy
-    try {
-      await connection.execute(`ALTER TABLE ${tableItems} ADD COLUMN incompatibleTraits TEXT NULL AFTER composition;`);
-      console.log(`✅ Columna "incompatibleTraits" verificada en la tabla ${tableItems}`);
-    } catch (e) {
-      // Si ya existe (error 1060), se ignora
+    if (!apiUrl || !apiToken) {
+      throw new Error("Faltan las variables de entorno API_URL o API_TOKEN en el archivo .env");
     }
 
-    // --- Guardar Items ---
-    for (const item of itemsTFT) {
-      if (!item.apiName) continue;
-      const query = `
-        INSERT INTO ${tableItems} (apiName, name, desc_item, icon, effects, composition, incompatibleTraits) 
-        VALUES (?, ?, ?, ?, ?, ?, ?) 
-        ON DUPLICATE KEY UPDATE 
-          name = VALUES(name),
-          desc_item = VALUES(desc_item),
-          icon = VALUES(icon),
-          effects = VALUES(effects),
-          composition = VALUES(composition),
-          incompatibleTraits = VALUES(incompatibleTraits)
-      `;
-      const descItem = item.desc || "";
-      const effectsStr = item.effects ? JSON.stringify(item.effects) : "{}";
-      const compositionStr = item.composition ? JSON.stringify(item.composition) : "[]";
-      const incompatibleTraitsStr = item.incompatibleTraits ? JSON.stringify(item.incompatibleTraits) : "[]";
+    // Helper function to send data to API
+    async function sendToApi(action, dataToAPI) {
+      console.log(`Enviando acción '${action}' a la API...`);
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiToken}`
+        },
+        body: JSON.stringify({
+          action,
+          tableSuffix,
+          data: dataToAPI
+        })
+      });
 
-      await connection.execute(query, [
-        item.apiName, 
-        item.name || "", 
-        descItem, 
-        item.icon || "", 
-        effectsStr, 
-        compositionStr,
-        incompatibleTraitsStr
-      ]);
+      if (!response.ok) {
+        const errText = await response.text();
+        throw new Error(`Error en la API (${response.status}): ${errText}`);
+      }
+
+      const result = await response.json();
+      console.log(`✅ API Respuesta (${action}):`, result.message);
     }
-    console.log(`✅ Items guardados en "${tableItems}"`);
+
+    console.log('Iniciando envío a la API...');
+
+    // 1. Inicializar tablas
+    await sendToApi('init', null);
+
+    // 2. Enviar Items
+    if (itemsTFT.length > 0) {
+      await sendToApi('items', itemsTFT);
+    } else {
+      console.log("No hay items para enviar.");
+    }
 
     if (!onlyItems) {
-      // --- Guardar Aumentos ---
-      for (const aug of aumentosTFT) {
-        if (!aug.apiName) continue;
-        const query = `
-          INSERT INTO ${tableAumentos} (apiName, name, desc_item, icon, effects, associatedTraits, incompatibleTraits, tags) 
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?) 
-          ON DUPLICATE KEY UPDATE 
-            name = VALUES(name),
-            desc_item = VALUES(desc_item),
-            icon = VALUES(icon),
-            effects = VALUES(effects),
-            associatedTraits = VALUES(associatedTraits),
-            incompatibleTraits = VALUES(incompatibleTraits),
-            tags = VALUES(tags)
-        `;
-        const descAug = aug.desc || "";
-        const effectsStr = aug.effects ? JSON.stringify(aug.effects) : "{}";
-        const associatedTraitsStr = aug.associatedTraits ? JSON.stringify(aug.associatedTraits) : "[]";
-        const incompatibleTraitsStr = aug.incompatibleTraits ? JSON.stringify(aug.incompatibleTraits) : "[]";
-        // Algunos aumentos pueden no tener tags, nos aseguramos
-        const tagsStr = aug.tags ? JSON.stringify(aug.tags) : "[]";
-
-        await connection.execute(query, [
-          aug.apiName, 
-          aug.name || "", 
-          descAug, 
-          aug.icon || "", 
-          effectsStr, 
-          associatedTraitsStr,
-          incompatibleTraitsStr,
-          tagsStr
-        ]);
+      // 3. Enviar Aumentos
+      if (aumentosTFT.length > 0) {
+        await sendToApi('augments', aumentosTFT);
+      } else {
+        console.log("No hay aumentos para enviar.");
       }
-      console.log(`✅ Aumentos guardados en "${tableAumentos}"`);
 
-      // --- Guardar Campeones ---
-      for (const champ of campeonesTFT) {
-        if (!champ.apiName) continue;
-        const query = `
-          INSERT INTO ${tableCampeones} (apiName, name, cost, traits, tileIcon, icon, squareIcon, role, ability_name, ability_desc, ability_icon, ability_variables) 
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) 
-          ON DUPLICATE KEY UPDATE 
-            name = VALUES(name),
-            cost = VALUES(cost),
-            traits = VALUES(traits),
-            tileIcon = VALUES(tileIcon),
-            icon = VALUES(icon),
-            squareIcon = VALUES(squareIcon),
-            role = VALUES(role),
-            ability_name = VALUES(ability_name),
-            ability_desc = VALUES(ability_desc),
-            ability_icon = VALUES(ability_icon),
-            ability_variables = VALUES(ability_variables)
-        `;
-        const costVal = champ.cost !== undefined ? champ.cost : 0;
-        const traitsStr = champ.traits ? JSON.stringify(champ.traits) : "[]";
-        
-        // Extraer datos de la habilidad (ability)
-        const ability = champ.ability || {};
-        const abilityVariablesStr = ability.variables ? JSON.stringify(ability.variables) : "[]";
-        
-        await connection.execute(query, [
-          champ.apiName, 
-          champ.name || "", 
-          costVal, 
-          traitsStr, 
-          champ.tileIcon || "",
-          champ.icon || "",
-          champ.squareIcon || "",
-          champ.role || "",
-          ability.name || "",
-          ability.desc || "",
-          ability.icon || "",
-          abilityVariablesStr
-        ]);
+      // 4. Enviar Campeones
+      if (campeonesTFT.length > 0) {
+        await sendToApi('champions', campeonesTFT);
+      } else {
+        console.log("No hay campeones para enviar.");
       }
-      console.log(`✅ Campeones guardados en "${tableCampeones}"`);
 
-      // --- Guardar Traits ---
-      for (const trait of traitsTFT) {
-        if (!trait.apiName) continue;
-        const query = `
-          INSERT INTO ${tableTraits} (apiName, name, desc_trait, icon, effects) 
-          VALUES (?, ?, ?, ?, ?) 
-          ON DUPLICATE KEY UPDATE 
-            name = VALUES(name),
-            desc_trait = VALUES(desc_trait),
-            icon = VALUES(icon),
-            effects = VALUES(effects)
-        `;
-        const descTrait = trait.desc || "";
-        const effectsTraitStr = trait.effects ? JSON.stringify(trait.effects) : "[]";
-        
-        await connection.execute(query, [
-          trait.apiName, 
-          trait.name || "", 
-          descTrait, 
-          trait.icon || "", 
-          effectsTraitStr
-        ]);
+      // 5. Enviar Traits
+      if (traitsTFT.length > 0) {
+        await sendToApi('traits', traitsTFT);
+      } else {
+        console.log("No hay traits para enviar.");
       }
-      console.log(`✅ Traits guardados en "${tableTraits}"`);
     } else {
       console.log('⏩ Omitiendo Aumentos, Campeones y Traits (flag --only-items activo)');
     }
 
-    await connection.end();
     console.log('Proceso finalizado correctamente.');
 
   } catch (error) {

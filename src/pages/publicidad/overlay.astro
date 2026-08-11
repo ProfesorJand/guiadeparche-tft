@@ -1,0 +1,156 @@
+---
+// src/pages/publicidad/overlay.astro
+---
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OBS Overlay Publicidad</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background-color: transparent !important; /* Esencial para OBS */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #ad-container {
+            width: 100%;
+            height: 100%;
+            display: none; /* Oculto por defecto */
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #ad-container.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        #ad-media {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="ad-container">
+        <!-- El contenido multimedia se inyectará aquí -->
+    </div>
+
+    <script>
+        const API_URL = 'https://api.guiadeparche.com/publicidad/publicidad_api.php';
+        const TRACK_URL = 'https://api.guiadeparche.com/publicidad/track_ad_impression.php';
+        
+        const urlParams = new URLSearchParams(window.location.search);
+        const alias = urlParams.get('alias');
+        const campaignId = urlParams.get('camp');
+        const isTest = urlParams.get('test') === '1';
+
+        let intervalMinutes = 15;
+        let mediaUrl = '';
+        let isVideo = false;
+
+        async function fetchCampaignDetails() {
+            if (!alias || !campaignId) {
+                console.error("Faltan parámetros en la URL (alias o camp)");
+                return;
+            }
+
+            try {
+                // Para obtener la campaña, usaremos el endpoint existente pero filtramos en el cliente (lo ideal sería un endpoint GET /campaigns?id=X)
+                const res = await fetch(`${API_URL}?action=campaigns`);
+                const data = await res.json();
+                
+                if (data.status === 'success') {
+                    const campaign = data.data.find(c => c.id == campaignId);
+                    if (campaign && campaign.is_active) {
+                        intervalMinutes = campaign.interval_minutes;
+                        mediaUrl = campaign.media_url;
+                        isVideo = mediaUrl.match(/\.(mp4|webm|ogg)$/i) !== null;
+                        
+                        setupAdContainer();
+                        startAdCycle();
+                    } else {
+                        console.error("Campaña inactiva o no encontrada");
+                    }
+                }
+            } catch (error) {
+                console.error("Error obteniendo campaña", error);
+            }
+        }
+
+        function setupAdContainer() {
+            const container = document.getElementById('ad-container');
+            container.innerHTML = ''; // Limpiar
+
+            if (isVideo) {
+                const video = document.createElement('video');
+                video.id = 'ad-media';
+                video.src = mediaUrl;
+                video.muted = false; // OBS suele mutear por defecto si el usuario no interactúa, revisar config OBS
+                video.addEventListener('ended', hideAd);
+                container.appendChild(video);
+            } else {
+                const img = document.createElement('img');
+                img.id = 'ad-media';
+                img.src = mediaUrl;
+                container.appendChild(img);
+            }
+        }
+
+        function startAdCycle() {
+            // Mostrar primera vez o esperar el intervalo
+            setInterval(() => {
+                showAd();
+            }, intervalMinutes * 60 * 1000);
+            
+            // Opcional: mostrarla inmediatamente al cargar
+            // showAd(); 
+        }
+
+        async function showAd() {
+            const container = document.getElementById('ad-container');
+            container.classList.add('show');
+
+            if (isVideo) {
+                const video = document.getElementById('ad-media');
+                video.currentTime = 0;
+                video.play().catch(e => console.error("Error reproduciendo video", e));
+            } else {
+                // tiempo que se mantiene la imagen publicitaria en obs
+                setTimeout(hideAd, 15000);
+            }
+
+            // Registrar impresión y lanzar bot
+            try {
+                await fetch(TRACK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ alias: alias, campaign_id: campaignId, is_test: isTest })
+                });
+            } catch (e) {
+                console.error("Error registrando impresión", e);
+            }
+        }
+
+        function hideAd() {
+            const container = document.getElementById('ad-container');
+            container.classList.remove('show');
+        }
+
+        // Iniciar todo
+        fetchCampaignDetails();
+    </script>
+</body>
+</html>

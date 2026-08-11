@@ -3,6 +3,7 @@ import Header from '../components/headers/Header.astro';
 import Footer from '../components/footer/Footer.astro';
 import Logo from '../components/logo/Logo.astro';
 import Adsense from '../components/adsense/Adsense.jsx';
+import Breadcrumbs from '../components/navigation/Breadcrumbs.astro';
 import { ViewTransitions } from 'astro:transitions';
 import PageLoader from '@components/PageLoader';
 import Youtube from '@components/youtube/Youtube.jsx';
@@ -105,6 +106,7 @@ console.log({admin})
         <Header transition:persist/>
         <UserMenu client:only="react"/>
       </header> 
+      <Breadcrumbs />
 
       <div class="bodyInfo">
         {!admin && <aside class="bodyAside">

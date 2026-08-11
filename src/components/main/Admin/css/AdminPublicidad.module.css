@@ -1,0 +1,106 @@
+.container {
+    padding: 20px;
+    background-color: #1e1e1e;
+    color: #fff;
+    border-radius: 8px;
+}
+
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.tabs button {
+    padding: 10px 20px;
+    background: #333;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.tabs button.active {
+    background: #007bff;
+    font-weight: bold;
+}
+
+.content {
+    background: #2a2a2a;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 500px;
+    margin-bottom: 30px;
+}
+
+.form input, .form textarea, .form select {
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #555;
+    background: #444;
+    color: white;
+}
+
+.form button {
+    padding: 10px;
+    background: #28a745;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th, .table td {
+    padding: 10px;
+    border: 1px solid #555;
+    text-align: left;
+}
+
+.table th {
+    background: #333;
+}
+
+.table td button {
+    margin-right: 5px;
+    padding: 5px 10px;
+    background: #dc3545;
+    border: none;
+    color: white;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+.table td button:first-child {
+    background: #ffc107;
+    color: black;
+}
+
+.table td button:last-child {
+    background: #007bff;
+    color: white;
+}
+
+.warnings {
+    background: #fff3cd;
+    color: #856404;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    font-size: 0.9em;
+}
+
+.warnings p {
+    margin: 5px 0;
+}

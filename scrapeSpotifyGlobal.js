@@ -142,7 +142,7 @@ async function scrapeArtist(browser, url) {
     // 🖼️ Imagen artista Historia (mejor selector)
     try {
       const styleValue = await page
-        .locator('.J8g7rZ2MDknxmiYP.GUhu8mqqIMM0sZzG') 
+        .locator('.zctOjiwLQbOdvdhX6SNS.nfOrJD3pKmMeRiqpd3Pk') 
         .getAttribute("style");
       
       const match = styleValue.match(/url\("(.*?)"\)/);
@@ -154,7 +154,7 @@ async function scrapeArtist(browser, url) {
     // 🖼️ background Imagen artista (mejor selector)
     try {
       const styleValue = await page
-        .locator('.jiWxWueoicolJZnS.jX9OuHoZE8EC2SYi') 
+        .locator('.dyVzilsz8HZfD1EOJ_0N.RB3iA1xLBjGlOh23C5os') 
         .getAttribute("style");
       
       const match = styleValue.match(/url\("(.*?)"\)/);
@@ -166,7 +166,7 @@ async function scrapeArtist(browser, url) {
 
     // 🎵 Tracks
     try {
-      await page.locator('.sL0wneoReggMaCXb').click();
+      await page.locator('.RqGU3Bco6eU_KHXAMKcc').click();
       const tracks = await page.locator('[data-testid="tracklist-row"]').all();
       if(!artistImage){
         try{
@@ -246,7 +246,7 @@ async function scraptArtistImageFromMusic(url){
   const browser = await chromium.launch({ headless: true });
   const page = await browser.newPage();
   await page.goto(url, { waitUntil: "networkidle", timeout: 6000 });
-  const parentOfStyleValue = await page.locator('.S9MGX4rjHQQhXDFm')
+  const parentOfStyleValue = await page.locator('.xsM7tKwCQh3qDY73XOsa.UA1OcpgDv6mry5YKrum8.Cv1_Q_onyotHq4Ut9o_6')
   const styleValue = await parentOfStyleValue.locator('img').all();
   let getSRC = [];
   for(const style of styleValue){

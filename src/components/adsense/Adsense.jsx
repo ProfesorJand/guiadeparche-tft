@@ -1,24 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import style from './Adsense.module.css';
-import {$admin} from "@stores/auth"
+import {$admin, $superAdmin} from "@stores/auth"
 import { useStore } from '@nanostores/react';
 
 const AdComponent = ({ direction = '', dimension = 'cuadrado', numeracion = 0 }) => {
-  const admin = useStore($admin)
-  if(admin){
+  const admin = useStore($admin);
+  const superAdmin = useStore($superAdmin);
+  if(admin || superAdmin){
     return null;
   }
   const [pass, setPass] = useState(false);
   
   useEffect(() => {
-    if(!admin){
+    if(!(admin || superAdmin)){
       const timer = setTimeout(() => setPass(true),10000); // Aumenta a 10 segundos
       return () => clearTimeout(timer);
     }
   }, []);
 
   useEffect(() => {
-    if (pass || !admin) {
+    if (pass || !(admin || superAdmin)) {
       const checkAdsByGoogle = setInterval(() => {
         if (window.adsbygoogle) {
           clearInterval(checkAdsByGoogle); // Detiene el intervalo una vez que el script está disponible

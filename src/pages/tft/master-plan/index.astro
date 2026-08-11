@@ -4,6 +4,7 @@ import { crearJSONSchema } from "@json/schema/crearJSONSchema";
 
 import PaginaBaseMaxWidth from "@components/TFT/paginas/PaginaBaseMaxWidth.astro";
 import MasterPlanPage from "@components/TFT/master-plan/MasterPlanPage";
+import MasterPlanContent from "@components/TFT/master-plan/MasterPlanContent.jsx";
 
 const topTitle="Master Plan";
 const lowerTitle="La herramienta definitiva para tomar mejores decisiones en TFT";
@@ -38,42 +39,7 @@ const JSONSchema = JSON.stringify(baseSchema);
       </div>
 
       <div slot="bodyContainerMid" class="bodyContainerMid">
-        <a href="" class="button">Reservar mi acceso</a>
-        <details open>
-          <summary>¿Para quién es?</summary>
-          <ol>
-            <li>Jugadores que quieren subir de rango</li>
-            <li>No importa si eres Bronce o Challenger.</li>
-            <li>El objetivo es ayudarte a tomar mejores decisiones durante la partida.</li>
-          </ol>
-        </details>
-        <details open>
-          <summary>¿Por qué lo estamos creando?</summary>
-          <ol>
-            <li>Porque las composiciones son solo una parte de TFT.</li>
-            <li>La mayoría de jugadores pierde partidas por:
-              <ul>
-                <li>Elegir mal su composición</li>
-                <li>No adaptar su plan</li>
-                <li>Jugar una composición en el spot equivocado</li>
-                <li>No entender cuándo pivotar</li>
-              </ul>
-            </li>
-          </ol>
-        </details>
-        <details open>
-          <summary>¿Qué puedes hacer hoy?</summary>
-          <ol>
-            <li><a href="/login">Pre-registrarte</a></li>
-            <li>Al hacerlo:
-              <ol>
-                <li>Recibirás acceso prioritario</li>
-                <li>Conocerás las novedades antes que nadie</li>
-                <li>Podrás acceder a descuentos exclusivos de lanzamiento</li>
-              </ol>
-            </li>
-          </ol>
-        </details>
+        <MasterPlanContent client:only="react" />
       </div>
 
       <div slot="bodyContainerRight">

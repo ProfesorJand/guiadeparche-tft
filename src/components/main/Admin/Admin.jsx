@@ -16,49 +16,130 @@ import InfografiaTFTComps from "@components/TFT/InfografiaTFTComps.jsx";
 import InfografiaTop5 from '@components/Infografias/Top5/InfografiaTop5.jsx';
 import Formulario2XKO from "@components/2xko/Formulario2XKO.jsx";
 import DeckBuilder from "@components/riftbound/DeckBuilder.jsx"
-import { $admin, logOut } from "@stores/auth";
+import { $admin, $superAdmin, logOut, $user, setUser } from "@stores/auth";
 import {useStore} from "@nanostores/react";
 import FormularioCrearCompoTFT from "@components/TFT/FormularioCrearCompoTFT.jsx";
 import FormularioVisualTFT from "@components/TFT/FormularioVisualTFT.jsx";
+import AdminMercadoPago from "./AdminMercadoPago.jsx";
+import AdminPublicidad from "./AdminPublicidad.jsx";
 
 const AdminPanel = ()=>{
     const admin = useStore($admin);
-    const [adminName, setAdminName] = useState("");
-    const [admins, setAdmins] = useState([])
+    const superAdmin = useStore($superAdmin);
+    const user = useStore($user);
     const pestanas = [
       {
         primario:"TFT",
-        secundario:["Crear","Editar","Infografia Comps", "Tier List Items", "Tier List Augments", "Deploy"],
+        secundario:[
+          { nombre: "Crear", admin: true, superAdmin: true },
+          { nombre: "Editar", admin: true, superAdmin: true },
+          { nombre: "Infografia Comps", admin: false, superAdmin: true },
+          { nombre: "Tier List Items", admin: false, superAdmin: true },
+          { nombre: "Tier List Augments", admin: false, superAdmin: true },
+          { nombre: "Deploy", admin: false, superAdmin: true }
+        ],
+        admin: true,
+        superAdmin: true
       },{
         primario:"LOL",
-        secundario:["Meta"],
+        secundario:[
+          { nombre: "Meta", admin: true, superAdmin: true }
+        ],
+        admin: true,
+        superAdmin: true
       },{
         primario:"VALORANT",
-        secundario:["Meta"],
+        secundario:[
+          { nombre: "Meta", admin: true, superAdmin: true }
+        ],
+        admin: true,
+        superAdmin: true
       },{
         primario:"Wild Rift",
-        secundario:["Meta"]
+        secundario:[
+          { nombre: "Meta", admin: true, superAdmin: true }
+        ],
+        admin: true,
+        superAdmin: true
       },{
         primario:"2XKO",
-        secundario:["Meta"]
+        secundario:[
+          { nombre: "Meta", admin: true, superAdmin: true }
+        ],
+        admin: true,
+        superAdmin: true
       },{
         primario:"Infografia Zero",
-        secundario:["Crear"]
+        secundario:[
+          { nombre: "Crear", admin: true, superAdmin: true }
+        ],
+        admin: true,
+        superAdmin: true
       },{
         primario:"Streamer",
-        secundario:["Editar"]
+        secundario:[
+          { nombre: "Editar", admin: true, superAdmin: true }
+        ],
+        admin: false,
+        superAdmin: true
       },{
         primario:"Riftbound",
-        secundario:["Redes Deck"]
+        secundario:[
+          { nombre: "Redes Deck", admin: true, superAdmin: true }
+        ],
+        admin: true,
+        superAdmin: true
       },
       {
-        primario:"Guias",
-        secundario:["Crear", "Editar"]
+        primario:"Mercado Pago",
+        secundario:[
+          { nombre: "Planes Suscripción", admin: true, superAdmin: true }
+        ],
+        admin: false,
+        superAdmin: true
+      },
+      {
+        primario:"Publicidad GP",
+        secundario:[
+          { nombre: "Gestionar", admin: true, superAdmin: true }
+        ],
+        admin: false,
+        superAdmin: true
       }
     ]
+
+    const pestanasVisibles = pestanas.filter(p => (superAdmin && p.superAdmin) || (admin && p.admin));
     const [pestana, setPestana] = useState(null);
     const [action, setAction] = useState(null);
     const [action2, setAction2] = useState(null);
+
+    useEffect(() => {
+      if (user?.email && (admin || superAdmin)) {
+        const verifySilent = async () => {
+          try {
+            const response = await fetch('https://api.guiadeparche.com/verify-user.php', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email: user.email })
+            });
+            const result = await response.json();
+            if (result.status === 'success' && result.user) {
+              const datosUsuario = result.user;
+              setUser({
+                ...user,
+                isAdmin: result.isAdmin || datosUsuario.admin == 1 || datosUsuario.superAdmin == 1,
+                isSuperAdmin: result.isSuperAdmin || datosUsuario.superAdmin == 1,
+              });
+            } else if (result.status === 'error') {
+              logOut();
+            }
+          } catch(e) {
+            console.error("Error validando admin silenciosamente", e);
+          }
+        };
+        verifySilent();
+      }
+    }, [user?.email, admin, superAdmin]);
 
     function cerrarSesion(){
         logOut()
@@ -79,13 +160,12 @@ const AdminPanel = ()=>{
       }
     };
 
-    if(admin){
+    if(admin || superAdmin){
         return (
             <>
-            <div>{adminName}</div>
             <div className={style.navegador}>
                 {
-                  pestanas.map(({primario,secundario},index)=>{
+                  pestanasVisibles.map(({primario,secundario},index)=>{
                     return (
                       <div key={index} className={style.container}>
                         <input 
@@ -111,27 +191,30 @@ const AdminPanel = ()=>{
                 }     
             </div>
 
-            { pestanas.map(({primario,secundario},index)=>{
+            { pestanasVisibles.map(({primario,secundario},index)=>{
               if(pestana?.includes(primario))
               return (
                 <div key={index} className={style.containerPestanaSecundario}>
                   <div className={style.titlePestanaSecundario}>¿Qué quieres hacer en {primario}?</div>
                   {
-                    secundario.map((value,j)=>{
-                      return (
-                        <div key={j} className={style.compos}>
-                            <button 
-                              className={pestana === primario.concat(value) ? style.btnActive: ""} 
-                              onClick={()=>{
-                                setAction(`${primario}-${value}`);
-                                setPestana(primario.concat(value))
-                              }}
-                            >
-                              {value}
-                            </button>
-                        </div>
-                      )
-                    })
+                    secundario
+                      .filter(s => (superAdmin && s.superAdmin) || (admin && s.admin))
+                      .map((s,j)=>{
+                        const value = s.nombre;
+                        return (
+                          <div key={j} className={style.compos}>
+                              <button 
+                                className={pestana === primario.concat(value) ? style.btnActive: ""} 
+                                onClick={()=>{
+                                  setAction(`${primario}-${value}`);
+                                  setPestana(primario.concat(value))
+                                }}
+                              >
+                                {value}
+                              </button>
+                          </div>
+                        )
+                      })
                   }
                 </div>
               )
@@ -139,14 +222,12 @@ const AdminPanel = ()=>{
             
             <div>
                 {/* {action === "TFT-Crear" && <CrearCompoTFT />} */}
-                {action === "TFT-Crear" && <><FormularioVisualTFT /><FormularioCrearCompoTFT /></>}
+                {action === "TFT-Crear" && <FormularioVisualTFT />}
                 {action === "TFT-Editar" && <EditarCompoTFT />}
                 {action === "TFT-Infografia Comps" && <InfografiaTFT/>}
                 {/* {action === "InfografiaTFTCompo" && <InfografiaTFTComps/>} */}
                 {action === "TFT-Tier List Items" && <CreateItemsTierList />}
-                {action === "TFT-Tier List Augments" && <CreateAugmentsTierList admin={true}/>}
-                {action === "Guias-Crear" && <CrearGuiasPDF />}
-                {action === "Guias-Editar" && <EditarGuiasPDF />}
+                {action === "TFT-Tier List Augments" && <CreateAugmentsTierList admin={admin || superAdmin}/>}
                 {action === "TFT-Deploy" && <button onClick={() => handleDeploy("Añadí compos nuevas de TFT")}>Desplegar Cambios</button>}
                 {action?.includes(pestanas[1].primario) && <FormularioMetaLOL />}
                 {action?.includes(pestanas[2].primario) && <FormularioTierListValorant />}
@@ -155,6 +236,8 @@ const AdminPanel = ()=>{
                 {action?.includes(pestanas[5].primario) && <InfografiaTop5/>}
                 {action?.includes(pestanas[6].primario) && <StreamersManager/>}
                 {action?.includes(pestanas[7].primario) && <DeckBuilder/>}
+                {action?.includes("Mercado Pago") && <AdminMercadoPago />}
+                {action?.includes("Publicidad GP") && <AdminPublicidad />}
                 {/* {action === "champsItemsTierList" && <CrearTierListChampItem />} */}
             </div>
             <button className={style.btnCerrarSesion} onClick={()=>cerrarSesion()}>cerrar sesión</button>

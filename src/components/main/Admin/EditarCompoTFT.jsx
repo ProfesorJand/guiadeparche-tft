@@ -5,13 +5,14 @@ import { versionTFT, swapVersionTFT, constantesJSON, metaCompsTFT, constantesPHP
 import { useStore } from "@nanostores/react";
 import style from "./css/EditarCompoTFT.module.css"
 import SelectVersion from "@components/versionTFT/SelectVersion.jsx";
-import { $admin } from "@stores/auth.js"
+import { $admin, $superAdmin } from "@stores/auth.js"
 import Youtube from "@components/youtube/Youtube.jsx";
 import CardsCompos from "@components/TFT/CardsCompos.jsx";
 const EditarCompoTFT = () => {
   const currentVersion = useStore(versionTFT);
   //const [constantes, setConstantes] = useState({});
   const admin = useStore($admin);
+  const superAdmin = useStore($superAdmin);
   const constantes = useStore(constantesTFT)
   const metaComps = useStore(metaCompsTFT);
   // useEffect(() => {

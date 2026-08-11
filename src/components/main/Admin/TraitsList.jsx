@@ -6,6 +6,7 @@ import { getLocalTftImage } from "@utils/images";
 
 export const getTraitDisplayName = (trait) => {
     if (!trait) return "";
+    // mostrar nombre de la sinergia aleatoria
     if (trait.apiName && trait.apiName.toLowerCase().includes("stargazer")) {
         const parts = trait.apiName.split("_");
         if (parts.length >= 3) {

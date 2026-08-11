@@ -4,6 +4,7 @@ import Footer from '../components/footer/Footer.astro';
 import Logo from '../components/logo/Logo.astro';
 import logoGP from "src/assets/GP_logo.png";
 import Adsense from '../components/adsense/Adsense.jsx';
+import Breadcrumbs from '../components/navigation/Breadcrumbs.astro';
 import { ViewTransitions } from 'astro:transitions';
 import PageLoader from '@components/PageLoader';
 import Youtube from '@components/youtube/Youtube.jsx';
@@ -111,6 +112,7 @@ const absoluteSnippetImgUrl = new URL(resolvedSnippetImgUrl, Astro.site || "http
           <UserMenu client:only="react"/>
         </header> 
       </div>
+      <Breadcrumbs />
       <main class="bodyMain">
           <slot></slot>
       </main>

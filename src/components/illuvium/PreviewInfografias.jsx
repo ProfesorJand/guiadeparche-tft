@@ -8,7 +8,7 @@ import CrearCompoIlluvium from "./CrearCompoIlluvium";
 import Youtube from "@components/youtube/Youtube.jsx";
 import PositionInfografia from "./PositionInfografia.jsx";
 import PreviewInfografiasRedes from "./PreviewInfografiaRedes.jsx";
-import { $admin } from "@stores/auth";
+import { $admin, $superAdmin } from "@stores/auth";
 const PreviewInfografias = ()=>{
   const ComposMeta = useStore(metaComps);
   const [openInfografia, setOpenInfografia] = useState(null);
@@ -19,6 +19,7 @@ const PreviewInfografias = ()=>{
   const positionRefs = useRef([]);
   const carriesInfoRefs = useRef([]);
   const admin = useStore($admin);
+  const superAdmin = useStore($superAdmin);
   const [previewInfografiaRedes, setPreviewInfografiaRedes] = useState(null);
   useEffect(()=>{
     const buscarCompos = async()=>{
@@ -38,7 +39,7 @@ const PreviewInfografias = ()=>{
     {
       ComposMeta.length > 0 && 
       ComposMeta.map((data,i)=>{
-        if(data.ocultar === "true" && !admin){
+        if(data.ocultar === "true" && !(admin || superAdmin)){
           return null;
         }
         return (
@@ -50,7 +51,7 @@ const PreviewInfografias = ()=>{
             }
           }}>
             {
-              admin && 
+              (admin || superAdmin) && 
               <input 
               type="button"
               onClick={()=>{previewInfografiaRedes !== i ? setPreviewInfografiaRedes(i): setPreviewInfografiaRedes(null); console.log("click en preview")}}
@@ -72,7 +73,7 @@ const PreviewInfografias = ()=>{
               carriesInfoRef={carriesInfoRefs.current[i]}   //* ✅ agregado */}
               index={i} 
               setOpenInfografia={setOpenInfografia} 
-              admin={admin}
+              admin={admin || superAdmin}
               />
             {
               edit === data?.id && 

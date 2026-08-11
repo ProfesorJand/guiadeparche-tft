@@ -1,5 +1,5 @@
 import { useStore } from "@nanostores/react";
-import { $admin, $user, $activeTab, setActiveTab } from "@stores/auth";
+import { $admin, $superAdmin, $user, $activeTab, setActiveTab } from "@stores/auth";
 import ProfileSummary from "@components/auth/ProfileSummary";
 import Menu from "@components/auth/Menu";
 import TierListMetaComps from "@components/TFT/TierListMetaComps";
@@ -10,7 +10,8 @@ import { useEffect } from "react";
 const UserMenu=()=>{
 
   const user = useStore($user);
-  const admin = useStore($admin)
+  const admin = useStore($admin);
+  const superAdmin = useStore($superAdmin);
   const activeTab= useStore($activeTab);
   const todasLasCompsPBE = useStore(metaCompsTFT);
 
@@ -27,7 +28,7 @@ return (
   <aside className={styles.sidebar}>
     <ProfileSummary user={user} styles={styles}/>
 
-    <Menu activeTab={activeTab} setActiveTab={setActiveTab} styles={styles} admin={admin} />
+    <Menu activeTab={activeTab} setActiveTab={setActiveTab} styles={styles} admin={admin || superAdmin} />
     {/* {activeTab==="admin" &&
      <TierListMetaComps todasLasCompsPBE={todasLasCompsPBE} />
     } */}

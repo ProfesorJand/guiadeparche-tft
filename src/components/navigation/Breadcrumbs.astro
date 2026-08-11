@@ -1,0 +1,211 @@
+---
+const pathname = Astro.url.pathname;
+const segments = pathname.split('/').filter(Boolean);
+
+// No mostrar migas de pan si estamos en la página de inicio (/)
+const showBreadcrumbs = segments.length > 0;
+
+const CUSTOM_LABELS: Record<string, string> = {
+  'tft': 'TFT',
+  'lol': 'LoL',
+  'pbe': 'PBE',
+  'mmo': 'MMO',
+  'como-jugar': 'Como jugar',
+  'meta-comps-tier-list-teamfight-tactics': 'Meta Comps Tier List',
+  'nuevo-set': 'Nuevo Set',
+  'cuando-sale': 'Cuándo sale',
+  'campeones': 'Campeones',
+  'items': 'Ítems',
+  'aumentos': 'Aumentos',
+  'sinergias': 'Sinergias',
+  'tier-list': 'Tier List',
+  'notas-de-parche': 'Notas de Parche',
+  'guias': 'Guías',
+  'composiciones': 'Composiciones'
+};
+
+function formatSegment(slug: string): string {
+  try {
+    const decoded = decodeURIComponent(slug);
+    const lower = decoded.toLowerCase();
+    if (CUSTOM_LABELS[lower]) {
+      return CUSTOM_LABELS[lower];
+    }
+    const cleaned = decoded.replace(/[-_]/g, ' ');
+    return cleaned.charAt(0).toUpperCase() + cleaned.slice(1);
+  } catch (e) {
+    return slug;
+  }
+}
+
+const breadcrumbs = segments.map((segment, index) => {
+  const url = '/' + segments.slice(0, index + 1).join('/') + '/';
+  const label = formatSegment(segment);
+  const isLast = index === segments.length - 1;
+  return {
+    label,
+    url,
+    isLast,
+    position: index + 1
+  };
+});
+---
+
+{showBreadcrumbs && (
+  <nav aria-label="Migas de pan" class="breadcrumbsBar">
+    <div class="breadcrumbsContent">
+      <ol class="breadcrumbsList" itemscope itemtype="https://schema.org/BreadcrumbList">
+        {breadcrumbs.map((item, index) => (
+          <li
+            class="breadcrumbItem"
+            itemprop="itemListElement"
+            itemscope
+            itemtype="https://schema.org/ListItem"
+          >
+            {!item.isLast ? (
+              <a href={item.url} itemprop="item" class="breadcrumbLink">
+                <span itemprop="name">{item.label}</span>
+              </a>
+            ) : (
+              <span class="breadcrumbCurrent" itemprop="name" aria-current="page">
+                {item.label}
+              </span>
+            )}
+            <meta itemprop="position" content={String(item.position)} />
+
+            {!item.isLast && (
+              <span class="breadcrumbSeparator" aria-hidden="true">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </span>
+            )}
+          </li>
+        ))}
+      </ol>
+    </div>
+  </nav>
+)}
+
+<style>
+  .breadcrumbsBar {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 !important;
+    margin-bottom: 0 !important;
+    background-color: #141824;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 8px 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    padding: 0.55rem 1.5rem;
+    position: relative;
+    z-index: 8;
+  }
+
+  .breadcrumbsContent {
+    max-width: 1400px;
+    margin: 0 auto !important;
+    display: flex;
+    align-items: center;
+  }
+
+  ol.breadcrumbsList,
+  .breadcrumbsList {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    list-style: none;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-family: inherit;
+  }
+
+  ol.breadcrumbsList li,
+  ol.breadcrumbsList li:not(:has(ol)),
+  ol.breadcrumbsList li.breadcrumbItem,
+  .breadcrumbItem {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    margin: 0 !important;
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
+    padding: 0 !important;
+  }
+
+  .breadcrumbLink {
+    color: #f8fafc;
+    font-weight: 600;
+    letter-spacing: 0.015em;
+    padding: 0.2rem 0.45rem;
+    display: inline-flex;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .breadcrumbLink:hover {
+    color: #38b6ff;
+    background-color: rgba(56, 182, 255, 0.12);
+    border-color: rgba(56, 182, 255, 0.35);
+    text-shadow: 0 0 10px rgba(56, 182, 255, 0.4);
+    transform: translateY(-1px);
+  }
+
+  .breadcrumbCurrent {
+    color: #38b6ff;
+    font-weight: 600;
+    letter-spacing: 0.015em;
+    padding: 0.2rem 0.45rem;
+    display: inline-flex;
+    align-items: center;
+    background-color: rgba(56, 182, 255, 0.08);
+    border: 1px solid rgba(56, 182, 255, 0.25);
+    border-radius: 4px;
+    text-shadow: 0 0 10px rgba(56, 182, 255, 0.4);
+  }
+
+  .breadcrumbSeparator {
+    display: inline-flex;
+    align-items: center;
+    color: rgba(255, 255, 255, 0.25);
+    user-select: none;
+  }
+
+  .breadcrumbSeparator svg {
+    display: block;
+    width: 13px;
+    height: 13px;
+  }
+
+  @media (max-width: 768px) {
+    .breadcrumbsBar {
+      padding: 0.45rem 1rem;
+    }
+
+    .breadcrumbItem {
+      font-size: 0.8rem;
+      gap: 0.3rem;
+    }
+
+    .breadcrumbLink,
+    .breadcrumbCurrent {
+      padding: 0.15rem 0.3rem;
+    }
+  }
+</style>

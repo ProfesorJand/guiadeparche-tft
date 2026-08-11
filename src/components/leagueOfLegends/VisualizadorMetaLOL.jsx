@@ -6,7 +6,7 @@ import { toPng } from 'html-to-image';
 import SliderButtom from "@components/inputs/SliderButtom.jsx";
 import SliderButtomLogoGuiadeparche from "@components/inputs/SliderButtomLogoGuiadeparche";
 import LogoGuiadeparche from "@components/logo/LogoGuiadeparche";
-import { $admin } from "@stores/auth";
+import { $admin, $superAdmin } from "@stores/auth";
 
 //usar tile en ves de portrait
 // victory url : https://raw.communitydragon.org/latest/game/en_gb/assets/ux/endofgame/en_us/victory.png
@@ -22,6 +22,7 @@ const VisualizadorMetaLOL = () => {
   // const [elo, setElo] = useState("emerald");
   const backgroundRef = useRef(null);
   const admin = useStore($admin);
+  const superAdmin = useStore($superAdmin);
   const eloRanks = [
     "iron",
     "bronze",
@@ -130,7 +131,7 @@ const VisualizadorMetaLOL = () => {
 
   return (
     <div className={style.visualizadorMetaLOL}>
-      {admin && 
+      {(admin || superAdmin) && 
       <div>
         <label className={style.labelVersion}>
           Titulo:

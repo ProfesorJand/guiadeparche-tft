@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { $user, setUser } from '../../stores/auth';
 import { useStore } from '@nanostores/react';
 import styles from './LoginForm.module.css';
-import { countries, countryAreaCodes } from '../../utils/countries';
+import { countries, countryCodes, getCountryCode } from '../../utils/countries';
 
 // For Google Identity Services (GIS)
 const GOOGLE_CLIENT_ID = import.meta.env.PUBLIC_ID_CLIENT_GOOGLE_CLOUD_OAUTH;
@@ -22,7 +22,8 @@ const LoginForm = () => {
     surname: '',
     dob: '',
     country: '',
-    cel: '',
+    phoneCode: '+54',
+    phone: '',
     newsletter: false,
     termsAccepted: false
   });
@@ -58,7 +59,7 @@ const LoginForm = () => {
     }
   }, [step]);
 
-    useEffect(() => {
+  useEffect(() => {
     // Exit early when timer reaches 0
     if (codeTimer <= 0) return;
 
@@ -71,70 +72,72 @@ const LoginForm = () => {
     return () => clearInterval(timer);
   }, [codeTimer]);
 
-  useEffect(()=>{
-    console.log({user})
-    if(!user){
+  useEffect(() => {
+    console.log({ user })
+    if (!user) {
       setStep('choice');
     }
-  },[user])
+  }, [user])
 
   const verifyUser = async (email, typeLogin, googleData = null) => {
     const verifyRes = await fetch('https://api.guiadeparche.com/verify-user.php', {
-          method: 'POST',
-          headers: { 
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${import.meta.env.PUBLIC_TOKEN_META}`
-          },
-          body: JSON.stringify({ email }),
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${import.meta.env.PUBLIC_TOKEN_META}`
+      },
+      body: JSON.stringify({ email }),
+    });
+
+    const result = await verifyRes.json();
+    console.log("Verification API Result:", result);
+
+    if (result.status === 'success' && result.user) {
+      const datosUsuario = result.user;
+      setUser({
+        email: datosUsuario.email,
+        name: datosUsuario.nombre,
+        surname: datosUsuario.apellido,
+        country: datosUsuario.pais,
+        dob: datosUsuario.fecha_nacimiento,
+        cel: datosUsuario.cel,
+        loginType: typeLogin,
+        isAdmin: result.isAdmin || datosUsuario.admin == 1 || datosUsuario.superAdmin == 1,
+        isSuperAdmin: result.isSuperAdmin || datosUsuario.superAdmin == 1,
+        termsAccepted: datosUsuario.termsAccepted,
+        master_plan: datosUsuario.master_plan,
+        master_plan_expiration_date: datosUsuario.master_plan_expiration_date,
+      });
+      setEmail(datosUsuario.email);
+      setStep('success');
+    } else {
+      // User not found in DB
+      console.log("User not found in DB, proceeding to profile completion");
+
+      if (typeLogin === 'google' && googleData) {
+        setFormData({
+          ...formData,
+          name: googleData.given_name || '',
+          surname: googleData.family_name || ''
         });
-        
-        const result = await verifyRes.json();
-        console.log("Verification API Result:", result);
-        
-        if (result.status === 'success' && result.user) {
-          const datosUsuario = result.user;
-          setUser({ 
-            email: datosUsuario.email, 
-            name: datosUsuario.nombre, 
-            surname: datosUsuario.apellido, 
-            country: datosUsuario.pais, 
-            dob: datosUsuario.fecha_nacimiento, 
-            cel: datosUsuario.cel || '',
-            loginType: typeLogin,
-            isAdmin: result.isAdmin || datosUsuario.admin == 1 || datosUsuario.superAdmin == 1,
-            isSuperAdmin: result.isSuperAdmin || datosUsuario.superAdmin == 1,
-            termsAccepted: datosUsuario.termsAccepted,
-          });
-          setEmail(datosUsuario.email);
-          setStep('success');
-        } else {
-          // User not found in DB
-          console.log("User not found in DB, proceeding to profile completion");
-          
-          if (typeLogin === 'google' && googleData) {
-            setFormData({
-              ...formData,
-              name: googleData.given_name || '',
-              surname: googleData.family_name || ''
-            });
-            setEmail(googleData.email);
-          } else {
-            setEmail(email);
-          }
-          
-          setStep('profile-complete');
-        }
+        setEmail(googleData.email);
+      } else {
+        setEmail(email);
+      }
+
+      setStep('profile-complete');
+    }
   }
 
   const handleGoogleResponse = async (response) => {
     console.log("Google Login Response Received:", response);
     setLoading(true);
     setError(null);
-    
+
     try {
       const decoded = decodeJWT(response.credential);
       console.log("Decoded Google JWT:", decoded);
-      
+
       if (decoded.email) {
         console.log("Verifying user with email:", decoded.email);
         await verifyUser(decoded.email, 'google', decoded)
@@ -163,11 +166,11 @@ const LoginForm = () => {
       if (googleBtnContainer) {
         window.google.accounts.id.renderButton(
           googleBtnContainer,
-          { 
-            theme: 'outline', 
-            size: 'large', 
-            width: googleBtnContainer.offsetWidth > 0 ? googleBtnContainer.offsetWidth : 300, 
-            text: 'continue_with' 
+          {
+            theme: 'outline',
+            size: 'large',
+            width: googleBtnContainer.offsetWidth > 0 ? googleBtnContainer.offsetWidth : 300,
+            text: 'continue_with'
           }
         );
       }
@@ -193,11 +196,11 @@ const LoginForm = () => {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    console.log({email})
+    console.log({ email })
     try {
       const response = await fetch('https://api.guiadeparche.com/send-code.php', {
         method: 'POST',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${import.meta.env.PUBLIC_TOKEN_META}`
         },
@@ -283,28 +286,6 @@ const LoginForm = () => {
     );
   };
 
-  const handleCountryChange = (e) => {
-    const selectedCountry = e.target.value;
-    const newAreaCode = countryAreaCodes[selectedCountry] || '';
-
-    let updatedPhone = formData.cel;
-    if (newAreaCode) {
-      if (!updatedPhone || /^\+\d{1,4}\s*$/.test(updatedPhone)) {
-        updatedPhone = `${newAreaCode} `;
-      } else if (/^\+\d{1,4}\s+/.test(updatedPhone)) {
-        updatedPhone = updatedPhone.replace(/^\+\d{1,4}\s+/, `${newAreaCode} `);
-      } else {
-        updatedPhone = `${newAreaCode} ${updatedPhone}`;
-      }
-    }
-
-    setFormData({
-      ...formData,
-      country: selectedCountry,
-      cel: updatedPhone
-    });
-  };
-
   const handleProfileSubmit = async (e) => {
     e.preventDefault();
 
@@ -329,21 +310,19 @@ const LoginForm = () => {
     const dateInArgentina = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Argentina/Buenos_Aires" }));
     const termsAcceptedAtStr = `${dateInArgentina.getFullYear()}-${String(dateInArgentina.getMonth() + 1).padStart(2, '0')}-${String(dateInArgentina.getDate()).padStart(2, '0')} ${String(dateInArgentina.getHours()).padStart(2, '0')}:${String(dateInArgentina.getMinutes()).padStart(2, '0')}:${String(dateInArgentina.getSeconds()).padStart(2, '0')}`;
 
-    let phoneToSend = formData.cel ? formData.cel.trim() : '';
-    if (/^\+\d{1,4}$/.test(phoneToSend)) {
-      phoneToSend = '';
-    }
-
+    const fullPhone = `${formData.phoneCode || ''} ${formData.phone || ''}`.trim();
     const submissionData = {
       ...formData,
-      cel: phoneToSend,
+      phone: fullPhone,
+      telefono: fullPhone,
+      celular: fullPhone,
       termsAcceptedAt: termsAcceptedAtStr
     };
 
     try {
       const response = await fetch('https://api.guiadeparche.com/save-user.php', {
         method: 'POST',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
           // 'Authorization': `Bearer ${import.meta.env.PUBLIC_TOKEN_META}`
         },
@@ -369,10 +348,10 @@ const LoginForm = () => {
   const renderChoice = () => (
     <div className={styles.auth_step}>
       <h2>Iniciar Sesión</h2>
-      
+
       {/* Container for the official Google button */}
       <div ref={googleBtnContainerRef} className={styles.google_btn_container}></div>
-      
+
       <div className={styles.divider}>o</div>
       <button onClick={() => setStep('email-input')} className={styles.email_btn_choice}>
         Usar correo electrónico
@@ -478,7 +457,15 @@ const LoginForm = () => {
           <label>País</label>
           <select
             value={formData.country}
-            onChange={handleCountryChange}
+            onChange={(e) => {
+              const selectedCountry = e.target.value;
+              const code = getCountryCode(selectedCountry);
+              setFormData({
+                ...formData,
+                country: selectedCountry,
+                phoneCode: code || formData.phoneCode
+              });
+            }}
             required
             className={styles.select}
             disabled={loading}
@@ -493,17 +480,32 @@ const LoginForm = () => {
         </div>
 
         <div className={styles.form_group}>
-          <label>
-            Número de celular <span style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: 400 }}>(Opcional)</span>
-          </label>
-          <input
-            type="tel"
-            value={formData.cel}
-            onChange={(e) => setFormData({ ...formData, cel: e.target.value })}
-            placeholder="+54 11 1234 5678"
-            className={styles.input}
-            disabled={loading}
-          />
+          <label>Teléfono Celular (WhatsApp / Contacto)</label>
+          <div style={{ display: 'flex', gap: '8px', marginBottom: '18px' }}>
+            <select
+              value={formData.phoneCode}
+              onChange={(e) => setFormData({ ...formData, phoneCode: e.target.value })}
+              className={styles.select}
+              style={{ width: '135px', flexShrink: 0, marginBottom: 0 }}
+              disabled={loading}
+            >
+              {countryCodes.map((item) => (
+                <option key={item.name} value={item.code}>
+                  {item.code} ({item.name})
+                </option>
+              ))}
+            </select>
+            <input
+              type="tel"
+              value={formData.phone}
+              onChange={(e) => setFormData({ ...formData, phone: e.target.value.replace(/\D/g, '') })}
+              placeholder="Número sin 0 ni 15"
+              required
+              className={styles.input}
+              style={{ flex: 1, marginBottom: 0 }}
+              disabled={loading}
+            />
+          </div>
         </div>
 
         <div className={styles.checkbox_group}>
@@ -529,7 +531,16 @@ const LoginForm = () => {
   );
 
   const renderSuccess = () => {
-    window.location.href = '/perfil';
+    let redirectUrl = '/perfil';
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const redirectParam = params.get('redirect');
+      // Asegurarse de que la redirección sea local para evitar open redirects
+      if (redirectParam && redirectParam.startsWith('/')) {
+        redirectUrl = redirectParam;
+      }
+    }
+    window.location.href = redirectUrl;
     return (
       <div className={styles.auth_step}>
         <h2>¡Bienvenido, {user?.name || email}!</h2>
