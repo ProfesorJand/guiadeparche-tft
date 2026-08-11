@@ -4,7 +4,6 @@ import { CapturarImagen } from "@functions/CapturarImagen";
 import styles from "./FormularioSpotify.module.css";
 import spotifyDataGlobal from "@spotify-data-global";
 import spotifyDataGlobalMusic from "@spotify-data-global-music";
-import spotifyDataGlobalTop50 from "@spotify-data-global-top-50";
 import spotifyData from "@spotify-data"
 
 const FormularioSpotify = ({
