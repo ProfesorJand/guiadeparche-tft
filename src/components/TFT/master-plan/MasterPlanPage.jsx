@@ -1,3 +1,4 @@
+import { $hasMasterPlan } from '@stores/auth';
 import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { useStore } from '@nanostores/react';
 import { dificultades, categorias, tiers, dañoTipo } from '@stores/tft/dataFormularioCrear';
@@ -24,6 +25,14 @@ export const CHECK_FILTERS = [
 ];
 
 export default function MasterPlanPage() {
+  const hasPlan = useStore($hasMasterPlan);
+
+  useEffect(() => {
+    if (!hasPlan) {
+      window.location.href = '/tft/meta-comps-tier-list-teamfight-tactics/';
+    }
+  }, [hasPlan]);
+
   const allItems = useStore(dataTFTAllItems) || [];
   const allChampions = useStore(dataTFTChampions) || [];
   const allCompos = useStore(metaCompsTFT) || [];
