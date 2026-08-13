@@ -193,16 +193,19 @@ export async function getValorantConstantes() {
   }
 }
 
-export async function getLastUpdateDate(url = 'https://api.guiadeparche.com/tft/composMetaPBETest.json') {
+export async function getLastUpdateDate(tableName = 'composiciones_tft') {
   try {
-    const response = await fetch(url, { method: 'HEAD', cache: 'reload' });
-    const lastModified = response.headers.get('Last-Modified');
-    if (lastModified) {
-      const date = new Date(lastModified);
+    const url = `https://api.guiadeparche.com/tft/getLastUpdate.php?table=${tableName}`;
+    const response = await fetch(url, { cache: 'reload' });
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    
+    const data = await response.json();
+    if (data.status === 'success' && data.lastUpdate) {
+      const date = new Date(data.lastUpdate);
       return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
     }
   } catch (err) {
-    console.warn("Could not get Last-Modified header, using today...", err.message);
+    console.warn(`Could not get Last-Modified for table ${tableName}, using today...`, err.message);
   }
   const today = new Date();
   return `${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}`;
