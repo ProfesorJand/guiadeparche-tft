@@ -113,6 +113,7 @@
   flex-wrap: wrap;
   gap: 10px;
   padding: 10px;
+  box-sizing: border-box;
 }
 
 .styleBox19 {
@@ -627,4 +628,20 @@
   display:flex;
   position:relative;
   width:calc((100% - (5px * 2)) / 3)
+}
+.cAumento{
+  display:flex;
+  width:calc((100% - (10px *2)) / 3)
+
+}
+
+.cAumentoSoltar{
+  border: 2px dashed #0af;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 8px;
+  width:calc((100% - (10px *2)) / 3);
+  aspect-ratio: 1 / 1;
 }

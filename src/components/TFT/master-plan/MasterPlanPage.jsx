@@ -2,8 +2,9 @@ import { $hasMasterPlan } from '@stores/auth';
 import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { useStore } from '@nanostores/react';
 import { dificultades, categorias, tiers, dañoTipo } from '@stores/tft/dataFormularioCrear';
-import { dataTFTAllItems, dataTFTChampions, dataTFTAllAugments, dataTFTTraits, metaCompsTFT, fetchAndSortComps, composMetaJSON, composMetaPBEJSON, versionTFT, setNumberLatest, setNumberPBE } from '@stores/dataTFT';
+import { dataTFTAllItems, dataTFTChampions, dataTFTAllAugments, dataTFTTraits, metaCompsTFT, fetchAndSortComps, composMetaJSON, composMetaPBEJSON, versionTFT, setNumberLatest, setNumberPBE, dataDBTFTAumentos } from '@stores/dataTFT';
 import CardsMasterPlanCompos from './CardsMasterPlanCompos';
+import ImgAugment from "@components/TFT/ImgAugment";
 import { EXTRAS_ITEMS } from '@components/TFT/FormularioVisualTFT';
 import { Items as ItemsList } from '@components/main/Admin/Items';
 import ChampionsList from '@components/main/Admin/ChampionsList';
@@ -42,6 +43,38 @@ export default function MasterPlanPage() {
 
   const allAugments = useStore(dataTFTAllAugments) || [];
   const allTraits = useStore(dataTFTTraits) || [];
+  const dbAumentos = useStore(dataDBTFTAumentos) || {};
+
+  const CATEGORIAS_GRANDES = ["Combate", "Economia", "Item", "Otros", "Heroe", "Especificos", "Resultado_Aleatorio"];
+  const CATEGORIAS_PEQUENAS = ["Lose_Streak", "Win_Streak", "Experiencia", "Reroll", "Fast_9", "Emblema", "Artefactos", "AP", "AD", "Sinergia", "Escalado", "Loot"];
+
+  const opEarlyAugmentsMap = useMemo(() => {
+    const map = new Map();
+    allCompos.forEach(compo => {
+      if(compo.aumentos && Array.isArray(compo.aumentos)) {
+        compo.aumentos.forEach(aumento => {
+          if (aumento.op || aumento.early) {
+            const apiNameGrande = aumento.apiNameGrande;
+            const apiNamePequeno = aumento.apiNamePequeno;
+            
+            if (apiNameGrande && !map.has(apiNameGrande)) {
+              const augObj = allAugments.find(a => a.apiName === apiNameGrande);
+              if (augObj) map.set(apiNameGrande, augObj);
+            }
+            if (apiNamePequeno && !map.has(apiNamePequeno)) {
+              const augObj = allAugments.find(a => a.apiName === apiNamePequeno);
+              if (augObj) map.set(apiNamePequeno, augObj);
+            }
+          }
+        });
+      }
+    });
+    return Array.from(map.values());
+  }, [allCompos, allAugments]);
+
+  const [selectedSmallCats, setSelectedSmallCats] = useState([]);
+  const [selectedAugmentTiers, setSelectedAugmentTiers] = useState([]);
+  const [selectedHardAugments, setSelectedHardAugments] = useState([]);
 
   const listaAumentosHeroes =[
     "TFT17_Augment_GragasCarry"
@@ -226,7 +259,12 @@ console.log({selectedSoftItems})
   };
 
   const toggleArrayFilter = (setter, value) => {
-    setter(prev => prev.includes(value) ? prev.filter(v => v !== value) : [...prev, value]);
+    setter(prev => {
+      if (Array.isArray(value) || typeof value === 'object') {
+        return prev.some(v => v.apiName === value.apiName) ? prev.filter(v => v.apiName !== value.apiName) : [...prev, value];
+      }
+      return prev.includes(value) ? prev.filter(v => v !== value) : [...prev, value];
+    });
   };
 
   const toggleSelectedItem = (itemObj) => {
@@ -274,7 +312,8 @@ console.log({selectedSoftItems})
         selectedExtras.length > 0 ||
         selectedSinergias.length > 0 ||
         selectedAumentoResAleatorio.length > 0 ||
-        selectedAumentoEspecifico.length > 0;
+        selectedAumentoEspecifico.length > 0 ||
+        selectedHardAugments.length > 0;
 
       if (hasAnyConditionSelected) {
         let matchesAnySelectedCondition = false;
@@ -334,12 +373,21 @@ console.log({selectedSoftItems})
           if (matchAugEspecifico) matchesAnySelectedCondition = true;
         }
 
+        if (!matchesAnySelectedCondition && selectedHardAugments.length > 0) {
+          const compoAugments = (compo.aumentos || []).flatMap(a => [a.apiNameGrande, a.apiNamePequeno]).filter(Boolean);
+          const matchAug = selectedHardAugments.some(aug =>
+            compoAugments.includes(aug.apiName) ||
+            (compo.condiciones || []).some(c => c.apiNameGrande === aug.apiName || c.ApiNamePequeno === aug.apiName)
+          );
+          if (matchAug) matchesAnySelectedCondition = true;
+        }
+
         if (!matchesAnySelectedCondition) return false;
       }
 
       return true;
     });
-  }, [allCompos, selectedCategory, selectedDifficulty, selectedTier, selectedDamageType, selectedItems, selectedChampions, selectedExtras, selectedSinergias, selectedAumentoResAleatorio, selectedAumentoEspecifico]);
+  }, [allCompos, selectedCategory, selectedDifficulty, selectedTier, selectedDamageType, selectedItems, selectedChampions, selectedExtras, selectedSinergias, selectedAumentoResAleatorio, selectedAumentoEspecifico, selectedHardAugments]);
 
   const availableSoftItemApiNames = useMemo(() => {
     const set = new Set();
@@ -704,11 +752,105 @@ console.log({selectedSoftItems})
     )
   }
 
+  const FiltroAumentos = () => {
+    return (
+      <div className={`${style.filtersSection}`}>
+        <h3>Filtro de Aumentos (OP/Early)</h3>
+        
+        <div className={style.filterInputGroup}>
+          <label>Tier (Filtra los aumentos de abajo)</label>
+          <div className={style.filterButtonsContainer} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '8px', marginBottom: '15px' }}>
+            {['Plata', 'Oro', 'Prismatico'].map(tier => (
+              <button
+                key={tier}
+                type="button"
+                className={`${style.filterOptionBox} ${selectedAugmentTiers.includes(tier) ? style.filterOptionBoxActive : ''}`}
+                onClick={() => toggleArrayFilter(setSelectedAugmentTiers, tier)}
+              >
+                {tier}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className={style.filterInputGroup}>
+          <label>Categorías Pequeñas (Filtra los aumentos de abajo)</label>
+          <div className={style.filterButtonsContainer} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '8px' }}>
+            {CATEGORIAS_PEQUENAS.map(cat => (
+              <button
+                key={cat}
+                type="button"
+                className={`${style.filterOptionBox} ${selectedSmallCats.includes(cat) ? style.filterOptionBoxActive : ''}`}
+                onClick={() => toggleArrayFilter(setSelectedSmallCats, cat)}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'column', gap: '15px' }}>
+          {CATEGORIAS_GRANDES.map(catGrande => {
+            const augsInCategory = opEarlyAugmentsMap.filter(aug => dbAumentos[aug.apiName]?.categoria_grande === catGrande);
+            if (augsInCategory.length === 0) return null;
+
+            return (
+              <div key={catGrande}>
+                <h4 style={{ color: '#ffcc00', margin: '0 0 10px 0' }}>{catGrande}</h4>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                  {augsInCategory.map(aug => {
+                    let isGrayedOut = false;
+                    
+                    if (selectedAugmentTiers.length > 0) {
+                      const augTier = dbAumentos[aug.apiName]?.categoria_tier;
+                      if (!selectedAugmentTiers.includes(augTier)) {
+                        return null; // hide if it doesn't match selected tiers
+                      }
+                    }
+
+                    if (selectedSmallCats.length > 0) {
+                      const augCatsPequenas = dbAumentos[aug.apiName]?.categoria_pequeno || [];
+                      isGrayedOut = !selectedSmallCats.some(sc => augCatsPequenas.includes(sc)); 
+                    }
+
+                    const isSelected = selectedHardAugments.some(a => a.apiName === aug.apiName);
+
+                    return (
+                      <div 
+                        key={aug.apiName}
+                        onClick={() => toggleArrayFilter(setSelectedHardAugments, aug)}
+                        title={aug.name}
+                        style={{ 
+                          cursor: 'pointer', 
+                          opacity: isGrayedOut ? 0.3 : 1, 
+                          filter: isGrayedOut ? 'grayscale(100%)' : 'none',
+                          border: isSelected ? '2px solid #ffcc00' : '2px solid transparent',
+                          borderRadius: '6px',
+                          padding: '2px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center'
+                        }}
+                      >
+                        <ImgAugment augment={aug} width={40} height={40} />
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div id={"masterPlanContainer"} className={style.masterPlanContainer}>
       <div className={style.containerTop}>
         <div className={style.filtersSectionContainer}>
         {FiltroHard()}
+        {FiltroAumentos()}
         {FiltroSoft()}
 
         {/* <div className={style.filtersSection}>

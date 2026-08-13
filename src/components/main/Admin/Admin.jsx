@@ -7,6 +7,7 @@ import CreateItemsTierList from "./CreateItemsTierList.jsx";
 import FormularioMetaLOL from "@components/leagueOfLegends/FormularioMetaLOL.jsx";
 //import CrearTierListChampItem from "./crearTierListChampItem.jsx"
 import CreateAugmentsTierList from "./CreateAugmentsTierList.jsx";
+import AdminTFTAumentos from "./AdminTFTAumentos.jsx";
 import style from "./css/Admin.module.css";
 import StreamersManager from "@components/embed/StreamersManager.jsx";
 import InfografiaTFT from "@components/Infografias/TopTFT/InfografiaTFT.jsx";
@@ -36,7 +37,8 @@ const AdminPanel = ()=>{
           { nombre: "Infografia Comps", admin: false, superAdmin: true },
           { nombre: "Tier List Items", admin: false, superAdmin: true },
           { nombre: "Tier List Augments", admin: false, superAdmin: true },
-          { nombre: "Deploy", admin: false, superAdmin: true }
+          { nombre: "Deploy", admin: false, superAdmin: true },
+          { nombre: "Aumentos", admin: true, superAdmin: true }
         ],
         admin: true,
         superAdmin: true
@@ -228,6 +230,7 @@ const AdminPanel = ()=>{
                 {/* {action === "InfografiaTFTCompo" && <InfografiaTFTComps/>} */}
                 {action === "TFT-Tier List Items" && <CreateItemsTierList />}
                 {action === "TFT-Tier List Augments" && <CreateAugmentsTierList admin={admin || superAdmin}/>}
+                {action === "TFT-Aumentos" && <AdminTFTAumentos />}
                 {action === "TFT-Deploy" && <button onClick={() => handleDeploy("Añadí compos nuevas de TFT")}>Desplegar Cambios</button>}
                 {action?.includes(pestanas[1].primario) && <FormularioMetaLOL />}
                 {action?.includes(pestanas[2].primario) && <FormularioTierListValorant />}

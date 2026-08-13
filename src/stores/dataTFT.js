@@ -102,6 +102,7 @@ export const assets3Estrellas = `${apiGPTFT}3-estrellas.webp`;
 export const dataTFT = deepMap(initialStateDataTFT)
 export const dataTFTAllItems = atom(initialStateDataTFTItems);
 export const dataTFTAllAugments = atom([]);
+export const dataDBTFTAumentos = atom({});
 export const dataTFTSetData = atom(initialStateDataTFTSetData);
 export const dataTFTChampions = atom(initialStateDataTFTChampions);
 export const dataTFTTraits = atom([]);
@@ -239,6 +240,26 @@ export const loadDataTFTFromAPI = ({ version = versionTFT.get(), idioma = "es", 
   });
 }
 
+export const loadDataDBTFTAumentos = async (version = versionTFT.get()) => {
+  try {
+    let targetSet = setNumberLatest;
+    if (version === "pbe") {
+      targetSet = setNumberPBE;
+    } else if (version === "latest") {
+      targetSet = setNumberLatest;
+    } else if (!isNaN(version)) {
+      targetSet = String(version);
+    }
+    const url = `https://api.guiadeparche.com/tft/get-aumentos-categorias.php?set=${targetSet}`;
+    const response = await fetch(url);
+    const result = await response.json();
+    if (result.status === "success") {
+      dataDBTFTAumentos.set(result.data);
+    }
+  } catch(e) {
+    console.error("Error fetching dataDBTFTAumentos", e);
+  }
+}
 
 export const getMetadataVersionTFTBySet = async (set = TFT_SET.get()) => {
   try {
@@ -392,6 +413,7 @@ if (typeof window !== 'undefined') {
   versionTFT.subscribe((version) => {
     loadDataTFTFromAPI({ version: version })
     getTeamPlannerCodeAPI(); // Llamar automáticamente cuando cambia la versión
+    loadDataDBTFTAumentos(version);
   });
 }
 
