@@ -1,8 +1,13 @@
 import { SanitizedComponent, replaceVariables } from "./functions.jsx";
 import style from "./tooltips.module.css";
 import { getLocalTftImage } from "@utils/images.js";
+import { useStore } from '@nanostores/react';
+import { versionTFT, setNumberLatest, setNumberPBE } from '@stores/dataTFT';
 
 const TooltipAugment = ({ augment }) => {
+  const version = useStore(versionTFT);
+  const versionNumber = version === "latest" ? setNumberLatest : setNumberPBE;
+
   if (!augment) return null;
   const { name, nombre, icon, desc, desc_item, effects } = augment;
 
@@ -14,7 +19,7 @@ const TooltipAugment = ({ augment }) => {
         {icon && (
           <img 
             className={style.tooltipImage} 
-            src={getLocalTftImage(icon, 'augments/choiceui')} 
+            src={getLocalTftImage(icon, 'augments/choiceui', versionNumber)} 
             alt={name || nombre} 
           />
         )}

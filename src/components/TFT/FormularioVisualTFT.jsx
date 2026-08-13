@@ -712,17 +712,20 @@ const AumentosVisual = ({
 }) => {
   const comp = useStore(datosCompos);
   const AllAugments = useStore(dataTFTAllAugments);
-  const addAumento = apiName => {
+  
+  const addAumento = (apiName, tier) => {
     const newAumentos = [...(comp.aumentos || [])];
     newAumentos.push({
       apiNameGrande: apiName,
       op: false,
-      early: isEarly
+      early: isEarly,
+      tier: tier
     });
     actualizarComposicionTFT({
       aumentos: newAumentos
     });
   };
+  
   const removeAumento = index => {
     const newAumentos = [...(comp.aumentos || [])];
     newAumentos.splice(index, 1);
@@ -730,6 +733,7 @@ const AumentosVisual = ({
       aumentos: newAumentos
     });
   };
+  
   const toggleOp = (index, e) => {
     e.preventDefault();
     const newAumentos = [...(comp.aumentos || [])];
@@ -738,17 +742,26 @@ const AumentosVisual = ({
       aumentos: newAumentos
     });
   };
+  
   const handleDragStart = (e, index) => {
     e.dataTransfer.setData("aumentoIndex", index);
   };
-  const handleDrop = (e, targetIndex) => {
+  
+  const handleDrop = (e, targetIndex, targetTier) => {
     const fromIndexRaw = e.dataTransfer.getData("aumentoIndex");
     if (fromIndexRaw !== "") {
       e.stopPropagation();
       const fromIndex = parseInt(fromIndexRaw, 10);
-      if (fromIndex === targetIndex) return;
       const newAumentos = [...(comp.aumentos || [])];
+      
       const itemToMove = newAumentos[fromIndex];
+      if (targetTier) itemToMove.tier = targetTier;
+
+      if (fromIndex === targetIndex) {
+        actualizarComposicionTFT({ aumentos: newAumentos });
+        return;
+      }
+      
       newAumentos.splice(fromIndex, 1);
       const toIndex = targetIndex > fromIndex ? targetIndex - 1 : targetIndex;
       newAumentos.splice(toIndex, 0, itemToMove);
@@ -757,30 +770,65 @@ const AumentosVisual = ({
       });
     }
   };
-  return <div className={`${style.cBoxTitleInfo} ${style.cAumentos}`}>
+
+  const columns = [
+    { id: 'plata', label: 'Plata' },
+    { id: 'oro', label: 'Oro' },
+    { id: 'prismatico', label: 'Prismático' }
+  ];
+
+  return (
+    <div className={`${style.cBoxTitleInfo} ${style.cAumentos}`}>
       <span className={style.tBox}>{title}</span>
-      <div className={`${style.cAumentosInfo} ${localStyle.styleBox18}`}>
-        {(comp.aumentos || []).map((aumento, globalIndex) => {
-        if (!!aumento.early === isEarly && aumento.apiNameGrande) {
-          return <div key={globalIndex} className={`${style.cAumento} ${localStyle.styleBox34}`} draggable onDragStart={e => handleDragStart(e, globalIndex)} onDragOver={e => e.preventDefault()} onDrop={e => handleDrop(e, globalIndex)} onContextMenu={e => toggleOp(globalIndex, e)} title="Arrastra para reordenar. Click derecho para marcar como OP">
-                <ImgAugment augment={AllAugments?.find(item => item.apiName === aumento.apiNameGrande)} />
-                {aumento.op && <div className={style.opAumento}>
-                    <span className={style.textOP}>OP</span>
-                  </div>}
-                <button onClick={() => removeAumento(globalIndex)} className={localStyle.styleBox22}>X</button>
-              </div>;
-        }
-        return null;
-      })}
-        <div onDragOver={e => e.preventDefault()} onDrop={e => {
-        e.preventDefault();
-        const aug = e.dataTransfer.getData("augment");
-        if (aug) addAumento(JSON.parse(aug).apiName);
-      }} className={localStyle.styleBox35}>
-          <span className={localStyle.styleBox36}>Soltar aquí</span>
-        </div>
+      <div style={{ display: 'flex', width: '100%', gap: '10px' }}>
+        {columns.map(col => (
+          <div key={col.id} style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '5px' }}>
+            <span style={{ fontSize: '14px', textAlign: 'center', fontWeight: 'bold' }}>{col.label}</span>
+            <div className={`${style.cAumentosInfo} ${localStyle.styleBox18}`}>
+              {(comp.aumentos || []).map((aumento, globalIndex) => {
+                const currentTier = aumento.tier || 'plata';
+                if (!!aumento.early === isEarly && aumento.apiNameGrande && currentTier === col.id) {
+                  return (
+                    <div key={globalIndex} className={`${localStyle.cAumento} ${localStyle.styleBox34}`} draggable onDragStart={e => handleDragStart(e, globalIndex)} onDragOver={e => e.preventDefault()} onDrop={e => handleDrop(e, globalIndex, col.id)} onContextMenu={e => toggleOp(globalIndex, e)} title="Arrastra para reordenar. Click derecho para marcar como OP">
+                      <ImgAugment augment={AllAugments?.find(item => item.apiName === aumento.apiNameGrande)} />
+                      {aumento.op && (
+                        <div className={style.opAumento}>
+                          <span className={style.textOP}>OP</span>
+                        </div>
+                      )}
+                      <button onClick={() => removeAumento(globalIndex)} className={localStyle.styleBox22}>X</button>
+                    </div>
+                  );
+                }
+                return null;
+              })}
+              <div onDragOver={e => e.preventDefault()} onDrop={e => {
+                e.preventDefault();
+                const aug = e.dataTransfer.getData("augment");
+                if (aug) {
+                  addAumento(JSON.parse(aug).apiName, col.id);
+                } else {
+                  const fromIndexRaw = e.dataTransfer.getData("aumentoIndex");
+                  if (fromIndexRaw !== "") {
+                    e.stopPropagation();
+                    const fromIndex = parseInt(fromIndexRaw, 10);
+                    const newAumentos = [...(comp.aumentos || [])];
+                    const itemToMove = newAumentos[fromIndex];
+                    itemToMove.tier = col.id;
+                    newAumentos.splice(fromIndex, 1);
+                    newAumentos.push(itemToMove);
+                    actualizarComposicionTFT({ aumentos: newAumentos });
+                  }
+                }
+              }} className={localStyle.cAumentoSoltar}>
+                <span className={localStyle.styleBox36}>Soltar aquí</span>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
-    </div>;
+    </div>
+  );
 };
 const NivelesVisual = () => {
   const comp = useStore(datosCompos);
