@@ -42,6 +42,16 @@ const AdminTFTAumentos = () => {
   // localState to hold current edits before saving.
   // Shape: { "apiName": { Combate: 1, AP: 0, ... } }
 
+  // Default to PBE (Set 18) only while latest is still Set 17. 
+  // Once latest updates to 18 on the 28th, it will default to latest.
+  useEffect(() => {
+    if (setNumberLatest === "17") {
+      swapVersionTFT("pbe");
+    } else {
+      swapVersionTFT("latest");
+    }
+  }, []);
+
   // Initialize localAumentos from the database
   useEffect(() => {
     if (dbAumentos && Object.keys(dbAumentos).length > 0) {

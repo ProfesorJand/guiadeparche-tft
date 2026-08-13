@@ -11,7 +11,7 @@ import TableOfContent from "@layouts/sidebar/TableOfContent.astro";
 import DynamicSection from "@layouts/sections/DynamicSection.astro";
 const [constantes, lastUpdateComps] = await Promise.all([
   getConstantes(),
-  getLastUpdateDate()
+  getLastUpdateDate("composiciones_tft")
 ]);
 interface Props {
   titleMain?: string;
@@ -37,6 +37,8 @@ const {
   snippetImgUrl,
   isIndividual=false
 } = Astro.props;
+
+console.log({lastUpdate})
 
 const tiersInfo = [
   {
@@ -157,15 +159,8 @@ const tableOfContentData = [
         {titleMain}<br /><span class="colored-text">{titleHighlight}</span>
       </h1>
       <p>{description}</p>
+      <p>Última actualización: {lastUpdate}</p>
       <div class="two-columns space-between">
-        {!isIndividual &&
-          <div class="info">
-          <p>
-            Última actualización: {lastUpdate}
-          </p>
-        </div>
-        }
-        
         
         <RegistrarseBTN
           text={isIndividual ? "¿Quieres ver más composiciones de TFT?" : "¿Quieres probar el TFT Master Plan antes que nadie?"}
