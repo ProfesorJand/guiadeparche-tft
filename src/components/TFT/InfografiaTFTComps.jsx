@@ -76,7 +76,7 @@ useEffect(() => {
         {/* titulo */}
         <span className={style.title}>{tituloInfografiaTFT}</span>
         {/* version */}
-        <span className={style.version}>{constantes?.MetaCompVersionPBE}</span>
+        <span className={style.version}>{currentVersion === "pbe" ? constantes?.MetaCompVersionPBE : constantes?.MetaCompVersion}</span>
       </div>
 
       {/* compos metas */}
