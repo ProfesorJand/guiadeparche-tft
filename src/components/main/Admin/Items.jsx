@@ -214,6 +214,16 @@ export const Items = ({ onSelectItem })=>{
 
   const ARTEFACTOS = [
     {
+      nombre: "Dawncore",
+      apiName: "TFT_Item_Artifact_Dawncore",
+      img: "https://raw.communitydragon.org/pbe/game/assets/maps/tft/icons/items/hexcore/tft_item_artifact_dawncore.tft_set15.png",
+    },
+    {
+      nombre:"Eternal Pact",
+      apiName:"TFT_Item_Artifact_EternalPact",
+      img:"https://raw.communitydragon.org/pbe/game/assets/maps/tft/icons/items/hexcore/tft16_artifact_eternalpact.png",
+    },
+    {
       nombre: "Spirit Visage",
       apiName: "TFT4_Item_OrnnAnimaVisage",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/tft/icons/items/hexcore/tft4_item_ornnanimavisage.tft_set13.png",
@@ -374,14 +384,10 @@ export const Items = ({ onSelectItem })=>{
       apiName:"TFT4_Item_OrnnZhonyasParadox",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/tft/icons/items/hexcore/tft4_item_ornnzhonyasparadox.tft_set13.png",
     },
+    
   ];
   const ARTEFACTOSPBE = [
-    ...ARTEFACTOS,
-    {
-      nombre: "Dawncore",
-      apiName: "TFT_Item_Artifact_Dawncore",
-      img: "https://raw.communitydragon.org/pbe/game/assets/maps/tft/icons/items/hexcore/tft_item_artifact_dawncore.tft_set15.png",
-    }
+    ...ARTEFACTOS
   ]
 
   const ORDENAMIENTO_RADIANTES = [
