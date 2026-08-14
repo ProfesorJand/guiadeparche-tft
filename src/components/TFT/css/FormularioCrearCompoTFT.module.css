@@ -4,7 +4,6 @@ label{
   flex-direction: column;
   gap:5px;
   padding:5px;
-  border: 1px dashed rgb(61, 61, 61);
 }
 
 .formContainer{

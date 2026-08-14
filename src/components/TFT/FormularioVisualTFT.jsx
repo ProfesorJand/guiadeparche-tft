@@ -16,10 +16,12 @@ import TraitsList, { getTraitDisplayName } from "@components/main/Admin/TraitsLi
 import { composicionTFT as datosCompos, actualizarComposicionTFT, reiniciarComposicionTFT, dificultades, categorias, tiers, tiersExtras, dañoTipo, dioses as listaDioses } from "@stores/tft/dataFormularioCrear.js";
 import { getLocalTftImage } from "@utils/images";
 import CardsMasterPlanCompos from "@components/TFT/master-plan/CardsMasterPlanCompos.jsx";
+import AdminTFTCampeonesEarly from "@components/main/Admin/AdminTFTCampeonesEarly";
+import Tooltip from "@components/tooltips";
 
 // -1. Datos Básicos
 import localStyle from "./css/FormularioVisualTFT.module.css";
-const DatosBasicosVisual = () => {
+const DatosBasicosVisual = ({ gruposSalidasEarly }) => {
   const comp = useStore(datosCompos);
   return (
     <div className={`${style.cBoxTitleInfo} ${localStyle.styleBox1}`}>
@@ -109,7 +111,7 @@ const DatosBasicosVisual = () => {
           
         </div>
         <div className={localStyle.styleBox1}>
-          <CardsMasterPlanCompos compo={comp} />
+          <CardsMasterPlanCompos compo={comp} gruposSalidasEarly={gruposSalidasEarly} />
         </div>
       </div>
     </div>
@@ -598,10 +600,146 @@ const PreliminaresOPVisual = ({ title = "Preliminares OP", condTypeGrande, condT
     </div>
   );
 };
+const SalidasEarlyVisual = ({ gruposSalidasEarly }) => {
+  const comp = useStore(datosCompos);
+  const allChampionsTFT = useStore(dataTFTChampions);
+  const currentVersion = useStore(versionTFT);
+  const targetSet = currentVersion === "pbe" ? setNumberPBE : setNumberLatest;
+
+  const toggleSalidaEarly = (grupoId) => {
+    const currentSalidas = [...(comp.salidasEarly || [])];
+    if (currentSalidas.includes(grupoId)) {
+      actualizarComposicionTFT({ salidasEarly: currentSalidas.filter(id => id !== grupoId) });
+    } else {
+      currentSalidas.push(grupoId);
+      actualizarComposicionTFT({ salidasEarly: currentSalidas });
+    }
+  };
+
+  return (
+    <div className={`${style.cBoxTitleInfo} ${localStyle.styleBox25}`}>
+      <span className={style.tBox}>Salidas Early</span>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginTop: '10px', background: '#2a203b', padding: '15px', borderRadius: '8px', width: '100%' }}>
+        {(comp.salidasEarly || []).length === 0 ? <span style={{fontSize: '0.85rem', color: '#aaa'}}>Añade salidas early desde la pestaña derecha.</span> : null}
+        {(comp.salidasEarly || []).map(grupoId => {
+          const grupo = gruposSalidasEarly.find(g => g.id === grupoId);
+          const nombreGrupo = grupo ? grupo.nombre : `Grupo ${grupoId}`;
+          return (
+            <div
+              key={grupoId}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '6px 10px',
+                borderRadius: '6px',
+                background: '#1e162b',
+                color: 'white',
+                border: '1px solid #d8b4fe',
+                fontSize: '0.85rem'
+              }}
+            >
+              <span style={{ fontWeight: 'bold', color: '#d8b4fe' }}>{nombreGrupo}</span>
+              {grupo && (
+                <div style={{ display: 'flex', gap: '4px', alignItems: 'center', marginLeft: '5px' }}>
+                  {grupo.campeones.map(apiName => {
+                    const champ = allChampionsTFT?.find(c => c.apiName === apiName);
+                    if (!champ) return null;
+                    const cost = champ.cost != null ? Number(champ.cost) : 1;
+                    const colors = { 1: '#808080', 2: '#11b288', 3: '#207ac7', 4: '#c440da', 5: '#ffb93b' };
+                    const borderColor = colors[cost] || '#808080';
+                    return (
+                      <Tooltip key={apiName} type="campeon" campeon={champ}>
+                        <img 
+                          src={getLocalTftImage(champ.img || champ.tileIcon, 'champions/tileIcon', targetSet)} 
+                          alt={champ.name}
+                          style={{ width: '28px', height: '28px', borderRadius: '4px', border: `2px solid ${borderColor}`, objectFit: 'cover' }}
+                        />
+                      </Tooltip>
+                    );
+                  })}
+                </div>
+              )}
+              <button 
+                onClick={(e) => { e.preventDefault(); toggleSalidaEarly(grupoId); }}
+                style={{
+                  background: '#e00000',
+                  border: 'none',
+                  borderRadius: '4px',
+                  color: 'white',
+                  fontWeight: 'bold',
+                  cursor: 'pointer',
+                  padding: '4px 8px',
+                  marginLeft: '10px'
+                }}
+                title="Quitar"
+              >
+                X
+              </button>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+const RachaVisual = () => {
+  const comp = useStore(datosCompos);
+
+  const setRacha = (rachaType) => {
+    if (comp.racha === rachaType) {
+      actualizarComposicionTFT({ racha: null });
+    } else {
+      actualizarComposicionTFT({ racha: rachaType });
+    }
+  };
+
+  return (
+    <div className={`${style.cBoxTitleInfo} ${localStyle.styleBox25}`}>
+      <span className={style.tBox}>Racha (Opcional)</span>
+      <div style={{ display: 'flex', gap: '15px', marginTop: '10px' }}>
+        <button 
+          onClick={() => setRacha('Win Streak')}
+          style={{ 
+            flex: 1, 
+            padding: '10px', 
+            borderRadius: '6px', 
+            background: comp.racha === 'Win Streak' ? '#11b288' : '#2a203b', 
+            border: comp.racha === 'Win Streak' ? '2px solid white' : '2px solid transparent',
+            color: 'white', 
+            cursor: 'pointer',
+            fontWeight: 'bold',
+            transition: 'all 0.2s'
+          }}>
+          Win Streak
+        </button>
+        <button 
+          onClick={() => setRacha('Lose Streak')}
+          style={{ 
+            flex: 1, 
+            padding: '10px', 
+            borderRadius: '6px', 
+            background: comp.racha === 'Lose Streak' ? '#e14a4a' : '#2a203b', 
+            border: comp.racha === 'Lose Streak' ? '2px solid white' : '2px solid transparent',
+            color: 'white', 
+            cursor: 'pointer',
+            fontWeight: 'bold',
+            transition: 'all 0.2s'
+          }}>
+          Lose Streak
+        </button>
+      </div>
+    </div>
+  );
+};
+
 const FundamentalsVisual = () => {
   const comp = useStore(datosCompos);
   const allChampionsTFT = useStore(dataTFTChampions);
   const allItemsTFT = useStore(dataTFTAllItems);
+  const currentVersion = useStore(versionTFT);
+  const targetSet = currentVersion === "pbe" ? setNumberPBE : setNumberLatest;
   const addCampeonEarly = apiName => {
     const newCampeonesEarly = [...(comp.campeonesEarly || [])];
     newCampeonesEarly.push({
@@ -676,6 +814,7 @@ const FundamentalsVisual = () => {
             </div>
           </div>
         </div>
+
         <div className={`${style.cBoxTitleInfo} ${style.cPrioridadObjetos}`}>
           <span className={style.tBox}>Prioridad de Objetos</span>
           <div className={`${style.cPrioridadObjetosInfo} ${localStyle.styleBox30}`}>
@@ -921,7 +1060,7 @@ const PosicionamientoVisual = () => {
   const addTablero = () => {
     const nuevoPosicionamiento = [...(comp.posicionamiento || [])];
     nuevoPosicionamiento.push({
-      tablero: Array(28).fill(null),
+      tablero: [],
       info: ""
     });
     actualizarComposicionTFT({
@@ -1322,6 +1461,39 @@ export default function FormularioVisualTFT({
   const currentVersion = useStore(versionTFT);
   const [panelActivo, setPanelActivo] = useState("campeones"); // campeones, items, aumentos, datos basicos
 
+  const toggleSalidaEarly = (grupoId) => {
+    const currentSalidas = [...(comp.salidasEarly || [])];
+    if (currentSalidas.includes(grupoId)) {
+      actualizarComposicionTFT({ salidasEarly: currentSalidas.filter(id => id !== grupoId) });
+    } else {
+      currentSalidas.push(grupoId);
+      actualizarComposicionTFT({ salidasEarly: currentSalidas });
+    }
+  };
+
+  const targetSet = currentVersion === "pbe" ? setNumberPBE : setNumberLatest;
+  const [gruposSalidasEarly, setGruposSalidasEarly] = useState([]);
+
+  const fetchGruposSalidasEarly = async () => {
+    try {
+      const res = await fetch(`https://api.guiadeparche.com/tft/campeones-early.php`);
+      const result = await res.json();
+      if (result.status === 'success') {
+        const allGrupos = result.data || [];
+        setGruposSalidasEarly(allGrupos.filter(g => g.set_number === targetSet || g.set_number === "all"));
+      } else {
+        const dataArr = Array.isArray(result) ? result : [];
+        setGruposSalidasEarly(dataArr.filter(g => g.set_number === targetSet || g.set_number === "all"));
+      }
+    } catch (e) {
+      console.error("Error fetching grupos salidas early", e);
+    }
+  };
+
+  useEffect(() => {
+    fetchGruposSalidasEarly();
+  }, [targetSet]);
+
   useEffect(() => {
     if (Object.keys(compo).length) {
       actualizarComposicionTFT({
@@ -1424,7 +1596,7 @@ export default function FormularioVisualTFT({
       <div className={localStyle.styleBox75}>
         <div className={`${style.cardsMPCompContainer} ${localStyle.styleBox76}`}>
           <div className={style.cBoxRow}>
-            <DatosBasicosVisual />
+            <DatosBasicosVisual gruposSalidasEarly={gruposSalidasEarly} />
           </div>
           <div className={style.cBoxRow}>
             <CampeonMetaVisual />
@@ -1446,6 +1618,12 @@ export default function FormularioVisualTFT({
           </div>
           <AumentosVisual title="Aumentos Early (has click derecho para que sea OP)" isEarly={true} />
           <AumentosVisual title="Aumentos Mid/Late (has click derecho para que sea OP)" isEarly={false} />
+          <div className={style.cBoxRow}>
+            <SalidasEarlyVisual gruposSalidasEarly={gruposSalidasEarly} />
+          </div>
+          <div className={style.cBoxRow}>
+            <RachaVisual />
+          </div>
           <div className={style.cBoxRow}>
             <NivelesVisual />
             <PosicionamientoVisual />
@@ -1619,6 +1797,9 @@ export default function FormularioVisualTFT({
           <button onClick={() => setPanelActivo("sinergias")} style={{
           background: panelActivo === 'sinergias' ? '#0af' : '#222'
         }} className={localStyle.styleBox84}>Sinergias</button>
+          <button onClick={() => setPanelActivo("salidas_early")} style={{
+          background: panelActivo === 'salidas_early' ? '#0af' : '#222'
+        }} className={localStyle.styleBox84}>Salidas Early</button>
           <button onClick={() => setPanelActivo("extras")} style={{
           background: panelActivo === 'extras' ? '#0af' : '#222'
         }} className={localStyle.styleBox84}>Extra</button>
@@ -1629,6 +1810,7 @@ export default function FormularioVisualTFT({
           {panelActivo === 'items' && <ItemsList />}
           {panelActivo === 'aumentos' && <AugmentsList />}
           {panelActivo === 'sinergias' && <TraitsList />}
+          {panelActivo === 'salidas_early' && <AdminTFTCampeonesEarly onAddToComp={toggleSalidaEarly} selectedGrupos={comp.salidasEarly || []} isSidebar={true} onGruposChanged={fetchGruposSalidasEarly} />}
           {panelActivo === 'extras' && <ExtrasList />}
         </div>
       </div>

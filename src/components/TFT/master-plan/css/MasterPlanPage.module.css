@@ -24,13 +24,28 @@
   flex-direction: column;
 }
 .filtersSection {
-  display:flex;
-  position:relative;
+  display: flex;
+  position: relative;
   flex-direction: column;
+  /* Estilos premium para el fieldset */
+  border: 1px solid rgba(168, 85, 247, 0.3); /* Borde morado sutil */
+  border-radius: 12px;
+  padding: 20px;
+  background: rgba(59, 44, 82, 0.15); /* Fondo oscuro semitransparente */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+  width:100%;
 }
-.filtersSection h3 {
-  margin-bottom: 12px;
+
+.filtersSection legend {
+  /* Reemplaza al antiguo h3 y le da un estilo moderno sobre la línea */
   color: var(--text-color-purple-primary, #a855f7);
+  font-size: 1.15rem;
+  font-weight: bold;
+  padding: 0 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
 .filtersSectionContainer{
   display:flex;
