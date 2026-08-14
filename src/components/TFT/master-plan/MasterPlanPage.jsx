@@ -149,6 +149,21 @@ console.log({selectedSoftItems})
   const [selectedSinergias, setSelectedSinergias] = useState([]);
   const [selectedAumentoResAleatorio, setSelectedAumentoResAleatorio] = useState([]);
   const [selectedAumentoEspecifico, setSelectedAumentoEspecifico] = useState([]);
+  const [gruposSalidasEarly, setGruposSalidasEarly] = useState([]);
+  const [selectedSalidasEarly, setSelectedSalidasEarly] = useState([]);
+
+  useEffect(() => {
+    const fetchGruposSalidasEarly = async () => {
+      try {
+        const res = await fetch(`https://api.guiadeparche.com/tft/campeones-early.php?set=${versionNumber}`);
+        const data = await res.json();
+        setGruposSalidasEarly(Array.isArray(data) ? data : []);
+      } catch (e) {
+        console.error("Error fetching grupos salidas early", e);
+      }
+    };
+    fetchGruposSalidasEarly();
+  }, [versionNumber]);
   useEffect(()=>{
     const loadDataTFT = async()=>{
       const currentCompos = metaCompsTFT.get();
@@ -345,7 +360,8 @@ console.log({selectedSoftItems})
         selectedSinergias.length > 0 ||
         selectedAumentoResAleatorio.length > 0 ||
         selectedAumentoEspecifico.length > 0 ||
-        selectedHardAugments.length > 0;
+        selectedHardAugments.length > 0 ||
+        selectedSalidasEarly.length > 0;
 
       if (hasAnyConditionSelected) {
         let matchesAnySelectedCondition = false;
@@ -414,12 +430,18 @@ console.log({selectedSoftItems})
           if (matchAug) matchesAnySelectedCondition = true;
         }
 
+        if (!matchesAnySelectedCondition && selectedSalidasEarly.length > 0) {
+          const compoSalidas = compo.salidasEarly || [];
+          const matchSalida = selectedSalidasEarly.some(grupoId => compoSalidas.some(s => String(s) === String(grupoId)));
+          if (matchSalida) matchesAnySelectedCondition = true;
+        }
+
         if (!matchesAnySelectedCondition) return false;
       }
 
       return true;
     });
-  }, [filteredComposPrimary, selectedItems, selectedChampions, selectedExtras, selectedSinergias, selectedAumentoResAleatorio, selectedAumentoEspecifico, selectedHardAugments]);
+  }, [filteredComposPrimary, selectedItems, selectedChampions, selectedExtras, selectedSinergias, selectedAumentoResAleatorio, selectedAumentoEspecifico, selectedHardAugments, selectedSalidasEarly]);
 
   const availableSoftItemApiNames = useMemo(() => {
     const set = new Set();
@@ -475,8 +497,8 @@ console.log({selectedSoftItems})
 
   const FiltroHard = ()=>{
     return(
-    <div className={`${style.filtersSection} ${style.filtersSectionHard}`}>
-      <h3>Filtro Hard (Playstyle / Estilo de juego)</h3>
+    <fieldset className={`${style.filtersSection} ${style.filtersSectionHard}`}>
+      <legend>Filtro Hard (Playstyle / Estilo de juego)</legend>
       <div className={style.hardFiltersGrid}>
         <div className={style.filterInputGroup}>
           <label>Tiers</label>
@@ -634,91 +656,15 @@ console.log({selectedSoftItems})
             )}
           </div>
         </div>
-
-        <div className={style.filterInputGroup}>
-          <label>Aumentos de Resultado Aleatorio</label>
-          <div className={style.filterButtonsContainer} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '8px' }}>
-            {condicionesGrandeAumentoResAleatorio.length > 0 ? (
-              condicionesGrandeAumentoResAleatorio.map(aum => (
-                <button
-                  key={aum.apiName}
-                  type="button"
-                  className={`${style.filterOptionBox} ${selectedAumentoResAleatorio.includes(aum.apiName) ? style.filterOptionBoxActive : ''}`}
-                  onClick={() => toggleArrayFilter(setSelectedAumentoResAleatorio, aum.apiName)}
-                  style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
-                >
-                  {aum.icon && <img src={aum.icon} alt={aum.name} style={{ width: '40px', height: '40px', objectFit: 'contain', borderRadius: '3px' }} />}
-                  <span>{aum.name}</span>
-                </button>
-              ))
-            ) : (
-              <span style={{ color: '#ccc', fontStyle: 'italic', fontSize: '0.85rem' }}>No hay aumentos de resultado aleatorio disponibles</span>
-            )}
-          </div>
-        </div>
-
-        <div className={style.filterInputGroup}>
-          <label>Aumentos Específicos</label>
-          <div className={style.filterButtonsContainer} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '8px' }}>
-            {condicionesGrandeAumentoEspecifico.filter(aum => !listaAumentosHeroes.includes(aum.apiName)).length > 0 ? (
-              condicionesGrandeAumentoEspecifico
-                .filter(aum => !listaAumentosHeroes.includes(aum.apiName))
-                .map(aum => (
-                <button
-                  key={aum.apiName}
-                  type="button"
-                  className={`${style.filterOptionBox} ${selectedAumentoEspecifico.includes(aum.apiName) ? style.filterOptionBoxActive : ''}`}
-                  onClick={() => toggleArrayFilter(setSelectedAumentoEspecifico, aum.apiName)}
-                  style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
-                >
-                  {aum.icon && <img src={aum.icon} alt={aum.name} style={{ width: '40px', height: '40px', objectFit: 'contain', borderRadius: '3px' }} />}
-                  <span>{aum.name}</span>
-                </button>
-              ))
-            ) : (
-              <span style={{ color: '#ccc', fontStyle: 'italic', fontSize: '0.85rem' }}>No hay aumentos específicos disponibles</span>
-            )}
-          </div>
-        </div>
-
-        <div className={style.filterInputGroup}>
-          <label>Aumentos Específicos de Héroes</label>
-          <div className={style.filterButtonsContainer} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '8px' }}>
-            {condicionesGrandeAumentoEspecifico.filter(aum => listaAumentosHeroes.includes(aum.apiName)).length > 0 ? (
-              condicionesGrandeAumentoEspecifico
-                .filter(aum => listaAumentosHeroes.includes(aum.apiName))
-                .map(aum => (
-                <button
-                  key={aum.apiName}
-                  type="button"
-                  className={`${style.filterOptionBox} ${selectedAumentoEspecifico.includes(aum.apiName) ? style.filterOptionBoxActive : ''}`}
-                  onClick={() => toggleArrayFilter(setSelectedAumentoEspecifico, aum.apiName)}
-                  style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
-                >
-                  {aum.icon && <img src={aum.icon} alt={aum.name} style={{ width: '40px', height: '40px', objectFit: 'contain', borderRadius: '3px' }} />}
-                  {aum.apiNamePequeno && getConditionIconUrl(aum.apiNamePequeno, 'campeon') && (
-                    <img src={getConditionIconUrl(aum.apiNamePequeno, 'campeon')} alt={aum.apiNamePequeno} style={{ width: '40px', height: '40px', objectFit: 'contain', borderRadius: '3px' }} />
-                  )}
-                  <span>{aum.name}</span>
-                </button>
-              ))
-            ) : (
-              <span style={{ color: '#ccc', fontStyle: 'italic', fontSize: '0.85rem' }}>No hay aumentos específicos de héroes disponibles</span>
-            )}
-          </div>
-        </div>
-
-
-
       </div>
-    </div>
+    </fieldset>
     )
   }
 
   const FiltroSoft = ()=>{
     return(
-    <div className={`${style.filtersSection} ${style.filtersSectionSoft}`}>
-      <h3>Filtro Soft (Highlights de cosas que te pueden salir)</h3>
+    <fieldset className={`${style.filtersSection} ${style.filtersSectionSoft}`}>
+      <legend>Filtro Soft (Highlights de cosas que te pueden salir)</legend>
       
       <div className={style.filterInputGroup}>
         <label>Objetos</label>
@@ -780,14 +726,14 @@ console.log({selectedSoftItems})
           <span style={{ color: '#ccc', fontStyle: 'italic', fontSize: '0.85rem' }}>No hay campeones early disponibles</span>
         )}
       </div>
-    </div>
+    </fieldset>
     )
   }
 
   const FiltroAumentos = () => {
     return (
-      <div className={`${style.filtersSection}`}>
-        <h3>Filtro de Aumentos (OP/Early)</h3>
+      <fieldset className={`${style.filtersSection}`}>
+        <legend>Filtro de Aumentos (OP/Early)</legend>
         
         <div className={style.filterInputGroup}>
           <label>Categorías de aumentos:</label>
@@ -820,8 +766,6 @@ console.log({selectedSoftItems})
               ))}
             </div>
           </div>
-        </div>
-
         <div style={{ marginTop: '20px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '20px' }}>
           {CATEGORIAS_GRANDES.map(catGrande => {
             const augsInCategory = opEarlyAugmentsMap.filter(aug => dbAumentos[aug.apiName]?.categoria_grande === catGrande);
@@ -903,7 +847,36 @@ console.log({selectedSoftItems})
             )
           })}
         </div>
-      </div>
+        </div>
+
+      </fieldset>
+    );
+  };
+
+  const FiltroSalidasEarly = () => {
+    return (
+      <fieldset className={`${style.filtersSection} ${style.filtersSectionSoft}`}>
+        <legend>Filtro Salidas Early</legend>
+        <div className={style.filterInputGroup}>
+          <label>Grupos de Campeones</label>
+          <div className={style.filterButtonsContainer} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '8px' }}>
+            {gruposSalidasEarly.length > 0 ? (
+              gruposSalidasEarly.map(grupo => (
+                <button
+                  key={grupo.id}
+                  type="button"
+                  className={`${style.filterOptionBox} ${selectedSalidasEarly.includes(grupo.id) ? style.filterOptionBoxActive : ''}`}
+                  onClick={() => toggleArrayFilter(setSelectedSalidasEarly, grupo.id)}
+                >
+                  <span>{grupo.nombre}</span>
+                </button>
+              ))
+            ) : (
+              <span style={{ color: '#ccc', fontStyle: 'italic', fontSize: '0.85rem' }}>No hay grupos de salidas early disponibles</span>
+            )}
+          </div>
+        </div>
+      </fieldset>
     );
   };
 
@@ -926,6 +899,7 @@ console.log({selectedSoftItems})
         {FiltroHard()}
         {FiltroAumentos()}
         {FiltroSoft()}
+        {FiltroSalidasEarly()}
 
         {/* <div className={style.filtersSection}>
           <h3>Filtro Check (Condiciones específicas)</h3>
@@ -950,7 +924,7 @@ console.log({selectedSoftItems})
           {filteredCompos.length > 0 ? (
             filteredCompos.map(compo => (
               <div className={style.cardContainer} onClick={()=>setActiveComp(allCompos.find((comp)=>comp.id === compo.id))}>
-                <CardsMasterPlanCompos key={compo.id || compo.titulo || Math.random()} compo={compo} filtroSoft={{selectedSoftItems,selectedSoftChampions,selectedSoftTraits,selectedSoftAugments}}/>
+                <CardsMasterPlanCompos key={compo.id || compo.titulo || Math.random()} compo={compo} filtroSoft={{selectedSoftItems,selectedSoftChampions,selectedSoftTraits,selectedSoftAugments}} gruposSalidasEarly={gruposSalidasEarly} />
               </div>
             ))
           ) : (

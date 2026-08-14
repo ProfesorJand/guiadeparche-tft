@@ -38,6 +38,7 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
   // Reconstruct boardData from state array
   const boardData = {};
   tableroArray.forEach(champ => {
+    if (!champ) return;
     const hexIndex = champ.fila * 10 + champ.col;
 
     const champData = safeGlobalChampions.find(c => c.apiName === champ?.apiNameCampeon);

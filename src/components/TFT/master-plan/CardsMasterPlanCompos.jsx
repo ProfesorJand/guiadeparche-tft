@@ -10,7 +10,7 @@ import ImgAugment from "@components/TFT/ImgAugment";
 import ImgItem from "@components/TFT/ImgItem";
 import ImgCampeon from "@components/TFT/ImgCampeon";
 
-const CardsMasterPlanCompos = ({compo, filtroSoft={}})=>{
+const CardsMasterPlanCompos = ({compo, filtroSoft={}, gruposSalidasEarly=[]})=>{
   const allItemsTFT = useStore(dataTFTAllItems);
   const allChampionsTFT = useStore(dataTFTChampions);
   const allAugmentsTFT = useStore(dataTFTAllAugments);
@@ -146,31 +146,55 @@ const CardsMasterPlanCompos = ({compo, filtroSoft={}})=>{
             </div>
           </div>
           <div className={`${style.containerFundamentalsCampeones} ${style.borderContainer}`}>
-            <span className={style.titleMiniInfoCard}>Campeones Early</span>
-            <div className={style.containerCampeonesEarly}>
-              {compo.campeonesEarly.map((campeon, index)=>{
-                if (!campeon?.apiNameCampeon) return null;
+            <span className={style.titleMiniInfoCard}>Salidas Early</span>
+            <div className={style.containerCampeonesEarly} style={{ display: 'flex', flexDirection: 'column', gap: '5px', overflowY: 'auto', maxHeight: '90%' }}>
+              {(compo.salidasEarly || []).map((grupoId, index)=>{
+                const grupo = gruposSalidasEarly?.find(g => g.id === grupoId);
+                if (!grupo) return null;
                 return (
-                  <div key={index} className={`${style.campeonEarly} ${style.highlightable} ${isChampionHighlighted(campeon?.apiNameCampeon) ? style.highlight : ""}`}>
-                    <Tooltip type="campeon" campeon={allChampionsTFT.find(x => x.apiName === campeon?.apiNameCampeon)}>
-                      <img className={style.imgCampeonEarly} src={getLocalTftImage(allChampionsTFT.find(x => x.apiName === campeon?.apiNameCampeon)?.tileIcon, 'champions/tileIcon')} alt="Campeon early 1"/>
-                    </Tooltip>
-                    <div className={style.containerItemsCampeonEarly}>
-                      {campeon.apiNameItemsDelCampeon.map((item,index)=>{
-                        if(item)
-                        return (
-                          <Tooltip key={`item-early-${index}`}  type="item" item={allItemsTFT.find(x => x.apiName === item)}>
-                            <img 
-                              className={style.imgItemsCampeonEarly} 
-                              src={getLocalTftImage(allItemsTFT.find(x => x.apiName === item)?.icon, 'items')} 
-                              alt="item early 1"/>
-                          </Tooltip>
-                        )
-                      })}
+                  <div key={index} style={{ display: 'flex', alignItems: 'center', width: '100%', height:'100%' }}>
+                    <div style={{ display: 'flex', gap: '2px', width: '100%', height: '100%', minHeight: 0, minWidth: 0, justifyContent: 'flex-start', alignItems: 'center', }}>
+                      {grupo.nombre?.toLowerCase() === 'open fort' ? (
+                        <div style={{ background: '#080808a4', color: '#faf600ff', borderRadius: '4px', fontSize: '20px', fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center', height: '80%', width: '100%', boxSizing:"border-box" }}>
+                          Open Fort
+                        </div>
+                      ) : (
+                        grupo.campeones.map(apiName => {
+                          const champ = allChampionsTFT?.find(c => c.apiName === apiName);
+                          if (!champ) return null;
+                          
+                          // Determinar color de borde por coste
+                          const cost = champ.cost != null ? Number(champ.cost) : 1;
+                          const colors = { 1: '#808080', 2: '#11b288', 3: '#207ac7', 4: '#c440da', 5: '#ffb93b' };
+                          const borderColor = colors[cost] || '#808080';
+                          
+                          return (
+                            <Tooltip key={apiName} type="campeon" campeon={champ}>
+                              <img 
+                                src={getLocalTftImage(champ.img || champ.tileIcon, 'champions/tileIcon', versionNumber)} 
+                                alt={champ.name}
+                                style={{ 
+                                  height: '100%', 
+                                  maxHeight: '100%', 
+                                  maxWidth: '100%', 
+                                  aspectRatio: '1/1', 
+                                  borderRadius: '3px', 
+                                  border: `1.5px solid ${borderColor}`, 
+                                  objectFit: 'cover',
+                                  flexShrink: 1,
+                                  minWidth: 0,
+                                  minHeight: 0,
+                                  boxSizing: 'border-box'
+                                }}
+                              />
+                            </Tooltip>
+                          );
+                        })
+                      )}
                     </div>
                   </div>
-                  )
-                })}
+                );
+              })}
             </div>        
           </div>
         </div>

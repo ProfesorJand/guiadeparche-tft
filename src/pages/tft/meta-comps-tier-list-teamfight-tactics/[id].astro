@@ -1,11 +1,11 @@
 ---
 import MetaCompsLayout from "@components/TFT/MetaCompsLayout.astro";
-
 import {
   getComposFromDB,
   getConstantes,
+  getLastUpdateDate
 } from "../../../lib/cache/tftCache.js";
-import { setNumberPBE, dataTFTChampions, loadDataTFTFromAPI } from "@stores/dataTFT";
+import { setNumberPBE, dataTFTChampions, loadDataTFTFromAPI, versionTFT, numberOfVersionTFT } from "@stores/dataTFT";
 import { getLocalTftImage } from "@utils/images";
 
 export async function getStaticPaths() {
@@ -25,8 +25,9 @@ export async function getStaticPaths() {
 const { id } = Astro.params;
 const { comp, top10Comps, restComps } = Astro.props;
 
-const [numberOfVersion] = await Promise.all([
-  getConstantes()
+const [numberOfPatch, lastUpdateComps] = await Promise.all([
+  getConstantes(),
+  getLastUpdateDate("composiciones_tft")
 ]);
 
 if (dataTFTChampions.get().length === 0) {
@@ -53,11 +54,11 @@ const resolvedTileIcon = champInfo?.tileIcon ? getLocalTftImage(champInfo.tileIc
 ---
 
 <MetaCompsLayout
-  titleMain={`${comp.urlSEO.toUpperCase().replace("-"," ")} TFT Comp & Items Build - Set ${setNumberPBE}`}
+  titleMain={`${comp.urlSEO.toUpperCase().replace("-"," ")} TFT Comp & Items Build - Set 17`}
   titleHighlight={``}
   description={comp.tipSEO ||
     `Guía completa paso a paso de la composición ${comp.titulo} para el parche actual de TFT.`}
-  lastUpdate={`Actualizado: Parche ${numberOfVersion.MetaCompVersionPBE || "17.3"}`}
+  lastUpdate={`${lastUpdateComps} Parche ${numberOfPatch.MetaCompVersion}` }
   top10Comps={top10Comps}
   restComps={restComps}
   activeId={id}
