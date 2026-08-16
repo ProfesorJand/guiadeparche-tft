@@ -38,7 +38,6 @@ export const Items = ({ onSelectItem })=>{
   //set 17 items
   const [allPsionicItems, setAllPsionicItems] = useState(null);
   const [allGodsArtifacts, setAllGodsArtifacts] = useState(null);
-  //const [allCraftableItems, setAllCraftableItems] = useState(null);
   const [MatrixCraftableItems, setMatrixCraftableItems] = useState([]);
   useEffect(()=>{
     console.log({Emblemas:allItemsInfo.filter((item)=>{

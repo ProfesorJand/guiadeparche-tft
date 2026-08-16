@@ -223,7 +223,11 @@ export const loadDataTFTFromAPI = ({ version = versionTFT.get(), idioma = "es", 
         const urlAPI = `https://api.guiadeparche.com/tft/getDataTFT.php?set=${targetSet}`;
         const response = await fetch(urlAPI);
         const data = await response.json();
-        updateDataTFT(data);
+        
+        // Evitar race condition: solo actualizar si la versión no ha cambiado mientras hacíamos el fetch
+        if (version === versionTFT.get()) {
+          updateDataTFT(data);
+        }
         await loadConstantes();
       } catch (e) {
         console.warn("Fetch del backend PHP fallido. Intentando fallback local...", e);
@@ -301,7 +305,9 @@ const generateCraftableList = (allItems, setItemNames, setNumber) => {
     if (!setItemNames.includes(item.apiName)) return;
     if (!item.composition || item.composition.length !== 2) return;
 
-    const sortedComp = [...item.composition].sort();
+    // Normalizar DA_Component_ a TFT_Item_ para que haga match con orderedBaseItems
+    const normalizedComp = item.composition.map(c => c.replace("DA_Component_", "TFT_Item_"));
+    const sortedComp = [...normalizedComp].sort();
     const key = sortedComp.join('+');
     if (!compositionMap[key]) compositionMap[key] = [];
     compositionMap[key].push(item);
@@ -357,15 +363,15 @@ export const updateDataTFT = async (data) => {
 
   const allChampionsRaw = champions ? [...champions] : [];
 
-  if (!allChampionsRaw.some(c => c.apiName === "TFT15_ShenSword")) {
-    allChampionsRaw.push({
-      apiName: "TFT15_ShenSword",
-      name: "Shen's Sword",
-      cost: 1,
-      traits: [],
-      tileIcon: "/assets/characters/shen/hud/icons2d/shen_q.png",
-    });
-  }
+  // if (!allChampionsRaw.some(c => c.apiName === "TFT15_ShenSword")) {
+  //   allChampionsRaw.push({
+  //     apiName: "TFT15_ShenSword",
+  //     name: "Shen's Sword",
+  //     cost: 1,
+  //     traits: [],
+  //     tileIcon: "/assets/characters/shen/hud/icons2d/shen_q.png",
+  //   });
+  // }
 
   dataTFTChampions.set(allChampionsRaw.sort(
     (a, b) => {
@@ -452,7 +458,7 @@ export const apiNamesCrafteableItems = () => {
 
 export const AllCraftableItems = (todosLosItems) => {
   const apiNames = apiNamesCrafteableItems();
-
+  console.log({apiNamesCraftableItems:apiNames})
   if (!todosLosItems.length) return [];
   const retornando = apiNames.map(apiName => {
     const item = todosLosItems.find(i => i.apiName === apiName);
@@ -1432,7 +1438,7 @@ export const RADIANTS_ITEMS = []
 export const findTraitsStyles = (apiName) => {
   const traits = dataTFTTraits.get();
   const trait = traits.find((trait) => trait.apiName === apiName);
-
+  console.log({trait})
   if (!trait || !trait.effects) return {};
 
   const styleMapping = {

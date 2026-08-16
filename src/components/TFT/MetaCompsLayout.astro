@@ -19,8 +19,8 @@ interface Props {
   description?: string;
   lastUpdate?: string;
   video: { id: string; title: string; thumbnail: string };
-  top10Comps: any[];
-  restComps: any[];
+  allComps: any[];
+  comp?: any;
   activeId?: string;
   snippetImgUrl: string;
   isIndividual:boolean;
@@ -31,14 +31,21 @@ const {
   titleHighlight = ``,
   description = `Descubre las mejores TFT comps y composiciones TFT del Set ${setNumberLatest} actualizadas para el parche ${constantes.MetaCompVersion}. Aquí encontrarás builds, objetos BIS, aumentos y estrategias para jugar las compos más fuertes del meta de Teamfight Tactics y subir elo más rápido.`,
   lastUpdate = lastUpdateComps || null,
-  top10Comps,
-  restComps = [],
+  allComps = [],
+  comp: activeComp = null,
   activeId = null,
   snippetImgUrl,
   isIndividual=false
 } = Astro.props;
 
+console.log({activeComp})
 console.log({lastUpdate})
+
+const defaultSet = activeComp?.set_number || allComps.find(c => c.urlSEO === activeId)?.set_number || setNumberLatest;
+const sets = [
+  { id: setNumberLatest, name: `Set ${setNumberLatest} (Latest)` },
+  { id: setNumberPBE, name: `Set ${setNumberPBE} (PBE)` }
+];
 
 const tiersInfo = [
   {
@@ -73,6 +80,8 @@ const tiersInfo = [
   // },
 ];
 
+
+
 let keywords =
   "TFT Meta, Meta comps, comps TFT, comp TFT, Meta TFT, composiciones TFT, build TFT, tft comps, compos tft";
 if(activeId){
@@ -100,30 +109,43 @@ const urlRecursosTFT = [
   "https://youtu.be/nD-1exiSgnE",
 ];
 
-let globalIndex = 1;
-const tierChildren = !isIndividual ? tiersInfo.map((tier) => {
-  const compsInTier = [...top10Comps, ...restComps].filter(
-    (comp) => comp.tier === tier.tier
-  );
+const buildTOCForSet = (setId) => {
+  let globalIndex = 1;
+  const tierChildren = !isIndividual ? tiersInfo.map((tier) => {
+    const compsInTier = allComps.filter(
+      (comp) => comp.tier === tier.tier && (comp.set_number || setNumberLatest) === setId
+    );
+    if (compsInTier.length === 0) return null;
+    return {
+      label: `Tier ${tier.tier}`,
+      children: compsInTier.map((comp) => {
+        const currentIndex = globalIndex++;
+        const isActive = String(comp.urlSEO) === String(activeId);
+        return {
+          label: `${currentIndex}. ${comp.nombre || comp.urlSEO}`,
+          href: `/tft/meta-comps-tier-list-teamfight-tactics/${comp.urlSEO}`,
+          isActive: isActive
+        };
+      })
+    };
+  }).filter(Boolean) : [];
 
-  if (compsInTier.length === 0) return null;
+  return [
+    !isIndividual && {
+      label: `Comps Tier List`,
+      href: "#TierList",
+      children: tierChildren
+    },
+    !isIndividual && {
+      label: "Recursos TFT",
+      href: "#RecursosTFT"
+    }
+  ].filter(Boolean);
+};
 
-  return {
-    label: `Tier ${tier.tier}`,
-    children: compsInTier.map((comp) => {
-      const currentIndex = globalIndex++;
-      const isActive = String(comp.urlSEO) === String(activeId);
-      return {
-        label: `${currentIndex}. ${comp.nombre || comp.urlSEO}`,
-        href: `/tft/meta-comps-tier-list-teamfight-tactics/${comp.urlSEO}`,
-        isActive: isActive
-      };
-    })
-  };
-}).filter(Boolean) : [];
 const tableOfContentIndividual = [
   {
-    label:[...top10Comps, ...restComps].find((comp) => String(comp.urlSEO) === String(activeId))?.nombre || "composición",
+    label: allComps.find((comp) => String(comp.urlSEO) === String(activeId))?.nombre || "composición",
     href:`#${activeId}`,
     
   },
@@ -132,17 +154,6 @@ const tableOfContentIndividual = [
     href:"#TierList"
   }
 ]
-const tableOfContentData = [
-  !isIndividual && {
-    label: "Comps Tier List",
-    href: "#TierList",
-    children: tierChildren
-  },
-  !isIndividual && {
-    label: "Recursos TFT",
-    href: "#RecursosTFT"
-  }
-].filter(Boolean);
 ---
 
 <LayoutMaxWidth
@@ -155,7 +166,7 @@ const tableOfContentData = [
 >
   <div class="two-columns header-section">
     <div id="container-info">
-      <h1>
+      <h1 id="meta-title-main" data-is-individual={isIndividual ? "true" : "false"}>
         {titleMain}<br /><span class="colored-text">{titleHighlight}</span>
       </h1>
       <p>{description}</p>
@@ -181,8 +192,35 @@ const tableOfContentData = [
   </div>
   <DynamicSection hasSidebar={!isIndividual}>
     <div slot="main">
-      {
-        !isIndividual && 
+      <div class="set-switcher" style="display: flex; gap: 10px; margin-bottom: 20px; justify-content: center;">
+        {sets.map(s => {
+          const isActive = s.id === defaultSet;
+          const activeBg = s.id === setNumberLatest ? "rgba(0, 255, 196, 0.15)" : "rgba(255, 0, 160, 0.15)";
+          const activeColor = s.id === setNumberLatest ? "#00ffc4" : "#ff00a0";
+          const activeShadow = s.id === setNumberLatest ? "0 0 10px rgba(0,255,196,0.25)" : "0 0 10px rgba(255,0,160,0.25)";
+          
+          return (
+            <button 
+              class={`set-toggle-btn ${isActive ? 'active' : ''}`} 
+              data-target-set={s.id} 
+              style={`padding: 8px 16px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: all 0.2s; font-weight: bold; font-size: 14px; background: ${isActive ? activeBg : '#1a1a24'}; color: ${isActive ? activeColor : '#888'}; box-shadow: ${isActive ? activeShadow : 'none'};`}
+            >
+              {s.name}
+            </button>
+          );
+        })}
+      </div>
+
+      {sets.map(setObj => {
+        const compsInSet = allComps.filter(c => (c.set_number || setNumberLatest) === setObj.id);
+        const top10Comps = compsInSet.slice(0, 10);
+        const restComps = compsInSet.slice(10);
+        const isActiveSet = setObj.id === defaultSet;
+
+        return (
+          <div class={`set-content-container set-content-${setObj.id}`} style={`display: ${isActiveSet ? 'block' : 'none'};`}>
+            {
+              !isIndividual && 
 
         <h2 id="TierList">Mejores TFT Comps del Meta Actual (Parche {constantes.MetaCompVersion})</h2>
         <p>
@@ -209,51 +247,40 @@ const tableOfContentData = [
         <h2 id={"TierList"}>Tier List TFT</h2>
       }
       {
-        tiersInfo.map((tier, index) => (
-          <div class={`tier-info tier-card-${tier.tier}`}>
-            <h3 class="tier-header">
-              <div class="container-tier-text">
-                <span class={`tier-number tier-number-${tier.tier}`}>
-                  {tier.tier}
-                </span>
-                {/* <span class={`tier-title tier-title-${tier.tier}`}>
-                  {tier.title}
-                </span> */}
-              </div>
-            </h3>
-            {[...top10Comps, ...restComps].length && (
-              <div class="container-champs-tier">
-                {[...top10Comps, ...restComps]
-                  .filter((comp) => {
-                    // if (tier.tier === "H") {
-                    //   return comp.tierExtra === "H";
-                    // }
-                    // if (tier.tier === "X") {
-                    //   return comp.tierExtra === "X";
-                    // }
-                    return comp.tier === tier.tier;
-                  })
-                  .map((comp, index) => {
-                    const isActive = String(comp.urlSEO) === String(activeId);
-                    return (
-                      <CampeonImgInTierList
-                        apiNameCampeon={comp?.campeonMeta?.apiNameCampeon}
-                        apiNameItems={comp?.campeonMeta?.apiNameItemsDelCampeon}
-                        estrellas={comp?.campeonMeta?.estrellas}
-                        aumento={comp?.campeonMeta?.aumento}
-                        emblema={comp?.campeonMeta?.emblema}
-                        compUrl={comp.urlSEO}
-                        client:load
-                        transition:persist
-                      />
-                    );
-                  })}
-              </div>
-            )}
+        tiersInfo.map((tier, index) => {
+          const compsForThisTier = compsInSet.filter(comp => comp.tier === tier.tier);
+          
+          if (compsForThisTier.length === 0) return null;
 
-            {/* <p class={`tier-text`}>{tier.text}</p> */}
-          </div>
-        ))
+          return (
+            <div class={`tier-info tier-card-${tier.tier}`}>
+              <h3 class="tier-header">
+                <div class="container-tier-text">
+                  <span class={`tier-number tier-number-${tier.tier}`}>
+                    {tier.tier}
+                  </span>
+                </div>
+              </h3>
+              <div class="container-champs-tier">
+                {compsForThisTier.map((comp, index) => {
+                  const isActive = String(comp.urlSEO) === String(activeId);
+                  return (
+                    <CampeonImgInTierList
+                      apiNameCampeon={comp?.campeonMeta?.apiNameCampeon}
+                      apiNameItems={comp?.campeonMeta?.apiNameItemsDelCampeon}
+                      estrellas={comp?.campeonMeta?.estrellas}
+                      aumento={comp?.campeonMeta?.aumento}
+                      emblema={comp?.campeonMeta?.emblema}
+                      compUrl={comp.urlSEO}
+                      client:load
+                      transition:persist
+                    />
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })
       }
       {
         !isIndividual && top10Comps.map((comp, index) => (
@@ -270,7 +297,7 @@ const tableOfContentData = [
       }
       {
         !isIndividual && restComps.length > 0 && (
-          <button id="ver-mas-button" data-expanded="false">
+          <button id={`ver-mas-button-${setObj.id}`} class="ver-mas-button" data-expanded="false" data-set-btn={setObj.id}>
             Ver todas las composiciones
           </button>
         )
@@ -295,6 +322,10 @@ const tableOfContentData = [
             );
           })
       }
+          </div>
+        );
+      })}
+
       {
         !isIndividual &&
         <div id="RecursosTFT">
@@ -320,7 +351,15 @@ const tableOfContentData = [
       }
     </div>
     <div slot="sidebar">
-      <TableOfContent items={isIndividual ? tableOfContentIndividual : tableOfContentData} />
+      {isIndividual ? (
+        <TableOfContent items={tableOfContentIndividual} />
+      ) : (
+        sets.map(setObj => (
+          <div class={`set-content-container set-content-${setObj.id}`} style={`display: ${setObj.id === defaultSet ? 'block' : 'none'};`}>
+            <TableOfContent items={buildTOCForSet(setObj.id)} />
+          </div>
+        ))
+      )}
     </div>
       
     
@@ -328,54 +367,126 @@ const tableOfContentData = [
 </LayoutMaxWidth>
 
 <script>
-  document.addEventListener("astro:page-load", () => {
-    const verMasButton = document.getElementById("ver-mas-button");
-    const restCards = document.querySelectorAll(".rest-comp-card");
+  import { swapVersionTFT, versionTFT, setNumberPBE, setNumberLatest } from "@stores/dataTFT";
 
-    const expandComps = () => {
-      restCards.forEach((card) => {
-        card.classList.remove("hidden-comp");
+  document.addEventListener("astro:page-load", () => {
+    // Asegurarse de que la store global cargue los datos del Set activo al iniciar
+    const activeButton = document.querySelector(".set-toggle-btn.active");
+    if (activeButton) {
+      const initialSetId = activeButton.getAttribute("data-target-set");
+      const targetVersion = initialSetId === setNumberPBE ? "pbe" : "latest";
+      if (versionTFT.get() !== targetVersion) {
+         swapVersionTFT(targetVersion);
+      }
+    }
+
+    // Set switcher logic
+    const setButtons = document.querySelectorAll(".set-toggle-btn");
+    const setContainers = document.querySelectorAll(".set-content-container");
+
+    setButtons.forEach(btn => {
+      btn.addEventListener("click", (e) => {
+        const targetSet = e.currentTarget.getAttribute("data-target-set");
+        
+        // Cambiar la store global al set correspondiente
+        const targetVersion = targetSet === setNumberPBE ? "pbe" : "latest";
+        if (versionTFT.get() !== targetVersion) {
+           swapVersionTFT(targetVersion);
+        }
+
+        // Update buttons styling
+        setButtons.forEach(b => {
+          b.classList.remove("active");
+          b.style.background = "#1a1a24";
+          b.style.color = "#888";
+          b.style.boxShadow = "none";
+        });
+        
+        const activeBg = targetSet === setNumberLatest ? "rgba(0, 255, 196, 0.15)" : "rgba(255, 0, 160, 0.15)";
+        const activeColor = targetSet === setNumberLatest ? "#00ffc4" : "#ff00a0";
+        const activeShadow = targetSet === setNumberLatest ? "0 0 10px rgba(0,255,196,0.25)" : "0 0 10px rgba(255,0,160,0.25)";
+        
+        e.currentTarget.classList.add("active");
+        e.currentTarget.style.background = activeBg;
+        e.currentTarget.style.color = activeColor;
+        e.currentTarget.style.boxShadow = activeShadow;
+
+        // Update main title if not individual
+        const mainTitle = document.getElementById("meta-title-main");
+        if (mainTitle && mainTitle.getAttribute("data-is-individual") !== "true") {
+          const textNode = mainTitle.childNodes[0];
+          if (textNode && textNode.nodeType === Node.TEXT_NODE) {
+            textNode.nodeValue = textNode.nodeValue.replace(/Set \d+/i, `Set ${targetSet}`);
+          }
+        }
+
+        // Update containers visibility
+        setContainers.forEach(container => {
+          if (container.classList.contains(`set-content-${targetSet}`)) {
+            container.style.display = "block";
+          } else {
+            container.style.display = "none";
+          }
+        });
       });
-      if (verMasButton) {
+    });
+
+    // Ver más logic
+    const verMasButtons = document.querySelectorAll(".ver-mas-button");
+    
+    verMasButtons.forEach(verMasButton => {
+      const setId = verMasButton.getAttribute("data-set-btn");
+      const container = document.querySelector(`.set-content-${setId}`);
+      if (!container) return;
+      const restCards = container.querySelectorAll(".rest-comp-card");
+
+      const expandComps = () => {
+        restCards.forEach((card) => {
+          card.classList.remove("hidden-comp");
+        });
         verMasButton.textContent = "Ver menos composiciones";
         verMasButton.setAttribute("data-expanded", "true");
-      }
-    };
+      };
 
-    const collapseComps = () => {
-      restCards.forEach((card) => {
-        const isActive = card.getAttribute("data-active") === "true";
-        if (!isActive) {
-          card.classList.add("hidden-comp");
-        }
-      });
-      if (verMasButton) {
+      const collapseComps = () => {
+        restCards.forEach((card) => {
+          const isActive = card.getAttribute("data-active") === "true";
+          if (!isActive) {
+            card.classList.add("hidden-comp");
+          }
+        });
         verMasButton.textContent = "Ver todas las composiciones";
         verMasButton.setAttribute("data-expanded", "false");
+      };
+
+      // Restaurar estado al cargar la página
+      const savedExpanded = localStorage.getItem("tft-comps-expanded") === "true";
+      if (savedExpanded) {
+        expandComps();
       }
-    };
 
-    // Restaurar estado al cargar la página
-    const savedExpanded = localStorage.getItem("tft-comps-expanded") === "true";
-    if (savedExpanded) {
-      expandComps();
-    } else {
-      collapseComps();
-    }
-
-    if (verMasButton) {
       verMasButton.addEventListener("click", () => {
-        const isExpanded =
-          verMasButton.getAttribute("data-expanded") === "true";
-        if (!isExpanded) {
-          expandComps();
-          localStorage.setItem("tft-comps-expanded", "true");
-        } else {
+        const isExpanded = verMasButton.getAttribute("data-expanded") === "true";
+        if (isExpanded) {
           collapseComps();
           localStorage.setItem("tft-comps-expanded", "false");
+          
+          // Opcional: hacer scroll hacia arriba al contraer
+          const topElement = document.getElementById("TierList");
+          if (topElement) {
+            const offset = 80;
+            const elementPosition = topElement.getBoundingClientRect().top + window.pageYOffset;
+            window.scrollTo({
+              top: elementPosition - offset,
+              behavior: 'smooth'
+            });
+          }
+        } else {
+          expandComps();
+          localStorage.setItem("tft-comps-expanded", "true");
         }
       });
-    }
+    });
 
     // Manejar click en los campeones de la lista de tiers
     const champTiers = document.querySelectorAll(".champ-tier");

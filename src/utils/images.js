@@ -1,5 +1,17 @@
-export const getLocalTftImage = (iconPath, category, versionNumber = "17") => {
+import { versionTFT, setNumberLatest, setNumberPBE } from "../stores/dataTFT.js";
+
+export const getLocalTftImage = (iconPath, category, versionNumber) => {
   if (!iconPath) return '/tft/assets/t-logo.png'; // Ruta por defecto si no hay icono
+
+  let finalVersion = versionNumber;
+  if (!finalVersion) {
+    if (typeof versionTFT !== "undefined") {
+      const currentVersion = versionTFT.get();
+      finalVersion = currentVersion === "latest" ? setNumberLatest : setNumberPBE;
+    } else {
+      finalVersion = "17"; // fallback
+    }
+  }
 
   const fileName = iconPath.split('/').pop().toLowerCase().replace('.tex', '.png').replace('.dds', '.png');
 
@@ -9,5 +21,5 @@ export const getLocalTftImage = (iconPath, category, versionNumber = "17") => {
     else category = 'augments/hexcore'; // default para aumentos
   }
 
-  return `/tft/sets/${versionNumber}/${category}/${fileName}`;
+  return `/tft/sets/${finalVersion}/${category}/${fileName}`;
 };

@@ -2,7 +2,5 @@
 import MetaCompsLayout from "@components/TFT/MetaCompsLayout.astro";
 import { getComposFromDB } from "../../../lib/cache/tftCache.js";
 const todasLasCompsPBE = await getComposFromDB();
-const top10Comps = [...todasLasCompsPBE.slice(0, 10)];
-const restComps = [...todasLasCompsPBE.slice(10)];
 ---
-<MetaCompsLayout top10Comps={top10Comps} restComps={restComps} />
+<MetaCompsLayout allComps={todasLasCompsPBE} isIndividual={false} />

@@ -267,7 +267,10 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
     const rawChamp = championsTFT?.find(champ => champ?.apiName === data.apiNameCampeon);
 
     // Si no encuentra al campeón en la store, retornamos null
-    if (!rawChamp) return null;
+    if (!rawChamp) {
+      console.log(`[CardsCompos] No se encontró el campeón ${data.apiNameCampeon} en la store actual (version: ${currentVersion})`);
+      return null;
+    }
 
     const iconPath = rawChamp.squareIcon || rawChamp.tileIcon || "";
     const cleanIconPath = iconPath.startsWith('/') ? iconPath.slice(1) : iconPath;

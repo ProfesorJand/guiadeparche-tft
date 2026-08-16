@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import style from "../main/Admin/css/Builder.module.css";
 import { useStore } from "@nanostores/react";
-import { dataTFTChampions, initialTFT_SET, dataTFTAllItems, dataTFTTraits, findTraitsStyles } from "@stores/dataTFT";
+import { dataTFTChampions, initialTFT_SET, dataTFTAllItems, dataTFTTraits, findTraitsStyles, versionTFT, setNumberLatest, setNumberPBE } from "@stores/dataTFT";
 import { getLocalTftImage } from "@utils/images";
 import { composicionTFT as datosCompos, actualizarComposicionTFT } from "@stores/tft/dataFormularioCrear.js";
 import { traitsColors } from "@functions/campeonestft.js";
@@ -22,7 +22,8 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
   const [activeMenu, setActiveMenu] = useState(null);
   const [isMounted, setIsMounted] = React.useState(false);
   React.useEffect(() => { setIsMounted(true); }, []);
-  const version = "latest";
+  const currentVersion = useStore(versionTFT);
+  const versionNumber = currentVersion === "latest" ? setNumberLatest : setNumberPBE;
 
   const globalChampions = useStore(dataTFTChampions) || [];
   const globalItems = useStore(dataTFTAllItems) || [];
@@ -56,7 +57,7 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
 
       return {
         apiName: itemData.apiName || itemData.name,
-        imagen: itemData.icon.startsWith("http") ? itemData.icon.toLowerCase().replace(".tex", ".png") : getLocalTftImage(itemData.icon, itemData.apiName?.includes('Augment') ? 'augments/choiceui' : 'items'),
+        imagen: itemData.icon.startsWith("http") ? itemData.icon.toLowerCase().replace(".tex", ".png") : getLocalTftImage(itemData.icon, itemData.apiName?.includes('Augment') ? 'augments/choiceui' : 'items', versionNumber),
         traitExtra
       };
     }).filter(Boolean);
@@ -87,7 +88,7 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
       apiName: champData.apiName,
       nombre: champData.name,
       //itemData.icon.startsWith("http") ? itemData.icon.toLowerCase().replace(".tex", ".png") : getLocalTftImage(itemData.icon, itemData.apiName?.includes('Augment') ? 'augments/choiceui' : 'items'),
-      imagen: champData.tileIcon.includes("http") ? champData.tileIcon.toLowerCase().replace(".tex", ".png") : getLocalTftImage(champData.tileIcon, 'champions/tileIcon'),
+      imagen: champData.tileIcon.includes("http") ? champData.tileIcon.toLowerCase().replace(".tex", ".png") : getLocalTftImage(champData.tileIcon, 'champions/tileIcon', versionNumber),
       coste: champData.cost,
       traits: resolvedTraits,
       items: itemsData,
@@ -169,7 +170,7 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
       if (newBoard[hexIndex] && newBoard[hexIndex].items.length < 3) {
         const itemImageUrl = item.icon.startsWith("http")
           ? item.icon.replace(".tex", ".png").toLowerCase()
-          : getLocalTftImage(item.icon, item.apiName?.includes('Augment') ? 'augments/choiceui' : 'items');
+          : getLocalTftImage(item.icon, item.apiName?.includes('Augment') ? 'augments/choiceui' : 'items', versionNumber);
 
         let traitExtra = null;
         if (item.incompatibleTraits && item.incompatibleTraits.length > 0) {
@@ -357,7 +358,7 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
                         const traitSVG = findClosestTraitImage(syn.apiName.replace(" ", ""), count);
                         const iconUrl = syn.icon.startsWith("http")
                           ? syn.icon.toLowerCase().replace(".tex", ".png")
-                          : getLocalTftImage(syn.icon, 'traits');
+                          : getLocalTftImage(syn.icon, 'traits', versionNumber);
 
                         return (
                           <div key={idx} className={style.containerTrait}>
@@ -412,6 +413,23 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
     return hexes;
   };
 
+  const colorHex = {
+    bronze: "#a16f44",
+    silver: "#909090",
+    gold: "gold",
+    prismatic: { backgroundImage: "url(/hexagonos/hex-prismatic.webp)", backgroundSize: "125%", backgroundPosition: "center" },
+    default: "grey"
+  };
+
+  function checkColor(hexColor) {
+    if (!hexColor) return { backgroundColor: colorHex.default };
+    if (hexColor === "hex-prismatic.webp") {
+      return colorHex.prismatic;
+    }
+    const colorKey = hexColor.replace("hex-", "").replace(".webp", "");
+    return { backgroundColor: colorHex[colorKey] || colorHex.default };
+  }
+
   const renderTraits = () => {
     return (
       <div className={style.containerTraitsShow}>
@@ -421,15 +439,13 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
           if (traitSVG === "hex-default.webp") return null;
           const iconUrl = synergiesCount[trait]?.icon?.startsWith("http")
             ? synergiesCount[trait]?.icon.toLowerCase().replace(".tex", ".png")
-            : getLocalTftImage(synergiesCount[trait]?.icon, 'traits');
+            : getLocalTftImage(synergiesCount[trait]?.icon, 'traits', versionNumber);
 
           return (
-            <div key={idx} className={style.containerTraitShow}>
-              <div className={style.containerTraitShowIcon}>
-                <img className={style.backgroundSinergiaShow} src={`/hexagonos/${traitSVG}`} alt="hex" />
-                <img className={style.sinergiaShow} src={iconUrl} alt={trait} />
-              </div>
-              <span>{count}</span>
+            <div key={idx} className={style.containerSinergiaHexShow}>
+              <span className={style.borderHexShow} style={checkColor(traitSVG)}></span>
+              <img className={style.imgSinergiaShow} src={iconUrl} alt={trait} />
+              <div className={style.infoSinergiaShow}>{count}</div>
             </div>
           )
         })}
