@@ -39,6 +39,23 @@
   align-items: center;
   justify-content: flex-start;
 }
+.containerChampCarry{
+  display:flex;
+  position:relative;
+}
+.champStars{
+  display:flex;
+  position:absolute;
+  top: 0;
+  left: 0;
+  width:100%;
+  z-index:2;
+}
+.backgroundComp{
+  display:flex;
+  position:relative;
+}
+
 .titleInfografia{
   font-size: 25px;
   font-weight: bold;
@@ -328,6 +345,11 @@
   transition: all 0.2s ease;
 }
 .cItem{
+  display:flex;
+  width:calc((100% - (var(--gapInside) * 4)) / 5);
+  position:relative;
+}
+.cBestItem{
   display:flex;
   width:calc((100% - (var(--gapInside) * 4)) / 5);
   position:relative;

@@ -391,7 +391,6 @@ export const updateDataTFT = async (data) => {
 };
 
 export const swapVersionTFT = (data) => {
-  console.log("se hizo swap")
   versionTFT.set(data);
   loadDataTFTFromAPI({ version: data });
 }
@@ -458,7 +457,6 @@ export const apiNamesCrafteableItems = () => {
 
 export const AllCraftableItems = (todosLosItems) => {
   const apiNames = apiNamesCrafteableItems();
-  console.log({apiNamesCraftableItems:apiNames})
   if (!todosLosItems.length) return [];
   const retornando = apiNames.map(apiName => {
     const item = todosLosItems.find(i => i.apiName === apiName);
@@ -1438,7 +1436,6 @@ export const RADIANTS_ITEMS = []
 export const findTraitsStyles = (apiName) => {
   const traits = dataTFTTraits.get();
   const trait = traits.find((trait) => trait.apiName === apiName);
-  console.log({trait})
   if (!trait || !trait.effects) return {};
 
   const styleMapping = {

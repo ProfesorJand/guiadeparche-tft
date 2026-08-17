@@ -30,7 +30,7 @@ const CardsMasterPlanCompos = ({compo, filtroSoft={}, gruposSalidasEarly=[]})=>{
     if (traitObj) {
       const traitImgUrl = traitObj.icon ? (traitObj.icon.includes("http") ? traitObj.icon.replace(".tex", ".png").toLowerCase() : getLocalTftImage(traitObj.icon, 'traits', versionNumber)) : "";
       const displayName = getTraitDisplayName(traitObj);
-      return <img src={traitImgUrl} alt={displayName} title={displayName} style={{ width: isGrande ? '32px' : '24px', height: isGrande ? '32px' : '24px', objectFit: 'contain' }} />;
+      return <img src={traitImgUrl} alt={displayName} title={displayName} style={{ width: isGrande ? '100%' : '50%', height: isGrande ? '100%' : '50%', objectFit: 'contain' }} />;
     }
     const extraMap = {
       'winstreak': { name: 'Win Streak', icon: '/tft/assets/WinStreak.webp' },

@@ -219,7 +219,7 @@ const SuscripcionesMP = () => {
         </p>
       </div>
 
-      {/* {loadingPlanes ? (
+      {loadingPlanes ? (
         <div className={style.loadingContainer}>
           <div className={style.loadingSpinner}></div>
           <span>Cargando planes de suscripción desde tu servidor...</span>
@@ -334,7 +334,7 @@ const SuscripcionesMP = () => {
           })}
         </div>
         </>
-      )} */}
+      )}
     </div>
   );
 };

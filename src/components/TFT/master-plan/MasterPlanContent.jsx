@@ -35,7 +35,7 @@ const MasterPlanContent = () => {
       ) : (
         /* Si NO tiene el plan activo (logueado o no) */
         <>
-          <SuscripcionesMP />
+          {/* <SuscripcionesMP /> */}
 
           {/* Botón de login para los no logueados */}
           {!user && (

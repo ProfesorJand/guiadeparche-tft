@@ -914,7 +914,7 @@ const AumentosVisual = ({
 }) => {
   const comp = useStore(datosCompos);
   const AllAugments = useStore(dataTFTAllAugments);
-  
+
   const addAumento = (apiName, tier) => {
     const newAumentos = [...(comp.aumentos || [])];
     newAumentos.push({
@@ -1613,12 +1613,15 @@ export default function FormularioVisualTFT({
             apiNamePequeno: aument.apiNamePequeno,
             early: aument.early,
             midLate: aument.midLate,
-            op: aument.op
+            op: aument.op,
+            tier: aument.tier
           };
         }) : compo.aumentos || [],
         encuentros: compo.encuentros || [],
         mejoresItems: compo.mejoresItems,
-        proTip: compo.proTip || {}
+        proTip: compo.proTip || {},
+        salidasEarly:compo.salidasEarly,
+        racha:compo.racha,
       });
     } else {
       reiniciarComposicionTFT();
