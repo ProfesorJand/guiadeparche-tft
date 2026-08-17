@@ -83,7 +83,7 @@ const FormularioCrearCompoTFT = ({ compo = {} }) => {
           apiNameItemsSpecialBisDelCampeon: b.apiNameItemsSpecialBisDelCampeon || [["", "", ""]],
         })) || [],
         condiciones: compo.condiciones || [],
-        aumentos: compo.aumentos.every(item => typeof item === 'object') ? compo.aumentos.map((aument) => { return { apiNameGrande: aument.apiName || aument.apiNameGrande, apiNamePequeno: aument.apiNamePequeno, early: aument.early, midLate: aument.midLate, op: aument.op } }) : compo.aumentos || [],
+        aumentos: compo.aumentos?.every(item => typeof item === 'object') ? compo.aumentos.map((aument) => { return { apiNameGrande: aument.apiName || aument.apiNameGrande, apiNamePequeno: aument.apiNamePequeno, early: aument.early, midLate: aument.midLate, op: aument.op, tier: aument.tier } }) : compo.aumentos || [],
         encuentros: compo.encuentros || [],
         mejoresItems: compo.mejoresItems,
         proTip: compo.proTip || {},

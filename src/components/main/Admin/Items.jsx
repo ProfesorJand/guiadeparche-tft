@@ -213,6 +213,26 @@ export const Items = ({ onSelectItem })=>{
 
   const ARTEFACTOS = [
     {
+      nombre:"",
+      apiName:"TFT_Item_Artifact_AegisOfDawn",
+      img:"",
+    },
+    {
+      nombre:"",
+      apiName:"TFT_Item_Artifact_AegisOfDusk",
+      img:"",
+    },
+    {
+      nombre:"Hellfire Hatchet",
+      apiName:"TFT_Item_Artifact_HellfireHatchet",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/tft/icons/items/hexcore/tft_item_artifact_hellfirehatchet.png",
+    },
+    {
+      nombre:"Cappa Juice",
+      apiName:"TFT_Item_Artifact_CappaJuice",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/tft/icons/items/hexcore/tft16_artifact_kappajuice.png",
+    },
+    {
       nombre: "Dawncore",
       apiName: "TFT_Item_Artifact_Dawncore",
       img: "https://raw.communitydragon.org/pbe/game/assets/maps/tft/icons/items/hexcore/tft_item_artifact_dawncore.tft_set15.png",
@@ -221,6 +241,11 @@ export const Items = ({ onSelectItem })=>{
       nombre:"Eternal Pact",
       apiName:"TFT_Item_Artifact_EternalPact",
       img:"https://raw.communitydragon.org/pbe/game/assets/maps/tft/icons/items/hexcore/tft16_artifact_eternalpact.png",
+    },
+    {
+      nombre:"",
+      apiName:"TFT_Item_Artifact_VoidGauntlet",
+      img:"",
     },
     {
       nombre: "Spirit Visage",
@@ -238,13 +263,18 @@ export const Items = ({ onSelectItem })=>{
       apiName: "TFT_Item_Artifact_BlightingJewel",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/tft/icons/items/hexcore/tft_item_artifact_blightingjewel.tft_set13.png",
     },
-    {
-      nombre:"Corrupt Vampiric Scepter",
-      apiName:"TFT_Item_Artifact_CursedVampiricScepter",
-      img:"https://raw.communitydragon.org/latest/game/assets/maps/tft/icons/items/hexcore/tft_item_artifact_cursedvampiricscepter.tft_set13.png",
-    },
-    {
-      nombre:"Death's Defiance",
+    // {
+      //   nombre:"Corrupt Vampiric Scepter",
+      //   apiName:"TFT_Item_Artifact_CursedVampiricScepter",
+      //   img:"https://raw.communitydragon.org/latest/game/assets/maps/tft/icons/items/hexcore/tft_item_artifact_cursedvampiricscepter.tft_set13.png",
+      // },
+      {
+        nombre:"",
+        apiName:"TFT_Item_Artifact_CursedVampiricScepter",
+        img:"",
+      },
+      {
+        nombre:"Death's Defiance",
       apiName:"TFT4_Item_OrnnDeathsDefiance",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/tft/icons/items/hexcore/tft4_item_ornndeathsdefiance.tft_set13.png",
     },
@@ -253,11 +283,11 @@ export const Items = ({ onSelectItem })=>{
       apiName:"TFT9_Item_OrnnDeathfireGrasp",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/tft/icons/items/hexcore/tft9_item_ornndeathfiregrasp.tft_set13.png",
     },
-    {
-      nombre:"Eternal Winter",
-      apiName:"TFT4_Item_OrnnEternalWinter",
-      img:"https://raw.communitydragon.org/latest/game/assets/maps/tft/icons/items/hexcore/tft4_item_ornneternalwinter.tft_set13.png",
-    },
+    // {
+    //   nombre:"Eternal Winter",
+    //   apiName:"TFT4_Item_OrnnEternalWinter",
+    //   img:"https://raw.communitydragon.org/latest/game/assets/maps/tft/icons/items/hexcore/tft4_item_ornneternalwinter.tft_set13.png",
+    // },
     {
       nombre:"Fishbones",
       apiName:"TFT_Item_Artifact_Fishbones",
@@ -293,11 +323,11 @@ export const Items = ({ onSelectItem })=>{
       apiName:"TFT4_Item_OrnnInfinityForce",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/tft/icons/items/hexcore/tft4_item_ornninfinityforce.tft_set13.png",
     },
-    {
-      nombre:"Innervating Locket",
-      apiName:"TFT_Item_Artifact_InnervatingLocket",
-      img:"https://raw.communitydragon.org/latest/game/assets/maps/tft/icons/items/hexcore/tft_item_artifact_innervatinglocket.tft_set13.png",
-    },
+    // {
+    //   nombre:"Innervating Locket",
+    //   apiName:"TFT_Item_Artifact_InnervatingLocket",
+    //   img:"https://raw.communitydragon.org/latest/game/assets/maps/tft/icons/items/hexcore/tft_item_artifact_innervatinglocket.tft_set13.png",
+    // },
     {
       nombre:"Lich Bane",
       apiName:"TFT_Item_Artifact_LichBane",
@@ -328,11 +358,11 @@ export const Items = ({ onSelectItem })=>{
       apiName:"TFT7_Item_ShimmerscaleMogulsMail",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/tft/icons/items/hexcore/tft7_item_shimmerscalemogulsmail.tft_set13.png",
     },
-    {
-      nombre:"Prowler's Claw",
-      apiName:"TFT_Item_Artifact_ProwlersClaw",
-      img:"https://raw.communitydragon.org/latest/game/assets/maps/tft/icons/items/hexcore/tft_item_artifact_prowlersclaw.tft_set13.png",
-    },
+    // {
+    //   nombre:"Prowler's Claw",
+    //   apiName:"TFT_Item_Artifact_ProwlersClaw",
+    //   img:"https://raw.communitydragon.org/latest/game/assets/maps/tft/icons/items/hexcore/tft_item_artifact_prowlersclaw.tft_set13.png",
+    // },
     {
       nombre:"Rapid Firecannon",
       apiName:"TFT_Item_Artifact_RapidFirecannon",
@@ -348,11 +378,11 @@ export const Items = ({ onSelectItem })=>{
       apiName:"TFT_Item_Artifact_SilvermereDawn",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/tft/icons/items/hexcore/tft_item_artifact_silvermeredawn.tft_set13.png",
     },
-    {
-      nombre:"Spectral Cutlass",
-      apiName:"TFT_Item_Artifact_SpectralCutlass",
-      img:"https://raw.communitydragon.org/latest/game/assets/maps/tft/icons/items/hexcore/tft_item_artifact_spectralcutlass.tft_set13.png",
-    },
+    // {
+    //   nombre:"Spectral Cutlass",
+    //   apiName:"TFT_Item_Artifact_SpectralCutlass",
+    //   img:"https://raw.communitydragon.org/latest/game/assets/maps/tft/icons/items/hexcore/tft_item_artifact_spectralcutlass.tft_set13.png",
+    // },
     {
       nombre:"Suspicious Trench Coat",
       apiName:"TFT_Item_Artifact_SuspiciousTrenchCoat",
@@ -363,16 +393,16 @@ export const Items = ({ onSelectItem })=>{
       apiName:"TFT_Item_Artifact_TalismanOfAscension",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/tft/icons/items/hexcore/tft_item_artifact_talismanofascension.tft_set13.png",
     },
-    {
-      nombre:"Trickster's Glass",
-      apiName:"TFT9_Item_OrnnTrickstersGlass",
-      img:"https://raw.communitydragon.org/latest/game/assets/maps/tft/icons/items/hexcore/tft9_item_ornntrickstersglass.tft_set13.png",
-    },
-    {
-      nombre:"Unending Despair",
-      apiName:"TFT_Item_Artifact_UnendingDespair",
-      img:"https://raw.communitydragon.org/latest/game/assets/maps/tft/icons/items/hexcore/tft_item_artifact_unendingdespair.tft_set13.png",
-    },
+    // {
+    //   nombre:"Trickster's Glass",
+    //   apiName:"TFT9_Item_OrnnTrickstersGlass",
+    //   img:"https://raw.communitydragon.org/latest/game/assets/maps/tft/icons/items/hexcore/tft9_item_ornntrickstersglass.tft_set13.png",
+    // },
+    // {
+    //   nombre:"Unending Despair",
+    //   apiName:"TFT_Item_Artifact_UnendingDespair",
+    //   img:"https://raw.communitydragon.org/latest/game/assets/maps/tft/icons/items/hexcore/tft_item_artifact_unendingdespair.tft_set13.png",
+    // },
     {
       nombre:"Wit's End",
       apiName:"TFT_Item_Artifact_WitsEnd",
@@ -382,7 +412,7 @@ export const Items = ({ onSelectItem })=>{
       nombre:"Zhonya's Paradox",
       apiName:"TFT4_Item_OrnnZhonyasParadox",
       img:"https://raw.communitydragon.org/latest/game/assets/maps/tft/icons/items/hexcore/tft4_item_ornnzhonyasparadox.tft_set13.png",
-    },
+    }
     
   ];
   const ARTEFACTOSPBE = [

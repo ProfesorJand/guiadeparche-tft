@@ -1,19 +1,23 @@
 import { useState } from "react";
 import style from "./css/InfografiaMPTFT.module.css";
-import { dataTFTAllAugments, dataTFTAllItems, dataTFTChampions,teamPlannerCode,setMutatorPBE,setMutatorLatest,versionTFT } from "@stores/dataTFT";
+import { dataTFTAllAugments, dataTFTAllItems, dataTFTChampions,dataTFTTraits,teamPlannerCode,setMutatorPBE,setMutatorLatest,versionTFT } from "@stores/dataTFT";
 import { useStore } from "@nanostores/react";
+import Sinergias from "@components/main/Admin/Sinergias";
 import ImgItem from "@components/TFT/ImgItem";
 import CampeonesNivel from "../elementosInfografia/CampeonesNivel";
-import Sinergias from "@components/main/Admin/Sinergias.jsx";
 import NuevoBuilderTFT from "../NuevoBuilderTFT";
 import ImgCampeon from "../ImgCampeon";
 import ImgAugment from "../ImgAugment";
+import ImgTrait from "../ImgTrait";
+
 import copyToClipboard from "@functions/copyToClipboard.js";
 import { getLocalTftImage } from "@utils/images.js";
+import { getTraitDisplayName } from "@components/main/Admin/TraitsList";
 const InfografiaMPTFT = ({comp = {}}) => {
   const AllItems = useStore(dataTFTAllItems);
   const AllChampions = useStore(dataTFTChampions);
   const AllAugments = useStore(dataTFTAllAugments);
+  const AllTraits = useStore(dataTFTTraits);
   const codeOfChampions = useStore(teamPlannerCode);
   const currentVersion = useStore(versionTFT)
   const [hoveredItemApiName, setHoveredItemApiName] = useState(null);
@@ -45,7 +49,11 @@ const InfografiaMPTFT = ({comp = {}}) => {
     const tableroArray = comp?.posicionamiento?.[0]?.tablero || [];
     return (
       <div className={style.headerInfografia}>
-        <img className={style.backgroundComp} src={getLocalTftImage(campeonMetaObj?.tileIcon, "champions/tileIcon")} alt={comp?.nombre || "Nueva Composición"} />
+        <div className={style.containerChampCarry}>
+          {comp?.campeonMeta?.estrellas && <img className={style.champStars} src="/tft/assets/3estrellas.webp"/>}
+          {comp?.campeonMeta?.estrellas === 4 && <img className={style.champStars} src="/tft/assets/4estrellas.webp"/>}
+          <img className={style.backgroundComp} src={getLocalTftImage(campeonMetaObj?.tileIcon, "champions/tileIcon")} alt={comp?.nombre || "Nueva Composición"} />
+        </div>
         <div className={style.containerTitleInfo}>
           <span className={style.titleInfografia}>{comp?.nombre || "Nueva Composición"}</span>
           <div className={style.containerTopInfo}>
@@ -57,6 +65,7 @@ const InfografiaMPTFT = ({comp = {}}) => {
             </div>
           </div>
         </div>
+        <AumentosOP/>
       </div>
     )
   }
@@ -70,21 +79,48 @@ const InfografiaMPTFT = ({comp = {}}) => {
           if(condicion.early){
             const condicionGrande= condicion.apiNameGrande;
             const condicionPequeno = condicion.ApiNamePequeno;
-            console.log({condicion})
+            console.log({condicion, esSinergia:AllTraits.some((item) => item.apiName === condicionGrande), AllTraits})
             const isCondicionGrandeAugment = AllAugments.some((item) => item.apiName === condicionGrande);
             const isCondicionPequenoAugment = AllAugments.some((item) => item.apiName === condicionPequeno);
             const isCondicionGrandeItem = AllItems.some((item) => item.apiName === condicionGrande);
             const isCondicionPequenoItem = AllItems.some((item) => item.apiName === condicionPequeno);
-            const extras = ["Win Streak","Loss Streak","Orbe","3 estrellas","4 estrellas"];
-            const isCondicionGrandeExtra = extras.some((item) => item === condicionGrande);
-            const isCondicionPequenoExtra = extras.some((item) => item === condicionPequeno);
+            const isCondicionGrandeChamp = AllChampions.some((item) => item.apiName === condicionGrande);
+            const isCondicionPequenoChamp = AllChampions.some((item) => item.apiName === condicionPequeno);
+            const isCondicionGrandeSinergia = AllTraits.some((item) => item.apiName === condicionGrande);
+            const isCondicionPequenoSinergia = AllTraits.some((item) => item.apiName === condicionPequeno);
+            const extras = [
+              {
+                apiName:"Win Streak",
+                img:"/tft/assets/WinStreak.webp"
+              },
+              {
+                apiName:"Loss Streak",
+                img:"/tft/assets/LossStreak.webp"
+              },
+              {
+                apiName:"orbedecampeon",
+                img:"/tft/assets/Orbe.webp"
+              },
+              {
+                apiName:"3 estrellas",
+                img:"/tft/assets/3estrellas.webp"
+              },
+              {
+                apiName:"4 estrellas",
+                img:"/tft/assets/4estrellas.webp"
+              }
+            ];
+            const isCondicionGrandeExtra = extras.some((item) => item.apiName === condicionGrande);
+            const isCondicionPequenoExtra = extras.some((item) => item.apiName === condicionPequeno);
           // aca debe de haber varias condiciones si es un aumento o item o emblema o encuentro
             return (
               <div key={condicionGrande} className={style.cCondicionOP}>
                 <div className={style.cCondicionGrande}>
                   {isCondicionGrandeAugment && <ImgAugment augment={AllAugments.find((item) => item.apiName === condicionGrande)}/>}
                   {isCondicionGrandeItem && <ImgItem item={AllItems.find((item) => item.apiName === condicionGrande)}/>}
-                  {isCondicionGrandeExtra && <span className={style.textExtra}>{condicionGrande}</span>}
+                  {isCondicionGrandeChamp && <ImgCampeon championData={AllChampions.find((item) => item.apiName === condicionGrande)}/>}
+                  {isCondicionGrandeSinergia && <ImgTrait trait={AllTraits.find((item) => item.apiName === condicionGrande)} />}
+                  {isCondicionGrandeExtra && <img src={extras.find((item) => item.apiName === condicionGrande).img} alt="" style={{width:"100%"}}/>}
                   {condicion.op && (
                   <div className={style.opAumento}>
                     <span className={style.textOP}>OP</span>
@@ -94,7 +130,9 @@ const InfografiaMPTFT = ({comp = {}}) => {
                 <div className={style.cCondicionPequeno}>
                   {isCondicionPequenoAugment && <ImgAugment augment={AllAugments.find((item) => item.apiName === condicionPequeno)}/>}
                   {isCondicionPequenoItem && <ImgItem item={AllItems.find((item) => item.apiName === condicionPequeno)}/>}
-                  {isCondicionPequenoExtra && <span className={style.textExtra}>{condicionPequeno}</span>}
+                  {isCondicionPequenoChamp && <ImgCampeon championData={AllChampions.find((item) => item.apiName === condicionPequeno)} showName={false}/>}
+                  {isCondicionPequenoSinergia && <ImgTrait trait={AllTraits.find((item) => item.apiName === condicionPequeno)} showName={false} />} 
+                  {isCondicionPequenoExtra && <img src={extras.find((item) => item.apiName === condicionPequeno).img} alt="" style={{width:"100%"}} />}
                 </div>
               </div>
             )
@@ -143,51 +181,66 @@ const InfografiaMPTFT = ({comp = {}}) => {
       </div>
     )
   }
+  const sortAumentos = (a, b) => {
+    const getTierPriority = (tier) => {
+      const t = (tier || "").toLowerCase();
+      if (t === "plata" || t === "silver") return 1;
+      if (t === "oro" || t === "gold") return 2;
+      if (t === "prismatico" || t === "prismatic") return 3;
+      return 4;
+    };
+    
+    const pA = getTierPriority(a.tier);
+    const pB = getTierPriority(b.tier);
+    
+    if (pA !== pB) return pA - pB;
+    
+    // Si tienen el mismo tier, el OP va primero
+    if (a.op && !b.op) return -1;
+    if (!a.op && b.op) return 1;
+    
+    return 0;
+  };
+
   const AumentosEarly = ()=>{
+    const list = (comp?.aumentos || []).filter(a => a.early).sort(sortAumentos);
+
     return (
       <div className={`${style.cBoxTitleInfo} ${style.cAumentos}`}>
         <span className={style.tBox}>Aumentos Early</span>
         <div className={style.cAumentosInfo}>
-          {
-            (comp?.aumentos || []).map((aumento, index) => {
-              console.log({aumento})
-              if(aumento.early){
-                return (
-                  <div key={index} className={style.cAumento}>
-                    <ImgAugment augment={AllAugments.find((item) => item.apiName === aumento.apiNameGrande)}/>
-                    {aumento.op && (
-                      <div className={style.opAumento}>
-                      <span className={style.textOP}>OP</span>
-                    </div>
-                  )}
+          {list.map((aumento, index) => (
+            <div key={index} className={style.cAumento}>
+              <ImgAugment augment={AllAugments.find((item) => item.apiName === aumento.apiNameGrande)}/>
+              {aumento.op && (
+                <div className={style.opAumento}>
+                  <span className={style.textOP}>OP</span>
                 </div>
               )}
-            })
-          }
+            </div>
+          ))}
         </div>
       </div>
     )
   }
+
   const AumentosMidLate = ()=>{
+    const list = (comp?.aumentos || []).filter(a => !a.early).sort(sortAumentos);
+
     return (
       <div className={`${style.cBoxTitleInfo} ${style.cAumentos}`}>
         <span className={style.tBox}>Aumentos Mid/Late</span>
         <div className={style.cAumentosInfo}>
-        {
-          (comp?.aumentos || []).map((aumento, index) => {
-            if(!aumento.early){
-              return (
-                <div key={index} className={style.cAumento}>
-                <ImgAugment augment={AllAugments.find((item) => item.apiName === aumento.apiNameGrande)}/>
-                {aumento.op && (
-                  <div className={style.opAumento}>
-                    <span className={style.textOP}>OP</span>
-                  </div>
-                )}
-              </div>
-            )}
-          })
-        }
+          {list.map((aumento, index) => (
+            <div key={index} className={style.cAumento}>
+              <ImgAugment augment={AllAugments.find((item) => item.apiName === aumento.apiNameGrande)}/>
+              {aumento.op && (
+                <div className={style.opAumento}>
+                  <span className={style.textOP}>OP</span>
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       </div>
     )
@@ -227,21 +280,17 @@ const InfografiaMPTFT = ({comp = {}}) => {
                   <div className={style.cBestItemsInfo}>
                   {
                     (comp?.mejoresItems?.[key] || []).map((data, index) => {
-                      return (
-                        <div key={index} className={style.cChampWithItems}>
-                          <div className={style.containerImgItems}>
-                            {(data?.apiNameItemsDelCampeon || []).map((itemApiName, itemIndex) => {
+                      return ((data?.apiNameItemsDelCampeon || []).map((itemApiName, itemIndex) => {
                               return (
-                                <div key={itemIndex} className={style.cItem} onMouseEnter={()=>handleBestItemHelper(itemApiName, "show")} onMouseLeave={()=>handleBestItemHelper(itemApiName, "hide")}>
+                                <div key={itemIndex} className={style.cBestItem} onMouseEnter={()=>handleBestItemHelper(itemApiName, "show")} onMouseLeave={()=>handleBestItemHelper(itemApiName, "hide")}>
                                   <ImgItem item={AllItems.find((item) => item.apiName === itemApiName)}/>
                                   {/* <div className={style.cChampWrapper}>
                                     <ImgCampeon showName={false} championData={AllChampions.find((champ) => champ.apiName === data.apiNameCampeon)} />
                                   </div> */}
                                 </div>
                               )
-                            })}
-                          </div>
-                        </div>
+                            })
+
                       )
                     })
                   }
@@ -331,7 +380,7 @@ const InfografiaMPTFT = ({comp = {}}) => {
         {Fundamentals()}
       </div>            
       {(comp?.aumentos || []).some(aumento => aumento.early) && AumentosEarly()}
-      {(comp?.aumentos || []).some(aumento => aumento.midLate) && AumentosMidLate()}
+      {(comp?.aumentos || []).some(aumento => !aumento.early) && AumentosMidLate()}
       <div className={style.cBoxRow}>
         {Niveles()}
         {Posicionamiento()}
