@@ -4,16 +4,54 @@
   gap: 8px;
   color: white;
   text-decoration: none;
-  font-weight: 500;
-  padding: 8px 16px;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
+  font-weight: 600;
+  padding: 8px 20px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, var(--bg-purple-primary), var(--bg-purple-secondary));
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 12px rgba(255, 0, 160, 0.4);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   align-self: center;
+  position: relative; /* Necesario para el efecto de pulso externo */
 }
+
+/* Creamos un "clon" del botón por detrás que hará la animación de crecer y desvanecerse */
+.login_link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: inherit;
+  z-index: -1;
+  animation: login-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
 .login_link:hover {
-  background: rgba(59, 130, 246, 0.5);
-  transform: translateY(-2px);
+  background: linear-gradient(135deg, rgba(255, 0, 160, 1), rgba(112, 0, 255, 1));
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 0 20px rgba(255, 0, 160, 0.6), 0 0 40px rgba(112, 0, 255, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.login_link:hover::after {
+  animation: none; /* Quitamos el pulso al hacer hover */
+}
+
+@keyframes login-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+    box-shadow: 0 0 0 0 rgba(255, 238, 0, 0.4);
+  }
+  70% {
+    transform: scale(1.15, 1.25); /* Crece hacia afuera */
+    opacity: 0;
+    box-shadow: 0 0 0 15px rgba(255, 0, 160, 0);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
 }
 @media (max-width: 900px) {
   .login_link span {

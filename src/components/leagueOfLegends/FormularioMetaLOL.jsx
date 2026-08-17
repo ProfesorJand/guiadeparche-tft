@@ -18,7 +18,7 @@ const FormularioMetaLOL = () =>{
   const [runes, setRunes] = useState([]);
   const [localMeta, setLocalMeta] = useState({});
   const lanersChampionsMetaStore = useStore(lanersChampionsMeta);
-  const [ddragonVersion, setDdragonVersion] = useState("16.9.1");
+  const [ddragonVersion, setDdragonVersion] = useState("16.16.1");
   
   
   const championImgUrlPortrait = (championName) => {
