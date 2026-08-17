@@ -23,7 +23,7 @@ async function main() {
     const tableItems = `items_tft${tableSuffix}`;
     const tableAumentos = `aumentos_tft${tableSuffix}`;
     const tableCampeones = `campeones_tft${tableSuffix}`;
-    const tableTraits = `tratis_TFT${tableSuffix}`;
+    const tableTraits = `traits_TFT${tableSuffix}`;
 
     console.log(`====================================================`);
     console.log(`🚀 Iniciando descarga de datos CDragon TFT`);

@@ -5,7 +5,7 @@ import { dataTFTChampions, versionTFT, setNumberLatest, setNumberPBE, swapVersio
 import { getLocalTftImage } from '@utils/images';
 import style from './css/AdminTFTCampeonesEarly.module.css';
 
-const AdminTFTCampeonesEarly = ({ onAddToComp, selectedGrupos = [], isSidebar = false }) => {
+const AdminTFTCampeonesEarly = ({ onAddToComp, selectedGrupos = [], isSidebar = false, onGruposChanged }) => {
   const currentVersion = useStore(versionTFT);
   const allChampions = useStore(dataTFTChampions);
   

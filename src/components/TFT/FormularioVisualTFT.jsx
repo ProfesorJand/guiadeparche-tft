@@ -23,9 +23,72 @@ import Tooltip from "@components/tooltips";
 import localStyle from "./css/FormularioVisualTFT.module.css";
 const DatosBasicosVisual = ({ gruposSalidasEarly }) => {
   const comp = useStore(datosCompos);
+  const currentVersion = useStore(versionTFT);
   return (
     <div className={`${style.cBoxTitleInfo} ${localStyle.styleBox1}`}>
       <span className={style.tBox}>Datos Básicos</span>
+      
+      {/* Selector de versión Set 17 (Latest) vs Set 18 (PBE) */}
+      <div style={{
+          display: 'flex',
+          gap: '8px',
+          padding: '10px 15px',
+          background: 'rgba(18, 18, 28, 0.95)',
+          borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          borderRadius: '8px 8px 0 0',
+          marginBottom: '8px'
+        }}>
+          <span style={{ fontSize: '13px', fontWeight: 'bold', color: '#ccc', letterSpacing: '0.5px' }}>
+            SET ACTIVO:
+          </span>
+          <div style={{ display: 'flex', gap: '6px' }}>
+            <button
+              type="button"
+              onClick={() => {
+                swapVersionTFT("latest");
+                actualizarComposicionTFT({ version: "latest" });
+              }}
+              style={{
+                padding: '6px 14px',
+                borderRadius: '6px',
+                border: currentVersion === 'latest' ? '1px solid #00ffc4' : '1px solid rgba(255,255,255,0.15)',
+                background: currentVersion === 'latest' ? 'rgba(0, 255, 196, 0.15)' : '#1a1a24',
+                color: currentVersion === 'latest' ? '#00ffc4' : '#888',
+                fontWeight: currentVersion === 'latest' ? '700' : '500',
+                fontSize: '12px',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                boxShadow: currentVersion === 'latest' ? '0 0 10px rgba(0, 255, 196, 0.25)' : 'none'
+              }}
+            >
+              {`Set ${setNumberLatest} (Latest)`}
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                swapVersionTFT("pbe");
+                actualizarComposicionTFT({ version: "pbe" });
+              }}
+              style={{
+                padding: '6px 14px',
+                borderRadius: '6px',
+                border: currentVersion === 'pbe' ? '1px solid #ff00a0' : '1px solid rgba(255,255,255,0.15)',
+                background: currentVersion === 'pbe' ? 'rgba(255, 0, 160, 0.15)' : '#1a1a24',
+                color: currentVersion === 'pbe' ? '#ff00a0' : '#888',
+                fontWeight: currentVersion === 'pbe' ? '700' : '500',
+                fontSize: '12px',
+                cursor: 'pointer',
+                transition: 'all 0.2s ease',
+                boxShadow: currentVersion === 'pbe' ? '0 0 10px rgba(255, 0, 160, 0.25)' : 'none'
+              }}
+            >
+              {`Set ${setNumberPBE} (PBE)`}
+            </button>
+          </div>
+        </div>
+
       <div className={style.cBoxRow}>
           
 
@@ -1082,9 +1145,9 @@ const PosicionamientoVisual = () => {
               <strong>Tablero {index + 1}</strong>
               <button onClick={() => removeTablero(index)} className={localStyle.styleBox52}>X Tablero</button>
             </div>
-            <div className={style.containerSinergiasActivas}>
+            {/* <div className={style.containerSinergiasActivas}>
               <Sinergias sinergias={pos.tablero} orientacion={"horizontal"} show={true} version={"latest" || comp?.version} />
-            </div>
+            </div> */}
             <NuevoBuilderTFT posicionIndex={index} />
           </div>)}
         <button onClick={addTablero} className={localStyle.styleBox48}>+ Añadir Tablero</button>
@@ -1574,7 +1637,8 @@ export default function FormularioVisualTFT({
       const token = import.meta.env.PUBLIC_TOKEN_META || "dummy_token";
       const payload = {
         ...comp,
-        id: comp?.id ? comp.id : generadorID()
+        id: comp?.id ? comp.id : generadorID(),
+        set_number: currentVersion === "latest" ? setNumberLatest : setNumberPBE
       };
       const response = await fetch("https://api.guiadeparche.com/tft/composicionesBD.php", {
         method: 'POST',
@@ -1723,66 +1787,6 @@ export default function FormularioVisualTFT({
 
       {/* Columna Derecha: Panel de Herramientas Flotante / Sticky */}
       <div className={localStyle.styleBox82}>
-        {/* Selector de versión Set 17 (Latest) vs Set 18 (PBE) */}
-        <div style={{
-          display: 'flex',
-          gap: '8px',
-          padding: '10px 15px',
-          background: 'rgba(18, 18, 28, 0.95)',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          borderRadius: '8px 8px 0 0',
-          marginBottom: '8px'
-        }}>
-          <span style={{ fontSize: '13px', fontWeight: 'bold', color: '#ccc', letterSpacing: '0.5px' }}>
-            SET ACTIVO:
-          </span>
-          <div style={{ display: 'flex', gap: '6px' }}>
-            <button
-              type="button"
-              onClick={() => {
-                swapVersionTFT("latest");
-                actualizarComposicionTFT({ version: "latest" });
-              }}
-              style={{
-                padding: '6px 14px',
-                borderRadius: '6px',
-                border: currentVersion === 'latest' ? '1px solid #00ffc4' : '1px solid rgba(255,255,255,0.15)',
-                background: currentVersion === 'latest' ? 'rgba(0, 255, 196, 0.15)' : '#1a1a24',
-                color: currentVersion === 'latest' ? '#00ffc4' : '#888',
-                fontWeight: currentVersion === 'latest' ? '700' : '500',
-                fontSize: '12px',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                boxShadow: currentVersion === 'latest' ? '0 0 10px rgba(0, 255, 196, 0.25)' : 'none'
-              }}
-            >
-              {`Set ${setNumberLatest} (Latest)`}
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                swapVersionTFT("pbe");
-                actualizarComposicionTFT({ version: "pbe" });
-              }}
-              style={{
-                padding: '6px 14px',
-                borderRadius: '6px',
-                border: currentVersion === 'pbe' ? '1px solid #ff00a0' : '1px solid rgba(255,255,255,0.15)',
-                background: currentVersion === 'pbe' ? 'rgba(255, 0, 160, 0.15)' : '#1a1a24',
-                color: currentVersion === 'pbe' ? '#ff00a0' : '#888',
-                fontWeight: currentVersion === 'pbe' ? '700' : '500',
-                fontSize: '12px',
-                cursor: 'pointer',
-                transition: 'all 0.2s ease',
-                boxShadow: currentVersion === 'pbe' ? '0 0 10px rgba(255, 0, 160, 0.25)' : 'none'
-              }}
-            >
-              {`Set ${setNumberPBE} (PBE)`}
-            </button>
-          </div>
-        </div>
 
         <div className={localStyle.styleBox83} style={{ flexWrap: 'wrap' }}>
           <button onClick={() => setPanelActivo("campeones")} style={{

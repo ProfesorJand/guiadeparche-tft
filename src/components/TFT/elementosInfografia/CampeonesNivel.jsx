@@ -18,13 +18,15 @@ const CampeonesNivel = ({comp, isMP = false, isEarly = false}) => {
 		const nivelEarly = niveles[0] || {};
 		const level = nivelEarly.lv;
 		
-		const ChampionsEarly = nivelEarly.campeones?.map((champ) => {
+		const validCampeonesEarly = nivelEarly.campeones?.filter(champ => champ.apiNameCampeon) || [];
+		
+		const ChampionsEarly = validCampeonesEarly.map((champ) => {
 			const championData = safeChampionsTFT.find((c) => c.apiName === champ.apiNameCampeon);
 			// Retornamos el championData completo o un objeto con nombre genérico si no se encuentra (para evitar errores en render)
 			return championData || { ...champ, name: champ.apiNameCampeon };
 		}) || [];
 		
-		const itemsPerChamp = nivelEarly.campeones?.map((champ) => {
+		const itemsPerChamp = validCampeonesEarly.map((champ) => {
 			const items = [];
 			(champ.apiNameItemsDelCampeon || []).forEach((itemApiName) => {
 				const itemData = safeAllItemsTFT.find((i) => i.apiName === itemApiName);

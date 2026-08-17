@@ -24,6 +24,7 @@ import FormularioVisualTFT from "@components/TFT/FormularioVisualTFT.jsx";
 import AdminMercadoPago from "./AdminMercadoPago.jsx";
 import AdminPublicidad from "./AdminPublicidad.jsx";
 import AdminTFTCampeonesEarly from "./AdminTFTCampeonesEarly.jsx";
+import AdminCrearCampeonesTFT from "./AdminCrearCampeonesTFT.jsx";
 
 const AdminPanel = ()=>{
     const admin = useStore($admin);
@@ -35,6 +36,7 @@ const AdminPanel = ()=>{
         secundario:[
           { nombre: "Crear", admin: true, superAdmin: true },
           { nombre: "Editar", admin: true, superAdmin: true },
+          { nombre: "Creacion de campeones", admin: true, superAdmin: true },
           { nombre: "Infografia Comps", admin: false, superAdmin: true },
           { nombre: "Tier List Items", admin: false, superAdmin: true },
           { nombre: "Tier List Augments", admin: false, superAdmin: true },
@@ -234,6 +236,7 @@ const AdminPanel = ()=>{
                 {action === "TFT-Tier List Augments" && <CreateAugmentsTierList admin={admin || superAdmin}/>}
                 {action === "TFT-Aumentos" && <AdminTFTAumentos />}
                 {action === "TFT-Campeones Early" && <AdminTFTCampeonesEarly />}
+                {action === "TFT-Creacion de campeones" && <AdminCrearCampeonesTFT />}
                 {action === "TFT-Deploy" && <button onClick={() => handleDeploy("Añadí compos nuevas de TFT")}>Desplegar Cambios</button>}
                 {action?.includes(pestanas[1].primario) && <FormularioMetaLOL />}
                 {action?.includes(pestanas[2].primario) && <FormularioTierListValorant />}

@@ -2,7 +2,7 @@
   --containerItemsInfo-width : 100%;
   --itemsNumber-width: calc(100%/10);
   --itemsRadiantsNumber-width: calc(100%/8);
-  --itemsOtrosNumber-width: calc(100%/12);
+  --itemsOtrosNumber-width: calc((100% - (5px * 6)) / 7);;
 }
 .containerItems{
   display: flex;

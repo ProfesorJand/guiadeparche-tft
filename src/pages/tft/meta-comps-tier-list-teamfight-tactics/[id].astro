@@ -18,12 +18,12 @@ export async function getStaticPaths() {
     .filter((comp) => comp.urlSEO && String(comp.urlSEO).trim() !== "")
     .map((comp) => ({
       params: { id: String(comp.urlSEO) },
-      props: { comp, top10Comps, restComps },
+      props: { comp, allComps: todasLasCompsPBE },
     }));
 }
 
 const { id } = Astro.params;
-const { comp, top10Comps, restComps } = Astro.props;
+const { comp, allComps } = Astro.props;
 
 const [numberOfPatch, lastUpdateComps] = await Promise.all([
   getConstantes(),
@@ -52,15 +52,14 @@ const resolvedTileIcon = champInfo?.tileIcon ? getLocalTftImage(champInfo.tileIc
 //   thumbnail: `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`,
 // };
 ---
-
 <MetaCompsLayout
-  titleMain={`${comp.urlSEO.toUpperCase().replace("-"," ")} TFT Comp & Items Build - Set 17`}
+  titleMain={`${comp.urlSEO.toUpperCase().replace("-"," ")} TFT Comp & Items Build - Set ${comp.set_number || 17}`}
   titleHighlight={``}
   description={comp.tipSEO ||
     `Guía completa paso a paso de la composición ${comp.titulo} para el parche actual de TFT.`}
   lastUpdate={`${lastUpdateComps} Parche ${numberOfPatch.MetaCompVersion}` }
-  top10Comps={top10Comps}
-  restComps={restComps}
+  allComps={allComps}
+  comp={comp}
   activeId={id}
   snippetImgUrl={resolvedTileIcon}
   isIndividual={true}

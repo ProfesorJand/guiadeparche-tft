@@ -117,10 +117,7 @@ const defaultValuesComposicionTFT = {
     apiNameItemsBisDelCampeon: [["", "", ""]],
     apiNameItemsSpecialBisDelCampeon: [["", "", ""]],
   }],
-  condiciones:[{
-    apiNameGrande:"",
-    apiNamePequeno:"",
-  }], // masterplan
+  condiciones:[], // masterplan
   aumentos:[
     {
       apiNameGrande:"",
