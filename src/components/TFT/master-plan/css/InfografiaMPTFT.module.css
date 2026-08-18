@@ -39,6 +39,22 @@
   align-items: center;
   justify-content: flex-start;
 }
+.headerLeft{
+  display:flex;
+  flex-direction: column;
+  width: 50%;
+  gap:10px;
+}
+.headerRight{
+  width: 50%;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.containerTopLeft{
+  display:flex;
+  flex-direction:row;
+}
 .containerChampCarry{
   display:flex;
   position:relative;
@@ -140,7 +156,7 @@
 }
 
 .cCondicionOpEarly{
-  width: calc((100% - (var(--gapBoxRow) * 1)) / 3);
+  width: 100%;
 }
 
 .cCondicionOpEarlyImg{
@@ -150,7 +166,7 @@
   width:100%;
 }
 .cFundamentals{
-  width:calc((100% - (var(--gapBoxRow) * 1)) / 3 * 2);
+  width:100%;
 }
 .cFundamentalsInfo{
   display:flex;
@@ -173,7 +189,7 @@
 
 .cCondicionOP{
   display:flex;
-  width: calc((100% - (var(--gapInside) * 3)) / 4);
+  width: calc((100% - (var(--gapInside) * 5)) / 6);
   position:relative;
   flex-direction: row;
 }
@@ -460,4 +476,28 @@
   .cBestItemsInfo{
     flex-wrap: wrap;
   }
+}
+
+.lineWithText {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 11px;
+  font-weight: bold;
+  margin: 5px 0;
+  white-space: nowrap;
+}
+.lineWithText::before,
+.lineWithText::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+.lineWithText:not(:empty)::before {
+  margin-right: 10px;
+}
+.lineWithText:not(:empty)::after {
+  margin-left: 10px;
 }

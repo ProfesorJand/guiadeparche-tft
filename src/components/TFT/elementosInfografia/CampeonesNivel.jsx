@@ -15,7 +15,11 @@ const CampeonesNivel = ({comp, isMP = false, isEarly = false}) => {
 
 	if(!isMP && isEarly){
 		const niveles = comp?.niveles || [];
-		const nivelEarly = niveles[0] || {};
+		const nivelEarly = niveles.reduce((min, curr) => {
+			if (!min.lv) return curr;
+			if (!curr.lv) return min;
+			return parseInt(curr.lv, 10) < parseInt(min.lv, 10) ? curr : min;
+		}, niveles[0] || {});
 		const level = nivelEarly.lv;
 		
 		const validCampeonesEarly = nivelEarly.campeones?.filter(champ => champ.apiNameCampeon) || [];

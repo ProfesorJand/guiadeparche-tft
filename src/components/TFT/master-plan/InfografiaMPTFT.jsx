@@ -13,7 +13,7 @@ import ImgTrait from "../ImgTrait";
 import copyToClipboard from "@functions/copyToClipboard.js";
 import { getLocalTftImage } from "@utils/images.js";
 import { getTraitDisplayName } from "@components/main/Admin/TraitsList";
-const InfografiaMPTFT = ({comp = {}}) => {
+const InfografiaMPTFT = ({comp = {}, gruposSalidasEarly = []}) => {
   const AllItems = useStore(dataTFTAllItems);
   const AllChampions = useStore(dataTFTChampions);
   const AllAugments = useStore(dataTFTAllAugments);
@@ -49,111 +49,151 @@ const InfografiaMPTFT = ({comp = {}}) => {
     const tableroArray = comp?.posicionamiento?.[0]?.tablero || [];
     return (
       <div className={style.headerInfografia}>
-        <div className={style.containerChampCarry}>
-          {comp?.campeonMeta?.estrellas && <img className={style.champStars} src="/tft/assets/3estrellas.webp"/>}
-          {comp?.campeonMeta?.estrellas === 4 && <img className={style.champStars} src="/tft/assets/4estrellas.webp"/>}
-          <img className={style.backgroundComp} src={getLocalTftImage(campeonMetaObj?.tileIcon, "champions/tileIcon")} alt={comp?.nombre || "Nueva Composición"} />
-        </div>
-        <div className={style.containerTitleInfo}>
-          <span className={style.titleInfografia}>{comp?.nombre || "Nueva Composición"}</span>
-          <div className={style.containerTopInfo}>
-            <span className={style.dificultadCard} data-dificultad={comp?.dificultad}>{comp?.dificultad}</span>
-            <span className={style.categoriaCard} data-categoria={comp?.categoria}>{comp?.categoria}</span>
-            <span className={style.dañoCard} data-tipoDeDano={comp?.tipoDeDano}>{comp?.tipoDeDano}</span>
-            <div className={style.containerTextoInfoPrimarioCode} onClick={(e)=>copyToClipboard(e, "codigo copiado", codeForPBE(tableroArray.map((info)=>info.apiNameCampeon)))}>
-              {"COPIAR CODIGO 📋"}
+        <div className={style.headerLeft}>
+          <div className={`${style.containerTopLeft} ${style.cBoxTitleInfo}`}>
+            <div className={style.containerChampCarry}>
+              {comp?.campeonMeta?.estrellas && <img className={style.champStars} src="/tft/assets/3estrellas.webp"/>}
+              {comp?.campeonMeta?.estrellas === 4 && <img className={style.champStars} src="/tft/assets/4estrellas.webp"/>}
+              <img className={style.backgroundComp} src={getLocalTftImage(campeonMetaObj?.tileIcon, "champions/tileIcon")} alt={comp?.nombre || "Nueva Composición"} />
+            </div>
+            
+            <div className={style.containerTitleInfo}>
+              <span className={style.titleInfografia}>{comp?.nombre || "Nueva Composición"}</span>
+              <div className={style.containerTopInfo}>
+                <span className={style.dificultadCard} data-dificultad={comp?.dificultad}>{comp?.dificultad}</span>
+                <span className={style.categoriaCard} data-categoria={comp?.categoria}>{comp?.categoria}</span>
+                <span className={style.dañoCard} data-tipoDeDano={comp?.tipoDeDano}>{comp?.tipoDeDano}</span>
+                <div className={style.containerTextoInfoPrimarioCode} onClick={(e)=>copyToClipboard(e, "codigo copiado", codeForPBE(tableroArray.map((info)=>info.apiNameCampeon)))}>
+                  {"COPIAR CODIGO 📋"}
+                </div>
+              </div>
             </div>
           </div>
+          <Fundamentals/>
         </div>
-        <AumentosOP/>
+        <div className={style.headerRight}>
+          <Preliminares/>
+        </div>
       </div>
     )
   }
-  const AumentosOP = ()=>{
-   return (
-    <div className={`${style.cBoxTitleInfo} ${style.cCondicionOpEarly}`}>
-      <span className={style.tBox}>Preliminares OP</span>
-      <div className={style.cCondicionOpEarlyImg}>
-      {
-        (comp?.condiciones || []).map((condicion) => {
-          if(condicion.early){
-            const condicionGrande= condicion.apiNameGrande;
-            const condicionPequeno = condicion.ApiNamePequeno;
-            console.log({condicion, esSinergia:AllTraits.some((item) => item.apiName === condicionGrande), AllTraits})
-            const isCondicionGrandeAugment = AllAugments.some((item) => item.apiName === condicionGrande);
-            const isCondicionPequenoAugment = AllAugments.some((item) => item.apiName === condicionPequeno);
-            const isCondicionGrandeItem = AllItems.some((item) => item.apiName === condicionGrande);
-            const isCondicionPequenoItem = AllItems.some((item) => item.apiName === condicionPequeno);
-            const isCondicionGrandeChamp = AllChampions.some((item) => item.apiName === condicionGrande);
-            const isCondicionPequenoChamp = AllChampions.some((item) => item.apiName === condicionPequeno);
-            const isCondicionGrandeSinergia = AllTraits.some((item) => item.apiName === condicionGrande);
-            const isCondicionPequenoSinergia = AllTraits.some((item) => item.apiName === condicionPequeno);
-            const extras = [
-              {
-                apiName:"Win Streak",
-                img:"/tft/assets/WinStreak.webp"
-              },
-              {
-                apiName:"Loss Streak",
-                img:"/tft/assets/LossStreak.webp"
-              },
-              {
-                apiName:"orbedecampeon",
-                img:"/tft/assets/Orbe.webp"
-              },
-              {
-                apiName:"3 estrellas",
-                img:"/tft/assets/3estrellas.webp"
-              },
-              {
-                apiName:"4 estrellas",
-                img:"/tft/assets/4estrellas.webp"
-              }
-            ];
-            const isCondicionGrandeExtra = extras.some((item) => item.apiName === condicionGrande);
-            const isCondicionPequenoExtra = extras.some((item) => item.apiName === condicionPequeno);
-          // aca debe de haber varias condiciones si es un aumento o item o emblema o encuentro
-            return (
-              <div key={condicionGrande} className={style.cCondicionOP}>
-                <div className={style.cCondicionGrande}>
-                  {isCondicionGrandeAugment && <ImgAugment augment={AllAugments.find((item) => item.apiName === condicionGrande)}/>}
-                  {isCondicionGrandeItem && <ImgItem item={AllItems.find((item) => item.apiName === condicionGrande)}/>}
-                  {isCondicionGrandeChamp && <ImgCampeon championData={AllChampions.find((item) => item.apiName === condicionGrande)}/>}
-                  {isCondicionGrandeSinergia && <ImgTrait trait={AllTraits.find((item) => item.apiName === condicionGrande)} />}
-                  {isCondicionGrandeExtra && <img src={extras.find((item) => item.apiName === condicionGrande).img} alt="" style={{width:"100%"}}/>}
-                  {condicion.op && (
-                  <div className={style.opAumento}>
-                    <span className={style.textOP}>OP</span>
-                  </div>
-                    )}
-                </div>
-                <div className={style.cCondicionPequeno}>
-                  {isCondicionPequenoAugment && <ImgAugment augment={AllAugments.find((item) => item.apiName === condicionPequeno)}/>}
-                  {isCondicionPequenoItem && <ImgItem item={AllItems.find((item) => item.apiName === condicionPequeno)}/>}
-                  {isCondicionPequenoChamp && <ImgCampeon championData={AllChampions.find((item) => item.apiName === condicionPequeno)} showName={false}/>}
-                  {isCondicionPequenoSinergia && <ImgTrait trait={AllTraits.find((item) => item.apiName === condicionPequeno)} showName={false} />} 
-                  {isCondicionPequenoExtra && <img src={extras.find((item) => item.apiName === condicionPequeno).img} alt="" style={{width:"100%"}} />}
-                </div>
-              </div>
-            )
-          } 
-        })
-      }
+  const renderCondicion = (condicion, index) => {
+    const condicionGrande= condicion.apiNameGrande;
+    const condicionPequeno = condicion.ApiNamePequeno;
+    const isCondicionGrandeAugment = AllAugments.some((item) => item.apiName === condicionGrande);
+    const isCondicionPequenoAugment = AllAugments.some((item) => item.apiName === condicionPequeno);
+    const isCondicionGrandeItem = AllItems.some((item) => item.apiName === condicionGrande);
+    const isCondicionPequenoItem = AllItems.some((item) => item.apiName === condicionPequeno);
+    const isCondicionGrandeChamp = AllChampions.some((item) => item.apiName === condicionGrande);
+    const isCondicionPequenoChamp = AllChampions.some((item) => item.apiName === condicionPequeno);
+    const isCondicionGrandeSinergia = AllTraits.some((item) => item.apiName === condicionGrande);
+    const isCondicionPequenoSinergia = AllTraits.some((item) => item.apiName === condicionPequeno);
+    const extras = [
+      { apiName:"Win Streak", img:"/tft/assets/WinStreak.webp" },
+      { apiName:"Loss Streak", img:"/tft/assets/LossStreak.webp" },
+      { apiName:"orbedecampeon", img:"/tft/assets/Orbe.webp" },
+      { apiName:"3 estrellas", img:"/tft/assets/3estrellas.webp" },
+      { apiName:"4 estrellas", img:"/tft/assets/4estrellas.webp" }
+    ];
+    const isCondicionGrandeExtra = extras.some((item) => item.apiName === condicionGrande);
+    const isCondicionPequenoExtra = extras.some((item) => item.apiName === condicionPequeno);
+
+    const isOPM = condicion.op === 'opm';
+    const highlightStyle = isOPM ? { boxShadow: '0 0 8px 2px #ff4500', border: '1px solid #ff4500', borderRadius: '4px', boxSizing:"border-box" } : {};
+
+    return (
+      <div key={`${condicionGrande}-${index}`} className={style.cCondicionOP} style={highlightStyle}>
+        <div className={style.cCondicionGrande}>
+          {isCondicionGrandeAugment && <ImgAugment augment={AllAugments.find((item) => item.apiName === condicionGrande)}/>}
+          {isCondicionGrandeItem && <ImgItem item={AllItems.find((item) => item.apiName === condicionGrande)}/>}
+          {isCondicionGrandeChamp && <ImgCampeon championData={AllChampions.find((item) => item.apiName === condicionGrande)}/>}
+          {isCondicionGrandeSinergia && <ImgTrait trait={AllTraits.find((item) => item.apiName === condicionGrande)} />}
+          {isCondicionGrandeExtra && <img src={extras.find((item) => item.apiName === condicionGrande).img} alt="" style={{width:"100%"}}/>}
+          {condicion.op && (
+          <div className={style.opAumento} style={isOPM ? { backgroundColor: '#ff4500' } : {}}>
+            <span className={style.textOP}>{isOPM ? 'OPM' : 'OP'}</span>
+          </div>
+            )}
+        </div>
+        <div className={style.cCondicionPequeno}>
+          {isCondicionPequenoAugment && <ImgAugment augment={AllAugments.find((item) => item.apiName === condicionPequeno)}/>}
+          {isCondicionPequenoItem && <ImgItem item={AllItems.find((item) => item.apiName === condicionPequeno)}/>}
+          {isCondicionPequenoChamp && <ImgCampeon championData={AllChampions.find((item) => item.apiName === condicionPequeno)} showName={false}/>}
+          {isCondicionPequenoSinergia && <ImgTrait trait={AllTraits.find((item) => item.apiName === condicionPequeno)} showName={false} />} 
+          {isCondicionPequenoExtra && <img src={extras.find((item) => item.apiName === condicionPequeno).img} alt="" style={{width:"100%"}} />}
+        </div>
       </div>
-    </div>
-   )
+    );
+  };
+
+  const Preliminares = ()=>{
+    const todasCondiciones = (comp?.condiciones || []).filter(c => c.early);
+    
+    const condicionesOP = todasCondiciones.filter(c => c.op === true || c.op === 'opm');
+    const condicionesNormales = todasCondiciones.filter(c => !c.op);
+
+    condicionesOP.sort((a, b) => {
+      if (a.op === 'opm' && b.op !== 'opm') return -1;
+      if (a.op !== 'opm' && b.op === 'opm') return 1;
+      return 0;
+    });
+
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%' }}>
+        {condicionesOP.length > 0 && (
+          <div className={`${style.cBoxTitleInfo} ${style.cCondicionOpEarly}`}>
+            <span className={style.tBox}>Preliminares OP</span>
+            <div className={style.cCondicionOpEarlyImg}>
+              {condicionesOP.map((c, i) => renderCondicion(c, i))}
+            </div>
+          </div>
+        )}
+        
+        {condicionesNormales.length > 0 && (
+          <div className={`${style.cBoxTitleInfo} ${style.cCondicionOpEarly}`}>
+            <span className={style.tBox}>Preliminares</span>
+            <div className={style.cCondicionOpEarlyImg}>
+              {condicionesNormales.map((c, i) => renderCondicion(c, i))}
+            </div>
+          </div>
+        )}
+      </div>
+    );
   }
   const Fundamentals = ()=>{
+    const allEarlyChamps = (comp.salidasEarly || [])
+                    .map(grupoId => gruposSalidasEarly.find(g => g.id === grupoId))
+                    .filter(Boolean)
+                    .flatMap(grupo => grupo.campeones);
+                  
+    const uniqueChamps = [...new Set(allEarlyChamps)].slice(0, 6);
     return(
       <div className={`${style.cBoxTitleInfo} ${style.cFundamentals}`}>
         <span className={style.tBox}>Fundamentals</span>
         <div className={style.cFundamentalsInfo}>
           <div className={`${style.cBoxTitleInfo} ${style.cCampeonesPrio}`}> 
-            <span className={style.tBox}>Campeones Prio en Early</span>
+            <span className={style.tBox}>Salidas Early</span>
             <div className={style.cCampeonesPrioInfo}>
-              {/* <div className={style.cCampeonesEarly}> */}
-                <CampeonesNivel comp={comp} isMP={true} isEarly={true}/>
-              {/* </div> */}
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+
+                  
+                 {(uniqueChamps.length === 0) ? (
+                   <span style={{ fontSize: '0.85rem', color: '#aaa', fontStyle: 'italic' }}>Sin salidas early</span>
+                  )
+                  :
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', width: '100%', justifyContent: 'center' }}>
+                      {uniqueChamps.map(apiName => {
+                        const champ = AllChampions.find(c => c.apiName === apiName);
+                        return champ ? (
+                          <div key={apiName} style={{ width: 'calc((100% - (4px *4)) / 5)'}}>
+                            <ImgCampeon championData={champ} imgType="tileIcon" showName={false} />
+                          </div>
+                        ) : null;
+                      })}
+                    </div>
+                    }
+                  
+              </div>
             </div>
           </div>
           <div className={`${style.cBoxTitleInfo} ${style.cPrioridadObjetos}`}> 
@@ -267,10 +307,9 @@ const InfografiaMPTFT = ({comp = {}}) => {
     )
   }
   const MejoresItems = ()=>{
-    console.log({mejoresItems: comp?.mejoresItems})
     return (
       <div className={`${style.cBoxTitleInfo} ${style.cBestItemComp}`}>
-        <span className={style.tBox}>Mejores Objetos de la composition</span>
+        <span className={style.tBox}>Mejores Objetos de la Composición</span>
         <div className={style.cBestItemCompInfo}>
           {
             Object.keys(comp?.mejoresItems || {}).map((key, index)=>{
@@ -318,6 +357,7 @@ const InfografiaMPTFT = ({comp = {}}) => {
                 const infoItems = (itemsName || []).map((itemName)=>AllItems.find(i => i.apiName === itemName))
                 return infoItems
               });
+              console.log({itemsDataSpecial})
               const campeonData = AllChampions.find((campeon) => campeon.apiName === info.apiNameCampeon);
               return (
                 <div key={index} className={`${style.cardCampeonBIS}`} style={{ borderColor: `var(--color-hex-cost-${campeonData?.cost}, var(--border-purple-color))`,backgroundColor: `rgba(0, 0, 0, 0.5)` }}>
@@ -325,46 +365,51 @@ const InfografiaMPTFT = ({comp = {}}) => {
                   {/* {campeonData?.name} */}
                   <ImgCampeon championData={campeonData} imgType="icon" showName={true} borderColor={false}/>
                   <div className={style.cardCampeonBISItems}>
-                  {
-                    itemsData.map((itemsData, index) => {
+                    <span className={style.lineWithText}>BIS</span>
+                    {
+                      itemsData.map((itemsData, index) => {
 
-                      return (
-                        <div key={index} className={style.cItems}>
-                          {/* <span>BIS</span> */}
-                          <div className={`${style.cItemsInfo} ${hoveredItemApiName && itemsData.some(item => item?.apiName === hoveredItemApiName) ? style.highlightedItem : ''}`}>
-                          {itemsData.map((itemData, idx) => {
-                            return (
-                              <div key={idx} className={style.cItem}>
-                                <ImgItem item={itemData} />
-                              </div>
-                            )
-                          })}
+                        return (
+                          <div key={index} className={style.cItems}>
+                            
+                            <div className={`${style.cItemsInfo} ${hoveredItemApiName && itemsData.some(item => item?.apiName === hoveredItemApiName) ? style.highlightedItem : ''}`}>
+                            {itemsData.filter(Boolean).map((itemData, idx) => {
+                              return (
+                                <div key={idx} className={style.cItem}>
+                                  <ImgItem item={itemData} />
+                                </div>
+                              )
+                            })}
+                            </div>
                           </div>
-                        </div>
-                      )
-                    })
-                  }
+                        )
+                      })
+                    }
                   </div>
-                  <div className={style.cardCampeonBISItems}>
                   {
-                    itemsDataSpecial.map((itemsData, index) => {
-                      return (
-                        <div key={index} className={style.cItems}>
-                          {/* <span>Especial Bis</span> */}
-                          <div className={`${style.cItemsInfo} ${hoveredItemApiName && itemsData.some(item => item?.apiName === hoveredItemApiName) ? style.highlightedItem : ''}`}>
-                          {itemsData.map((itemData, idx) => {
-                            return (
-                              <div key={idx} className={style.cItem}>
-                                <ImgItem item={itemData} />
-                              </div>
-                            )
-                          })}
+                    itemsDataSpecial.some(itemsArray => itemsArray.some(item => item)) && (
+                  <div className={style.cardCampeonBISItems}>
+                    <span className={style.lineWithText}>BIS ESPECIALES</span>
+                    {
+                      itemsDataSpecial.map((itemsData, index) => {
+                        return (
+                          <div key={index} className={style.cItems}>
+                            {/* <span>Especial Bis</span> */}
+                            <div className={`${style.cItemsInfo} ${hoveredItemApiName && itemsData.some(item => item?.apiName === hoveredItemApiName) ? style.highlightedItem : ''}`}>
+                            {itemsData.filter(Boolean).map((itemData, idx) => {
+                              return (
+                                <div key={idx} className={style.cItem}>
+                                  <ImgItem item={itemData} />
+                                </div>
+                              )
+                            })}
+                            </div>
                           </div>
-                        </div>
-                      )
-                    })
-                  }
+                        )
+                      })
+                    }
                   </div>
+                    )}
                 </div>
               )
             })}
@@ -375,10 +420,9 @@ const InfografiaMPTFT = ({comp = {}}) => {
   return (
     <div className={style.cardsMPCompContainer}>
       <Header/>
-      <div className={style.cBoxRow}>
-        {(comp?.condiciones || []).some(condicion => condicion.op) && AumentosOP()}   
+      {/* <div className={style.cBoxRow}>
         {Fundamentals()}
-      </div>            
+      </div>             */}
       {(comp?.aumentos || []).some(aumento => aumento.early) && AumentosEarly()}
       {(comp?.aumentos || []).some(aumento => !aumento.early) && AumentosMidLate()}
       <div className={style.cBoxRow}>
