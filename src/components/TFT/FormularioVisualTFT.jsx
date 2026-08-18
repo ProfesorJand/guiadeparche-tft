@@ -350,7 +350,7 @@ const PreliminaresOPVisual = ({ title = "Preliminares OP", condTypeGrande, condT
       newCondiciones.push({
         apiNameGrande: tamano === 'grande' ? apiName : "",
         ApiNamePequeno: tamano === 'pequeno' ? apiName : "",
-        op: true,
+        op: false,
         early: true,
         condType: mainType,
         condTypeGrande: tamano === 'grande' ? mainType : "",
@@ -380,9 +380,25 @@ const PreliminaresOPVisual = ({ title = "Preliminares OP", condTypeGrande, condT
     });
   };
 
+  const toggleOp = (e, index) => {
+    e.preventDefault();
+    const newCondiciones = [...(comp.condiciones || [])];
+    const currentOp = newCondiciones[index].op;
+    
+    if (currentOp === false || !currentOp) {
+      newCondiciones[index].op = true;
+    } else if (currentOp === true) {
+      newCondiciones[index].op = 'opm';
+    } else {
+      newCondiciones[index].op = false;
+    }
+    
+    actualizarComposicionTFT({ condiciones: newCondiciones });
+  };
+
   const isCondicionFaltante = cond => {
     if (!cond || typeof cond !== 'object') return true;
-    if (!cond.op || !cond.early || !cond.condType) return true;
+    if (cond.op === undefined || !cond.early || !cond.condType) return true;
     if (cond.apiNameGrande && !cond.condTypeGrande) return true;
     if (cond.ApiNamePequeno && !cond.condTypePequeno) return true;
     return false;
@@ -594,11 +610,16 @@ const PreliminaresOPVisual = ({ title = "Preliminares OP", condTypeGrande, condT
       <div className={`${style.cCondicionOpEarlyImg} ${localStyle.styleBox18}`}>
         {(comp.condiciones || []).map((condicion, index) => {
           const itemCondType = condicion.condType || condicion.type || 'Aumento';
-          if (condicion.early && condicion.op && itemCondType === mainType && !isCondicionFaltante(condicion)) {
+          if (condicion.early && itemCondType === mainType && !isCondicionFaltante(condicion)) {
             const condicionGrande = condicion.apiNameGrande;
             const condicionPequeno = condicion.ApiNamePequeno;
             return (
-              <div key={index} className={`${style.cCondicionOP} ${localStyle.boxCondicionesInfo}`}>
+              <div 
+                key={index} 
+                className={`${style.cCondicionOP} ${localStyle.boxCondicionesInfo}`}
+                onContextMenu={(e) => toggleOp(e, index)}
+                title="Click derecho para cambiar estado OP/OPM"
+              >
                 <div 
                   className={`${style.cCondicionGrande} ${localStyle.styleBox20}`} 
                   draggable={!!condicionGrande} 
@@ -618,9 +639,11 @@ const PreliminaresOPVisual = ({ title = "Preliminares OP", condTypeGrande, condT
                 >
                   {renderIcon(condicionGrande, true, condicion.condTypeGrande || condicion.condType || mainType)}
                   {!condicionGrande && <span className={localStyle.styleBox16}>Grande</span>}
-                  <div className={style.opAumento}>
-                    <span className={style.textOP}>OP</span>
-                  </div>
+                  {condicion.op && (
+                    <div className={style.opAumento}>
+                      <span className={style.textOP}>{condicion.op === 'opm' ? 'OPM' : 'OP'}</span>
+                    </div>
+                  )}
                 </div>
                 
                 <div 
@@ -803,23 +826,7 @@ const FundamentalsVisual = () => {
   const allItemsTFT = useStore(dataTFTAllItems);
   const currentVersion = useStore(versionTFT);
   const targetSet = currentVersion === "pbe" ? setNumberPBE : setNumberLatest;
-  const addCampeonEarly = apiName => {
-    const newCampeonesEarly = [...(comp.campeonesEarly || [])];
-    newCampeonesEarly.push({
-      apiNameCampeon: apiName,
-      apiNameItemsDelCampeon: []
-    });
-    actualizarComposicionTFT({
-      campeonesEarly: newCampeonesEarly
-    });
-  };
-  const removeCampeonEarly = index => {
-    const newCampeonesEarly = [...(comp.campeonesEarly || [])];
-    newCampeonesEarly.splice(index, 1);
-    actualizarComposicionTFT({
-      campeonesEarly: newCampeonesEarly
-    });
-  };
+
   const addItemPrio = apiName => {
     const newItemsPrio = [...(comp.itemsPrio || [])];
     newItemsPrio.push({
@@ -853,30 +860,6 @@ const FundamentalsVisual = () => {
   return <div className={`${style.cBoxTitleInfo} ${style.cFundamentals} ${localStyle.styleBox25}`}>
       <span className={style.tBox}>Fundamentals</span>
       <div className={style.cFundamentalsInfo}>
-        <div className={`${style.cBoxTitleInfo} ${style.cCampeonesPrio}`}>
-          <span className={style.tBox}>Campeones Prio en Early</span>
-          <div className={style.cCampeonesPrioInfo}>
-            <div className={`${style.cCampeonesEarly} ${localStyle.styleBox26}`}>
-              {(comp.campeonesEarly || []).map((champ, index) => {
-              const champData = allChampionsTFT?.find(c => c.apiName === champ.apiNameCampeon);
-              const imgUrl = champData?.tileIcon ? champData.tileIcon.includes("http") ? champData.tileIcon.toLowerCase().replace(".tex", ".png") : getLocalTftImage(champData.tileIcon, 'champions/tileIcon') : null;
-              if (imgUrl) {
-                return <div key={index} className={localStyle.styleBox27}>
-                    <ImgCampeon championData={champData} imgType="tileIcon" showName={false} />
-                    <button onClick={() => removeCampeonEarly(index)} className={localStyle.styleBox22}>X</button>
-                  </div>;
-              }
-            })}
-              <div onDragOver={e => e.preventDefault()} onDrop={e => {
-              e.preventDefault();
-              const c = e.dataTransfer.getData("campeon");
-              if (c) addCampeonEarly(JSON.parse(c).apiName || JSON.parse(c).name);
-            }} className={localStyle.styleBox28}>
-                <span className={localStyle.styleBox29}>+</span>
-              </div>
-            </div>
-          </div>
-        </div>
 
         <div className={`${style.cBoxTitleInfo} ${style.cPrioridadObjetos}`}>
           <span className={style.tBox}>Prioridad de Objetos</span>
@@ -1269,51 +1252,6 @@ const BestBuildYMejoresItemsVisual = () => {
     handleMejoresItemsUpdate(newMejoresItems);
   };
 
-  // const guardarMejoresItemsEnBD = async () => {
-  //   try {
-  //     const token = import.meta.env.PUBLIC_TOKEN_META || "dummy_token";
-
-  //     const championsToSave = {};
-  //     const categorias = ["Artefactos", "Radiantes", "Emblemas", "Especiales"];
-
-  //     categorias.forEach(cat => {
-  //       (mejoresItems[cat] || []).forEach(row => {
-  //         if (!row.apiNameCampeon) return;
-  //         if (!championsToSave[row.apiNameCampeon]) {
-  //           championsToSave[row.apiNameCampeon] = { Artefactos: [], Radiantes: [], Emblemas: [], Especiales: [] };
-  //         }
-  //         championsToSave[row.apiNameCampeon][cat] = [
-  //           ...(championsToSave[row.apiNameCampeon][cat] || []),
-  //           ...(row.apiNameItemsDelCampeon || [])
-  //         ];
-  //       });
-  //     });
-
-  //     const campeonesArray = Object.keys(championsToSave).map(apiName => ({
-  //       apiNameCampeon: apiName,
-  //       itemsData: championsToSave[apiName]
-  //     }));
-
-  //     if (campeonesArray.length === 0) {
-  //       alert("No hay campeones con ítems (Artefactos/Radiantes/Emblemas/Especiales) para guardar en la BD.");
-  //       return;
-  //     }
-
-  //     const res = await fetch("https://api.guiadeparche.com/tft/mejoresItemsCampeon.php", {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         'Authorization': `Bearer ${token}`
-  //       },
-  //       body: JSON.stringify({ campeones: campeonesArray })
-  //     });
-  //     const data = await res.json();
-  //     alert("Guardado Mejores Ítems en BD: " + (data.message || "Éxito"));
-  //   } catch (err) {
-  //     alert("Error al guardar Mejores Ítems: " + err.message);
-  //   }
-  // };
-
   return <div className={`${style.cBoxTitleInfo} ${style.cBestItems}`}>
       <span className={style.tBox}>Mejores Builds y Objetos Extra</span>
       <div className={`${style.cBestItemsInfo} ${localStyle.styleBox53}`}>
@@ -1450,72 +1388,6 @@ const BestBuildYMejoresItemsVisual = () => {
     </div>;
 };
 
-// const DiosesVisual = () => {
-//   const comp = useStore(datosCompos);
-//   const updateDios = (idx, diosName) => {
-//     const newDioses = [...(comp.dioses || [])];
-//     newDioses[idx] = diosName;
-//     actualizarComposicionTFT({ dioses: newDioses });
-//   };
-
-//   const diosesSeleccionados = comp.dioses || ["", "", ""];
-//   const displayDioses = [diosesSeleccionados[0] || "", diosesSeleccionados[1] || "", diosesSeleccionados[2] || ""];
-
-//   return (
-//     <div className={`${style.cBoxTitleInfo} ${localStyle.styleBox7}`}>
-//       <span className={style.tBox}>Dioses (Master Plan)</span>
-//       <div className={localStyle.styleBox8}>
-//         <div className={localStyle.styleBox3}>
-//           <span className={localStyle.styleBox13}>Dioses</span>
-//           <div className={localStyle.styleBox14}>
-//             {[0, 1, 2].map(idx => {
-//               const diosName = displayDioses[idx];
-//               const isDiosValid = listaDioses?.includes(diosName);
-//               return (
-//                 <div key={idx} onDragOver={e => e.preventDefault()} onDrop={e => {
-//                   e.preventDefault();
-//                   const d = e.dataTransfer.getData("dios");
-//                   if (d) updateDios(idx, d);
-//                 }} onDoubleClick={() => updateDios(idx, "")} style={{
-//                   border: !isDiosValid ? '2px dashed #777' : 'none',
-//                   width: '50px',
-//                   height: '50px',
-//                   display: 'flex',
-//                   alignItems: 'center',
-//                   justifyContent: 'center',
-//                   overflow: 'hidden',
-//                   borderRadius: '4px',
-//                   background: '#222'
-//                 }} title="Arrastra el dios. Doble clic para borrar." className={localStyle.styleBox15}>
-//                   {isDiosValid && <img src={`/tft/sets/17/dioses/${diosName.toLowerCase().replace(/\s+/g, '-')}.webp`} alt={diosName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
-//                   {!isDiosValid && <span className={localStyle.styleBox16}>{idx + 1}</span>}
-//                 </div>
-//               );
-//             })}
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// const DiosesList = () => {
-//   return (
-//     <div className={localStyle.styleBox86} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', padding: '10px' }}>
-//       {listaDioses.map(dios => (
-//         <div
-//           key={dios}
-//           draggable
-//           onDragStart={e => e.dataTransfer.setData("dios", dios)}
-//           style={{ cursor: 'grab', textAlign: 'center', width: '60px' }}
-//         >
-//           <img src={`/tft/sets/17/dioses/${dios.toLowerCase().replace(/\s+/g, '-')}.webp`} alt={dios} style={{ width: '100%', height: 'auto', borderRadius: '4px' }} />
-//           <span style={{ fontSize: '10px', color: '#ccc', textTransform: 'capitalize' }}>{dios}</span>
-//         </div>
-//       ))}
-//     </div>
-//   );
-// };
 
 export default function FormularioVisualTFT({
   compo = {}
@@ -1672,12 +1544,12 @@ export default function FormularioVisualTFT({
             <DiosesVisual />
           </div> */}
           <div className={style.cBoxRow} style={{ flexWrap: 'wrap', gap: '10px' }}>
-            <PreliminaresOPVisual title="Condición OP Campeones" condTypeGrande="Campeon" condType="Campeon" />
-            <PreliminaresOPVisual title="Condición OP Items" condTypeGrande="Item" condType="Item" />
-            <PreliminaresOPVisual title="Condición OP Extras" condTypeGrande="Extra" condType="Extra" />
-            <PreliminaresOPVisual title="Condición OP Sinergias" condTypeGrande="Sinergia" condType="Sinergia" />
-            <PreliminaresOPVisual title="Condición OP Aumentos Resultado Aleatorio" condTypeGrande="AumentoResAleatorio" condType="AumentoResAleatorio" />
-            <PreliminaresOPVisual title="Condición OP Aumentos Especificos" condTypeGrande="AumentoEspecifico" condType="AumentoEspecifico" />
+            <PreliminaresOPVisual title="Condición Campeones" condTypeGrande="Campeon" condType="Campeon" />
+            <PreliminaresOPVisual title="Condición Items" condTypeGrande="Item" condType="Item" />
+            <PreliminaresOPVisual title="Condición Extras" condTypeGrande="Extra" condType="Extra" />
+            <PreliminaresOPVisual title="Condición Sinergias" condTypeGrande="Sinergia" condType="Sinergia" />
+            <PreliminaresOPVisual title="Condición Aumentos Resultado Aleatorio" condTypeGrande="AumentoResAleatorio" condType="AumentoResAleatorio" />
+            <PreliminaresOPVisual title="Condición Aumentos Especificos" condTypeGrande="AumentoEspecifico" condType="AumentoEspecifico" />
             <PreliminaresOPVisual title="todas las condiciones faltantes" isFaltante={true} />
           </div>
           <div className={style.cBoxRow}>

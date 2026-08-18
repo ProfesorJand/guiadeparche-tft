@@ -155,9 +155,15 @@ console.log({selectedSoftItems})
   useEffect(() => {
     const fetchGruposSalidasEarly = async () => {
       try {
-        const res = await fetch(`https://api.guiadeparche.com/tft/campeones-early.php?set=${versionNumber}`);
-        const data = await res.json();
-        setGruposSalidasEarly(Array.isArray(data) ? data : []);
+        const res = await fetch(`https://api.guiadeparche.com/tft/campeones-early.php`);
+        const result = await res.json();
+        if (result.status === 'success') {
+          const allGrupos = result.data || [];
+          setGruposSalidasEarly(allGrupos.filter(g => g.set_number === versionNumber || g.set_number === "all"));
+        } else {
+          const dataArr = Array.isArray(result) ? result : [];
+          setGruposSalidasEarly(dataArr.filter(g => g.set_number === versionNumber || g.set_number === "all"));
+        }
       } catch (e) {
         console.error("Error fetching grupos salidas early", e);
       }
@@ -939,7 +945,7 @@ console.log({selectedSoftItems})
           <div className={style.activeCompCloseButton} onClick={()=>setActiveComp(null)}>
             X
           </div>
-          <InfografiaMPTFT comp={activeComp}/>
+          <InfografiaMPTFT comp={activeComp} gruposSalidasEarly={gruposSalidasEarly} />
         </div>
       )}
       </div>
