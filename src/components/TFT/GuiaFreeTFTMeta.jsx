@@ -1,4 +1,4 @@
-import { urlComposiciones, dataTFTChampions, dataTFTAllItems, dataTFTAllAugments } from "@stores/dataTFT";
+import { urlComposiciones, dataTFTChampions, dataTFTAllItems, dataTFTAllAugments, dataTFTTraits } from "@stores/dataTFT";
 import { getLocalTftImage } from "@utils/images";
 import style from "./css/GuiaFreeTFTMeta.module.css";
 import Sinergias from "@components/main/Admin/Sinergias";
@@ -10,6 +10,7 @@ import CampeonesNivel from "@components/TFT/elementosInfografia/CampeonesNivel"
 import ImgItem from "./ImgItem";
 import ImgAugment from "./ImgAugment";
 import ImgCampeon from "./ImgCampeon";
+import ImgTrait from "./ImgTrait";
 const GuiaFreeTFTMeta = ({comp, isInfografia=false, edit=false, isIndividual=false}) => {
   const [hoveredAugment, setHoveredAugment] = useState(null);
   const augmentRef = useRef(null);
@@ -17,6 +18,7 @@ const GuiaFreeTFTMeta = ({comp, isInfografia=false, edit=false, isIndividual=fal
   const allChampionsTFT = useStore(dataTFTChampions);
   const allItemsTFT = useStore(dataTFTAllItems);
   const allAugmentsTFT = useStore(dataTFTAllAugments);
+  const allTraitsTFT = useStore(dataTFTTraits);
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -47,7 +49,7 @@ const GuiaFreeTFTMeta = ({comp, isInfografia=false, edit=false, isIndividual=fal
 
   return(
     <div className={style.container}>
-      <Header1 comp={comp} allChampionsTFT={safeChampionsTFT} allItemsTFT={safeItemsTFT} allAugmentsTFT={safeAugmentsTFT} ></Header1>
+      <Header1 comp={comp} allChampionsTFT={safeChampionsTFT} allItemsTFT={safeItemsTFT} allAugmentsTFT={safeAugmentsTFT} allTraitsTFT={allTraitsTFT}></Header1>
       <Header2 comp={comp} setHoveredAugment={setHoveredAugment} augmentRef={augmentRef} allChampionsTFT={safeChampionsTFT} allItemsTFT={safeItemsTFT} allAugmentsTFT={safeAugmentsTFT} ></Header2>
       {/* <FooterTooltip augment={hoveredAugment} tooltipRef={tooltipRef} edit={edit} isInfografia={isInfografia}></FooterTooltip> */}
       <FooterBuild comp={comp}></FooterBuild>
@@ -58,7 +60,7 @@ const GuiaFreeTFTMeta = ({comp, isInfografia=false, edit=false, isIndividual=fal
 
 export default GuiaFreeTFTMeta;
 
-const Header1 = ({comp, allChampionsTFT, allItemsTFT, allAugmentsTFT})=>{
+const Header1 = ({comp, allChampionsTFT, allItemsTFT, allAugmentsTFT, allTraitsTFT})=>{
 
 
   // 1. Campeones Early
@@ -131,64 +133,48 @@ const Header1 = ({comp, allChampionsTFT, allItemsTFT, allAugmentsTFT})=>{
           <h4>Condiciones OP (Early)</h4>
           <div className={style.containerCondicion}>
             {condicionOP && (() => {
-                let busquedaGrande;
-                let busquedaPequeno;
-                let isAugmentGrande;
-                let isItemGrande;
-                let isChampionGrande;
-                let isAugmentPequeno;
-                let isItemPequeno;
-                let isChampionPequeno;
-                let tipoPequeno;
-                let tipoGrande;
-                const extras = ["Win Streak","Loss Streak","Orbe","3 estrellas","4 estrellas"];
-                
-                // API NAME GRANDE
-                if(extras.includes(condicionOP.apiNameGrande)){
-                  busquedaGrande = `/tft/assets/${condicionOP.apiNameGrande.replace(" ","")}.webp`;
-                }else{
-                  isAugmentGrande = allAugmentsTFT.find((x) => x.apiName === condicionOP.apiNameGrande);
-                  isItemGrande = allItemsTFT.find((x) => x.apiName === condicionOP.apiNameGrande);
-                  isChampionGrande = allChampionsTFT.find((x) => x.apiName === condicionOP.apiNameGrande);
-                  tipoGrande = isAugmentGrande ? "augment" : isItemGrande ? "item" : isChampionGrande ? "champion" : "";
-                  const filtradoGrande = (isItemGrande || isChampionGrande || isAugmentGrande)?.icon;
-                  busquedaGrande = filtradoGrande ? getLocalTftImage(filtradoGrande, 'augments/choiceui') : "";
-                }
-                
-                // API NAME PEQUENO
-                if(extras.includes(condicionOP.apiNamePequeno)){
-                  busquedaPequeno = `/tft/assets/${condicionOP.apiNamePequeno.replace(" ","")}.webp`;
-                }else{
-                  isAugmentPequeno = allAugmentsTFT.find((x) => x.apiName === condicionOP.apiNamePequeno);
-                  isItemPequeno = allItemsTFT.find((x) => x.apiName === condicionOP.apiNamePequeno);
-                  isChampionPequeno = allChampionsTFT.find((x) => x.apiName === condicionOP.apiNamePequeno);
-                  tipoPequeno = isAugmentPequeno ? "augment" : isItemPequeno ? "item" : isChampionPequeno ? "champion" : "";
-                  const filtradoPequeno = (isItemPequeno || isChampionPequeno || isAugmentPequeno)?.icon;
-                  busquedaPequeno = filtradoPequeno ? getLocalTftImage(filtradoPequeno, 'augments/choiceui') : "";
-                }
+              const condicionGrande= condicionOP.apiNameGrande;
+              const condicionPequeno = condicionOP.ApiNamePequeno;
+              const isCondicionGrandeAugment = allAugmentsTFT?.some((item) => item.apiName === condicionGrande);
+              const isCondicionPequenoAugment = allAugmentsTFT?.some((item) => item.apiName === condicionPequeno);
+              const isCondicionGrandeItem = allItemsTFT?.some((item) => item.apiName === condicionGrande);
+              const isCondicionPequenoItem = allItemsTFT?.some((item) => item.apiName === condicionPequeno);
+              const isCondicionGrandeChamp = allChampionsTFT?.some((item) => item.apiName === condicionGrande);
+              const isCondicionPequenoChamp = allChampionsTFT?.some((item) => item.apiName === condicionPequeno);
+              const isCondicionGrandeSinergia = allTraitsTFT?.some((item) => item.apiName === condicionGrande);
+              const isCondicionPequenoSinergia = allTraitsTFT?.some((item) => item.apiName === condicionPequeno);
+              const extras = [
+                { apiName:"Win Streak", img:"/tft/assets/WinStreak.webp" },
+                { apiName:"Loss Streak", img:"/tft/assets/LossStreak.webp" },
+                { apiName:"orbedecampeon", img:"/tft/assets/Orbe.webp" },
+                { apiName:"3 estrellas", img:"/tft/assets/3estrellas.webp" },
+                { apiName:"4 estrellas", img:"/tft/assets/4estrellas.webp" }
+              ];
+              const isCondicionGrandeExtra = extras.some((item) => item.apiName === condicionGrande);
+              const isCondicionPequenoExtra = extras.some((item) => item.apiName === condicionPequeno);
 
-                return (
-                  <div className={style.condicionOpEarly}>
-                    {condicionOP.apiNameGrande && busquedaGrande && 
-                      <div className={style.condicionGrandeImg}>
-                        {
-                          tipoGrande === "augment" && <ImgAugment augment={isAugmentGrande}/> ||
-                          tipoGrande === "item" && <ImgItem item={isItemGrande}/> ||
-                          tipoGrande === "champion" && <ImgCampeon championData={isChampionGrande} showName={false}/>
-                        }
-                      </div>
-                    }
-                    {condicionOP.apiNamePequeno && busquedaPequeno &&
-                      <div className={style.condicionPequenoImg}>
-                        {
-                          tipoPequeno === "augment" && <ImgAugment augment={isAugmentPequeno}/> ||
-                          tipoPequeno === "item" && <ImgItem item={isItemPequeno}/> ||
-                          tipoPequeno === "champion" && <ImgCampeon championData={isChampionPequeno} showName={false}/>
-                        }
-                      </div>
-                    }
-                  </div>
-                );
+              return (
+                <div className={style.condicionOpEarly}>
+                  {condicionGrande && (
+                    <div className={style.condicionGrandeImg}>
+                      {isCondicionGrandeAugment && <ImgAugment augment={allAugmentsTFT?.find((item) => item.apiName === condicionGrande)}/>}
+                      {isCondicionGrandeItem && <ImgItem item={allItemsTFT?.find((item) => item.apiName === condicionGrande)}/>}
+                      {isCondicionGrandeChamp && <ImgCampeon championData={allChampionsTFT?.find((item) => item.apiName === condicionGrande)}/>}
+                      {isCondicionGrandeSinergia && <ImgTrait trait={allTraitsTFT?.find((item) => item.apiName === condicionGrande)} />}
+                      {isCondicionGrandeExtra && <img src={extras.find((item) => item.apiName === condicionGrande)?.img} alt="" style={{width:"100%"}}/>}
+                    </div>
+                  )}
+                  {condicionPequeno && (
+                    <div className={style.condicionPequenoImg}>
+                      {isCondicionPequenoAugment && <ImgAugment augment={allAugmentsTFT?.find((item) => item.apiName === condicionPequeno)}/>}
+                      {isCondicionPequenoItem && <ImgItem item={allItemsTFT?.find((item) => item.apiName === condicionPequeno)}/>}
+                      {isCondicionPequenoChamp && <ImgCampeon championData={allChampionsTFT?.find((item) => item.apiName === condicionPequeno)} showName={false}/>}
+                      {isCondicionPequenoSinergia && <ImgTrait trait={allTraitsTFT?.find((item) => item.apiName === condicionPequeno)} showName={false} />} 
+                      {isCondicionPequenoExtra && <img src={extras.find((item) => item.apiName === condicionPequeno)?.img} alt="" style={{width:"100%"}} />}
+                    </div>
+                  )}
+                </div>
+              );
             })()}
             <a href="/login" target="_blank" className={style.condicionOpEarly}>
               <Tooltip type="default" text="Master Plan">
