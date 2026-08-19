@@ -256,6 +256,29 @@ console.log({selectedSoftItems})
     }
   };
 
+  const activateMissingOPM = (type, apiName) => {
+    if (type === 'item') {
+      const itemObj = allItems.find(i => i.apiName === apiName);
+      if (itemObj && !selectedItems.some(i => i.apiName === apiName)) {
+        toggleSelectedItem(itemObj);
+      }
+    } else if (type === 'campeon') {
+      const champObj = allChampions.find(c => c.apiName === apiName);
+      if (champObj && !selectedChampions.some(c => c.apiName === apiName)) {
+        toggleSelectedChampion(champObj);
+      }
+    } else if (type === 'sinergia') {
+      if (!selectedSinergias.includes(apiName)) {
+        toggleArrayFilter(setSelectedSinergias, apiName);
+      }
+    } else if (type === 'augment' || type === 'aumento' || type === 'aumentoresaleatorio' || type === 'aumentoespecifico') {
+      const augObj = allAugments.find(a => a.apiName === apiName);
+      if (augObj && !selectedHardAugments.some(a => a.apiName === apiName)) {
+        toggleArrayFilter(setSelectedHardAugments, augObj);
+      }
+    }
+  };
+
   const filteredComposPrimary = useMemo(() => {
     return allCompos.filter(compo => {
       if (selectedCategory.length > 0 && !selectedCategory.includes(compo.categoria)) return false;
@@ -508,7 +531,55 @@ console.log({selectedSoftItems})
           return getVal(b.opStatus) - getVal(a.opStatus);
         });
 
-        results.push({ ...compo, _matchCount: matchCount, _matchedFilters: matchedFilters });
+        let missingOPM = null;
+        if (compo.itemsPrio) {
+          const opmItem = compo.itemsPrio.find(i => typeof i === 'object' && i.op === 'opm');
+          if (opmItem && !selectedItems.some(i => (typeof i === 'object' ? i.apiName : i) === opmItem.apiName)) {
+            const itemObj = allItems.find(i => i.apiName === opmItem.apiName);
+            missingOPM = { type: 'item', apiName: opmItem.apiName, name: itemObj?.name || opmItem.apiName, icon: itemObj ? getLocalTftImage(itemObj.icon, 'items') : null };
+          }
+        }
+        if (!missingOPM && compo.aumentos) {
+          const opmAugment = compo.aumentos.find(a => typeof a === 'object' && a.op === 'opm');
+          if (opmAugment) {
+            const apiName = opmAugment.apiNameGrande || opmAugment.apiNamePequeno || opmAugment.apiName;
+            if (!selectedHardAugments.some(a => a.apiName === apiName)) {
+              const augObj = allAugments.find(a => a.apiName === apiName);
+              missingOPM = { type: 'augment', apiName, name: augObj?.name || apiName, icon: augObj?.icon ? (augObj.icon.includes("http") ? augObj.icon.replace(".tex", ".png").toLowerCase() : getLocalTftImage(augObj.icon, 'augments', versionNumber)) : null };
+            }
+          }
+        }
+        if (!missingOPM && compo.condiciones) {
+          const opmCond = compo.condiciones.find(c => c.op === 'opm');
+          if (opmCond) {
+            const apiName = opmCond.apiNameGrande || opmCond.ApiNamePequeno || opmCond.apiNamePequeno;
+            const cType = (opmCond.condTypeGrande || '').toLowerCase();
+            let isSelected = false;
+            let icon = null;
+            let name = apiName;
+            
+            if (cType === 'campeon') {
+              isSelected = selectedChampions.some(c => (typeof c === 'object' ? c.apiName : c) === apiName);
+              const champObj = allChampions.find(c => c.apiName === apiName);
+              if (champObj) { name = champObj.name; icon = champObj.tileIcon ? getLocalTftImage(champObj.tileIcon, 'champions/tileIcon', versionNumber) : null; }
+            } else if (cType === 'item') {
+              isSelected = selectedItems.some(i => (typeof i === 'object' ? i.apiName : i) === apiName);
+              const itemObj = allItems.find(i => i.apiName === apiName);
+              if (itemObj) { name = itemObj.name; icon = getLocalTftImage(itemObj.icon, 'items'); }
+            } else if (cType === 'sinergia') {
+              isSelected = selectedSinergias.includes(apiName);
+              const tr = allTraits.find(t => t.apiName === apiName);
+              if (tr) { name = getTraitDisplayName(tr); icon = tr.icon ? (tr.icon.includes("http") ? tr.icon.replace(".tex", ".png").toLowerCase() : getLocalTftImage(tr.icon, 'traits', versionNumber)) : null; }
+            } else if (cType === 'aumento' || cType === 'aumentoespecifico' || cType === 'aumentoresaleatorio') {
+              isSelected = selectedHardAugments.some(a => a.apiName === apiName);
+              const augObj = allAugments.find(a => a.apiName === apiName);
+              if (augObj) { name = augObj.name; icon = augObj.icon ? (augObj.icon.includes("http") ? augObj.icon.replace(".tex", ".png").toLowerCase() : getLocalTftImage(augObj.icon, 'augments', versionNumber)) : null; }
+            }
+            if (!isSelected) missingOPM = { type: cType, apiName, name, icon };
+          }
+        }
+
+        results.push({ ...compo, _matchCount: matchCount, _matchedFilters: matchedFilters, _missingOPM: missingOPM });
     });
 
     results.sort((a, b) => b._matchCount - a._matchCount);
@@ -516,7 +587,8 @@ console.log({selectedSoftItems})
   }, [
     filteredComposPrimary, selectedItems, selectedChampions, selectedExtras, selectedSinergias, 
     selectedAumentoResAleatorio, selectedAumentoEspecifico, selectedHardAugments, selectedSalidasEarly,
-    condicionesGrandeSinergias, condicionesGrandeAumentoResAleatorio, condicionesGrandeAumentoEspecifico
+    condicionesGrandeSinergias, condicionesGrandeAumentoResAleatorio, condicionesGrandeAumentoEspecifico,
+    allItems, allChampions, allAugments, allTraits, versionNumber
   ]);
 
   const availableSoftItemApiNames = useMemo(() => {
@@ -1028,7 +1100,7 @@ console.log({selectedSoftItems})
                     </div>
                     <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.1)' }}></div>
                   </div>
-                <CardsMasterPlanCompos compo={compo} filtroSoft={{selectedSoftItems,selectedSoftChampions,selectedSoftTraits,selectedSoftAugments}} gruposSalidasEarly={gruposSalidasEarly} />
+                <CardsMasterPlanCompos compo={compo} activateMissingOPM={activateMissingOPM} filtroSoft={{selectedSoftItems,selectedSoftChampions,selectedSoftTraits,selectedSoftAugments}} gruposSalidasEarly={gruposSalidasEarly} />
               </div>
             ))
           ) : (

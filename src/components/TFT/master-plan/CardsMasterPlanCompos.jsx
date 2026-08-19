@@ -10,7 +10,7 @@ import ImgAugment from "@components/TFT/ImgAugment";
 import ImgItem from "@components/TFT/ImgItem";
 import ImgCampeon from "@components/TFT/ImgCampeon";
 
-const CardsMasterPlanCompos = ({compo, filtroSoft={}, gruposSalidasEarly=[]})=>{
+const CardsMasterPlanCompos = ({compo, activateMissingOPM, filtroSoft={}, gruposSalidasEarly=[]})=>{
   const allItemsTFT = useStore(dataTFTAllItems);
   const allChampionsTFT = useStore(dataTFTChampions);
   const allAugmentsTFT = useStore(dataTFTAllAugments);
@@ -79,6 +79,73 @@ const CardsMasterPlanCompos = ({compo, filtroSoft={}, gruposSalidasEarly=[]})=>{
 
   return (
     <div className={style.container} style={{background: cardColorTier[compo.tier]}}>
+      {compo._missingOPM && (
+        <div 
+          className={style.opmLockOverlay}
+          onClick={(e) => {
+            e.stopPropagation();
+            if (activateMissingOPM) {
+              activateMissingOPM(compo._missingOPM.type, compo._missingOPM.apiName);
+            }
+          }}
+          style={{
+            position: 'absolute',
+            top: 0, left: 0, right: 0, bottom: 0,
+            background: 'rgba(10, 10, 10, 0.9)',
+            backdropFilter: 'blur(3px)',
+            zIndex: 10,
+            borderRadius: '0 0 8px 8px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+            padding: '16px',
+            textAlign: 'center',
+            color: 'white',
+            gap: '8px'
+          }}
+        >
+          {/* Meta Campeon & Compo Name */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px', background: 'rgba(255,255,255,0.05)', padding: '6px 12px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)' }}>
+            <div style={{ position: 'relative', width: '36px', height: '36px' }}>
+              <img 
+                src={getLocalTftImage(allChampionsTFT.find(x => x.apiName === compo?.campeonMeta?.apiNameCampeon)?.tileIcon, 'champions/tileIcon')} 
+                alt="Campeón Meta"
+                style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px', border: '1px solid #777' }}
+              />
+              {compo?.campeonMeta?.estrellas && (
+                <img 
+                  src="/tft/assets/3-estrellas.webp" 
+                  alt="3 estrellas"
+                  style={{ position: 'absolute', top: '0', left: '0', width: '100%' }}
+                />
+              )}
+            </div>
+            <span style={{ fontSize: '0.85rem', fontWeight: 'bold' }}>{compo.nombre}</span>
+          </div>
+
+          <span style={{ fontSize: '1.05rem', fontWeight: 'bold', color: '#ff4d4d' }}>Composición Bloqueada</span>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '4px' }}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ccc" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            {compo._missingOPM.icon && (
+              <img src={compo._missingOPM.icon} alt={compo._missingOPM.name} style={{ width: '42px', height: '42px', objectFit: 'contain', borderRadius: '6px', border: '2px solid #ff4500' }} />
+            )}
+          </div>
+          
+          <span style={{ fontSize: '0.8rem', color: '#bbb', maxWidth: '90%', lineHeight: '1.2' }}>
+            Activa <strong>{compo._missingOPM.name}</strong> para jugar
+          </span>
+          
+          <span style={{ fontSize: '0.75rem', background: '#ff4500', padding: '4px 10px', borderRadius: '12px', marginTop: '2px' }}>
+            Click para desbloquear
+          </span>
+        </div>
+      )}
       <div className={style.header}>
             <span
               className={style.tierCard}
