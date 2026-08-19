@@ -112,7 +112,9 @@ const EditarCompoTFT = () => {
       </label> */}
 
       {
-        metaComps.length > 0 && metaComps.map((comp, index)=>{
+        metaComps.length > 0 && metaComps
+        .filter(comp => comp.version === currentVersion || (currentVersion === "latest" && !comp.version)) // Asumimos latest si no tiene version para retrocompatibilidad
+        .map((comp, index)=>{
           return (
             <CardsCompos 
             comp={comp}

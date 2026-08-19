@@ -36,9 +36,12 @@ export default function MasterPlanPage() {
 
   const allItems = useStore(dataTFTAllItems) || [];
   const allChampions = useStore(dataTFTChampions) || [];
-  const allCompos = useStore(metaCompsTFT) || [];
+  const allComposRaw = useStore(metaCompsTFT) || [];
   const version = useStore(versionTFT);
   const versionNumber = version === "latest" ? setNumberLatest : setNumberPBE;
+  const allCompos = useMemo(() => {
+    return allComposRaw.filter(comp => String(comp.set_number) === String(versionNumber) || comp.set_number === "all");
+  }, [allComposRaw, versionNumber]);
   const allAugments = useStore(dataTFTAllAugments) || [];
   const allTraits = useStore(dataTFTTraits) || [];
   const dbAumentos = useStore(dataDBTFTAumentos) || {};
@@ -358,96 +361,136 @@ console.log({selectedSoftItems})
   const condicionesGrandeAumentoEspecifico = useMemo(() => getUniqueConditionsGrandeByType("aumentoespecifico"), [getUniqueConditionsGrandeByType]);
 
   const filteredCompos = useMemo(() => {
-    return filteredComposPrimary.filter(compo => {
-      const hasAnyConditionSelected = 
-        selectedItems.length > 0 ||
-        selectedChampions.length > 0 ||
-        selectedExtras.length > 0 ||
-        selectedSinergias.length > 0 ||
-        selectedAumentoResAleatorio.length > 0 ||
-        selectedAumentoEspecifico.length > 0 ||
-        selectedHardAugments.length > 0 ||
-        selectedSalidasEarly.length > 0;
+    const hasAnyConditionSelected = 
+      selectedItems.length > 0 ||
+      selectedChampions.length > 0 ||
+      selectedExtras.length > 0 ||
+      selectedSinergias.length > 0 ||
+      selectedAumentoResAleatorio.length > 0 ||
+      selectedAumentoEspecifico.length > 0 ||
+      selectedHardAugments.length > 0 ||
+      selectedSalidasEarly.length > 0;
 
-      if (hasAnyConditionSelected) {
-        let matchesAnySelectedCondition = false;
+    if (!hasAnyConditionSelected) {
+      return filteredComposPrimary.map(compo => ({ ...compo, _matchCount: 0, _matchedFilters: [] }));
+    }
 
-        if (selectedItems.length > 0) {
-          const matchItem = selectedItems.some(item => 
+    const results = [];
+
+    filteredComposPrimary.forEach(compo => {
+      let matchCount = 0;
+      let matchedFilters = [];
+
+      if (selectedItems.length > 0) {
+        selectedItems.forEach(item => {
+          const matchItem = 
             compo.itemsPrio?.some(i => (typeof i === 'object' && i !== null ? i.apiName : i) === item.apiName) || 
             compo.campeonMeta?.apiNameItemsDelCampeon?.includes(item.apiName) ||
             compo.posicionamiento?.[0]?.tablero?.some(champ => champ.apiNameItemsDelCampeon?.includes(item.apiName)) ||
-            (compo.condiciones || []).some(c => c.apiNameGrande === item.apiName || c.ApiNamePequeno === item.apiName)
-          );
-          if (matchItem) matchesAnySelectedCondition = true;
-        }
-
-        if (!matchesAnySelectedCondition && selectedChampions.length > 0) {
-          const boardChampions = compo.posicionamiento?.[0]?.tablero?.map(c => c.apiNameCampeon) || [];
-          const matchChamp = selectedChampions.some(champ => 
-            boardChampions.includes(champ.apiName) || 
-            compo.campeonMeta?.apiNameCampeon === champ.apiName ||
-            compo.campeonesEarly?.some(early => early.apiNameCampeon === champ.apiName) ||
-            (compo.condiciones || []).some(c => c.apiNameGrande === champ.apiName || c.ApiNamePequeno === champ.apiName)
-          );
-          if (matchChamp) matchesAnySelectedCondition = true;
-        }
-
-        if (!matchesAnySelectedCondition && selectedExtras.length > 0) {
-          const matchExtra = selectedExtras.some(apiName =>
-            (compo.condiciones || []).some(c => c.apiNameGrande === apiName || c.ApiNamePequeno === apiName)
-          );
-          if (matchExtra) matchesAnySelectedCondition = true;
-        }
-
-        if (!matchesAnySelectedCondition && selectedSinergias.length > 0) {
-          const compoTraits = (compo.sinergias || []).map(s => s.apiName || s.apiNameSinergia).filter(Boolean);
-          const matchSinergia = selectedSinergias.some(apiName =>
-            compoTraits.includes(apiName) ||
-            (compo.condiciones || []).some(c => c.apiNameGrande === apiName || c.ApiNamePequeno === apiName)
-          );
-          if (matchSinergia) matchesAnySelectedCondition = true;
-        }
-
-        if (!matchesAnySelectedCondition && selectedAumentoResAleatorio.length > 0) {
-          const compoAugments = (compo.aumentos || []).map(a => typeof a === 'object' ? a.apiName : a).filter(Boolean);
-          const matchAugAleatorio = selectedAumentoResAleatorio.some(apiName =>
-            compoAugments.includes(apiName) ||
-            (compo.condiciones || []).some(c => c.apiNameGrande === apiName || c.ApiNamePequeno === apiName)
-          );
-          if (matchAugAleatorio) matchesAnySelectedCondition = true;
-        }
-
-        if (!matchesAnySelectedCondition && selectedAumentoEspecifico.length > 0) {
-          const compoAugments = (compo.aumentos || []).map(a => typeof a === 'object' ? a.apiName : a).filter(Boolean);
-          const matchAugEspecifico = selectedAumentoEspecifico.some(apiName =>
-            compoAugments.includes(apiName) ||
-            (compo.condiciones || []).some(c => c.apiNameGrande === apiName || c.ApiNamePequeno === apiName)
-          );
-          if (matchAugEspecifico) matchesAnySelectedCondition = true;
-        }
-
-        if (!matchesAnySelectedCondition && selectedHardAugments.length > 0) {
-          const compoAugments = (compo.aumentos || []).flatMap(a => [a.apiNameGrande, a.apiNamePequeno]).filter(Boolean);
-          const matchAug = selectedHardAugments.some(aug =>
-            compoAugments.includes(aug.apiName) ||
-            (compo.condiciones || []).some(c => c.apiNameGrande === aug.apiName || c.ApiNamePequeno === aug.apiName)
-          );
-          if (matchAug) matchesAnySelectedCondition = true;
-        }
-
-        if (!matchesAnySelectedCondition && selectedSalidasEarly.length > 0) {
-          const compoSalidas = compo.salidasEarly || [];
-          const matchSalida = selectedSalidasEarly.some(grupoId => compoSalidas.some(s => String(s) === String(grupoId)));
-          if (matchSalida) matchesAnySelectedCondition = true;
-        }
-
-        if (!matchesAnySelectedCondition) return false;
+            (compo.condiciones || []).some(c => c.apiNameGrande === item.apiName || c.ApiNamePequeno === item.apiName);
+          if (matchItem) {
+            matchCount++;
+            matchedFilters.push({ type: 'item', apiName: item.apiName, icon: item.icon, name: item.name });
+          }
+        });
       }
 
-      return true;
+      if (selectedChampions.length > 0) {
+        const boardChampions = compo.posicionamiento?.[0]?.tablero?.map(c => c.apiNameCampeon) || [];
+        selectedChampions.forEach(champ => {
+          const matchChamp = 
+            boardChampions.includes(champ.apiName) || 
+            compo.campeonMeta?.apiNameCampeon === champ.apiName ||
+            compo.campeonesEarly?.some(early => (typeof early === 'object' && early !== null ? early.apiNameCampeon : early) === champ.apiName) ||
+            (compo.condiciones || []).some(c => c.apiNameGrande === champ.apiName || c.ApiNamePequeno === champ.apiName);
+          if (matchChamp) {
+            matchCount++;
+            matchedFilters.push({ type: 'campeon', apiName: champ.apiName, icon: champ.icon || (champ.tileIcon ? getLocalTftImage(champ.tileIcon, 'champions/tileIcon') : null), name: champ.name });
+          }
+        });
+      }
+
+      if (selectedExtras.length > 0) {
+        selectedExtras.forEach(apiName => {
+          const matchExtra = (compo.condiciones || []).some(c => c.apiNameGrande === apiName || c.ApiNamePequeno === apiName);
+          if (matchExtra) {
+            matchCount++;
+            const extrasMap = { "Win Streak": "/tft/assets/WinStreak.webp", "Loss Streak": "/tft/assets/LossStreak.webp", "orbedecampeon": "/tft/assets/Orbe.webp", "3 estrellas": "/tft/assets/3estrellas.webp", "4 estrellas": "/tft/assets/4estrellas.webp" };
+            matchedFilters.push({ type: 'extra', apiName: apiName, icon: extrasMap[apiName] || null, name: apiName });
+          }
+        });
+      }
+
+      if (selectedSinergias.length > 0) {
+        const compoTraits = (compo.sinergias || []).map(s => s.apiName || s.apiNameSinergia).filter(Boolean);
+        selectedSinergias.forEach(apiName => {
+          const matchSinergia = compoTraits.includes(apiName) || (compo.condiciones || []).some(c => c.apiNameGrande === apiName || c.ApiNamePequeno === apiName);
+          if (matchSinergia) {
+            matchCount++;
+            const traitObj = condicionesGrandeSinergias.find(t => t.apiName === apiName);
+            matchedFilters.push({ type: 'sinergia', apiName: apiName, icon: traitObj?.icon || null, name: traitObj?.name || apiName });
+          }
+        });
+      }
+
+      if (selectedAumentoResAleatorio.length > 0) {
+        const compoAugments = (compo.aumentos || []).map(a => typeof a === 'object' ? a.apiName : a).filter(Boolean);
+        selectedAumentoResAleatorio.forEach(apiName => {
+          const matchAugAleatorio = compoAugments.includes(apiName) || (compo.condiciones || []).some(c => c.apiNameGrande === apiName || c.ApiNamePequeno === apiName);
+          if (matchAugAleatorio) {
+            matchCount++;
+            const augObj = condicionesGrandeAumentoResAleatorio.find(a => a.apiName === apiName);
+            matchedFilters.push({ type: 'aumentoresaleatorio', apiName: apiName, icon: augObj?.icon || null, name: augObj?.name || apiName });
+          }
+        });
+      }
+
+      if (selectedAumentoEspecifico.length > 0) {
+        const compoAugments = (compo.aumentos || []).map(a => typeof a === 'object' ? a.apiName : a).filter(Boolean);
+        selectedAumentoEspecifico.forEach(apiName => {
+          const matchAugEspecifico = compoAugments.includes(apiName) || (compo.condiciones || []).some(c => c.apiNameGrande === apiName || c.ApiNamePequeno === apiName);
+          if (matchAugEspecifico) {
+            matchCount++;
+            const augObj = condicionesGrandeAumentoEspecifico.find(a => a.apiName === apiName);
+            matchedFilters.push({ type: 'aumentoespecifico', apiName: apiName, icon: augObj?.icon || null, name: augObj?.name || apiName });
+          }
+        });
+      }
+
+      if (selectedHardAugments.length > 0) {
+        const compoAugments = (compo.aumentos || []).flatMap(a => [a.apiNameGrande, a.apiNamePequeno]).filter(Boolean);
+        selectedHardAugments.forEach(aug => {
+          const matchAug = compoAugments.includes(aug.apiName) || (compo.condiciones || []).some(c => c.apiNameGrande === aug.apiName || c.ApiNamePequeno === aug.apiName);
+          if (matchAug) {
+            matchCount++;
+            matchedFilters.push({ type: 'hardaugment', apiName: aug.apiName, icon: (aug.icon && aug.icon.includes('.tex')) ? getLocalTftImage(aug.icon, 'augments/choiceui') : aug.icon, name: aug.name });
+          }
+        });
+      }
+
+      if (selectedSalidasEarly.length > 0) {
+        const compoSalidas = compo.salidasEarly || [];
+        selectedSalidasEarly.forEach(grupoId => {
+          const matchSalida = compoSalidas.some(s => String(s) === String(grupoId));
+          if (matchSalida) {
+            matchCount++;
+            matchedFilters.push({ type: 'salida', apiName: grupoId, name: `Salida Early ${grupoId}`, icon: null });
+          }
+        });
+      }
+
+      if (matchCount > 0) {
+        results.push({ ...compo, _matchCount: matchCount, _matchedFilters: matchedFilters });
+      }
     });
-  }, [filteredComposPrimary, selectedItems, selectedChampions, selectedExtras, selectedSinergias, selectedAumentoResAleatorio, selectedAumentoEspecifico, selectedHardAugments, selectedSalidasEarly]);
+
+    results.sort((a, b) => b._matchCount - a._matchCount);
+    return results;
+  }, [
+    filteredComposPrimary, selectedItems, selectedChampions, selectedExtras, selectedSinergias, 
+    selectedAumentoResAleatorio, selectedAumentoEspecifico, selectedHardAugments, selectedSalidasEarly,
+    condicionesGrandeSinergias, condicionesGrandeAumentoResAleatorio, condicionesGrandeAumentoEspecifico
+  ]);
 
   const availableSoftItemApiNames = useMemo(() => {
     const set = new Set();
@@ -929,8 +972,23 @@ console.log({selectedSoftItems})
         <div className={style.composGrid}>
           {filteredCompos.length > 0 ? (
             filteredCompos.map(compo => (
-              <div className={style.cardContainer} onClick={()=>setActiveComp(allCompos.find((comp)=>comp.id === compo.id))}>
-                <CardsMasterPlanCompos key={compo.id || compo.titulo || Math.random()} compo={compo} filtroSoft={{selectedSoftItems,selectedSoftChampions,selectedSoftTraits,selectedSoftAugments}} gruposSalidasEarly={gruposSalidasEarly} />
+              <div key={compo.id || compo.titulo || Math.random()} className={style.cardContainer} onClick={()=>setActiveComp(allCompos.find((comp)=>comp.id === compo.id))}>
+                {compo._matchCount > 0 && (
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '5px', background: 'rgba(0,0,0,0.3)', borderRadius: '8px', marginBottom: '10px' }}>
+                    <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.1)' }}></div>
+                    <div style={{ display: 'flex', gap: '5px' }}>
+                      {compo._matchedFilters.map((f, i) => (
+                        f.icon ? (
+                          <img key={i} src={f.icon} alt={f.name} title={f.name} style={{ width: '24px', height: '24px', borderRadius: '4px', objectFit: 'contain' }} />
+                        ) : (
+                          <span key={i} style={{ fontSize: '10px', background: 'rgba(255,255,255,0.1)', padding: '2px 4px', borderRadius: '4px', color: 'white' }}>{f.name}</span>
+                        )
+                      ))}
+                    </div>
+                    <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.1)' }}></div>
+                  </div>
+                )}
+                <CardsMasterPlanCompos compo={compo} filtroSoft={{selectedSoftItems,selectedSoftChampions,selectedSoftTraits,selectedSoftAugments}} gruposSalidasEarly={gruposSalidasEarly} />
               </div>
             ))
           ) : (

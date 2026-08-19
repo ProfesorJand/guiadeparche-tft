@@ -99,10 +99,14 @@ const InfografiaMPTFT = ({comp = {}, gruposSalidasEarly = []}) => {
     const isCondicionPequenoExtra = extras.some((item) => item.apiName === condicionPequeno);
 
     const isOPM = condicion.op === 'opm';
-    const highlightStyle = isOPM ? { boxShadow: '0 0 8px 2px #ff4500', border: '1px solid #ff4500', borderRadius: '4px', boxSizing:"border-box" } : {};
+    
+    let containerClass = condicion.op ? style.cCondicionOP : style.cCondicionNormal;
+    if (isOPM) {
+      containerClass += ` ${style.cCondicionOPM}`;
+    }
 
     return (
-      <div key={`${condicionGrande}-${index}`} className={style.cCondicionOP} style={highlightStyle}>
+      <div key={`${condicionGrande}-${index}`} className={containerClass}>
         <div className={style.cCondicionGrande}>
           {isCondicionGrandeAugment && <ImgAugment augment={AllAugments.find((item) => item.apiName === condicionGrande)}/>}
           {isCondicionGrandeItem && <ImgItem item={AllItems.find((item) => item.apiName === condicionGrande)}/>}
@@ -110,8 +114,8 @@ const InfografiaMPTFT = ({comp = {}, gruposSalidasEarly = []}) => {
           {isCondicionGrandeSinergia && <ImgTrait trait={AllTraits.find((item) => item.apiName === condicionGrande)} />}
           {isCondicionGrandeExtra && <img src={extras.find((item) => item.apiName === condicionGrande).img} alt="" style={{width:"100%"}}/>}
           {condicion.op && (
-          <div className={style.opAumento} style={isOPM ? { backgroundColor: '#ff4500' } : {}}>
-            <span className={style.textOP}>{isOPM ? 'OPM' : 'OP'}</span>
+          <div className={style.opAumento}>
+            <span className={`${style.textOP} ${isOPM ? style.textOPM : ''}`}>{isOPM ? 'OPM' : 'OP'}</span>
           </div>
             )}
         </div>
@@ -139,7 +143,7 @@ const InfografiaMPTFT = ({comp = {}, gruposSalidasEarly = []}) => {
     });
 
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%', height: '100%' }}>
         {condicionesOP.length > 0 && (
           <div className={`${style.cBoxTitleInfo} ${style.cCondicionOpEarly}`}>
             <span className={style.tBox}>Preliminares OP</span>
@@ -168,8 +172,6 @@ const InfografiaMPTFT = ({comp = {}, gruposSalidasEarly = []}) => {
                   
     const uniqueChamps = [...new Set(allEarlyChamps)].slice(0, 6);
     return(
-      <div className={`${style.cBoxTitleInfo} ${style.cFundamentals}`}>
-        <span className={style.tBox}>Fundamentals</span>
         <div className={style.cFundamentalsInfo}>
           <div className={`${style.cBoxTitleInfo} ${style.cCampeonesPrio}`}> 
             <span className={style.tBox}>Salidas Early</span>
@@ -186,7 +188,7 @@ const InfografiaMPTFT = ({comp = {}, gruposSalidasEarly = []}) => {
                         const champ = AllChampions.find(c => c.apiName === apiName);
                         return champ ? (
                           <div key={apiName} style={{ width: 'calc((100% - (4px *4)) / 5)'}}>
-                            <ImgCampeon championData={champ} imgType="tileIcon" showName={false} />
+                            <ImgCampeon championData={champ} imgType="tileIcon" showName={true} />
                           </div>
                         ) : null;
                       })}
@@ -218,7 +220,6 @@ const InfografiaMPTFT = ({comp = {}, gruposSalidasEarly = []}) => {
             </div>
           </div>
         </div>
-      </div>
     )
   }
   const sortAumentos = (a, b) => {
@@ -247,7 +248,7 @@ const InfografiaMPTFT = ({comp = {}, gruposSalidasEarly = []}) => {
 
     return (
       <div className={`${style.cBoxTitleInfo} ${style.cAumentos}`}>
-        <span className={style.tBox}>Aumentos Early</span>
+        <span className={style.tBox}>Aumentos Early (2-1)</span>
         <div className={style.cAumentosInfo}>
           {list.map((aumento, index) => (
             <div key={index} className={style.cAumento}>
@@ -269,7 +270,7 @@ const InfografiaMPTFT = ({comp = {}, gruposSalidasEarly = []}) => {
 
     return (
       <div className={`${style.cBoxTitleInfo} ${style.cAumentos}`}>
-        <span className={style.tBox}>Aumentos Mid/Late</span>
+        <span className={style.tBox}>Aumentos Mid/Late (3-2 & 4-2)</span>
         <div className={style.cAumentosInfo}>
           {list.map((aumento, index) => (
             <div key={index} className={style.cAumento}>
@@ -290,18 +291,86 @@ const InfografiaMPTFT = ({comp = {}, gruposSalidasEarly = []}) => {
       <div className={`${style.cBoxTitleInfo} ${style.cNiveles}`}>
         <span className={style.tBox}>Niveles</span>
         <CampeonesNivel comp={comp} isMP={true}/>
+        {comp?.planB && comp.planB.length > 0 && (
+        <div className={style.cBoxRow}>
+          {PlanB()}
+        </div>
+      )}
       </div>
     )
   }
   const Posicionamiento = ()=>{
+    const [activeTableroIndex, setActiveTableroIndex] = useState(0);
+
+    if (!comp?.posicionamiento || comp.posicionamiento.length === 0) return null;
+
+    const activePos = comp.posicionamiento[activeTableroIndex] || comp.posicionamiento[0];
+
+    const NavegacionTableros = () => {
+      // Si quieres que siempre se muestre la columna incluso con 1 tablero, quita esta condición.
+      if (comp.posicionamiento.length <= 1) return null;
+
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100px', flexShrink: 0 }}>
+          {comp.posicionamiento.map((pos, index) => {
+            const condicion = pos.condicionExtra;
+            let imgUrl = null;
+            if (condicion) {
+              if (condicion.type === 'campeon') imgUrl = getLocalTftImage(AllChampions?.find(c => c.apiName === condicion.apiName)?.tileIcon, 'champions/tileIcon');
+              else if (condicion.type === 'item') imgUrl = getLocalTftImage(AllItems?.find(i => i.apiName === condicion.apiName)?.icon, 'items');
+              else if (condicion.type === 'augment') imgUrl = getLocalTftImage(AllAugments?.find(a => a.apiName === condicion.apiName)?.icon, 'augments/choiceui');
+              else if (condicion.type === 'trait') imgUrl = getLocalTftImage(AllTraits?.find(t => t.apiName === condicion.apiName)?.icon, 'traits');
+              else if (condicion.type === 'extra') {
+                const extrasMap = { "Win Streak": "/tft/assets/WinStreak.webp", "Loss Streak": "/tft/assets/LossStreak.webp", "orbedecampeon": "/tft/assets/Orbe.webp", "3 estrellas": "/tft/assets/3estrellas.webp", "4 estrellas": "/tft/assets/4estrellas.webp" };
+                imgUrl = extrasMap[condicion.apiName];
+              }
+            }
+
+            return (
+              <div 
+                key={index} 
+                onClick={() => setActiveTableroIndex(index)}
+                style={{
+                  cursor: 'pointer',
+                  padding: '8px',
+                  background: activeTableroIndex === index ? 'var(--bg-box-color-active, rgba(255, 255, 255, 0.2))' : 'var(--bg-box-color, rgba(0, 0, 0, 0.3))',
+                  border: activeTableroIndex === index ? '1px solid #fff' : '1px solid transparent',
+                  borderRadius: '8px',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  textAlign: 'center',
+                  minHeight: '60px',
+                  transition: 'all 0.2s'
+                }}
+                title={pos.nombreTablero || `Tablero ${index + 1}`}
+              >
+                {imgUrl ? (
+                  <img src={imgUrl} alt={pos.nombreTablero || `Tablero ${index + 1}`} style={{ width: '100%', objectFit: 'contain' }} />
+                ) : (
+                  <span style={{ color: 'white', fontSize: '13px', fontWeight: 'bold', wordBreak: 'break-word', lineHeight: '1.2' }}>{pos.nombreTablero || `Tablero ${index + 1}`}</span>
+                )}
+              </div>
+            )
+          })}
+        </div>
+      );
+    };
+
     return (
       <div className={`${style.cBoxTitleInfo} ${style.cPosicionamiento}`}>
         <span className={style.tBox}>Posicionamiento</span>
-        <div className={style.cPosicionamientoInfo}>
-          <div className={style.containerSinergiasActivas}>
-            <Sinergias sinergias={comp?.posicionamiento?.[0]?.tablero} orientacion={"vertical"} show={true} version={"latest" || comp?.version} />
+        <div style={{ display: 'flex', gap: '15px', width:"100%" }}>
+          
+          <div className={style.cPosicionamientoInfo} style={{ flex: 1 }}>
+            <div className={style.containerSinergiasActivas}>
+              <Sinergias sinergias={activePos.tablero} orientacion={"vertical"} show={true} version={"latest" || comp?.version} />
+            </div>
+            <NuevoBuilderTFT customTablero={activePos.tablero} readOnly={true} />
           </div>
-          <NuevoBuilderTFT customTablero={comp?.posicionamiento?.[0]?.tablero} readOnly={true} />
+
+          <NavegacionTableros />
+
         </div>
       </div>
     )
@@ -313,23 +382,20 @@ const InfografiaMPTFT = ({comp = {}, gruposSalidasEarly = []}) => {
         <div className={style.cBestItemCompInfo}>
           {
             Object.keys(comp?.mejoresItems || {}).map((key, index)=>{
+              const allItemApiNames = (comp?.mejoresItems?.[key] || [])
+                .flatMap(data => data?.apiNameItemsDelCampeon || []);
+              const uniqueItems = [...new Set(allItemApiNames)];
+
               return (
                 <div key={index} className={style.cBestItemCompItem}>
                   <span className={style.tBox}>{key}</span>
                   <div className={style.cBestItemsInfo}>
                   {
-                    (comp?.mejoresItems?.[key] || []).map((data, index) => {
-                      return ((data?.apiNameItemsDelCampeon || []).map((itemApiName, itemIndex) => {
-                              return (
-                                <div key={itemIndex} className={style.cBestItem} onMouseEnter={()=>handleBestItemHelper(itemApiName, "show")} onMouseLeave={()=>handleBestItemHelper(itemApiName, "hide")}>
-                                  <ImgItem item={AllItems.find((item) => item.apiName === itemApiName)}/>
-                                  {/* <div className={style.cChampWrapper}>
-                                    <ImgCampeon showName={false} championData={AllChampions.find((champ) => champ.apiName === data.apiNameCampeon)} />
-                                  </div> */}
-                                </div>
-                              )
-                            })
-
+                    uniqueItems.map((itemApiName, itemIndex) => {
+                      return (
+                        <div key={itemIndex} className={style.cBestItem} onMouseEnter={()=>handleBestItemHelper(itemApiName, "show")} onMouseLeave={()=>handleBestItemHelper(itemApiName, "hide")}>
+                          <ImgItem item={AllItems.find((item) => item.apiName === itemApiName)}/>
+                        </div>
                       )
                     })
                   }
@@ -417,6 +483,35 @@ const InfografiaMPTFT = ({comp = {}, gruposSalidasEarly = []}) => {
       </div>
     )
   }
+
+  const PlanB = () => {
+    return (
+      <div className={`${style.cBoxTitleInfo} ${style.cPlanB}`} style={{ width: '100%' }}>
+        <span className={style.tBox}>Plan B (Reemplazos)</span>
+        <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', padding: '10px' }}>
+          {(comp?.planB || []).map((row, index) => {
+            if (!row[0] || !row[1]) return null;
+            const champLeft = AllChampions.find(c => c.apiName === row[0]);
+            const champRight = AllChampions.find(c => c.apiName === row[1]);
+            if (!champLeft || !champRight) return null;
+
+            return (
+              <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '10px', background: 'rgba(0,0,0,0.3)', padding: '5px 10px', borderRadius: '8px' }}>
+                <div style={{ width: '45px' }}>
+                  <ImgCampeon championData={champLeft} imgType="tileIcon" showName={false} />
+                </div>
+                <span style={{ color: 'white', fontWeight: 'bold', fontSize: '24px' }}>{'⇄'}</span>
+                <div style={{ width: '45px' }}>
+                  <ImgCampeon championData={champRight} imgType="tileIcon" showName={false} />
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className={style.cardsMPCompContainer}>
       <Header/>
