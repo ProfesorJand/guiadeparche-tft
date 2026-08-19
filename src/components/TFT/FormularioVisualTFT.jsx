@@ -1667,6 +1667,7 @@ export default function FormularioVisualTFT({
         proTip: compo.proTip || {},
         salidasEarly:compo.salidasEarly,
         racha:compo.racha,
+        planB: compo.planB || [],
       });
     } else {
       reiniciarComposicionTFT();

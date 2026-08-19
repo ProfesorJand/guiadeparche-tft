@@ -40,7 +40,7 @@ interface ImageMetadata {
 <style>
   .logo {
     display: flex;
-    height:  var(--height-header);
+    height:  calc(var(--height-header) - 10px);
   }
   .textLogo{
     font-family: Fantasy, ObvioslyWideBold, sans-serif;;
@@ -58,7 +58,7 @@ interface ImageMetadata {
     .logo {
       display: flex;
       position: relative;
-      height: var(--height-header);
+      height:  calc(var(--height-header) - 10px);
       aspect-ratio: 1/1;
       box-sizing: border-box;
     }
