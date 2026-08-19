@@ -98,13 +98,33 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
     };
   });
 
+  // Constante para campeones que aplican x2 en su sinergia
+  // Formato: { "apiName_del_campeon": ["apiName_de_la_sinergia"] }
+  const doubleTraitChampions = {
+    "tft18_lux_coven": ["DA_18_Coven"],
+    "tft18_lux_inferno":["DA_18_Inferno"],
+    "tft18_lux_blackthorn":["DA_18_Blackthorn"],
+    "tft18_lux_blossom":["DA_18_Blossom"],
+    "tft18_lux_elderwood":["DA_18_Elderwood"],
+    "tft18_lux_fae":["DA_18_Fae"],
+    "tft18_lux_lunar":["DA_18_Lunar"],
+    "tft18_lux_primal":["DA_Primal18"],
+    "tft18_lux_solar":["DA_18_Solar"],
+    "tft18_elderdragon":["DA_Riftbeast18"],
+  };
+
   const synergiesCount = {};
   Object.values(boardData).forEach((champion) => {
     const collectedTraits = new Set();
     champion.traits.forEach((trait) => {
       collectedTraits.add(trait.apiName);
+      
+      // Verifica si el campeón tiene la sinergia marcada como x2 en la constante
+      const isDouble = doubleTraitChampions[champion.apiName]?.includes(trait.apiName);
+      const countToAdd = isDouble ? 2 : 1;
+
       const currentCount = synergiesCount[trait.apiName]?.count || 0;
-      synergiesCount[trait.apiName] = { count: currentCount + 1, icon: trait.icon };
+      synergiesCount[trait.apiName] = { count: currentCount + countToAdd, icon: trait.icon };
     });
     if (champion.items) {
       champion.items.forEach((item) => {

@@ -1103,16 +1103,23 @@ const NivelesVisual = () => {
 };
 const PosicionamientoVisual = () => {
   const comp = useStore(datosCompos);
+  const allChampionsTFT = useStore(dataTFTChampions);
+  const AllItems = useStore(dataTFTAllItems);
+  const AllAugments = useStore(dataTFTAllAugments);
+  const AllTraits = useStore(dataTFTTraits);
+
   const addTablero = () => {
     const nuevoPosicionamiento = [...(comp.posicionamiento || [])];
     nuevoPosicionamiento.push({
       tablero: [],
-      info: ""
+      nombreTablero: "Tablero " + (nuevoPosicionamiento.length + 1),
+      condicionExtra: null
     });
     actualizarComposicionTFT({
       posicionamiento: nuevoPosicionamiento
     });
   };
+
   const removeTablero = index => {
     const nuevoPosicionamiento = [...(comp.posicionamiento || [])];
     nuevoPosicionamiento.splice(index, 1);
@@ -1120,23 +1127,193 @@ const PosicionamientoVisual = () => {
       posicionamiento: nuevoPosicionamiento
     });
   };
+
+  const updateTableroName = (index, name) => {
+    const nuevoPosicionamiento = [...(comp.posicionamiento || [])];
+    nuevoPosicionamiento[index].nombreTablero = name;
+    actualizarComposicionTFT({ posicionamiento: nuevoPosicionamiento });
+  };
+
+  const updateTableroCondicion = (index, condicion) => {
+    const nuevoPosicionamiento = [...(comp.posicionamiento || [])];
+    nuevoPosicionamiento[index].condicionExtra = condicion;
+    actualizarComposicionTFT({ posicionamiento: nuevoPosicionamiento });
+  };
+
+  const renderCondicionIcon = (condicion) => {
+    if (!condicion) return <span style={{ color: '#ccc', fontSize: '18px' }}>+</span>;
+    let imgUrl = null;
+    let name = "";
+    
+    if (condicion.type === 'campeon') {
+      const data = allChampionsTFT?.find(c => c.apiName === condicion.apiName);
+      if (data) {
+        imgUrl = getLocalTftImage(data.tileIcon, 'champions/tileIcon');
+        name = data.name;
+      }
+    } else if (condicion.type === 'item') {
+      const data = AllItems?.find(i => i.apiName === condicion.apiName);
+      if (data) {
+        imgUrl = getLocalTftImage(data.icon, 'items');
+        name = data.name;
+      }
+    } else if (condicion.type === 'augment') {
+      const data = AllAugments?.find(a => a.apiName === condicion.apiName);
+      if (data) {
+        imgUrl = getLocalTftImage(data.icon, 'augments/choiceui');
+        name = data.name;
+      }
+    } else if (condicion.type === 'trait') {
+      const data = AllTraits?.find(t => t.apiName === condicion.apiName);
+      if (data) {
+        imgUrl = getLocalTftImage(data.icon, 'traits');
+        name = data.name;
+      }
+    } else if (condicion.type === 'extra') {
+      const extrasMap = {
+        "Win Streak": "/tft/assets/WinStreak.webp",
+        "Loss Streak": "/tft/assets/LossStreak.webp",
+        "orbedecampeon": "/tft/assets/Orbe.webp",
+        "3 estrellas": "/tft/assets/3estrellas.webp",
+        "4 estrellas": "/tft/assets/4estrellas.webp"
+      };
+      imgUrl = extrasMap[condicion.apiName];
+      name = condicion.apiName;
+    }
+
+    if (imgUrl) {
+      return (
+        <>
+          <img src={imgUrl} alt={name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} title={name} />
+          <button onClick={(e) => { e.stopPropagation(); updateTableroCondicion(null); }} className={localStyle.styleBox22} style={{ position: 'absolute', top: -5, right: -5 }}>X</button>
+        </>
+      );
+    }
+    return <span style={{ color: '#ccc' }}>?</span>;
+  };
+
   return <div className={`${style.cBoxTitleInfo} ${style.cPosicionamiento}`}>
       <span className={style.tBox}>Posicionamiento</span>
       <div className={`${style.cPosicionamientoInfo} ${localStyle.styleBox49}`}>
         {(comp.posicionamiento || []).map((pos, index) => <div key={index} className={localStyle.styleBox50}>
-            <div className={localStyle.styleBox51}>
-              <strong>Tablero {index + 1}</strong>
+            <div className={localStyle.styleBox51} style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+              
+              <div
+                onDragOver={e => e.preventDefault()}
+                onDrop={e => {
+                  e.preventDefault();
+                  const champ = e.dataTransfer.getData("campeon");
+                  const item = e.dataTransfer.getData("item");
+                  const aug = e.dataTransfer.getData("augment") || e.dataTransfer.getData("aumento");
+                  const trait = e.dataTransfer.getData("sinergia") || e.dataTransfer.getData("trait");
+                  const extra = e.dataTransfer.getData("extra");
+
+                  if (champ) updateTableroCondicion(index, { type: 'campeon', apiName: JSON.parse(champ).apiName || JSON.parse(champ).name });
+                  else if (item) updateTableroCondicion(index, { type: 'item', apiName: JSON.parse(item).apiName || JSON.parse(item).name });
+                  else if (aug) updateTableroCondicion(index, { type: 'augment', apiName: JSON.parse(aug).apiName || JSON.parse(aug).name });
+                  else if (trait) updateTableroCondicion(index, { type: 'trait', apiName: JSON.parse(trait).apiName || JSON.parse(trait).name });
+                  else if (extra) updateTableroCondicion(index, { type: 'extra', apiName: extra });
+                }}
+                style={{ width: '40px', height: '40px', border: '1px dashed #ccc', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative', cursor: 'pointer', background: 'rgba(0,0,0,0.3)', borderRadius: '4px' }}
+                title="Arrastra un campeón, ítem, aumento o extra aquí"
+              >
+                {renderCondicionIcon(pos.condicionExtra)}
+              </div>
+
+              <input 
+                type="text" 
+                value={pos.nombreTablero !== undefined ? pos.nombreTablero : pos.info || `Tablero ${index + 1}`} 
+                onChange={(e) => updateTableroName(index, e.target.value)}
+                style={{ flex: 1, padding: '5px 10px', background: 'rgba(0,0,0,0.5)', border: '1px solid #444', color: 'white', borderRadius: '4px', fontSize: '16px' }}
+                placeholder={`Tablero ${index + 1}`}
+              />
+              
               <button onClick={() => removeTablero(index)} className={localStyle.styleBox52}>X Tablero</button>
             </div>
-            {/* <div className={style.containerSinergiasActivas}>
-              <Sinergias sinergias={pos.tablero} orientacion={"horizontal"} show={true} version={"latest" || comp?.version} />
-            </div> */}
             <NuevoBuilderTFT posicionIndex={index} />
           </div>)}
         <button onClick={addTablero} className={localStyle.styleBox48}>+ Añadir Tablero</button>
       </div>
     </div>;
 };
+  const PlanB = () => {
+    const comp = useStore(datosCompos);
+    const allChampionsTFT = useStore(dataTFTChampions);
+
+    const addPlanBRow = () => {
+      const nuevosPlanB = [...(comp.planB || [])];
+      nuevosPlanB.push([null, null]);
+      actualizarComposicionTFT({ planB: nuevosPlanB });
+    };
+
+    const updatePlanBChamp = (rowIndex, positionIndex, apiName) => {
+      const nuevosPlanB = [...(comp.planB || [])];
+      nuevosPlanB[rowIndex][positionIndex] = apiName;
+      actualizarComposicionTFT({ planB: nuevosPlanB });
+    };
+
+    const removePlanBRow = (rowIndex) => {
+      const nuevosPlanB = [...(comp.planB || [])];
+      nuevosPlanB.splice(rowIndex, 1);
+      actualizarComposicionTFT({ planB: nuevosPlanB });
+    };
+
+    return (
+      <div className={`${style.cBoxTitleInfo} ${style.cPlanB}`} style={{ width: '100%' }}>
+        <span className={style.tBox}>Plan B (Reemplazos)</span>
+        <div className={localStyle.styleBox37}>
+          {(comp.planB || []).map((row, rowIndex) => (
+            <div key={rowIndex} className={localStyle.styleBox38} style={{ display: 'flex', alignItems: 'center', gap: '20px', padding: '10px', background: 'rgba(0,0,0,0.2)', borderRadius: '8px' }}>
+              
+              {/* Left Champ */}
+              <div
+                onDragOver={e => e.preventDefault()}
+                onDrop={e => {
+                  e.preventDefault();
+                  const c = e.dataTransfer.getData("campeon");
+                  if (c) updatePlanBChamp(rowIndex, 0, JSON.parse(c).apiName || JSON.parse(c).name);
+                }}
+                className={localStyle.styleBox46}
+                style={{ width: '60px', height: '60px', border: '1px dashed #ccc', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative', cursor: 'pointer' }}
+              >
+                {row[0] ? (
+                  <>
+                    <img src={getLocalTftImage(allChampionsTFT.find(c => c.apiName === row[0])?.tileIcon, 'champions/tileIcon')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="champ" />
+                    <button onClick={() => updatePlanBChamp(rowIndex, 0, null)} className={localStyle.styleBox22}>X</button>
+                  </>
+                ) : <span style={{ color: '#ccc', fontSize: '24px' }}>+</span>}
+              </div>
+
+              <span style={{ fontSize: '26px', fontWeight: 'bold', color: 'white' }}>{'⇄'}</span>
+
+              {/* Right Champ */}
+              <div
+                onDragOver={e => e.preventDefault()}
+                onDrop={e => {
+                  e.preventDefault();
+                  const c = e.dataTransfer.getData("campeon");
+                  if (c) updatePlanBChamp(rowIndex, 1, JSON.parse(c).apiName || JSON.parse(c).name);
+                }}
+                className={localStyle.styleBox46}
+                style={{ width: '60px', height: '60px', border: '1px dashed #ccc', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative', cursor: 'pointer' }}
+              >
+                {row[1] ? (
+                  <>
+                    <img src={getLocalTftImage(allChampionsTFT.find(c => c.apiName === row[1])?.tileIcon, 'champions/tileIcon')} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="champ" />
+                    <button onClick={() => updatePlanBChamp(rowIndex, 1, null)} className={localStyle.styleBox22}>X</button>
+                  </>
+                ) : <span style={{ color: '#ccc', fontSize: '24px' }}>+</span>}
+              </div>
+
+              <button onClick={() => removePlanBRow(rowIndex)} className={localStyle.styleBox42} style={{ marginLeft: 'auto' }}>X Eliminar Reemplazo</button>
+            </div>
+          ))}
+          <button onClick={addPlanBRow} className={localStyle.styleBox48}>+ Añadir Reemplazo</button>
+        </div>
+      </div>
+    );
+  };
+
 const BestBuildYMejoresItemsVisual = () => {
   const comp = useStore(datosCompos);
   const allChampionsTFT = useStore(dataTFTChampions);
@@ -1566,6 +1743,9 @@ export default function FormularioVisualTFT({
           <div className={style.cBoxRow}>
             <NivelesVisual />
             <PosicionamientoVisual />
+          </div>
+          <div className={style.cBoxRow}>
+            <PlanB />
           </div>
           <div className={style.cBoxRow}>
             {/* Aquí combiné Mejores Items y Best Build en uno solo porque así lo diseñamos arriba, pero ocupa 100% */}

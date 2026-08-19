@@ -87,8 +87,8 @@ const FormularioCrearCompoTFT = ({ compo = {} }) => {
         encuentros: compo.encuentros || [],
         mejoresItems: compo.mejoresItems,
         proTip: compo.proTip || {},
-
-
+        salidasEarly: compo.salidasEarly || [],
+        planB: typeof compo.planB === 'string' ? JSON.parse(compo.planB || '[]') : (compo.planB || [])
       });
     }
   }, [compo.id])

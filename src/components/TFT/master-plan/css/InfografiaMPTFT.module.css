@@ -36,7 +36,7 @@
   flex-direction: row;
   padding:20px 0;
   gap:20px;
-  align-items: center;
+  align-items: stretch;
   justify-content: flex-start;
 }
 .headerLeft{
@@ -49,11 +49,12 @@
   width: 50%;
   display:flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: stretch;
 }
 .containerTopLeft{
   display:flex;
   flex-direction:row;
+  flex: 1;
 }
 .containerChampCarry{
   display:flex;
@@ -157,6 +158,7 @@
 
 .cCondicionOpEarly{
   width: 100%;
+  flex: 1;
 }
 
 .cCondicionOpEarlyImg{
@@ -164,9 +166,11 @@
   flex-direction: row;
   gap:var(--gapInside);
   width:100%;
+  justify-content: center;
 }
 .cFundamentals{
   width:100%;
+  flex: 1;
 }
 .cFundamentalsInfo{
   display:flex;
@@ -193,7 +197,26 @@
   position:relative;
   flex-direction: row;
 }
+.cCondicionNormal{
+  display:flex;
+  width: calc((100% - (var(--gapInside) * 8)) / 9);
+  position:relative;
+  flex-direction: row;
+}
 
+.cCondicionOPM {
+  box-shadow: 0 0 8px 2px #ff4500;
+  border: 1px solid #ff4500;
+  border-radius: 10px;
+  box-sizing: border-box;
+  animation: pulseOPM 1s infinite ease-in-out;
+}
+
+@keyframes pulseOPM {
+  0% { box-shadow: 0 0 8px 2px #ff4500; }
+  50% { box-shadow: 0 0 15px 4px #ff4500; }
+  100% { box-shadow: 0 0 8px 2px #ff4500; }
+}
 
 .cCondicionGrande{
   display:flex;
@@ -292,6 +315,36 @@
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
+}
+
+.textOPM {
+  background: linear-gradient(45deg, #ff4500, #ff1100, #ff8c00);
+  background-size: 200% 200%;
+  animation: explosionAnim 0.8s infinite alternate ease-in-out;
+  padding: 8px 12px;
+  border-radius: 0;
+  text-shadow: 1px 1px 3px rgba(0,0,0,1);
+  clip-path: polygon(
+    41% 5%, 55% 18%, 79% 2%, 76% 23%, 98% 21%, 
+    88% 41%, 100% 64%, 81% 69%, 92% 91%, 69% 84%, 
+    58% 98%, 45% 82%, 25% 96%, 26% 75%, 4% 82%, 
+    16% 56%, 2% 35%, 23% 32%, 11% 6%, 33% 21%
+  );
+  border: none;
+  box-shadow: none;
+}
+
+@keyframes explosionAnim {
+  0% { 
+    transform: scale(1.15) translate(4px, -4px) rotate(-2deg);
+    filter: drop-shadow(0px 0px 4px #ff4500);
+    background-position: 0% 50%;
+  }
+  100% { 
+    transform: scale(1.25) translate(3px, -3px) rotate(3deg);
+    filter: drop-shadow(0px 0px 10px #ffeb3b);
+    background-position: 100% 50%;
+  }
 }
 
 .cNiveles{
