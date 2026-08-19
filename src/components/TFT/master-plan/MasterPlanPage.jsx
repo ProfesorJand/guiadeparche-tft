@@ -479,9 +479,36 @@ console.log({selectedSoftItems})
         });
       }
 
-      if (matchCount > 0) {
+        matchedFilters = matchedFilters.map(mf => {
+          let opStatus = null;
+          const matchCond = (compo.condiciones || []).find(c => c.apiNameGrande === mf.apiName || c.ApiNamePequeno === mf.apiName);
+          if (matchCond) {
+            if (matchCond.op === 'opm') opStatus = 'opm';
+            else if (matchCond.op) opStatus = 'op';
+          }
+          if (opStatus !== 'opm') {
+             const matchPrio = compo.itemsPrio?.find(i => typeof i === 'object' && i.apiName === mf.apiName);
+             if (matchPrio) {
+               if (matchPrio.op === 'opm') opStatus = 'opm';
+               else if (matchPrio.op) opStatus = 'op';
+             }
+          }
+          if (opStatus !== 'opm') {
+             const matchAug = compo.aumentos?.find(a => typeof a === 'object' && (a.apiName === mf.apiName || a.apiNameGrande === mf.apiName || a.apiNamePequeno === mf.apiName));
+             if (matchAug) {
+               if (matchAug.op === 'opm') opStatus = 'opm';
+               else if (matchAug.op) opStatus = 'op';
+             }
+          }
+          return { ...mf, opStatus };
+        });
+
+        matchedFilters.sort((a, b) => {
+          const getVal = (s) => s === 'opm' ? 2 : s === 'op' ? 1 : 0;
+          return getVal(b.opStatus) - getVal(a.opStatus);
+        });
+
         results.push({ ...compo, _matchCount: matchCount, _matchedFilters: matchedFilters });
-      }
     });
 
     results.sort((a, b) => b._matchCount - a._matchCount);
@@ -973,21 +1000,34 @@ console.log({selectedSoftItems})
           {filteredCompos.length > 0 ? (
             filteredCompos.map(compo => (
               <div key={compo.id || compo.titulo || Math.random()} className={style.cardContainer} onClick={()=>setActiveComp(allCompos.find((comp)=>comp.id === compo.id))}>
-                {compo._matchCount > 0 && (
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '5px', background: 'rgba(0,0,0,0.3)', borderRadius: '8px', marginBottom: '10px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '5px', background: 'rgba(0,0,0,0.3)', borderRadius: '8px 8px 0px 0px', }}>
                     <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.1)' }}></div>
-                    <div style={{ display: 'flex', gap: '5px' }}>
-                      {compo._matchedFilters.map((f, i) => (
-                        f.icon ? (
-                          <img key={i} src={f.icon} alt={f.name} title={f.name} style={{ width: '24px', height: '24px', borderRadius: '4px', objectFit: 'contain' }} />
-                        ) : (
-                          <span key={i} style={{ fontSize: '10px', background: 'rgba(255,255,255,0.1)', padding: '2px 4px', borderRadius: '4px', color: 'white' }}>{f.name}</span>
-                        )
-                      ))}
+                    <div style={{ display: 'flex', gap: '8px', minHeight: '32px' }}>
+                      {compo._matchedFilters.map((f, i) => {
+                        const showDivider = i > 0 && f.opStatus !== compo._matchedFilters[i - 1].opStatus;
+                        return (
+                          <div key={i} style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                            {showDivider && (
+                              <div style={{ width: '20px', height: '1px', background: 'rgba(255,255,255,0.1)' }}></div>
+                            )}
+                            <div style={{ position: 'relative', display: 'flex' }}>
+                              {f.icon ? (
+                                <img src={f.icon} alt={f.name} title={f.name} style={{ width: '32px', height: '32px', borderRadius: '4px', objectFit: 'contain', border: f.opStatus === 'opm' ? '2px solid #ff4500' : f.opStatus === 'op' ? '2px solid #ff9d00' : 'none' }} />
+                              ) : (
+                                <span style={{ fontSize: '12px', background: 'rgba(255,255,255,0.1)', padding: '4px 6px', borderRadius: '4px', color: 'white', border: f.opStatus === 'opm' ? '2px solid #ff4500' : f.opStatus === 'op' ? '2px solid #ff9d00' : 'none' }}>{f.name}</span>
+                              )}
+                              {f.opStatus && (
+                                <div style={{ position: 'absolute', top: '-6px', right: '-6px', fontSize: '10px', fontWeight: 'bold', background: f.opStatus === 'opm' ? '#ff4500' : '#ff9d00', color: 'white', padding: '1px 3px', borderRadius: '4px', zIndex: 1, textShadow: '1px 1px 2px rgba(0,0,0,0.8)' }}>
+                                  {f.opStatus.toUpperCase()}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
                     </div>
                     <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.1)' }}></div>
                   </div>
-                )}
                 <CardsMasterPlanCompos compo={compo} filtroSoft={{selectedSoftItems,selectedSoftChampions,selectedSoftTraits,selectedSoftAugments}} gruposSalidasEarly={gruposSalidasEarly} />
               </div>
             ))
