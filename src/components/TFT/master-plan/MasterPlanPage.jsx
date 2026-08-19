@@ -207,6 +207,26 @@ console.log({selectedSoftItems})
     }
   },[activeComp])
 
+  const resetAllFilters = () => {
+    setSelectedTier([]);
+    setSelectedCategory([]);
+    setSelectedDifficulty([]);
+    setSelectedDamageType([]);
+    setSelectedItems([]);
+    setSelectedChampions([]);
+    setSelectedExtras([]);
+    setSelectedSinergias([]);
+    setSelectedAumentoResAleatorio([]);
+    setSelectedAumentoEspecifico([]);
+    setSelectedHardAugments([]);
+    setSelectedSalidasEarly([]);
+    setSelectedSoftItems([]);
+    setSelectedSoftChampions([]);
+    setSelectedSoftTraits([]);
+    setSelectedSoftAugments([]);
+    setActiveCheckFilters([]);
+  };
+
   const toggleFilter = (filterType, apiName) => {
     if (filterType === 'check') {
       setActiveCheckFilters(prev => 
@@ -378,8 +398,47 @@ console.log({selectedSoftItems})
 
   const condicionesGrandeCampeones = useMemo(() => getUniqueConditionsGrandeByType("campeon"), [getUniqueConditionsGrandeByType]);
   const condicionesGrandeItems = useMemo(() => getUniqueConditionsGrandeByType("item"), [getUniqueConditionsGrandeByType]);
+  
+  const condicionesGrandeItemsGrouped = useMemo(() => {
+    const groups = {
+      artefactos: [],
+      radiantes: [],
+      emblemas: [],
+      crafteables: [],
+      especificos: []
+    };
+
+    condicionesGrandeItems.forEach(condItem => {
+      const apiName = condItem.apiName;
+      const dbItem = allItems.find(i => i.apiName === apiName);
+      
+      const isEmblem = apiName.includes("Emblem") || dbItem?.name?.toLowerCase().includes("emblem") || dbItem?.name?.toLowerCase().includes("emblema");
+      const isArtifact = apiName.includes("Artifact_") || apiName.includes("Ornn");
+      const isRadiant = apiName.includes("Radiant");
+      const isCraftable = dbItem?.composition && Array.isArray(dbItem.composition) && dbItem.composition.length > 0 && !isEmblem;
+
+      if (isArtifact) groups.artefactos.push(condItem);
+      else if (isRadiant) groups.radiantes.push(condItem);
+      else if (isEmblem) groups.emblemas.push(condItem);
+      else if (isCraftable) groups.crafteables.push(condItem);
+      else groups.especificos.push(condItem);
+    });
+
+    return groups;
+  }, [condicionesGrandeItems, allItems]);
+
   const condicionesGrandeExtras = useMemo(() => getUniqueConditionsGrandeByType("extra"), [getUniqueConditionsGrandeByType]);
   const condicionesGrandeSinergias = useMemo(() => getUniqueConditionsGrandeByType("sinergia"), [getUniqueConditionsGrandeByType]);
+  
+  const availableGruposSalidasEarly = useMemo(() => {
+    const ids = new Set();
+    filteredComposPrimary.forEach(compo => {
+      if (compo.salidasEarly && Array.isArray(compo.salidasEarly)) {
+        compo.salidasEarly.forEach(id => ids.add(String(id)));
+      }
+    });
+    return gruposSalidasEarly.filter(g => ids.has(String(g.id)));
+  }, [filteredComposPrimary, gruposSalidasEarly]);
   const condicionesGrandeAumentoResAleatorio = useMemo(() => getUniqueConditionsGrandeByType("aumentoresaleatorio"), [getUniqueConditionsGrandeByType]);
   const condicionesGrandeAumentoEspecifico = useMemo(() => getUniqueConditionsGrandeByType("aumentoespecifico"), [getUniqueConditionsGrandeByType]);
 
@@ -497,7 +556,14 @@ console.log({selectedSoftItems})
           const matchSalida = compoSalidas.some(s => String(s) === String(grupoId));
           if (matchSalida) {
             matchCount++;
-            matchedFilters.push({ type: 'salida', apiName: grupoId, name: `Salida Early ${grupoId}`, icon: null });
+            const grupoObj = gruposSalidasEarly.find(g => String(g.id) === String(grupoId));
+            matchedFilters.push({ 
+               type: 'salida', 
+               apiName: grupoId, 
+               name: grupoObj ? grupoObj.nombre : `Salida Early ${grupoId}`, 
+               icon: null,
+               campeones: grupoObj && grupoObj.campeones ? grupoObj.campeones.slice(0, 3) : [] 
+            });
           }
         });
       }
@@ -718,21 +784,64 @@ console.log({selectedSoftItems})
         </div>
 
         <div className={style.filterInputGroup}>
+          <label>Filtros Rápidos</label>
+          <div className={style.filterButtonsContainer} style={{ display: 'flex', flexDirection: 'row', gap: '8px' }}>
+            <button
+              type="button"
+              className={style.filterOptionBox}
+              onClick={() => {
+                resetAllFilters();
+                setSelectedTier(["S", "A"]);
+                setSelectedDifficulty(["Facil"]);
+              }}
+              style={{ padding: '8px 12px', background: '#d8b4fe20', borderColor: '#d8b4fe', color: 'white', fontWeight: 'bold', justifyContent: 'center' }}
+            >
+              Filtro Principiante
+            </button>
+            <button
+              type="button"
+              className={style.filterOptionBox}
+              onClick={resetAllFilters}
+              style={{ padding: '8px 12px', background: '#ff4d4d20', borderColor: '#ff4d4d', color: '#ffaaaa', justifyContent: 'center' }}
+            >
+              Resetear Filtros
+            </button>
+          </div>
+        </div>
+
+        <div className={style.filterInputGroup}>
           <label>Objetos Específicos</label>
-          <div className={style.filterButtonsContainer} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '8px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '8px' }}>
             {condicionesGrandeItems.length > 0 ? (
-              condicionesGrandeItems.map(item => (
-                <button
-                  key={item.apiName}
-                  type="button"
-                  className={`${style.filterOptionBox} ${selectedItems.some(i => i.apiName === item.apiName) ? style.filterOptionBoxActive : ''}`}
-                  onClick={() => toggleSelectedItem(item)}
-                  style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
-                >
-                  {item.icon && <img src={item.icon} alt={item.name} style={{ width: '40px', height: '40px', objectFit: 'contain', borderRadius: '3px' }} />}
-                  <span>{item.name}</span>
-                </button>
-              ))
+              Object.entries({
+                'Artefactos': condicionesGrandeItemsGrouped.artefactos,
+                'Radiantes': condicionesGrandeItemsGrouped.radiantes,
+                'Emblemas': condicionesGrandeItemsGrouped.emblemas,
+                'Crafteables': condicionesGrandeItemsGrouped.crafteables,
+                'Específicos / Soporte': condicionesGrandeItemsGrouped.especificos
+              }).map(([groupName, items]) => {
+                if (items.length === 0) return null;
+                return (
+                  <div key={groupName} style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    <span style={{ fontSize: '0.85rem', fontWeight: 'bold', color: '#bbb' }}>{groupName}</span>
+                    <div className={style.filterButtonsContainer} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                      {items.map(item => (
+                        <button
+                          key={item.apiName}
+                          type="button"
+                          title={item.name}
+                          className={`${style.filterOptionBox} ${selectedItems.some(i => i.apiName === item.apiName) ? style.filterOptionBoxActive : ''}`}
+                          onClick={() => toggleSelectedItem(item)}
+                          style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '6px 10px' }}
+                        >
+                          {item.icon && <img src={item.icon} alt={item.name} style={{ width: '32px', height: '32px', objectFit: 'contain', borderRadius: '3px' }} />}
+                          <span style={{ fontSize: '0.8rem' }}>{item.name}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })
             ) : (
               <span style={{ color: '#ccc', fontStyle: 'italic', fontSize: '0.85rem' }}>No hay objetos de condición disponibles</span>
             )}
@@ -801,6 +910,46 @@ console.log({selectedSoftItems})
               ))
             ) : (
               <span style={{ color: '#ccc', fontStyle: 'italic', fontSize: '0.85rem' }}>No hay sinergias disponibles</span>
+            )}
+          </div>
+        </div>
+
+        <div className={style.filterInputGroup}>
+          <label>Salidas Early</label>
+          <div className={style.filterButtonsContainer} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '8px' }}>
+            {availableGruposSalidasEarly.length > 0 ? (
+              availableGruposSalidasEarly.map(grupo => {
+                const isSelected = selectedSalidasEarly.includes(grupo.id);
+                return (
+                  <button
+                    key={grupo.id}
+                    type="button"
+                    title={grupo.nombre || `Grupo ${grupo.id}`}
+                    className={`${style.filterOptionBox} ${isSelected ? style.filterOptionBoxActive : ''}`}
+                    onClick={() => toggleArrayFilter(setSelectedSalidasEarly, grupo.id)}
+                    style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '6px 8px' }}
+                  >
+                    {grupo.campeones && grupo.campeones.length > 0 && (
+                      <div style={{ display: 'flex', gap: '4px' }}>
+                        {grupo.campeones.slice(0, 3).map(apiName => {
+                          const champ = allChampions.find(c => c.apiName === apiName);
+                          if (!champ || !champ.tileIcon) return null;
+                          return (
+                            <img 
+                              key={apiName} 
+                              src={getLocalTftImage(champ.tileIcon, 'champions/tileIcon')} 
+                              alt={champ.name} 
+                              style={{ width: '40px', height: '40px', objectFit: 'contain', borderRadius: '3px' }} 
+                            />
+                          );
+                        })}
+                      </div>
+                    )}
+                  </button>
+                );
+              })
+            ) : (
+              <span style={{ color: '#ccc', fontStyle: 'italic', fontSize: '0.85rem' }}>No hay salidas early disponibles</span>
             )}
           </div>
         </div>
@@ -1083,7 +1232,23 @@ console.log({selectedSoftItems})
                               <div style={{ width: '20px', height: '1px', background: 'rgba(255,255,255,0.1)' }}></div>
                             )}
                             <div style={{ position: 'relative', display: 'flex' }}>
-                              {f.icon ? (
+                              {f.type === 'salida' && f.campeones && f.campeones.length > 0 ? (
+                                <div style={{ display: 'flex', gap: '2px', background: 'rgba(255,255,255,0.1)', padding: '2px', borderRadius: '4px', border: f.opStatus === 'opm' ? '2px solid #ff4500' : f.opStatus === 'op' ? '2px solid #ff9d00' : 'none' }}>
+                                  {f.campeones.map(apiName => {
+                                    const champ = allChampions.find(c => c.apiName === apiName);
+                                    if (!champ || !champ.tileIcon) return null;
+                                    return (
+                                      <img 
+                                        key={apiName} 
+                                        title={f.name}
+                                        src={getLocalTftImage(champ.tileIcon, 'champions/tileIcon')} 
+                                        alt={champ.name} 
+                                        style={{ width: '28px', height: '28px', objectFit: 'contain', borderRadius: '3px' }} 
+                                      />
+                                    );
+                                  })}
+                                </div>
+                              ) : f.icon ? (
                                 <img src={f.icon} alt={f.name} title={f.name} style={{ width: '32px', height: '32px', borderRadius: '4px', objectFit: 'contain', border: f.opStatus === 'opm' ? '2px solid #ff4500' : f.opStatus === 'op' ? '2px solid #ff9d00' : 'none' }} />
                               ) : (
                                 <span style={{ fontSize: '12px', background: 'rgba(255,255,255,0.1)', padding: '4px 6px', borderRadius: '4px', color: 'white', border: f.opStatus === 'opm' ? '2px solid #ff4500' : f.opStatus === 'op' ? '2px solid #ff9d00' : 'none' }}>{f.name}</span>
