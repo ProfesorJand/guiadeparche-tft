@@ -40,9 +40,6 @@ export const Items = ({ onSelectItem })=>{
   const [allGodsArtifacts, setAllGodsArtifacts] = useState(null);
   const [MatrixCraftableItems, setMatrixCraftableItems] = useState([]);
   useEffect(()=>{
-    console.log({Emblemas:allItemsInfo.filter((item)=>{
-        return item?.apiName?.includes("Emblem")
-        })})
     const getAllItems = async ()=>{
       setAllEmblemsItems(allItemsInfo.filter((item)=>{
         return item?.apiName?.includes("Emblem")
