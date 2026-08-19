@@ -857,10 +857,7 @@ const FundamentalsVisual = () => {
       itemsPrio: newItemsPrio
     });
   };
-  return <div className={`${style.cBoxTitleInfo} ${style.cFundamentals} ${localStyle.styleBox25}`}>
-      <span className={style.tBox}>Fundamentals</span>
-      <div className={style.cFundamentalsInfo}>
-
+  return <div className={style.cFundamentalsInfo}>
         <div className={`${style.cBoxTitleInfo} ${style.cPrioridadObjetos}`}>
           <span className={style.tBox}>Prioridad de Objetos</span>
           <div className={`${style.cPrioridadObjetosInfo} ${localStyle.styleBox30}`}>
@@ -888,8 +885,7 @@ const FundamentalsVisual = () => {
             </div>
           </div>
         </div>
-      </div>
-    </div>;
+      </div>;
 };
 const AumentosVisual = ({
   title,
