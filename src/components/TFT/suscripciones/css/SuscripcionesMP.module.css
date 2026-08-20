@@ -35,9 +35,10 @@
 }
 
 .grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
   width: 100%;
   align-items: stretch;
 }
@@ -46,6 +47,8 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  flex: 1 1 340px;
+  max-width: 340px;
   background: rgba(18, 18, 28, 0.75);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 20px;
@@ -54,6 +57,7 @@
   backdrop-filter: blur(12px);
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .card:hover {
@@ -66,7 +70,7 @@
   background: linear-gradient(180deg, rgba(34, 25, 56, 0.85) 0%, rgba(18, 18, 28, 0.9) 100%);
   border: 2px solid #9f55ff;
   box-shadow: 0 15px 35px rgba(159, 85, 255, 0.25);
-  transform: scale(1.03);
+  transform: scale(1);
 }
 
 .cardFeatured:hover {
@@ -76,7 +80,7 @@
 
 .badge {
   position: absolute;
-  top: 18px;
+  top: 10px;
   right: 18px;
   background: linear-gradient(135deg, #ff7e00, #ffb800);
   color: #000;
@@ -94,13 +98,6 @@
   font-weight: 700;
   color: #fff;
   margin: 0 0 8px 0;
-}
-
-.planDescription {
-  font-size: 0.9rem;
-  color: #8b92a5;
-  margin: 0 0 24px 0;
-  min-height: 40px;
 }
 
 .priceContainer {
@@ -256,7 +253,12 @@
 
 @media (max-width: 768px) {
   .grid {
-    grid-template-columns: 1fr;
+    flex-direction: column;
+    align-items: center;
+  }
+  .card {
+    width: 100%;
+    max-width: 100%;
   }
   .cardFeatured {
     transform: none;

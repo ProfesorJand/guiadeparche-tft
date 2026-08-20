@@ -38,8 +38,6 @@ const {
   isIndividual=false
 } = Astro.props;
 
-console.log({activeComp})
-console.log({lastUpdate})
 
 const defaultSet = activeComp?.set_number || allComps.find(c => c.urlSEO === activeId)?.set_number || setNumberLatest;
 const sets = [

@@ -8,6 +8,7 @@ import SelectVersion from "@components/versionTFT/SelectVersion.jsx";
 import { $admin, $superAdmin } from "@stores/auth.js"
 import Youtube from "@components/youtube/Youtube.jsx";
 import CardsCompos from "@components/TFT/CardsCompos.jsx";
+import DragDropTierListEditor from "./DragDropTierListEditor.jsx";
 const EditarCompoTFT = () => {
   const currentVersion = useStore(versionTFT);
   //const [constantes, setConstantes] = useState({});
@@ -89,6 +90,11 @@ const EditarCompoTFT = () => {
           
           <SelectVersion></SelectVersion>
         </label>
+        {metaComps && metaComps.length > 0 && (
+          <DragDropTierListEditor 
+            comps={metaComps.filter(comp => comp.version === currentVersion || (currentVersion === "latest" && !comp.version))} 
+          />
+        )}
       {/* <TierListMetaComps /> */}
 
       {/* <label>

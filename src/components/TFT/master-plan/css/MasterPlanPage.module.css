@@ -15,6 +15,13 @@
   flex-direction: column;
   width:100%;
 }
+.planDescription {
+  font-size: 0.9rem;
+  color: #8b92a5;
+  margin: 0 0 24px 0;
+  min-height: 40px;
+}
+
 .containerMid{
   display:flex;
   width:100%;

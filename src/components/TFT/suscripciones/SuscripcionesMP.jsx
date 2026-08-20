@@ -64,7 +64,7 @@ const SuscripcionesMP = () => {
    * Genera el texto del Badge (Etiqueta superior)
    * Prioriza el badge_text guardado en tu base de datos MySQL si fue ingresado por el Admin.
    */
-  const getBadgeText = (plan, index) => {
+  const getBadgeText = (plan) => {
     if (plan.badge_text && plan.badge_text.trim() !== '') {
       return plan.badge_text.trim();
     }
@@ -73,7 +73,6 @@ const SuscripcionesMP = () => {
     const freq = parseInt(plan.frequency || 1, 10);
     const type = (plan.frequency_type || "months").toLowerCase();
     if (type === "months" && freq === 12) return "💎 AHORRO ANUAL";
-    if (index === 0) return "🔥 MÁS POPULAR";
     return null;
   };
 
@@ -136,12 +135,14 @@ const SuscripcionesMP = () => {
     
     const params = new URLSearchParams(fixSearch);
     const preapproval_id = params.get('preapproval_id');
+    const payment_id = params.get('payment_id');
+    const status = params.get('status');
 
-    console.log("2. ID de la URL:", preapproval_id);
+    console.log("2. ID de la URL:", { preapproval_id, payment_id, status });
     console.log("3. Datos del usuario en este momento:", user);
 
     if (preapproval_id && user && user.email) {
-      console.log("4. Todo en orden, llamando a GoDaddy para vincular ID:", preapproval_id);
+      console.log("4. Todo en orden, llamando a GoDaddy para vincular SUSCRIPCIÓN:", preapproval_id);
       fetch("https://api.guiadeparche.com/tft/mercado_pago_mp/vincular_suscripcion.php", {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -152,26 +153,54 @@ const SuscripcionesMP = () => {
       })
       .then(async res => {
         const text = await res.text();
-        console.log("5. Respuesta cruda de GoDaddy:", text);
         return JSON.parse(text);
       })
       .then(data => {
-        console.log("6. Respuesta JSON:", data);
         if (data.success) {
            if (user) {
              const updatedUser = { ...user, master_plan: 1, rol: 'suscriptor' };
              setUser(updatedUser);
            }
-           alert("¡Pago Exitoso! Tu suscripción al Master Plan ha sido activada en tu cuenta.");
+           alert("¡Suscripción Exitosa! Tu acceso al Master Plan ha sido activado en tu cuenta.");
            window.history.replaceState({}, document.title, window.location.pathname + "?tab=master-plan");
            window.location.reload(); 
         } else {
            alert("Hubo un error al activar en la Base de Datos: " + data.message);
         }
       })
-      .catch(e => console.error("7. Error fatal al llamar a GoDaddy:", e));
-    } else if (preapproval_id) {
-       console.log("⚠️ Hay preapproval_id en la URL pero el usuario aún no tiene sesión cargada.");
+      .catch(e => console.error("Error fatal al vincular suscripción:", e));
+    } 
+    else if (payment_id && status === 'approved' && user && user.email) {
+      console.log("4. Todo en orden, llamando a GoDaddy para vincular PAGO ÚNICO:", payment_id);
+      fetch("https://api.guiadeparche.com/tft/mercado_pago_mp/vincular_pago_unico.php", {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          user_email: user.email,
+          payment_id: payment_id
+        })
+      })
+      .then(async res => {
+        const text = await res.text();
+        return JSON.parse(text);
+      })
+      .then(data => {
+        if (data.success) {
+           if (user) {
+             const updatedUser = { ...user, master_plan: 1, rol: 'suscriptor' };
+             setUser(updatedUser);
+           }
+           alert("¡Pago Exitoso! Los días de acceso al Master Plan han sido añadidos a tu cuenta.");
+           window.history.replaceState({}, document.title, window.location.pathname + "?tab=master-plan");
+           window.location.reload(); 
+        } else {
+           alert("Hubo un error al activar el pago en la Base de Datos: " + data.message);
+        }
+      })
+      .catch(e => console.error("Error fatal al vincular pago único:", e));
+    }
+    else if (preapproval_id || payment_id) {
+       console.log("⚠️ Hay un ID en la URL pero el usuario aún no tiene sesión cargada.");
     }
   }, [user]);
 
@@ -192,16 +221,19 @@ const SuscripcionesMP = () => {
     setLoadingPlanId(plan.id);
 
     try {
-      console.log(`🚀 Redirigiendo a suscripción de Mercado Pago: ${plan.reason}`);
+      console.log(`🚀 Redirigiendo a pago de Mercado Pago: ${plan.reason}`);
       
-      const checkoutUrl = plan.init_point && plan.init_point.trim() !== ''
-        ? plan.init_point
-        : `https://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=${plan.mp_plan_id}`;
+      let checkoutUrl = "";
+      if (plan.tipo_plan === 'pago_unico') {
+        checkoutUrl = `https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=${plan.mp_plan_id}`;
+      } else {
+        checkoutUrl = `https://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=${plan.mp_plan_id}`;
+      }
 
       const finalUrl = checkoutUrl.includes('?') 
         ? `${checkoutUrl}&payer_email=${encodeURIComponent(user.email)}`
         : `${checkoutUrl}?payer_email=${encodeURIComponent(user.email)}`;
-
+      
       window.location.href = finalUrl;
     } catch (error) {
       console.error("❌ Error de red al procesar la suscripción:", error);
@@ -213,7 +245,7 @@ const SuscripcionesMP = () => {
   return (
     <div className={style.container}>
       <div className={style.header}>
-        <h2 className={style.title}>Elige tu membresía del Master Plan</h2>
+        <h2 className={style.title}>Elige tu membresía del Master Plan con Mercado Pago (Argentina)</h2>
         <p className={style.subtitle}>
           Mejora tu toma de decisiones en el parche actual con acceso a filtros competitivos avanzados y herramientas del Master Plan.
         </p>
@@ -253,9 +285,9 @@ const SuscripcionesMP = () => {
               }
               return true;
             }).map((plan, index) => {
-              const isFeatured = index === 0 || (plan.reason && plan.reason.toLowerCase().includes('pro'));
+              const isFeatured = !!(plan.badge_text && plan.badge_text.trim() !== '');
             const isLoading = loadingPlanId === plan.id;
-            const badgeText = getBadgeText(plan, index);
+            const badgeText = getBadgeText(plan);
             const features = getFeaturesForPlan(plan);
             const priceFormatted = parseFloat(plan.amount || 0).toLocaleString('es-AR', {
               minimumFractionDigits: 0,
@@ -285,24 +317,26 @@ const SuscripcionesMP = () => {
                 )}
 
                 <h3 className={style.planName}>{plan.reason}</h3>
-                <p className={style.planDescription}>
-                  Desbloquea todo el potencial competitivo y herramientas exclusivas del Master Plan para dominar el meta actual.
-                </p>
 
-                <div className={style.priceContainer}>
+                
+                <div className={style.priceContainer} style={{ flexDirection: 'column', alignItems: 'flex-start', gap: '4px' }}>
                   {hasDiscount && (
-                    <span className={style.oldPrice}>
-                      ${oldPriceFormatted}
+                    <span className={style.oldPrice} style={{ marginRight: 0 }}>
+                      Antes: ${oldPriceFormatted} ARS
                     </span>
                   )}
-                  <span className={style.price}>
-                    ${priceFormatted}
-                  </span>
-                  <span className={style.period}>{getPeriodText(plan)}</span>
-                  {hasDiscount && (
-                    <span className={style.discountBadge}>-{discountPct}% OFF</span>
-                  )}
+                  <div style={{ display: 'flex', alignItems: 'baseline', flexWrap: 'wrap', gap: '6px' }}>
+                    <span className={style.price}>
+                      ${priceFormatted} <span style={{ fontSize: '1.2rem', fontWeight: '600', color: '#a0a6b8' }}>ARS</span>
+                    </span>
+                    <span className={style.period}>{getPeriodText(plan)}</span>
+                  </div>
                 </div>
+                {hasDiscount && (
+                  <div className={style.discountLabel}>
+                    🏷️ Descuento especial: -{discountPct}% OFF
+                  </div>
+                )}
 
                 <ul className={style.featuresList}>
                   {features.map((feature, i) => (
