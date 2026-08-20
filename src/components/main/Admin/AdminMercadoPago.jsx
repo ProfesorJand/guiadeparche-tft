@@ -97,7 +97,11 @@ const AdminMercadoPago = () => {
       { text: "Filtros Soft/Hard aditivos avanzados", enabled: true },
       { text: "Códigos de tablero exportables", enabled: true },
       { text: "Análisis y Tier List de Meta por parche", enabled: true }
-    ]
+    ],
+
+    // --- NUEVO: TIPO DE PLAN ---
+    tipo_plan: "suscripcion",
+    dias_acceso: 7
   });
 
   const [editandoId, setEditandoId] = useState(null);
@@ -111,7 +115,9 @@ const AdminMercadoPago = () => {
     repetitions: 0,
     badge_text: "",
     back_url: "",
-    features: []
+    features: [],
+    tipo_plan: "suscripcion",
+    dias_acceso: 7
   });
 
   const [loading, setLoading] = useState(false);
@@ -180,27 +186,26 @@ const AdminMercadoPago = () => {
 
     try {
       const payload = {
-        // Obligatorios
-        reason: formData.reason.trim(),
-        amount: formData.amountPromo && parseFloat(formData.amountPromo) > 0 ? parseFloat(formData.amountPromo) : parseFloat(baseAmount),
-        amount_base: parseFloat(baseAmount),
-        amount_promo: formData.amountPromo ? parseFloat(formData.amountPromo) : "",
-        promo_months: parseInt(formData.promoMonths || 0, 10),
+        reason: formData.reason,
+        amount: parseFloat(formData.amountBase || formData.amount || 0),
         currency: formData.currency,
         frequency: parseInt(formData.frequency, 10),
         frequency_type: formData.frequencyType,
-        back_url: formData.backUrl.trim(),
-
+        back_url: formData.backUrl,
+        amount_base: parseFloat(formData.amountBase || formData.amount),
+        amount_promo: parseFloat(formData.amountPromo || 0),
+        promo_months: parseInt(formData.promoMonths || 0, 10),
+        badge_text: formData.badgeText,
+        tipo_plan: formData.tipo_plan,
+        dias_acceso: parseInt(formData.dias_acceso || 0, 10),
+        features: formData.features.filter(f => f.text.trim() !== ""),
+        
         // Opcionales
         free_trial_days: parseInt(formData.freeTrialDays || 0, 10),
         repetitions: parseInt(formData.repetitions || 0, 10),
         billing_day: formData.billingDay ? parseInt(formData.billingDay, 10) : null,
         billing_day_proportional: formData.billingDayProportional,
-        payment_types_allowed: formData.paymentTypesAllowed,
-
-        // Opcionales visuales para web
-        badge_text: formData.badgeText.trim(),
-        features: formData.features.map(f => typeof f === 'string' ? { text: f, enabled: true } : f).filter(f => f.text.trim() !== "")
+        payment_types_allowed: formData.paymentTypesAllowed
       };
 
       console.log("📤 Creando plan oficial en Mercado Pago con parámetros:", payload);
@@ -244,7 +249,9 @@ const AdminMercadoPago = () => {
           { text: "Filtros Soft/Hard aditivos avanzados", enabled: true },
           { text: "Códigos de tablero exportables", enabled: true },
           { text: "Análisis y Tier List de Meta por parche", enabled: true }
-        ]
+        ],
+        tipo_plan: "suscripcion",
+        dias_acceso: 7
       });
 
       fetchPlanes();
@@ -275,6 +282,40 @@ const AdminMercadoPago = () => {
       }
     } catch (err) {
       console.error("Error en eliminación:", err);
+    }
+  };
+
+  const handleMover = async (index, direccion) => {
+    if (direccion === -1 && index === 0) return;
+    if (direccion === 1 && index === planes.length - 1) return;
+
+    const nuevosPlanes = [...planes];
+    const planMovido = nuevosPlanes[index];
+    nuevosPlanes[index] = nuevosPlanes[index + direccion];
+    nuevosPlanes[index + direccion] = planMovido;
+    
+    setPlanes(nuevosPlanes);
+
+    try {
+      const res = await fetch(`${API_URL}?action=reorder`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${accessToken.trim()}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          order: nuevosPlanes.map(p => p.id)
+        })
+      });
+      const data = await res.json();
+      if (!data.success) {
+        alert("Error guardando el nuevo orden: " + data.message);
+        fetchPlanes(); 
+      }
+    } catch (e) {
+      console.error(e);
+      alert("Error de conexión al guardar el orden.");
+      fetchPlanes();
     }
   };
 
@@ -313,7 +354,9 @@ const AdminMercadoPago = () => {
       repetitions: plan.repetitions || 0,
       badge_text: plan.badge_text || "",
       back_url: plan.back_url || "",
-      features: plan.features ? JSON.parse(plan.features) : []
+      features: plan.features ? JSON.parse(plan.features) : [],
+      tipo_plan: plan.tipo_plan || "suscripcion",
+      dias_acceso: plan.dias_acceso || 7
     });
   };
 
@@ -380,8 +423,36 @@ const AdminMercadoPago = () => {
 
               {/* GESTIÓN AVANZADA DE PRECIO BASE, PRECIO PROMO Y DESCUENTO */}
               <div style={{ background: 'rgba(0, 212, 255, 0.07)', padding: '12px', borderRadius: '8px', marginBottom: '12px', border: '1px solid rgba(0, 212, 255, 0.2)' }}>
-                <div style={{ fontSize: '0.82rem', color: '#00d4ff', fontWeight: 'bold', marginBottom: '10px' }}>
-                  💵 Precios, Promociones y Descuento Automático
+                <h3 className={style.sectionTitle}>
+                  2. Montos y Tipo de Plan
+                </h3>
+                
+                <div className={style.row} style={{ marginBottom: '16px', background: 'rgba(255,255,255,0.02)', padding: '16px', borderRadius: '8px' }}>
+                  <div className={style.formGroup}>
+                    <label className={style.label}>Tipo de Plan</label>
+                    <select 
+                      name="tipo_plan" 
+                      className={style.select} 
+                      value={formData.tipo_plan} 
+                      onChange={handleChange}
+                    >
+                      <option value="suscripcion">Suscripción Recurrente (Preapproval)</option>
+                      <option value="pago_unico">Pago Único (Checkout Pro)</option>
+                    </select>
+                  </div>
+                  {formData.tipo_plan === 'pago_unico' && (
+                    <div className={style.formGroup}>
+                      <label className={style.label}>Días de acceso que otorga <Tooltip text="Cantidad de días de Master Plan que recibirá el usuario al pagar." /></label>
+                      <input 
+                        type="number" 
+                        name="dias_acceso" 
+                        className={style.input} 
+                        value={formData.dias_acceso} 
+                        onChange={handleChange} 
+                        min="1"
+                      />
+                    </div>
+                  )}
                 </div>
 
                 <div className={style.row}>
@@ -469,39 +540,41 @@ const AdminMercadoPago = () => {
                 )}
               </div>
 
-              <div className={style.row}>
-                <div className={style.formGroup}>
-                  <label className={style.label}>
-                    frequency (Frecuencia) *
-                    <Tooltip text="Número que indica cada cuánto se cobra (ej: 1 con unidad meses = cada 1 mes; 12 con unidad meses = cada 12 meses)." />
-                  </label>
-                  <input
-                    type="number"
-                    name="frequency"
-                    className={style.input}
-                    value={formData.frequency}
-                    onChange={handleChange}
-                    min="1"
-                    required
-                  />
-                </div>
+              {formData.tipo_plan === 'suscripcion' && (
+                <div className={style.row}>
+                  <div className={style.formGroup}>
+                    <label className={style.label}>
+                      frequency (Frecuencia) *
+                      <Tooltip text="Número que indica cada cuánto se cobra (ej: 1 con unidad meses = cada 1 mes; 12 con unidad meses = cada 12 meses)." />
+                    </label>
+                    <input
+                      type="number"
+                      name="frequency"
+                      className={style.input}
+                      value={formData.frequency}
+                      onChange={handleChange}
+                      min="1"
+                      required
+                    />
+                  </div>
 
-                <div className={style.formGroup}>
-                  <label className={style.label}>
-                    frequency_type (Unidad) *
-                    <Tooltip text="Unidad de tiempo de la frecuencia (meses o días)." />
-                  </label>
-                  <select
-                    name="frequencyType"
-                    className={style.select}
-                    value={formData.frequencyType}
-                    onChange={handleChange}
-                  >
-                    <option value="months">months (Meses)</option>
-                    <option value="days">days (Días)</option>
-                  </select>
+                  <div className={style.formGroup}>
+                    <label className={style.label}>
+                      frequency_type (Unidad) *
+                      <Tooltip text="Unidad de tiempo de la frecuencia (meses o días)." />
+                    </label>
+                    <select
+                      name="frequencyType"
+                      className={style.select}
+                      value={formData.frequencyType}
+                      onChange={handleChange}
+                    >
+                      <option value="months">months (Meses)</option>
+                      <option value="days">days (Días)</option>
+                    </select>
+                  </div>
                 </div>
-              </div>
+              )}
 
               <div className={style.formGroup}>
                 <label className={style.label}>
@@ -525,92 +598,56 @@ const AdminMercadoPago = () => {
                 🟡 Parámetros Opcionales (Avanzados)
               </div>
 
-              <div className={style.row}>
-                <div className={style.formGroup}>
-                  <label className={style.label}>
-                    free_trial (Días gratis de prueba)
-                    <Tooltip text="Días gratis de prueba antes del primer cobro. El usuario carga la tarjeta pero se le cobra recién al pasar estos días. 0 = cobro inmediato." />
-                  </label>
-                  <input
-                    type="number"
-                    name="freeTrialDays"
-                    className={style.input}
-                    value={formData.freeTrialDays}
-                    onChange={handleChange}
-                    min="0"
-                    placeholder="0 = Sin prueba gratis"
-                  />
-                  <span className={style.helpText}>0 = Cobro al suscribirse</span>
-                </div>
+              {formData.tipo_plan === 'suscripcion' && (
+                  <div className={style.sectionOptional}>
+                    <h4 style={{ margin: '0 0 12px 0', fontSize: '1rem', color: '#00ff88', display: 'flex', alignItems: 'center' }}>
+                      Configuraciones de Suscripción Opcionales (Mercado Pago)
+                    </h4>
+                    <p style={{ margin: '0 0 20px 0', fontSize: '0.85rem', color: '#a0a6b8' }}>
+                      Estos valores aplican reglas especiales de cobro a tu suscripción recurrente en MP. Si los dejas vacíos o en 0, no se aplicarán.
+                    </p>
+                    
+                    <div className={style.row}>
+                      <div className={style.formGroup}>
+                        <label className={style.label}>Días de Prueba Gratis <Tooltip text="Otorga X días donde MP no cobrará nada. El primer cobro se hará al finalizar la prueba."/></label>
+                        <input type="number" name="freeTrialDays" className={style.input} placeholder="0 = Sin prueba" value={formData.freeTrialDays} onChange={handleChange} min="0" />
+                      </div>
+                      <div className={style.formGroup}>
+                        <label className={style.label}>Límite de Cobros Totales <Tooltip text="Ej: Si pones 12, la suscripción se cancelará automáticamente tras 12 cobros. Si dejas 0, será indefinida."/></label>
+                        <input type="number" name="repetitions" className={style.input} placeholder="0 = Indefinido" value={formData.repetitions} onChange={handleChange} min="0" />
+                      </div>
+                    </div>
+                    
+                    <div className={style.row}>
+                      <div className={style.formGroup}>
+                        <label className={style.label}>Día exacto de facturación <Tooltip text="Ej: '1' para cobrar los días 1 de cada mes. 0 o vacío para cobrar el día en que se suscriben."/></label>
+                        <input type="number" name="billingDay" className={style.input} placeholder="1-28" value={formData.billingDay} onChange={handleChange} min="1" max="28" />
+                      </div>
+                      <div className={style.formGroup} style={{ justifyContent: 'center' }}>
+                        <label className={style.label} style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+                          <input type="checkbox" name="billingDayProportional" checked={formData.billingDayProportional} onChange={handleChange} style={{ width: '18px', height: '18px', accentColor: '#00ff88' }} />
+                          Cobro proporcional <Tooltip text="Si definiste un día exacto de facturación, el primer cobro será proporcional a los días restantes hasta esa fecha." />
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
-                <div className={style.formGroup}>
-                  <label className={style.label}>
-                    repetitions (Total de cobros)
-                    <Tooltip text="Cantidad total de cuotas que durará la suscripción en Mercado Pago. Déjalo vacío o en 0 para cobro indefinido mes a mes." />
-                  </label>
-                  <input
-                    type="number"
-                    name="repetitions"
-                    className={style.input}
-                    value={formData.repetitions}
-                    onChange={handleChange}
-                    min="1"
-                    placeholder="Vacío = Indefinido"
-                  />
-                  <span className={style.helpText}>Vacío = Cobro indefinido</span>
-                </div>
-              </div>
-
-              <div className={style.row}>
-                <div className={style.formGroup}>
-                  <label className={style.label}>
-                    billing_day (Día fijo 1 al 28)
-                    <Tooltip text="Día exacto del mes (del 1 al 28) en que se le cobrará a todos los suscriptores. Vacío = cobra en su aniversario de registro." />
-                  </label>
-                  <input
-                    type="number"
-                    name="billingDay"
-                    className={style.input}
-                    value={formData.billingDay}
-                    onChange={handleChange}
-                    min="1"
-                    max="28"
-                    placeholder="Vacío = Aniversario"
-                  />
-                  <span className={style.helpText}>Día del mes para cobrarle a todos</span>
-                </div>
-
-                <div className={style.formGroup}>
-                  <label className={style.label}>
-                    payment_types (Restricción tarjetas)
-                    <Tooltip text="Permite restringir para que solo paguen con Tarjetas de Crédito, solo Débito, o ambas." />
-                  </label>
-                  <select
-                    name="paymentTypesAllowed"
-                    className={style.select}
-                    value={formData.paymentTypesAllowed}
-                    onChange={handleChange}
-                  >
-                    <option value="">Todas permitidas (Crédito y Débito)</option>
-                    <option value="credit_card">Solo Tarjetas de Crédito</option>
-                    <option value="debit_card">Solo Tarjetas de Débito</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className={style.formGroup} style={{ flexDirection: 'row', alignItems: 'center', marginTop: '6px' }}>
-                <input
-                  type="checkbox"
-                  id="proportional"
-                  name="billingDayProportional"
-                  checked={formData.billingDayProportional}
-                  onChange={handleChange}
-                  style={{ width: '18px', height: '18px', accentColor: '#ffb800' }}
-                />
-                <label htmlFor="proportional" className={style.label} style={{ cursor: 'pointer', margin: 0 }}>
-                  <strong>billing_day_proportional:</strong> Cobrar parte proporcional del mes al registrarse
-                  <Tooltip text="Si defines un día fijo de cobro y el usuario se suscribe a mitad de mes, cobra solo el proporcional de días hasta la fecha de cobro." />
+              <div className={style.formGroup}>
+                <label className={style.label}>
+                  payment_types (Restricción tarjetas)
+                  <Tooltip text="Permite restringir para que solo paguen con Tarjetas de Crédito, solo Débito, o ambas." />
                 </label>
+                <select
+                  name="paymentTypesAllowed"
+                  className={style.select}
+                  value={formData.paymentTypesAllowed}
+                  onChange={handleChange}
+                >
+                  <option value="">Todas permitidas (Crédito y Débito)</option>
+                  <option value="credit_card">Solo Tarjetas de Crédito</option>
+                  <option value="debit_card">Solo Tarjetas de Débito</option>
+                </select>
               </div>
 
               {/* Opcional Visual para Tarjetas Web (Control de Badge) */}
@@ -728,7 +765,7 @@ const AdminMercadoPago = () => {
               </div>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                {planes.map((plan) => {
+                {planes.map((plan, index) => {
                   const isEditing = editandoId === plan.id;
                   const esIndefinido = !plan.repetitions || parseInt(plan.repetitions, 10) === 0;
                   const sinPrueba = !plan.free_trial_days || parseInt(plan.free_trial_days, 10) === 0;
@@ -753,6 +790,19 @@ const AdminMercadoPago = () => {
                               <label className={style.label}>Monto Oficial (amount)</label>
                               <input type="number" step="0.01" className={style.input} value={editData.amount} onChange={(e) => setEditData({ ...editData, amount: e.target.value })} />
                             </div>
+                            <div className={style.formGroup}>
+                              <label className={style.label}>Tipo de Plan</label>
+                              <select className={style.select} value={editData.tipo_plan} onChange={(e) => setEditData({ ...editData, tipo_plan: e.target.value })}>
+                                <option value="suscripcion">Suscripción</option>
+                                <option value="pago_unico">Pago Único</option>
+                              </select>
+                            </div>
+                            {editData.tipo_plan === 'pago_unico' && (
+                              <div className={style.formGroup}>
+                                <label className={style.label}>Días Acceso</label>
+                                <input type="number" className={style.input} value={editData.dias_acceso} onChange={(e) => setEditData({ ...editData, dias_acceso: e.target.value })} />
+                              </div>
+                            )}
                           </div>
                           
                           {/* Fila 2: Display de precios web */}
@@ -847,9 +897,15 @@ const AdminMercadoPago = () => {
                             
                             <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', fontSize: '0.95rem', color: '#a5acb8', marginBottom: '16px' }}>
                               <span style={{ color: '#00d4ff', fontWeight: 'bold' }}>💰 ${plan.amount} {plan.currency || 'ARS'}</span>
-                              <span>🔄 {esIndefinido ? 'Cobro Indefinido' : `${plan.repetitions} cobros`}</span>
-                              {!sinPrueba && <span className={style.badgeFree} style={{ padding: '0 6px', display: 'flex', alignItems: 'center' }}>🎁 {plan.free_trial_days}d gratis</span>}
-                              <span>⏱️ Frec: {plan.frequency} {plan.frequency_type === 'months' ? 'mes(es)' : 'día(s)'}</span>
+                              {plan.tipo_plan === 'pago_unico' ? (
+                                <span style={{ color: '#ffb800' }}>⚡ Pago Único ({plan.dias_acceso} días)</span>
+                              ) : (
+                                <>
+                                  <span>🔄 {esIndefinido ? 'Cobro Indefinido' : `${plan.repetitions} cobros`}</span>
+                                  {!sinPrueba && <span className={style.badgeFree} style={{ padding: '0 6px', display: 'flex', alignItems: 'center' }}>🎁 {plan.free_trial_days}d gratis</span>}
+                                  <span>⏱️ Frec: {plan.frequency} {plan.frequency_type === 'months' ? 'mes(es)' : 'día(s)'}</span>
+                                </>
+                              )}
                             </div>
 
                             {plan.amount_base && parseFloat(plan.amount_base) > parseFloat(plan.amount) && (
@@ -869,6 +925,10 @@ const AdminMercadoPago = () => {
                           </div>
                           
                           <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'flex-start' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginRight: '8px' }}>
+                                <button type="button" onClick={() => handleMover(index, -1)} disabled={index === 0} style={{ background: 'rgba(255,255,255,0.1)', border: 'none', color: '#fff', borderRadius: '4px', cursor: index === 0 ? 'not-allowed' : 'pointer', padding: '2px 8px', opacity: index === 0 ? 0.3 : 1 }} title="Mover Arriba">▲</button>
+                                <button type="button" onClick={() => handleMover(index, 1)} disabled={index === planes.length - 1} style={{ background: 'rgba(255,255,255,0.1)', border: 'none', color: '#fff', borderRadius: '4px', cursor: index === planes.length - 1 ? 'not-allowed' : 'pointer', padding: '2px 8px', opacity: index === planes.length - 1 ? 0.3 : 1 }} title="Mover Abajo">▼</button>
+                            </div>
                             <button type="button" className={style.btnCopy} onClick={() => copiarID(plan.mp_plan_id)} title="Copiar ID MP">
                               📋 Copiar ID
                             </button>

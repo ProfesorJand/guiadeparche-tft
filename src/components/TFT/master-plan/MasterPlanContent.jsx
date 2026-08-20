@@ -1,16 +1,16 @@
 import React from 'react';
 import { useStore } from '@nanostores/react';
-import { $user, $hasMasterPlan } from '../../../stores/auth';
+import { $user, $superAdmin, $hasMasterPlan } from '../../../stores/auth';
 import SuscripcionesMP from '../suscripciones/SuscripcionesMP';
 import styles from './MasterPlanContent.module.css';
 
 const MasterPlanContent = () => {
   const user = useStore($user);
   const hasMasterPlan = useStore($hasMasterPlan);
-
+  const superAdmin = useStore($superAdmin);
   return (
     <div className="bodyContainerMid">
-      
+      {superAdmin && user.country === "Argentina" && <SuscripcionesMP />}
       {/* Si TIENE el plan activo */}
       {hasMasterPlan ? (
         <div className={styles.activePlanContainer}>
@@ -35,19 +35,12 @@ const MasterPlanContent = () => {
       ) : (
         /* Si NO tiene el plan activo (logueado o no) */
         <>
-          {/* <SuscripcionesMP /> */}
+          {/* !hasMasterPlan &&  <SuscripcionesMP /> /* mostrar esto cuando ya dejemos las pruebas de MP en Mercado pago */}
 
           {/* Botón de login para los no logueados */}
           {!user && (
             <a href="/login?redirect=/tft/master-plan" className={styles.button} style={{ display: 'block', textAlign: 'center', marginTop: '20px' }}>
               Reservar mi acceso
-            </a>
-          )}
-
-          {/* Botón de acceso directo si está logueado pero aún no paga (o si tu sistema lo permite) */}
-          {user && (
-            <a href="/tft/meta-comps-tier-list-teamfight-tactics/master-plan" className={styles.button} style={{ display: 'block', textAlign: 'center', marginTop: '20px' }}>
-              Accede al Master Plan
             </a>
           )}
         </>

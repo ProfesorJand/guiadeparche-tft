@@ -5,7 +5,7 @@ import style from "./css/CampeonImgInTierList.module.css";
 import { navigate } from "astro:transitions/client";
 import { useState, useEffect } from "react";
 
-const CampeonImgInTierList = ({id, aumento, emblema, apiNameCampeon, apiNameItems, compUrl, isInfografia=false, estrellas, showTooltipOnHover=false, onSelectForInfografia, isSelectedForInfografia})=>{
+const CampeonImgInTierList = ({id, aumento, emblema, apiNameCampeon, apiNameItems, compUrl, isInfografia=false, estrellas, showTooltipOnHover=false, onSelectForInfografia, isSelectedForInfografia, isDraggable=false})=>{
   const [isMounted, setIsMounted] = useState(false);
   useEffect(() => { setIsMounted(true); }, []);
   
@@ -27,6 +27,7 @@ const CampeonImgInTierList = ({id, aumento, emblema, apiNameCampeon, apiNameItem
   const emblemaIcon = emblema ? safeItemsData?.find(c => c.apiName === emblema)?.icon : null;
   const handleClick = async (e) => {
     e.preventDefault();
+    if (isDraggable) return;
     // Guardamos la posición absoluta del scroll actual para evitar que la página salte arriba
     sessionStorage.setItem("tft-tierlist-scroll", window.scrollY.toString());
     
@@ -42,14 +43,14 @@ const CampeonImgInTierList = ({id, aumento, emblema, apiNameCampeon, apiNameItem
   }
 
   if (!name) return (
-    <a href={`/tft/meta-comps-tier-list-teamfight-tactics/${compUrl}`} className={`${style.champTier} ${isInfografia ? (isSelectedForInfografia ? style.activeComp : "") : (id ? style.activeComp : "")}`}>
+    <a href={isDraggable ? "#" : `/tft/meta-comps-tier-list-teamfight-tactics/${compUrl}`} className={`${style.champTier} ${isInfografia ? (isSelectedForInfografia ? style.activeComp : "") : (id ? style.activeComp : "")}`}>
       <div className={style.containerChamp} style={{ width: "100%" }}>
         <div className={style.champTierImg} style={{width: "100%", minWidth: "45px", height: "100%", minHeight: "45px", backgroundColor: "rgba(255,255,255,0.1)", borderRadius: "0.5rem", aspectRatio: "1/1"}}></div>
       </div>
     </a>
   );
   return (
-    <a href={`/tft/meta-comps-tier-list-teamfight-tactics/${compUrl}`} onClick={isInfografia ? handleInfografia : handleClick} className={`${style.champTier} ${isInfografia ? (isSelectedForInfografia ? style.activeComp : "") : (id ? style.activeComp : "")}`}>
+    <a href={isDraggable ? "#" : `/tft/meta-comps-tier-list-teamfight-tactics/${compUrl}`} onClick={isInfografia ? handleInfografia : handleClick} className={`${style.champTier} ${isInfografia ? (isSelectedForInfografia ? style.activeComp : "") : (id ? style.activeComp : "")}`}>
       <div className={style.containerChamp}>  
       {
         (aumento || emblema) && 

@@ -1,0 +1,101 @@
+.tierListContainer {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.tierInfo {
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 0, 0.247);
+  background-color: #121034;
+  padding: 1rem;
+}
+
+.tierHeader {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.containerTierText {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+}
+
+.tierNumber {
+  font-size: 1.5rem;
+  font-weight: bold;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+.tierNumberS { color: #ff7f7f; }
+.tierNumberA { color: #ffbf7f; }
+.tierNumberB { color: #ffff7f; }
+.tierNumberC { color: #7fff7f; }
+.tierNumberD { color: #7f7fff; }
+
+.tierCardS { border-color: #ff7f7f; }
+.tierCardA { border-color: #ffbf7f; }
+.tierCardB { border-color: #ffff7f; }
+.tierCardC { border-color: #7fff7f; }
+.tierCardD { border-color: #7f7fff; }
+
+.containerChampsTier {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  min-height: 80px;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.isDraggingOver {
+  background-color: rgba(255, 255, 255, 0.1);
+  outline: 2px dashed rgba(255, 255, 255, 0.5);
+}
+
+.draggableItem {
+  transition: transform 0.2s ease;
+  width: calc(100% / 10 - 10px);
+  min-width: 60px;
+}
+
+.isDragging {
+  transform: scale(1.05);
+  opacity: 0.9;
+  z-index: 100;
+}
+
+.saveButtonContainer {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+.saveButton {
+  padding: 0.5rem 1rem;
+  background-color: #fbbf24;
+  color: #121034;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.saveButton:hover {
+  background-color: #f59e0b;
+  transform: scale(1.05);
+}
+
+.saveButton:disabled {
+  background-color: #6b7280;
+  cursor: not-allowed;
+  transform: none;
+}
