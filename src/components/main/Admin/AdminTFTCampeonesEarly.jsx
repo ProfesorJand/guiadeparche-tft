@@ -39,6 +39,7 @@ const AdminTFTCampeonesEarly = ({ onAddToComp, selectedGrupos = [], isSidebar = 
     setEditingGrupo({
       id: crypto.randomUUID(),
       nombre: "",
+      tipo: "N/A",
       campeones: [],
       set_number: targetSet
     });
@@ -73,8 +74,8 @@ const AdminTFTCampeonesEarly = ({ onAddToComp, selectedGrupos = [], isSidebar = 
       alert("El nombre es obligatorio.");
       return;
     }
-    if (editingGrupo.campeones.length < 2 || editingGrupo.campeones.length > 5) {
-      alert("Debes seleccionar entre 2 y 5 campeones.");
+    if (editingGrupo.campeones.length > 5) {
+      alert("Debes seleccionar un máximo de 5 campeones.");
       return;
     }
     const campeonesOrdenados = [...editingGrupo.campeones].sort((a, b) => {
@@ -169,7 +170,22 @@ const AdminTFTCampeonesEarly = ({ onAddToComp, selectedGrupos = [], isSidebar = 
             <div className={style.gridGrupos} style={isSidebar ? { display: 'flex', flexDirection: 'column', gap: '10px' } : {}}>
               {grupos.map(g => (
                 <div key={g.id} className={style.grupoCard} style={isSidebar ? { padding: '10px', background: '#1c1c24' } : {}}>
-                  <h3 style={isSidebar ? { fontSize: '0.9rem', margin: 0, paddingBottom: '5px' } : {}}>{g.nombre}</h3>
+                  <h3 style={isSidebar ? { fontSize: '0.9rem', margin: 0, paddingBottom: '5px' } : {}}>
+                    {g.nombre} 
+                    {g.tipo && (
+                      <span style={{ 
+                        fontSize: '0.75rem', 
+                        padding: '2px 6px', 
+                        borderRadius: '4px', 
+                        background: g.tipo === 'Win Streak' ? '#1ba71640' : (g.tipo === 'Lose Streak' ? '#e0000040' : '#88888840'), 
+                        color: g.tipo === 'Win Streak' ? '#1ba716' : (g.tipo === 'Lose Streak' ? '#ff4d4d' : '#cccccc'), 
+                        marginLeft: '8px', 
+                        verticalAlign: 'middle' 
+                      }}>
+                        {g.tipo}
+                      </span>
+                    )}
+                  </h3>
                   <div className={style.champsList}>
                     {[...g.campeones].sort((a, b) => {
                       const champA = allChampions.find(c => c.apiName === a);
@@ -240,6 +256,20 @@ const AdminTFTCampeonesEarly = ({ onAddToComp, selectedGrupos = [], isSidebar = 
                   className={style.textInput}
                   placeholder="Ej: Early Storyweaver"
                 />
+              </div>
+
+              <div className={style.formGroup}>
+                <label>Tipo de Grupo</label>
+                <select 
+                  value={editingGrupo.tipo || "N/A"} 
+                  onChange={e => setEditingGrupo({...editingGrupo, tipo: e.target.value})}
+                  className={style.textInput}
+                  style={{ padding: '8px', borderRadius: '6px', border: '1px solid #444', background: '#3b2c52', color: 'white', width: '100%' }}
+                >
+                  <option value="N/A">N/A</option>
+                  <option value="Win Streak">Win Streak</option>
+                  <option value="Lose Streak">Lose Streak</option>
+                </select>
               </div>
 
               <div className={style.formGroupSelector}>
