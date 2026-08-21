@@ -14,6 +14,7 @@ import style from './css/MasterPlanPage.module.css';
 import { getLocalTftImage } from '@utils/images';
 import InfografiaMPTFT from "./InfografiaMPTFT"
 import { getTraitDisplayName } from '../../main/Admin/TraitsList';
+import ActiveTraitsDisplay from '../ActiveTraitsDisplay';
 
 export const CHECK_FILTERS = [
   { apiName: 'hero_augment', label: 'Aumento de Héroe' },
@@ -562,7 +563,7 @@ console.log({selectedSoftItems})
                apiName: grupoId, 
                name: grupoObj ? grupoObj.nombre : `Salida Early ${grupoId}`, 
                icon: null,
-               campeones: grupoObj && grupoObj.campeones ? grupoObj.campeones.slice(0, 3) : [] 
+               campeones: grupoObj && grupoObj.campeones ? grupoObj.campeones : [] 
             });
           }
         });
@@ -722,7 +723,7 @@ console.log({selectedSoftItems})
                 key={t}
                 type="button"
                 data-tier={t}
-                className={`${style.filterOptionBox} ${selectedTier.includes(t) ? style.filterOptionBoxActive : ''}`}
+                className={`${style.filterOptionBox} ${selectedTier.includes(t) ? style.filterOptionBoxActive : style.grayWhenInactive}`}
                 onClick={() => toggleArrayFilter(setSelectedTier, t)}
               >
                 Tier {t}
@@ -739,7 +740,7 @@ console.log({selectedSoftItems})
                 key={cat}
                 type="button"
                 data-categoria={cat}
-                className={`${style.filterOptionBox} ${selectedCategory.includes(cat) ? style.filterOptionBoxActive : ''}`}
+                className={`${style.filterOptionBox} ${selectedCategory.includes(cat) ? style.filterOptionBoxActive : style.grayWhenInactive}`}
                 onClick={() => toggleArrayFilter(setSelectedCategory, cat)}
               >
                 {cat}
@@ -756,7 +757,7 @@ console.log({selectedSoftItems})
                 key={d}
                 type="button"
                 data-dificultad={d}
-                className={`${style.filterOptionBox} ${selectedDifficulty.includes(d) ? style.filterOptionBoxActive : ''}`}
+                className={`${style.filterOptionBox} ${selectedDifficulty.includes(d) ? style.filterOptionBoxActive : style.grayWhenInactive}`}
                 onClick={() => toggleArrayFilter(setSelectedDifficulty, d)}
               >
                 {d}
@@ -774,7 +775,7 @@ console.log({selectedSoftItems})
                 key={d}
                 type="button"
                 data-tipodedano={d}
-                className={`${style.filterOptionBox} ${selectedDamageType.includes(d) ? style.filterOptionBoxActive : ''}`}
+                className={`${style.filterOptionBox} ${selectedDamageType.includes(d) ? style.filterOptionBoxActive : style.grayWhenInactive}`}
                 onClick={() => toggleArrayFilter(setSelectedDamageType, d)}
               >
                 {d}
@@ -788,42 +789,64 @@ console.log({selectedSoftItems})
           <div className={style.filterButtonsContainer} style={{ display: 'flex', flexDirection: 'row', gap: '8px' }}>
             <button
               type="button"
-              className={style.filterOptionBox}
+              className={`${style.filterOptionBox} ${((selectedTier.includes("S") && selectedTier.includes("A") && selectedDifficulty.includes("Facil"))) ? '' : style.grayWhenInactive}`}
               onClick={() => {
                 resetAllFilters();
                 setSelectedTier(["S", "A"]);
                 setSelectedDifficulty(["Facil"]);
               }}
-              style={{ padding: '8px 12px', background: '#d8b4fe20', borderColor: '#d8b4fe', color: 'white', fontWeight: 'bold', justifyContent: 'center' }}
+              style={{ 
+                padding: '8px 12px', 
+                background: '#d8b4fe20', 
+                borderColor: '#d8b4fe', 
+                color: 'white', 
+                fontWeight: 'bold', 
+                justifyContent: 'center'
+              }}
             >
               Filtro Principiante
             </button>
             <button
               type="button"
-              className={style.filterOptionBox}
+              className={`${style.filterOptionBox} ${((selectedTier.length > 0 || selectedCategory.length > 0 || selectedDifficulty.length > 0 || selectedDamageType.length > 0)) ? '' : style.grayWhenInactive}`}
               onClick={resetAllFilters}
-              style={{ padding: '8px 12px', background: '#ff4d4d20', borderColor: '#ff4d4d', color: '#ffaaaa', justifyContent: 'center' }}
+              style={{ 
+                padding: '8px 12px', 
+                background: '#ff4d4d20', 
+                borderColor: '#ff4d4d', 
+                color: '#ffaaaa', 
+                justifyContent: 'center'
+              }}
             >
               Resetear Filtros
             </button>
           </div>
         </div>
 
+      </div>
+    </fieldset>
+    )
+  }
+
+  const FiltroHard2 = ()=>{
+    const ObjetosEspesificos= ()=>{
+      return (
         <div className={style.filterInputGroup}>
-          <label>Objetos Específicos</label>
+          <legend>Objetos Específicos</legend>
+          
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '8px' }}>
             {condicionesGrandeItems.length > 0 ? (
               Object.entries({
-                'Artefactos': condicionesGrandeItemsGrouped.artefactos,
-                'Radiantes': condicionesGrandeItemsGrouped.radiantes,
                 'Emblemas': condicionesGrandeItemsGrouped.emblemas,
                 'Crafteables': condicionesGrandeItemsGrouped.crafteables,
+                'Artefactos': condicionesGrandeItemsGrouped.artefactos,
+                'Radiantes': condicionesGrandeItemsGrouped.radiantes,
                 'Específicos / Soporte': condicionesGrandeItemsGrouped.especificos
               }).map(([groupName, items]) => {
                 if (items.length === 0) return null;
                 return (
-                  <div key={groupName} style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                    <span style={{ fontSize: '0.85rem', fontWeight: 'bold', color: '#bbb' }}>{groupName}</span>
+                  <fieldset key={groupName} style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    <legend>{groupName}</legend>
                     <div className={style.filterButtonsContainer} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                       {items.map(item => (
                         <button
@@ -832,14 +855,13 @@ console.log({selectedSoftItems})
                           title={item.name}
                           className={`${style.filterOptionBox} ${selectedItems.some(i => i.apiName === item.apiName) ? style.filterOptionBoxActive : ''}`}
                           onClick={() => toggleSelectedItem(item)}
-                          style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '6px 10px' }}
+                          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '6px' }}
                         >
-                          {item.icon && <img src={item.icon} alt={item.name} style={{ width: '32px', height: '32px', objectFit: 'contain', borderRadius: '3px' }} />}
-                          <span style={{ fontSize: '0.8rem' }}>{item.name}</span>
+                          {item.icon && <img src={item.icon} alt={item.name} style={{ minWidth: '60px', minHeight: '60px', width: '60px', height: '60px', objectFit: 'contain', borderRadius: '3px' }} />}
                         </button>
                       ))}
                     </div>
-                  </div>
+                  </fieldset>
                 );
               })
             ) : (
@@ -847,7 +869,10 @@ console.log({selectedSoftItems})
             )}
           </div>
         </div>
-
+      )
+    }
+    const Campeones = ()=>{
+      return (
         <div className={style.filterInputGroup}>
           <label>Campeones</label>
           <div className={style.filterButtonsContainer} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '8px' }}>
@@ -858,10 +883,10 @@ console.log({selectedSoftItems})
                   type="button"
                   className={`${style.filterOptionBox} ${selectedChampions.some(c => c.apiName === champ.apiName) ? style.filterOptionBoxActive : ''}`}
                   onClick={() => toggleSelectedChampion(champ)}
-                  style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
+                  style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '8px 10px', minWidth: '70px', gap: '6px' }}
                 >
-                  {champ.icon && <img src={champ.icon} alt={champ.name} style={{ width: '40px', height: '40px', objectFit: 'contain', borderRadius: '3px' }} />}
-                  <span>{champ.name}</span>
+                  {champ.icon && <img src={champ.icon} alt={champ.name} style={{ minWidth: '60px', minHeight: '60px', width: '60px', height: '60px', objectFit: 'contain', borderRadius: '3px' }} />}
+                  <span style={{ fontSize: '0.78rem', textAlign: 'center', lineHeight: '1.1' }}>{champ.name}</span>
                 </button>
               ))
             ) : (
@@ -869,7 +894,10 @@ console.log({selectedSoftItems})
             )}
           </div>
         </div>
-
+      )
+    }
+    const Extra = ()=>{
+      return (
         <div className={style.filterInputGroup}>
           <label>Extra</label>
           <div className={style.filterButtonsContainer} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '8px' }}>
@@ -880,10 +908,10 @@ console.log({selectedSoftItems})
                   type="button"
                   className={`${style.filterOptionBox} ${selectedExtras.includes(extra.apiName) ? style.filterOptionBoxActive : ''}`}
                   onClick={() => toggleArrayFilter(setSelectedExtras, extra.apiName)}
-                  style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
+                  style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '8px 10px', minWidth: '70px', gap: '6px' }}
                 >
-                  {extra.icon && <img src={extra.icon} alt={extra.name} style={{ width: '40px', height: '40px', objectFit: 'contain', borderRadius: '3px' }} />}
-                  <span>{extra.name}</span>
+                  {extra.icon && <img src={extra.icon} alt={extra.name} style={{ minWidth: '60px', minHeight: '60px', width: '60px', height: '60px', objectFit: 'contain', borderRadius: '3px' }} />}
+                  <span style={{ fontSize: '0.78rem', textAlign: 'center', lineHeight: '1.1' }}>{extra.name}</span>
                 </button>
               ))
             ) : (
@@ -891,7 +919,10 @@ console.log({selectedSoftItems})
             )}
           </div>
         </div>
-
+      )
+    }
+    const Sinergia = ()=>{
+      return (
         <div className={style.filterInputGroup}>
           <label>Sinergia</label>
           <div className={style.filterButtonsContainer} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '8px' }}>
@@ -902,10 +933,10 @@ console.log({selectedSoftItems})
                   type="button"
                   className={`${style.filterOptionBox} ${selectedSinergias.includes(sinergia.apiName) ? style.filterOptionBoxActive : ''}`}
                   onClick={() => toggleArrayFilter(setSelectedSinergias, sinergia.apiName)}
-                  style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
+                  style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '8px 10px', minWidth: '70px', gap: '6px' }}
                 >
-                  {sinergia.icon && <img src={sinergia.icon} alt={sinergia.name} style={{ width: '40px', height: '40px', objectFit: 'contain', borderRadius: '3px' }} />}
-                  <span>{getTraitDisplayName(sinergia)}</span>
+                  {sinergia.icon && <img src={sinergia.icon} alt={sinergia.name} style={{ minWidth: '60px', minHeight: '60px', width: '60px', height: '60px', objectFit: 'contain', borderRadius: '3px' }} />}
+                  <span style={{ fontSize: '0.78rem', textAlign: 'center', lineHeight: '1.1' }}>{getTraitDisplayName(sinergia)}</span>
                 </button>
               ))
             ) : (
@@ -913,39 +944,94 @@ console.log({selectedSoftItems})
             )}
           </div>
         </div>
+      )
+    }
+    const SalidasEarly=()=>{
+      const groupedGrupos = {
+        'Win Streak': [],
+        'Lose Streak': [],
+        'N/A': []
+      };
 
+      availableGruposSalidasEarly.forEach(grupo => {
+        const tipoStr = grupo.tipo && grupo.tipo !== '' ? grupo.tipo : 'N/A';
+        if (groupedGrupos[tipoStr]) {
+          groupedGrupos[tipoStr].push(grupo);
+        } else {
+          groupedGrupos['N/A'].push(grupo);
+        }
+      });
+
+      Object.keys(groupedGrupos).forEach(key => {
+        groupedGrupos[key].sort((a, b) => {
+          const aLen = a.campeones ? a.campeones.length : 0;
+          const bLen = b.campeones ? b.campeones.length : 0;
+          if (aLen === 0 && bLen > 0) return -1;
+          if (bLen === 0 && aLen > 0) return 1;
+          return 0;
+        });
+      });
+
+      return(
         <div className={style.filterInputGroup}>
-          <label>Salidas Early</label>
-          <div className={style.filterButtonsContainer} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '8px' }}>
+          <legend>Salidas Early</legend>
+          
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '8px' }}>
             {availableGruposSalidasEarly.length > 0 ? (
-              availableGruposSalidasEarly.map(grupo => {
-                const isSelected = selectedSalidasEarly.includes(grupo.id);
+              Object.entries(groupedGrupos).map(([groupName, grupos]) => {
+                if (grupos.length === 0) return null;
                 return (
-                  <button
-                    key={grupo.id}
-                    type="button"
-                    title={grupo.nombre || `Grupo ${grupo.id}`}
-                    className={`${style.filterOptionBox} ${isSelected ? style.filterOptionBoxActive : ''}`}
-                    onClick={() => toggleArrayFilter(setSelectedSalidasEarly, grupo.id)}
-                    style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '6px 8px' }}
-                  >
-                    {grupo.campeones && grupo.campeones.length > 0 && (
-                      <div style={{ display: 'flex', gap: '4px' }}>
-                        {grupo.campeones.slice(0, 3).map(apiName => {
-                          const champ = allChampions.find(c => c.apiName === apiName);
-                          if (!champ || !champ.tileIcon) return null;
-                          return (
-                            <img 
-                              key={apiName} 
-                              src={getLocalTftImage(champ.tileIcon, 'champions/tileIcon')} 
-                              alt={champ.name} 
-                              style={{ width: '40px', height: '40px', objectFit: 'contain', borderRadius: '3px' }} 
-                            />
-                          );
-                        })}
-                      </div>
-                    )}
-                  </button>
+                  <fieldset key={groupName} style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    <legend>{groupName  === "Win Streak" ? `${groupName} / Tempo` : groupName}</legend>
+                    <div className={style.filterButtonsContainer} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                      {grupos.map(grupo => {
+                        const isSelected = selectedSalidasEarly.includes(grupo.id);
+                        return (
+                          <button
+                            key={grupo.id}
+                            type="button"
+                            title={grupo.nombre || `Grupo ${grupo.id}`}
+                            className={`${style.filterOptionBox} ${isSelected ? style.filterOptionBoxActive : ''}`}
+                            onClick={() => toggleArrayFilter(setSelectedSalidasEarly, grupo.id)}
+                            style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '6px 8px' }}
+                          >
+                            {grupo.campeones && grupo.campeones.length > 0 ? (
+                              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                <ActiveTraitsDisplay championApiNames={grupo.campeones} versionNumber={versionNumber} />
+                                <div style={{ display: 'flex', gap: '5px' }}>
+                                  {grupo.campeones.map(apiName => {
+                                    const champ = allChampions.find(c => c.apiName === apiName);
+                                    if (!champ || !champ.tileIcon) return null;
+                                    return (
+                                      <div key={apiName} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
+                                        <img 
+                                          src={getLocalTftImage(champ.tileIcon, 'champions/tileIcon')} 
+                                          alt={champ.name} 
+                                          style={{ 
+                                            minWidth: '60px', 
+                                            minHeight: '60px', 
+                                            width: '60px', 
+                                            height: '60px', 
+                                            objectFit: 'contain', 
+                                            borderRadius: '3px',
+                                            boxSizing: 'border-box',
+                                            border: champ.cost ? `3px solid var(--color-hex-cost-${champ.cost})` : '3px solid transparent'
+                                          }} 
+                                        />
+                                        <span style={{ fontSize: '0.7rem', textAlign: 'center', lineHeight: '1' }}>{champ.name}</span>
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            ) : (
+                              <span>{grupo.nombre || `Grupo ${grupo.id}`}</span>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </fieldset>
                 );
               })
             ) : (
@@ -953,6 +1039,28 @@ console.log({selectedSoftItems})
             )}
           </div>
         </div>
+
+      )
+    }
+    return (
+      <fieldset className={`${style.filtersSection} ${style.filtersSectionHard}`}>
+      <legend>Filtro Hard 2 (Playstyle / Estilo de juego)</legend>
+      <div className={style.hardFiltersGrid}>
+        {/*  Salidas Early */}
+        {SalidasEarly()}
+
+        {/*  Objetos Específicos */}
+        {ObjetosEspesificos()}
+
+        {/* Campeones */}
+        {Campeones()}
+        
+        {/*  Extra */}
+        {Extra()}
+
+        {/*  Sinergia */}
+        {Sinergia()}
+
       </div>
     </fieldset>
     )
@@ -987,7 +1095,7 @@ console.log({selectedSoftItems})
                   cursor: isAvailable ? 'pointer' : 'not-allowed'
                 }}
               >
-                {item.icon && <img src={item.icon} alt={item.name} style={{ width: '40px', height: '40px', objectFit: 'contain', borderRadius: '4px' }} />}
+                {item.icon && <img src={item.icon} alt={item.name} style={{ minWidth: '60px', minHeight: '60px', width: '60px', height: '60px', objectFit: 'contain', borderRadius: '4px' }} />}
               </button>
             );
           })}
@@ -1011,7 +1119,7 @@ console.log({selectedSoftItems})
                       onClick={() => toggleSoftChampion(champ)}
                       style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '8px 10px', minWidth: '70px', gap: '6px' }}
                     >
-                      {champ.icon && <img src={champ.icon} alt={champ.name} style={{ width: '40px', height: '40px', objectFit: 'contain', borderRadius: '4px', border: `2px solid var(--color-hex-cost-${champ.cost || cost})`, boxSizing: 'border-box' }} />}
+                      {champ.icon && <img src={champ.icon} alt={champ.name} style={{ minWidth: '60px', minHeight: '60px', width: '60px', height: '60px', objectFit: 'contain', borderRadius: '4px', border: `2px solid var(--color-hex-cost-${champ.cost || cost})`, boxSizing: 'border-box' }} />}
                       <span style={{ fontSize: '0.78rem', textAlign: 'center', lineHeight: '1.1' }}>{champ.name}</span>
                     </button>
                   ))}
@@ -1150,32 +1258,6 @@ console.log({selectedSoftItems})
     );
   };
 
-  const FiltroSalidasEarly = () => {
-    return (
-      <fieldset className={`${style.filtersSection} ${style.filtersSectionSoft}`}>
-        <legend>Filtro Salidas Early</legend>
-        <div className={style.filterInputGroup}>
-          <label>Grupos de Campeones</label>
-          <div className={style.filterButtonsContainer} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '8px' }}>
-            {gruposSalidasEarly.length > 0 ? (
-              gruposSalidasEarly.map(grupo => (
-                <button
-                  key={grupo.id}
-                  type="button"
-                  className={`${style.filterOptionBox} ${selectedSalidasEarly.includes(grupo.id) ? style.filterOptionBoxActive : ''}`}
-                  onClick={() => toggleArrayFilter(setSelectedSalidasEarly, grupo.id)}
-                >
-                  <span>{grupo.nombre}</span>
-                </button>
-              ))
-            ) : (
-              <span style={{ color: '#ccc', fontStyle: 'italic', fontSize: '0.85rem' }}>No hay grupos de salidas early disponibles</span>
-            )}
-          </div>
-        </div>
-      </fieldset>
-    );
-  };
 
   return (
     <div id={"masterPlanContainer"} className={style.masterPlanContainer}>
@@ -1194,9 +1276,9 @@ console.log({selectedSoftItems})
         </div>
         <div className={style.filtersSectionContainer}>
         {FiltroHard()}
+        {FiltroHard2()}
         {FiltroAumentos()}
         {FiltroSoft()}
-        {FiltroSalidasEarly()}
 
         {/* <div className={style.filtersSection}>
           <h3>Filtro Check (Condiciones específicas)</h3>
