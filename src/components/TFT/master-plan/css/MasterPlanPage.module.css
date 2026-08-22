@@ -107,6 +107,14 @@
   flex-wrap: wrap;
   gap: 8px;
   margin-top: 4px;
+  flex-direction: column;
+}
+.filterButtonsContainerRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+  flex-direction: row;
 }
 .filterOptionBox {
   padding: 6px 14px;
@@ -119,6 +127,7 @@
   cursor: pointer;
   opacity: 1;
   filter: saturate(0.65);
+  transform: scale(0.85);
   transition: all 0.2s ease;
   /* text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); */
   box-sizing: border-box;
@@ -127,13 +136,37 @@
   opacity: 0.85;
   filter: saturate(1);
   border-color: rgba(255, 255, 255, 0.7);
+  transform: scale(0.9);
 }
 .filterOptionBoxActive {
   opacity: 1;
   filter: saturate(1.1) brightness(1.05);
-  border: 1px solid #10dd00;
-  box-shadow: 0 0 10px rgb(4 252 24 / 80%);
   font-weight: 700;
+  border: 1px solid transparent;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  box-shadow: 0 0 10px rgb(4 252 24 / 80%);
+  transform: scale(1);
+}
+.filterOptionBoxActive::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(from 0deg, transparent 40%, rgba(16, 221, 0, 0.5) 80%, #10dd00 100%);
+  animation: spinBorder 1.5s linear infinite;
+  z-index: -2;
+}
+.filterOptionBoxActive::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border-radius: 7px;
+  background: #9906a7;
+  z-index: -1;
 }
 
 .grayWhenInactive {
@@ -145,18 +178,71 @@
   filter: none;
 }
 
+@keyframes spinBorder {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.spinningHighlight {
+  position: relative;
+  overflow: hidden;
+  padding: 2px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5); 
+}
+
+.spinningHighlightIdle {
+  position: relative;
+  padding: 2px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent; 
+}
+
+.spinningHighlight::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(transparent, transparent, transparent, #ffdd00);
+  animation: spinBorder 1.5s linear infinite;
+  z-index: 0;
+}
+
+.spinningHighlight::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 2px;
+  z-index: 1;
+}
+
+.spinningHighlight > img {
+  position: relative;
+  z-index: 2;
+  display: block;
+}
+
 /* Colores idénticos a CardsMasterPlanCompos.module.css */
 /* Tier */
-.filterOptionBox[data-tier="S"] { background-image: linear-gradient(135deg, #ff8c00, #ff003c); }
-.filterOptionBox[data-tier="A"] { background-image: linear-gradient(135deg, #ffe066, #f8b500); color: #000; text-shadow: none; }
-.filterOptionBox[data-tier="B"] { background-image: linear-gradient(135deg, #ffffff, #8ca3bc); color: #000; text-shadow: none; }
-.filterOptionBox[data-tier="C"] { background-image: linear-gradient(135deg, #e3a985, #b87333); }
-.filterOptionBox[data-tier="D"] { background-image: linear-gradient(135deg, #a0a0a0, #606060); }
+.filterOptionBox[data-tier="S"], .filterOptionBoxActive[data-tier="S"]::after { background-image: linear-gradient(135deg, #ff8c00, #ff003c); }
+.filterOptionBox[data-tier="A"], .filterOptionBoxActive[data-tier="A"]::after { background-image: linear-gradient(135deg, #ffe066, #f8b500); color: #000; text-shadow: none; }
+.filterOptionBox[data-tier="B"], .filterOptionBoxActive[data-tier="B"]::after { background-image: linear-gradient(135deg, #ffffff, #8ca3bc); color: #000; text-shadow: none; }
+.filterOptionBox[data-tier="C"], .filterOptionBoxActive[data-tier="C"]::after { background-image: linear-gradient(135deg, #e3a985, #b87333); }
+.filterOptionBox[data-tier="D"], .filterOptionBoxActive[data-tier="D"]::after { background-image: linear-gradient(135deg, #a0a0a0, #606060); }
 
 /* Dificultad */
-.filterOptionBox[data-dificultad="Facil"], .filterOptionBox[data-dificultad="Easy"] { background-color: #1ba716; }
-.filterOptionBox[data-dificultad="Medio"], .filterOptionBox[data-dificultad="Medium"] { background-color: #cc6104; }
-.filterOptionBox[data-dificultad="Dificil"], .filterOptionBox[data-dificultad="Hard"] { background-color: #e00000; }
+.filterOptionBox[data-dificultad="Facil"], .filterOptionBox[data-dificultad="Easy"], .filterOptionBoxActive[data-dificultad="Facil"]::after, .filterOptionBoxActive[data-dificultad="Easy"]::after { background-color: #1ba716; }
+.filterOptionBox[data-dificultad="Medio"], .filterOptionBox[data-dificultad="Medium"], .filterOptionBoxActive[data-dificultad="Medio"]::after, .filterOptionBoxActive[data-dificultad="Medium"]::after { background-color: #cc6104; }
+.filterOptionBox[data-dificultad="Dificil"], .filterOptionBox[data-dificultad="Hard"], .filterOptionBoxActive[data-dificultad="Dificil"]::after, .filterOptionBoxActive[data-dificultad="Hard"]::after { background-color: #e00000; }
 
 /* Categorías */
 .filterOptionBox[data-categoria="Fast 8"] { background-color: #cc6104; }

@@ -110,7 +110,18 @@ export default function MasterPlanPage() {
   };
 
 
-  const BASIC_COMPONENTS_APINAMES = [
+  const BASIC_COMPONENTS_APINAMES = version === "pbe" ? [
+    "DA_Component_BFSword",
+    "DA_Component_RecurveBow",
+    "DA_Component_NeedlesslyLargeRod",
+    "DA_Component_TearOfTheGoddess",
+    "DA_Component_ChainVest",
+    "DA_Component_NegatronCloak",
+    "DA_Component_GiantsBelt",
+    "DA_Component_SparringGloves",
+    "DA_Component_Spatula",
+    "DA_Component_FryingPan"
+  ] : [
     "TFT_Item_BFSword",
     "TFT_Item_RecurveBow",
     "TFT_Item_NeedlesslyLargeRod",
@@ -148,6 +159,7 @@ console.log({selectedSoftItems})
   const [selectedTier, setSelectedTier] = useState([]);
   const [selectedDamageType, setSelectedDamageType] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
+  const [selectedCraftableComponents, setSelectedCraftableComponents] = useState([]);
   const [selectedChampions, setSelectedChampions] = useState([]);
   const [selectedExtras, setSelectedExtras] = useState([]);
   const [selectedSinergias, setSelectedSinergias] = useState([]);
@@ -300,7 +312,7 @@ console.log({selectedSoftItems})
     }
   };
 
-  const filteredComposPrimary = useMemo(() => {
+  const filteredComposBase = useMemo(() => {
     return allCompos.filter(compo => {
       if (selectedCategory.length > 0 && !selectedCategory.includes(compo.categoria)) return false;
       if (selectedDifficulty.length > 0 && !selectedDifficulty.includes(compo.dificultad)) return false;
@@ -309,6 +321,16 @@ console.log({selectedSoftItems})
       return true;
     });
   }, [allCompos, selectedCategory, selectedDifficulty, selectedTier, selectedDamageType]);
+
+  const filteredComposPrimary = useMemo(() => {
+    return filteredComposBase.filter(compo => {
+      if (selectedExtras.length > 0) {
+        const hasExtra = (compo.condiciones || []).some(c => selectedExtras.includes(c.apiNameGrande) || selectedExtras.includes(c.ApiNamePequeno));
+        if (!hasExtra) return false;
+      }
+      return true;
+    });
+  }, [filteredComposBase, selectedExtras]);
 
   const allConditions = useMemo(() => filteredComposPrimary.flatMap((comp) => comp.condiciones || []), [filteredComposPrimary]);
 
@@ -428,7 +450,25 @@ console.log({selectedSoftItems})
     return groups;
   }, [condicionesGrandeItems, allItems]);
 
-  const condicionesGrandeExtras = useMemo(() => getUniqueConditionsGrandeByType("extra"), [getUniqueConditionsGrandeByType]);
+  const condicionesGrandeExtras = useMemo(() => {
+    const uniqueMap = new Map();
+    filteredComposBase.forEach(comp => {
+      (comp.condiciones || []).forEach(cond => {
+        if (!cond) return;
+        const tGrande = (cond.condTypeGrande || cond.typeGrande || cond.condType || "").toLowerCase();
+        if (tGrande === 'extra' && cond.apiNameGrande && !uniqueMap.has(cond.apiNameGrande)) {
+          uniqueMap.set(cond.apiNameGrande, {
+            apiName: cond.apiNameGrande,
+            apiNamePequeno: cond.ApiNamePequeno || cond.apiNamePequeno,
+            name: getConditionDisplayName(cond.apiNameGrande, 'extra'),
+            icon: getConditionIconUrl(cond.apiNameGrande, 'extra'),
+            type: 'extra'
+          });
+        }
+      });
+    });
+    return Array.from(uniqueMap.values());
+  }, [filteredComposBase, getConditionDisplayName, getConditionIconUrl]);
   const condicionesGrandeSinergias = useMemo(() => getUniqueConditionsGrandeByType("sinergia"), [getUniqueConditionsGrandeByType]);
   
   const availableGruposSalidasEarly = useMemo(() => {
@@ -785,8 +825,30 @@ console.log({selectedSoftItems})
         </div>
 
         <div className={style.filterInputGroup}>
+          <label>Extra</label>
+          <div className={style.filterButtonsContainer} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '8px' }}>
+            {condicionesGrandeExtras.length > 0 ? (
+              condicionesGrandeExtras.map(extra => (
+                <button
+                  key={extra.apiName}
+                  type="button"
+                  className={`${style.filterOptionBox} ${selectedExtras.includes(extra.apiName) ? style.filterOptionBoxActive : ''}`}
+                  onClick={() => toggleArrayFilter(setSelectedExtras, extra.apiName)}
+                  style={{ display: 'flex',alignItems: 'center', justifyContent: 'center', padding: '8px 10px', minWidth: '70px', gap: '6px' }}
+                >
+                  {extra.icon && <img src={extra.icon} alt={extra.name} style={{ minWidth: '60px', minHeight: '60px', width: '60px', height: '60px', objectFit: 'contain', borderRadius: '3px' }} />}
+                  <span style={{ fontSize: '0.78rem', textAlign: 'center', lineHeight: '1.1' }}>{extra.name}</span>
+                </button>
+              ))
+            ) : (
+              <span style={{ color: '#ccc', fontStyle: 'italic', fontSize: '0.85rem' }}>No hay extras disponibles</span>
+            )}
+          </div>
+        </div>
+
+        <div className={style.filterInputGroup}>
           <label>Filtros Rápidos</label>
-          <div className={style.filterButtonsContainer} style={{ display: 'flex', flexDirection: 'row', gap: '8px' }}>
+          <div className={style.filterButtonsContainer} >
             <button
               type="button"
               className={`${style.filterOptionBox} ${((selectedTier.includes("S") && selectedTier.includes("A") && selectedDifficulty.includes("Facil"))) ? '' : style.grayWhenInactive}`}
@@ -823,13 +885,116 @@ console.log({selectedSoftItems})
           </div>
         </div>
 
+        
+
       </div>
     </fieldset>
     )
   }
 
   const FiltroHard2 = ()=>{
-    const ObjetosEspesificos= ()=>{
+    const ObjetosEspesificosCraftreables= ()=>{
+      console.log("Mini-filtro Basic Components apiNames:", softItemsList.map(i => i.apiName));
+      return (
+        <div className={style.filterInputGroup}>
+          <legend>Objetos Específicos Crafteables</legend>
+
+          {/* Mini filtro de componentes */}
+          <div className={style.filterButtonsContainerRow} >
+            {softItemsList.map(item => {
+              const isSelected = selectedCraftableComponents.includes(item.apiName);
+              return (
+                <button
+                  key={item.apiName}
+                  type="button"
+                  title={item.name}
+                  className={`${style.filterOptionBox} ${isSelected ? style.filterOptionBoxActive : ''}`}
+                  onClick={() => toggleArrayFilter(setSelectedCraftableComponents, item.apiName)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: '6px',
+                    opacity: 1,
+                    cursor: 'pointer'
+                  }}
+                >
+                  {item.icon && <img src={item.icon} alt={item.name} style={{ minWidth: '35px', minHeight: '35px', width: '35px', height: '35px', objectFit: 'contain', borderRadius: '4px' }} />}
+                </button>
+              );
+            })}
+          </div>
+          
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '8px' }}>
+            {condicionesGrandeItems.length > 0 ? (
+              Object.entries({
+                'Emblemas': condicionesGrandeItemsGrouped.emblemas,
+                'Crafteables': condicionesGrandeItemsGrouped.crafteables,
+              }).map(([groupName, items]) => {
+                if (items.length === 0) return null;
+                return (
+                  <fieldset key={groupName} className={style.filterButtonsContainerRow}>
+                    <legend>{groupName}</legend>
+                    <div className={style.filterButtonsContainerRow} >
+                      {items.map(item => {
+                        const dbItem = allItems.find(i => i.apiName === item.apiName);
+                        const composition = dbItem?.composition || [];
+                        const hasSelectedComponent = selectedCraftableComponents.length === 0 || composition.length === 0 || selectedCraftableComponents.some(c => composition.includes(c));
+                        const matchedComponentsCount = selectedCraftableComponents.length > 0 ? composition.filter(c => selectedCraftableComponents.includes(c)).length : 0;
+                        const isItemSelected = selectedItems.some(i => i.apiName === item.apiName);
+                        
+                        return (
+                          <button
+                            key={item.apiName}
+                            type="button"
+                            title={item.name}
+                            className={`${style.filterOptionBox} ${isItemSelected ? style.filterOptionBoxActive : ''}`}
+                            onClick={() => toggleSelectedItem(item)}
+                            style={{ 
+                              display: 'flex', 
+                              flexDirection: 'column', 
+                              alignItems: 'center', 
+                              justifyContent: 'center', 
+                              padding: '6px', 
+                              gap: '4px',
+                              opacity: hasSelectedComponent ? 1 : 0.5,
+                              filter: hasSelectedComponent ? 'none' : 'grayscale(50%)',
+                            }}
+                          >
+                            {item.icon && (
+                              <div className={matchedComponentsCount === 2 && !isItemSelected ? style.spinningHighlight : style.spinningHighlightIdle} style={{ borderRadius: '4px' }}>
+                                <img src={item.icon} alt={item.name} style={{ minWidth: '60px', minHeight: '60px', width: '60px', height: '60px', objectFit: 'contain', borderRadius: '3px' }} />
+                              </div>
+                            )}
+                            {composition.length === 2 && (
+                              <div style={{ display: 'flex', gap: '4px' }}>
+                                {composition.map((compApi, i) => {
+                                  const compObj = softItemsList.find(x => x.apiName === compApi);
+                                  if (!compObj || !compObj.icon) return null;
+                                  const isCompSelected = selectedCraftableComponents.includes(compApi);
+                                  return (
+                                    <div key={i} className={isCompSelected && matchedComponentsCount < 2 ? style.spinningHighlight : style.spinningHighlightIdle} style={{ borderRadius: '3px' }}>
+                                      <img src={compObj.icon} alt={compObj.name} style={{ width: '22px', height: '22px', borderRadius: '2px', backgroundColor: 'rgba(0,0,0,0.5)' }} />
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </fieldset>
+                );
+              })
+            ) : (
+              <span style={{ color: '#ccc', fontStyle: 'italic', fontSize: '0.85rem' }}>No hay objetos de condición disponibles</span>
+            )}
+          </div>
+        </div>
+      )
+    }
+    const ObjetosEspesificosArtefactos= ()=>{
       return (
         <div className={style.filterInputGroup}>
           <legend>Objetos Específicos</legend>
@@ -837,8 +1002,6 @@ console.log({selectedSoftItems})
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '8px' }}>
             {condicionesGrandeItems.length > 0 ? (
               Object.entries({
-                'Emblemas': condicionesGrandeItemsGrouped.emblemas,
-                'Crafteables': condicionesGrandeItemsGrouped.crafteables,
                 'Artefactos': condicionesGrandeItemsGrouped.artefactos,
                 'Radiantes': condicionesGrandeItemsGrouped.radiantes,
                 'Específicos / Soporte': condicionesGrandeItemsGrouped.especificos
@@ -847,7 +1010,7 @@ console.log({selectedSoftItems})
                 return (
                   <fieldset key={groupName} style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                     <legend>{groupName}</legend>
-                    <div className={style.filterButtonsContainer} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                    <div className={style.filterButtonsContainerRow}>
                       {items.map(item => (
                         <button
                           key={item.apiName}
@@ -872,52 +1035,45 @@ console.log({selectedSoftItems})
       )
     }
     const Campeones = ()=>{
+      const groups = {};
+      condicionesGrandeCampeones.forEach(champ => {
+        const dbChamp = allChampions.find(c => c.apiName === champ.apiName);
+        const c = dbChamp?.cost || dbChamp?.coste || 1;
+        if (!groups[c]) groups[c] = [];
+        groups[c].push({ ...champ, cost: c });
+      });
+      Object.keys(groups).forEach(cost => {
+        groups[cost].sort((a, b) => a.name.localeCompare(b.name));
+      });
+
       return (
         <div className={style.filterInputGroup}>
           <label>Campeones</label>
-          <div className={style.filterButtonsContainer} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '8px' }}>
-            {condicionesGrandeCampeones.length > 0 ? (
-              condicionesGrandeCampeones.map(champ => (
-                <button
-                  key={champ.apiName}
-                  type="button"
-                  className={`${style.filterOptionBox} ${selectedChampions.some(c => c.apiName === champ.apiName) ? style.filterOptionBoxActive : ''}`}
-                  onClick={() => toggleSelectedChampion(champ)}
-                  style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '8px 10px', minWidth: '70px', gap: '6px' }}
-                >
-                  {champ.icon && <img src={champ.icon} alt={champ.name} style={{ minWidth: '60px', minHeight: '60px', width: '60px', height: '60px', objectFit: 'contain', borderRadius: '3px' }} />}
-                  <span style={{ fontSize: '0.78rem', textAlign: 'center', lineHeight: '1.1' }}>{champ.name}</span>
-                </button>
-              ))
-            ) : (
-              <span style={{ color: '#ccc', fontStyle: 'italic', fontSize: '0.85rem' }}>No hay campeones de condición disponibles</span>
-            )}
-          </div>
-        </div>
-      )
-    }
-    const Extra = ()=>{
-      return (
-        <div className={style.filterInputGroup}>
-          <label>Extra</label>
-          <div className={style.filterButtonsContainer} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '8px' }}>
-            {condicionesGrandeExtras.length > 0 ? (
-              condicionesGrandeExtras.map(extra => (
-                <button
-                  key={extra.apiName}
-                  type="button"
-                  className={`${style.filterOptionBox} ${selectedExtras.includes(extra.apiName) ? style.filterOptionBoxActive : ''}`}
-                  onClick={() => toggleArrayFilter(setSelectedExtras, extra.apiName)}
-                  style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '8px 10px', minWidth: '70px', gap: '6px' }}
-                >
-                  {extra.icon && <img src={extra.icon} alt={extra.name} style={{ minWidth: '60px', minHeight: '60px', width: '60px', height: '60px', objectFit: 'contain', borderRadius: '3px' }} />}
-                  <span style={{ fontSize: '0.78rem', textAlign: 'center', lineHeight: '1.1' }}>{extra.name}</span>
-                </button>
-              ))
-            ) : (
-              <span style={{ color: '#ccc', fontStyle: 'italic', fontSize: '0.85rem' }}>No hay extras disponibles</span>
-            )}
-          </div>
+          {Object.keys(groups).length > 0 ? (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '8px' }}>
+              {Object.keys(groups).sort((a,b) => Number(a) - Number(b)).map(cost => (
+                <div key={cost} style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <span style={{ fontSize: '0.85rem', fontWeight: 'bold', color: '#bbb' }}>Coste {cost}</span>
+                  <div className={style.filterButtonsContainerRow}>
+                    {groups[cost].map(champ => (
+                      <button
+                        key={champ.apiName}
+                        type="button"
+                        className={`${style.filterOptionBox} ${selectedChampions.some(c => c.apiName === champ.apiName) ? style.filterOptionBoxActive : ''}`}
+                        onClick={() => toggleSelectedChampion(champ)}
+                        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '8px 10px', minWidth: '70px', gap: '6px' }}
+                      >
+                        {champ.icon && <img src={champ.icon} alt={champ.name} style={{ minWidth: '60px', minHeight: '60px', width: '60px', height: '60px', objectFit: 'contain', borderRadius: '4px', border: `2px solid var(--color-hex-cost-${champ.cost})`, boxSizing: 'border-box' }} />}
+                        <span style={{ fontSize: '0.78rem', textAlign: 'center', lineHeight: '1.1' }}>{champ.name}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <span style={{ color: '#ccc', fontStyle: 'italic', fontSize: '0.85rem', marginTop: '8px' }}>No hay campeones de condición disponibles</span>
+          )}
         </div>
       )
     }
@@ -925,7 +1081,7 @@ console.log({selectedSoftItems})
       return (
         <div className={style.filterInputGroup}>
           <label>Sinergia</label>
-          <div className={style.filterButtonsContainer} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '8px' }}>
+          <div className={style.filterButtonsContainerRow} >
             {condicionesGrandeSinergias.length > 0 ? (
               condicionesGrandeSinergias.map(sinergia => (
                 <button
@@ -983,7 +1139,7 @@ console.log({selectedSoftItems})
                 return (
                   <fieldset key={groupName} style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                     <legend>{groupName  === "Win Streak" ? `${groupName} / Tempo` : groupName}</legend>
-                    <div className={style.filterButtonsContainer} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                    <div className={style.filterButtonsContainerRow} >
                       {grupos.map(grupo => {
                         const isSelected = selectedSalidasEarly.includes(grupo.id);
                         return (
@@ -1050,13 +1206,13 @@ console.log({selectedSoftItems})
         {SalidasEarly()}
 
         {/*  Objetos Específicos */}
-        {ObjetosEspesificos()}
+        {ObjetosEspesificosCraftreables()}
+
+        {/*  Objetos Específicos */}
+        {ObjetosEspesificosArtefactos()}
 
         {/* Campeones */}
         {Campeones()}
-        
-        {/*  Extra */}
-        {Extra()}
 
         {/*  Sinergia */}
         {Sinergia()}
@@ -1073,7 +1229,7 @@ console.log({selectedSoftItems})
       
       <div className={style.filterInputGroup}>
         <label>Objetos</label>
-        <div className={style.filterButtonsContainer} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '8px' }}>
+        <div className={style.filterButtonsContainerRow} >
           {softItemsList.map(item => {
             const isAvailable = availableSoftItemApiNames.has(item.apiName);
             const isSelected = selectedSoftItems.some(i => (typeof i === 'object' ? i.apiName : i) === item.apiName);
@@ -1109,7 +1265,7 @@ console.log({selectedSoftItems})
             {Object.keys(softChampionsByCost).sort((a,b) => Number(a) - Number(b)).map(cost => (
               <div key={cost} style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                 <span style={{ fontSize: '0.85rem', fontWeight: 'bold', color: '#bbb' }}>Coste {cost}</span>
-                <div className={style.filterButtonsContainer} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                <div className={style.filterButtonsContainerRow}>
                   {softChampionsByCost[cost].map(champ => (
                     <button
                       key={champ.apiName}
@@ -1143,7 +1299,7 @@ console.log({selectedSoftItems})
         <div className={style.filterInputGroup}>
           <label>Categorías de aumentos:</label>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '8px', marginBottom: '15px' }}>
-            <div className={style.filterButtonsContainer} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', alignItems: 'center' }}>
+            <div className={style.filterButtonsContainerRow} >
               <span style={{ fontSize: '0.85rem', fontWeight: 'bold', marginRight: '5px' }}>Tiers:</span>
               {['Plata', 'Oro', 'Prismatico'].map(tier => (
                 <button
@@ -1157,7 +1313,7 @@ console.log({selectedSoftItems})
               ))}
             </div>
 
-            <div className={style.filterButtonsContainer} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', alignItems: 'center' }}>
+            <div className={style.filterButtonsContainerRow}>
               <span style={{ fontSize: '0.85rem', fontWeight: 'bold', marginRight: '5px' }}>Pequeñas:</span>
               {CATEGORIAS_PEQUENAS.map(cat => (
                 <button
@@ -1305,7 +1461,7 @@ console.log({selectedSoftItems})
               <div key={compo.id || compo.titulo || Math.random()} className={style.cardContainer} onClick={()=>setActiveComp(allCompos.find((comp)=>comp.id === compo.id))}>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '5px', background: 'rgba(0,0,0,0.3)', borderRadius: '8px 8px 0px 0px', }}>
                     <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.1)' }}></div>
-                    <div style={{ display: 'flex', gap: '8px', minHeight: '32px' }}>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '8px', minHeight: '32px' }}>
                       {compo._matchedFilters.map((f, i) => {
                         const showDivider = i > 0 && f.opStatus !== compo._matchedFilters[i - 1].opStatus;
                         return (
