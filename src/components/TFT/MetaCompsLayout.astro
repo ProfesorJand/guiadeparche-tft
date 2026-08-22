@@ -2,7 +2,7 @@
 import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
 import CardsCompos from "@components/TFT/CardsCompos";
 import { getConstantes, getMetadata, getLastUpdateDate } from "src/lib/cache/tftCache.js";
-import { setNumberPBE, setNumberLatest } from "@stores/dataTFT";
+import { setNumberPBE, setNumberLatest, initialTFT_SET } from "@stores/dataTFT";
 import { crearJSONSchema } from "src/json/schema/crearJSONSchema";
 import RegistrarseBTN from "./RegistrarseBTN.jsx";
 import Youtube from "@components/youtube/Youtube.jsx";
@@ -27,9 +27,9 @@ interface Props {
 }
 
 const {
-  titleMain = `TFT Meta Comps: Mejores Composiciones & Builds Set ${setNumberLatest}`,
+  titleMain = `TFT Meta Comps: Mejores Composiciones & Builds Set ${initialTFT_SET === "pbe" ? setNumberPBE : setNumberLatest}`,
   titleHighlight = ``,
-  description = `Descubre las mejores TFT comps y composiciones TFT del Set ${setNumberLatest} actualizadas para el parche ${constantes.MetaCompVersion}. Aquí encontrarás builds, objetos BIS, aumentos y estrategias para jugar las compos más fuertes del meta de Teamfight Tactics y subir elo más rápido.`,
+  description = `Descubre las mejores TFT comps y composiciones TFT del Set ${initialTFT_SET === "pbe" ? setNumberPBE : setNumberLatest} actualizadas para el parche ${constantes.MetaCompVersion}. Aquí encontrarás builds, objetos BIS, aumentos y estrategias para jugar las compos más fuertes del meta de Teamfight Tactics y subir elo más rápido.`,
   lastUpdate = lastUpdateComps || null,
   allComps = [],
   comp: activeComp = null,
@@ -39,7 +39,8 @@ const {
 } = Astro.props;
 
 
-const defaultSet = activeComp?.set_number || allComps.find(c => c.urlSEO === activeId)?.set_number || setNumberLatest;
+const defaultSetNumber = initialTFT_SET === "pbe" ? setNumberPBE : setNumberLatest;
+const defaultSet = activeComp?.set_number || allComps.find(c => c.urlSEO === activeId)?.set_number || defaultSetNumber;
 const sets = [
   { id: setNumberLatest, name: `Set ${setNumberLatest} (Latest)` },
   { id: setNumberPBE, name: `Set ${setNumberPBE} (PBE)` }
