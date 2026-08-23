@@ -147,16 +147,17 @@ const DragDropTierListEditor = ({ comps = [] }) => {
     }
 
     try {
+      // Importar set numbers desde dataTFT.js
+      const { setNumberLatest, setNumberPBE } = await import("src/stores/dataTFT.js");
+      
       // Se envían secuencialmente para evitar posibles problemas de concurrencia al leer/escribir el JSON
       for (const comp of updatedComps) {
-        // Asegurarse de que el ID sea numérico si originalmente lo era, o string según el backend lo requiera.
-        // La API de PHP suele recibir todo como JSON, no debería haber problema.
         const bodyData = {
           ...comp,
-          version: currentVersion // enviamos la versión (pbe o latest) para que el PHP sepa qué JSON modificar
+          set_number: currentVersion === "latest" ? setNumberLatest : setNumberPBE
         };
         
-        const response = await fetch(crearCompoMetaPHP, {
+        const response = await fetch("https://api.guiadeparche.com/tft/composicionesBD.php", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -234,6 +235,15 @@ const DragDropTierListEditor = ({ comps = [] }) => {
                               {...provided.draggableProps}
                               {...provided.dragHandleProps}
                               className={`${style.draggableItem} ${snapshot.isDragging ? style.isDragging : ''}`}
+                              style={{
+                                ...provided.draggableProps.style,
+                                ...(snapshot.isDragging ? {
+                                  zIndex: 99999,
+                                  transform: provided.draggableProps.style?.transform 
+                                    ? `${provided.draggableProps.style.transform} scale(1.1)`
+                                    : 'scale(1.1)'
+                                } : {})
+                              }}
                             >
                               <CampeonImgInTierList
                                 id={comp.id}
