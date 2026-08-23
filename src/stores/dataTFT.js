@@ -114,6 +114,7 @@ export const numberOfVersionTFT = atom("15.23.1");
 export const constantesTFT = atom(constantesTFTLocal);
 export const dataTFTLastUpdate = atom(null);
 export const metaCompsTFT = atom(null);
+export const metaCompsTFTAdmin = atom(null);
 
 export const compActiveId = atom(null);
 
@@ -496,31 +497,46 @@ export const addRestCompsFetch = async (url) => {
     );
     let data = await response.json();
 
+    let dataPublic = {};
+    let dataAdmin = {};
+
     if (data.status === "success" && Array.isArray(data.data)) {
-      const grouped = {};
       data.data.forEach(compo => {
-        if (compo.ocultar) return;
         const tier = compo.tier || "B";
-        if (!grouped[tier]) grouped[tier] = [];
-        grouped[tier].push(compo);
+        
+        if (!dataAdmin[tier]) dataAdmin[tier] = [];
+        dataAdmin[tier].push(compo);
+
+        if (!compo.ocultar) {
+          if (!dataPublic[tier]) dataPublic[tier] = [];
+          dataPublic[tier].push(compo);
+        }
       });
-      data = grouped;
     }
 
     const hierarchy = ["S", "A", "B", "C", "D", "MEME"];
-    const allSorted = [];
+    const allSortedPublic = [];
+    const allSortedAdmin = [];
 
     hierarchy.forEach(tier => {
-      if (data[tier]) {
-        const tierComps = [...data[tier]].sort((a, b) => (a.posicion || 0) - (b.posicion || 0));
-        allSorted.push(...tierComps);
+      if (dataPublic[tier]) {
+        const tierComps = [...dataPublic[tier]].sort((a, b) => (a.posicion || 0) - (b.posicion || 0));
+        allSortedPublic.push(...tierComps);
+      }
+      if (dataAdmin[tier]) {
+        const tierCompsAdmin = [...dataAdmin[tier]].sort((a, b) => (a.posicion || 0) - (b.posicion || 0));
+        allSortedAdmin.push(...tierCompsAdmin);
       }
     });
 
-    const currentState = metaCompsTFT.get() || [];
-    //eliminar los id que ya existen en allSorted en currentState
-    const restos = allSorted.filter(comp => !currentState.some(sComp => sComp.id === comp.id));
-    metaCompsTFT.set([...currentState, ...restos]);
+    const currentStatePublic = metaCompsTFT.get() || [];
+    const restosPublic = allSortedPublic.filter(comp => !currentStatePublic.some(sComp => sComp.id === comp.id));
+    metaCompsTFT.set([...currentStatePublic, ...restosPublic]);
+    
+    const currentStateAdmin = metaCompsTFTAdmin.get() || [];
+    const restosAdmin = allSortedAdmin.filter(comp => !currentStateAdmin.some(sComp => sComp.id === comp.id));
+    metaCompsTFTAdmin.set([...currentStateAdmin, ...restosAdmin]);
+    
   } catch (error) {
     console.error(error);
   }
@@ -528,28 +544,6 @@ export const addRestCompsFetch = async (url) => {
 
 // SEO: Fetch Compositions Server-Side for Schema and initial render
 export const fetchAndSortComps = async (url) => {
-  // if (url && url.includes("composMetaPBE")) {
-  //   try {
-  //     const data = metaCompsTFT.get();
-  //     const hierarchy = ["S", "A", "B", "C", "D", "MEME"];
-  //     const allSorted = [];
-
-  //     hierarchy.forEach(tier => {
-  //       if (data[tier]) {
-  //         const tierComps = [...data[tier]].sort((a, b) => (a.posicion || 0) - (b.posicion || 0));
-  //         allSorted.push(...tierComps);
-  //       }
-  //     });
-  //     // Set a fallback last update date (since we don't have HTTP headers)
-  //     dataTFTLastUpdate.set("10/6/2026");
-  //     metaCompsTFT.set(allSorted);
-  //     return allSorted;
-  //   } catch (e) {
-  //     console.error(`Error loading local PBE compositions in [dataTFT.js]:`, e);
-  //     return [];
-  //   }
-  // }
-
   try {
     const response = await fetch(
       url,
@@ -557,26 +551,38 @@ export const fetchAndSortComps = async (url) => {
     );
     let data = await response.json();
 
+    let dataPublic = {};
+    let dataAdmin = {};
+
     if (data.status === "success" && Array.isArray(data.data)) {
-      const grouped = {};
       data.data.forEach(compo => {
-        if (compo.ocultar) return;
         const tier = compo.tier || "B";
-        if (!grouped[tier]) grouped[tier] = [];
-        grouped[tier].push(compo);
+        
+        if (!dataAdmin[tier]) dataAdmin[tier] = [];
+        dataAdmin[tier].push(compo);
+
+        if (!compo.ocultar) {
+          if (!dataPublic[tier]) dataPublic[tier] = [];
+          dataPublic[tier].push(compo);
+        }
       });
-      data = grouped;
     }
 
     const hierarchy = ["S", "A", "B", "C", "D", "MEME"];
-    const allSorted = [];
+    const allSortedPublic = [];
+    const allSortedAdmin = [];
 
     hierarchy.forEach(tier => {
-      if (data[tier]) {
-        const tierComps = [...data[tier]].sort((a, b) => (a.posicion || 0) - (b.posicion || 0));
-        allSorted.push(...tierComps);
+      if (dataPublic[tier]) {
+        const tierComps = [...dataPublic[tier]].sort((a, b) => (a.posicion || 0) - (b.posicion || 0));
+        allSortedPublic.push(...tierComps);
+      }
+      if (dataAdmin[tier]) {
+        const tierCompsAdmin = [...dataAdmin[tier]].sort((a, b) => (a.posicion || 0) - (b.posicion || 0));
+        allSortedAdmin.push(...tierCompsAdmin);
       }
     });
+    
     const lastModified = response.headers.get('Last-Modified');
     if (lastModified) {
       //transformar a dia/mes/año string, string dia = 1, mes = 0
@@ -586,9 +592,12 @@ export const fetchAndSortComps = async (url) => {
       const año = date.getFullYear();
       dataTFTLastUpdate.set(`${dia}/${mes}/${año}`);
     }
-    metaCompsTFT.set(allSorted);
+    
+    metaCompsTFT.set(allSortedPublic);
+    metaCompsTFTAdmin.set(allSortedAdmin);
+    
     await composMetaPBETest();
-    return allSorted;
+    return allSortedPublic;
   } catch (e) {
     console.error(`Error fetching from ${url}:`, e);
     throw e;
