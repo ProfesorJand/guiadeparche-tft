@@ -1607,13 +1607,13 @@ export default function FormularioVisualTFT({
       actualizarComposicionTFT({
         id: compo.id,
         version: compo.version,
-        ocultar: compo.ocultar || compo.isHide,
-        nombre: compo.nombre || compo.titulo,
-        tier: compo.tier,
-        tierExtra: compo.tierExtra,
-        posicion: compo.posicion,
-        dificultad: dificultades.Es.includes(compo.dificultad) ? compo.dificultad : compo.dificultad === "Easy" ? "Facil" : compo.dificultad === "Medium" ? "Medio" : "Dificil",
-        categoria: compo.categoria || compo.shadowCategory,
+        ocultar: compo.ocultar === 1 || compo.ocultar === "1" || compo.ocultar === true || compo.ocultar === "true" || compo.isHide === "true" || compo.isHide === true,
+        nombre: compo.nombre || compo.titulo || "",
+        tier: compo.tier || "S",
+        tierExtra: compo.tierExtra || "N/A",
+        posicion: compo.posicion || 1,
+        dificultad: dificultades.Es.includes(compo.dificultad) ? compo.dificultad : compo.dificultad === "Easy" ? "Facil" : compo.dificultad === "Medium" ? "Medio" : compo.dificultad === "Hard" ? "Dificil" : dificultades.Es[0],
+        categoria: compo.categoria || compo.shadowCategory || categorias.Es[1],
         campeonMeta: compo.campeonMeta || {
           apiNameCampeon: compo.campeonTierList?.apiName || "",
           apiNameItemsDelCampeon: compo.champItem?.map(item => item.apiName) || [],
@@ -1621,7 +1621,7 @@ export default function FormularioVisualTFT({
           aumento: compo?.augmentTierList?.[0]?.apiName,
           emblema: compo?.champTrait?.[0]?.apiName
         },
-        tipoDeDano: compo.tipoDeDano,
+        tipoDeDano: compo.tipoDeDano || dañoTipo.Es[0],
         niveles: compo.niveles || [],
         itemsPrio: (compo.itemsPrio || (compo?.carouselItems ? Object.values(compo.carouselItems) : [])).map(item => {
           if (typeof item === 'object' && item !== null) {

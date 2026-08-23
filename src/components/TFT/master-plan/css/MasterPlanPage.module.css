@@ -371,7 +371,6 @@
   position:relative;
   gap:10px;
   height: 800px;
-  overflow-y: auto;
   box-sizing: border-box;
   border: 2px solid var(--border-purple-color);
   padding: 5px;

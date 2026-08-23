@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MetaComps from "./MetaComps.jsx";
 import TierListMetaComps from "@components/TFT/TierListMetaComps.jsx";
-import { versionTFT, swapVersionTFT, constantesJSON, metaCompsTFT, constantesPHP, addConstantesTFT, constantesTFT } from "src/stores/dataTFT.js";
+import { versionTFT, swapVersionTFT, constantesJSON, metaCompsTFTAdmin, constantesPHP, addConstantesTFT, constantesTFT } from "src/stores/dataTFT.js";
 import { useStore } from "@nanostores/react";
 import style from "./css/EditarCompoTFT.module.css"
 import SelectVersion from "@components/versionTFT/SelectVersion.jsx";
@@ -15,7 +15,7 @@ const EditarCompoTFT = () => {
   const admin = useStore($admin);
   const superAdmin = useStore($superAdmin);
   const constantes = useStore(constantesTFT)
-  const metaComps = useStore(metaCompsTFT);
+  const metaComps = useStore(metaCompsTFTAdmin) || [];
   // useEffect(() => {
   //   // Obtener las constantes actuales
   //   const fetchConstantes = async () => {
@@ -122,14 +122,15 @@ const EditarCompoTFT = () => {
         .filter(comp => comp.version === currentVersion || (currentVersion === "latest" && !comp.version)) // Asumimos latest si no tiene version para retrocompatibilidad
         .map((comp, index)=>{
           return (
-            <CardsCompos 
-            comp={comp}
-            numeracion={index + 1}
-            isActive={false}
-            edit={true}
-            client:load
-          />
-          
+            <div key={comp.id || index} style={{ opacity: comp.ocultar ? 0.5 : 1 }}>
+              <CardsCompos 
+                comp={comp}
+                numeracion={index + 1}
+                isActive={false}
+                edit={true}
+                client:load
+              />
+            </div>
         )
         })
       }

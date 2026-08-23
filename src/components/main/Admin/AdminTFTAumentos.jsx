@@ -17,6 +17,8 @@ const CATEGORIAS_PEQUENAS = [
 
 const CATEGORIAS_TIERS = ["Plata", "Oro", "Prismatico"];
 
+const CATEGORIAS_ETAPAS = ["2-1", "3-2", "4-2"];
+
 const AdminTFTAumentos = () => {
   const rawAllAugments = useStore(dataTFTAllAugments);
   const dbAumentos = useStore(dataDBTFTAumentos);
@@ -151,6 +153,19 @@ const AdminTFTAumentos = () => {
     });
   };
 
+  const toggleCategoriaEtapa = (apiName, etapa) => {
+    setLocalAumentos(prev => {
+      const current = prev[apiName] || {};
+      let etapas = current.categoria_etapa || [];
+      if (etapas.includes(etapa)) {
+        etapas = etapas.filter(e => e !== etapa);
+      } else {
+        etapas = [...etapas, etapa];
+      }
+      return { ...prev, [apiName]: { ...current, categoria_etapa: etapas } };
+    });
+  };
+
   const uncategorized = filteredAugments.filter(a => isMissingAnyCategory(a.apiName));
 
   return (
@@ -256,6 +271,30 @@ const AdminTFTAumentos = () => {
         </div>
       </div>
 
+      <div className={style.section}>
+        <h2>Categorías de Etapa</h2>
+        <div className={style.gridGrandes}>
+          {CATEGORIAS_ETAPAS.map(etapa => {
+            const categorizedAugs = filteredAugments.filter(a => {
+              const etapas = localAumentos[a.apiName]?.categoria_etapa || [];
+              return etapas.includes(etapa);
+            });
+            return (
+              <div key={etapa} className={style.categoriaCard}>
+                <div className={style.categoriaTitle}>{etapa} ({categorizedAugs.length})</div>
+                <div className={style.aumentosContainer}>
+                  {categorizedAugs.map(aug => (
+                    <div key={aug.apiName} className={`${style.augmentItem} ${hasPartialCategories(aug.apiName) ? style.incomplete : ''}`} onClick={() => openModal(aug)}>
+                      <ImgAugment augment={aug} width={40} height={40} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
       {selectedAugment && createPortal(
         <div className={style.modalOverlay} onClick={() => setSelectedAugment(null)}>
           <div className={style.modalContent} onClick={e => e.stopPropagation()}>
@@ -308,6 +347,20 @@ const AdminTFTAumentos = () => {
                       onChange={() => toggleCategoriaPequena(selectedAugment.apiName, cat)}
                     />
                     {cat}
+                  </label>
+                ))}
+              </div>
+
+              <h4>Categorías de Etapa (Múltiples)</h4>
+              <div className={style.checkboxGroup}>
+                {CATEGORIAS_ETAPAS.map(etapa => (
+                  <label key={etapa} className={style.checkboxLabel}>
+                    <input 
+                      type="checkbox" 
+                      checked={localAumentos[selectedAugment.apiName]?.categoria_etapa?.includes(etapa)}
+                      onChange={() => toggleCategoriaEtapa(selectedAugment.apiName, etapa)}
+                    />
+                    {etapa}
                   </label>
                 ))}
               </div>
