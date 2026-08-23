@@ -61,15 +61,15 @@
 }
 
 .draggableItem {
-  transition: transform 0.2s ease;
   width: calc(100% / 10 - 10px);
   min-width: 60px;
 }
 
 .isDragging {
-  transform: scale(1.05);
   opacity: 0.9;
-  z-index: 100;
+  z-index: 99999 !important;
+  width: 60px !important;
+  height: 60px !important;
 }
 
 .saveButtonContainer {
