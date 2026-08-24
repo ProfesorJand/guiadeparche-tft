@@ -231,31 +231,14 @@ const CardsMasterPlanCompos = ({compo, activateMissingOPM, filtroSoft={}, grupos
                           const champ = allChampionsTFT?.find(c => c.apiName === apiName);
                           if (!champ) return null;
                           
-                          // Determinar color de borde por coste
-                          const cost = champ.cost != null ? Number(champ.cost) : 1;
-                          const colors = { 1: '#808080', 2: '#11b288', 3: '#207ac7', 4: '#c440da', 5: '#ffb93b' };
-                          const borderColor = colors[cost] || '#808080';
-                          
                           return (
-                            <Tooltip key={apiName} type="campeon" campeon={champ}>
-                              <img 
-                                src={getLocalTftImage(champ.img || champ.tileIcon, 'champions/tileIcon', versionNumber)} 
-                                alt={champ.name}
-                                style={{ 
-                                  height: '100%', 
-                                  maxHeight: '100%', 
-                                  maxWidth: '100%', 
-                                  aspectRatio: '1/1', 
-                                  borderRadius: '3px', 
-                                  border: `1.5px solid ${borderColor}`, 
-                                  objectFit: 'cover',
-                                  flexShrink: 1,
-                                  minWidth: 0,
-                                  minHeight: 0,
-                                  boxSizing: 'border-box'
-                                }}
+                            <div key={apiName} style={{ height: '100%', aspectRatio: '1/1', flexShrink: 1, minWidth: 0, minHeight: 0, boxSizing: 'border-box' }}>
+                              <ImgCampeon 
+                                championData={champ} 
+                                showName={false} 
+                                showBorderColor={true} 
                               />
-                            </Tooltip>
+                            </div>
                           );
                         })
                       )}
