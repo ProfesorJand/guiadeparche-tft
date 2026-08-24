@@ -384,21 +384,27 @@ console.log({selectedSoftItems})
 
       if(compo.aumentos && Array.isArray(compo.aumentos)) {
         compo.aumentos.forEach(aumento => {
-          const apiNameGrande = typeof aumento === 'object' ? (aumento.apiNameGrande || aumento.apiName) : aumento;
-          const apiNamePequeno = typeof aumento === 'object' ? aumento.apiNamePequeno : null;
-          const op = typeof aumento === 'object' ? aumento.op : null;
-          const isOpm = op === 'opm';
-          const isOp = op === 'op' || op === true || op === 'true' || isOpm;
-          addAugment(apiNameGrande, apiNamePequeno, isOp, isOpm);
+          const isEarly = typeof aumento === 'object' && (aumento.early === true || aumento.early === 'true' || aumento.early === 1);
+          if (isEarly) {
+            const apiNameGrande = typeof aumento === 'object' ? (aumento.apiNameGrande || aumento.apiName) : aumento;
+            const apiNamePequeno = typeof aumento === 'object' ? aumento.apiNamePequeno : null;
+            const op = typeof aumento === 'object' ? aumento.op : null;
+            const isOpm = op === 'opm';
+            const isOp = op === 'op' || op === true || op === 'true' || isOpm;
+            addAugment(apiNameGrande, apiNamePequeno, isOp, isOpm);
+          }
         });
       }
 
       if (compo.condiciones && Array.isArray(compo.condiciones)) {
         compo.condiciones.forEach(cond => {
           if (cond) {
-            const isOpm = cond.op === 'opm';
-            const isOp = cond.op === 'op' || cond.op === true || cond.op === 'true' || isOpm;
-            addAugment(cond.apiNameGrande, cond.ApiNamePequeno || cond.apiNamePequeno, isOp, isOpm);
+            const isEarly = cond.early === true || cond.early === 'true' || cond.early === 1;
+            if (isEarly) {
+              const isOpm = cond.op === 'opm';
+              const isOp = cond.op === 'op' || cond.op === true || cond.op === 'true' || isOpm;
+              addAugment(cond.apiNameGrande, cond.ApiNamePequeno || cond.apiNamePequeno, isOp, isOpm);
+            }
           }
         });
       }
