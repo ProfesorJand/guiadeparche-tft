@@ -6,7 +6,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 25px 50px;
+  padding: 25px 55px;
   height: fit-content;
   aspect-ratio: 4/5;
   box-sizing: border-box;
@@ -49,7 +49,7 @@
   display: flex;
   position: relative;
   width: 100%;
-  height: 10%;
+  height: 6%;
 }
 
 .cLogoV{
@@ -72,7 +72,7 @@
   position: absolute;
   width: 100%;
   color: rgb(255, 255, 255);
-  font-size: 0.9vw;
+  font-size: 30px;
   font-weight: bold;
   text-align: center;
   align-items: center;
@@ -95,7 +95,7 @@
   display: flex;
   /* background-color: #0a458a; */
   color: white;
-  font-size: 15px;
+  font-size: 25px;
   font-weight: bold;
   margin: 0;
   position:absolute;
@@ -113,7 +113,7 @@
   align-content: end;
   position: relative;
   position:relative;
-  height: 8%;
+  height: 6%;
   align-items: flex-end;
 }
 
@@ -145,9 +145,9 @@
   width: 100%;
   position: relative;
   flex-direction: column;
-  height: 82%;
+  height: 80%;
   gap:var(--gap-maps);
-  padding: 0px 0px 25px;
+  padding: 0px 0px 30px;
   box-sizing: border-box;
 }
 
@@ -155,7 +155,7 @@
   position: absolute;
   width: calc((100%) / 6 * 4.5);
   left: calc(((100% ) / 6 * 1.5));
-  height: calc(100% - 25px);
+  height: calc(100% - 30px);
 }
 
 .vline{
@@ -182,7 +182,7 @@
   position: absolute;
   width: calc((100%) / 6 * 4.5);
   left: calc(((100% ) / 6 * 1.5));
-  height: calc(100% - 25px);
+  height: calc(100% - 30px);
   border-left: 1px solid rgb(160, 70, 70);
   border-right: 1px solid rgb(160, 70, 70);
   /* z-index: 9; */
@@ -306,7 +306,7 @@
   justify-content: center;
   bottom: 0%;
   margin: 0;
-  font-size: 12px;
+  font-size: 22px;
 }
 
 .cMetaByMapAgent{
@@ -347,7 +347,7 @@
 .footer{
   display: flex;
   width: 100%;
-  height: 5%;
+  height: 7%;
   opacity: 0.8;
   flex-direction: row;
   align-items: center;

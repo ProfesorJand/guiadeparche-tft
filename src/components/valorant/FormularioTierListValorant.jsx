@@ -282,7 +282,8 @@ const maps = [
   "lotus",
   "pearl",
   "split",
-  "sunset"
+  "sunset",
+  "summit"
 ];
 
 const agentsRols = {
