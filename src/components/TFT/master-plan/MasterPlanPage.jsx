@@ -168,7 +168,7 @@ console.log({selectedSoftItems})
   const [gruposSalidasEarly, setGruposSalidasEarly] = useState([]);
   const [selectedSalidasEarly, setSelectedSalidasEarly] = useState([]);
   const [selectedSalidasEarlyChampions, setSelectedSalidasEarlyChampions] = useState([]);
-
+  const [selectedSalidasEarlyComponents, setSelectedSalidasEarlyComponents] = useState([]);
   useEffect(() => {
     const fetchGruposSalidasEarly = async () => {
       try {
@@ -1142,8 +1142,8 @@ console.log({selectedSoftItems})
     const SalidasEarly=()=>{
       const groupedGrupos = {
         'Win Streak': [],
+        'N/A': [],
         'Lose Streak': [],
-        'N/A': []
       };
 
       availableGruposSalidasEarly.forEach(grupo => {
@@ -1155,8 +1155,50 @@ console.log({selectedSoftItems})
         }
       });
 
+      const getGrupoScore = (grupo) => {
+        let score = 0;
+        const composUsingThisGroup = filteredComposPrimary.filter(c => c.salidasEarly?.map(String).includes(String(grupo.id)));
+        
+        if (selectedSalidasEarlyChampions.length > 0) {
+          let matchedChamps = 0;
+          selectedSalidasEarlyChampions.forEach(champ => {
+            const isMatch = composUsingThisGroup.some(compo => 
+              (compo.condiciones || []).some(c => c.apiNameGrande === champ.apiName || c.ApiNamePequeno === champ.apiName)
+            );
+            if (isMatch) matchedChamps++;
+          });
+          score += matchedChamps;
+        }
+
+        if (selectedSalidasEarlyComponents.length > 0) {
+          const uniqueCraftedItems = new Set();
+          composUsingThisGroup.forEach(c => {
+            (c.itemsPrio || []).forEach(prioItem => {
+              const apiName = typeof prioItem === 'object' ? prioItem.apiName : prioItem;
+              const dbItem = allItems.find(i => i.apiName === apiName);
+              if (dbItem?.composition && dbItem.composition.length > 0) {
+                const canBeCrafted = dbItem.composition.every(comp => selectedSalidasEarlyComponents.includes(comp));
+                if (canBeCrafted) uniqueCraftedItems.add(apiName);
+              } else {
+                const normalizedApi = apiName.replace('DA_Component_', '').replace('DA_', '').replace('TFT_Item_', '');
+                const isSelected = selectedSalidasEarlyComponents.some(comp => comp.replace('DA_Component_', '').replace('DA_', '').replace('TFT_Item_', '') === normalizedApi);
+                if (isSelected) uniqueCraftedItems.add(apiName);
+              }
+            });
+          });
+          score += uniqueCraftedItems.size;
+        }
+        
+        return score;
+      };
+
       Object.keys(groupedGrupos).forEach(key => {
         groupedGrupos[key].sort((a, b) => {
+          const scoreA = getGrupoScore(a);
+          const scoreB = getGrupoScore(b);
+          if (scoreA !== scoreB) {
+            return scoreB - scoreA;
+          }
           const aLen = a.campeones ? a.campeones.length : 0;
           const bLen = b.campeones ? b.campeones.length : 0;
           if (aLen === 0 && bLen > 0) return -1;
@@ -1176,38 +1218,95 @@ console.log({selectedSoftItems})
         return a.name.localeCompare(b.name);
       });
 
+      const groupedChamps = {};
+      champsList.forEach(champ => {
+        const c = champ.cost || 1;
+        if (!groupedChamps[c]) groupedChamps[c] = [];
+        groupedChamps[c].push(champ);
+      });
+
       return(
         <div className={style.filterInputGroup}>
           <legend>Salidas Early</legend>
           
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '8px', marginBottom: '16px' }}>
             {champsList.length > 0 && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                <div className={style.filterButtonsContainerRow}>
-                  {champsList.map(champ => (
-                    <button
-                      key={champ.apiName}
-                      type="button"
-                      className={`${style.filterOptionBox} ${selectedSalidasEarlyChampions.some(c => c.apiName === champ.apiName) ? style.filterOptionBoxActive : ''}`}
-                      onClick={() => toggleSelectedSalidasEarlyChampion(champ)}
-                      style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '8px 10px', minWidth: '70px', gap: '6px' }}
-                    >
-                      {champ.icon && <img src={champ.icon} alt={champ.name} style={{ minWidth: '60px', minHeight: '60px', width: '60px', height: '60px', objectFit: 'contain', borderRadius: '4px', border: `3px solid var(--color-hex-cost-${champ.cost})`, boxSizing: 'border-box' }} />}
-                      <span style={{ fontSize: '0.78rem', textAlign: 'center', lineHeight: '1.1' }}>{champ.name}</span>
-                    </button>
-                  ))}
-                </div>
+              <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '16px', alignItems: 'stretch' }}>
+                {Object.keys(groupedChamps).sort((a,b) => Number(a) - Number(b)).map((cost, idx) => {
+                  let title = `Coste ${cost}`;
+                  if (String(cost) === '2') title = 'coste 2';
+                  if (String(cost) === '3') title = 'orbe';
+                  if (String(cost) === '4') title = 'orbe dorado';
+
+                  return (
+                    <React.Fragment key={cost}>
+                      {idx > 0 && <div style={{ width: '2px', background: 'rgba(255,255,255,0.1)', borderRadius: '1px' }}></div>}
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                          <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.15)' }}></div>
+                          <span style={{ padding: '0 10px', fontSize: '0.85rem', fontWeight: 'bold', color: '#bbb', textTransform: 'capitalize', textAlign: 'center', whiteSpace: 'nowrap' }}>
+                            {title}
+                          </span>
+                          <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.15)' }}></div>
+                        </div>
+                        <div className={style.filterButtonsContainerRow}>
+                          {groupedChamps[cost].map(champ => (
+                            <button
+                              key={champ.apiName}
+                              type="button"
+                              className={`${style.filterOptionBox} ${selectedSalidasEarlyChampions.some(c => c.apiName === champ.apiName) ? style.filterOptionBoxActive : ''}`}
+                              onClick={() => toggleSelectedSalidasEarlyChampion(champ)}
+                              style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '8px 10px', minWidth: '70px', gap: '6px' }}
+                            >
+                              {champ.icon && <img src={champ.icon} alt={champ.name} style={{ minWidth: '60px', minHeight: '60px', width: '60px', height: '60px', objectFit: 'contain', borderRadius: '4px', border: `3px solid var(--color-hex-cost-${champ.cost})`, boxSizing: 'border-box' }} />}
+                              <span style={{ fontSize: '0.78rem', textAlign: 'center', lineHeight: '1.1' }}>{champ.name}</span>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </React.Fragment>
+                  );
+                })}
               </div>
             )}
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            {/* Minifiltro de Componentes en Salidas Early */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginBottom: '8px' }}>
+              <span style={{ fontSize: '0.85rem', fontWeight: 'bold', color: '#bbb' }}>Componentes Crafteables (filtra qué armar)</span>
+              <div className={style.filterButtonsContainerRow} >
+                {softItemsList.map(item => {
+                  const isSelected = selectedSalidasEarlyComponents.includes(item.apiName);
+                  return (
+                    <button
+                      key={item.apiName}
+                      type="button"
+                      title={item.name}
+                      className={`${style.filterOptionBox} ${isSelected ? style.filterOptionBoxActive : ''}`}
+                      onClick={() => toggleArrayFilter(setSelectedSalidasEarlyComponents, item.apiName)}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding: '6px',
+                        opacity: 1,
+                        cursor: 'pointer'
+                      }}
+                    >
+                      {item.icon && <img src={item.icon} alt={item.name} style={{ minWidth: '35px', minHeight: '35px', width: '35px', height: '35px', objectFit: 'contain', borderRadius: '4px' }} />}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
             {availableGruposSalidasEarly.length > 0 ? (
               Object.entries(groupedGrupos).map(([groupName, grupos]) => {
                 if (grupos.length === 0) return null;
                 return (
                   <fieldset key={groupName} style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                    <legend>{groupName  === "Win Streak" ? `${groupName} / Tempo` : groupName}</legend>
+                    <legend>{groupName  === "N/A" ? `Tempo` : groupName}</legend>
                     <div className={style.filterButtonsContainerRow} >
                       {grupos.map(grupo => {
                         const isSelected = selectedSalidasEarly.includes(grupo.id);
@@ -1217,6 +1316,38 @@ console.log({selectedSoftItems})
                             (compo.condiciones || []).some(c => c.apiNameGrande === champ.apiName || c.ApiNamePequeno === champ.apiName)
                           );
                         });
+
+                        const craftedItemsForGroup = [];
+                        if (selectedSalidasEarlyComponents.length > 0) {
+                          const composUsingThisGroup = filteredComposPrimary.filter(c => c.salidasEarly?.map(String).includes(String(grupo.id)));
+                          const uniqueCraftedItems = new Set();
+                          composUsingThisGroup.forEach(c => {
+                            (c.itemsPrio || []).forEach(prioItem => {
+                              const apiName = typeof prioItem === 'object' ? prioItem.apiName : prioItem;
+                              const dbItem = allItems.find(i => i.apiName === apiName);
+                              if (dbItem?.composition && dbItem.composition.length > 0) {
+                                const canBeCrafted = dbItem.composition.every(comp => selectedSalidasEarlyComponents.includes(comp));
+                                if (canBeCrafted) uniqueCraftedItems.add(apiName);
+                              } else {
+                                const normalizedApi = apiName.replace('DA_Component_', '').replace('DA_', '').replace('TFT_Item_', '');
+                                const isSelected = selectedSalidasEarlyComponents.some(comp => comp.replace('DA_Component_', '').replace('DA_', '').replace('TFT_Item_', '') === normalizedApi);
+                                if (isSelected) {
+                                  uniqueCraftedItems.add(apiName);
+                                }
+                              }
+                            });
+                          });
+                          uniqueCraftedItems.forEach(apiName => {
+                             const dbItem = allItems.find(i => i.apiName === apiName);
+                             if (dbItem) craftedItemsForGroup.push(dbItem);
+                          });
+                        }
+
+                        // Si hay componentes seleccionados, podemos atenuar (opacity) los grupos que NO arman ningún objeto, o dejarlos visibles
+                        // Para no romper la visibilidad actual, combinaremos ambas lógicas:
+                        const hasCraftedItems = selectedSalidasEarlyComponents.length === 0 || craftedItemsForGroup.length > 0;
+                        const isVisibleByFilters = hasSelectedChampion && hasCraftedItems;
+
                         return (
                           <button
                             key={grupo.id}
@@ -1229,8 +1360,8 @@ console.log({selectedSoftItems})
                               alignItems: 'center', 
                               gap: '6px', 
                               padding: '6px 8px',
-                              opacity: hasSelectedChampion ? 1 : 0.5,
-                              filter: hasSelectedChampion ? 'none' : 'grayscale(50%)'
+                              opacity: isVisibleByFilters ? 1 : 0.5,
+                              filter: isVisibleByFilters ? 'none' : 'grayscale(50%)'
                             }}
                           >
                             {grupo.campeones && grupo.campeones.length > 0 ? (
@@ -1266,6 +1397,19 @@ console.log({selectedSoftItems})
                                     );
                                   })}
                                 </div>
+                                {craftedItemsForGroup.length > 0 && (
+                                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '6px', padding: '4px', background: 'rgba(0,0,0,0.3)', borderRadius: '4px' }}>
+                                    {craftedItemsForGroup.map(item => (
+                                      <img 
+                                        key={item.apiName}
+                                        src={getLocalTftImage(item.icon, 'items')} 
+                                        alt={item.name} 
+                                        title={item.name}
+                                        style={{ width: '40px', height: '40px', borderRadius: '4px', objectFit: 'contain' }} 
+                                      />
+                                    ))}
+                                  </div>
+                                )}
                               </div>
                             ) : (
                               <span>{grupo.nombre || `Grupo ${grupo.id}`}</span>
@@ -1446,7 +1590,7 @@ console.log({selectedSoftItems})
             return (
               <div key={tierName} style={{ display: 'flex', flexDirection: 'column', gap: '10px', background: 'rgba(0,0,0,0.15)', padding: '10px', borderRadius: '8px' }}>
                 <h4 style={{ color: tierColor, margin: '0 0 5px 0', borderBottom: '1px solid #444', paddingBottom: '5px' }}>{tierName}</h4>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(70px, 1fr))', gap: '8px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))', gap: '8px' }}>
                   {augsInTier.map(aug => {
                     let isGrayedOut = false;
 
@@ -1515,7 +1659,7 @@ console.log({selectedSoftItems})
                               display: 'flex',
                               alignItems: 'center',
                               justifyContent: 'center',
-                              fontSize: '0.65rem',
+                              fontSize: '1rem',
                               fontWeight: 'bold',
                               zIndex: 2
                             }}>
@@ -1540,7 +1684,7 @@ console.log({selectedSoftItems})
                             </div>
                           )}
                         </div>
-                        <span style={{ fontSize: '0.65rem', textAlign: 'center', lineHeight: '1.2', wordBreak: 'break-word', color: isSelected ? '#ffcc00' : '#ddd' }}>
+                        <span style={{ fontSize: '1rem', textAlign: 'center', lineHeight: '1.2', wordBreak: 'break-word', color: isSelected ? '#ffcc00' : '#ddd' }}>
                           {aug.name}{champ ? ` + ${champ.name}` : ''}
                         </span>
                       </div>
