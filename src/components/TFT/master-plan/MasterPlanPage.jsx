@@ -169,6 +169,8 @@ console.log({selectedSoftItems})
   const [selectedSalidasEarly, setSelectedSalidasEarly] = useState([]);
   const [selectedSalidasEarlyChampions, setSelectedSalidasEarlyChampions] = useState([]);
   const [selectedSalidasEarlyComponents, setSelectedSalidasEarlyComponents] = useState([]);
+  const [selectedSalidasEarlyItems, setSelectedSalidasEarlyItems] = useState([]);
+  const [selectedSalidasEarlySinergias, setSelectedSalidasEarlySinergias] = useState([]);
   useEffect(() => {
     const fetchGruposSalidasEarly = async () => {
       try {
@@ -235,6 +237,8 @@ console.log({selectedSoftItems})
     setSelectedHardAugments([]);
     setSelectedSalidasEarly([]);
     setSelectedSalidasEarlyChampions([]);
+    setSelectedSalidasEarlyComponents([]);
+    setSelectedSalidasEarlyItems([]);
     setSelectedSoftItems([]);
     setSelectedSoftChampions([]);
     setSelectedSoftTraits([]);
@@ -301,18 +305,28 @@ console.log({selectedSoftItems})
 
   const activateMissingOPM = (type, apiName) => {
     if (type === 'item') {
-      const itemObj = allItems.find(i => i.apiName === apiName);
-      if (itemObj && !selectedItems.some(i => i.apiName === apiName)) {
-        toggleSelectedItem(itemObj);
+      const dbItem = allItems.find(i => i.apiName === apiName);
+      if (dbItem && !selectedSalidasEarlyItems.some(i => i.apiName === apiName)) {
+        const itemObj = {
+          apiName: dbItem.apiName,
+          name: dbItem.name,
+          icon: getLocalTftImage(dbItem.icon, 'items')
+        };
+        toggleArrayFilter(setSelectedSalidasEarlyItems, itemObj);
       }
     } else if (type === 'campeon') {
-      const champObj = allChampions.find(c => c.apiName === apiName);
-      if (champObj && !selectedChampions.some(c => c.apiName === apiName)) {
-        toggleSelectedChampion(champObj);
+      const dbChamp = allChampions.find(c => c.apiName === apiName);
+      if (dbChamp && !selectedSalidasEarlyChampions.some(c => c.apiName === apiName)) {
+        const champObj = {
+          apiName: dbChamp.apiName,
+          name: dbChamp.name,
+          icon: dbChamp.tileIcon ? getLocalTftImage(dbChamp.tileIcon, 'champions/tileIcon', versionNumber) : null
+        };
+        toggleSelectedSalidasEarlyChampion(champObj);
       }
     } else if (type === 'sinergia') {
-      if (!selectedSinergias.includes(apiName)) {
-        toggleArrayFilter(setSelectedSinergias, apiName);
+      if (!selectedSalidasEarlySinergias.includes(apiName)) {
+        toggleArrayFilter(setSelectedSalidasEarlySinergias, apiName);
       }
     } else if (type === 'augment' || type === 'aumento' || type === 'aumentoresaleatorio' || type === 'aumentoespecifico') {
       const augObj = allAugments.find(a => a.apiName === apiName);
@@ -529,7 +543,11 @@ console.log({selectedSoftItems})
       selectedAumentoResAleatorio.length > 0 ||
       selectedAumentoEspecifico.length > 0 ||
       selectedHardAugments.length > 0 ||
-      selectedSalidasEarly.length > 0;
+      selectedSalidasEarly.length > 0 ||
+      selectedSalidasEarlyChampions.length > 0 ||
+      selectedSalidasEarlySinergias.length > 0 ||
+      selectedSalidasEarlyItems.length > 0 ||
+      selectedSalidasEarlyComponents.length > 0;
 
     if (!hasAnyConditionSelected) {
       return filteredComposPrimary.map(compo => ({ ...compo, _matchCount: 0, _matchedFilters: [] }));
@@ -646,6 +664,81 @@ console.log({selectedSoftItems})
         });
       }
 
+      if (selectedSalidasEarlyChampions.length > 0) {
+        const boardChampions = compo.posicionamiento?.[0]?.tablero?.map(c => c.apiNameCampeon) || [];
+        selectedSalidasEarlyChampions.forEach(champ => {
+          const matchChamp = 
+            boardChampions.includes(champ.apiName) || 
+            compo.campeonMeta?.apiNameCampeon === champ.apiName ||
+            compo.campeonesEarly?.some(early => (typeof early === 'object' && early !== null ? early.apiNameCampeon : early) === champ.apiName) ||
+            (compo.condiciones || []).some(c => c.apiNameGrande === champ.apiName || c.ApiNamePequeno === champ.apiName);
+          if (matchChamp) {
+            matchCount++;
+            matchedFilters.push({ type: 'campeon', apiName: champ.apiName, icon: champ.icon || (champ.tileIcon ? getLocalTftImage(champ.tileIcon, 'champions/tileIcon') : null), name: champ.name });
+          }
+        });
+      }
+
+      if (selectedSalidasEarlySinergias.length > 0) {
+        const compoTraits = (compo.sinergias || []).map(s => s.apiName || s.apiNameSinergia).filter(Boolean);
+        selectedSalidasEarlySinergias.forEach(apiName => {
+          const matchSinergia = compoTraits.includes(apiName) || (compo.condiciones || []).some(c => c.apiNameGrande === apiName || c.ApiNamePequeno === apiName);
+          if (matchSinergia) {
+            matchCount++;
+            const traitObj = allTraits.find(t => t.apiName === apiName) || condicionesGrandeSinergias.find(t => t.apiName === apiName);
+            matchedFilters.push({ type: 'sinergia', apiName: apiName, icon: traitObj?.icon ? (traitObj.icon.includes("http") ? traitObj.icon.replace(".tex", ".png").toLowerCase() : getLocalTftImage(traitObj.icon, 'traits', versionNumber)) : null, name: traitObj?.name || apiName });
+          }
+        });
+      }
+
+      if (selectedSalidasEarlyItems.length > 0) {
+        selectedSalidasEarlyItems.forEach(item => {
+          const matchItem = 
+            compo.itemsPrio?.some(i => (typeof i === 'object' && i !== null ? i.apiName : i) === item.apiName) || 
+            compo.campeonMeta?.apiNameItemsDelCampeon?.includes(item.apiName) ||
+            compo.posicionamiento?.[0]?.tablero?.some(champ => champ.apiNameItemsDelCampeon?.includes(item.apiName)) ||
+            (compo.condiciones || []).some(c => c.apiNameGrande === item.apiName || c.ApiNamePequeno === item.apiName);
+          if (matchItem) {
+            matchCount++;
+            matchedFilters.push({ type: 'item', apiName: item.apiName, icon: item.icon, name: item.name });
+          }
+        });
+      }
+
+      if (selectedSalidasEarlyComponents.length > 0) {
+        selectedSalidasEarlyComponents.forEach(compId => {
+           let matched = false;
+           const checkItem = (apiName) => {
+              const dbItem = allItems.find(i => i.apiName === apiName);
+              if (dbItem?.composition && dbItem.composition.length > 0) {
+                if (dbItem.composition.includes(compId)) matched = true;
+              } else {
+                const normalizedApi = apiName.replace('DA_Component_', '').replace('DA_', '').replace('TFT_Item_', '');
+                if (compId.replace('DA_Component_', '').replace('DA_', '').replace('TFT_Item_', '') === normalizedApi) matched = true;
+              }
+           };
+           
+           (compo.itemsPrio || []).forEach(prioItem => {
+              const apiName = typeof prioItem === 'object' ? prioItem.apiName : prioItem;
+              checkItem(apiName);
+           });
+           (compo.campeonMeta?.apiNameItemsDelCampeon || []).forEach(apiName => checkItem(apiName));
+           (compo.posicionamiento?.[0]?.tablero || []).forEach(champ => {
+              (champ.apiNameItemsDelCampeon || []).forEach(apiName => checkItem(apiName));
+           });
+           (compo.condiciones || []).forEach(cond => {
+              const condType = (cond.condTypeGrande || cond.typeGrande || cond.condType || "").toLowerCase();
+              if (condType === 'item' && cond.apiNameGrande) checkItem(cond.apiNameGrande);
+           });
+
+           if (matched) {
+             matchCount++;
+             const compData = softItemsList.find(i => i.apiName === compId) || allItems.find(i => i.apiName === compId);
+             matchedFilters.push({ type: 'item', apiName: compId, icon: compData?.icon, name: compData?.name });
+           }
+        });
+      }
+
         matchedFilters = matchedFilters.map(mf => {
           let opStatus = null;
           const matchCond = (compo.condiciones || []).find(c => c.apiNameGrande === mf.apiName || c.ApiNamePequeno === mf.apiName);
@@ -678,7 +771,9 @@ console.log({selectedSoftItems})
         let missingOPM = null;
         if (compo.itemsPrio) {
           const opmItem = compo.itemsPrio.find(i => typeof i === 'object' && i.op === 'opm');
-          if (opmItem && !selectedItems.some(i => (typeof i === 'object' ? i.apiName : i) === opmItem.apiName)) {
+          if (opmItem && 
+              !selectedItems.some(i => (typeof i === 'object' ? i.apiName : i) === opmItem.apiName) && 
+              !selectedSalidasEarlyItems.some(i => (typeof i === 'object' ? i.apiName : i) === opmItem.apiName)) {
             const itemObj = allItems.find(i => i.apiName === opmItem.apiName);
             missingOPM = { type: 'item', apiName: opmItem.apiName, name: itemObj?.name || opmItem.apiName, icon: itemObj ? getLocalTftImage(itemObj.icon, 'items') : null };
           }
@@ -703,15 +798,18 @@ console.log({selectedSoftItems})
             let name = apiName;
             
             if (cType === 'campeon') {
-              isSelected = selectedChampions.some(c => (typeof c === 'object' ? c.apiName : c) === apiName);
+              isSelected = selectedChampions.some(c => (typeof c === 'object' ? c.apiName : c) === apiName) ||
+                           selectedSalidasEarlyChampions.some(c => (typeof c === 'object' ? c.apiName : c) === apiName);
               const champObj = allChampions.find(c => c.apiName === apiName);
               if (champObj) { name = champObj.name; icon = champObj.tileIcon ? getLocalTftImage(champObj.tileIcon, 'champions/tileIcon', versionNumber) : null; }
             } else if (cType === 'item') {
-              isSelected = selectedItems.some(i => (typeof i === 'object' ? i.apiName : i) === apiName);
+              isSelected = selectedItems.some(i => (typeof i === 'object' ? i.apiName : i) === apiName) ||
+                           selectedSalidasEarlyItems.some(i => (typeof i === 'object' ? i.apiName : i) === apiName);
               const itemObj = allItems.find(i => i.apiName === apiName);
               if (itemObj) { name = itemObj.name; icon = getLocalTftImage(itemObj.icon, 'items'); }
             } else if (cType === 'sinergia') {
-              isSelected = selectedSinergias.includes(apiName);
+              isSelected = selectedSinergias.includes(apiName) ||
+                           selectedSalidasEarlySinergias.includes(apiName);
               const tr = allTraits.find(t => t.apiName === apiName);
               if (tr) { name = getTraitDisplayName(tr); icon = tr.icon ? (tr.icon.includes("http") ? tr.icon.replace(".tex", ".png").toLowerCase() : getLocalTftImage(tr.icon, 'traits', versionNumber)) : null; }
             } else if (cType === 'aumento' || cType === 'aumentoespecifico' || cType === 'aumentoresaleatorio') {
@@ -731,6 +829,7 @@ console.log({selectedSoftItems})
   }, [
     filteredComposPrimary, selectedItems, selectedChampions, selectedExtras, selectedSinergias, 
     selectedAumentoResAleatorio, selectedAumentoEspecifico, selectedHardAugments, selectedSalidasEarly,
+    selectedSalidasEarlyChampions, selectedSalidasEarlySinergias, selectedSalidasEarlyItems, selectedSalidasEarlyComponents, softItemsList,
     condicionesGrandeSinergias, condicionesGrandeAumentoResAleatorio, condicionesGrandeAumentoEspecifico,
     allItems, allChampions, allAugments, allTraits, versionNumber
   ]);
@@ -930,215 +1029,6 @@ console.log({selectedSoftItems})
   }
 
   const FiltroHard2 = ()=>{
-    const ObjetosEspesificosCraftreables= ()=>{
-      console.log("Mini-filtro Basic Components apiNames:", softItemsList.map(i => i.apiName));
-      return (
-        <div className={style.filterInputGroup}>
-          <legend>Objetos Específicos Crafteables</legend>
-
-          {/* Mini filtro de componentes */}
-          <div className={style.filterButtonsContainerRow} >
-            {softItemsList.map(item => {
-              const isSelected = selectedCraftableComponents.includes(item.apiName);
-              return (
-                <button
-                  key={item.apiName}
-                  type="button"
-                  title={item.name}
-                  className={`${style.filterOptionBox} ${isSelected ? style.filterOptionBoxActive : ''}`}
-                  onClick={() => toggleArrayFilter(setSelectedCraftableComponents, item.apiName)}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: '6px',
-                    opacity: 1,
-                    cursor: 'pointer'
-                  }}
-                >
-                  {item.icon && <img src={item.icon} alt={item.name} style={{ minWidth: '35px', minHeight: '35px', width: '35px', height: '35px', objectFit: 'contain', borderRadius: '4px' }} />}
-                </button>
-              );
-            })}
-          </div>
-          
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '8px' }}>
-            {condicionesGrandeItems.length > 0 ? (
-              Object.entries({
-                'Emblemas': condicionesGrandeItemsGrouped.emblemas,
-                'Crafteables': condicionesGrandeItemsGrouped.crafteables,
-              }).map(([groupName, items]) => {
-                if (items.length === 0) return null;
-                return (
-                  <fieldset key={groupName} className={style.filterButtonsContainerRow}>
-                    <legend>{groupName}</legend>
-                    <div className={style.filterButtonsContainerRow} >
-                      {items.map(item => {
-                        const dbItem = allItems.find(i => i.apiName === item.apiName);
-                        const composition = dbItem?.composition || [];
-                        const hasSelectedComponent = selectedCraftableComponents.length === 0 || composition.length === 0 || selectedCraftableComponents.some(c => composition.includes(c));
-                        const matchedComponentsCount = selectedCraftableComponents.length > 0 ? composition.filter(c => selectedCraftableComponents.includes(c)).length : 0;
-                        const isItemSelected = selectedItems.some(i => i.apiName === item.apiName);
-                        
-                        return (
-                          <button
-                            key={item.apiName}
-                            type="button"
-                            title={item.name}
-                            className={`${style.filterOptionBox} ${isItemSelected ? style.filterOptionBoxActive : ''}`}
-                            onClick={() => toggleSelectedItem(item)}
-                            style={{ 
-                              display: 'flex', 
-                              flexDirection: 'column', 
-                              alignItems: 'center', 
-                              justifyContent: 'center', 
-                              padding: '6px', 
-                              gap: '4px',
-                              opacity: hasSelectedComponent ? 1 : 0.5,
-                              filter: hasSelectedComponent ? 'none' : 'grayscale(50%)',
-                            }}
-                          >
-                            {item.icon && (
-                              <div className={matchedComponentsCount === 2 && !isItemSelected ? style.spinningHighlight : style.spinningHighlightIdle} style={{ borderRadius: '4px' }}>
-                                <img src={item.icon} alt={item.name} style={{ minWidth: '60px', minHeight: '60px', width: '60px', height: '60px', objectFit: 'contain', borderRadius: '3px' }} />
-                              </div>
-                            )}
-                            {composition.length === 2 && (
-                              <div style={{ display: 'flex', gap: '4px' }}>
-                                {composition.map((compApi, i) => {
-                                  const compObj = softItemsList.find(x => x.apiName === compApi);
-                                  if (!compObj || !compObj.icon) return null;
-                                  const isCompSelected = selectedCraftableComponents.includes(compApi);
-                                  return (
-                                    <div key={i} className={isCompSelected && matchedComponentsCount < 2 ? style.spinningHighlight : style.spinningHighlightIdle} style={{ borderRadius: '3px' }}>
-                                      <img src={compObj.icon} alt={compObj.name} style={{ width: '22px', height: '22px', borderRadius: '2px', backgroundColor: 'rgba(0,0,0,0.5)' }} />
-                                    </div>
-                                  );
-                                })}
-                              </div>
-                            )}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </fieldset>
-                );
-              })
-            ) : (
-              <span style={{ color: '#ccc', fontStyle: 'italic', fontSize: '0.85rem' }}>No hay objetos de condición disponibles</span>
-            )}
-          </div>
-        </div>
-      )
-    }
-    const ObjetosEspesificosArtefactos= ()=>{
-      return (
-        <div className={style.filterInputGroup}>
-          <legend>Objetos Específicos</legend>
-          
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '8px' }}>
-            {condicionesGrandeItems.length > 0 ? (
-              Object.entries({
-                'Artefactos': condicionesGrandeItemsGrouped.artefactos,
-                'Radiantes': condicionesGrandeItemsGrouped.radiantes,
-                'Específicos / Soporte': condicionesGrandeItemsGrouped.especificos
-              }).map(([groupName, items]) => {
-                if (items.length === 0) return null;
-                return (
-                  <fieldset key={groupName} style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                    <legend>{groupName}</legend>
-                    <div className={style.filterButtonsContainerRow}>
-                      {items.map(item => (
-                        <button
-                          key={item.apiName}
-                          type="button"
-                          title={item.name}
-                          className={`${style.filterOptionBox} ${selectedItems.some(i => i.apiName === item.apiName) ? style.filterOptionBoxActive : ''}`}
-                          onClick={() => toggleSelectedItem(item)}
-                          style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '6px' }}
-                        >
-                          {item.icon && <img src={item.icon} alt={item.name} style={{ minWidth: '60px', minHeight: '60px', width: '60px', height: '60px', objectFit: 'contain', borderRadius: '3px' }} />}
-                        </button>
-                      ))}
-                    </div>
-                  </fieldset>
-                );
-              })
-            ) : (
-              <span style={{ color: '#ccc', fontStyle: 'italic', fontSize: '0.85rem' }}>No hay objetos de condición disponibles</span>
-            )}
-          </div>
-        </div>
-      )
-    }
-    const Campeones = ()=>{
-      const groups = {};
-      condicionesGrandeCampeones.forEach(champ => {
-        const dbChamp = allChampions.find(c => c.apiName === champ.apiName);
-        const c = dbChamp?.cost || dbChamp?.coste || 1;
-        if (!groups[c]) groups[c] = [];
-        groups[c].push({ ...champ, cost: c });
-      });
-      Object.keys(groups).forEach(cost => {
-        groups[cost].sort((a, b) => a.name.localeCompare(b.name));
-      });
-
-      return (
-        <div className={style.filterInputGroup}>
-          <label>Campeones</label>
-          {Object.keys(groups).length > 0 ? (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '8px' }}>
-              {Object.keys(groups).sort((a,b) => Number(a) - Number(b)).map(cost => (
-                <div key={cost} style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                  <span style={{ fontSize: '0.85rem', fontWeight: 'bold', color: '#bbb' }}>Coste {cost}</span>
-                  <div className={style.filterButtonsContainerRow}>
-                    {groups[cost].map(champ => (
-                      <button
-                        key={champ.apiName}
-                        type="button"
-                        className={`${style.filterOptionBox} ${selectedChampions.some(c => c.apiName === champ.apiName) ? style.filterOptionBoxActive : ''}`}
-                        onClick={() => toggleSelectedChampion(champ)}
-                        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '8px 10px', minWidth: '70px', gap: '6px' }}
-                      >
-                        {champ.icon && <img src={champ.icon} alt={champ.name} style={{ minWidth: '60px', minHeight: '60px', width: '60px', height: '60px', objectFit: 'contain', borderRadius: '4px', border: `2px solid var(--color-hex-cost-${champ.cost})`, boxSizing: 'border-box' }} />}
-                        <span style={{ fontSize: '0.78rem', textAlign: 'center', lineHeight: '1.1' }}>{champ.name}</span>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <span style={{ color: '#ccc', fontStyle: 'italic', fontSize: '0.85rem', marginTop: '8px' }}>No hay campeones de condición disponibles</span>
-          )}
-        </div>
-      )
-    }
-    const Sinergia = ()=>{
-      return (
-        <div className={style.filterInputGroup}>
-          <label>Sinergia</label>
-          <div className={style.filterButtonsContainerRow} >
-            {condicionesGrandeSinergias.length > 0 ? (
-              condicionesGrandeSinergias.map(sinergia => (
-                <button
-                  key={sinergia.apiName}
-                  type="button"
-                  className={`${style.filterOptionBox} ${selectedSinergias.includes(sinergia.apiName) ? style.filterOptionBoxActive : ''}`}
-                  onClick={() => toggleArrayFilter(setSelectedSinergias, sinergia.apiName)}
-                  style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '8px 10px', minWidth: '70px', gap: '6px' }}
-                >
-                  {sinergia.icon && <img src={sinergia.icon} alt={sinergia.name} style={{ minWidth: '60px', minHeight: '60px', width: '60px', height: '60px', objectFit: 'contain', borderRadius: '3px' }} />}
-                  <span style={{ fontSize: '0.78rem', textAlign: 'center', lineHeight: '1.1' }}>{getTraitDisplayName(sinergia)}</span>
-                </button>
-              ))
-            ) : (
-              <span style={{ color: '#ccc', fontStyle: 'italic', fontSize: '0.85rem' }}>No hay sinergias disponibles</span>
-            )}
-          </div>
-        </div>
-      )
-    }
     const SalidasEarly=()=>{
       const groupedGrupos = {
         'Win Streak': [],
@@ -1170,19 +1060,51 @@ console.log({selectedSoftItems})
           score += matchedChamps;
         }
 
-        if (selectedSalidasEarlyComponents.length > 0) {
+        if (selectedSalidasEarlySinergias.length > 0) {
+          let matchedTraits = 0;
+          selectedSalidasEarlySinergias.forEach(traitApiName => {
+            const isMatch = composUsingThisGroup.some(compo => 
+              (compo.condiciones || []).some(c => 
+                (c.condTypeGrande?.toLowerCase() === 'sinergia' || c.typeGrande?.toLowerCase() === 'sinergia' || c.condType?.toLowerCase() === 'sinergia') &&
+                (c.apiNameGrande === traitApiName || c.ApiNamePequeno === traitApiName)
+              ) || (compo.traits || []).some(t => t.name === traitApiName)
+            );
+            if (isMatch) matchedTraits++;
+          });
+          score += matchedTraits;
+        }
+
+        if (selectedSalidasEarlyComponents.length > 0 || selectedSalidasEarlyItems.length > 0) {
           const uniqueCraftedItems = new Set();
           composUsingThisGroup.forEach(c => {
+            const checkItem = (apiName) => {
+              if (selectedSalidasEarlyComponents.length > 0) {
+                const dbItem = allItems.find(i => i.apiName === apiName);
+                if (dbItem?.composition && dbItem.composition.length > 0) {
+                  if (dbItem.composition.every(comp => selectedSalidasEarlyComponents.includes(comp))) {
+                    uniqueCraftedItems.add(apiName);
+                  }
+                } else {
+                  const normalizedApi = apiName.replace('DA_Component_', '').replace('DA_', '').replace('TFT_Item_', '');
+                  if (selectedSalidasEarlyComponents.some(comp => comp.replace('DA_Component_', '').replace('DA_', '').replace('TFT_Item_', '') === normalizedApi)) {
+                    uniqueCraftedItems.add(apiName);
+                  }
+                }
+              }
+              if (selectedSalidasEarlyItems.length > 0) {
+                if (selectedSalidasEarlyItems.some(i => i.apiName === apiName)) {
+                  uniqueCraftedItems.add(apiName);
+                }
+              }
+            };
             (c.itemsPrio || []).forEach(prioItem => {
               const apiName = typeof prioItem === 'object' ? prioItem.apiName : prioItem;
-              const dbItem = allItems.find(i => i.apiName === apiName);
-              if (dbItem?.composition && dbItem.composition.length > 0) {
-                const canBeCrafted = dbItem.composition.every(comp => selectedSalidasEarlyComponents.includes(comp));
-                if (canBeCrafted) uniqueCraftedItems.add(apiName);
-              } else {
-                const normalizedApi = apiName.replace('DA_Component_', '').replace('DA_', '').replace('TFT_Item_', '');
-                const isSelected = selectedSalidasEarlyComponents.some(comp => comp.replace('DA_Component_', '').replace('DA_', '').replace('TFT_Item_', '') === normalizedApi);
-                if (isSelected) uniqueCraftedItems.add(apiName);
+              checkItem(apiName);
+            });
+            (c.condiciones || []).forEach(cond => {
+              const condType = (cond.condTypeGrande || cond.typeGrande || cond.condType || "").toLowerCase();
+              if (condType === 'item' && cond.apiNameGrande) {
+                checkItem(cond.apiNameGrande);
               }
             });
           });
@@ -1229,9 +1151,9 @@ console.log({selectedSoftItems})
         <div className={style.filterInputGroup}>
           <legend>Salidas Early</legend>
           
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '8px', marginBottom: '16px' }}>
+          <div style={{ display: 'flex', flexDirection: 'row', gap: '5px', marginTop: '8px', marginBottom: '5px' }}>
             {champsList.length > 0 && (
-              <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '16px', alignItems: 'stretch' }}>
+              <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '5px', alignItems: 'stretch' }}>
                 {Object.keys(groupedChamps).sort((a,b) => Number(a) - Number(b)).map((cost, idx) => {
                   let title = `Coste ${cost}`;
                   if (String(cost) === '2') title = 'coste 2';
@@ -1239,16 +1161,10 @@ console.log({selectedSoftItems})
                   if (String(cost) === '4') title = 'orbe dorado';
 
                   return (
-                    <React.Fragment key={cost}>
-                      {idx > 0 && <div style={{ width: '2px', background: 'rgba(255,255,255,0.1)', borderRadius: '1px' }}></div>}
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                      <div key={cost} style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                        <fieldset style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                          <legend style={{ fontSize: '0.75rem' }}>Sinergias</legend>
                           <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.15)' }}></div>
-                          <span style={{ padding: '0 10px', fontSize: '0.85rem', fontWeight: 'bold', color: '#bbb', textTransform: 'capitalize', textAlign: 'center', whiteSpace: 'nowrap' }}>
-                            {title}
-                          </span>
-                          <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.15)' }}></div>
-                        </div>
                         <div className={style.filterButtonsContainerRow}>
                           {groupedChamps[cost].map(champ => (
                             <button
@@ -1263,42 +1179,131 @@ console.log({selectedSoftItems})
                             </button>
                           ))}
                         </div>
+                        </fieldset>
                       </div>
-                    </React.Fragment>
                   );
                 })}
               </div>
             )}
+            {condicionesGrandeSinergias && condicionesGrandeSinergias.length > 0 && (
+              <fieldset style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <legend style={{ fontSize: '0.75rem' }}>Sinergias</legend>
+                <div className={style.filterButtonsContainerRow}>
+                  {condicionesGrandeSinergias.map(sinergia => (
+                    <button
+                      key={sinergia.apiName}
+                      type="button"
+                      title={sinergia.name}
+                      className={`${style.filterOptionBox} ${selectedSalidasEarlySinergias.includes(sinergia.apiName) ? style.filterOptionBoxActive : ''}`}
+                      onClick={() => toggleArrayFilter(setSelectedSalidasEarlySinergias, sinergia.apiName)}
+                      style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '6px' }}
+                    >
+                      {sinergia.icon && <img src={sinergia.icon} alt={sinergia.name} style={{ minWidth: '35px', minHeight: '35px', width: '35px', height: '35px', objectFit: 'contain', borderRadius: '3px' }} />}
+                    </button>
+                  ))}
+                </div>
+              </fieldset>
+            )}
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            {/* Minifiltro de Componentes en Salidas Early */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginBottom: '8px' }}>
-              <span style={{ fontSize: '0.85rem', fontWeight: 'bold', color: '#bbb' }}>Componentes Crafteables (filtra qué armar)</span>
-              <div className={style.filterButtonsContainerRow} >
-                {softItemsList.map(item => {
-                  const isSelected = selectedSalidasEarlyComponents.includes(item.apiName);
-                  return (
-                    <button
-                      key={item.apiName}
-                      type="button"
-                      title={item.name}
-                      className={`${style.filterOptionBox} ${isSelected ? style.filterOptionBoxActive : ''}`}
-                      onClick={() => toggleArrayFilter(setSelectedSalidasEarlyComponents, item.apiName)}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        padding: '6px',
-                        opacity: 1,
-                        cursor: 'pointer'
-                      }}
-                    >
-                      {item.icon && <img src={item.icon} alt={item.name} style={{ minWidth: '35px', minHeight: '35px', width: '35px', height: '35px', objectFit: 'contain', borderRadius: '4px' }} />}
-                    </button>
-                  );
-                })}
+            <div style={{ display: 'flex', flexDirection: 'row', gap: '5px', marginBottom: '8px' }}>
+              {/* Minifiltro de Componentes en Salidas Early */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <fieldset  style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <legend style={{ fontSize: '0.75rem' }}>{'Componentes Crafteables'}</legend>
+                <div className={style.filterButtonsContainerRow} >
+                  {softItemsList.map(item => {
+                    const isSelected = selectedSalidasEarlyComponents.includes(item.apiName);
+                    return (
+                      <button
+                        key={item.apiName}
+                        type="button"
+                        title={item.name}
+                        className={`${style.filterOptionBox} ${isSelected ? style.filterOptionBoxActive : ''}`}
+                        onClick={() => toggleArrayFilter(setSelectedSalidasEarlyComponents, item.apiName)}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          padding: '6px',
+                          opacity: 1,
+                          cursor: 'pointer'
+                        }}
+                      >
+                        {item.icon && <img src={item.icon} alt={item.name} style={{ minWidth: '35px', minHeight: '35px', width: '35px', height: '35px', objectFit: 'contain', borderRadius: '4px' }} />}
+                      </button>
+                    );
+                  })}
+                </div>
+                </fieldset>
               </div>
+
+              {/* Minifiltro de Objetos Específicos y Sinergias en Salidas Early */}
+              {(condicionesGrandeItems.length > 0 || (condicionesGrandeSinergias && condicionesGrandeSinergias.length > 0)) && (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '5px' }}>
+                    {Object.entries({
+                      'Emblemas': condicionesGrandeItemsGrouped.emblemas,
+                      'Artefactos': condicionesGrandeItemsGrouped.artefactos,
+                      'Radiantes': condicionesGrandeItemsGrouped.radiantes,
+                      'Específicos / Soporte': condicionesGrandeItemsGrouped.especificos
+                    }).map(([groupName, items]) => {
+                      if (!items || items.length === 0) return null;
+                      return (
+                        <fieldset key={groupName} style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                          <legend style={{ fontSize: '0.75rem' }}>{groupName}</legend>
+                          <div className={style.filterButtonsContainerRow}>
+                            {items.map(item => {
+                              const isSelected = selectedSalidasEarlyItems.some(i => i.apiName === item.apiName);
+                              const fullItem = allItems.find(i => i.apiName === item.apiName) || item;
+                              const hasComposition = fullItem.composition && fullItem.composition.length > 0;
+                              const matchedCount = hasComposition ? fullItem.composition.filter(c => selectedSalidasEarlyComponents.includes(c) || selectedSalidasEarlyComponents.some(sc => sc.replace('DA_Component_', '').replace('DA_', '').replace('TFT_Item_', '') === c.replace('DA_Component_', '').replace('DA_', '').replace('TFT_Item_', ''))).length : 0;
+                              return (
+                                <button
+                                  key={item.apiName}
+                                  type="button"
+                                  title={item.name}
+                                  className={`${style.filterOptionBox} ${isSelected ? style.filterOptionBoxActive : ''}`}
+                                  onClick={() => toggleArrayFilter(setSelectedSalidasEarlyItems, item)}
+                                  style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '6px', gap: '4px' }}
+                                >
+                                  {item.icon && (
+                                    <div className={matchedCount === 2 && !isSelected ? style.spinningHighlight : style.spinningHighlightIdle} style={{ borderRadius: '4px' }}>
+                                      <img src={item.icon} alt={item.name} style={{ minWidth: '35px', minHeight: '35px', width: '35px', height: '35px', objectFit: 'contain', borderRadius: '3px' }} />
+                                    </div>
+                                  )}
+                                  {hasComposition && (
+                                    <div style={{ display: 'flex', gap: '2px' }}>
+                                      {fullItem.composition.map((compId, idx) => {
+                                        const compData = softItemsList.find(i => i.apiName === compId) || allItems.find(i => i.apiName === compId);
+                                        const normalizedCompId = compId.replace('DA_Component_', '').replace('DA_', '').replace('TFT_Item_', '');
+                                        const isCompSelected = selectedSalidasEarlyComponents.includes(compId) || 
+                                          selectedSalidasEarlyComponents.some(c => c.replace('DA_Component_', '').replace('DA_', '').replace('TFT_Item_', '') === normalizedCompId);
+                                        
+                                        return compData && compData.icon ? (
+                                          <div key={`${compId}-${idx}`} className={isCompSelected && matchedCount < 2 ? style.spinningHighlight : style.spinningHighlightIdle} style={{ borderRadius: '3px' }}>
+                                            <img 
+                                              src={compData.icon} 
+                                              alt={compData.name} 
+                                              title={compData.name}
+                                              style={{ width: '16px', height: '16px', objectFit: 'contain', borderRadius: '2px', display: 'block', backgroundColor: 'rgba(0,0,0,0.5)' }} 
+                                            />
+                                          </div>
+                                        ) : null;
+                                      })}
+                                    </div>
+                                  )}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </fieldset>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
             </div>
 
             {availableGruposSalidasEarly.length > 0 ? (
@@ -1310,43 +1315,90 @@ console.log({selectedSoftItems})
                     <div className={style.filterButtonsContainerRow} >
                       {grupos.map(grupo => {
                         const isSelected = selectedSalidasEarly.includes(grupo.id);
-                        const hasSelectedChampion = selectedSalidasEarlyChampions.length === 0 || filteredComposPrimary.some(compo => {
-                          if (!compo.salidasEarly || !compo.salidasEarly.map(String).includes(String(grupo.id))) return false;
-                          return selectedSalidasEarlyChampions.some(champ => 
-                            (compo.condiciones || []).some(c => c.apiNameGrande === champ.apiName || c.ApiNamePequeno === champ.apiName)
-                          );
-                        });
+                        const composUsingThisGroup = filteredComposPrimary.filter(c => c.salidasEarly?.map(String).includes(String(grupo.id)));
 
-                        const craftedItemsForGroup = [];
-                        if (selectedSalidasEarlyComponents.length > 0) {
-                          const composUsingThisGroup = filteredComposPrimary.filter(c => c.salidasEarly?.map(String).includes(String(grupo.id)));
-                          const uniqueCraftedItems = new Set();
-                          composUsingThisGroup.forEach(c => {
-                            (c.itemsPrio || []).forEach(prioItem => {
-                              const apiName = typeof prioItem === 'object' ? prioItem.apiName : prioItem;
-                              const dbItem = allItems.find(i => i.apiName === apiName);
-                              if (dbItem?.composition && dbItem.composition.length > 0) {
-                                const canBeCrafted = dbItem.composition.every(comp => selectedSalidasEarlyComponents.includes(comp));
-                                if (canBeCrafted) uniqueCraftedItems.add(apiName);
-                              } else {
-                                const normalizedApi = apiName.replace('DA_Component_', '').replace('DA_', '').replace('TFT_Item_', '');
-                                const isSelected = selectedSalidasEarlyComponents.some(comp => comp.replace('DA_Component_', '').replace('DA_', '').replace('TFT_Item_', '') === normalizedApi);
-                                if (isSelected) {
-                                  uniqueCraftedItems.add(apiName);
-                                }
-                              }
-                            });
-                          });
-                          uniqueCraftedItems.forEach(apiName => {
-                             const dbItem = allItems.find(i => i.apiName === apiName);
-                             if (dbItem) craftedItemsForGroup.push(dbItem);
+                        let matchesChampion = false;
+                        const matchedChampionsForGroup = [];
+                        if (selectedSalidasEarlyChampions.length > 0) {
+                          selectedSalidasEarlyChampions.forEach(champ => {
+                            const isMatch = composUsingThisGroup.some(compo => 
+                              (compo.condiciones || []).some(c => c.apiNameGrande === champ.apiName || c.ApiNamePequeno === champ.apiName)
+                            );
+                            if (isMatch) {
+                              matchesChampion = true;
+                              matchedChampionsForGroup.push(champ);
+                            }
                           });
                         }
 
-                        // Si hay componentes seleccionados, podemos atenuar (opacity) los grupos que NO arman ningún objeto, o dejarlos visibles
-                        // Para no romper la visibilidad actual, combinaremos ambas lógicas:
-                        const hasCraftedItems = selectedSalidasEarlyComponents.length === 0 || craftedItemsForGroup.length > 0;
-                        const isVisibleByFilters = hasSelectedChampion && hasCraftedItems;
+                        const uniqueCraftedItems = new Set();
+                        if (selectedSalidasEarlyComponents.length > 0 || selectedSalidasEarlyItems.length > 0) {
+                          composUsingThisGroup.forEach(c => {
+                            const checkItem = (apiName) => {
+                              let addedByComponent = false;
+                              if (selectedSalidasEarlyComponents.length > 0) {
+                                const dbItem = allItems.find(i => i.apiName === apiName);
+                                if (dbItem?.composition && dbItem.composition.length > 0) {
+                                  if (dbItem.composition.every(comp => selectedSalidasEarlyComponents.includes(comp))) {
+                                    addedByComponent = true;
+                                  }
+                                } else {
+                                  const normalizedApi = apiName.replace('DA_Component_', '').replace('DA_', '').replace('TFT_Item_', '');
+                                  if (selectedSalidasEarlyComponents.some(comp => comp.replace('DA_Component_', '').replace('DA_', '').replace('TFT_Item_', '') === normalizedApi)) {
+                                    addedByComponent = true;
+                                  }
+                                }
+                              }
+
+                              let addedBySpecificItem = false;
+                              if (selectedSalidasEarlyItems.length > 0) {
+                                if (selectedSalidasEarlyItems.some(i => i.apiName === apiName)) {
+                                  addedBySpecificItem = true;
+                                }
+                              }
+
+                              if (addedByComponent || addedBySpecificItem) {
+                                uniqueCraftedItems.add(apiName);
+                              }
+                            };
+
+                            (c.itemsPrio || []).forEach(prioItem => {
+                              const apiName = typeof prioItem === 'object' ? prioItem.apiName : prioItem;
+                              checkItem(apiName);
+                            });
+
+                            (c.condiciones || []).forEach(cond => {
+                              const condType = (cond.condTypeGrande || cond.typeGrande || cond.condType || "").toLowerCase();
+                              if (condType === 'item' && cond.apiNameGrande) {
+                                checkItem(cond.apiNameGrande);
+                              }
+                            });
+                          });
+                        }
+
+                        const craftedItemsForGroup = Array.from(uniqueCraftedItems).map(apiName => allItems.find(i => i.apiName === apiName)).filter(Boolean);
+
+                        let matchesSinergia = false;
+                        const matchedSinergiasForGroup = [];
+                        if (selectedSalidasEarlySinergias.length > 0) {
+                          selectedSalidasEarlySinergias.forEach(traitApiName => {
+                            const isMatch = composUsingThisGroup.some(compo => 
+                              (compo.condiciones || []).some(c => 
+                                (c.condTypeGrande?.toLowerCase() === 'sinergia' || c.typeGrande?.toLowerCase() === 'sinergia' || c.condType?.toLowerCase() === 'sinergia') &&
+                                (c.apiNameGrande === traitApiName || c.ApiNamePequeno === traitApiName)
+                              ) || (compo.traits || []).some(t => t.name === traitApiName)
+                            );
+                            if (isMatch) {
+                              matchesSinergia = true;
+                              const tr = allTraits.find(t => t.apiName === traitApiName);
+                              if (tr) matchedSinergiasForGroup.push(tr);
+                            }
+                          });
+                        }
+
+                        const isFiltersActive = selectedSalidasEarlyChampions.length > 0 || selectedSalidasEarlyComponents.length > 0 || selectedSalidasEarlyItems.length > 0 || selectedSalidasEarlySinergias.length > 0;
+                        const hasCraftedItems = craftedItemsForGroup.length > 0;
+                        const isVisibleByFilters = !isFiltersActive || matchesChampion || hasCraftedItems || matchesSinergia;
 
                         return (
                           <button
@@ -1371,7 +1423,7 @@ console.log({selectedSoftItems})
                                     {grupo.nombre}
                                   </span>
                                 )}
-                                <ActiveTraitsDisplay championApiNames={grupo.campeones} versionNumber={versionNumber} />
+                                {/* <ActiveTraitsDisplay championApiNames={grupo.campeones} versionNumber={versionNumber} /> */}
                                 <div style={{ display: 'flex', gap: '5px' }}>
                                   {grupo.campeones.map(apiName => {
                                     const champ = allChampions.find(c => c.apiName === apiName);
@@ -1397,8 +1449,26 @@ console.log({selectedSoftItems})
                                     );
                                   })}
                                 </div>
-                                {craftedItemsForGroup.length > 0 && (
+                                {(craftedItemsForGroup.length > 0 || matchedChampionsForGroup.length > 0 || matchedSinergiasForGroup.length > 0) && (
                                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '6px', padding: '4px', background: 'rgba(0,0,0,0.3)', borderRadius: '4px' }}>
+                                    {matchedSinergiasForGroup.map(trait => (
+                                      <img 
+                                        key={trait.apiName}
+                                        src={trait.icon?.includes("http") ? trait.icon.replace(".tex", ".png").toLowerCase() : getLocalTftImage(trait.icon, 'traits', versionNumber)} 
+                                        alt={trait.name} 
+                                        title={trait.name}
+                                        style={{ width: '40px', height: '40px', borderRadius: '4px', objectFit: 'contain', backgroundColor: 'rgba(0,0,0,0.5)', border: '1px solid #444', boxSizing: 'border-box' }} 
+                                      />
+                                    ))}
+                                    {matchedChampionsForGroup.map(champ => (
+                                      <img 
+                                        key={champ.apiName}
+                                        src={champ.icon || getLocalTftImage(champ.tileIcon, 'champions/tileIcon')} 
+                                        alt={champ.name} 
+                                        title={champ.name}
+                                        style={{ width: '40px', height: '40px', borderRadius: '4px', objectFit: 'contain', border: champ.cost ? `2px solid var(--color-hex-cost-${champ.cost})` : '2px solid transparent', boxSizing: 'border-box' }} 
+                                      />
+                                    ))}
                                     {craftedItemsForGroup.map(item => (
                                       <img 
                                         key={item.apiName}
@@ -1436,91 +1506,11 @@ console.log({selectedSoftItems})
         {/*  Salidas Early */}
         {SalidasEarly()}
 
-        {/*  Objetos Específicos */}
-        {ObjetosEspesificosCraftreables()}
-
-        {/*  Objetos Específicos */}
-        {ObjetosEspesificosArtefactos()}
-
-        {/* Campeones */}
-        {/* {Campeones()} */}
-
-        {/*  Sinergia */}
-        {Sinergia()}
-
       </div>
     </fieldset>
     )
   }
 
-  const FiltroSoft = ()=>{
-    return(
-    <fieldset className={`${style.filtersSection} ${style.filtersSectionSoft}`}>
-      <legend>Filtro Soft (Highlights de cosas que te pueden salir)</legend>
-      
-      <div className={style.filterInputGroup}>
-        <label>Objetos</label>
-        <div className={style.filterButtonsContainerRow} >
-          {softItemsList.map(item => {
-            const isAvailable = availableSoftItemApiNames.has(item.apiName);
-            const isSelected = selectedSoftItems.some(i => (typeof i === 'object' ? i.apiName : i) === item.apiName);
-            return (
-              <button
-                key={item.apiName}
-                type="button"
-                title={item.name}
-                disabled={!isAvailable}
-                className={`${style.filterOptionBox} ${isSelected ? style.filterOptionBoxActive : ''}`}
-                onClick={() => isAvailable && toggleSoftItem(item)}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  padding: '6px',
-                  opacity: isAvailable ? 1 : 0.25,
-                  filter: isAvailable ? 'none' : 'grayscale(100%)',
-                  cursor: isAvailable ? 'pointer' : 'not-allowed'
-                }}
-              >
-                {item.icon && <img src={item.icon} alt={item.name} style={{ minWidth: '60px', minHeight: '60px', width: '60px', height: '60px', objectFit: 'contain', borderRadius: '4px' }} />}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
-      <div className={style.filterInputGroup} style={{ marginTop: '16px' }}>
-        <label>Campeones (Early)</label>
-        {Object.keys(softChampionsByCost).length > 0 ? (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginTop: '8px' }}>
-            {Object.keys(softChampionsByCost).sort((a,b) => Number(a) - Number(b)).map(cost => (
-              <div key={cost} style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                <span style={{ fontSize: '0.85rem', fontWeight: 'bold', color: '#bbb' }}>Coste {cost}</span>
-                <div className={style.filterButtonsContainerRow}>
-                  {softChampionsByCost[cost].map(champ => (
-                    <button
-                      key={champ.apiName}
-                      type="button"
-                      title={champ.name}
-                      className={`${style.filterOptionBox} ${selectedSoftChampions.some(c => (typeof c === 'object' ? c.apiName : c) === champ.apiName) ? style.filterOptionBoxActive : ''}`}
-                      onClick={() => toggleSoftChampion(champ)}
-                      style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '8px 10px', minWidth: '70px', gap: '6px' }}
-                    >
-                      {champ.icon && <img src={champ.icon} alt={champ.name} style={{ minWidth: '60px', minHeight: '60px', width: '60px', height: '60px', objectFit: 'contain', borderRadius: '4px', border: `2px solid var(--color-hex-cost-${champ.cost || cost})`, boxSizing: 'border-box' }} />}
-                      <span style={{ fontSize: '0.78rem', textAlign: 'center', lineHeight: '1.1' }}>{champ.name}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <span style={{ color: '#ccc', fontStyle: 'italic', fontSize: '0.85rem' }}>No hay campeones early disponibles</span>
-        )}
-      </div>
-    </fieldset>
-    )
-  }
 
   const FiltroAumentos = () => {
     return (
@@ -1528,10 +1518,8 @@ console.log({selectedSoftItems})
         <legend>Filtro de Aumentos</legend>
         
         <div className={style.filterInputGroup}>
-          <label>Categorías de aumentos:</label>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '8px', marginBottom: '15px' }}>
             <div className={style.filterButtonsContainerRow} >
-              <span style={{ fontSize: '0.85rem', fontWeight: 'bold', marginRight: '5px' }}>Tiers:</span>
               {['Plata', 'Oro', 'Prismatico'].map(tier => (
                 <button
                   key={tier}
@@ -1544,7 +1532,7 @@ console.log({selectedSoftItems})
               ))}
             </div>
 
-            <div className={style.filterButtonsContainerRow}>
+            {/* <div className={style.filterButtonsContainerRow}>
               <span style={{ fontSize: '0.85rem', fontWeight: 'bold', marginRight: '5px' }}>Pequeñas:</span>
               {CATEGORIAS_PEQUENAS.map(cat => (
                 <button
@@ -1556,7 +1544,7 @@ console.log({selectedSoftItems})
                   {cat}
                 </button>
               ))}
-            </div>
+            </div> */}
           </div>
         <div style={{ marginTop: '20px', display: 'grid', gridTemplateRows: 'repeat(auto-fit, 1fr)', gap: '20px' }}>
           {['Plata', 'Oro', 'Prismatico', 'Otros'].map(tierName => {
@@ -1583,7 +1571,7 @@ console.log({selectedSoftItems})
             
             if (augsInTier.length === 0) return null;
 
-            augsInTier.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
+            augsInTier.sort((a, b) => (b.appearCount || 0) - (a.appearCount || 0) || (a.name || "").localeCompare(b.name || ""));
 
             const tierColor = tierName === 'Oro' ? '#ffcc00' : tierName === 'Plata' ? '#ccc' : tierName === 'Prismatico' ? '#ff4d4d' : '#888';
 
@@ -1790,7 +1778,7 @@ console.log({selectedSoftItems})
                     </div>
                     <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.1)' }}></div>
                   </div>
-                <CardsMasterPlanCompos compo={compo} activateMissingOPM={activateMissingOPM} filtroSoft={{selectedSoftItems,selectedSoftChampions,selectedSoftTraits,selectedSoftAugments}} gruposSalidasEarly={gruposSalidasEarly} />
+                <CardsMasterPlanCompos compo={compo} activateMissingOPM={activateMissingOPM} filtroSoft={{selectedSoftItems,selectedSoftChampions,selectedSoftTraits,selectedSoftAugments}} gruposSalidasEarly={gruposSalidasEarly} selectedAugmentTiers={selectedAugmentTiers} />
               </div>
             ))
           ) : (

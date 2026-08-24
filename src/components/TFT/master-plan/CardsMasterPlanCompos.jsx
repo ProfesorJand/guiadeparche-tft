@@ -3,20 +3,21 @@ import style from "./css/CardsMasterPlanCompos.module.css"
 import { useStore } from "@nanostores/react";
 import Tooltip from "@components/tooltips";
 
-import { dataTFTAllItems, dataTFTChampions, dataTFTAllAugments, dataTFTTraits, versionTFT, setNumberLatest, setNumberPBE } from "@stores/dataTFT";
+import { dataTFTAllItems, dataTFTChampions, dataTFTAllAugments, dataTFTTraits, versionTFT, setNumberLatest, setNumberPBE, dataDBTFTAumentos } from "@stores/dataTFT";
 import { getLocalTftImage } from "@utils/images";
 import { getTraitDisplayName } from "@components/main/Admin/TraitsList";
 import ImgAugment from "@components/TFT/ImgAugment";
 import ImgItem from "@components/TFT/ImgItem";
 import ImgCampeon from "@components/TFT/ImgCampeon";
 
-const CardsMasterPlanCompos = ({compo, activateMissingOPM, filtroSoft={}, gruposSalidasEarly=[]})=>{
+const CardsMasterPlanCompos = ({compo, activateMissingOPM, filtroSoft={}, gruposSalidasEarly=[], selectedAugmentTiers=[]})=>{
   const allItemsTFT = useStore(dataTFTAllItems);
   const allChampionsTFT = useStore(dataTFTChampions);
   const allAugmentsTFT = useStore(dataTFTAllAugments);
   const allTraitsTFT = useStore(dataTFTTraits);
   const currentVersion = useStore(versionTFT);
   const versionNumber = currentVersion === "latest" ? setNumberLatest : setNumberPBE;
+  const dbAumentos = useStore(dataDBTFTAumentos) || {};
 
   const renderCondicionElement = (apiName, isGrande) => {
     if (!apiName) return null;
@@ -201,12 +202,12 @@ const CardsMasterPlanCompos = ({compo, activateMissingOPM, filtroSoft={}, grupos
             <div className={style.containerItemsPrio}>
               {compo.itemsPrio.map((itemEntry, index)=>{
                 const nombreItem = typeof itemEntry === 'object' && itemEntry !== null ? itemEntry.apiName : itemEntry;
-                const isOp = typeof itemEntry === 'object' && itemEntry !== null ? !!itemEntry.op : false;
+                const opStatus = typeof itemEntry === 'object' && itemEntry !== null ? itemEntry.op : false;
                 if (!nombreItem) return null;
                 return (
                   <div key={index} className={`${style.containerItemPrio} ${style.highlightable} ${isItemHighlighted(nombreItem) ? style.highlight : ""}`}>
                     <ImgItem item={allItemsTFT.find(x => x.apiName === nombreItem)}/>
-                    {isOp && <span className={style.opText}>OP</span>}
+                    {opStatus && <span className={opStatus === 'opm' ? style.opmText || style.opText : style.opText}>{opStatus === 'opm' ? 'OPM' : 'OP'}</span>}
                   </div>
                 )
               })}
@@ -283,7 +284,7 @@ const CardsMasterPlanCompos = ({compo, activateMissingOPM, filtroSoft={}, grupos
                     <div className={style.containerCuadroCondicionPequeno}>
                       {renderCondicionElement(condicionPequeno, false)}
                     </div>
-                    {condicion.op && <span className={style.opText}>OP</span>}
+                    {condicion.op && <span className={condicion.op === 'opm' ? style.opmText || style.opText : style.opText}>{condicion.op === 'opm' ? 'OPM' : 'OP'}</span>}
                   </div>
                 );
             }
@@ -291,10 +292,22 @@ const CardsMasterPlanCompos = ({compo, activateMissingOPM, filtroSoft={}, grupos
           </div>
         </div>
         <div className={`${style.initialAumentos} ${style.borderContainer}`}>
-          <span className={style.titleMiniInfoCard}>Aumentos</span>
+          <span className={style.titleMiniInfoCard}>Aumentos 2-1</span>
           <div className={style.containerAumentos}>
             {compo.aumentos
               .filter(aumento => aumento.op || aumento.early)
+              .filter(aumento => {
+                if (!selectedAugmentTiers || selectedAugmentTiers.length === 0) return true;
+                const augmentApi = aumento.apiNameGrande || aumento.apiNamePequeno;
+                if (!augmentApi) return false;
+                const dbAugData = dbAumentos[augmentApi];
+                if (!dbAugData) return false;
+                const augTier = (dbAugData.categoria_tier || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                return selectedAugmentTiers.some(tier => {
+                  if (tier === 'Otros') return augTier !== 'plata' && augTier !== 'oro' && augTier !== 'prismatico';
+                  return augTier === tier.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                });
+              })
               .sort((a, b) => (b.op ? 1 : 0) - (a.op ? 1 : 0))
               .slice(0, 4)
               .map((aumento, index) => {
@@ -316,9 +329,21 @@ const CardsMasterPlanCompos = ({compo, activateMissingOPM, filtroSoft={}, grupos
               }
               return (
                 <div key={`aumento-${index}`} className={style.containerCuadrosAumentos}>
-                  {aumento.apiNameGrande && busquedaGrande && <img className={style.imgAumentoCuadroGrande} src={busquedaGrande} alt="item aumento cuadro grande"/>}
-                  {aumento.apiNamePequeno && busquedaPequeno && <img className={style.imgAumentoCuadroPequeno} src={busquedaPequeno} alt="item aumento cuadro pequeño"/>}
-                  {aumento.op && <span className={style.opText}>OP</span>}
+                  {aumento.apiNameGrande && busquedaGrande && (
+                    allAugmentsTFT.some(x => x.apiName === aumento.apiNameGrande) ? (
+                      <ImgAugment augment={allAugmentsTFT.find(x => x.apiName === aumento.apiNameGrande)} className={style.imgAumentoCuadroGrande} />
+                    ) : (
+                      <img className={style.imgAumentoCuadroGrande} src={busquedaGrande} alt="item aumento cuadro grande"/>
+                    )
+                  )}
+                  {aumento.apiNamePequeno && busquedaPequeno && (
+                    allAugmentsTFT.some(x => x.apiName === aumento.apiNamePequeno) ? (
+                      <ImgAugment augment={allAugmentsTFT.find(x => x.apiName === aumento.apiNamePequeno)} className={style.imgAumentoCuadroPequeno} />
+                    ) : (
+                      <img className={style.imgAumentoCuadroPequeno} src={busquedaPequeno} alt="item aumento cuadro pequeño"/>
+                    )
+                  )}
+                  {aumento.op && <span className={aumento.op === 'opm' ? style.opmText || style.opText : style.opText}>{aumento.op === 'opm' ? 'OPM' : 'OP'}</span>}
                 </div>
               )
             })}

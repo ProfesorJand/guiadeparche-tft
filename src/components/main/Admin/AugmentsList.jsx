@@ -16,12 +16,15 @@ const AugmentsList = ({ onSelectAugment, showName= false }) => {
         e.dataTransfer.setData("aumento", JSON.stringify(augment));
     };
 
-    const filteredAugments = allAugments?.filter(aug => {
+    const baseAugments = currentVersion === "pbe" 
+        ? allAugments?.filter(a => a.apiName && a.apiName.includes("DA_"))
+        : allAugments;
+
+    const filteredAugments = baseAugments?.filter(aug => {
         if (!aug || !aug.name) return false;
         const s = search.toLowerCase();
         return aug.name.toLowerCase().includes(s) || aug.apiName.toLowerCase().includes(s);
     }) || [];
-    console.log({filteredAugments})
 
     return (
         <div className={style.containerAugmentsMain}>
