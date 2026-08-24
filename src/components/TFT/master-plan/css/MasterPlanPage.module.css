@@ -370,7 +370,6 @@
   flex-wrap: wrap;
   position:relative;
   gap:10px;
-  height: 800px;
   box-sizing: border-box;
   border: 2px solid var(--border-purple-color);
   padding: 5px;
