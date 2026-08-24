@@ -350,16 +350,19 @@ console.log({selectedSoftItems})
     filteredComposPrimary.forEach(compo => {
       const seenInThisComp = new Set();
       
-      const addAugment = (apiNameGrande, apiNamePequeno) => {
+      const addAugment = (apiNameGrande, apiNamePequeno, isOp, isOpm) => {
         if (apiNameGrande && !seenInThisComp.has(apiNameGrande)) {
           seenInThisComp.add(apiNameGrande);
           if (!map.has(apiNameGrande)) {
             const augObj = allAugments.find(a => a.apiName === apiNameGrande);
             if (augObj) {
-              map.set(apiNameGrande, { ...augObj, championApiName: apiNamePequeno, appearCount: 1 });
+              map.set(apiNameGrande, { ...augObj, championApiName: apiNamePequeno, appearCount: 1, isOp: isOp || false, isOpm: isOpm || false });
             }
           } else {
-            map.get(apiNameGrande).appearCount += 1;
+            const existing = map.get(apiNameGrande);
+            existing.appearCount += 1;
+            if (isOp) existing.isOp = true;
+            if (isOpm) existing.isOpm = true;
           }
         }
         
@@ -368,24 +371,34 @@ console.log({selectedSoftItems})
           if (!map.has(apiNamePequeno)) {
             const augObj = allAugments.find(a => a.apiName === apiNamePequeno);
             if (augObj) {
-              map.set(apiNamePequeno, { ...augObj, championApiName: apiNamePequeno, appearCount: 1 });
+              map.set(apiNamePequeno, { ...augObj, championApiName: apiNamePequeno, appearCount: 1, isOp: isOp || false, isOpm: isOpm || false });
             }
           } else {
-            map.get(apiNamePequeno).appearCount += 1;
+            const existing = map.get(apiNamePequeno);
+            existing.appearCount += 1;
+            if (isOp) existing.isOp = true;
+            if (isOpm) existing.isOpm = true;
           }
         }
       };
 
       if(compo.aumentos && Array.isArray(compo.aumentos)) {
         compo.aumentos.forEach(aumento => {
-          addAugment(aumento.apiNameGrande || aumento.apiName, aumento.apiNamePequeno);
+          const apiNameGrande = typeof aumento === 'object' ? (aumento.apiNameGrande || aumento.apiName) : aumento;
+          const apiNamePequeno = typeof aumento === 'object' ? aumento.apiNamePequeno : null;
+          const op = typeof aumento === 'object' ? aumento.op : null;
+          const isOpm = op === 'opm';
+          const isOp = op === 'op' || op === true || op === 'true' || isOpm;
+          addAugment(apiNameGrande, apiNamePequeno, isOp, isOpm);
         });
       }
 
       if (compo.condiciones && Array.isArray(compo.condiciones)) {
         compo.condiciones.forEach(cond => {
           if (cond) {
-            addAugment(cond.apiNameGrande, cond.ApiNamePequeno || cond.apiNamePequeno);
+            const isOpm = cond.op === 'opm';
+            const isOp = cond.op === 'op' || cond.op === true || cond.op === 'true' || isOpm;
+            addAugment(cond.apiNameGrande, cond.ApiNamePequeno || cond.apiNamePequeno, isOp, isOpm);
           }
         });
       }
@@ -1396,41 +1409,40 @@ console.log({selectedSoftItems})
             </div>
           </div>
         <div style={{ marginTop: '20px', display: 'grid', gridTemplateRows: 'repeat(auto-fit, 1fr)', gap: '20px' }}>
-          {CATEGORIAS_GRANDES.map(catGrande => {
-            const augsInCategory = opEarlyAugmentsMap.filter(aug => {
-              const cat = dbAumentos[aug?.apiName]?.categoria_grande;
-              // Si el aumento no tiene categoría asignada en la DB, lo mandamos a "Otros"
-              if (!cat && catGrande === "Otros") return true;
-              return cat === catGrande;
+          {['Plata', 'Oro', 'Prismatico', 'Otros'].map(tierName => {
+            // Ocultar completamente este sector de tier si hay tiers seleccionados y no es este
+            // (Asumimos que 'Otros' no se filtra o se filtra aparte, pero si no está seleccionado lo ocultamos)
+            if (selectedAugmentTiers.length > 0 && tierName !== 'Otros' && !selectedAugmentTiers.includes(tierName)) {
+              return null;
+            }
+            if (selectedAugmentTiers.length > 0 && tierName === 'Otros' && !selectedAugmentTiers.includes('Otros')) {
+              // Si 'Otros' no está en las opciones del minifiltro, tal vez siempre lo ocultamos al usar filtros
+              return null;
+            }
+
+            const augsInTier = opEarlyAugmentsMap.filter(aug => {
+              let augTier = (dbAumentos[aug.apiName]?.categoria_tier || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+              
+              if (tierName === "Otros") {
+                return augTier !== "plata" && augTier !== "oro" && augTier !== "prismatico";
+              }
+              
+              const normalizedTierName = tierName.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+              return augTier === normalizedTierName;
             });
             
-            augsInCategory.sort((a, b) => {
-              const tierOrder = { "plata": 1, "oro": 2, "prismatico": 3 };
-              const tierA = (dbAumentos[a.apiName]?.categoria_tier || "").toLowerCase();
-              const tierB = (dbAumentos[b.apiName]?.categoria_tier || "").toLowerCase();
-              
-              const orderA = tierOrder[tierA] || 4;
-              const orderB = tierOrder[tierB] || 4;
-              
-              if (orderA !== orderB) return orderA - orderB;
-              return (a.name || "").localeCompare(b.name || "");
-            });
+            if (augsInTier.length === 0) return null;
 
-            if (augsInCategory.length === 0) return null;
+            augsInTier.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
+
+            const tierColor = tierName === 'Oro' ? '#ffcc00' : tierName === 'Plata' ? '#ccc' : tierName === 'Prismatico' ? '#ff4d4d' : '#888';
 
             return (
-              <div key={catGrande} style={{ display: 'flex', flexDirection: 'column', gap: '10px', background: 'rgba(0,0,0,0.15)', padding: '10px', borderRadius: '8px' }}>
-                <h4 style={{ color: '#ffcc00', margin: '0 0 5px 0', borderBottom: '1px solid #444', paddingBottom: '5px' }}>{catGrande}</h4>
+              <div key={tierName} style={{ display: 'flex', flexDirection: 'column', gap: '10px', background: 'rgba(0,0,0,0.15)', padding: '10px', borderRadius: '8px' }}>
+                <h4 style={{ color: tierColor, margin: '0 0 5px 0', borderBottom: '1px solid #444', paddingBottom: '5px' }}>{tierName}</h4>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(70px, 1fr))', gap: '8px' }}>
-                  {augsInCategory.map(aug => {
+                  {augsInTier.map(aug => {
                     let isGrayedOut = false;
-                    
-                    if (selectedAugmentTiers.length > 0) {
-                      const augTier = dbAumentos[aug.apiName]?.categoria_tier;
-                      if (!selectedAugmentTiers.includes(augTier)) {
-                        return null; // hide if it doesn't match selected tiers
-                      }
-                    }
 
                     if (selectedSmallCats.length > 0) {
                       const augCatsPequenas = dbAumentos[aug.apiName]?.categoria_pequeno || [];
@@ -1438,7 +1450,7 @@ console.log({selectedSoftItems})
                     }
 
                     const isSelected = selectedHardAugments.some(a => a.apiName === aug.apiName);
-                    const champ = (catGrande === "Heroe" && aug.championApiName) 
+                    const champ = (dbAumentos[aug.apiName]?.categoria_grande === "Heroe" && aug.championApiName) 
                       ? allChampions.find(c => c.apiName === aug.championApiName) 
                       : null;
 
@@ -1502,6 +1514,23 @@ console.log({selectedSoftItems})
                               zIndex: 2
                             }}>
                               {aug.appearCount}
+                            </div>
+                          )}
+                          {aug.isOp && (
+                            <div style={{
+                              position: 'absolute',
+                              top: '-6px',
+                              right: '-6px',
+                              backgroundColor: aug.isOpm ? '#ff4500' : '#ff9d00',
+                              color: 'white',
+                              borderRadius: '4px',
+                              padding: '1px 3px',
+                              fontSize: '0.60rem',
+                              fontWeight: 'bold',
+                              zIndex: 3,
+                              textShadow: '1px 1px 2px rgba(0,0,0,0.8)'
+                            }}>
+                              {aug.isOpm ? 'OPM' : 'OP'}
                             </div>
                           )}
                         </div>
