@@ -112,7 +112,7 @@
 .filterButtonsContainerRow {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 4px;
   margin-top: 4px;
   flex-direction: row;
 }

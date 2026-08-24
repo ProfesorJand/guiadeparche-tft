@@ -131,8 +131,10 @@ const CampeonesNivel = ({comp, isMP = false, isEarly = false}) => {
 		};
 	}) || [];
 
-	const maxCampeones = comp?.niveles?.[comp?.niveles?.length - 1]?.campeones?.length || 5;
-	const cols = Math.min(maxCampeones, 9);
+	CampeonesPorNivel.sort((a, b) => parseInt(a.level, 10) - parseInt(b.level, 10));
+
+	const maxCampeones = CampeonesPorNivel[CampeonesPorNivel.length - 1]?.data?.length || 5;
+	const cols = isMP ? 9 : Math.min(maxCampeones, 9);
   
 	return (
 		<div className={style.cardChampNivelesMP}>

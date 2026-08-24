@@ -149,6 +149,7 @@ async function main() {
         },
         body: JSON.stringify({
           action,
+          idioma: IDIOMA,
           tableSuffix,
           data: dataToAPI
         })

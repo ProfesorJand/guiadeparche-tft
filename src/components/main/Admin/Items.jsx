@@ -42,7 +42,7 @@ export const Items = ({ onSelectItem })=>{
   useEffect(()=>{
     const getAllItems = async ()=>{
       setAllEmblemsItems(allItemsInfo.filter((item)=>{
-        return item?.apiName?.includes("Emblem") && item?.incompatibleTraits?.length
+        return item?.apiName?.includes("Emblem") || (item?.name && (item.name.toLowerCase().includes("emblem") || item.name.toLowerCase().includes("emblema")));
         })
       )
       setAllPsionicItems(allItemsInfo.filter((item)=>{

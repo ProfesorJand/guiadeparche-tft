@@ -1622,7 +1622,10 @@ export default function FormularioVisualTFT({
           emblema: compo?.champTrait?.[0]?.apiName
         },
         tipoDeDano: compo.tipoDeDano || dañoTipo.Es[0],
-        niveles: compo.niveles || [],
+        niveles: (compo.niveles || []).map(nivel => ({
+          ...nivel,
+          campeones: (nivel.campeones || []).filter(c => c && c.apiNameCampeon !== "")
+        })),
         itemsPrio: (compo.itemsPrio || (compo?.carouselItems ? Object.values(compo.carouselItems) : [])).map(item => {
           if (typeof item === 'object' && item !== null) {
             return {
@@ -1684,8 +1687,14 @@ export default function FormularioVisualTFT({
     // La logica para guardar la compo (simulando lo de FormularioCrearCompoTFT.jsx)
     try {
       const token = import.meta.env.PUBLIC_TOKEN_META || "dummy_token";
+      const nivelesLimpios = (comp.niveles || []).map(nivel => ({
+        ...nivel,
+        campeones: (nivel.campeones || []).filter(c => c && c.apiNameCampeon !== "")
+      }));
+
       const payload = {
         ...comp,
+        niveles: nivelesLimpios,
         id: comp?.id ? comp.id : generadorID(),
         set_number: currentVersion === "latest" ? setNumberLatest : setNumberPBE
       };
