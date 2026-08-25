@@ -62,7 +62,7 @@ const Tooltip = ({ text }) => {
   );
 };
 
-const AdminMercadoPago = () => {
+const AdminMercadoPagoPlanes = () => {
   const [accessToken, setAccessToken] = useState(() => {
     return sessionStorage.getItem('mp_admin_access_token') || '';
   });
@@ -953,4 +953,4 @@ const AdminMercadoPago = () => {
   );
 };
 
-export default AdminMercadoPago;
+export default AdminMercadoPagoPlanes;

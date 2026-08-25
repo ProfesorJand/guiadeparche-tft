@@ -303,3 +303,116 @@
   line-height: 1.5;
 }
 
+/* MODAL STYLES */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(10, 13, 20, 0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modalContent {
+  background: linear-gradient(180deg, rgba(34, 25, 56, 0.95) 0%, rgba(18, 18, 28, 0.98) 100%);
+  border: 1px solid rgba(159, 85, 255, 0.4);
+  border-radius: 20px;
+  padding: 32px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 20px rgba(159, 85, 255, 0.15);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.modalTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+  color: #fff;
+}
+
+.modalSubtitle {
+  font-size: 0.95rem;
+  color: #a0a6b8;
+  margin: 0;
+}
+
+.couponInputGroup {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.couponInput {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 12px 16px;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.couponInput:focus {
+  border-color: #9f55ff;
+  box-shadow: 0 0 0 2px rgba(159, 85, 255, 0.2);
+}
+
+.couponApplyBtn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  padding: 0 16px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.couponApplyBtn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.couponApplyBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.couponSuccess {
+  background: rgba(0, 255, 136, 0.1);
+  border: 1px solid rgba(0, 255, 136, 0.3);
+  border-radius: 10px;
+  padding: 16px;
+  color: #00ff88;
+}
+
+.couponError {
+  color: #ff5555;
+  font-size: 0.85rem;
+  margin-top: -10px;
+}
+
+.modalButtons {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.modalButtons button {
+  flex: 1;
+}
+

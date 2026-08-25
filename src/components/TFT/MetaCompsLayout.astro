@@ -191,7 +191,7 @@ const tableOfContentIndividual = [
   </div>
   <DynamicSection hasSidebar={!isIndividual}>
     <div slot="main">
-      <div class="set-switcher" style="display: flex; gap: 10px; margin-bottom: 20px; justify-content: center;">
+      <!-- <div class="set-switcher" style="display: flex; gap: 10px; margin-bottom: 20px; justify-content: center;">
         {sets.map(s => {
           const isActive = s.id === defaultSet;
           const activeBg = s.id === setNumberLatest ? "rgba(0, 255, 196, 0.15)" : "rgba(255, 0, 160, 0.15)";
@@ -208,7 +208,7 @@ const tableOfContentIndividual = [
             </button>
           );
         })}
-      </div>
+      </div> -->
 
       {sets.map(setObj => {
         const compsInSet = allComps.filter(c => (c.set_number || setNumberLatest) === setObj.id);
