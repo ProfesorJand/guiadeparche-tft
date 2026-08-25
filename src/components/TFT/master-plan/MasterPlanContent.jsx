@@ -10,7 +10,7 @@ const MasterPlanContent = () => {
   const superAdmin = useStore($superAdmin);
   return (
     <div className="bodyContainerMid">
-      {superAdmin && user.country === "Argentina" && <SuscripcionesMP />}
+      {user.country === "Argentina" && <SuscripcionesMP />}
       {/* Si TIENE el plan activo */}
       {hasMasterPlan ? (
         <div className={styles.activePlanContainer}>
