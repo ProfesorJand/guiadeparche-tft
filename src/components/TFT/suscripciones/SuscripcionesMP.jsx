@@ -19,6 +19,10 @@ const SuscripcionesMP = () => {
   const [loadingPlanes, setLoadingPlanes] = useState(true);
   const [loadingPlanId, setLoadingPlanId] = useState(null);
   const [errorMsg, setErrorMsg] = useState("");
+
+  // Estado para los cupones por plan (map de planId -> data)
+  const [couponStates, setCouponStates] = useState({});
+
   useEffect(() => {
     fetchPlanes();
   }, []);
@@ -225,7 +229,28 @@ const SuscripcionesMP = () => {
       
       let checkoutUrl = "";
       if (plan.tipo_plan === 'pago_unico') {
-        checkoutUrl = `https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=${plan.mp_plan_id}`;
+        const cState = couponStates[plan.id];
+        const codigoCupon = (cState && cState.status === 'success') ? cState.code : "";
+        
+        // Llamar al backend para generar la preferencia con el email y plan_id EXACTOS
+        const res = await fetch("https://api.guiadeparche.com/tft/mercado_pago_mp/generar_pago_unico.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            user_email: user.email,
+            plan_id: plan.id,
+            codigo: codigoCupon
+          })
+        });
+        
+        const data = await res.json();
+        if (data.success && data.pref_id) {
+            checkoutUrl = `https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=${data.pref_id}`;
+        } else {
+            alert("Error al iniciar el pago: " + (data.message || "No se pudo generar el link."));
+            setLoadingPlanId(null);
+            return;
+        }
       } else {
         checkoutUrl = `https://www.mercadopago.com.ar/subscriptions/checkout?preapproval_plan_id=${plan.mp_plan_id}`;
       }
@@ -239,6 +264,75 @@ const SuscripcionesMP = () => {
       console.error("❌ Error de red al procesar la suscripción:", error);
       alert("Hubo un error de conexión al iniciar la suscripción. Por favor intenta de nuevo.");
       setLoadingPlanId(null);
+    }
+  };
+
+  const handleCouponCodeChange = (planId, code) => {
+    setCouponStates(prev => ({
+      ...prev,
+      [planId]: {
+        ...(prev[planId] || { status: 'idle', discountData: null, errorMsg: '' }),
+        code: code.toUpperCase(),
+        status: 'idle', // reset status on typing
+        errorMsg: ''
+      }
+    }));
+  };
+
+  const handleApplyCoupon = async (plan) => {
+    const cState = couponStates[plan.id];
+    if (!cState || !cState.code || !cState.code.trim()) return;
+    
+    setCouponStates(prev => ({
+      ...prev,
+      [plan.id]: { ...prev[plan.id], status: 'loading', errorMsg: '' }
+    }));
+    
+    try {
+      const res = await fetch("https://api.guiadeparche.com/tft/mercado_pago_mp/aplicar_cupon.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          codigo: cState.code.trim(),
+          plan_id: plan.id
+        })
+      });
+      
+      const data = await res.json();
+      
+      if (data.success) {
+        setCouponStates(prev => ({
+          ...prev,
+          [plan.id]: {
+            ...prev[plan.id],
+            status: 'success',
+            discountData: {
+              originalPrice: plan.amount,
+              newPrice: data.nuevo_precio,
+              discountPct: data.porcentaje_descuento,
+              newPrefId: data.nuevo_pref_id
+            }
+          }
+        }));
+      } else {
+        setCouponStates(prev => ({
+          ...prev,
+          [plan.id]: {
+            ...prev[plan.id],
+            status: 'error',
+            errorMsg: data.message || "Cupón inválido o expirado"
+          }
+        }));
+      }
+    } catch (err) {
+      setCouponStates(prev => ({
+        ...prev,
+        [plan.id]: {
+          ...prev[plan.id],
+          status: 'error',
+          errorMsg: "Error de conexión al validar cupón"
+        }
+      }));
     }
   };
 
@@ -349,6 +443,34 @@ const SuscripcionesMP = () => {
                   ))}
                 </ul>
 
+                {plan.tipo_plan === 'pago_unico' && (
+                    <div style={{ display: 'flex', gap: '8px', padding:"10px" }}>
+                      <input 
+                        type="text" 
+                        placeholder="CUPÓN" 
+                        value={couponStates[plan.id]?.code || ''}
+                        onChange={(e) => handleCouponCodeChange(plan.id, e.target.value)}
+                        style={{ flex: 1, background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', padding: '8px 12px', borderRadius: '8px', textTransform: 'uppercase', outline: 'none' }}
+                        disabled={couponStates[plan.id]?.status === 'loading' || couponStates[plan.id]?.status === 'success'}
+                      />
+                      <button 
+                        onClick={() => handleApplyCoupon(plan)}
+                        style={{ flex: 1, background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', padding: '0 12px', borderRadius: '8px', cursor: (couponStates[plan.id]?.status === 'loading' || couponStates[plan.id]?.status === 'success' || !couponStates[plan.id]?.code) ? 'not-allowed' : 'pointer', opacity: (couponStates[plan.id]?.status === 'loading' || couponStates[plan.id]?.status === 'success' || !couponStates[plan.id]?.code) ? 0.6 : 1 }}
+                        disabled={couponStates[plan.id]?.status === 'loading' || couponStates[plan.id]?.status === 'success' || !couponStates[plan.id]?.code}
+                      >
+                        {couponStates[plan.id]?.status === 'loading' ? '⏳' : 'Aplicar'}
+                      </button>
+                      {couponStates[plan.id]?.status === 'error' && (
+                        <div style={{ color: '#ff5555', fontSize: '0.8rem', marginTop: '6px' }}>⚠️ {couponStates[plan.id]?.errorMsg}</div>
+                      )}
+                      {couponStates[plan.id]?.status === 'success' && (
+                        <div style={{ color: '#00ff88', fontSize: '0.85rem', marginTop: '8px', background: 'rgba(0,255,136,0.1)', padding: '6px', borderRadius: '6px' }}>
+                          ✅ ¡Cupón aplicado! El total ahora es <strong>${parseFloat(couponStates[plan.id]?.discountData?.newPrice).toLocaleString('es-AR')} ARS</strong>
+                        </div>
+                      )}
+                    </div>
+                )}
+
                 <button
                   type="button"
                   disabled={isLoading}
@@ -360,7 +482,7 @@ const SuscripcionesMP = () => {
                   {isLoading ? (
                     <span className={style.loadingSpinner}></span>
                   ) : (
-                    "Suscribirme ahora"
+                    `Suscribirme ahora ${couponStates[plan.id]?.status === 'success' ? `($${parseFloat(couponStates[plan.id]?.discountData?.newPrice).toLocaleString('es-AR')})` : ''}`
                   )}
                 </button>
               </div>

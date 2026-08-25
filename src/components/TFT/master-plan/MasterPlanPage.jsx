@@ -706,53 +706,73 @@ console.log({selectedSoftItems})
       }
 
       if (selectedSalidasEarlyComponents.length > 0) {
-        selectedSalidasEarlyComponents.forEach(compId => {
-           let matched = false;
-           const checkItem = (apiName) => {
-              const dbItem = allItems.find(i => i.apiName === apiName);
-              if (dbItem?.composition && dbItem.composition.length > 0) {
-                if (dbItem.composition.includes(compId)) matched = true;
-              } else {
-                const normalizedApi = apiName.replace('DA_Component_', '').replace('DA_', '').replace('TFT_Item_', '');
-                if (compId.replace('DA_Component_', '').replace('DA_', '').replace('TFT_Item_', '') === normalizedApi) matched = true;
+        const itemsToAdd = new Set();
+        
+        const checkItem = (apiName) => {
+          if (!apiName) return;
+          const dbItem = allItems.find(i => i.apiName === apiName);
+          
+          if (dbItem?.composition && dbItem.composition.length > 0) {
+            let matchesAll = true;
+            dbItem.composition.forEach(compReq => {
+              const reqNormalized = compReq.replace('DA_Component_', '').replace('DA_', '').replace('TFT_Item_', '');
+              const isSelected = selectedSalidasEarlyComponents.some(sc => sc.replace('DA_Component_', '').replace('DA_', '').replace('TFT_Item_', '') === reqNormalized);
+              if (!isSelected) {
+                matchesAll = false;
               }
-           };
-           
-           (compo.itemsPrio || []).forEach(prioItem => {
-              const apiName = typeof prioItem === 'object' ? prioItem.apiName : prioItem;
-              checkItem(apiName);
-           });
-           (compo.campeonMeta?.apiNameItemsDelCampeon || []).forEach(apiName => checkItem(apiName));
-           (compo.posicionamiento?.[0]?.tablero || []).forEach(champ => {
-              (champ.apiNameItemsDelCampeon || []).forEach(apiName => checkItem(apiName));
-           });
-           (compo.condiciones || []).forEach(cond => {
-              const condType = (cond.condTypeGrande || cond.typeGrande || cond.condType || "").toLowerCase();
-              if (condType === 'item' && cond.apiNameGrande) checkItem(cond.apiNameGrande);
-           });
+            });
 
-           if (matched) {
+            if (matchesAll) {
+              itemsToAdd.add(apiName);
+            }
+          } else {
+            const normalizedApi = apiName.replace('DA_Component_', '').replace('DA_', '').replace('TFT_Item_', '');
+            const isSelected = selectedSalidasEarlyComponents.some(sc => sc.replace('DA_Component_', '').replace('DA_', '').replace('TFT_Item_', '') === normalizedApi);
+            if (isSelected) {
+              itemsToAdd.add(apiName);
+            }
+          }
+        };
+
+        (compo.itemsPrio || []).forEach(prioItem => {
+           const apiName = typeof prioItem === 'object' && prioItem !== null ? prioItem.apiName : prioItem;
+           checkItem(apiName);
+        });
+        (compo.condiciones || []).forEach(cond => {
+           const condType = (cond.condTypeGrande || cond.typeGrande || cond.condType || "").toLowerCase();
+           if (condType === 'item' && cond.apiNameGrande) checkItem(cond.apiNameGrande);
+        });
+
+        itemsToAdd.forEach(apiName => {
+           if (!matchedFilters.some(mf => mf.apiName === apiName)) {
              matchCount++;
-             const compData = softItemsList.find(i => i.apiName === compId) || allItems.find(i => i.apiName === compId);
-             matchedFilters.push({ type: 'item', apiName: compId, icon: compData?.icon, name: compData?.name });
+             const itemData = allItems.find(i => i.apiName === apiName);
+             const iconPath = itemData?.icon ? getLocalTftImage(itemData.icon, 'items') : null;
+             matchedFilters.push({ type: 'item', apiName: apiName, icon: iconPath, name: itemData?.name || apiName });
            }
         });
       }
 
         matchedFilters = matchedFilters.map(mf => {
           let opStatus = null;
+          let isCore = false;
+          
           const matchCond = (compo.condiciones || []).find(c => c.apiNameGrande === mf.apiName || c.ApiNamePequeno === mf.apiName);
           if (matchCond) {
+            isCore = true;
             if (matchCond.op === 'opm') opStatus = 'opm';
             else if (matchCond.op) opStatus = 'op';
           }
-          if (opStatus !== 'opm') {
-             const matchPrio = compo.itemsPrio?.find(i => typeof i === 'object' && i.apiName === mf.apiName);
-             if (matchPrio) {
-               if (matchPrio.op === 'opm') opStatus = 'opm';
-               else if (matchPrio.op) opStatus = 'op';
-             }
+          
+          const matchPrio = compo.itemsPrio?.find(i => (typeof i === 'object' ? i.apiName : i) === mf.apiName);
+          if (matchPrio) {
+            isCore = true;
+            if (opStatus !== 'opm') {
+              if (matchPrio.op === 'opm') opStatus = 'opm';
+              else if (matchPrio.op) opStatus = 'op';
+            }
           }
+          
           if (opStatus !== 'opm') {
              const matchAug = compo.aumentos?.find(a => typeof a === 'object' && (a.apiName === mf.apiName || a.apiNameGrande === mf.apiName || a.apiNamePequeno === mf.apiName));
              if (matchAug) {
@@ -760,7 +780,7 @@ console.log({selectedSoftItems})
                else if (matchAug.op) opStatus = 'op';
              }
           }
-          return { ...mf, opStatus };
+          return { ...mf, opStatus, isCore };
         });
 
         matchedFilters.sort((a, b) => {
@@ -1148,9 +1168,7 @@ console.log({selectedSoftItems})
       });
 
       return(
-        <div className={style.filterInputGroup}>
-          <legend>Salidas Early</legend>
-          
+        <div className={style.filterInputGroup}>          
           <div style={{ display: 'flex', flexDirection: 'row', gap: '5px', marginTop: '8px', marginBottom: '5px' }}>
             {champsList.length > 0 && (
               <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '5px', alignItems: 'stretch' }}>
@@ -1163,7 +1181,7 @@ console.log({selectedSoftItems})
                   return (
                       <div key={cost} style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
                         <fieldset style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-                          <legend style={{ fontSize: '0.75rem' }}>Sinergias</legend>
+                          <legend style={{ fontSize: '0.75rem' }}>{title}</legend>
                           <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.15)' }}></div>
                         <div className={style.filterButtonsContainerRow}>
                           {groupedChamps[cost].map(champ => (
@@ -1207,7 +1225,7 @@ console.log({selectedSoftItems})
             )}
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
             <div style={{ display: 'flex', flexDirection: 'row', gap: '5px', marginBottom: '8px' }}>
               {/* Minifiltro de Componentes en Salidas Early */}
 
@@ -1242,7 +1260,7 @@ console.log({selectedSoftItems})
 
               {/* Minifiltro de Objetos Específicos y Sinergias en Salidas Early */}
               {(condicionesGrandeItems.length > 0 || (condicionesGrandeSinergias && condicionesGrandeSinergias.length > 0)) && (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
                   <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '5px' }}>
                     {Object.entries({
                       'Emblemas': condicionesGrandeItemsGrouped.emblemas,
@@ -1502,7 +1520,7 @@ console.log({selectedSoftItems})
     }
     return (
       <fieldset className={`${style.filtersSection} ${style.filtersSectionHard}`}>
-      <legend>Filtro Hard 2 (Playstyle / Estilo de juego)</legend>
+      <legend>Filtros Early (Dentro del Juego / Ingame)</legend>
       <div className={style.hardFiltersGrid}>
         {/*  Salidas Early */}
         {SalidasEarly()}
@@ -1516,10 +1534,10 @@ console.log({selectedSoftItems})
   const FiltroAumentos = () => {
     return (
       <fieldset className={`${style.filtersSection}`}>
-        <legend>Filtro de Aumentos</legend>
+        <legend>Filtro de Aumentos (2-1)</legend>
         
         <div className={style.filterInputGroup}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '8px', marginBottom: '15px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <div className={style.filterButtonsContainerRow} >
               {['Plata', 'Oro', 'Prismatico'].map(tier => (
                 <button
@@ -1532,23 +1550,9 @@ console.log({selectedSoftItems})
                 </button>
               ))}
             </div>
-
-            {/* <div className={style.filterButtonsContainerRow}>
-              <span style={{ fontSize: '0.85rem', fontWeight: 'bold', marginRight: '5px' }}>Pequeñas:</span>
-              {CATEGORIAS_PEQUENAS.map(cat => (
-                <button
-                  key={cat}
-                  type="button"
-                  className={`${style.filterOptionBox} ${selectedSmallCats.includes(cat) ? style.filterOptionBoxActive : ''}`}
-                  onClick={() => toggleArrayFilter(setSelectedSmallCats, cat)}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div> */}
           </div>
-        <div style={{ marginTop: '20px', display: 'grid', gridTemplateRows: 'repeat(auto-fit, 1fr)', gap: '20px' }}>
-          {['Plata', 'Oro', 'Prismatico', 'Otros'].map(tierName => {
+        <div style={{ display: 'grid', gridTemplateRows: 'repeat(auto-fit, 1fr)', gap: '5px' }}>
+          {['Plata', 'Oro', 'Prismatico'].map(tierName => {
             // Ocultar completamente este sector de tier si hay tiers seleccionados y no es este
             // (Asumimos que 'Otros' no se filtra o se filtra aparte, pero si no está seleccionado lo ocultamos)
             if (selectedAugmentTiers.length > 0 && tierName !== 'Otros' && !selectedAugmentTiers.includes(tierName)) {
@@ -1578,7 +1582,6 @@ console.log({selectedSoftItems})
 
             return (
               <div key={tierName} style={{ display: 'flex', flexDirection: 'column', gap: '10px', background: 'rgba(0,0,0,0.15)', padding: '10px', borderRadius: '8px' }}>
-                <h4 style={{ color: tierColor, margin: '0 0 5px 0', borderBottom: '1px solid #444', paddingBottom: '5px' }}>{tierName}</h4>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))', gap: '8px' }}>
                   {augsInTier.map(aug => {
                     let isGrayedOut = false;
@@ -1694,7 +1697,7 @@ console.log({selectedSoftItems})
   return (
     <div id={"masterPlanContainer"} className={style.masterPlanContainer}>
       <div className={style.containerTop}>
-        <div style={{ display: 'flex', gap: '10px', marginBottom: '15px' }}>
+        <div className={style.containerBtnsVersion}>
           <button 
             style={{ padding: '8px 16px', borderRadius: '4px', border: 'none', background: version === 'latest' ? '#ffcc00' : '#444', color: version === 'latest' ? '#000' : '#fff', cursor: 'pointer', fontWeight: 'bold' }}
             onClick={() => swapVersionTFT('latest')}>
@@ -1763,9 +1766,9 @@ console.log({selectedSoftItems})
                                   })}
                                 </div>
                               ) : f.icon ? (
-                                <img src={f.icon} alt={f.name} title={f.name} style={{ width: '32px', height: '32px', borderRadius: '4px', objectFit: 'contain', border: f.opStatus === 'opm' ? '2px solid #ff4500' : f.opStatus === 'op' ? '2px solid #ff9d00' : 'none' }} />
+                                <img src={f.icon} alt={f.name} title={f.name} style={{ width: '32px', height: '32px', borderRadius: '4px', objectFit: 'contain', border: f.opStatus === 'opm' ? '2px solid #ff4500' : f.opStatus === 'op' ? '2px solid #ff9d00' : f.isCore ? '2px solid #24ce02ff' : 'none' }} />
                               ) : (
-                                <span style={{ fontSize: '12px', background: 'rgba(255,255,255,0.1)', padding: '4px 6px', borderRadius: '4px', color: 'white', border: f.opStatus === 'opm' ? '2px solid #ff4500' : f.opStatus === 'op' ? '2px solid #ff9d00' : 'none' }}>{f.name}</span>
+                                <span style={{ fontSize: '12px', background: 'rgba(255,255,255,0.1)', padding: '4px 6px', borderRadius: '4px', color: 'white', border: f.opStatus === 'opm' ? '2px solid #ff4500' : f.opStatus === 'op' ? '2px solid #ff9d00' : f.isCore ? '2px solid #24ce02ff' : 'none' }}>{f.name}</span>
                               )}
                               {f.opStatus && (
                                 <div style={{ position: 'absolute', top: '-6px', right: '-6px', fontSize: '10px', fontWeight: 'bold', background: f.opStatus === 'opm' ? '#ff4500' : '#ff9d00', color: 'white', padding: '1px 3px', borderRadius: '4px', zIndex: 1, textShadow: '1px 1px 2px rgba(0,0,0,0.8)' }}>

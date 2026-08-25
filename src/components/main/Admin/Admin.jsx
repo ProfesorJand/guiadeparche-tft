@@ -21,10 +21,11 @@ import { $admin, $superAdmin, logOut, $user, setUser } from "@stores/auth";
 import {useStore} from "@nanostores/react";
 import FormularioCrearCompoTFT from "@components/TFT/FormularioCrearCompoTFT.jsx";
 import FormularioVisualTFT from "@components/TFT/FormularioVisualTFT.jsx";
-import AdminMercadoPago from "./AdminMercadoPago.jsx";
 import AdminPublicidad from "./AdminPublicidad.jsx";
 import AdminTFTCampeonesEarly from "./AdminTFTCampeonesEarly.jsx";
 import AdminCrearCampeonesTFT from "./AdminCrearCampeonesTFT.jsx";
+import AdminMercadoPagoPlanes from "./AdminMercadoPagoPlanes.jsx";
+import AdminMercadoPagoCupones from "./AdminMercadoPagoCupones.jsx";
 
 const AdminPanel = ()=>{
     const admin = useStore($admin);
@@ -99,7 +100,8 @@ const AdminPanel = ()=>{
       {
         primario:"Mercado Pago",
         secundario:[
-          { nombre: "Planes Suscripción", admin: true, superAdmin: true }
+          { nombre: "Planes Suscripción / Pago único", admin: true, superAdmin: true },
+          { nombre: "Cupones de descuentos", admin: true, superAdmin: true }
         ],
         admin: false,
         superAdmin: true
@@ -245,7 +247,8 @@ const AdminPanel = ()=>{
                 {action?.includes(pestanas[5].primario) && <InfografiaTop5/>}
                 {action?.includes(pestanas[6].primario) && <StreamersManager/>}
                 {action?.includes(pestanas[7].primario) && <DeckBuilder/>}
-                {action?.includes("Mercado Pago") && <AdminMercadoPago />}
+                {action === "Mercado Pago-Planes Suscripción / Pago único" && <AdminMercadoPagoPlanes />}
+                {action === "Mercado Pago-Cupones de descuentos" && <AdminMercadoPagoCupones />}
                 {action?.includes("Publicidad GP") && <AdminPublicidad />}
                 {/* {action === "champsItemsTierList" && <CrearTierListChampItem />} */}
             </div>

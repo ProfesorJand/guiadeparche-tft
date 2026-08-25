@@ -38,7 +38,7 @@ const tempo = {
   Es: ["Agresivo / Slam", "Open fort / Salvar HP"],
   En: ["Aggressive / Slam", "Open fort / Save HP"]
 }
-export const tiers = ["S", "A", "B", "C", "D"];
+export const tiers = ["S", "A", "B", "C"];
 export const tiersExtras = ["N/A", "H", "X"]
 export const dañoTipo = {
   Es: ["AD", "AP", "Híbrido"],

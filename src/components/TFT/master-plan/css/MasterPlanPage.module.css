@@ -1,19 +1,24 @@
 .masterPlanContainer {
-  padding: 20px;
+  padding: 10px;
   background: var(--bg-color-primary, #1e1e2f);
   color: var(--text-color-white-primary, #fff);
   border-radius: 12px;
   display:flex;
   flex-direction:column;
-  gap:20px;
+  gap:10px;
 }
 .containerTop{
   display:flex;
   width:100%;
   position:relative;
-  gap:20px;
+  gap:5px;
   flex-direction: column;
   width:100%;
+}
+.containerBtnsVersion{
+  display:flex;
+  flex-direction: row;
+  gap:10px;
 }
 .planDescription {
   font-size: 0.9rem;
@@ -37,7 +42,7 @@
   /* Estilos premium para el fieldset */
   border: 1px solid rgba(168, 85, 247, 0.3); /* Borde morado sutil */
   border-radius: 12px;
-  padding: 20px;
+  padding: 10px;
   background: rgba(59, 44, 82, 0.15); /* Fondo oscuro semitransparente */
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   margin-bottom: 10px;
@@ -80,7 +85,7 @@
 .filterInputGroup {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 5px;
   box-sizing: border-box;
   background-color: var(--bg-purple-primary, #3b2c52);
   border: 1px solid var(--border-purple-color);
@@ -113,7 +118,6 @@
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
-  margin-top: 4px;
   flex-direction: row;
 }
 .filterOptionBox {
