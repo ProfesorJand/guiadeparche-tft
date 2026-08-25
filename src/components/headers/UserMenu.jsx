@@ -1,10 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useStore } from '@nanostores/react';
-import { $user, setUser } from '../../stores/auth';
+import { $user, setUser, $hasMasterPlan } from '../../stores/auth';
 import styles from './UserMenu.module.css';
+import btnStyles from '../TFT/RegistrarseBTN.module.css';
 
 const UserMenu = () => {
   const user = useStore($user);
+  const hasMasterPlan = useStore($hasMasterPlan);
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef(null);
 
@@ -21,6 +23,31 @@ const UserMenu = () => {
     };
   }, []);
 
+  const getMasterPlanBtn = () => {
+    let text = "";
+    let link = "";
+
+    if (user && !hasMasterPlan) {
+      text = "Accede al Master Plan";
+      link = "/tft/master-plan";
+    } else if (user && hasMasterPlan) {
+      text = "Accede al Master Plan";
+      link = "/tft/meta-comps-tier-list-teamfight-tactics/master-plan";
+    } else {
+      return null;
+    }
+
+    return (
+      <a 
+        href={link} 
+        className={btnStyles.button} 
+        style={{ textDecoration: 'none', padding: '0.4rem 0.8rem', fontSize: '0.75rem', textAlign: 'center' }}
+      >
+        {text}
+      </a>
+    );
+  };
+
   if (!user) {
     return (
       <a href="/login" className={styles.login_link}>
@@ -36,12 +63,14 @@ const UserMenu = () => {
   const toggleMenu = () => setIsOpen(!isOpen);
 
   return (
-    <div 
-      className={styles.user_profile} 
-      ref={menuRef}
-      onMouseEnter={() => setIsOpen(true)}
-      onMouseLeave={() => setIsOpen(false)}
-    >
+    <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+      {getMasterPlanBtn()}
+      <div 
+        className={styles.user_profile} 
+        ref={menuRef}
+        onMouseEnter={() => setIsOpen(true)}
+        onMouseLeave={() => setIsOpen(false)}
+      >
       <div className={styles.avatar} onClick={toggleMenu}>
         {user.picture ? (
           <img src={user.picture} alt={user.name} />
@@ -59,6 +88,7 @@ const UserMenu = () => {
         <button onClick={() => window.location.href = "/perfil"} className={styles.btn}>Mi Perfil</button>
         <button onClick={() => setUser(null)} className={styles.btn + " " + styles.logout_btn}>Cerrar Sesión</button>
       </div>
+    </div>
     </div>
   );
 };

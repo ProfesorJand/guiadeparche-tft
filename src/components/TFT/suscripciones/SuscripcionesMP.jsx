@@ -161,13 +161,21 @@ const SuscripcionesMP = () => {
       })
       .then(data => {
         if (data.success) {
-           if (user) {
-             const updatedUser = { ...user, master_plan: 1, rol: 'suscriptor' };
-             setUser(updatedUser);
-           }
-           alert("¡Suscripción Exitosa! Tu acceso al Master Plan ha sido activado en tu cuenta.");
-           window.history.replaceState({}, document.title, window.location.pathname + "?tab=master-plan");
-           window.location.reload(); 
+           // Refrescar los datos reales desde la base de datos
+           fetch("https://api.guiadeparche.com/verify-user.php", {
+             method: 'POST',
+             headers: { 'Content-Type': 'application/json' },
+             body: JSON.stringify({ email: user.email })
+           })
+           .then(res => res.json())
+           .then(verifyData => {
+             if (verifyData.status === 'success' && verifyData.user) {
+                setUser(verifyData.user); // Actualiza el localStorage y el estado
+             }
+             alert("¡Suscripción Exitosa! Tu acceso al Master Plan ha sido activado en tu cuenta.");
+             window.history.replaceState({}, document.title, window.location.pathname + "?tab=master-plan");
+             window.location.reload(); 
+           });
         } else {
            alert("Hubo un error al activar en la Base de Datos: " + data.message);
         }
@@ -190,13 +198,21 @@ const SuscripcionesMP = () => {
       })
       .then(data => {
         if (data.success) {
-           if (user) {
-             const updatedUser = { ...user, master_plan: 1, rol: 'suscriptor' };
-             setUser(updatedUser);
-           }
-           alert("¡Pago Exitoso! Los días de acceso al Master Plan han sido añadidos a tu cuenta.");
-           window.history.replaceState({}, document.title, window.location.pathname + "?tab=master-plan");
-           window.location.reload(); 
+           // Refrescar los datos reales desde la base de datos
+           fetch("https://api.guiadeparche.com/verify-user.php", {
+             method: 'POST',
+             headers: { 'Content-Type': 'application/json' },
+             body: JSON.stringify({ email: user.email })
+           })
+           .then(res => res.json())
+           .then(verifyData => {
+             if (verifyData.status === 'success' && verifyData.user) {
+                setUser(verifyData.user); // Actualiza el localStorage y el estado
+             }
+             alert("¡Pago Exitoso! Los días de acceso al Master Plan han sido añadidos a tu cuenta.");
+             window.history.replaceState({}, document.title, window.location.pathname + "?tab=master-plan");
+             window.location.reload(); 
+           });
         } else {
            alert("Hubo un error al activar el pago en la Base de Datos: " + data.message);
         }
