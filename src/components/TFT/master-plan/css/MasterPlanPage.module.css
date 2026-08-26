@@ -463,4 +463,4 @@
   .resultsSection{
     width: 100%;
   }
-}
+}@keyframes pulseEarlyHighlight { 0% { box-shadow: 0 0 0 rgba(0, 255, 204, 0); border-color: rgba(0, 255, 204, 0.3); } 50% { box-shadow: 0 0 8px rgba(0, 255, 204, 0.4); border-color: rgba(0, 255, 204, 0.8); } 100% { box-shadow: 0 0 0 rgba(0, 255, 204, 0); border-color: rgba(0, 255, 204, 0.3); } } .earlyHighlightPulse { animation: pulseEarlyHighlight 2.5s infinite ease-in-out; background-color: rgba(0, 255, 204, 0.08) !important; border-style: solid; border-width: 2px; }
