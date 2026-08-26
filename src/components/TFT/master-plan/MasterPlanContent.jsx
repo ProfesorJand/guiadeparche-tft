@@ -10,6 +10,11 @@ const MasterPlanContent = () => {
   const superAdmin = useStore($superAdmin);
   return (
     <div className="bodyContainerMid">
+      <video width="640" height="360" controls preload="auto" playsInline style={{alignSelf: "anchor-center"}}>
+        <source src="https://api.guiadeparche.com/tft/videos/VSL_Master_Plan_2026.mp4" type="video/mp4" />
+        Tu navegador no soporta la etiqueta de video.
+      </video>
+
       {(Object.keys(user).length === 0 || user?.country === "Argentina") && hasMasterPlan && <SuscripcionesMP />}
       
       <h2 className={styles.tituloCentrado}>Mejorar en TFT requiere conocimiento. El problema es cuánto tiempo tienes para conseguirlo.</h2>
