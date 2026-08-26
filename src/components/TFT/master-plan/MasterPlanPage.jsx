@@ -62,6 +62,8 @@ export default function MasterPlanPage() {
   const [selectedSmallCats, setSelectedSmallCats] = useState([]);
   const [selectedAugmentTiers, setSelectedAugmentTiers] = useState([]);
   const [selectedHardAugments, setSelectedHardAugments] = useState([]);
+  const [sortAugmentsByName, setSortAugmentsByName] = useState(null);
+  const [sortAugmentsByCount, setSortAugmentsByCount] = useState(null);
 
   const listaAumentosHeroes =[
     "TFT17_Augment_GragasCarry"
@@ -1551,15 +1553,39 @@ console.log({selectedSoftItems})
                 </button>
               ))}
             </div>
+
+            <div className={style.filterButtonsContainerRow} style={{ marginTop: '10px' }}>
+              <button
+                type="button"
+                className={`${style.filterOptionBox} ${sortAugmentsByName ? style.filterOptionBoxActive : ''}`}
+                onClick={() => {
+                  setSortAugmentsByCount(null);
+                  setSortAugmentsByName(prev => prev === 'A-Z' ? 'Z-A' : prev === 'Z-A' ? null : 'A-Z');
+                }}
+              >
+                {sortAugmentsByName || 'A-Z / Z-A'}
+              </button>
+
+              <button
+                type="button"
+                className={`${style.filterOptionBox} ${sortAugmentsByCount ? style.filterOptionBoxActive : ''}`}
+                onClick={() => {
+                  setSortAugmentsByName(null);
+                  setSortAugmentsByCount(prev => prev === 'DESC' ? 'ASC' : prev === 'ASC' ? null : 'DESC');
+                }}
+              >
+                {sortAugmentsByCount ? `${sortAugmentsByCount}` : 'DESC / ASC'}
+              </button>
+            </div>
           </div>
         <div style={{ display: 'grid', gridTemplateRows: 'repeat(auto-fit, 1fr)', gap: '5px' }}>
-          {['Plata', 'Oro', 'Prismatico'].map(tierName => {
+          {selectedAugmentTiers.length > 0 && ['Plata', 'Oro', 'Prismatico'].map(tierName => {
             // Ocultar completamente este sector de tier si hay tiers seleccionados y no es este
             // (Asumimos que 'Otros' no se filtra o se filtra aparte, pero si no está seleccionado lo ocultamos)
-            if (selectedAugmentTiers.length > 0 && tierName !== 'Otros' && !selectedAugmentTiers.includes(tierName)) {
+            if (tierName !== 'Otros' && !selectedAugmentTiers.includes(tierName)) {
               return null;
             }
-            if (selectedAugmentTiers.length > 0 && tierName === 'Otros' && !selectedAugmentTiers.includes('Otros')) {
+            if (tierName === 'Otros' && !selectedAugmentTiers.includes('Otros')) {
               // Si 'Otros' no está en las opciones del minifiltro, tal vez siempre lo ocultamos al usar filtros
               return null;
             }
@@ -1577,7 +1603,18 @@ console.log({selectedSoftItems})
             
             if (augsInTier.length === 0) return null;
 
-            augsInTier.sort((a, b) => (b.appearCount || 0) - (a.appearCount || 0) || (a.name || "").localeCompare(b.name || ""));
+            augsInTier.sort((a, b) => {
+              if (sortAugmentsByName) {
+                const alphaSort = (a.name || "").localeCompare(b.name || "");
+                return sortAugmentsByName === 'A-Z' ? alphaSort : -alphaSort;
+              }
+              if (sortAugmentsByCount) {
+                const diff = (a.appearCount || 0) - (b.appearCount || 0);
+                return sortAugmentsByCount === 'ASC' ? diff : -diff;
+              }
+              // Default fallback
+              return (b.appearCount || 0) - (a.appearCount || 0) || (a.name || "").localeCompare(b.name || "");
+            });
 
             const tierColor = tierName === 'Oro' ? '#ffcc00' : tierName === 'Plata' ? '#ccc' : tierName === 'Prismatico' ? '#ff4d4d' : '#888';
 
