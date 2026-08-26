@@ -50,6 +50,11 @@ const SuscripcionesMP = () => {
    * Genera texto de periodicidad natural a partir de los datos de MySQL
    */
   const getPeriodText = (plan) => {
+    if (plan.tipo_plan === "pago_unico") {
+      const dias = parseInt(plan.dias_acceso || 0, 10);
+      return dias > 0 ? `por ${dias} días (Pago Único)` : `(Pago Único)`;
+    }
+
     const freq = parseInt(plan.frequency || 1, 10);
     const type = (plan.frequency_type || "months").toLowerCase();
     if (type === "months") {
@@ -356,9 +361,6 @@ const SuscripcionesMP = () => {
     <div className={style.container}>
       <div className={style.header}>
         <h2 className={style.title}>Elige tu membresía del Master Plan con Mercado Pago (Argentina)</h2>
-        <p className={style.subtitle}>
-          Mejora tu toma de decisiones en el parche actual con acceso a filtros competitivos avanzados y herramientas del Master Plan.
-        </p>
       </div>
 
       {loadingPlanes ? (
@@ -374,9 +376,9 @@ const SuscripcionesMP = () => {
       ) : planes.length === 0 ? (
         <div className={style.emptyState}>
           <h3>Aún no hay planes publicados</h3>
-          <p className={style.emptySub}>
+          {/* <p className={style.emptySub}>
             Ve al panel de administración de Mercado Pago en tu servidor para crear tu primer plan de suscripción y aquí aparecerá automáticamente.
-          </p>
+          </p> */}
         </div>
       ) : (
         <>
@@ -460,27 +462,29 @@ const SuscripcionesMP = () => {
                 </ul>
 
                 {plan.tipo_plan === 'pago_unico' && (
-                    <div style={{ display: 'flex', gap: '8px', padding:"10px" }}>
-                      <input 
-                        type="text" 
-                        placeholder="CUPÓN" 
-                        value={couponStates[plan.id]?.code || ''}
-                        onChange={(e) => handleCouponCodeChange(plan.id, e.target.value)}
-                        style={{ flex: 1, background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', padding: '8px 12px', borderRadius: '8px', textTransform: 'uppercase', outline: 'none' }}
-                        disabled={couponStates[plan.id]?.status === 'loading' || couponStates[plan.id]?.status === 'success'}
-                      />
-                      <button 
-                        onClick={() => handleApplyCoupon(plan)}
-                        style={{ flex: 1, background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', padding: '0 12px', borderRadius: '8px', cursor: (couponStates[plan.id]?.status === 'loading' || couponStates[plan.id]?.status === 'success' || !couponStates[plan.id]?.code) ? 'not-allowed' : 'pointer', opacity: (couponStates[plan.id]?.status === 'loading' || couponStates[plan.id]?.status === 'success' || !couponStates[plan.id]?.code) ? 0.6 : 1 }}
-                        disabled={couponStates[plan.id]?.status === 'loading' || couponStates[plan.id]?.status === 'success' || !couponStates[plan.id]?.code}
-                      >
-                        {couponStates[plan.id]?.status === 'loading' ? '⏳' : 'Aplicar'}
-                      </button>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', padding:"10px" }}>
+                      <div style={{ display: 'flex', gap: '8px' }}>
+                        <input 
+                          type="text" 
+                          placeholder="CUPÓN" 
+                          value={couponStates[plan.id]?.code || ''}
+                          onChange={(e) => handleCouponCodeChange(plan.id, e.target.value)}
+                          style={{ flex: 1, background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', padding: '8px 12px', borderRadius: '8px', textTransform: 'uppercase', outline: 'none' }}
+                          disabled={couponStates[plan.id]?.status === 'loading' || couponStates[plan.id]?.status === 'success'}
+                        />
+                        <button 
+                          onClick={() => handleApplyCoupon(plan)}
+                          style={{ flex: 1, background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: '#fff', padding: '0 12px', borderRadius: '8px', cursor: (couponStates[plan.id]?.status === 'loading' || couponStates[plan.id]?.status === 'success' || !couponStates[plan.id]?.code) ? 'not-allowed' : 'pointer', opacity: (couponStates[plan.id]?.status === 'loading' || couponStates[plan.id]?.status === 'success' || !couponStates[plan.id]?.code) ? 0.6 : 1 }}
+                          disabled={couponStates[plan.id]?.status === 'loading' || couponStates[plan.id]?.status === 'success' || !couponStates[plan.id]?.code}
+                        >
+                          {couponStates[plan.id]?.status === 'loading' ? '⏳' : 'Aplicar'}
+                        </button>
+                      </div>
                       {couponStates[plan.id]?.status === 'error' && (
-                        <div style={{ color: '#ff5555', fontSize: '0.8rem', marginTop: '6px' }}>⚠️ {couponStates[plan.id]?.errorMsg}</div>
+                        <div style={{ color: '#ff5555', fontSize: '0.8rem', marginTop: '2px' }}>⚠️ {couponStates[plan.id]?.errorMsg}</div>
                       )}
                       {couponStates[plan.id]?.status === 'success' && (
-                        <div style={{ color: '#00ff88', fontSize: '0.85rem', marginTop: '8px', background: 'rgba(0,255,136,0.1)', padding: '6px', borderRadius: '6px' }}>
+                        <div style={{ color: '#00ff88', fontSize: '0.85rem', marginTop: '2px', background: 'rgba(0,255,136,0.1)', padding: '6px', borderRadius: '6px' }}>
                           ✅ ¡Cupón aplicado! El total ahora es <strong>${parseFloat(couponStates[plan.id]?.discountData?.newPrice).toLocaleString('es-AR')} ARS</strong>
                         </div>
                       )}

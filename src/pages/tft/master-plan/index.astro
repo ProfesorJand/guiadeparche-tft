@@ -6,11 +6,11 @@ import PaginaBaseMaxWidth from "@components/TFT/paginas/PaginaBaseMaxWidth.astro
 import MasterPlanPage from "@components/TFT/master-plan/MasterPlanPage";
 import MasterPlanContent from "@components/TFT/master-plan/MasterPlanContent.jsx";
 
-const topTitle="Master Plan";
-const lowerTitle="La herramienta definitiva para tomar mejores decisiones en TFT";
-const title=`${topTitle}: ${lowerTitle}`;
-const description="Descubre todo sobre el Master Plan de TFT: qué es, cómo funciona y cómo conseguirlo.";
-const keywords="tft, master plan, teamfight tactics";
+const topTitle="TFT Master Plan: Convierte el análisis del meta en decisiones para tus partidas";
+const lowerTitle="";
+const title=`${topTitle}`;
+const description="Cientos de horas de análisis profesional, organizadas en una herramienta para que puedas saber qué jugar, cuándo jugarlo y cómo adaptarte sin tener que hacer todo el trabajo por tu cuenta.";
+const keywords="tft, master plan, teamfight tactics, guiadeparche, masterplan, guia tft";
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
 const baseSchema = JSON.parse(
@@ -30,7 +30,9 @@ const JSONSchema = JSON.stringify(baseSchema);
   >
     <PaginaBaseMaxWidth
       topTitle={topTitle}
-      textInfo={["Desbloquea todo el potencial competitivo y herramientas exclusivas del Master Plan para dominar el meta actual"]}
+      textInfo={[
+        description
+      ]}
     >
       <div slot="bodyContainerLeft">
         <!-- Columna izquierda vacía para consistencia -->
@@ -60,4 +62,5 @@ const JSONSchema = JSON.stringify(baseSchema);
     background: var(--bg-purple-primary);
     text-decoration: none;
   }
+
 </style>

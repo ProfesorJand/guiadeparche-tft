@@ -2,8 +2,9 @@ import fs from 'fs/promises';
 import path from 'path';
 
 const FETCH_HEADERS = {
-  'User-Agent': 'Astro-Build-Process/1.0',
-  'Accept': 'application/json, text/plain, */*'
+  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+  'Accept': 'application/json, text/plain, */*',
+  'Referer': 'https://guiadeparche.com/'
 };
 
 let composMetaPBECache = null;

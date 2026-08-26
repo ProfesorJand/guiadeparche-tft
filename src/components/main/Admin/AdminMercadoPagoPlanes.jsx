@@ -237,7 +237,7 @@ const AdminMercadoPagoPlanes = () => {
         currency: "ARS",
         frequency: "1",
         frequencyType: "months",
-        backUrl: "https://guiadeparche.com/perfil?tab=master-plan",
+        backUrl: "https://guiadeparche.com/tft/master-plan",
         freeTrialDays: "0",
         repetitions: "",
         billingDay: "",
