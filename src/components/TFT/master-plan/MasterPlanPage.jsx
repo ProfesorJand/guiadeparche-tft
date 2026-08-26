@@ -1735,7 +1735,7 @@ console.log({selectedSoftItems})
   return (
     <div id={"masterPlanContainer"} className={style.masterPlanContainer}>
       <div className={style.containerTop}>
-        <div className={style.containerBtnsVersion}>
+        {/* <div className={style.containerBtnsVersion}>
           <button 
             style={{ padding: '8px 16px', borderRadius: '4px', border: 'none', background: version === 'latest' ? '#ffcc00' : '#444', color: version === 'latest' ? '#000' : '#fff', cursor: 'pointer', fontWeight: 'bold' }}
             onClick={() => swapVersionTFT('latest')}>
@@ -1746,7 +1746,7 @@ console.log({selectedSoftItems})
             onClick={() => swapVersionTFT('pbe')}>
             Set {setNumberPBE} (PBE)
           </button>
-        </div>
+        </div> */}
         <div className={style.filtersSectionContainer}>
         {FiltroHard()}
         {FiltroHard2()}
