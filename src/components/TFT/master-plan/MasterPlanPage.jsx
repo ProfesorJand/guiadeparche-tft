@@ -756,35 +756,55 @@ console.log({selectedSoftItems})
         });
       }
 
+        let compoScore = 0;
+
         matchedFilters = matchedFilters.map(mf => {
-          let opStatus = null;
-          let isCore = false;
-          
-          const matchCond = (compo.condiciones || []).find(c => c.apiNameGrande === mf.apiName || c.ApiNamePequeno === mf.apiName);
-          if (matchCond) {
-            isCore = true;
-            if (matchCond.op === 'opm') opStatus = 'opm';
-            else if (matchCond.op) opStatus = 'op';
-          }
-          
-          const matchPrio = compo.itemsPrio?.find(i => (typeof i === 'object' ? i.apiName : i) === mf.apiName);
-          if (matchPrio) {
-            isCore = true;
-            if (opStatus !== 'opm') {
-              if (matchPrio.op === 'opm') opStatus = 'opm';
-              else if (matchPrio.op) opStatus = 'op';
-            }
-          }
-          
-          if (opStatus !== 'opm') {
-             const matchAug = compo.aumentos?.find(a => typeof a === 'object' && (a.apiName === mf.apiName || a.apiNameGrande === mf.apiName || a.apiNamePequeno === mf.apiName));
-             if (matchAug) {
-               if (matchAug.op === 'opm') opStatus = 'opm';
-               else if (matchAug.op) opStatus = 'op';
+           let opStatus = null;
+           let isCore = false;
+           let isEarly = false;
+           
+           const matchCond = (compo.condiciones || []).find(c => c.apiNameGrande === mf.apiName || c.ApiNamePequeno === mf.apiName);
+           if (matchCond) {
+             isCore = true;
+             if (matchCond.op === 'opm') opStatus = 'opm';
+             else if (matchCond.op) opStatus = 'op';
+             if (matchCond.early === true || matchCond.early === 'true' || matchCond.early === 1) isEarly = true;
+           }
+           
+           const matchPrio = compo.itemsPrio?.find(i => (typeof i === 'object' ? i.apiName : i) === mf.apiName);
+           if (matchPrio) {
+             isCore = true;
+             if (opStatus !== 'opm') {
+               if (matchPrio.op === 'opm') opStatus = 'opm';
+               else if (matchPrio.op) opStatus = 'op';
              }
-          }
-          return { ...mf, opStatus, isCore };
+             if (matchPrio.early === true || matchPrio.early === 'true' || matchPrio.early === 1) isEarly = true;
+           }
+           
+           if (opStatus !== 'opm') {
+              const matchAug = compo.aumentos?.find(a => typeof a === 'object' && (a.apiName === mf.apiName || a.apiNameGrande === mf.apiName || a.apiNamePequeno === mf.apiName));
+              if (matchAug) {
+                if (matchAug.op === 'opm') opStatus = 'opm';
+                else if (matchAug.op) opStatus = 'op';
+                if (matchAug.early === true || matchAug.early === 'true' || matchAug.early === 1) isEarly = true;
+              }
+           }
+
+           let indicatorScore = 1;
+           if (opStatus === 'opm') indicatorScore += 2;
+           else if (opStatus === 'op') indicatorScore += 0.5;
+           
+           if (isEarly) indicatorScore += 0.2;
+           if (mf.type === 'salida') indicatorScore += 0.4;
+
+           compoScore += indicatorScore;
+
+           return { ...mf, opStatus, isCore, isEarly };
         });
+
+        const compoTier = (compo.categoria_tier || "").toUpperCase();
+        if (compoTier === 'S') compoScore += 1;
+        else if (compoTier === 'B') compoScore -= 1;
 
         matchedFilters.sort((a, b) => {
           const getVal = (s) => s === 'opm' ? 2 : s === 'op' ? 1 : 0;
@@ -844,10 +864,10 @@ console.log({selectedSoftItems})
           }
         }
 
-        results.push({ ...compo, _matchCount: matchCount, _matchedFilters: matchedFilters, _missingOPM: missingOPM });
+        results.push({ ...compo, _matchCount: matchCount, _score: compoScore, _matchedFilters: matchedFilters, _missingOPM: missingOPM });
     });
 
-    results.sort((a, b) => b._matchCount - a._matchCount);
+    results.sort((a, b) => b._score - a._score);
     return results;
   }, [
     filteredComposPrimary, selectedItems, selectedChampions, selectedExtras, selectedSinergias, 
@@ -1533,6 +1553,44 @@ console.log({selectedSoftItems})
     )
   }
 
+  const hasEarlyFiltersActive = selectedSalidasEarly.length > 0 || selectedSalidasEarlyItems.length > 0;
+
+  const earlyHighlightedAugments = useMemo(() => {
+    const highlighted = new Set();
+    if (!hasEarlyFiltersActive) return highlighted;
+
+    const activeEarlyApiNames = new Set([
+      ...selectedSalidasEarly.map(String),
+      ...selectedSalidasEarlyItems.map(i => String(i.apiName))
+    ]);
+
+    filteredCompos.forEach(compo => {
+      const matchesEarly = compo._matchedFilters && compo._matchedFilters.some(mf => activeEarlyApiNames.has(String(mf.apiName)));
+      
+      if (matchesEarly) {
+        if (compo.aumentos && Array.isArray(compo.aumentos)) {
+          compo.aumentos.forEach(aumento => {
+            const isEarly = typeof aumento === 'object' && (aumento.early === true || aumento.early === 'true' || aumento.early === 1);
+            if (isEarly) {
+              highlighted.add(typeof aumento === 'object' ? (aumento.apiNameGrande || aumento.apiName) : aumento);
+            }
+          });
+        }
+        if (compo.condiciones && Array.isArray(compo.condiciones)) {
+          compo.condiciones.forEach(cond => {
+            if (cond) {
+              const isEarly = cond.early === true || cond.early === 'true' || cond.early === 1;
+              if (isEarly) {
+                highlighted.add(cond.apiNameGrande);
+              }
+            }
+          });
+        }
+      }
+    });
+
+    return highlighted;
+  }, [filteredCompos, hasEarlyFiltersActive, selectedSalidasEarly, selectedSalidasEarlyItems]);
 
   const FiltroAumentos = () => {
     return (
@@ -1540,8 +1598,8 @@ console.log({selectedSoftItems})
         <legend>Filtro de Aumentos (2-1)</legend>
         
         <div className={style.filterInputGroup}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            <div className={style.filterButtonsContainerRow} >
+          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
+            <div className={style.filterButtonsContainerRow}>
               {['Plata', 'Oro', 'Prismatico'].map(tier => (
                 <button
                   key={tier}
@@ -1554,7 +1612,7 @@ console.log({selectedSoftItems})
               ))}
             </div>
 
-            <div className={style.filterButtonsContainerRow} style={{ marginTop: '10px' }}>
+            <div className={style.filterButtonsContainerRow}>
               <button
                 type="button"
                 className={`${style.filterOptionBox} ${sortAugmentsByName ? style.filterOptionBoxActive : ''}`}
@@ -1629,6 +1687,8 @@ console.log({selectedSoftItems})
                       isGrayedOut = !selectedSmallCats.some(sc => augCatsPequenas.includes(sc)); 
                     }
 
+                    const isEarlyHighlighted = earlyHighlightedAugments.has(aug.apiName);
+
                     const isSelected = selectedHardAugments.some(a => a.apiName === aug.apiName);
                     const champ = (dbAumentos[aug.apiName]?.categoria_grande === "Heroe" && aug.championApiName) 
                       ? allChampions.find(c => c.apiName === aug.championApiName) 
@@ -1639,6 +1699,7 @@ console.log({selectedSoftItems})
                         key={aug.apiName}
                         onClick={() => toggleArrayFilter(setSelectedHardAugments, aug)}
                         title={aug.name}
+                        className={isEarlyHighlighted && !isSelected ? style.earlyHighlightPulse : ''}
                         style={{ 
                           cursor: 'pointer', 
                           opacity: isGrayedOut ? 0.3 : 1, 
