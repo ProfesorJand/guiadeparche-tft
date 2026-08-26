@@ -89,6 +89,8 @@ const InfografiaMPTFT = ({comp = {}, gruposSalidasEarly = []}) => {
     const isCondicionGrandeSinergia = AllTraits.some((item) => item.apiName === condicionGrande);
     const isCondicionPequenoSinergia = AllTraits.some((item) => item.apiName === condicionPequeno);
     const extras = [
+      { apiName:"winstreak", img:"/tft/assets/WinStreak.webp" },
+      { apiName:"lossstreak", img:"/tft/assets/LossStreak.webp" },
       { apiName:"Win Streak", img:"/tft/assets/WinStreak.webp" },
       { apiName:"Loss Streak", img:"/tft/assets/LossStreak.webp" },
       { apiName:"orbedecampeon", img:"/tft/assets/Orbe.webp" },

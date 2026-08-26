@@ -592,3 +592,14 @@
     width:100%;
   }
 }
+
+.stretchEarlyImg {
+  height: 100% !important; 
+  height: stretch !important;
+}
+.stretchEarlyImg img {
+  height: 100% !important; 
+  height: stretch !important;
+  width: auto !important;
+  object-fit: cover !important;
+}

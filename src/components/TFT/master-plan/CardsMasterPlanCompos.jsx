@@ -232,11 +232,12 @@ const CardsMasterPlanCompos = ({compo, activateMissingOPM, filtroSoft={}, grupos
                           if (!champ) return null;
                           
                           return (
-                            <div key={apiName} style={{ height: '100%', aspectRatio: '1/1', flexShrink: 1, minWidth: 0, minHeight: 0, boxSizing: 'border-box' }}>
+                            <div key={apiName} style={{ height: 'stretch', flex: 1, minWidth: 0, minHeight: 0, boxSizing: 'border-box' }}>
                               <ImgCampeon 
                                 championData={champ} 
                                 showName={false} 
                                 showBorderColor={true} 
+                                className={style.stretchEarlyImg}
                               />
                             </div>
                           );

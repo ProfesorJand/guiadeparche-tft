@@ -1,4 +1,4 @@
-import { urlComposiciones, dataTFTChampions, dataTFTAllItems, dataTFTAllAugments, dataTFTTraits } from "@stores/dataTFT";
+import { urlComposiciones, dataTFTChampions, dataTFTAllItems, dataTFTAllAugments, dataTFTTraits, versionTFT, setNumberPBE, setNumberLatest } from "@stores/dataTFT";
 import { getLocalTftImage } from "@utils/images";
 import style from "./css/GuiaFreeTFTMeta.module.css";
 import Sinergias from "@components/main/Admin/Sinergias";
@@ -576,7 +576,9 @@ const FooterBuild = ({comp})=>{
 }
 
 const FooterLogos = ({edit})=>{
-  if(!edit) return null;
+  const activeVersion = useStore(versionTFT);
+  const setNumber = activeVersion === "pbe" ? setNumberPBE : setNumberLatest;
+
   const [logos, setLogos] = useState([{
     label: "Jupeson",
     url:"/Jupeson_LOGO_Sin_Publicidad_Sin_Bordes.png",
@@ -591,9 +593,17 @@ const FooterLogos = ({edit})=>{
     show: false
   },{
     label: "SetTFT",
-    url:"/tft/sets/17/logo2.webp",
+    url:`/tft/sets/${setNumber}/logo2.webp`,
     show: true
-  }])
+  }]);
+
+  useEffect(() => {
+    setLogos(prev => prev.map(logo => 
+      logo.label === "SetTFT" ? { ...logo, url: `/tft/sets/${setNumber}/logo2.webp` } : logo
+    ));
+  }, [setNumber]);
+
+  if(!edit) return null;
   
   return (
     <div className={style.panelControlLogos}>
