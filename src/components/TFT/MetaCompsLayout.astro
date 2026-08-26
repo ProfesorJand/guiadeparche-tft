@@ -13,6 +13,7 @@ const [constantes, lastUpdateComps] = await Promise.all([
   getConstantes(),
   getLastUpdateDate("composiciones_tft")
 ]);
+console.log({constantes})
 interface Props {
   titleMain?: string;
   titleHighlight?: string;
@@ -221,7 +222,7 @@ const tableOfContentIndividual = [
             {
               !isIndividual && 
 
-        <h2 id="TierList">Mejores TFT Comps del Meta Actual (Parche {constantes.MetaCompVersion})</h2>
+        <h2 id="TierList">Mejores TFT Comps del Meta Actual (Parche {setObj.id === setNumberPBE ? constantes.MetaCompVersionPBE : constantes.MetaCompVersion})</h2>
         <p>
         Las compos están ordenadas por fuerza dentro del meta actual, desde las
         mejores opciones para subir elo hasta alternativas viables según tu
