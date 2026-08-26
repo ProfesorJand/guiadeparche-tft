@@ -338,6 +338,7 @@ console.log({selectedSoftItems})
 
   const filteredComposBase = useMemo(() => {
     return allCompos.filter(compo => {
+      if (compo.tier === "C") return false;
       if (selectedCategory.length > 0 && !selectedCategory.includes(compo.categoria)) return false;
       if (selectedDifficulty.length > 0 && !selectedDifficulty.includes(compo.dificultad)) return false;
       if (selectedTier.length > 0 && !selectedTier.includes(compo.tier)) return false;
@@ -914,7 +915,7 @@ console.log({selectedSoftItems})
         <div className={style.filterInputGroup}>
           <label>Tiers</label>
           <div className={style.filterButtonsContainer}>
-            {tiers?.map(t => (
+            {tiers?.filter(t => t !== "C").map(t => (
               <button
                 key={t}
                 type="button"
@@ -980,9 +981,9 @@ console.log({selectedSoftItems})
           </div>
         </div>
 
-        <div className={style.filterInputGroup}>
+        {/* <div className={style.filterInputGroup}>
           <label>Extra</label>
-          <div className={style.filterButtonsContainer} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '8px' }}>
+          <div className={style.filterButtonsContainer} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
             {condicionesGrandeExtras.filter(extra => extra.apiName !== 'orbedecampeon').length > 0 ? (
               condicionesGrandeExtras.filter(extra => extra.apiName !== 'orbedecampeon').map(extra => (
                 <button
@@ -1000,7 +1001,7 @@ console.log({selectedSoftItems})
               <span style={{ color: '#ccc', fontStyle: 'italic', fontSize: '0.85rem' }}>No hay extras disponibles</span>
             )}
           </div>
-        </div>
+        </div> */}
 
         <div className={style.filterInputGroup}>
           <label>Filtros Rápidos</label>
@@ -1193,7 +1194,7 @@ console.log({selectedSoftItems})
                               style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '8px 10px', minWidth: '70px', gap: '6px' }}
                             >
                               {champ.icon && <img src={champ.icon} alt={champ.name} style={{ minWidth: '60px', minHeight: '60px', width: '60px', height: '60px', objectFit: 'contain', borderRadius: '4px', border: `3px solid var(--color-hex-cost-${champ.cost})`, boxSizing: 'border-box' }} />}
-                              <span style={{ fontSize: '0.78rem', textAlign: 'center', lineHeight: '1.1' }}>{champ.name}</span>
+                              <span style={{ fontSize: '1rem', textAlign: 'center', lineHeight: '1.1' }}>{champ.name}</span>
                             </button>
                           ))}
                         </div>
@@ -1217,7 +1218,7 @@ console.log({selectedSoftItems})
                       style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '8px 10px', minWidth: '70px', gap: '6px' }}
                     >
                       {sinergia.icon && <img src={sinergia.icon} alt={sinergia.name} style={{ width: '60px', height: '60px', objectFit: 'contain', borderRadius: '3px' }} />}
-                      <span style={{ fontSize: '0.78rem', textAlign: 'center', lineHeight: '1.1' }}>{sinergia.name}</span>
+                      <span style={{ fontSize: '1rem', textAlign: 'center', lineHeight: '1.1' }}>{sinergia.name}</span>
                     </button>
                   ))}
                 </div>
@@ -1438,7 +1439,7 @@ console.log({selectedSoftItems})
                             {grupo.campeones && grupo.campeones.length > 0 ? (
                               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                                 {grupo.nombre && (
-                                  <span style={{ fontSize: '0.85rem', fontWeight: 'bold', marginBottom: '4px' }}>
+                                  <span style={{ fontSize: '1rem', fontWeight: 'bold', marginBottom: '4px' }}>
                                     {grupo.nombre}
                                   </span>
                                 )}
@@ -1463,7 +1464,7 @@ console.log({selectedSoftItems})
                                             border: champ.cost ? `3px solid var(--color-hex-cost-${champ.cost})` : '3px solid transparent'
                                           }} 
                                         />
-                                        <span style={{ fontSize: '0.7rem', textAlign: 'center', lineHeight: '1' }}>{champ.name}</span>
+                                        <span style={{ fontSize: '1rem', textAlign: 'center', lineHeight: '1' }}>{champ.name}</span>
                                       </div>
                                     );
                                   })}

@@ -57,7 +57,7 @@ const resolvedTileIcon = champInfo?.tileIcon ? getLocalTftImage(champInfo.tileIc
   titleHighlight={``}
   description={comp.tipSEO ||
     `Guía completa paso a paso de la composición ${comp.titulo} para el parche actual de TFT.`}
-  lastUpdate={`${lastUpdateComps} Parche ${numberOfPatch.MetaCompVersion}` }
+  lastUpdate={`${lastUpdateComps} Parche ${comp?.set_number === setNumberPBE ? numberOfPatch.MetaCompVersionPBE : numberOfPatch.MetaCompVersion}` }
   allComps={allComps}
   comp={comp}
   activeId={id}

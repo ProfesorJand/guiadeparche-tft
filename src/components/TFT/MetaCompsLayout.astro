@@ -28,9 +28,7 @@ interface Props {
 }
 
 const {
-  titleMain = `TFT Meta Comps: Mejores Composiciones & Builds Set ${initialTFT_SET === "pbe" ? setNumberPBE : setNumberLatest}`,
   titleHighlight = ``,
-  description = `Descubre las mejores TFT comps y composiciones TFT del Set ${initialTFT_SET === "pbe" ? setNumberPBE : setNumberLatest} actualizadas para el parche ${constantes.MetaCompVersion}. Aquí encontrarás builds, objetos BIS, aumentos y estrategias para jugar las compos más fuertes del meta de Teamfight Tactics y subir elo más rápido.`,
   lastUpdate = lastUpdateComps || null,
   allComps = [],
   comp: activeComp = null,
@@ -39,9 +37,12 @@ const {
   isIndividual=false
 } = Astro.props;
 
-
 const defaultSetNumber = initialTFT_SET === "pbe" ? setNumberPBE : setNumberLatest;
 const defaultSet = activeComp?.set_number || allComps.find(c => c.urlSEO === activeId)?.set_number || defaultSetNumber;
+const isCurrentSetPBE = defaultSet === setNumberPBE;
+
+const titleMain = Astro.props.titleMain || `TFT Meta Comps: Mejores Composiciones & Builds Set ${defaultSet}`;
+const description = Astro.props.description || `Descubre las mejores TFT comps y composiciones TFT del Set ${defaultSet} actualizadas para el parche ${isCurrentSetPBE ? constantes.MetaCompVersionPBE : constantes.MetaCompVersion}. Aquí encontrarás builds, objetos BIS, aumentos y estrategias para jugar las compos más fuertes del meta de Teamfight Tactics y subir elo más rápido.`;
 const sets = [
   { id: setNumberLatest, name: `Set ${setNumberLatest} (Latest)` },
   { id: setNumberPBE, name: `Set ${setNumberPBE} (PBE)` }
