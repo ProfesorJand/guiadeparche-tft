@@ -87,7 +87,7 @@
   flex-direction: column;
   gap: 5px;
   box-sizing: border-box;
-  background-color: var(--bg-purple-primary, #3b2c52);
+  background-color:#1b191b;
   border: 1px solid var(--border-purple-color);
   border-radius: 8px;
   padding: 10px;
@@ -124,10 +124,10 @@
   padding: 6px 14px;
   border-radius: 8px;
   border: 1px solid rgba(255, 255, 255, 0.25);
-  background: var(--bg-purple-secondary, #3b2c52);
+  background: #23022b;
   color: #fff;
   font-size: 0.85rem;
-  font-weight: 700;
+  font-weight: 400;
   cursor: pointer;
   opacity: 1;
   filter: saturate(0.65);
