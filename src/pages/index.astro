@@ -85,7 +85,8 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
             <li>✔ Saber cuándo pivotear o forzar</li>
           </ul>
           
-          <form class="subscription-form" action="/login/" method="GET">
+          <form class="subscription-form" action="/login" method="GET">
+            <input type="hidden" name="redirect" value={Astro.url.pathname} />
             <button type="submit">Registrarme</button>
           </form>
         </div>

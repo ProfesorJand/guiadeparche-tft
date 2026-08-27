@@ -1,4 +1,4 @@
-import { $hasMasterPlan } from '@stores/auth';
+import { $hasMasterPlan, $user } from '@stores/auth';
 import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { useStore } from '@nanostores/react';
 import { dificultades, categorias, tiers, dañoTipo } from '@stores/tft/dataFormularioCrear';
@@ -28,12 +28,26 @@ export const CHECK_FILTERS = [
 
 export default function MasterPlanPage() {
   const hasPlan = useStore($hasMasterPlan);
+  const user = useStore($user);
+  const [isClient, setIsClient] = useState(false);
+  console.log({hasPlan})
 
   useEffect(() => {
-    if (!hasPlan) {
-      window.location.href = '/tft/meta-comps-tier-list-teamfight-tactics/';
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (isClient) {
+      if (!user) {
+        window.location.href = '/login?redirect=/tft/master-plan/app';
+      } else if (!hasPlan) {
+        window.location.href = '/tft/master-plan';
+      }
     }
-  }, [hasPlan]);
+  }, [isClient, user, hasPlan]);
+
+  // La redirección está controlada en el useEffect. 
+  // Ocultaremos el contenido más abajo.
 
   const allItems = useStore(dataTFTAllItems) || [];
   const allChampions = useStore(dataTFTChampions) || [];
@@ -1792,6 +1806,14 @@ console.log({selectedSoftItems})
     );
   };
 
+
+  if (!isClient || !hasPlan) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh', color: 'white' }}>
+        <h2>Cargando Master Plan...</h2>
+      </div>
+    );
+  }
 
   return (
     <div id={"masterPlanContainer"} className={style.masterPlanContainer}>

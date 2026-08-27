@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './RegistrarseBTN.module.css';
 
-const RegistrarseBTN = ({ text, buttonText, layout = 'column', className = '', link="/login"}) => {
+const RegistrarseBTN = ({ text, buttonText, layout = 'column', className = '', link = typeof window !== 'undefined' ? `/login?redirect=${window.location.pathname}` : "/login"}) => {
   const layoutClass = layout === 'row' ? styles.layout_row : styles.layout_column;
 
   return (

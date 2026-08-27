@@ -9,7 +9,6 @@ const ContextMenuBuilderNew = ({
   setActiveMenu
 }) => {
   const champion = boardData[hexIndex];
-  if (!champion) return null;
 
   const traits = dataTFTTraits.get();
   // Traits extras específicos para la mecánica de TFT17_MissFortune (adaptar según set)
@@ -19,17 +18,20 @@ const ContextMenuBuilderNew = ({
     return traits.filter(({ name }) => name === traitName);
   });
 
-  const OPTIONS_BASE = ["★ 4 stars", "★ 3 stars", "★ 2 stars", "★ 1 star", "X Remove"];
+  const OPTIONS_BASE = champion && champion.apiName ? ["★ 4 stars", "★ 3 stars", "★ 2 stars", "★ 1 star", "X Remove"] : [];
   let OPTIONS = [...OPTIONS_BASE];
 
   // Regla especial para Miss Fortune
-  if (champion.apiName === "TFT17_MissFortune") {
+  if (champion && champion.apiName === "TFT17_MissFortune") {
     OPTIONS.splice(4, 0, ...extraOptions);
   }
+  
+  const hasEspinaNegra = champion && champion.extraSynergy === "Espina Negra";
+  OPTIONS.push(hasEspinaNegra ? "Quitar Espina Negra" : "Espina Negra");
 
   const handleMenu = (opcion) => {
     const newBoard = { ...boardData };
-    const currentChampion = { ...newBoard[hexIndex] };
+    let currentChampion = newBoard[hexIndex] ? { ...newBoard[hexIndex] } : { apiName: null, items: [], traits: [] };
 
     switch (opcion) {
       case "★ 4 stars":
@@ -49,6 +51,19 @@ const ContextMenuBuilderNew = ({
         updateTablero(newBoard);
         setActiveMenu(null);
         return;
+      case "Espina Negra":
+        currentChampion.extraSynergy = "Espina Negra";
+        break;
+      case "Quitar Espina Negra":
+        if (!currentChampion.apiName) {
+           delete newBoard[hexIndex];
+           updateTablero(newBoard);
+           setActiveMenu(null);
+           return;
+        } else {
+           currentChampion.extraSynergy = null;
+        }
+        break;
       default:
         // Manejar selecciones de sinergias extras
         const extraTrait = findExtraOptions.find((t) => t.name === opcion);

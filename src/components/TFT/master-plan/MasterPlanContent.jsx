@@ -15,7 +15,42 @@ const MasterPlanContent = () => {
         Tu navegador no soporta la etiqueta de video.
       </video>
 
-      {(Object.keys(user).length === 0 || user?.country === "Argentina") && hasMasterPlan && <SuscripcionesMP />}
+            {/* Si TIENE el plan activo */}
+      {hasMasterPlan ? (
+        <div className={styles.activePlanContainer}>
+          <div className={styles.successBadge}>
+            <h2>¡Master Plan Activo!</h2>
+            <p>Disfruta de todos tus beneficios exclusivos.</p>
+          </div>
+          
+          <div className={styles.benefitsList}>
+            <h3>Tus Beneficios:</h3>
+            <ul>
+              <li>✅ Acceso ilimitado a las herramientas del Master Plan TFT</li>
+              <li>✅ Filtros Soft/Hard aditivos avanzados para composiciones</li>
+              <li>✅ Actualizaciones en tiempo real del meta actual</li>
+            </ul>
+          </div>
+          
+          <a href="/tft/master-plan/app" className={styles.button} style={{ display: 'block', textAlign: 'center', marginTop: '20px' }}>
+            Accede al Master Plan
+          </a>
+        </div>
+      ) : (
+        /* Si NO tiene el plan activo (logueado o no) */
+        <>
+          {/* !hasMasterPlan &&  <SuscripcionesMP /> /* mostrar esto cuando ya dejemos las pruebas de MP en Mercado pago */}
+
+          {/* Botón de login para los no logueados */}
+          {!user && (
+            <a href="/login?redirect=/tft/master-plan" className={styles.button} style={{ display: 'block', textAlign: 'center', marginTop: '20px', alignSelf: "anchor-center" }}>
+              Reservar mi acceso
+            </a>
+          )}
+        </>
+      )}
+
+      {(user?.country === "Argentina") && !hasMasterPlan && <SuscripcionesMP />}
       
       <h2 className={styles.tituloCentrado}>Mejorar en TFT requiere conocimiento. El problema es cuánto tiempo tienes para conseguirlo.</h2>
       <p>
@@ -64,40 +99,7 @@ const MasterPlanContent = () => {
       </p>
 
 
-      {/* Si TIENE el plan activo */}
-      {hasMasterPlan ? (
-        <div className={styles.activePlanContainer}>
-          <div className={styles.successBadge}>
-            <h2>¡Master Plan Activo!</h2>
-            <p>Disfruta de todos tus beneficios exclusivos.</p>
-          </div>
-          
-          <div className={styles.benefitsList}>
-            <h3>Tus Beneficios:</h3>
-            <ul>
-              <li>✅ Acceso ilimitado a las herramientas del Master Plan TFT</li>
-              <li>✅ Filtros Soft/Hard aditivos avanzados para composiciones</li>
-              <li>✅ Actualizaciones en tiempo real del meta actual</li>
-            </ul>
-          </div>
-          
-          <a href="/tft/meta-comps-tier-list-teamfight-tactics/master-plan" className={styles.button} style={{ display: 'block', textAlign: 'center', marginTop: '20px' }}>
-            Accede al Master Plan
-          </a>
-        </div>
-      ) : (
-        /* Si NO tiene el plan activo (logueado o no) */
-        <>
-          {/* !hasMasterPlan &&  <SuscripcionesMP /> /* mostrar esto cuando ya dejemos las pruebas de MP en Mercado pago */}
 
-          {/* Botón de login para los no logueados */}
-          {!user && (
-            <a href="/login?redirect=/tft/master-plan" className={styles.button} style={{ display: 'block', textAlign: 'center', marginTop: '20px' }}>
-              Reservar mi acceso
-            </a>
-          )}
-        </>
-      )}
 
       {/* Detalles desplegables */}
       {hasMasterPlan && (
