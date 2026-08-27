@@ -23,15 +23,15 @@ const UserMenu = () => {
     };
   }, []);
 
-  const getMasterPlanBtn = () => {
-    let text = "";
+  const getMasterPlanBtn = (isMobile) => {
+    let content = null;
     let link = "";
 
     if (user && !hasMasterPlan) {
-      text = "Accede al Master Plan";
+      content = <>Accede al <br/> Master Plan</>;
       link = "/tft/master-plan";
     } else if (user && hasMasterPlan) {
-      text = "Accede al Master Plan";
+      content = <>Accede al <br/> Master Plan</>;
       link = "/tft/master-plan/app";
     } else {
       return null;
@@ -40,10 +40,9 @@ const UserMenu = () => {
     return (
       <a 
         href={link} 
-        className={btnStyles.button} 
-        style={{ textDecoration: 'none', padding: '0.4rem 0.8rem', fontSize: '0.75rem', textAlign: 'center' }}
+        className={styles.master_plan_btn} 
       >
-        {text}
+        {content}
       </a>
     );
   };
@@ -64,7 +63,7 @@ const UserMenu = () => {
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-      {getMasterPlanBtn()}
+      {getMasterPlanBtn(false)}
       <div 
         className={styles.user_profile} 
         ref={menuRef}
@@ -84,12 +83,40 @@ const UserMenu = () => {
           <div className={styles.email}>{user.email}</div>
         </div>
         <div className={styles.hr} />
-        
         <button onClick={() => window.location.href = "/perfil"} className={styles.btn}>Mi Perfil</button>
         <button onClick={() => setUser(null)} className={styles.btn + " " + styles.logout_btn}>Cerrar Sesión</button>
       </div>
     </div>
     </div>
+  );
+};
+
+export const MasterPlanMobileMenu = () => {
+  const user = useStore($user);
+  const hasMasterPlan = useStore($hasMasterPlan);
+
+  let link = "/tft/master-plan";
+  if (user && hasMasterPlan) {
+    link = "/tft/master-plan/app";
+  }
+
+  // Estilos pensados para mezclarse bien con el menú lateral móvil
+  return (
+    <a 
+      href={link} 
+      className={styles.mobile_menu_item}
+      style={{ 
+        display: 'block', 
+        padding: '18px 25px', 
+        color: '#00d4ff', 
+        fontWeight: 'bold', 
+        textDecoration: 'none', 
+        borderBottom: '1px solid rgba(255,255,255,0.05)',
+        fontSize: '1.1rem'
+      }}
+    >
+      👑 Accede al Master Plan
+    </a>
   );
 };
 

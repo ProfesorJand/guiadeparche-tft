@@ -159,3 +159,69 @@
 .logout_btn:hover {
   background: #991b1b;
 }
+.desktop_btn {
+  display: block;
+}
+@media (max-width: 900px) {
+  .desktop_btn {
+    display: none;
+  }
+}
+.mobile_btn {
+  display: none;
+  margin-bottom: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+@media (max-width: 900px) {
+  .mobile_btn {
+    display: block;
+  }
+}
+
+.master_plan_btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 6px 16px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--bg-purple-primary), var(--bg-purple-secondary));
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 12px rgba(255, 0, 160, 0.4);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  position: relative;
+  text-align: center;
+  line-height: 1.2;
+  font-size: 0.90rem;
+}
+
+.master_plan_btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: inherit;
+  z-index: -1;
+  animation: login-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.master_plan_btn:hover {
+  background: linear-gradient(135deg, rgb(105, 3, 68), rgb(60, 3, 134));
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 0 20px rgba(255, 0, 160, 0.6), 0 0 40px rgba(112, 0, 255, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.master_plan_btn:hover::after {
+  animation: none;
+}
+
+@media (max-width: 900px) {
+  .master_plan_btn {
+    display: none;
+  }
+}
+

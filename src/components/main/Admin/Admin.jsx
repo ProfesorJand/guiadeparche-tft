@@ -26,7 +26,7 @@ import AdminTFTCampeonesEarly from "./AdminTFTCampeonesEarly.jsx";
 import AdminCrearCampeonesTFT from "./AdminCrearCampeonesTFT.jsx";
 import AdminMercadoPagoPlanes from "./AdminMercadoPagoPlanes.jsx";
 import AdminMercadoPagoCupones from "./AdminMercadoPagoCupones.jsx";
-
+import AdminCorreos from "./AdminCorreos.jsx";
 const AdminPanel = ()=>{
     const admin = useStore($admin);
     const superAdmin = useStore($superAdmin);
@@ -110,6 +110,14 @@ const AdminPanel = ()=>{
         primario:"Publicidad GP",
         secundario:[
           { nombre: "Gestionar", admin: true, superAdmin: true }
+        ],
+        admin: false,
+        superAdmin: true
+      },
+      {
+        primario:"Correos",
+        secundario:[
+          { nombre: "Newsletters", admin: false, superAdmin: true }
         ],
         admin: false,
         superAdmin: true
@@ -250,6 +258,7 @@ const AdminPanel = ()=>{
                 {action === "Mercado Pago-Planes Suscripción / Pago único" && <AdminMercadoPagoPlanes />}
                 {action === "Mercado Pago-Cupones de descuentos" && <AdminMercadoPagoCupones />}
                 {action?.includes("Publicidad GP") && <AdminPublicidad />}
+                {action === "Correos-Newsletters" && <AdminCorreos />}
                 {/* {action === "champsItemsTierList" && <CrearTierListChampItem />} */}
             </div>
             <button className={style.btnCerrarSesion} onClick={()=>cerrarSesion()}>cerrar sesión</button>
