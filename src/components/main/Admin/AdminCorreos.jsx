@@ -47,7 +47,7 @@ export default function AdminCorreos() {
             alert("Por favor selecciona una plantilla HTML primero.");
             return;
         }
-        if (!confirm(`⚠️ ADVERTENCIA: Esto enviará la plantilla '${selectedTemplate}' a 50 usuarios reales de Argentina.\n¿Estás completamente seguro de continuar?`)) return;
+        if (!confirm(`⚠️ ADVERTENCIA: Esto iniciará el envío automático de la plantilla '${selectedTemplate}' a TODOS los usuarios pendientes de Argentina.\nEl proceso se hará en lotes de 50 para proteger el servidor.\n¿Estás completamente seguro de continuar?`)) return;
         
         setLoading(true);
         setLogs(`Iniciando envío automático por lotes...\nPlantilla: ${selectedTemplate}\nIncluir usuarios con Master Plan: ${incluirMp ? 'Sí' : 'No'}\n\n`);
@@ -70,10 +70,14 @@ export default function AdminCorreos() {
                 const text = await res.text();
                 setLogs(prev => prev + text);
 
-                // Comprobar si el script devolvió que ya no hay usuarios
-                if (text.includes("No hay usuarios pendientes") || text.includes("Total procesados en este lote: 0")) {
+                // Comprobar si el script devolvió que ya no hay usuarios o si hubo un error de PHP
+                if (text.includes("No hay usuarios pendientes") || text.includes("Total procesados en este lote: 0") || text.includes("Error:")) {
                     quedanUsuarios = false;
-                    setLogs(prev => prev + "\n\n✅ ¡Envío masivo completado! Todos los correos han sido enviados.");
+                    if (text.includes("Error:")) {
+                        setLogs(prev => prev + "\n\n❌ El proceso se detuvo porque ocurrió un error en el servidor PHP.");
+                    } else {
+                        setLogs(prev => prev + "\n\n✅ ¡Envío masivo completado! Todos los correos han sido enviados.");
+                    }
                 } else {
                     loteNum++;
                     setLogs(prev => prev + "\nEsperando 10 segundos antes de enviar el siguiente lote para proteger el servidor...\n");
