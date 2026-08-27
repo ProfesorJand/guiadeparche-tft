@@ -176,7 +176,7 @@ const Header1 = ({comp, allChampionsTFT, allItemsTFT, allAugmentsTFT, allTraitsT
                 </div>
               );
             })()}
-            <a href="/login" target="_blank" className={style.condicionOpEarly}>
+            <a href={typeof window !== 'undefined' ? `/login?redirect=${window.location.pathname}` : "/login"} target="_blank" className={style.condicionOpEarly}>
               <Tooltip type="default" text="Master Plan">
               <img src="/web/logoGPMP.webp" alt="Master Plan" className={style.imgMasterPlan}/>
               </Tooltip>
@@ -277,7 +277,7 @@ const Header2 = ({comp, setHoveredAugment, augmentRef,  allChampionsTFT, allItem
                 )
               })
             }
-              <a href="/login" target="_blank"className={style.augmentContainer}>
+              <a href={typeof window !== 'undefined' ? `/login?redirect=${window.location.pathname}` : "/login"} target="_blank"className={style.augmentContainer}>
             <Tooltip type="default" text="Master Plan">
                 <img src={"/web/logoGPMP.webp"} className={style.imgMasterPlan}/>
             </Tooltip>
@@ -348,7 +348,7 @@ const Header2 = ({comp, setHoveredAugment, augmentRef,  allChampionsTFT, allItem
                 </div>
               );
             })()}
-            <a href="/login" target="_blank" className={style.containerOp}>
+            <a href={typeof window !== 'undefined' ? `/login?redirect=${window.location.pathname}` : "/login"} target="_blank" className={style.containerOp}>
               <Tooltip type="default" text="Master Plan">
               <img src="/web/logoGPMP.webp" alt="Master Plan" className={style.imgMasterPlan}/>
               </Tooltip>
@@ -358,7 +358,7 @@ const Header2 = ({comp, setHoveredAugment, augmentRef,  allChampionsTFT, allItem
         {/* boton de plan B */}
         <div className={`${style.borderBlock} ${style.blockRow}`}>
           <h4>Plan B</h4>
-          <a href="/login" target="_blank" className={style.planBContainer}>
+          <a href={typeof window !== 'undefined' ? `/login?redirect=${window.location.pathname}` : "/login"} target="_blank" className={style.planBContainer}>
             <Tooltip type="default" text="Master Plan">
             <img src="/web/logoGPMP.webp" alt="Master Plan" className={style.imgMasterPlan}/>
             </Tooltip>
@@ -565,7 +565,7 @@ const FooterBuild = ({comp})=>{
           )
         })
       }
-      <a href="/login" target="_blank" className={`${style.containerVerMasBuilds} ${style.containerBuild}`}>
+      <a href={typeof window !== 'undefined' ? `/login?redirect=${window.location.pathname}` : "/login"} target="_blank" className={`${style.containerVerMasBuilds} ${style.containerBuild}`}>
         <Tooltip type="default" text="Master Plan">
         <img src="/web/logoGPMP.webp" alt="Logo Guiadeparche Master Plan" className={`${style.imgMasterPlan}`} />
         </Tooltip>

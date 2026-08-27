@@ -36,60 +36,63 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
 
   const tableroArray = customTablero || globalComposicion.posicionamiento?.[posicionIndex]?.tablero || [];
 
-  // Reconstruct boardData from state array
   const boardData = {};
   tableroArray.forEach(champ => {
     if (!champ) return;
     const hexIndex = champ.fila * 10 + champ.col;
 
+    const isEspinaNegra = champ.sinergiaExtraMissFortune === "Espina Negra";
     const champData = safeGlobalChampions.find(c => c.apiName === champ?.apiNameCampeon);
-    if (!champData) return;
+    
+    if (!champData && !isEspinaNegra) return;
 
-    const itemsData = (champ.apiNameItemsDelCampeon || []).map(apiNameItem => {
-      if (!apiNameItem) return null;
-      const itemData = safeGlobalItems.find(i => i.apiName === apiNameItem);
-      if (!itemData) return null;
+    let itemsData = [];
+    if (champData) {
+      itemsData = (champ.apiNameItemsDelCampeon || []).map(apiNameItem => {
+        if (!apiNameItem) return null;
+        const itemData = safeGlobalItems.find(i => i.apiName === apiNameItem);
+        if (!itemData) return null;
 
-      let traitExtra = null;
-      if (itemData.incompatibleTraits && itemData.incompatibleTraits.length > 0) {
-        traitExtra = safeGlobalTraits.find((t) => t.apiName === itemData.incompatibleTraits[0]);
-      }
+        let traitExtra = null;
+        if (itemData.incompatibleTraits && itemData.incompatibleTraits.length > 0) {
+          traitExtra = safeGlobalTraits.find((t) => t.apiName === itemData.incompatibleTraits[0]);
+        }
 
-      return {
-        apiName: itemData.apiName || itemData.name,
-        imagen: itemData.icon.startsWith("http") ? itemData.icon.toLowerCase().replace(".tex", ".png") : getLocalTftImage(itemData.icon, itemData.apiName?.includes('Augment') ? 'augments/choiceui' : 'items', versionNumber),
-        traitExtra
-      };
-    }).filter(Boolean);
+        return {
+          apiName: itemData.apiName || itemData.name,
+          imagen: itemData.icon.startsWith("http") ? itemData.icon.toLowerCase().replace(".tex", ".png") : getLocalTftImage(itemData.icon, itemData.apiName?.includes('Augment') ? 'augments/choiceui' : 'items', versionNumber),
+          traitExtra
+        };
+      }).filter(Boolean);
+    }
 
-    let resolvedTraits = (champData.traits || []).map(traitName => {
-      const traitObj = safeGlobalTraits.find(t => t.name === traitName || t.apiName === traitName);
-      if (traitObj) {
-        const { effects, desc, ...rest } = traitObj;
-        return rest;
-      }
-      return { apiName: traitName, name: traitName, icon: "hex-default.webp" }; // fallback
-    }).filter(Boolean);
+    let resolvedTraits = [];
+    if (champData) {
+      resolvedTraits = (champData.traits || []).map(traitName => {
+        const traitObj = safeGlobalTraits.find(t => t.name === traitName || t.apiName === traitName);
+        if (traitObj) {
+          const { effects, desc, ...rest } = traitObj;
+          return rest;
+        }
+        return { apiName: traitName, name: traitName, icon: "hex-default.webp" }; // fallback
+      }).filter(Boolean);
 
-    // Si tiene sinergiaExtra (Miss Fortune)
-    if (champ.sinergiaExtraMissFortune) {
-      // Remover la sinergia "undetermined" o genérica de MF si existe
-      resolvedTraits = resolvedTraits.filter(t => !t.apiName.toLowerCase().includes("undetermined") && !(t.icon && t.icon.toLowerCase().includes("undetermined")));
-
-      // Y agregar el trait de la sinergia extra
-      const extraTraitObj = safeGlobalTraits.find(t => t.apiName === champ.sinergiaExtraMissFortune || t.name === champ.sinergiaExtraMissFortune);
-      if (extraTraitObj) {
-        const { effects, desc, ...restExtra } = extraTraitObj;
-        resolvedTraits.push(restExtra);
+      // Si tiene sinergiaExtra (Miss Fortune)
+      if (champ.sinergiaExtraMissFortune && champ.sinergiaExtraMissFortune !== "Espina Negra") {
+        resolvedTraits = resolvedTraits.filter(t => !t.apiName.toLowerCase().includes("undetermined") && !(t.icon && t.icon.toLowerCase().includes("undetermined")));
+        const extraTraitObj = safeGlobalTraits.find(t => t.apiName === champ.sinergiaExtraMissFortune || t.name === champ.sinergiaExtraMissFortune);
+        if (extraTraitObj) {
+          const { effects, desc, ...restExtra } = extraTraitObj;
+          resolvedTraits.push(restExtra);
+        }
       }
     }
 
     boardData[hexIndex] = {
-      apiName: champData.apiName,
-      nombre: champData.name,
-      //itemData.icon.startsWith("http") ? itemData.icon.toLowerCase().replace(".tex", ".png") : getLocalTftImage(itemData.icon, itemData.apiName?.includes('Augment') ? 'augments/choiceui' : 'items'),
-      imagen: champData.tileIcon.includes("http") ? champData.tileIcon.toLowerCase().replace(".tex", ".png") : getLocalTftImage(champData.tileIcon, 'champions/tileIcon', versionNumber),
-      coste: champData.cost,
+      apiName: champData ? champData.apiName : null,
+      nombre: champData ? champData.name : null,
+      imagen: champData ? (champData.tileIcon.includes("http") ? champData.tileIcon.toLowerCase().replace(".tex", ".png") : getLocalTftImage(champData.tileIcon, 'champions/tileIcon', versionNumber)) : null,
+      coste: champData ? champData.cost : 0,
       traits: resolvedTraits,
       items: itemsData,
       estrellas: champ.estrella || 1,
@@ -115,6 +118,7 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
 
   const synergiesCount = {};
   Object.values(boardData).forEach((champion) => {
+    if (!champion.apiName) return; // Skip empty hexes like Espina Negra
     const collectedTraits = new Set();
     champion.traits.forEach((trait) => {
       collectedTraits.add(trait.apiName);
@@ -227,7 +231,7 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
         items: [],
         estrellas: 1,
         hexagono: hexIndex,
-        extraSynergy: null
+        extraSynergy: targetChampion?.extraSynergy === "Espina Negra" ? "Espina Negra" : null
       };
 
       if (isFromBoard) {
@@ -347,7 +351,8 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
 
           {row.map(hexIndex => {
             const champion = boardData[hexIndex];
-            const hexColor = champion ? championsColor[champion.coste] || championsColor[0] : championsColor[0];
+            const hexColor = champion && champion.apiName ? championsColor[champion.coste] || championsColor[0] : championsColor[0];
+            const isEspinaNegra = champion && champion.extraSynergy === "Espina Negra";
 
             return (
               <div
@@ -356,10 +361,34 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
                 onDrop={readOnly ? undefined : (e) => handleDrop(e, hexIndex)}
                 onDragOver={readOnly ? undefined : (e) => e.preventDefault()}
                 onContextMenu={readOnly ? undefined : (e) => handleContextMenu(e, hexIndex)}
+                style={{ 
+                  boxShadow: isEspinaNegra ? "0 0 15px 3px rgba(128, 0, 128, 0.8)" : "none", 
+                  borderRadius: "50%",
+                  transition: "box-shadow 0.3s ease" 
+                }}
               >
-                <div className={style.poligon} style={{ backgroundColor: hexColor }}></div>
+                <div 
+                  className={style.poligon} 
+                  style={{ 
+                    backgroundColor: hexColor,
+                    backgroundImage: isEspinaNegra && (!champion || !champion.apiName) ? "radial-gradient(circle at center, #6b21a8 0%, #3b0764 40%, #000000 100%)" : "none",
+                    boxShadow: isEspinaNegra && (!champion || !champion.apiName) ? "inset 0 0 20px rgba(168, 85, 247, 0.5)" : "none"
+                  }}
+                >
+                  {isEspinaNegra && (!champion || !champion.apiName) && (
+                    <div style={{
+                      position: "absolute",
+                      width: "100%",
+                      height: "100%",
+                      background: "conic-gradient(from 0deg, transparent 0%, rgba(168, 85, 247, 0.4) 25%, transparent 50%, rgba(168, 85, 247, 0.4) 75%, transparent 100%)",
+                      animation: "spin 4s linear infinite",
+                      borderRadius: "50%",
+                      opacity: 0.7
+                    }}></div>
+                  )}
+                </div>
 
-                {champion && (
+                {champion && champion.apiName && (
                   <div
                     draggable={!readOnly}
                     onDragStart={readOnly ? undefined : (e) => handleDragStartChampion(e, hexIndex, champion)}
@@ -410,15 +439,16 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
                       ))}
                     </div>
 
-                    {activeMenu === hexIndex && (
-                      <ContextMenuBuilderNew
-                        hexIndex={hexIndex}
-                        boardData={boardData}
-                        updateTablero={updateTablero}
-                        setActiveMenu={setActiveMenu}
-                      />
-                    )}
                   </div>
+                )}
+
+                {activeMenu === hexIndex && (
+                  <ContextMenuBuilderNew
+                    hexIndex={hexIndex}
+                    boardData={boardData}
+                    updateTablero={updateTablero}
+                    setActiveMenu={setActiveMenu}
+                  />
                 )}
               </div>
             );

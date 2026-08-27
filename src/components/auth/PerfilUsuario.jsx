@@ -59,12 +59,12 @@ const PerfilUsuario = () => {
   useEffect(() => {
     if (activeTab === 'logout') {
       logOut();
-      window.location.href = '/login'; // O redirigir a donde prefieras
+      window.location.href = `/login?redirect=${window.location.pathname}`; // O redirigir a donde prefieras
     }
   }, [activeTab]);
 
   if (!user) {
-    window.location.href = '/login';
+    window.location.href = `/login?redirect=${window.location.pathname}`;
   }
 
   const renderUserData = () => (

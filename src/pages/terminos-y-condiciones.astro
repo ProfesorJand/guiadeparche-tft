@@ -42,7 +42,7 @@ import Main from '@components/main/Main.astro';
 
       <div class="footer-note">
         <p>Última actualización: {new Date().toLocaleDateString('es-ES')}</p>
-        <a href="/login" class="back-link">Volver al inicio de sesión</a>
+        <a href={`/login?redirect=${Astro.url.pathname}`} class="back-link">Volver al inicio de sesión</a>
       </div>
     </div>
   </Main>

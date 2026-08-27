@@ -18,7 +18,7 @@ const MasterPlanDynamicBTN = ({ layout = 'row', className = '', isIndividual = f
   // Estado por defecto (cargando o SSR)
   let text = isIndividual ? "¿Quieres ver más composiciones de TFT?" : "¿Quieres probar el TFT Master Plan antes que nadie?";
   let buttonText = isIndividual ? "Meta Comps TFT →" : "Pre-Regístrate para acceder al master plan →";
-  let link = isIndividual ? "/tft/meta-comps-tier-list-teamfight-tactics/" : "/login";
+  let link = isIndividual ? "/tft/meta-comps-tier-list-teamfight-tactics/" : (typeof window !== 'undefined' ? `/login?redirect=${window.location.pathname}` : "/login");
 
   // Si ya estamos en el cliente, evaluamos los estados
   if (mounted) {
@@ -31,7 +31,7 @@ const MasterPlanDynamicBTN = ({ layout = 'row', className = '', isIndividual = f
         // Caso 1: No logeado
         text = "¿Quieres probar el TFT Master Plan antes que nadie?";
         buttonText = "Pre-Regístrate para acceder al master plan →";
-        link = "/login";
+        link = typeof window !== 'undefined' ? `/login?redirect=${window.location.pathname}` : "/login";
       } else if (user && !hasMasterPlan) {
         // Caso 2: Logeado, sin master plan
         text = "Desbloquea todo el potencial de TFT";
@@ -41,7 +41,7 @@ const MasterPlanDynamicBTN = ({ layout = 'row', className = '', isIndividual = f
         // Caso 3: Logeado, con master plan
         text = "¡Disfruta de tus beneficios exclusivos!";
         buttonText = "Accede al Master Plan →";
-        link = "/tft/meta-comps-tier-list-teamfight-tactics/master-plan";
+        link = "/tft/master-plan/app";
       }
     }
   }

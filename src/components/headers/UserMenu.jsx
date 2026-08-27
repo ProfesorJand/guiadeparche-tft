@@ -32,7 +32,7 @@ const UserMenu = () => {
       link = "/tft/master-plan";
     } else if (user && hasMasterPlan) {
       text = "Accede al Master Plan";
-      link = "/tft/meta-comps-tier-list-teamfight-tactics/master-plan";
+      link = "/tft/master-plan/app";
     } else {
       return null;
     }
