@@ -23,7 +23,7 @@ const UserMenu = () => {
     };
   }, []);
 
-  const getMasterPlanBtn = () => {
+  const getMasterPlanBtn = (isMobile) => {
     let text = "";
     let link = "";
 
@@ -40,7 +40,7 @@ const UserMenu = () => {
     return (
       <a 
         href={link} 
-        className={btnStyles.button} 
+        className={`${btnStyles.button} ${isMobile ? styles.mobile_btn : styles.desktop_btn}`} 
         style={{ textDecoration: 'none', padding: '0.4rem 0.8rem', fontSize: '0.75rem', textAlign: 'center' }}
       >
         {text}
@@ -64,7 +64,7 @@ const UserMenu = () => {
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-      {getMasterPlanBtn()}
+      {getMasterPlanBtn(false)}
       <div 
         className={styles.user_profile} 
         ref={menuRef}
@@ -84,12 +84,40 @@ const UserMenu = () => {
           <div className={styles.email}>{user.email}</div>
         </div>
         <div className={styles.hr} />
-        
         <button onClick={() => window.location.href = "/perfil"} className={styles.btn}>Mi Perfil</button>
         <button onClick={() => setUser(null)} className={styles.btn + " " + styles.logout_btn}>Cerrar Sesión</button>
       </div>
     </div>
     </div>
+  );
+};
+
+export const MasterPlanMobileMenu = () => {
+  const user = useStore($user);
+  const hasMasterPlan = useStore($hasMasterPlan);
+
+  let link = "/tft/master-plan";
+  if (user && hasMasterPlan) {
+    link = "/tft/master-plan/app";
+  }
+
+  // Estilos pensados para mezclarse bien con el menú lateral móvil
+  return (
+    <a 
+      href={link} 
+      className={styles.mobile_menu_item}
+      style={{ 
+        display: 'block', 
+        padding: '18px 25px', 
+        color: '#00d4ff', 
+        fontWeight: 'bold', 
+        textDecoration: 'none', 
+        borderBottom: '1px solid rgba(255,255,255,0.05)',
+        fontSize: '1.1rem'
+      }}
+    >
+      👑 Accede al Master Plan
+    </a>
   );
 };
 
