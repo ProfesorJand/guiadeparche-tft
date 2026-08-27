@@ -1,15 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import style from './css/AdminCorreos.module.css';
 
 export default function AdminCorreos() {
+    const [activeTab, setActiveTab] = useState("envios");
     const [loading, setLoading] = useState(false);
     const [logs, setLogs] = useState("");
     const [testUser, setTestUser] = useState({ nombre: "", email: "", pais: "Argentina" });
     const [templates, setTemplates] = useState([]);
     const [selectedTemplate, setSelectedTemplate] = useState("");
     const [incluirMp, setIncluirMp] = useState(false);
+    
+    const [trackingData, setTrackingData] = useState(null);
+    const [trackingLoading, setTrackingLoading] = useState(false);
 
-    React.useEffect(() => {
+    useEffect(() => {
         // Asumiendo que listar_templates.php está en /templates_html/ en GoDaddy
         fetch('https://api.guiadeparche.com/tft/templates_html/listar_templates.php')
             .then(res => res.json())
@@ -20,7 +24,23 @@ export default function AdminCorreos() {
                 }
             })
             .catch(e => console.error("Error cargando templates:", e));
+            
+        fetchTrackingData();
     }, []);
+
+    const fetchTrackingData = async () => {
+        setTrackingLoading(true);
+        try {
+            const res = await fetch('https://api.guiadeparche.com/tft/correos/obtener_seguimiento_correos.php');
+            const data = await res.json();
+            if (data.success) {
+                setTrackingData(data);
+            }
+        } catch (e) {
+            console.error("Error cargando seguimiento:", e);
+        }
+        setTrackingLoading(false);
+    };
 
     const sendTestEmail = async () => {
         if (!testUser.nombre || !testUser.email) {
@@ -100,76 +120,171 @@ export default function AdminCorreos() {
     return (
         <div className={style.container}>
             <h2>Gestión de Correos y Newsletters</h2>
-            <p>Desde aquí puedes disparar los scripts de envío alojados en tu servidor.</p>
             
-            <div className={style.testForm}>
-                <h3>Enviar Prueba Personalizada</h3>
-                <p>Déjalo vacío para enviar a Juan y Jorge por defecto.</p>
-                <div className={style.formGroupRow}>
-                    <input type="text" placeholder="Nombre" value={testUser.nombre} onChange={e => setTestUser({...testUser, nombre: e.target.value})} />
-                    <input type="email" placeholder="Correo Electrónico" value={testUser.email} onChange={e => setTestUser({...testUser, email: e.target.value})} />
-                    <input type="text" placeholder="País" value={testUser.pais} onChange={e => setTestUser({...testUser, pais: e.target.value})} />
-                </div>
+            <div className={style.tabsContainer}>
+                <button 
+                    className={`${style.tabBtn} ${activeTab === 'envios' ? style.activeTab : ''}`}
+                    onClick={() => setActiveTab('envios')}
+                >
+                    ✉️ Envíos
+                </button>
+                <button 
+                    className={`${style.tabBtn} ${activeTab === 'seguimiento' ? style.activeTab : ''}`}
+                    onClick={() => setActiveTab('seguimiento')}
+                >
+                    📊 Seguimiento
+                </button>
             </div>
+            
+            {activeTab === 'envios' && (
+                <>
+                    <p>Desde aquí puedes disparar los scripts de envío alojados en tu servidor.</p>
+                    
+                    <div className={style.testForm}>
+                        <h3>Enviar Prueba Personalizada</h3>
+                        <p>Déjalo vacío para enviar a Juan y Jorge por defecto.</p>
+                        <div className={style.formGroupRow}>
+                            <input type="text" placeholder="Nombre" value={testUser.nombre} onChange={e => setTestUser({...testUser, nombre: e.target.value})} />
+                            <input type="email" placeholder="Correo Electrónico" value={testUser.email} onChange={e => setTestUser({...testUser, email: e.target.value})} />
+                            <input type="text" placeholder="País" value={testUser.pais} onChange={e => setTestUser({...testUser, pais: e.target.value})} />
+                        </div>
+                    </div>
 
-            <div className={style.testForm} style={{ marginTop: '20px' }}>
-                <h3>Opciones de Campaña Masiva</h3>
-                <p>Configura a quién y qué enviar antes de disparar el lote de correos reales.</p>
-                <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '15px', flexWrap: 'wrap' }}>
-                    <div>
-                        <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>Plantilla HTML:</label>
-                        <select 
-                            value={selectedTemplate} 
-                            onChange={e => setSelectedTemplate(e.target.value)}
-                            style={{ padding: '10px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.2)', background: 'rgba(0,0,0,0.5)', color: 'white', minWidth: '280px', fontSize: '1rem' }}
+                    <div className={style.testForm} style={{ marginTop: '20px' }}>
+                        <h3>Opciones de Campaña Masiva</h3>
+                        <p>Configura a quién y qué enviar antes de disparar el lote de correos reales.</p>
+                        <div style={{ display: 'flex', gap: '20px', alignItems: 'center', marginBottom: '15px', flexWrap: 'wrap' }}>
+                            <div>
+                                <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>Plantilla HTML:</label>
+                                <select 
+                                    value={selectedTemplate} 
+                                    onChange={e => setSelectedTemplate(e.target.value)}
+                                    style={{ padding: '10px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.2)', background: 'rgba(0,0,0,0.5)', color: 'white', minWidth: '280px', fontSize: '1rem' }}
+                                >
+                                    {templates.length === 0 ? <option value="">Cargando plantillas...</option> : null}
+                                    {templates.map(t => <option key={t} value={t}>{t}</option>)}
+                                </select>
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '25px' }}>
+                                <input 
+                                    type="checkbox" 
+                                    id="incluir_mp"
+                                    checked={incluirMp} 
+                                    onChange={e => setIncluirMp(e.target.checked)} 
+                                    style={{ width: '20px', height: '20px', cursor: 'pointer' }}
+                                />
+                                <label htmlFor="incluir_mp" style={{ cursor: 'pointer', fontSize: '1rem', color: '#ffb800', fontWeight: 'bold' }}>
+                                    Incluir usuarios que YA compraron el Master Plan
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className={style.buttonContainer}>
+                        <button 
+                            className={style.btnTest} 
+                            onClick={sendTestEmail} 
+                            disabled={loading}
                         >
-                            {templates.length === 0 ? <option value="">Cargando plantillas...</option> : null}
-                            {templates.map(t => <option key={t} value={t}>{t}</option>)}
-                        </select>
+                            {loading ? "Ejecutando..." : "📨 Enviar Correo de Prueba"}
+                        </button>
+                        
+                        <button 
+                            className={style.btnReal} 
+                            onClick={sendBatchEmail} 
+                            disabled={loading}
+                        >
+                            {loading ? "Enviando Lotes..." : "🚀 Iniciar Envío Masivo Automático"}
+                        </button>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '25px' }}>
-                        <input 
-                            type="checkbox" 
-                            id="incluir_mp"
-                            checked={incluirMp} 
-                            onChange={e => setIncluirMp(e.target.checked)} 
-                            style={{ width: '20px', height: '20px', cursor: 'pointer' }}
+
+                    <div className={style.consoleContainer}>
+                        <div className={style.consoleHeader}>
+                            <span>Registro del Servidor (Output)</span>
+                            <button className={style.btnClear} onClick={clearLogs}>Limpiar</button>
+                        </div>
+                        <div 
+                            className={style.consoleOutput} 
+                            dangerouslySetInnerHTML={{ __html: logs || "Esperando acción..." }} 
                         />
-                        <label htmlFor="incluir_mp" style={{ cursor: 'pointer', fontSize: '1rem', color: '#ffb800', fontWeight: 'bold' }}>
-                            Incluir usuarios que YA compraron el Master Plan
-                        </label>
+                    </div>
+                </>
+            )}
+
+            {activeTab === 'seguimiento' && (
+                <div className={style.trackingContainer}>
+                    <button className={style.refreshBtn} onClick={fetchTrackingData} disabled={trackingLoading}>
+                        {trackingLoading ? "Actualizando..." : "🔄 Actualizar Datos"}
+                    </button>
+                    
+                    {trackingData && trackingData.stats && (
+                        <div className={style.statsGrid}>
+                            <div className={style.statCard}>
+                                <div className={style.statTitle}>Correos Enviados</div>
+                                <div className={style.statValue}>{trackingData.stats.total_enviados}</div>
+                            </div>
+                            <div className={style.statCard}>
+                                <div className={style.statTitle}>Correos Abiertos</div>
+                                <div className={style.statValue}>{trackingData.stats.total_leidos}</div>
+                            </div>
+                            <div className={style.statCard}>
+                                <div className={style.statTitle}>Clics Totales</div>
+                                <div className={style.statValue}>{trackingData.stats.total_clics}</div>
+                            </div>
+                            <div className={style.statCard}>
+                                <div className={style.statTitle}>Compradores MP</div>
+                                <div className={style.statValue}>{trackingData.stats.compradores_mp}</div>
+                            </div>
+                            <div className={style.statCard}>
+                                <div className={style.statTitle}>Recaudación (ARS)</div>
+                                <div className={style.statValue}>${trackingData.stats.recaudacion_total.toLocaleString('es-AR')}</div>
+                            </div>
+                        </div>
+                    )}
+
+                    <div className={style.tableContainer}>
+                        <table className={style.trackingTable}>
+                            <thead>
+                                <tr>
+                                    <th>Usuario</th>
+                                    <th>Email</th>
+                                    <th>Campaña</th>
+                                    <th>Estado</th>
+                                    <th>Abierto</th>
+                                    <th>Clics</th>
+                                    <th>Fecha</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {trackingData && trackingData.users && trackingData.users.length > 0 ? trackingData.users.map(u => (
+                                    <tr key={u.id}>
+                                        <td>
+                                            {u.nombre}
+                                            {u.master_plan == 1 && <span style={{marginLeft: '8px', color: '#ffb800', fontSize: '12px'}}>👑</span>}
+                                        </td>
+                                        <td>{u.email}</td>
+                                        <td>{u.campana}</td>
+                                        <td>
+                                            <span className={`${style.badge} ${u.estado === 'enviado' ? style.success : style.error}`}>
+                                                {u.estado}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span className={`${style.badge} ${u.leido == 1 ? style.success : style.neutral}`}>
+                                                {u.leido == 1 ? 'Sí' : 'No'}
+                                            </span>
+                                        </td>
+                                        <td>{u.clics}</td>
+                                        <td>{new Date(u.fecha_intento).toLocaleString()}</td>
+                                    </tr>
+                                )) : (
+                                    <tr><td colSpan="7" style={{textAlign: 'center', padding: '30px', color: '#888'}}>No hay registros de correos enviados.</td></tr>
+                                )}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-            </div>
-
-            <div className={style.buttonContainer}>
-                <button 
-                    className={style.btnTest} 
-                    onClick={sendTestEmail} 
-                    disabled={loading}
-                >
-                    {loading ? "Ejecutando..." : "📨 Enviar Correo de Prueba"}
-                </button>
-                
-                <button 
-                    className={style.btnReal} 
-                    onClick={sendBatchEmail} 
-                    disabled={loading}
-                >
-                    {loading ? "Enviando Lotes..." : "🚀 Iniciar Envío Masivo Automático"}
-                </button>
-            </div>
-
-            <div className={style.consoleContainer}>
-                <div className={style.consoleHeader}>
-                    <span>Registro del Servidor (Output)</span>
-                    <button className={style.btnClear} onClick={clearLogs}>Limpiar</button>
-                </div>
-                <div 
-                    className={style.consoleOutput} 
-                    dangerouslySetInnerHTML={{ __html: logs || "Esperando acción..." }} 
-                />
-            </div>
+            )}
         </div>
     );
 }
