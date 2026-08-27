@@ -24,14 +24,14 @@ const UserMenu = () => {
   }, []);
 
   const getMasterPlanBtn = (isMobile) => {
-    let text = "";
+    let content = null;
     let link = "";
 
     if (user && !hasMasterPlan) {
-      text = "Accede al Master Plan";
+      content = <>Accede al <br/> Master Plan</>;
       link = "/tft/master-plan";
     } else if (user && hasMasterPlan) {
-      text = "Accede al Master Plan";
+      content = <>Accede al <br/> Master Plan</>;
       link = "/tft/master-plan/app";
     } else {
       return null;
@@ -40,10 +40,9 @@ const UserMenu = () => {
     return (
       <a 
         href={link} 
-        className={`${btnStyles.button} ${isMobile ? styles.mobile_btn : styles.desktop_btn}`} 
-        style={{ textDecoration: 'none', padding: '0.4rem 0.8rem', fontSize: '0.75rem', textAlign: 'center' }}
+        className={styles.master_plan_btn} 
       >
-        {text}
+        {content}
       </a>
     );
   };
