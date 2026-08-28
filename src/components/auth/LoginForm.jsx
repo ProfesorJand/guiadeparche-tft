@@ -21,7 +21,7 @@ const LoginForm = () => {
     name: '',
     surname: '',
     dob: '',
-    country: '',
+    pais: '',
     phoneCode: '+54',
     phone: '',
     newsletter: false,
@@ -456,13 +456,13 @@ const LoginForm = () => {
         <div className={styles.form_group}>
           <label>País</label>
           <select
-            value={formData.country}
+            value={formData.pais}
             onChange={(e) => {
               const selectedCountry = e.target.value;
               const code = getCountryCode(selectedCountry);
               setFormData({
                 ...formData,
-                country: selectedCountry,
+                pais: selectedCountry,
                 phoneCode: code || formData.phoneCode
               });
             }}

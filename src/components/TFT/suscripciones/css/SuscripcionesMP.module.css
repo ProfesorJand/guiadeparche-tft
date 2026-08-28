@@ -416,3 +416,114 @@
   flex: 1;
 }
 
+.btnMP {
+  background-color: #009ee3;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 15px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 12px;
+}
+.btnMP:hover {
+  background-color: #0080b7;
+}
+
+.btnCripto {
+  background-color: #f0b90b;
+  color: #1e2329;
+  border: none;
+  border-radius: 8px;
+  padding: 15px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+.btnCripto:hover {
+  opacity: 0.9;
+}
+
+.btnCriptoDark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background-color: #1E2329;
+  color: #F0B90B;
+  border: 1px solid #F0B90B;
+  padding: 14px 20px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.btnCriptoDark:hover {
+  background-color: #2b3139;
+  box-shadow: 0 4px 15px rgba(240, 185, 11, 0.2);
+}
+
+.btnCriptoDark:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.btnPayPal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background-color: #003087;
+  color: #fff;
+  border: none;
+  padding: 14px 20px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.btnPayPal:hover {
+  background-color: #002266;
+  box-shadow: 0 4px 15px rgba(0, 48, 135, 0.3);
+}
+
+.btnPayPal:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.modalCloseBtn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  color: #a0a6b8;
+  font-size: 24px;
+  cursor: pointer;
+  line-height: 1;
+}
+.modalCloseBtn:hover {
+  color: #fff;
+}

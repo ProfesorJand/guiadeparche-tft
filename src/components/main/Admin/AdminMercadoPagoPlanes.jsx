@@ -75,6 +75,8 @@ const AdminMercadoPagoPlanes = () => {
     // --- OBLIGATORIOS ---
     reason: "",
     amount: "", // Monto base por defecto
+    amount_usd: "", // Precio en dólares
+    amount_usd_base: "", // Precio en dólares tachado
     amountBase: "", // Precio base regular del servicio (al que se sube tras promo)
     amountPromo: "", // Precio promocional inicial
     promoMonths: "0", // Meses que dura el precio promocional (0 = indefinido)
@@ -108,6 +110,8 @@ const AdminMercadoPagoPlanes = () => {
   const [editData, setEditData] = useState({
     reason: "",
     amount: "",
+    amount_usd: "",
+    amount_usd_base: "",
     amount_base: "",
     amount_promo: "",
     promo_months: 0,
@@ -188,6 +192,8 @@ const AdminMercadoPagoPlanes = () => {
       const payload = {
         reason: formData.reason,
         amount: parseFloat(formData.amountBase || formData.amount || 0),
+        amount_usd: parseFloat(formData.amount_usd || 0),
+        amount_usd_base: formData.amount_usd_base ? parseFloat(formData.amount_usd_base) : null,
         currency: formData.currency,
         frequency: parseInt(formData.frequency, 10),
         frequency_type: formData.frequencyType,
@@ -231,6 +237,8 @@ const AdminMercadoPagoPlanes = () => {
       setFormData({
         reason: "",
         amount: "",
+        amount_usd: "",
+        amount_usd_base: "",
         amountBase: "",
         amountPromo: "",
         promoMonths: "0",
@@ -347,6 +355,8 @@ const AdminMercadoPagoPlanes = () => {
     setEditData({
       reason: plan.reason,
       amount: plan.amount,
+      amount_usd: plan.amount_usd || "",
+      amount_usd_base: plan.amount_usd_base || "",
       amount_base: plan.amount_base || plan.amount || "",
       amount_promo: plan.amount_promo || "",
       promo_months: plan.promo_months || 0,
@@ -458,8 +468,8 @@ const AdminMercadoPagoPlanes = () => {
                 <div className={style.row}>
                   <div className={style.formGroup}>
                     <label className={style.label}>
-                      Precio Base Regular ($) *
-                      <Tooltip text="Precio real o normal del servicio (ej: 4990). Cuando expire la promoción o si no hay promo, este será el precio a cobrar." />
+                      {formData.tipo_plan === 'pago_unico' ? 'Precio Anterior / Tachado ($)' : 'Precio Base Regular ($) *'}
+                      <Tooltip text={formData.tipo_plan === 'pago_unico' ? 'El precio viejo que se mostrará tachado (Ej: 7000). Si no quieres mostrar descuento, pon el mismo valor que el actual.' : 'Precio real o normal del servicio (ej: 4990). Cuando expire la promoción o si no hay promo, este será el precio a cobrar.'} />
                     </label>
                     <input
                       type="number"
@@ -475,8 +485,39 @@ const AdminMercadoPagoPlanes = () => {
 
                   <div className={style.formGroup}>
                     <label className={style.label}>
-                      Precio Promocional / Descuento ($)
-                      <Tooltip text="Precio reducido especial para los primeros meses (ej: 2990). Será el monto inicial cobrado en Mercado Pago al registrarse." />
+                      {formData.tipo_plan === 'pago_unico' ? 'Precio USD (Tachado)' : 'Precio USD Anterior'}
+                    </label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      name="amount_usd_base"
+                      className={style.input}
+                      value={formData.amount_usd_base}
+                      onChange={handleChange}
+                      placeholder="Ej: 15.00"
+                    />
+                  </div>
+                  
+                  <div className={style.formGroup}>
+                    <label className={style.label}>
+                      {formData.tipo_plan === 'pago_unico' ? 'Precio USD (Final)' : 'Precio en Dólares (USD)'}
+                      <Tooltip text="Precio en Dólares para cobros con Criptomonedas (Ej: 10.00)." />
+                    </label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      name="amount_usd"
+                      className={style.input}
+                      value={formData.amount_usd}
+                      onChange={handleChange}
+                      placeholder="Ej: 10.00"
+                    />
+                  </div>
+
+                  <div className={style.formGroup}>
+                    <label className={style.label}>
+                      {formData.tipo_plan === 'pago_unico' ? 'Precio Actual de Venta ($ ARS) *' : 'Precio Promocional / Descuento ($ ARS)'}
+                      <Tooltip text={formData.tipo_plan === 'pago_unico' ? 'El precio final que pagará el usuario en este pago único (Ej: 5000).' : 'Precio reducido especial para los primeros meses (ej: 2990). Será el monto inicial cobrado en Mercado Pago al registrarse.'} />
                     </label>
                     <input
                       type="number"
@@ -491,21 +532,23 @@ const AdminMercadoPagoPlanes = () => {
                 </div>
 
                 <div className={style.row} style={{ marginTop: '10px' }}>
-                  <div className={style.formGroup}>
-                    <label className={style.label}>
-                      Duración de la Promoción (Meses)
-                      <Tooltip text="Cantidad de meses que durará el Precio Promocional (ej: 3). Tras cumplir estos meses, tu backend (Método 1) cobrará el Precio Base. Pon 0 para promo indefinida." />
-                    </label>
-                    <input
-                      type="number"
-                      name="promoMonths"
-                      className={style.input}
-                      value={formData.promoMonths}
-                      onChange={handleChange}
-                      min="0"
-                      placeholder="Ej: 3 (0 = indefinido)"
-                    />
-                  </div>
+                  {formData.tipo_plan === 'suscripcion' && (
+                    <div className={style.formGroup}>
+                      <label className={style.label}>
+                        Duración de la Promoción (Meses)
+                        <Tooltip text="Cantidad de meses que durará el Precio Promocional (ej: 3). Tras cumplir estos meses, tu backend (Método 1) cobrará el Precio Base. Pon 0 para promo indefinida." />
+                      </label>
+                      <input
+                        type="number"
+                        name="promoMonths"
+                        className={style.input}
+                        value={formData.promoMonths}
+                        onChange={handleChange}
+                        min="0"
+                        placeholder="Ej: 3 (0 = indefinido)"
+                      />
+                    </div>
+                  )}
 
                   <div className={style.formGroup}>
                     <label className={style.label}>
@@ -791,6 +834,14 @@ const AdminMercadoPagoPlanes = () => {
                               <input type="number" step="0.01" className={style.input} value={editData.amount} onChange={(e) => setEditData({ ...editData, amount: e.target.value })} />
                             </div>
                             <div className={style.formGroup}>
+                              <label className={style.label}>Precio en USD (Actual)</label>
+                              <input type="number" step="0.01" className={style.input} value={editData.amount_usd} onChange={(e) => setEditData({ ...editData, amount_usd: e.target.value })} />
+                            </div>
+                            <div className={style.formGroup}>
+                              <label className={style.label}>Precio en USD (Tachado)</label>
+                              <input type="number" step="0.01" className={style.input} value={editData.amount_usd_base} onChange={(e) => setEditData({ ...editData, amount_usd_base: e.target.value })} />
+                            </div>
+                            <div className={style.formGroup}>
                               <label className={style.label}>Tipo de Plan</label>
                               <select className={style.select} value={editData.tipo_plan} onChange={(e) => setEditData({ ...editData, tipo_plan: e.target.value })}>
                                 <option value="suscripcion">Suscripción</option>
@@ -897,6 +948,7 @@ const AdminMercadoPagoPlanes = () => {
                             
                             <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', fontSize: '0.95rem', color: '#a5acb8', marginBottom: '16px' }}>
                               <span style={{ color: '#00d4ff', fontWeight: 'bold' }}>💰 ${plan.amount} {plan.currency || 'ARS'}</span>
+                              {plan.amount_usd && <span style={{ color: '#f0b90b', fontWeight: 'bold' }}>💲 ${plan.amount_usd} USD</span>}
                               {plan.tipo_plan === 'pago_unico' ? (
                                 <span style={{ color: '#ffb800' }}>⚡ Pago Único ({plan.dias_acceso} días)</span>
                               ) : (

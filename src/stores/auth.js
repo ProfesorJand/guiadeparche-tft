@@ -99,6 +99,27 @@ if (typeof window !== 'undefined') {
 
       $admin.set(isAdminNormal);
       $superAdmin.set(isSuper);
+
+      // Verificación en segundo plano con la base de datos
+      fetch("https://api.guiadeparche.com/verify-user.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: userData.email })
+      })
+      .then(res => res.json())
+      .then(verifyData => {
+        if (verifyData.status === 'success' && verifyData.user) {
+          // Fusionar los datos para no perder isAdmin o isSuperAdmin si el script PHP no los devuelve
+          const currentUser = $user.get();
+          const mergedUser = { ...currentUser, ...verifyData.user };
+          setUser(mergedUser); // Esto actualizará el estado y el localStorage automáticamente
+        } else if (verifyData.status === 'error') {
+          // Si el usuario ya no existe o hay un error crítico, opcionalmente desloguear
+          // logOut();
+        }
+      })
+      .catch(e => console.error("Error validando usuario en background:", e));
+      
     } catch (e) {
       console.error('Error al cargar usuario guardado', e);
       localStorage.removeItem('gp_user');
