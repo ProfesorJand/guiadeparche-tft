@@ -478,8 +478,7 @@ const SuscripcionesMP = () => {
   return (
     <div className={style.container}>
       <div className={style.header}>
-        <h2 className={style.title}>Elige tu membresía del Master Plan</h2>
-        <p className={style.subtitle}>Accede a las mejores herramientas, composiciones actualizadas en tiempo real y conviértete en un Challenger.</p>
+        <h2 className={style.title}>Elige tu Master Plan</h2>
       </div>
 
       {loadingPlanes ? (
@@ -584,24 +583,6 @@ const SuscripcionesMP = () => {
                         <span className={style.period} style={{ color: '#a0a6b8', fontSize: '0.95rem' }}>{getPeriodText(plan)}</span>
                       </div>
 
-                      {/* Precio en USD dinámico si viene de la base de datos (amount_usd) */}
-                      {plan.amount_usd && (
-                        <div style={{ display: 'inline-flex', alignItems: 'center', background: 'rgba(240, 185, 11, 0.1)', border: '1px solid rgba(240, 185, 11, 0.3)', padding: '4px 10px', borderRadius: '8px', color: '#f0b90b', fontWeight: 'bold', fontSize: '1rem', marginTop: '4px', gap: '6px' }}>
-                           {couponStates[plan.id]?.status === 'success' ? (
-                              <>
-                                <span style={{ textDecoration: 'line-through', opacity: 0.6, fontSize: '0.85rem' }}>${parseFloat(plan.amount_usd_base || plan.amount_usd).toLocaleString('en-US', {minimumFractionDigits: 2})}</span>
-                                <span>≈ ${(parseFloat(plan.amount_usd) * (1 - (couponStates[plan.id].discountData.discountPct / 100))).toLocaleString('en-US', {minimumFractionDigits: 2})} USD</span>
-                              </>
-                           ) : (
-                              <>
-                                {plan.amount_usd_base && parseFloat(plan.amount_usd_base) > parseFloat(plan.amount_usd) && (
-                                  <span style={{ textDecoration: 'line-through', opacity: 0.6, fontSize: '0.85rem' }}>${parseFloat(plan.amount_usd_base).toLocaleString('en-US', {minimumFractionDigits: 2})}</span>
-                                )}
-                                <span>≈ ${parseFloat(plan.amount_usd).toLocaleString('en-US', {minimumFractionDigits: 2})} USD</span>
-                              </>
-                           )}
-                        </div>
-                      )}
                     </>
                   ) : (
                     <>
@@ -728,8 +709,11 @@ const SuscripcionesMP = () => {
                           <span className={style.loadingSpinner}></span>
                         ) : (
                           <>
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15.424 10.741L11.517 7.021C11.139 6.662 10.457 6.662 10.079 7.021L5.807 11.085C5.556 11.325 5.419 11.666 5.419 12.023C5.419 12.38 5.556 12.721 5.807 12.961L10.079 17.025C10.457 17.384 11.139 17.384 11.517 17.025L15.424 13.305V17.025C15.424 17.384 16.106 17.384 16.484 17.025C16.862 16.666 17 16.2 17 15.684V13.305C17 13.111 16.924 12.923 16.786 12.793L15.424 11.5V10.741ZM11.517 8.016L14.707 11.054L11.517 14.092V8.016Z" fill="white"/></svg>
-                            Pagar con Mercado Pago (ARS)
+                            <img src="/assets/icon-mercadopago.webp" alt="Mercado Pago" style={{ height: '24px', width: 'auto', objectFit: 'contain', display: 'block' }} />
+                            <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                              Pagar ${couponStates[selectedPlanForPayment.id]?.status === 'success' ? parseFloat(couponStates[selectedPlanForPayment.id].discountData.newPrice).toLocaleString('es-AR', {minimumFractionDigits: 0, maximumFractionDigits: 2}) : parseFloat(selectedPlanForPayment.amount).toLocaleString('es-AR', {minimumFractionDigits: 0, maximumFractionDigits: 2})} ARS
+                              con Mercado Pago
+                            </span>
                           </>
                         )}
                       </button>
@@ -745,12 +729,11 @@ const SuscripcionesMP = () => {
                         <span className={style.loadingSpinner}></span>
                       ) : (
                         <>
-                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 6.007 0h7.362c3.225 0 5.843 1.57 6.482 5.148.51 2.85-.013 5.394-1.437 7.236-1.503 1.942-3.87 2.766-6.425 2.766h-3.19c-.58 0-1.077.41-1.168.983l-1.555 5.204z" fill="#003087"/>
-                            <path d="M12.915 15.15H9.725c-.58 0-1.077.41-1.168.983l-1.555 5.204H2.47a.641.641 0 0 1-.633-.74l2.124-7.11 1.637-6.07c.083-.518.53-1.05 1.063-1.05h7.362c3.225 0 5.843 1.57 6.482 5.148.51 2.85-.013 5.394-1.437 7.236-1.503 1.942-3.87 2.766-6.425 2.766z" fill="#009CDE"/>
-                            <path d="M8.94 13.568h3.975c2.555 0 4.922-.824 6.425-2.766 1.107-1.431 1.64-3.328 1.438-5.59-1.025 3.31-3.692 4.417-6.842 4.417H9.96c-.58 0-1.077.41-1.168.983l-.707 2.37.855.586z" fill="#012169"/>
-                          </svg>
-                          Pagar con PayPal (USD)
+                          <img src="/assets/icon-paypal.webp" alt="PayPal" style={{ height: '24px', width: 'auto', objectFit: 'contain', display: 'block' }} />
+                          <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            Pagar ${couponStates[selectedPlanForPayment.id]?.status === 'success' ? (parseFloat(selectedPlanForPayment.amount_usd) * (1 - (couponStates[selectedPlanForPayment.id].discountData.discountPct / 100))).toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0}) : parseFloat(selectedPlanForPayment.amount_usd).toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0})} USD
+                            con PayPal
+                          </span>
                         </>
                       )}
                     </button>
