@@ -88,7 +88,7 @@ const PerfilUsuario = () => {
         </div>
         <div className={styles.infoCard}>
           <span className={styles.infoLabel}>País</span>
-          <div className={styles.infoValue}>{user.country || 'No especificado'}</div>
+          <div className={styles.infoValue}>{user.pais || 'No especificado'}</div>
         </div>
         <div className={styles.infoCard}>
           <span className={styles.infoLabel}>Teléfono Celular</span>

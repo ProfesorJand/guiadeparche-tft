@@ -50,7 +50,7 @@ const MasterPlanContent = () => {
         </>
       )}
 
-      {(user?.country === "Argentina") && !hasMasterPlan && <SuscripcionesMP />}
+      {!hasMasterPlan && user && <SuscripcionesMP />}
       
       <h2 className={styles.tituloCentrado}>Mejorar en TFT requiere conocimiento. El problema es cuánto tiempo tienes para conseguirlo.</h2>
       <p>

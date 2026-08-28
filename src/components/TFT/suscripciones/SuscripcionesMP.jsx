@@ -27,6 +27,7 @@ const SuscripcionesMP = () => {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [selectedPlanForPayment, setSelectedPlanForPayment] = useState(null);
   const [cryptoLoading, setCryptoLoading] = useState(false);
+  const [paypalLoading, setPayPalLoading] = useState(false);
 
   useEffect(() => {
     fetchPlanes();
@@ -56,8 +57,7 @@ const SuscripcionesMP = () => {
    */
   const getPeriodText = (plan) => {
     if (plan.tipo_plan === "pago_unico") {
-      const dias = parseInt(plan.dias_acceso || 0, 10);
-      return dias > 0 ? `por ${dias} días (Pago Único)` : `(Pago Único)`;
+      return `(Pago Único)`;
     }
 
     const freq = parseInt(plan.frequency || 1, 10);
@@ -151,8 +151,10 @@ const SuscripcionesMP = () => {
     const preapproval_id = params.get('preapproval_id');
     const payment_id = params.get('payment_id');
     const status = params.get('status');
+    const paypal_token = params.get('token');
+    const payer_id = params.get('PayerID');
 
-    console.log("2. ID de la URL:", { preapproval_id, payment_id, status });
+    console.log("2. ID de la URL:", { preapproval_id, payment_id, status, paypal_token, payer_id });
     console.log("3. Datos del usuario en este momento:", user);
 
     if (preapproval_id && user && user.email) {
@@ -183,7 +185,7 @@ const SuscripcionesMP = () => {
                 setUser(verifyData.user); // Actualiza el localStorage y el estado
              }
              alert("¡Suscripción Exitosa! Tu acceso al Master Plan ha sido activado en tu cuenta.");
-             window.history.replaceState({}, document.title, window.location.pathname + "?tab=master-plan");
+             window.history.replaceState({}, document.title, window.location.pathname);
              window.location.reload(); 
            });
         } else {
@@ -220,7 +222,7 @@ const SuscripcionesMP = () => {
                 setUser(verifyData.user); // Actualiza el localStorage y el estado
              }
              alert("¡Pago Exitoso! Los días de acceso al Master Plan han sido añadidos a tu cuenta.");
-             window.history.replaceState({}, document.title, window.location.pathname + "?tab=master-plan");
+             window.history.replaceState({}, document.title, window.location.pathname);
              window.location.reload(); 
            });
         } else {
@@ -229,7 +231,41 @@ const SuscripcionesMP = () => {
       })
       .catch(e => console.error("Error fatal al vincular pago único:", e));
     }
-    else if (preapproval_id || payment_id) {
+    else if (paypal_token && payer_id && user && user.email) {
+      console.log("4. Todo en orden, llamando a GoDaddy para capturar PAYPAL:", paypal_token);
+      fetch("https://api.guiadeparche.com/tft/paypal/capturar_pago_paypal.php", {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: paypal_token })
+      })
+      .then(async res => {
+        const text = await res.text();
+        return JSON.parse(text);
+      })
+      .then(data => {
+        if (data.success) {
+           // Refrescar los datos reales desde la base de datos
+           fetch("https://api.guiadeparche.com/verify-user.php", {
+             method: 'POST',
+             headers: { 'Content-Type': 'application/json' },
+             body: JSON.stringify({ email: user.email })
+           })
+           .then(res => res.json())
+           .then(verifyData => {
+             if (verifyData.status === 'success' && verifyData.user) {
+                setUser(verifyData.user); // Actualiza el localStorage y el estado
+             }
+             alert("¡Pago con PayPal Exitoso! Tu Master Plan ha sido activado/extendido.");
+             window.history.replaceState({}, document.title, window.location.pathname);
+             window.location.reload(); 
+           });
+        } else {
+           alert("Hubo un error al procesar el pago de PayPal: " + data.message);
+        }
+      })
+      .catch(e => console.error("Error fatal al capturar pago PayPal:", e));
+    }
+    else if (preapproval_id || payment_id || paypal_token) {
        console.log("⚠️ Hay un ID en la URL pero el usuario aún no tiene sesión cargada.");
     }
   }, [user]);
@@ -331,6 +367,42 @@ const SuscripcionesMP = () => {
       alert("Hubo un error de conexión con la pasarela cripto. Por favor intenta de nuevo.");
     } finally {
       setCryptoLoading(false);
+    }
+  };
+
+  const handlePayPalPayment = async () => {
+    const plan = selectedPlanForPayment;
+    if (!plan) return;
+
+    setPayPalLoading(true);
+    try {
+      console.log(`🚀 Redirigiendo a pago PayPal: ${plan.reason}`);
+      
+      const cState = couponStates[plan.id];
+      const codigoCupon = (cState && cState.status === 'success') ? cState.code : "";
+      
+      const res = await fetch("https://api.guiadeparche.com/tft/paypal/generar_pago_paypal.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user_email: user.email,
+          plan_id: plan.id,
+          codigo: codigoCupon,
+          return_url: window.location.href.split('?')[0]
+        })
+      });
+      
+      const data = await res.json();
+      if (data.success && data.invoice_url) {
+          window.location.href = data.invoice_url;
+      } else {
+          alert("Error al iniciar el pago con PayPal: " + (data.message || "No se pudo generar la orden."));
+      }
+    } catch (error) {
+      console.error("❌ Error de red al procesar PayPal:", error);
+      alert("Hubo un error de conexión con la pasarela de PayPal. Por favor intenta de nuevo.");
+    } finally {
+      setPayPalLoading(false);
     }
   };
 
@@ -466,6 +538,8 @@ const SuscripcionesMP = () => {
               ? Math.round(((parseFloat(basePrice) - parseFloat(plan.amount)) / parseFloat(basePrice)) * 100)
               : 0;
 
+            const isInternational = user && user.pais !== 'Argentina';
+
             return (
               <div
                 key={plan.id}
@@ -479,22 +553,85 @@ const SuscripcionesMP = () => {
 
                 
                 <div className={style.priceContainer} style={{ flexDirection: 'column', alignItems: 'flex-start', gap: '8px' }}>
-                  {hasDiscount && (
-                    <span className={style.oldPrice} style={{ marginRight: 0 }}>
-                      Antes: ${oldPriceFormatted} ARS
-                    </span>
-                  )}
-                  <div style={{ display: 'flex', alignItems: 'baseline', flexWrap: 'wrap', gap: '6px' }}>
-                    <span className={style.price}>
-                      ${priceFormatted} <span style={{ fontSize: '1.2rem', fontWeight: '600', color: '#a0a6b8' }}>ARS</span>
-                    </span>
-                    <span className={style.period}>{getPeriodText(plan)}</span>
-                  </div>
-                  {/* Precio en USD dinámico si viene de la base de datos (amount_usd) */}
-                  {plan.amount_usd && (
-                    <div style={{ display: 'inline-flex', alignItems: 'center', background: 'rgba(240, 185, 11, 0.1)', border: '1px solid rgba(240, 185, 11, 0.3)', padding: '4px 10px', borderRadius: '8px', color: '#f0b90b', fontWeight: 'bold', fontSize: '1rem', marginTop: '4px' }}>
-                       ≈ ${parseFloat(plan.amount_usd).toLocaleString('en-US', {minimumFractionDigits: 2})} USD
-                    </div>
+                  
+                  {!isInternational ? (
+                    <>
+                      {/* Old price ARS */}
+                      {couponStates[plan.id]?.status === 'success' ? (
+                        <span className={style.oldPrice} style={{ marginRight: 0, color: '#a0a6b8' }}>
+                          ${oldPriceFormatted} ARS
+                        </span>
+                      ) : (
+                        hasDiscount && (
+                          <span className={style.oldPrice} style={{ marginRight: 0, color: '#a0a6b8' }}>
+                            ${oldPriceFormatted} ARS
+                          </span>
+                        )
+                      )}
+
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                        <span className={style.price}>
+                          {couponStates[plan.id]?.status === 'success' ? (
+                             <>
+                               ${parseFloat(couponStates[plan.id].discountData.newPrice).toLocaleString('es-AR', {minimumFractionDigits: 0, maximumFractionDigits: 2})} <span style={{ fontSize: '1.2rem', fontWeight: '600', color: '#a0a6b8' }}>ARS</span>
+                             </>
+                          ) : (
+                             <>
+                               ${priceFormatted} <span style={{ fontSize: '1.2rem', fontWeight: '600', color: '#a0a6b8' }}>ARS</span>
+                             </>
+                          )}
+                        </span>
+                        <span className={style.period} style={{ color: '#a0a6b8', fontSize: '0.95rem' }}>{getPeriodText(plan)}</span>
+                      </div>
+
+                      {/* Precio en USD dinámico si viene de la base de datos (amount_usd) */}
+                      {plan.amount_usd && (
+                        <div style={{ display: 'inline-flex', alignItems: 'center', background: 'rgba(240, 185, 11, 0.1)', border: '1px solid rgba(240, 185, 11, 0.3)', padding: '4px 10px', borderRadius: '8px', color: '#f0b90b', fontWeight: 'bold', fontSize: '1rem', marginTop: '4px', gap: '6px' }}>
+                           {couponStates[plan.id]?.status === 'success' ? (
+                              <>
+                                <span style={{ textDecoration: 'line-through', opacity: 0.6, fontSize: '0.85rem' }}>${parseFloat(plan.amount_usd_base || plan.amount_usd).toLocaleString('en-US', {minimumFractionDigits: 2})}</span>
+                                <span>≈ ${(parseFloat(plan.amount_usd) * (1 - (couponStates[plan.id].discountData.discountPct / 100))).toLocaleString('en-US', {minimumFractionDigits: 2})} USD</span>
+                              </>
+                           ) : (
+                              <>
+                                {plan.amount_usd_base && parseFloat(plan.amount_usd_base) > parseFloat(plan.amount_usd) && (
+                                  <span style={{ textDecoration: 'line-through', opacity: 0.6, fontSize: '0.85rem' }}>${parseFloat(plan.amount_usd_base).toLocaleString('en-US', {minimumFractionDigits: 2})}</span>
+                                )}
+                                <span>≈ ${parseFloat(plan.amount_usd).toLocaleString('en-US', {minimumFractionDigits: 2})} USD</span>
+                              </>
+                           )}
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      {couponStates[plan.id]?.status === 'success' ? (
+                        <span className={style.oldPrice} style={{ marginRight: 0, color: '#a0a6b8' }}>
+                          ${parseFloat(plan.amount_usd_base || plan.amount_usd).toLocaleString('en-US', {minimumFractionDigits: 2})} USD
+                        </span>
+                      ) : (
+                        plan.amount_usd_base && parseFloat(plan.amount_usd_base) > parseFloat(plan.amount_usd) && (
+                          <span className={style.oldPrice} style={{ marginRight: 0, color: '#a0a6b8' }}>
+                            ${parseFloat(plan.amount_usd_base).toLocaleString('en-US', {minimumFractionDigits: 2})} USD
+                          </span>
+                        )
+                      )}
+
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                        <span className={style.price} style={{ color: '#f0b90b' }}>
+                          {couponStates[plan.id]?.status === 'success' ? (
+                             <>
+                               ${(parseFloat(plan.amount_usd) * (1 - (couponStates[plan.id].discountData.discountPct / 100))).toLocaleString('en-US', {minimumFractionDigits: 2})} <span style={{ fontSize: '1.2rem', fontWeight: '600', color: '#f0b90b' }}>USD</span>
+                             </>
+                          ) : (
+                             <>
+                               ${parseFloat(plan.amount_usd).toLocaleString('en-US', {minimumFractionDigits: 2})} <span style={{ fontSize: '1.2rem', fontWeight: '600', color: '#f0b90b' }}>USD</span>
+                             </>
+                          )}
+                        </span>
+                        <span className={style.period} style={{ color: '#a0a6b8', fontSize: '0.95rem' }}>{getPeriodText(plan)}</span>
+                      </div>
+                    </>
                   )}
                 </div>
                 {hasDiscount && (
@@ -538,7 +675,11 @@ const SuscripcionesMP = () => {
                       )}
                       {couponStates[plan.id]?.status === 'success' && (
                         <div style={{ color: '#00ff88', fontSize: '0.85rem', marginTop: '2px', background: 'rgba(0,255,136,0.1)', padding: '6px', borderRadius: '6px' }}>
-                          ✅ ¡Cupón aplicado! El total ahora es <strong>${parseFloat(couponStates[plan.id]?.discountData?.newPrice).toLocaleString('es-AR')} ARS</strong>
+                          ✅ ¡Cupón aplicado! El total ahora es {isInternational ? (
+                            <strong>${(parseFloat(plan.amount_usd || 0) * (1 - (couponStates[plan.id].discountData.discountPct / 100))).toLocaleString('en-US', {minimumFractionDigits: 2})} USD</strong>
+                          ) : (
+                            <><strong>${parseFloat(couponStates[plan.id]?.discountData?.newPrice).toLocaleString('es-AR')} ARS</strong> o <strong>${(parseFloat(plan.amount_usd || 0) * (1 - (couponStates[plan.id].discountData.discountPct / 100))).toLocaleString('en-US', {minimumFractionDigits: 2})} USD</strong></>
+                          )}
                         </div>
                       )}
                     </div>
@@ -555,7 +696,7 @@ const SuscripcionesMP = () => {
                   {isLoading ? (
                     <span className={style.loadingSpinner}></span>
                   ) : (
-                    `Suscribirme ahora ${couponStates[plan.id]?.status === 'success' ? `($${parseFloat(couponStates[plan.id]?.discountData?.newPrice).toLocaleString('es-AR')})` : ''}`
+                    `Suscribirme ahora ${couponStates[plan.id]?.status === 'success' ? `(Dcto. Aplicado)` : ''}`
                   )}
                 </button>
               </div>
@@ -577,7 +718,7 @@ const SuscripcionesMP = () => {
                   <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
                     
                     {/* Botón de Mercado Pago (Solo si es de Argentina) */}
-                    {user?.country === 'Argentina' && (
+                    {user?.pais === 'Argentina' && (
                       <button 
                         className={style.btnMP} 
                         onClick={handleMercadoPagoPayment}
@@ -594,7 +735,27 @@ const SuscripcionesMP = () => {
                       </button>
                     )}
 
-                    {/* Botón de Criptomonedas (Internacional - NOWPayments) */}
+                    {/* Botón de PayPal (Internacional) */}
+                    <button 
+                      className={style.btnPayPal} 
+                      onClick={handlePayPalPayment}
+                      disabled={loadingPlanId === selectedPlanForPayment.id || paypalLoading}
+                    >
+                      {paypalLoading ? (
+                        <span className={style.loadingSpinner}></span>
+                      ) : (
+                        <>
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M7.076 21.337H2.47a.641.641 0 0 1-.633-.74L4.944.901C5.026.382 5.474 0 6.007 0h7.362c3.225 0 5.843 1.57 6.482 5.148.51 2.85-.013 5.394-1.437 7.236-1.503 1.942-3.87 2.766-6.425 2.766h-3.19c-.58 0-1.077.41-1.168.983l-1.555 5.204z" fill="#003087"/>
+                            <path d="M12.915 15.15H9.725c-.58 0-1.077.41-1.168.983l-1.555 5.204H2.47a.641.641 0 0 1-.633-.74l2.124-7.11 1.637-6.07c.083-.518.53-1.05 1.063-1.05h7.362c3.225 0 5.843 1.57 6.482 5.148.51 2.85-.013 5.394-1.437 7.236-1.503 1.942-3.87 2.766-6.425 2.766z" fill="#009CDE"/>
+                            <path d="M8.94 13.568h3.975c2.555 0 4.922-.824 6.425-2.766 1.107-1.431 1.64-3.328 1.438-5.59-1.025 3.31-3.692 4.417-6.842 4.417H9.96c-.58 0-1.077.41-1.168.983l-.707 2.37.855.586z" fill="#012169"/>
+                          </svg>
+                          Pagar con PayPal (USD)
+                        </>
+                      )}
+                    </button>
+
+                    {/* Botón de Criptomonedas (Internacional - NOWPayments) - OCULTO POR AHORA 
                     <button 
                       className={style.btnCriptoDark} 
                       onClick={handleCryptoPayment}
@@ -612,6 +773,7 @@ const SuscripcionesMP = () => {
                     <p style={{ fontSize: '0.8rem', color: '#a0a6b8', textAlign: 'center', margin: 0, marginTop: '8px' }}>
                       Aceptamos USDT, BTC, ETH y más de 50 criptos mediante NOWPayments.
                     </p>
+                    */}
 
                   </div>
                 </div>
