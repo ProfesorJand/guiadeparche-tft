@@ -75,6 +75,7 @@ const AdminMercadoPagoPlanes = () => {
     // --- OBLIGATORIOS ---
     reason: "",
     amount: "", // Monto base por defecto
+    amount_usd: "", // Precio en dólares
     amountBase: "", // Precio base regular del servicio (al que se sube tras promo)
     amountPromo: "", // Precio promocional inicial
     promoMonths: "0", // Meses que dura el precio promocional (0 = indefinido)
@@ -108,6 +109,7 @@ const AdminMercadoPagoPlanes = () => {
   const [editData, setEditData] = useState({
     reason: "",
     amount: "",
+    amount_usd: "",
     amount_base: "",
     amount_promo: "",
     promo_months: 0,
@@ -188,6 +190,7 @@ const AdminMercadoPagoPlanes = () => {
       const payload = {
         reason: formData.reason,
         amount: parseFloat(formData.amountBase || formData.amount || 0),
+        amount_usd: parseFloat(formData.amount_usd || 0),
         currency: formData.currency,
         frequency: parseInt(formData.frequency, 10),
         frequency_type: formData.frequencyType,
@@ -231,6 +234,7 @@ const AdminMercadoPagoPlanes = () => {
       setFormData({
         reason: "",
         amount: "",
+        amount_usd: "",
         amountBase: "",
         amountPromo: "",
         promoMonths: "0",
@@ -347,6 +351,7 @@ const AdminMercadoPagoPlanes = () => {
     setEditData({
       reason: plan.reason,
       amount: plan.amount,
+      amount_usd: plan.amount_usd || "",
       amount_base: plan.amount_base || plan.amount || "",
       amount_promo: plan.amount_promo || "",
       promo_months: plan.promo_months || 0,
@@ -475,7 +480,23 @@ const AdminMercadoPagoPlanes = () => {
 
                   <div className={style.formGroup}>
                     <label className={style.label}>
-                      Precio Promocional / Descuento ($)
+                      Precio en Dólares (USD)
+                      <Tooltip text="Precio en Dólares para cobros con Criptomonedas (Ej: 10.00)." />
+                    </label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      name="amount_usd"
+                      className={style.input}
+                      value={formData.amount_usd}
+                      onChange={handleChange}
+                      placeholder="Ej: 10.00"
+                    />
+                  </div>
+
+                  <div className={style.formGroup}>
+                    <label className={style.label}>
+                      Precio Promocional / Descuento ($ ARS)
                       <Tooltip text="Precio reducido especial para los primeros meses (ej: 2990). Será el monto inicial cobrado en Mercado Pago al registrarse." />
                     </label>
                     <input
@@ -791,6 +812,10 @@ const AdminMercadoPagoPlanes = () => {
                               <input type="number" step="0.01" className={style.input} value={editData.amount} onChange={(e) => setEditData({ ...editData, amount: e.target.value })} />
                             </div>
                             <div className={style.formGroup}>
+                              <label className={style.label}>Precio en USD (Cripto)</label>
+                              <input type="number" step="0.01" className={style.input} value={editData.amount_usd} onChange={(e) => setEditData({ ...editData, amount_usd: e.target.value })} />
+                            </div>
+                            <div className={style.formGroup}>
                               <label className={style.label}>Tipo de Plan</label>
                               <select className={style.select} value={editData.tipo_plan} onChange={(e) => setEditData({ ...editData, tipo_plan: e.target.value })}>
                                 <option value="suscripcion">Suscripción</option>
@@ -897,6 +922,7 @@ const AdminMercadoPagoPlanes = () => {
                             
                             <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', fontSize: '0.95rem', color: '#a5acb8', marginBottom: '16px' }}>
                               <span style={{ color: '#00d4ff', fontWeight: 'bold' }}>💰 ${plan.amount} {plan.currency || 'ARS'}</span>
+                              {plan.amount_usd && <span style={{ color: '#f0b90b', fontWeight: 'bold' }}>💲 ${plan.amount_usd} USD</span>}
                               {plan.tipo_plan === 'pago_unico' ? (
                                 <span style={{ color: '#ffb800' }}>⚡ Pago Único ({plan.dias_acceso} días)</span>
                               ) : (

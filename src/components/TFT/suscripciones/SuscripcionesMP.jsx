@@ -23,6 +23,11 @@ const SuscripcionesMP = () => {
   // Estado para los cupones por plan (map de planId -> data)
   const [couponStates, setCouponStates] = useState({});
 
+  // Estado para el modal de pago
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [selectedPlanForPayment, setSelectedPlanForPayment] = useState(null);
+  const [cryptoLoading, setCryptoLoading] = useState(false);
+
   useEffect(() => {
     fetchPlanes();
   }, []);
@@ -239,12 +244,19 @@ const SuscripcionesMP = () => {
     }
 
     if (!plan.mp_plan_id) {
-      alert("⚠️ Este plan aún no tiene un ID de suscripción de Mercado Pago válido.");
+      alert("⚠️ Este plan aún no tiene un ID válido.");
       return;
     }
 
-    setLoadingPlanId(plan.id);
+    setSelectedPlanForPayment(plan);
+    setShowPaymentModal(true);
+  };
 
+  const handleMercadoPagoPayment = async () => {
+    const plan = selectedPlanForPayment;
+    if (!plan) return;
+    
+    setLoadingPlanId(plan.id);
     try {
       console.log(`🚀 Redirigiendo a pago de Mercado Pago: ${plan.reason}`);
       
@@ -253,7 +265,6 @@ const SuscripcionesMP = () => {
         const cState = couponStates[plan.id];
         const codigoCupon = (cState && cState.status === 'success') ? cState.code : "";
         
-        // Llamar al backend para generar la preferencia con el email y plan_id EXACTOS
         const res = await fetch("https://api.guiadeparche.com/tft/mercado_pago_mp/generar_pago_unico.php", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -282,9 +293,44 @@ const SuscripcionesMP = () => {
       
       window.location.href = finalUrl;
     } catch (error) {
-      console.error("❌ Error de red al procesar la suscripción:", error);
+      console.error("❌ Error de red al procesar Mercado Pago:", error);
       alert("Hubo un error de conexión al iniciar la suscripción. Por favor intenta de nuevo.");
       setLoadingPlanId(null);
+    }
+  };
+
+  const handleCryptoPayment = async () => {
+    const plan = selectedPlanForPayment;
+    if (!plan) return;
+
+    setCryptoLoading(true);
+    try {
+      console.log(`🚀 Redirigiendo a pago Cripto (NOWPayments): ${plan.reason}`);
+      
+      const cState = couponStates[plan.id];
+      const codigoCupon = (cState && cState.status === 'success') ? cState.code : "";
+      
+      const res = await fetch("https://api.guiadeparche.com/tft/cripto/generar_pago_cripto.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          user_email: user.email,
+          plan_id: plan.id,
+          codigo: codigoCupon
+        })
+      });
+      
+      const data = await res.json();
+      if (data.success && data.invoice_url) {
+          window.location.href = data.invoice_url;
+      } else {
+          alert("Error al iniciar el pago con cripto: " + (data.message || "No se pudo generar la factura."));
+      }
+    } catch (error) {
+      console.error("❌ Error de red al procesar Cripto:", error);
+      alert("Hubo un error de conexión con la pasarela cripto. Por favor intenta de nuevo.");
+    } finally {
+      setCryptoLoading(false);
     }
   };
 
@@ -360,7 +406,8 @@ const SuscripcionesMP = () => {
   return (
     <div className={style.container}>
       <div className={style.header}>
-        <h2 className={style.title}>Elige tu membresía del Master Plan con Mercado Pago (Argentina)</h2>
+        <h2 className={style.title}>Elige tu membresía del Master Plan</h2>
+        <p className={style.subtitle}>Accede a las mejores herramientas, composiciones actualizadas en tiempo real y conviértete en un Challenger.</p>
       </div>
 
       {loadingPlanes ? (
@@ -431,7 +478,7 @@ const SuscripcionesMP = () => {
                 <h3 className={style.planName}>{plan.reason}</h3>
 
                 
-                <div className={style.priceContainer} style={{ flexDirection: 'column', alignItems: 'flex-start', gap: '4px' }}>
+                <div className={style.priceContainer} style={{ flexDirection: 'column', alignItems: 'flex-start', gap: '8px' }}>
                   {hasDiscount && (
                     <span className={style.oldPrice} style={{ marginRight: 0 }}>
                       Antes: ${oldPriceFormatted} ARS
@@ -443,6 +490,12 @@ const SuscripcionesMP = () => {
                     </span>
                     <span className={style.period}>{getPeriodText(plan)}</span>
                   </div>
+                  {/* Precio en USD dinámico si viene de la base de datos (amount_usd) */}
+                  {plan.amount_usd && (
+                    <div style={{ display: 'inline-flex', alignItems: 'center', background: 'rgba(240, 185, 11, 0.1)', border: '1px solid rgba(240, 185, 11, 0.3)', padding: '4px 10px', borderRadius: '8px', color: '#f0b90b', fontWeight: 'bold', fontSize: '1rem', marginTop: '4px' }}>
+                       ≈ ${parseFloat(plan.amount_usd).toLocaleString('en-US', {minimumFractionDigits: 2})} USD
+                    </div>
+                  )}
                 </div>
                 {hasDiscount && (
                   <div className={style.discountLabel}>
@@ -508,6 +561,62 @@ const SuscripcionesMP = () => {
               </div>
             );
           })}
+            {/* MODAL DE PAGO */}
+            {showPaymentModal && selectedPlanForPayment && (
+              <div className={style.modalOverlay} onClick={() => setShowPaymentModal(false)}>
+                <div className={style.modalContent} onClick={e => e.stopPropagation()}>
+                  <button className={style.modalCloseBtn} onClick={() => setShowPaymentModal(false)}>×</button>
+                  
+                  <h3 className={style.modalTitle}>Método de Pago</h3>
+                  <p className={style.modalSubtitle}>
+                    Estás a punto de adquirir el <strong>{selectedPlanForPayment.reason}</strong>.
+                    <br />
+                    Elige cómo deseas pagar:
+                  </p>
+
+                  <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    
+                    {/* Botón de Mercado Pago (Solo si es de Argentina) */}
+                    {user?.country === 'Argentina' && (
+                      <button 
+                        className={style.btnMP} 
+                        onClick={handleMercadoPagoPayment}
+                        disabled={loadingPlanId === selectedPlanForPayment.id || cryptoLoading}
+                      >
+                        {loadingPlanId === selectedPlanForPayment.id ? (
+                          <span className={style.loadingSpinner}></span>
+                        ) : (
+                          <>
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15.424 10.741L11.517 7.021C11.139 6.662 10.457 6.662 10.079 7.021L5.807 11.085C5.556 11.325 5.419 11.666 5.419 12.023C5.419 12.38 5.556 12.721 5.807 12.961L10.079 17.025C10.457 17.384 11.139 17.384 11.517 17.025L15.424 13.305V17.025C15.424 17.384 16.106 17.384 16.484 17.025C16.862 16.666 17 16.2 17 15.684V13.305C17 13.111 16.924 12.923 16.786 12.793L15.424 11.5V10.741ZM11.517 8.016L14.707 11.054L11.517 14.092V8.016Z" fill="white"/></svg>
+                            Pagar con Mercado Pago (ARS)
+                          </>
+                        )}
+                      </button>
+                    )}
+
+                    {/* Botón de Criptomonedas (Internacional - NOWPayments) */}
+                    <button 
+                      className={style.btnCriptoDark} 
+                      onClick={handleCryptoPayment}
+                      disabled={loadingPlanId === selectedPlanForPayment.id || cryptoLoading}
+                    >
+                      {cryptoLoading ? (
+                        <span className={style.loadingSpinner}></span>
+                      ) : (
+                        <>
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" fill="#F0B90B"/><path d="M10.7424 16.262H13.6848L15.3408 12.631L13.6848 9H10.7424L9.08643 12.631L10.7424 16.262ZM12.2136 14.862V10.4H13.1328L14.1624 12.631L13.1328 14.862H12.2136Z" fill="#1E2329"/></svg>
+                          Pagar con Criptomonedas (USD)
+                        </>
+                      )}
+                    </button>
+                    <p style={{ fontSize: '0.8rem', color: '#a0a6b8', textAlign: 'center', margin: 0, marginTop: '8px' }}>
+                      Aceptamos USDT, BTC, ETH y más de 50 criptos mediante NOWPayments.
+                    </p>
+
+                  </div>
+                </div>
+              </div>
+            )}
         </div>
         </>
       )}
