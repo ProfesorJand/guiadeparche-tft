@@ -9,6 +9,7 @@ export default function AdminCorreos() {
     const [templates, setTemplates] = useState([]);
     const [selectedTemplate, setSelectedTemplate] = useState("");
     const [incluirMp, setIncluirMp] = useState(false);
+    const [asunto, setAsunto] = useState("¿Qué jugarías con esta salida en TFT? 👀");
     
     const [trackingData, setTrackingData] = useState(null);
     const [trackingLoading, setTrackingLoading] = useState(false);
@@ -193,7 +194,11 @@ export default function AdminCorreos() {
             const res = await fetch('https://api.guiadeparche.com/tft/correos/prueba_correo_html.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(testUser)
+                body: JSON.stringify({ 
+                    ...testUser, 
+                    template: selectedTemplate || "correo_lanzamiento_MP_argentina.html",
+                    asunto: asunto
+                })
             });
             const text = await res.text();
             setLogs(prev => prev + text);
@@ -225,7 +230,8 @@ export default function AdminCorreos() {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         template: selectedTemplate,
-                        incluir_mp: incluirMp
+                        incluir_mp: incluirMp,
+                        asunto: asunto
                     })
                 });
                 const text = await res.text();
@@ -579,6 +585,15 @@ export default function AdminCorreos() {
                                         title="Actualizar lista"
                                     >🔄</button>
                                 </div>
+                            </div>
+                            <div>
+                                <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>Asunto del Correo:</label>
+                                <input 
+                                    type="text" 
+                                    value={asunto} 
+                                    onChange={e => setAsunto(e.target.value)} 
+                                    style={{ padding: '10px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.2)', background: 'rgba(0,0,0,0.5)', color: 'white', minWidth: '350px', fontSize: '1rem' }}
+                                />
                             </div>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '25px' }}>
                                 <input 
