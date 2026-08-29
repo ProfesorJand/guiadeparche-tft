@@ -10,7 +10,7 @@ const MasterPlanContent = () => {
   const superAdmin = useStore($superAdmin);
   return (
     <div className="bodyContainerMid">
-      <video poster="https://api.guiadeparche.com/tft/videos/VSL_Master_Plan_2026.webp" controls preload="auto" playsInline style={{ width: '100%', height: 'auto', maxWidth: '640px', margin: '0 auto', display: 'block', alignSelf: 'center' }}>
+      <video controls preload="auto" playsInline style={{ width: '100%', height: 'auto', maxWidth: '640px', margin: '0 auto', display: 'block', alignSelf: 'center' }}>
         <source src="https://api.guiadeparche.com/tft/videos/VSL_Master_Plan_2026.mp4" type="video/mp4" />
         Tu navegador no soporta la etiqueta de video.
       </video>
