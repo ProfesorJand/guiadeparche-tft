@@ -23,6 +23,8 @@ export default function AdminCorreos() {
     // --- ESTADOS DEL EDITOR DE PLANTILLAS ---
     const [editorTemplate, setEditorTemplate] = useState("");
     const [editorContent, setEditorContent] = useState("");
+    const [previewContent, setPreviewContent] = useState("");
+    const partialsCacheRef = React.useRef({});
     const [editorLoading, setEditorLoading] = useState(false);
     const [isCreatingNew, setIsCreatingNew] = useState(false);
     const [newTemplateName, setNewTemplateName] = useState("");
@@ -38,6 +40,53 @@ export default function AdminCorreos() {
         fetchTemplates();
         fetchTrackingData();
     }, []);
+
+    // Actualizar Previsualización y cargar subplantillas dinámicamente
+    useEffect(() => {
+        const renderPreview = async () => {
+            let content = editorContent;
+            const regex = /\{\{([a-zA-Z0-9_\-]+\.html)\}\}/g;
+            const matches = [...content.matchAll(regex)];
+            
+            for (const match of matches) {
+                const partialName = match[1];
+                if (partialsCacheRef.current[partialName] === undefined) {
+                    partialsCacheRef.current[partialName] = ""; // Evitar multiples llamados
+                    try {
+                        const res = await fetch(`https://api.guiadeparche.com/tft/templates_html/subplantillas/obtener_subplantillas.php?file=${partialName}`);
+                        if (res.ok) {
+                            const data = await res.json();
+                            if (data.content !== undefined) {
+                                partialsCacheRef.current[partialName] = data.content;
+                            } else {
+                                partialsCacheRef.current[partialName] = `<!-- No se encontró ${partialName} -->`;
+                            }
+                        } else {
+                            partialsCacheRef.current[partialName] = `<!-- Error en servidor para ${partialName} -->`;
+                        }
+                    } catch(e) {
+                        partialsCacheRef.current[partialName] = `<!-- Error cargando ${partialName} -->`;
+                    }
+                }
+            }
+            
+            // Reemplazar las subplantillas
+            let finalHtml = content.replace(regex, (m, name) => partialsCacheRef.current[name] || "");
+            
+            // Reemplazar variables comunes para una mejor vista previa
+            finalHtml = finalHtml.replace(/\{\{nombre\}\}/g, "Estratega");
+            finalHtml = finalHtml.replace(/\{\{usuario_id\}\}/g, "12345");
+            finalHtml = finalHtml.replace(/\{\{campana\}\}/g, "preview");
+            
+            setPreviewContent(finalHtml);
+        };
+        
+        const timer = setTimeout(() => {
+            if (editorContent) renderPreview();
+        }, 500); // 500ms debounce
+        
+        return () => clearTimeout(timer);
+    }, [editorContent]);
 
     const fetchTemplates = () => {
         fetch('https://api.guiadeparche.com/tft/templates_html/listar_templates.php')
@@ -540,7 +589,7 @@ export default function AdminCorreos() {
                                     </div>
                                     <iframe
                                         title="preview"
-                                        srcDoc={editorContent}
+                                        srcDoc={previewContent}
                                         style={{ flex: '1', width: '100%', background: '#fff', border: '1px solid #444', borderBottomLeftRadius: '8px', borderBottomRightRadius: '8px' }}
                                     />
                                 </div>

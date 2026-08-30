@@ -186,6 +186,16 @@
     font-weight: 600;
 }
 
+.containerInfografia .nameContainer h3 {
+    font-size: 1.6rem;
+}
+
+.containerInfografia .headerControls .dificultad,
+.containerInfografia .headerControls .shadowCategory {
+    font-size: 1rem;
+    padding: 2px 8px;
+}
+
 /* Contenedores de Campeones */
 .championsContainer {
     display: grid;
