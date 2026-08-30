@@ -3,7 +3,7 @@ import { useRef, useCallback, useState, useEffect } from "react";
 import { toPng } from 'html-to-image';
 import SliderButtom from "@components/inputs/SliderButtom";
 import SliderButtomLogoGuiadeparche from "@components/inputs/SliderButtomLogoGuiadeparche";
-import { metaCompsTFT } from "@stores/dataTFT";
+import { metaCompsTFT, versionTFT } from "@stores/dataTFT";
 import { useStore } from "@nanostores/react";
 import CampeonImgInTierList from "@components/TFT/meta/CampeonImgInTierList"
 const InfografiaTFT = ()=>{
@@ -13,6 +13,7 @@ const InfografiaTFT = ()=>{
   const [logoGuiadeparche, setLogoGuiadeparche] = useState(false)
   const [compsSelected, setCompsSelected] = useState([])
   const metaComps = useStore(metaCompsTFT);
+  const currentVersion = useStore(versionTFT);
   
   const toggleCompSelection = (comp) => {
     setCompsSelected(prev => {
@@ -98,9 +99,8 @@ const InfografiaTFT = ()=>{
   return (
     <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto", margin:"0 auto", flexWrap:"wrap", gap:"1rem"}}>
       {/* Seleccionar las compos que van en la infografia */}
-      <span>hola</span>
       {['S', 'A', 'B', 'C'].map(tierLetter => {
-        const tierComps = metaComps.filter(c => c.tier === tierLetter);
+        const tierComps = metaComps.filter(c => c.tier === tierLetter && (c.version || "latest") === currentVersion);
         if (tierComps.length === 0) return null;
         return (
           <div key={tierLetter} style={{ marginBottom: "20px" }}>
