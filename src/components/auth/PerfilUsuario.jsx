@@ -18,6 +18,9 @@ const PerfilUsuario = () => {
   const [isSavingPhone, setIsSavingPhone] = useState(false);
   const [phoneError, setPhoneError] = useState('');
 
+  const [newsletter, setNewsletter] = useState(user.newsletter !== 0 && user.newsletter !== "0");
+  const [isSavingNewsletter, setIsSavingNewsletter] = useState(false);
+
   const handleSavePhone = async () => {
     if (!phone) {
       setPhoneError('Por favor ingresa un número');
@@ -28,7 +31,7 @@ const PerfilUsuario = () => {
     const fullPhone = `${phoneCode} ${phone}`.trim();
 
     try {
-      const response = await fetch('https://api.guiadeparche.com/update-user-phone.php', {
+      const response = await fetch('https://api.guiadeparche.com/update-user-info.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: user.email, cel: fullPhone })
@@ -46,6 +49,32 @@ const PerfilUsuario = () => {
     }
   };
 
+  const handleToggleNewsletter = async (e) => {
+    const newValue = e.target.checked;
+    setNewsletter(newValue);
+    setIsSavingNewsletter(true);
+
+    try {
+      const response = await fetch('https://api.guiadeparche.com/update-user-info.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: user.email, newsletter: newValue ? 1 : 0 })
+      });
+      const result = await response.json();
+      if (result.status === 'success') {
+        setUser({ ...user, newsletter: newValue ? 1 : 0 });
+      } else {
+        alert(result.message || 'Error al guardar la preferencia');
+        setNewsletter(!newValue);
+      }
+    } catch (err) {
+      alert('Error de conexión');
+      setNewsletter(!newValue);
+    } finally {
+      setIsSavingNewsletter(false);
+    }
+  };
+
   useEffect(() => {
     const loadData = async () => {
       if (admin || superAdmin) {
@@ -54,6 +83,13 @@ const PerfilUsuario = () => {
       }
     };
     loadData();
+
+    // Leer el tab desde la URL si existe
+    const urlParams = new URLSearchParams(window.location.search);
+    const tabParam = urlParams.get('tab');
+    if (tabParam) {
+      setActiveTab(tabParam);
+    }
   }, []);
 
   useEffect(() => {
@@ -138,6 +174,26 @@ const PerfilUsuario = () => {
             </div>
           )}
         </div>
+        
+        <div className={styles.infoCard}>
+          <span className={styles.infoLabel}>Suscripción a Correos (Newsletter)</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '10px' }}>
+            <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', gap: '8px' }}>
+              <input 
+                type="checkbox" 
+                checked={newsletter} 
+                onChange={handleToggleNewsletter} 
+                disabled={isSavingNewsletter}
+                style={{ width: '20px', height: '20px', cursor: isSavingNewsletter ? 'wait' : 'pointer' }}
+              />
+              <span style={{ color: newsletter ? '#4CAF50' : '#888', fontWeight: 'bold' }}>
+                {newsletter ? 'Activado (Recibirás novedades)' : 'Desactivado (No recibirás correos)'}
+              </span>
+            </label>
+            {isSavingNewsletter && <span style={{fontSize: '0.85rem', color: '#a0a6b8'}}>Guardando...</span>}
+          </div>
+        </div>
+
       </div>
     </div>
   );

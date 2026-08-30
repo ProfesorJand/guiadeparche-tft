@@ -9,6 +9,8 @@ export default function AdminCorreos() {
     const [templates, setTemplates] = useState([]);
     const [selectedTemplate, setSelectedTemplate] = useState("");
     const [incluirMp, setIncluirMp] = useState(false);
+    const [filtroPais, setFiltroPais] = useState("Todos");
+    const [reenviar, setReenviar] = useState(false);
     const [asunto, setAsunto] = useState("¿Qué jugarías con esta salida en TFT? 👀");
     
     const [trackingData, setTrackingData] = useState(null);
@@ -262,10 +264,10 @@ export default function AdminCorreos() {
             alert("Por favor selecciona una plantilla HTML primero.");
             return;
         }
-        if (!confirm(`⚠️ ADVERTENCIA: Esto iniciará el envío automático de la plantilla '${selectedTemplate}' a TODOS los usuarios pendientes de Argentina.\nEl proceso se hará en lotes de 50 para proteger el servidor.\n¿Estás completamente seguro de continuar?`)) return;
+        if (!confirm(`⚠️ ADVERTENCIA: Esto iniciará el envío automático de la plantilla '${selectedTemplate}' a los usuarios de ${filtroPais === 'Todos' ? 'TODOS los países' : filtroPais}.\nEl proceso se hará en lotes de 50 para proteger el servidor.\n¿Estás completamente seguro de continuar?`)) return;
         
         setLoading(true);
-        setLogs(`Iniciando envío automático por lotes...\nPlantilla: ${selectedTemplate}\nIncluir usuarios con Master Plan: ${incluirMp ? 'Sí' : 'No'}\n\n`);
+        setLogs(`Iniciando envío automático por lotes...\nPlantilla: ${selectedTemplate}\nPaís: ${filtroPais}\nIncluir usuarios con Master Plan: ${incluirMp ? 'Sí' : 'No'}\nReenviar: ${reenviar ? 'Sí' : 'No'}\n\n`);
         
         let quedanUsuarios = true;
         let loteNum = 1;
@@ -280,7 +282,9 @@ export default function AdminCorreos() {
                     body: JSON.stringify({
                         template: selectedTemplate,
                         incluir_mp: incluirMp,
-                        asunto: asunto
+                        asunto: asunto,
+                        pais: filtroPais,
+                        reenviar: reenviar
                     })
                 });
                 const text = await res.text();
@@ -636,6 +640,22 @@ export default function AdminCorreos() {
                                 </div>
                             </div>
                             <div>
+                                <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>País:</label>
+                                <select 
+                                    value={filtroPais} 
+                                    onChange={e => setFiltroPais(e.target.value)}
+                                    style={{ padding: '10px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.2)', background: 'rgba(0,0,0,0.5)', color: 'white', minWidth: '150px', fontSize: '1rem' }}
+                                >
+                                    <option value="Todos">Todos</option>
+                                    <option value="Argentina">Argentina</option>
+                                    <option value="Chile">Chile</option>
+                                    <option value="Colombia">Colombia</option>
+                                    <option value="España">España</option>
+                                    <option value="México">México</option>
+                                    <option value="Perú">Perú</option>
+                                </select>
+                            </div>
+                            <div>
                                 <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>Asunto del Correo:</label>
                                 <input 
                                     type="text" 
@@ -644,7 +664,7 @@ export default function AdminCorreos() {
                                     style={{ padding: '10px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.2)', background: 'rgba(0,0,0,0.5)', color: 'white', minWidth: '350px', fontSize: '1rem' }}
                                 />
                             </div>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '25px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '25px', width: '100%' }}>
                                 <input 
                                     type="checkbox" 
                                     id="incluir_mp"
@@ -654,6 +674,17 @@ export default function AdminCorreos() {
                                 />
                                 <label htmlFor="incluir_mp" style={{ cursor: 'pointer', fontSize: '1rem', color: '#ffb800', fontWeight: 'bold' }}>
                                     Incluir usuarios que YA compraron el Master Plan
+                                </label>
+                                
+                                <input 
+                                    type="checkbox" 
+                                    id="reenviar"
+                                    checked={reenviar} 
+                                    onChange={e => setReenviar(e.target.checked)} 
+                                    style={{ width: '20px', height: '20px', cursor: 'pointer', marginLeft: '15px' }}
+                                />
+                                <label htmlFor="reenviar" style={{ cursor: 'pointer', fontSize: '1rem', color: '#ff6b6b', fontWeight: 'bold' }}>
+                                    Reenviar (ignorar si ya recibieron esta campaña)
                                 </label>
                             </div>
                         </div>
