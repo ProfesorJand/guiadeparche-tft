@@ -284,7 +284,8 @@ export default function AdminCorreos() {
                         incluir_mp: incluirMp,
                         asunto: asunto,
                         pais: filtroPais,
-                        reenviar: reenviar
+                        reenviar: reenviar,
+                        offset: reenviar ? (loteNum - 1) * 25 : 0
                     })
                 });
                 const text = await res.text();

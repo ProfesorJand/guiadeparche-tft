@@ -115,7 +115,6 @@ useEffect(()=>{
     try {
       const response = await fetch(constantesJSON, {cache:"reload"});
       const data = await response.json();
-      console.log({constantes:data})
       setConstantes(data);
     } catch (error) {
       console.error("Error obteniendo constantes:", error);
