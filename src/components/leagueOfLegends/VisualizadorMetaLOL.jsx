@@ -168,7 +168,7 @@ const VisualizadorMetaLOL = () => {
             </div> */}
             <div className={style.title}>
               {/* <p>MEJORES CAMPEONES - TIER S</p> */}
-               <p>{tituloMeta}</p> 
+               {tituloMeta}
             </div>
           </div>
           {/*ACA VA LOS TIERS ARRIBA Tier S y Tier A donde los Tier S son los 3 primeros campeones y Tier A son los 2 restantes siendo total 5*/}
