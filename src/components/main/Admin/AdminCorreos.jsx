@@ -264,7 +264,7 @@ export default function AdminCorreos() {
             alert("Por favor selecciona una plantilla HTML primero.");
             return;
         }
-        if (!confirm(`⚠️ ADVERTENCIA: Esto iniciará el envío automático de la plantilla '${selectedTemplate}' a los usuarios de ${filtroPais === 'Todos' ? 'TODOS los países' : filtroPais}.\nEl proceso se hará en lotes de 50 para proteger el servidor.\n¿Estás completamente seguro de continuar?`)) return;
+        if (!confirm(`⚠️ ADVERTENCIA: Esto iniciará el envío automático de la plantilla '${selectedTemplate}' a los usuarios de ${filtroPais === 'Todos' ? 'TODOS los países' : filtroPais}.\nEl proceso se hará en lotes de 15 para proteger el servidor.\n¿Estás completamente seguro de continuar?`)) return;
         
         setLoading(true);
         setLogs(`Iniciando envío automático por lotes...\nPlantilla: ${selectedTemplate}\nPaís: ${filtroPais}\nIncluir usuarios con Master Plan: ${incluirMp ? 'Sí' : 'No'}\nReenviar: ${reenviar ? 'Sí' : 'No'}\n\n`);
@@ -285,7 +285,7 @@ export default function AdminCorreos() {
                         asunto: asunto,
                         pais: filtroPais,
                         reenviar: reenviar,
-                        offset: reenviar ? (loteNum - 1) * 25 : 0
+                        offset: reenviar ? (loteNum - 1) * 15 : 0
                     })
                 });
                 const text = await res.text();
@@ -300,8 +300,8 @@ export default function AdminCorreos() {
                     }
                 } else {
                     loteNum++;
-                    setLogs(prev => prev + "\nEsperando 10 segundos antes de enviar el siguiente lote para proteger el servidor...\n");
-                    await new Promise(resolve => setTimeout(resolve, 10000));
+                    setLogs(prev => prev + "\nEsperando 15 segundos antes de enviar el siguiente lote para proteger el servidor...\n");
+                    await new Promise(resolve => setTimeout(resolve, 15000));
                 }
             } catch (e) {
                 setLogs(prev => prev + "\nError de red al intentar enviar: " + e.message);
