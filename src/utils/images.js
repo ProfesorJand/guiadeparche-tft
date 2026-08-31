@@ -13,7 +13,7 @@ export const getLocalTftImage = (iconPath, category, versionNumber) => {
     }
   }
 
-  const fileName = iconPath.split('/').pop().toLowerCase().replace('.tex', '.png').replace('.dds', '.png');
+  const fileName = iconPath.split('/').pop().toLowerCase().replace('.tex', '.png').replace('.dds', '.png').replace('.webp', '.png');
 
   // Si la ruta original ya incluía choiceui o hexcore, podemos asegurarnos de la categoría
   if (category === 'augments') {
