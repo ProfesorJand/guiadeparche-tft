@@ -101,20 +101,27 @@ function CampaignsManager() {
                     Intervalo en minutos (cada cuánto se muestra en el stream):
                     <input type="number" min="1" value={form.interval_minutes} onChange={e => setForm({...form, interval_minutes: e.target.value})} required />
                 </label>
-                <button type="submit">Guardar Campaña</button>
+                <label style={{display: 'flex', alignItems: 'center', gap: '10px', marginTop: '10px'}}>
+                    <input type="checkbox" checked={form.is_active === 1} onChange={e => setForm({...form, is_active: e.target.checked ? 1 : 0})} style={{width: '20px', height: '20px'}} />
+                    <strong>Campaña Activa</strong> (Si se desmarca, no se mostrará en los streams)
+                </label>
+                <button type="submit" style={{marginTop: '15px'}}>Guardar Campaña</button>
             </form>
 
             <h3>Lista de Campañas</h3>
             {loading ? <p>Cargando...</p> : (
                 <table className={style.table}>
                     <thead>
-                        <tr><th>ID</th><th>Nombre</th><th>Intervalo</th><th>Mensaje</th><th>Acciones</th></tr>
+                        <tr><th>ID</th><th>Nombre</th><th>Estado</th><th>Intervalo</th><th>Mensaje</th><th>Acciones</th></tr>
                     </thead>
                     <tbody>
                         {campaigns.map(c => (
                             <tr key={c.id}>
                                 <td>{c.id}</td>
                                 <td>{c.name}</td>
+                                <td style={{ color: c.is_active ? '#00ff88' : '#ff4444', fontWeight: 'bold' }}>
+                                    {c.is_active ? 'Activa' : 'Inactiva'}
+                                </td>
                                 <td>{c.interval_minutes} min</td>
                                 <td>{c.chat_message}</td>
                                 <td>
@@ -188,6 +195,13 @@ function UsersManager() {
             </form>
 
             <h3>Streamers Registrados</h3>
+            <div style={{ background: 'rgba(0, 255, 136, 0.1)', padding: '12px', borderLeft: '4px solid #00ff88', borderRadius: '4px', margin: '15px 0' }}>
+                <p style={{ margin: 0, fontSize: '0.9rem', color: '#e0e0e0' }}>
+                    <strong>💡 Manual de Pruebas (OBS):</strong> Para probar cómo se ve la publicidad en OBS sin alterar las estadísticas reales ni mandar mensajes automáticos al chat, añade <code>&test=1</code> al final de tu URL.
+                    <br/><br/>
+                    <em>Ejemplo:</em> <code>https://guiadeparche.com/publicidad/overlay?alias=mi_alias&amp;camp=1<strong>&amp;test=1</strong></code>
+                </p>
+            </div>
             <table className={style.table}>
                 <thead>
                     <tr><th>ID</th><th>Alias</th><th>Plataformas</th><th>Acciones</th></tr>
