@@ -32,8 +32,25 @@ const MasterPlanContent = () => {
             </ul>
           </div>
           
-          <a href="/tft/master-plan/app" className={styles.button} style={{ display: 'block', textAlign: 'center', marginTop: '20px' }}>
-            Accede al Master Plan
+          <a href="/tft/master-plan/app" className={styles.button} style={{ 
+            display: 'block', 
+            textAlign: 'center', 
+            marginTop: '30px',
+            padding: '18px 30px',
+            fontSize: '1.4rem',
+            fontWeight: '800',
+            background: 'linear-gradient(135deg, #00C9FF 0%, #92FE9D 100%)',
+            color: '#000',
+            borderRadius: '12px',
+            boxShadow: '0 8px 20px rgba(0, 201, 255, 0.4)',
+            textTransform: 'uppercase',
+            letterSpacing: '1px',
+            border: 'none',
+            textDecoration: 'none',
+            justifySelf: "center",
+            alignSelf: "center"
+          }}>
+            🔥 Accede al Master Plan 🔥
           </a>
         </div>
       ) : (

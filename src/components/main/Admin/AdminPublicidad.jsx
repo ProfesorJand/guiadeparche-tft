@@ -102,7 +102,7 @@ function CampaignsManager() {
                     <input type="number" min="1" value={form.interval_minutes} onChange={e => setForm({...form, interval_minutes: e.target.value})} required />
                 </label>
                 <label style={{display: 'flex', alignItems: 'center', gap: '10px', marginTop: '10px'}}>
-                    <input type="checkbox" checked={form.is_active === 1} onChange={e => setForm({...form, is_active: e.target.checked ? 1 : 0})} style={{width: '20px', height: '20px'}} />
+                    <input type="checkbox" checked={form.is_active === 1 || form.is_active === true} onChange={e => setForm({...form, is_active: e.target.checked ? 1 : 0})} style={{width: '20px', height: '20px'}} />
                     <strong>Campaña Activa</strong> (Si se desmarca, no se mostrará en los streams)
                 </label>
                 <button type="submit" style={{marginTop: '15px'}}>Guardar Campaña</button>
