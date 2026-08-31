@@ -12,7 +12,7 @@
   width:100%;
   position:relative;
   gap:5px;
-  flex-direction: column;
+  flex-direction: row;
   width:100%;
 }
 .containerBtnsVersion{
@@ -47,6 +47,7 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   margin-bottom: 10px;
   width:100%;
+  box-sizing: border-box;
 }
 
 .filtersSection legend {
@@ -59,6 +60,47 @@
   letter-spacing: 1px;
   text-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
+
+.tabsMenu {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin-bottom: 15px;
+  border-bottom: 2px solid rgba(168, 85, 247, 0.2);
+  padding-bottom: 5px;
+}
+
+.tabButton {
+  background: transparent;
+  border: none;
+  color: #ccc;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 8px 16px;
+  cursor: pointer;
+  border-radius: 6px 6px 0 0;
+  transition: all 0.2s ease-in-out;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tabButton:hover {
+  color: white;
+  background: rgba(168, 85, 247, 0.1);
+}
+
+.tabButtonActive {
+  color: #fff;
+  background: rgba(168, 85, 247, 0.2);
+  border-bottom: 3px solid #a855f7;
+}
+
+.tabContent {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
 .filtersSectionContainer{
   display:flex;
   flex-direction: row;
@@ -67,13 +109,37 @@
   position:relative;
   width:100%;
 }
+.sectionFiltersPlaystyles{
+  display:flex;
+  width:100%;
+  flex-direction: row;
+}
+.sectionFiltersAndResults{
+  display:flex;
+  width:100%;
+  flex-direction: row;
+  gap:20px
+}
+.sectionFiltersEarly{
+  display:flex;
+  width:60%;
+  flex-direction: column;
+}
+.containerResults{
+  display:flex;
+  width:40%;
+  position:relative;
+  flex-direction: column;
+}
 .filtersSectionHard{
   display:flex;
   width:100%;
+  box-sizing: border-box;
 }
 .filtersSectionSoft{
   display:flex;
   width:100%;
+  box-sizing: border-box;
 }
 .hardFiltersGrid {
   display:flex;
@@ -113,6 +179,7 @@
   gap: 8px;
   margin-top: 4px;
   flex-direction: column;
+  justify-content: center;
 }
 .filterButtonsContainerRow {
   display: flex;
@@ -131,21 +198,55 @@
   cursor: pointer;
   opacity: 1;
   filter: saturate(0.65);
-  transform: scale(0.85);
+  transform: scale(0.95);
   transition: all 0.2s ease;
   /* text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); */
   box-sizing: border-box;
+  justify-content: center;
 }
 .filterOptionBox:hover {
   opacity: 0.85;
   filter: saturate(1);
   border-color: rgba(255, 255, 255, 0.7);
-  transform: scale(0.9);
+  transform: scale(1);
 }
+.conditionShimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.conditionShimmer::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-20deg);
+  animation: shimmerEffect 1s infinite;
+}
+
+@keyframes shimmerEffect {
+  0% {
+    left: -100%;
+  }
+  20% {
+    left: 200%;
+  }
+  100% {
+    left: 200%;
+  }
+}
+
 .filterOptionBoxActive {
   opacity: 1;
   filter: saturate(1.1) brightness(1.05);
-  font-weight: 700;
   border: 1px solid transparent;
   position: relative;
   overflow: hidden;
@@ -375,14 +476,36 @@
   position:relative;
   gap:10px;
   box-sizing: border-box;
-  border: 2px solid var(--border-purple-color);
-  padding: 5px;
+  border: 2px solid var(--border-purple-color, #5e4881);
+  border-radius: 8px;
+  padding: 10px;
+  max-height: 750px;
+  overflow-y: auto;
 }
+
+.composGrid::-webkit-scrollbar {
+  width: 8px;
+}
+
+.composGrid::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.composGrid::-webkit-scrollbar-thumb {
+  background: var(--border-purple-color, #7952b3);
+  border-radius: 4px;
+}
+
+.composGrid::-webkit-scrollbar-thumb:hover {
+  background: #a37ee3;
+}
+
 .cardContainer{
   display:flex;
   position:relative;
   min-width:250px;
-  width:calc((100% - (10px * 4)) / 5);
+  width:calc((100% - (10px * 1)) / 2);
   flex-direction: column;
 }
 .noResults {

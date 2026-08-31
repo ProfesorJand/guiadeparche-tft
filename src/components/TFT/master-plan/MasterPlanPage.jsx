@@ -16,6 +16,12 @@ import InfografiaMPTFT from "./InfografiaMPTFT"
 import { getTraitDisplayName } from '../../main/Admin/TraitsList';
 import ActiveTraitsDisplay from '../ActiveTraitsDisplay';
 
+import FiltroHardWrapper from './filtros-hard/FiltroHardWrapper';
+import FiltroEarlyWrapper from './filtros-early/FiltroEarlyWrapper';
+import FiltroAumentosWrapper from './filtros-aumentos/FiltroAumentosWrapper';
+import ResultadosWrapper from './resultados/ResultadosWrapper';
+
+
 export const CHECK_FILTERS = [
   { apiName: 'hero_augment', label: 'Aumento de Héroe' },
   { apiName: 'artifacts', label: 'Artefactos' },
@@ -159,6 +165,7 @@ export default function MasterPlanPage() {
     });
   }, [allItems]);
 
+  const [activeEarlyTab, setActiveEarlyTab] = useState('campeones');
   const [selectedSoftItems, setSelectedSoftItems] = useState([]);
   const [selectedSoftChampions, setSelectedSoftChampions] = useState([]);
   const [selectedSoftTraits, setSelectedSoftTraits] = useState([]);
@@ -564,10 +571,6 @@ export default function MasterPlanPage() {
       selectedSalidasEarlyItems.length > 0 ||
       selectedSalidasEarlyComponents.length > 0;
 
-    if (!hasAnyConditionSelected) {
-      return filteredComposPrimary.map(compo => ({ ...compo, _matchCount: 0, _matchedFilters: [] }));
-    }
-
     const results = [];
 
     filteredComposPrimary.forEach(compo => {
@@ -909,24 +912,94 @@ export default function MasterPlanPage() {
 
   const softChampionsList = useMemo(() => {
     const uniqueMap = new Map();
+
     filteredCompos.forEach(comp => {
       if (comp.campeonesEarly && Array.isArray(comp.campeonesEarly)) {
         comp.campeonesEarly.forEach(early => {
           const apiName = typeof early === 'object' && early !== null ? early.apiNameCampeon : early;
-          if (apiName && !uniqueMap.has(apiName)) {
-            const champ = allChampions.find(c => c.apiName === apiName);
-            uniqueMap.set(apiName, {
-              apiName,
-              name: champ?.name || champ?.nombre || apiName,
-              icon: champ ? getLocalTftImage(champ.img || champ.tileIcon, 'champions/tileIcon', versionNumber) : null,
-              cost: champ?.cost || champ?.coste || 1
+          if (apiName) {
+            if (!uniqueMap.has(apiName)) {
+              const champ = allChampions.find(c => c.apiName === apiName);
+              uniqueMap.set(apiName, {
+                apiName,
+                name: champ?.name || champ?.nombre || apiName,
+                icon: champ ? getLocalTftImage(champ.img || champ.tileIcon, 'champions/tileIcon', versionNumber) : null,
+                cost: champ?.cost || champ?.coste || 1,
+                isEarly: true
+              });
+            } else {
+              uniqueMap.get(apiName).isEarly = true;
+            }
+          }
+        });
+      }
+      
+      if (comp.salidasEarly && Array.isArray(comp.salidasEarly)) {
+        comp.salidasEarly.forEach(groupId => {
+          const grupoObj = gruposSalidasEarly.find(g => String(g.id) === String(groupId));
+          if (grupoObj && grupoObj.campeones && Array.isArray(grupoObj.campeones)) {
+            grupoObj.campeones.forEach(apiName => {
+              if (apiName) {
+                if (!uniqueMap.has(apiName)) {
+                  const champ = allChampions.find(c => c.apiName === apiName);
+                  uniqueMap.set(apiName, {
+                    apiName,
+                    name: champ?.name || champ?.nombre || apiName,
+                    icon: champ ? getLocalTftImage(champ.img || champ.tileIcon, 'champions/tileIcon', versionNumber) : null,
+                    cost: champ?.cost || champ?.coste || 1,
+                    isEarly: true
+                  });
+                } else {
+                  uniqueMap.get(apiName).isEarly = true;
+                }
+              }
             });
           }
         });
       }
     });
+
+    condicionesGrandeCampeones.forEach(champCond => {
+      if (champCond.apiName) {
+        let iconPequeno = null;
+        if (champCond.apiNamePequeno) {
+          let obj = allAugments.find(a => a.apiName === champCond.apiNamePequeno);
+          if (obj) {
+            iconPequeno = obj.icon?.includes("http") ? obj.icon.replace(".tex", ".png").toLowerCase() : getLocalTftImage(obj.icon, 'augments', versionNumber);
+          } else {
+            obj = allItems.find(i => i.apiName === champCond.apiNamePequeno);
+            if (obj) {
+              iconPequeno = getLocalTftImage(obj.icon, 'items');
+            } else {
+              obj = EXTRAS_ITEMS.find(e => e.apiName === champCond.apiNamePequeno);
+              if (obj) iconPequeno = obj.icon;
+            }
+          }
+        }
+
+        if (!uniqueMap.has(champCond.apiName)) {
+          const champ = allChampions.find(c => c.apiName === champCond.apiName);
+          uniqueMap.set(champCond.apiName, {
+            apiName: champCond.apiName,
+            apiNamePequeno: champCond.apiNamePequeno,
+            iconPequeno: iconPequeno,
+            name: champ?.name || champ?.nombre || champCond.apiName,
+            icon: champ ? getLocalTftImage(champ.img || champ.tileIcon, 'champions/tileIcon', versionNumber) : null,
+            cost: champ?.cost || champ?.coste || 1,
+            isCondition: true
+          });
+        } else {
+          uniqueMap.get(champCond.apiName).isCondition = true;
+          if (champCond.apiNamePequeno) {
+            uniqueMap.get(champCond.apiName).apiNamePequeno = champCond.apiNamePequeno;
+            uniqueMap.get(champCond.apiName).iconPequeno = iconPequeno;
+          }
+        }
+      }
+    });
+
     return Array.from(uniqueMap.values());
-  }, [filteredCompos, allChampions, versionNumber]);
+  }, [filteredCompos, allChampions, versionNumber, condicionesGrandeCampeones, gruposSalidasEarly]);
 
   const softChampionsByCost = useMemo(() => {
     const groups = {};
@@ -940,630 +1013,6 @@ export default function MasterPlanPage() {
     });
     return groups;
   }, [softChampionsList]);
-
-  const FiltroHard = () => {
-    return (
-      <fieldset className={`${style.filtersSection} ${style.filtersSectionHard}`}>
-        <legend>Filtro Hard (Playstyle / Estilo de juego)</legend>
-        <div className={style.hardFiltersGrid}>
-          <div className={style.filterInputGroup}>
-            <label>Tiers</label>
-            <div className={style.filterButtonsContainer}>
-              {tiers?.filter(t => t !== "C").map(t => (
-                <button
-                  key={t}
-                  type="button"
-                  data-tier={t}
-                  className={`${style.filterOptionBox} ${selectedTier.includes(t) ? style.filterOptionBoxActive : style.grayWhenInactive}`}
-                  onClick={() => toggleArrayFilter(setSelectedTier, t)}
-                >
-                  Tier {t}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className={style.filterInputGroup}>
-            <label>Categorías</label>
-            <div className={style.filterButtonsContainer}>
-              {categorias?.Es?.map(cat => (
-                <button
-                  key={cat}
-                  type="button"
-                  data-categoria={cat}
-                  className={`${style.filterOptionBox} ${selectedCategory.includes(cat) ? style.filterOptionBoxActive : style.grayWhenInactive}`}
-                  onClick={() => toggleArrayFilter(setSelectedCategory, cat)}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className={style.filterInputGroup}>
-            <label>Dificultad</label>
-            <div className={style.filterButtonsContainer}>
-              {dificultades?.Es?.map(d => (
-                <button
-                  key={d}
-                  type="button"
-                  data-dificultad={d}
-                  className={`${style.filterOptionBox} ${selectedDifficulty.includes(d) ? style.filterOptionBoxActive : style.grayWhenInactive}`}
-                  onClick={() => toggleArrayFilter(setSelectedDifficulty, d)}
-                >
-                  {d}
-                </button>
-              ))}
-            </div>
-          </div>
-
-
-          <div className={style.filterInputGroup}>
-            <label>Tipo de Daño</label>
-            <div className={style.filterButtonsContainer}>
-              {dañoTipo?.Es?.map(d => (
-                <button
-                  key={d}
-                  type="button"
-                  data-tipodedano={d}
-                  className={`${style.filterOptionBox} ${selectedDamageType.includes(d) ? style.filterOptionBoxActive : style.grayWhenInactive}`}
-                  onClick={() => toggleArrayFilter(setSelectedDamageType, d)}
-                >
-                  {d}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* <div className={style.filterInputGroup}>
-          <label>Extra</label>
-          <div className={style.filterButtonsContainer} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-            {condicionesGrandeExtras.filter(extra => extra.apiName !== 'orbedecampeon').length > 0 ? (
-              condicionesGrandeExtras.filter(extra => extra.apiName !== 'orbedecampeon').map(extra => (
-                <button
-                  key={extra.apiName}
-                  type="button"
-                  className={`${style.filterOptionBox} ${selectedExtras.includes(extra.apiName) ? style.filterOptionBoxActive : ''}`}
-                  onClick={() => toggleArrayFilter(setSelectedExtras, extra.apiName)}
-                  style={{ display: 'flex',alignItems: 'center', justifyContent: 'center', padding: '8px 10px', minWidth: '70px', gap: '6px' }}
-                >
-                  {extra.icon && <img src={extra.icon} alt={extra.name} style={{ minWidth: '60px', minHeight: '60px', width: '60px', height: '60px', objectFit: 'contain', borderRadius: '3px' }} />}
-                  <span style={{ fontSize: '0.78rem', textAlign: 'center', lineHeight: '1.1' }}>{extra.name}</span>
-                </button>
-              ))
-            ) : (
-              <span style={{ color: '#ccc', fontStyle: 'italic', fontSize: '0.85rem' }}>No hay extras disponibles</span>
-            )}
-          </div>
-        </div> */}
-
-          <div className={style.filterInputGroup}>
-            <label>Filtros Rápidos</label>
-            <div className={style.filterButtonsContainer} >
-              <button
-                type="button"
-                className={`${style.filterOptionBox} ${((selectedTier.includes("S") && selectedTier.includes("A") && selectedDifficulty.includes("Facil"))) ? '' : style.grayWhenInactive}`}
-                onClick={() => {
-                  resetAllFilters();
-                  setSelectedTier(["S", "A"]);
-                  setSelectedDifficulty(["Facil"]);
-                }}
-                style={{
-                  padding: '8px 12px',
-                  background: '#d8b4fe20',
-                  borderColor: '#d8b4fe',
-                  color: 'white',
-                  fontWeight: 'bold',
-                  justifyContent: 'center'
-                }}
-              >
-                Filtro Principiante
-              </button>
-              <button
-                type="button"
-                className={`${style.filterOptionBox} ${((selectedTier.length > 0 || selectedCategory.length > 0 || selectedDifficulty.length > 0 || selectedDamageType.length > 0)) ? '' : style.grayWhenInactive}`}
-                onClick={resetAllFilters}
-                style={{
-                  padding: '8px 12px',
-                  background: '#ff4d4d20',
-                  borderColor: '#ff4d4d',
-                  color: '#ffaaaa',
-                  justifyContent: 'center'
-                }}
-              >
-                Resetear Filtros
-              </button>
-            </div>
-          </div>
-
-
-
-        </div>
-      </fieldset>
-    )
-  }
-
-  const FiltroHard2 = () => {
-    const SalidasEarly = () => {
-      const groupedGrupos = {
-        'Win Streak': [],
-        'N/A': [],
-        'Lose Streak': [],
-      };
-
-      availableGruposSalidasEarly.forEach(grupo => {
-        const tipoStr = grupo.tipo && grupo.tipo !== '' ? grupo.tipo : 'N/A';
-        if (groupedGrupos[tipoStr]) {
-          groupedGrupos[tipoStr].push(grupo);
-        } else {
-          groupedGrupos['N/A'].push(grupo);
-        }
-      });
-
-      const getGrupoScore = (grupo) => {
-        let score = 0;
-        const composUsingThisGroup = filteredComposPrimary.filter(c => c.salidasEarly?.map(String).includes(String(grupo.id)));
-
-        if (selectedSalidasEarlyChampions.length > 0) {
-          let matchedChamps = 0;
-          selectedSalidasEarlyChampions.forEach(champ => {
-            const isMatch = composUsingThisGroup.some(compo =>
-              (compo.condiciones || []).some(c => c.apiNameGrande === champ.apiName || c.ApiNamePequeno === champ.apiName)
-            );
-            if (isMatch) matchedChamps++;
-          });
-          score += matchedChamps;
-        }
-
-        if (selectedSalidasEarlySinergias.length > 0) {
-          let matchedTraits = 0;
-          selectedSalidasEarlySinergias.forEach(traitApiName => {
-            const isMatch = composUsingThisGroup.some(compo =>
-              (compo.condiciones || []).some(c =>
-                (c.condTypeGrande?.toLowerCase() === 'sinergia' || c.typeGrande?.toLowerCase() === 'sinergia' || c.condType?.toLowerCase() === 'sinergia') &&
-                (c.apiNameGrande === traitApiName || c.ApiNamePequeno === traitApiName)
-              ) || (compo.traits || []).some(t => t.name === traitApiName)
-            );
-            if (isMatch) matchedTraits++;
-          });
-          score += matchedTraits;
-        }
-
-        if (selectedSalidasEarlyComponents.length > 0 || selectedSalidasEarlyItems.length > 0) {
-          const uniqueCraftedItems = new Set();
-          composUsingThisGroup.forEach(c => {
-            const checkItem = (apiName) => {
-              if (selectedSalidasEarlyComponents.length > 0) {
-                const dbItem = allItems.find(i => i.apiName === apiName);
-                if (dbItem?.composition && dbItem.composition.length > 0) {
-                  if (dbItem.composition.every(comp => selectedSalidasEarlyComponents.includes(comp))) {
-                    uniqueCraftedItems.add(apiName);
-                  }
-                } else {
-                  const normalizedApi = apiName.replace('DA_Component_', '').replace('DA_', '').replace('TFT_Item_', '');
-                  if (selectedSalidasEarlyComponents.some(comp => comp.replace('DA_Component_', '').replace('DA_', '').replace('TFT_Item_', '') === normalizedApi)) {
-                    uniqueCraftedItems.add(apiName);
-                  }
-                }
-              }
-              if (selectedSalidasEarlyItems.length > 0) {
-                if (selectedSalidasEarlyItems.some(i => i.apiName === apiName)) {
-                  uniqueCraftedItems.add(apiName);
-                }
-              }
-            };
-            (c.itemsPrio || []).forEach(prioItem => {
-              const apiName = typeof prioItem === 'object' ? prioItem.apiName : prioItem;
-              checkItem(apiName);
-            });
-            (c.condiciones || []).forEach(cond => {
-              const condType = (cond.condTypeGrande || cond.typeGrande || cond.condType || "").toLowerCase();
-              if (condType === 'item' && cond.apiNameGrande) {
-                checkItem(cond.apiNameGrande);
-              }
-            });
-          });
-          score += uniqueCraftedItems.size;
-        }
-
-        return score;
-      };
-
-      Object.keys(groupedGrupos).forEach(key => {
-        groupedGrupos[key].sort((a, b) => {
-          const scoreA = getGrupoScore(a);
-          const scoreB = getGrupoScore(b);
-          if (scoreA !== scoreB) {
-            return scoreB - scoreA;
-          }
-          const aLen = a.campeones ? a.campeones.length : 0;
-          const bLen = b.campeones ? b.campeones.length : 0;
-          if (aLen === 0 && bLen > 0) return -1;
-          if (bLen === 0 && aLen > 0) return 1;
-          return 0;
-        });
-      });
-
-      const champsList = [];
-      condicionesGrandeCampeones.forEach(champ => {
-        const dbChamp = allChampions.find(c => c.apiName === champ.apiName);
-        const c = dbChamp?.cost || dbChamp?.coste || 1;
-        champsList.push({ ...champ, cost: c });
-      });
-      champsList.sort((a, b) => {
-        if (a.cost !== b.cost) return a.cost - b.cost;
-        return a.name.localeCompare(b.name);
-      });
-
-      const groupedChamps = {};
-      champsList.forEach(champ => {
-        const c = champ.cost || 1;
-        if (!groupedChamps[c]) groupedChamps[c] = [];
-        groupedChamps[c].push(champ);
-      });
-
-      return (
-        <div className={style.filterInputGroup}>
-          <div style={{ display: 'flex', flexDirection: 'row', gap: '5px', marginTop: '8px', marginBottom: '5px' }}>
-            {champsList.length > 0 && (
-              <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '5px', alignItems: 'stretch' }}>
-                {Object.keys(groupedChamps).sort((a, b) => Number(a) - Number(b)).map((cost, idx) => {
-                  let title = `Coste ${cost}`;
-                  if (String(cost) === '2') title = 'coste 2';
-                  if (String(cost) === '3') title = 'orbe';
-                  if (String(cost) === '4') title = 'orbe dorado';
-
-                  return (
-                    <div key={cost} style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-                      <fieldset style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-                        <legend style={{ fontSize: '0.75rem' }}>{title}</legend>
-                        <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.15)' }}></div>
-                        <div className={style.filterButtonsContainerRow}>
-                          {groupedChamps[cost].map(champ => (
-                            <button
-                              key={champ.apiName}
-                              type="button"
-                              className={`${style.filterOptionBox} ${selectedSalidasEarlyChampions.some(c => c.apiName === champ.apiName) ? style.filterOptionBoxActive : ''}`}
-                              onClick={() => toggleSelectedSalidasEarlyChampion(champ)}
-                              style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '8px 10px', minWidth: '70px', gap: '6px' }}
-                            >
-                              {champ.icon && <img src={champ.icon} alt={champ.name} style={{ minWidth: '60px', minHeight: '60px', width: '60px', height: '60px', objectFit: 'contain', borderRadius: '4px', border: `3px solid var(--color-hex-cost-${champ.cost})`, boxSizing: 'border-box' }} />}
-                              <span style={{ fontSize: '1rem', textAlign: 'center', lineHeight: '1.1' }}>{champ.name}</span>
-                            </button>
-                          ))}
-                        </div>
-                      </fieldset>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-            {condicionesGrandeSinergias && condicionesGrandeSinergias.length > 0 && (
-              <fieldset style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                <legend style={{ fontSize: '0.75rem' }}>Sinergias</legend>
-                <div className={style.filterButtonsContainerRow}>
-                  {condicionesGrandeSinergias.map(sinergia => (
-                    <button
-                      key={sinergia.apiName}
-                      type="button"
-                      title={sinergia.name}
-                      className={`${style.filterOptionBox} ${selectedSalidasEarlySinergias.includes(sinergia.apiName) ? style.filterOptionBoxActive : ''}`}
-                      onClick={() => toggleArrayFilter(setSelectedSalidasEarlySinergias, sinergia.apiName)}
-                      style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '8px 10px', minWidth: '70px', gap: '6px' }}
-                    >
-                      {sinergia.icon && <img src={sinergia.icon} alt={sinergia.name} style={{ width: '60px', height: '60px', objectFit: 'contain', borderRadius: '3px' }} />}
-                      <span style={{ fontSize: '1rem', textAlign: 'center', lineHeight: '1.1' }}>{sinergia.name}</span>
-                    </button>
-                  ))}
-                </div>
-              </fieldset>
-            )}
-          </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-            <div style={{ display: 'flex', flexDirection: 'row', gap: '5px', marginBottom: '8px' }}>
-              {/* Minifiltro de Componentes en Salidas Early */}
-
-              <fieldset style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                <legend style={{ fontSize: '0.75rem' }}>{'Componentes Crafteables'}</legend>
-                <div className={style.filterButtonsContainerRow} >
-                  {softItemsList.map(item => {
-                    const isSelected = selectedSalidasEarlyComponents.includes(item.apiName);
-                    return (
-                      <button
-                        key={item.apiName}
-                        type="button"
-                        title={item.name}
-                        className={`${style.filterOptionBox} ${isSelected ? style.filterOptionBoxActive : ''}`}
-                        onClick={() => toggleArrayFilter(setSelectedSalidasEarlyComponents, item.apiName)}
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          padding: '6px',
-                          opacity: 1,
-                          cursor: 'pointer'
-                        }}
-                      >
-                        {item.icon && <img src={item.icon} alt={item.name} style={{ width: '45px', height: '45px', objectFit: 'contain', borderRadius: '4px' }} />}
-                      </button>
-                    );
-                  })}
-                </div>
-              </fieldset>
-
-
-              {/* Minifiltro de Objetos Específicos y Sinergias en Salidas Early */}
-              {(condicionesGrandeItems.length > 0 || (condicionesGrandeSinergias && condicionesGrandeSinergias.length > 0)) && (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-                  <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: '5px' }}>
-                    {Object.entries({
-                      'Emblemas': condicionesGrandeItemsGrouped.emblemas,
-                      'Artefactos': condicionesGrandeItemsGrouped.artefactos,
-                      'Radiantes': condicionesGrandeItemsGrouped.radiantes,
-                      'Específicos / Soporte': condicionesGrandeItemsGrouped.especificos
-                    }).map(([groupName, items]) => {
-                      if (!items || items.length === 0) return null;
-                      return (
-                        <fieldset key={groupName} style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                          <legend style={{ fontSize: '0.75rem' }}>{groupName}</legend>
-                          <div className={style.filterButtonsContainerRow}>
-                            {items.map(item => {
-                              const isSelected = selectedSalidasEarlyItems.some(i => i.apiName === item.apiName);
-                              const fullItem = allItems.find(i => i.apiName === item.apiName) || item;
-                              const hasComposition = fullItem.composition && fullItem.composition.length > 0;
-                              const matchedCount = hasComposition ? fullItem.composition.filter(c => selectedSalidasEarlyComponents.includes(c) || selectedSalidasEarlyComponents.some(sc => sc.replace('DA_Component_', '').replace('DA_', '').replace('TFT_Item_', '') === c.replace('DA_Component_', '').replace('DA_', '').replace('TFT_Item_', ''))).length : 0;
-                              return (
-                                <button
-                                  key={item.apiName}
-                                  type="button"
-                                  title={item.name}
-                                  className={`${style.filterOptionBox} ${isSelected ? style.filterOptionBoxActive : ''}`}
-                                  onClick={() => toggleArrayFilter(setSelectedSalidasEarlyItems, item)}
-                                  style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '6px', gap: '4px' }}
-                                >
-                                  {item.icon && (
-                                    <div className={matchedCount === 2 && !isSelected ? style.spinningHighlight : style.spinningHighlightIdle} style={{ borderRadius: '4px' }}>
-                                      <img src={item.icon} alt={item.name} style={{ width: '45px', height: '45px', objectFit: 'contain', borderRadius: '3px' }} />
-                                    </div>
-                                  )}
-                                  {hasComposition && (
-                                    <div style={{ display: 'flex', gap: '2px' }}>
-                                      {fullItem.composition.map((compId, idx) => {
-                                        const compData = softItemsList.find(i => i.apiName === compId) || allItems.find(i => i.apiName === compId);
-                                        const normalizedCompId = compId.replace('DA_Component_', '').replace('DA_', '').replace('TFT_Item_', '');
-                                        const isCompSelected = selectedSalidasEarlyComponents.includes(compId) ||
-                                          selectedSalidasEarlyComponents.some(c => c.replace('DA_Component_', '').replace('DA_', '').replace('TFT_Item_', '') === normalizedCompId);
-
-                                        return compData && compData.icon ? (
-                                          <div key={`${compId}-${idx}`} className={isCompSelected && matchedCount < 2 ? style.spinningHighlight : style.spinningHighlightIdle} style={{ borderRadius: '3px' }}>
-                                            <img
-                                              src={compData.icon}
-                                              alt={compData.name}
-                                              title={compData.name}
-                                              style={{ width: '16px', height: '16px', objectFit: 'contain', borderRadius: '2px', display: 'block', backgroundColor: 'rgba(0,0,0,0.5)' }}
-                                            />
-                                          </div>
-                                        ) : null;
-                                      })}
-                                    </div>
-                                  )}
-                                </button>
-                              );
-                            })}
-                          </div>
-                        </fieldset>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {availableGruposSalidasEarly.length > 0 ? (
-              Object.entries(groupedGrupos).map(([groupName, grupos]) => {
-                if (grupos.length === 0) return null;
-                return (
-                  <fieldset key={groupName} style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                    <legend>{groupName === "N/A" ? `Tempo` : groupName}</legend>
-                    <div className={style.filterButtonsContainerRow} >
-                      {grupos.map(grupo => {
-                        const isSelected = selectedSalidasEarly.includes(grupo.id);
-                        const composUsingThisGroup = filteredComposPrimary.filter(c => c.salidasEarly?.map(String).includes(String(grupo.id)));
-
-                        let matchesChampion = false;
-                        const matchedChampionsForGroup = [];
-                        if (selectedSalidasEarlyChampions.length > 0) {
-                          selectedSalidasEarlyChampions.forEach(champ => {
-                            const isMatch = composUsingThisGroup.some(compo =>
-                              (compo.condiciones || []).some(c => c.apiNameGrande === champ.apiName || c.ApiNamePequeno === champ.apiName)
-                            );
-                            if (isMatch) {
-                              matchesChampion = true;
-                              matchedChampionsForGroup.push(champ);
-                            }
-                          });
-                        }
-
-                        const uniqueCraftedItems = new Set();
-                        if (selectedSalidasEarlyComponents.length > 0 || selectedSalidasEarlyItems.length > 0) {
-                          composUsingThisGroup.forEach(c => {
-                            const checkItem = (apiName) => {
-                              let addedByComponent = false;
-                              if (selectedSalidasEarlyComponents.length > 0) {
-                                const dbItem = allItems.find(i => i.apiName === apiName);
-                                if (dbItem?.composition && dbItem.composition.length > 0) {
-                                  if (dbItem.composition.every(comp => selectedSalidasEarlyComponents.includes(comp))) {
-                                    addedByComponent = true;
-                                  }
-                                } else {
-                                  const normalizedApi = apiName.replace('DA_Component_', '').replace('DA_', '').replace('TFT_Item_', '');
-                                  if (selectedSalidasEarlyComponents.some(comp => comp.replace('DA_Component_', '').replace('DA_', '').replace('TFT_Item_', '') === normalizedApi)) {
-                                    addedByComponent = true;
-                                  }
-                                }
-                              }
-
-                              let addedBySpecificItem = false;
-                              if (selectedSalidasEarlyItems.length > 0) {
-                                if (selectedSalidasEarlyItems.some(i => i.apiName === apiName)) {
-                                  addedBySpecificItem = true;
-                                }
-                              }
-
-                              if (addedByComponent || addedBySpecificItem) {
-                                uniqueCraftedItems.add(apiName);
-                              }
-                            };
-
-                            (c.itemsPrio || []).forEach(prioItem => {
-                              const apiName = typeof prioItem === 'object' ? prioItem.apiName : prioItem;
-                              checkItem(apiName);
-                            });
-
-                            (c.condiciones || []).forEach(cond => {
-                              const condType = (cond.condTypeGrande || cond.typeGrande || cond.condType || "").toLowerCase();
-                              if (condType === 'item' && cond.apiNameGrande) {
-                                checkItem(cond.apiNameGrande);
-                              }
-                            });
-                          });
-                        }
-
-                        const craftedItemsForGroup = Array.from(uniqueCraftedItems).map(apiName => allItems.find(i => i.apiName === apiName)).filter(Boolean);
-
-                        let matchesSinergia = false;
-                        const matchedSinergiasForGroup = [];
-                        if (selectedSalidasEarlySinergias.length > 0) {
-                          selectedSalidasEarlySinergias.forEach(traitApiName => {
-                            const isMatch = composUsingThisGroup.some(compo =>
-                              (compo.condiciones || []).some(c =>
-                                (c.condTypeGrande?.toLowerCase() === 'sinergia' || c.typeGrande?.toLowerCase() === 'sinergia' || c.condType?.toLowerCase() === 'sinergia') &&
-                                (c.apiNameGrande === traitApiName || c.ApiNamePequeno === traitApiName)
-                              ) || (compo.traits || []).some(t => t.name === traitApiName)
-                            );
-                            if (isMatch) {
-                              matchesSinergia = true;
-                              const tr = allTraits.find(t => t.apiName === traitApiName);
-                              if (tr) matchedSinergiasForGroup.push(tr);
-                            }
-                          });
-                        }
-
-                        const isFiltersActive = selectedSalidasEarlyChampions.length > 0 || selectedSalidasEarlyComponents.length > 0 || selectedSalidasEarlyItems.length > 0 || selectedSalidasEarlySinergias.length > 0;
-                        const hasCraftedItems = craftedItemsForGroup.length > 0;
-                        const isVisibleByFilters = !isFiltersActive || matchesChampion || hasCraftedItems || matchesSinergia;
-
-                        return (
-                          <button
-                            key={grupo.id}
-                            type="button"
-                            title={grupo.nombre || `Grupo ${grupo.id}`}
-                            className={`${style.filterOptionBox} ${isSelected ? style.filterOptionBoxActive : ''}`}
-                            onClick={() => toggleArrayFilter(setSelectedSalidasEarly, grupo.id)}
-                            style={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              gap: '6px',
-                              padding: '6px 8px',
-                              opacity: isVisibleByFilters ? 1 : 0.5,
-                              filter: isVisibleByFilters ? 'none' : 'grayscale(50%)'
-                            }}
-                          >
-                            {grupo.campeones && grupo.campeones.length > 0 ? (
-                              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                                {grupo.nombre && (
-                                  <span style={{ fontSize: '1rem', fontWeight: 'bold', marginBottom: '4px' }}>
-                                    {grupo.nombre}
-                                  </span>
-                                )}
-                                {/* <ActiveTraitsDisplay championApiNames={grupo.campeones} versionNumber={versionNumber} /> */}
-                                <div style={{ display: 'flex', gap: '5px' }}>
-                                  {grupo.campeones.map(apiName => {
-                                    const champ = allChampions.find(c => c.apiName === apiName);
-                                    if (!champ || !champ.tileIcon) return null;
-                                    return (
-                                      <div key={apiName} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
-                                        <img
-                                          src={getLocalTftImage(champ.tileIcon, 'champions/tileIcon')}
-                                          alt={champ.name}
-                                          style={{
-                                            minWidth: '60px',
-                                            minHeight: '60px',
-                                            width: '60px',
-                                            height: '60px',
-                                            objectFit: 'contain',
-                                            borderRadius: '3px',
-                                            boxSizing: 'border-box',
-                                            border: champ.cost ? `3px solid var(--color-hex-cost-${champ.cost})` : '3px solid transparent'
-                                          }}
-                                        />
-                                        <span style={{ fontSize: '1rem', textAlign: 'center', lineHeight: '1' }}>{champ.name}</span>
-                                      </div>
-                                    );
-                                  })}
-                                </div>
-                                {(craftedItemsForGroup.length > 0 || matchedChampionsForGroup.length > 0 || matchedSinergiasForGroup.length > 0) && (
-                                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '6px', padding: '4px', background: 'rgba(0,0,0,0.3)', borderRadius: '4px' }}>
-                                    {matchedSinergiasForGroup.map(trait => (
-                                      <img
-                                        key={trait.apiName}
-                                        src={trait.icon?.includes("http") ? trait.icon.replace(".tex", ".png").toLowerCase() : getLocalTftImage(trait.icon, 'traits', versionNumber)}
-                                        alt={trait.name}
-                                        title={trait.name}
-                                        style={{ width: '40px', height: '40px', borderRadius: '4px', objectFit: 'contain', backgroundColor: 'rgba(0,0,0,0.5)', border: '1px solid #444', boxSizing: 'border-box' }}
-                                      />
-                                    ))}
-                                    {matchedChampionsForGroup.map(champ => (
-                                      <img
-                                        key={champ.apiName}
-                                        src={champ.icon || getLocalTftImage(champ.tileIcon, 'champions/tileIcon')}
-                                        alt={champ.name}
-                                        title={champ.name}
-                                        style={{ width: '40px', height: '40px', borderRadius: '4px', objectFit: 'contain', border: champ.cost ? `2px solid var(--color-hex-cost-${champ.cost})` : '2px solid transparent', boxSizing: 'border-box' }}
-                                      />
-                                    ))}
-                                    {craftedItemsForGroup.map(item => (
-                                      <img
-                                        key={item.apiName}
-                                        src={getLocalTftImage(item.icon, 'items')}
-                                        alt={item.name}
-                                        title={item.name}
-                                        style={{ width: '40px', height: '40px', borderRadius: '4px', objectFit: 'contain' }}
-                                      />
-                                    ))}
-                                  </div>
-                                )}
-                              </div>
-                            ) : (
-                              <span>{grupo.nombre || `Grupo ${grupo.id}`}</span>
-                            )}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </fieldset>
-                );
-              })
-            ) : (
-              <span style={{ color: '#ccc', fontStyle: 'italic', fontSize: '0.85rem' }}>No hay salidas early disponibles</span>
-            )}
-          </div>
-        </div>
-
-      )
-    }
-    return (
-      <fieldset className={`${style.filtersSection} ${style.filtersSectionHard}`}>
-        <legend>Filtros Early (Dentro del Juego / Ingame)</legend>
-        <div className={style.hardFiltersGrid}>
-          {/*  Salidas Early */}
-          {SalidasEarly()}
-
-        </div>
-      </fieldset>
-    )
-  }
 
   const hasEarlyFiltersActive = selectedSalidasEarly.length > 0 || selectedSalidasEarlyItems.length > 0;
 
@@ -1600,210 +1049,8 @@ export default function MasterPlanPage() {
         }
       }
     });
-
     return highlighted;
   }, [filteredCompos, hasEarlyFiltersActive, selectedSalidasEarly, selectedSalidasEarlyItems]);
-
-  const FiltroAumentos = () => {
-    return (
-      <fieldset className={`${style.filtersSection}`}>
-        <legend>Filtro de Aumentos (2-1)</legend>
-
-        <div className={style.filterInputGroup}>
-          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
-            <div className={style.filterButtonsContainerRow}>
-              {['Plata', 'Oro', 'Prismatico'].map(tier => (
-                <button
-                  key={tier}
-                  type="button"
-                  className={`${style.filterOptionBox} ${selectedAugmentTiers.includes(tier) ? style.filterOptionBoxActive : ''}`}
-                  onClick={() => toggleArrayFilter(setSelectedAugmentTiers, tier)}
-                >
-                  {tier}
-                </button>
-              ))}
-            </div>
-
-            <div className={style.filterButtonsContainerRow}>
-              <button
-                type="button"
-                className={`${style.filterOptionBox} ${sortAugmentsByName ? style.filterOptionBoxActive : ''}`}
-                onClick={() => {
-                  setSortAugmentsByCount(null);
-                  setSortAugmentsByName(prev => prev === 'A-Z' ? 'Z-A' : prev === 'Z-A' ? null : 'A-Z');
-                }}
-              >
-                {sortAugmentsByName || 'A-Z / Z-A'}
-              </button>
-
-              <button
-                type="button"
-                className={`${style.filterOptionBox} ${sortAugmentsByCount ? style.filterOptionBoxActive : ''}`}
-                onClick={() => {
-                  setSortAugmentsByName(null);
-                  setSortAugmentsByCount(prev => prev === 'DESC' ? 'ASC' : prev === 'ASC' ? null : 'DESC');
-                }}
-              >
-                {sortAugmentsByCount ? `${sortAugmentsByCount}` : 'DESC / ASC'}
-              </button>
-            </div>
-          </div>
-          <div style={{ display: 'grid', gridTemplateRows: 'repeat(auto-fit, 1fr)', gap: '5px' }}>
-            {selectedAugmentTiers.length > 0 && ['Plata', 'Oro', 'Prismatico'].map(tierName => {
-              // Ocultar completamente este sector de tier si hay tiers seleccionados y no es este
-              // (Asumimos que 'Otros' no se filtra o se filtra aparte, pero si no está seleccionado lo ocultamos)
-              if (tierName !== 'Otros' && !selectedAugmentTiers.includes(tierName)) {
-                return null;
-              }
-              if (tierName === 'Otros' && !selectedAugmentTiers.includes('Otros')) {
-                // Si 'Otros' no está en las opciones del minifiltro, tal vez siempre lo ocultamos al usar filtros
-                return null;
-              }
-
-              const augsInTier = opEarlyAugmentsMap.filter(aug => {
-                let augTier = (dbAumentos[aug.apiName]?.categoria_tier || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-
-                if (tierName === "Otros") {
-                  return augTier !== "plata" && augTier !== "oro" && augTier !== "prismatico";
-                }
-
-                const normalizedTierName = tierName.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-                return augTier === normalizedTierName;
-              });
-
-              if (augsInTier.length === 0) return null;
-
-              augsInTier.sort((a, b) => {
-                if (sortAugmentsByName) {
-                  const alphaSort = (a.name || "").localeCompare(b.name || "");
-                  return sortAugmentsByName === 'A-Z' ? alphaSort : -alphaSort;
-                }
-                if (sortAugmentsByCount) {
-                  const diff = (a.appearCount || 0) - (b.appearCount || 0);
-                  return sortAugmentsByCount === 'ASC' ? diff : -diff;
-                }
-                // Default fallback
-                return (b.appearCount || 0) - (a.appearCount || 0) || (a.name || "").localeCompare(b.name || "");
-              });
-
-              const tierColor = tierName === 'Oro' ? '#ffcc00' : tierName === 'Plata' ? '#ccc' : tierName === 'Prismatico' ? '#ff4d4d' : '#888';
-
-              return (
-                <div key={tierName} style={{ display: 'flex', flexDirection: 'column', gap: '10px', background: 'rgba(0,0,0,0.15)', padding: '10px', borderRadius: '8px' }}>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))', gap: '8px' }}>
-                    {augsInTier.map(aug => {
-                      let isGrayedOut = false;
-
-                      if (selectedSmallCats.length > 0) {
-                        const augCatsPequenas = dbAumentos[aug.apiName]?.categoria_pequeno || [];
-                        isGrayedOut = !selectedSmallCats.some(sc => augCatsPequenas.includes(sc));
-                      }
-
-                      const isEarlyHighlighted = earlyHighlightedAugments.has(aug.apiName);
-
-                      const isSelected = selectedHardAugments.some(a => a.apiName === aug.apiName);
-                      const champ = (dbAumentos[aug.apiName]?.categoria_grande === "Heroe" && aug.championApiName)
-                        ? allChampions.find(c => c.apiName === aug.championApiName)
-                        : null;
-
-                      return (
-                        <div
-                          key={aug.apiName}
-                          onClick={() => toggleArrayFilter(setSelectedHardAugments, aug)}
-                          title={aug.name}
-                          className={isEarlyHighlighted && !isSelected ? style.earlyHighlightPulse : ''}
-                          style={{
-                            cursor: 'pointer',
-                            opacity: isGrayedOut ? 0.3 : 1,
-                            filter: isGrayedOut ? 'grayscale(100%)' : 'none',
-                            border: isSelected ? '2px solid #ffcc00' : '2px solid transparent',
-                            borderRadius: '6px',
-                            padding: '6px 4px',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            justifyContent: 'flex-start',
-                            background: isSelected ? 'rgba(255, 204, 0, 0.1)' : 'rgba(0, 0, 0, 0.3)',
-                            transition: 'all 0.2s ease',
-                            gap: '6px'
-                          }}
-                        >
-                          <div style={{ position: 'relative', width: '60px', height: '60px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            <ImgAugment augment={aug} width={40} height={40} />
-                            {champ && (champ.img || champ.tileIcon) && (
-                              <img
-                                src={getLocalTftImage(champ.img || champ.tileIcon, 'champions/tileIcon', versionNumber)}
-                                alt={champ.name}
-                                style={{
-                                  position: 'absolute',
-                                  top: '-4px',
-                                  left: '-4px',
-                                  width: '30px',
-                                  height: '30px',
-                                  objectFit: 'contain',
-                                  borderRadius: '4px',
-                                  border: '1px solid #ffcc00',
-                                  backgroundColor: 'rgba(0,0,0,0.8)'
-                                }}
-                              />
-                            )}
-                            {aug.appearCount > 0 && (
-                              <div style={{
-                                position: 'absolute',
-                                bottom: '-6px',
-                                left: '50%',
-                                transform: 'translateX(-50%)',
-                                backgroundColor: 'rgba(0,0,0,0.85)',
-                                color: '#ffcc00',
-                                border: '1px solid #ffcc00',
-                                borderRadius: '50%',
-                                width: '18px',
-                                height: '18px',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                fontSize: '1rem',
-                                fontWeight: 'bold',
-                                zIndex: 2
-                              }}>
-                                {aug.appearCount}
-                              </div>
-                            )}
-                            {aug.isOp && (
-                              <div style={{
-                                position: 'absolute',
-                                top: '-6px',
-                                right: '-6px',
-                                backgroundColor: aug.isOpm ? '#ff4500' : '#ff9d00',
-                                color: 'white',
-                                borderRadius: '4px',
-                                padding: '1px 3px',
-                                fontSize: '0.60rem',
-                                fontWeight: 'bold',
-                                zIndex: 3,
-                                textShadow: '1px 1px 2px rgba(0,0,0,0.8)'
-                              }}>
-                                {aug.isOpm ? 'OPM' : 'OP'}
-                              </div>
-                            )}
-                          </div>
-                          <span style={{ fontSize: '1rem', textAlign: 'center', lineHeight: '1.2', wordBreak: 'break-word', color: isSelected ? '#ffcc00' : '#ddd' }}>
-                            {aug.name}{champ ? ` + ${champ.name}` : ''}
-                          </span>
-                        </div>
-                      )
-                    })}
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-        </div>
-
-      </fieldset>
-    );
-  };
-
 
   return (
     <div id={"masterPlanContainer"} className={style.masterPlanContainer}>
@@ -1821,87 +1068,97 @@ export default function MasterPlanPage() {
           </button>
         </div> */}
         <div className={style.filtersSectionContainer}>
-          {FiltroHard()}
-          {FiltroHard2()}
-          {FiltroAumentos()}
-          {/* {FiltroSoft()} */}
-
-          {/* <div className={style.filtersSection}>
-          <h3>Filtro Check (Condiciones específicas)</h3>
-          <div className={style.filterGroup}>
-            {CHECK_FILTERS.map((filter) => (
-              <label key={filter.apiName} className={style.filterLabel}>
-                <input 
-                  type="checkbox" 
-                  checked={activeCheckFilters.includes(filter.apiName)}
-                  onChange={() => toggleFilter('check', filter.apiName)}
-                />
-                {filter.label}
-              </label>
-            ))}
+          <div className={style.sectionFiltersPlaystyles}>
+            <FiltroHardWrapper
+              tiers={tiers} selectedTier={selectedTier} setSelectedTier={setSelectedTier}
+              categorias={categorias} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory}
+              dificultades={dificultades} selectedDifficulty={selectedDifficulty} setSelectedDifficulty={setSelectedDifficulty}
+              dañoTipo={dañoTipo} selectedDamageType={selectedDamageType} setSelectedDamageType={setSelectedDamageType}
+              toggleArrayFilter={toggleArrayFilter} resetAllFilters={resetAllFilters} style={style}
+            />
           </div>
-        </div> */}
-        </div>
-
-        <div className={style.resultsSection}>
-          <h3>Resultados ({filteredCompos.length})</h3>
-          <div className={style.composGrid}>
-            {filteredCompos.length > 0 ? (
-              filteredCompos.map(compo => (
-                <div key={compo.id || compo.titulo || Math.random()} className={style.cardContainer} onClick={() => setActiveComp(allCompos.find((comp) => comp.id === compo.id))}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '5px', background: 'rgba(0,0,0,0.3)', borderRadius: '8px 8px 0px 0px', }}>
-                    <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.1)' }}></div>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '8px', minHeight: '32px' }}>
-                      {compo._matchedFilters.map((f, i) => {
-                        const showDivider = i > 0 && f.opStatus !== compo._matchedFilters[i - 1].opStatus;
-                        return (
-                          <div key={i} style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                            {showDivider && (
-                              <div style={{ width: '20px', height: '1px', background: 'rgba(255,255,255,0.1)' }}></div>
-                            )}
-                            <div style={{ position: 'relative', display: 'flex' }}>
-                              {f.type === 'salida' && f.campeones && f.campeones.length > 0 ? (
-                                <div style={{ display: 'flex', gap: '2px', background: 'rgba(255,255,255,0.1)', padding: '2px', borderRadius: '4px', border: f.opStatus === 'opm' ? '2px solid #ff4500' : f.opStatus === 'op' ? '2px solid #ff9d00' : 'none' }}>
-                                  {f.campeones.map(apiName => {
-                                    const champ = allChampions.find(c => c.apiName === apiName);
-                                    if (!champ || !champ.tileIcon) return null;
-                                    return (
-                                      <img
-                                        key={apiName}
-                                        title={f.name}
-                                        src={getLocalTftImage(champ.tileIcon, 'champions/tileIcon')}
-                                        alt={champ.name}
-                                        style={{ width: '28px', height: '28px', objectFit: 'contain', borderRadius: '3px' }}
-                                      />
-                                    );
-                                  })}
-                                </div>
-                              ) : f.icon ? (
-                                <img src={f.icon} alt={f.name} title={f.name} style={{ width: '32px', height: '32px', borderRadius: '4px', objectFit: 'contain', border: f.opStatus === 'opm' ? '2px solid #ff4500' : f.opStatus === 'op' ? '2px solid #ff9d00' : f.isCore ? '2px solid #24ce02ff' : 'none' }} />
-                              ) : (
-                                <span style={{ fontSize: '12px', background: 'rgba(255,255,255,0.1)', padding: '4px 6px', borderRadius: '4px', color: 'white', border: f.opStatus === 'opm' ? '2px solid #ff4500' : f.opStatus === 'op' ? '2px solid #ff9d00' : f.isCore ? '2px solid #24ce02ff' : 'none' }}>{f.name}</span>
-                              )}
-                              {f.opStatus && (
-                                <div style={{ position: 'absolute', top: '-6px', right: '-6px', fontSize: '10px', fontWeight: 'bold', background: f.opStatus === 'opm' ? '#ff4500' : '#ff9d00', color: 'white', padding: '1px 3px', borderRadius: '4px', zIndex: 1, textShadow: '1px 1px 2px rgba(0,0,0,0.8)' }}>
-                                  {f.opStatus.toUpperCase()}
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                    <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.1)' }}></div>
-                  </div>
-                  <CardsMasterPlanCompos compo={compo} activateMissingOPM={activateMissingOPM} filtroSoft={{ selectedSoftItems, selectedSoftChampions, selectedSoftTraits, selectedSoftAugments }} gruposSalidasEarly={gruposSalidasEarly} selectedAugmentTiers={selectedAugmentTiers} />
+          <div className={style.sectionFiltersAndResults}>
+            <div className={style.sectionFiltersEarly}>
+              <fieldset className={`${style.filtersSection} ${style.filtersSectionHard}`}>
+                <legend>Filtros Early (Dentro del Juego / Ingame)</legend>
+                <div className={style.tabsMenu}>
+                  <button type="button" onClick={() => setActiveEarlyTab('campeones')} className={`${style.tabButton} ${activeEarlyTab === 'campeones' ? style.tabButtonActive : ''}`}>Campeones & Salidas</button>
+                  <button type="button" onClick={() => setActiveEarlyTab('objetos')} className={`${style.tabButton} ${activeEarlyTab === 'objetos' ? style.tabButtonActive : ''}`}>Objetos / Items</button>
+                  <button type="button" onClick={() => setActiveEarlyTab('aumentos')} className={`${style.tabButton} ${activeEarlyTab === 'aumentos' ? style.tabButtonActive : ''}`}>Aumentos 2-1</button>
                 </div>
-              ))
-            ) : (
-              <p className={style.noResults}>No se encontraron composiciones con estos filtros.</p>
-            )}
+                <div className={style.tabContent}>
+                  {activeEarlyTab !== 'aumentos' && (
+                    <FiltroEarlyWrapper
+                      activeTab={activeEarlyTab}
+                      champsList={softChampionsList}
+                      selectedSalidasEarlyChampions={selectedSalidasEarlyChampions}
+                      toggleSelectedSalidasEarlyChampion={toggleSelectedSalidasEarlyChampion}
+                      condicionesGrandeSinergias={condicionesGrandeSinergias}
+                      selectedSalidasEarlySinergias={selectedSalidasEarlySinergias}
+                      toggleArrayFilter={toggleArrayFilter}
+                      setSelectedSalidasEarlySinergias={setSelectedSalidasEarlySinergias}
+                      softItemsList={softItemsList}
+                      selectedSalidasEarlyComponents={selectedSalidasEarlyComponents}
+                      setSelectedSalidasEarlyComponents={setSelectedSalidasEarlyComponents}
+                      condicionesGrandeItems={condicionesGrandeItems}
+                      condicionesGrandeItemsGrouped={condicionesGrandeItemsGrouped}
+                      selectedSalidasEarlyItems={selectedSalidasEarlyItems}
+                      setSelectedSalidasEarlyItems={setSelectedSalidasEarlyItems}
+                      allItems={allItems}
+                      availableGruposSalidasEarly={availableGruposSalidasEarly}
+                      filteredComposPrimary={filteredComposPrimary}
+                      selectedSalidasEarly={selectedSalidasEarly}
+                      setSelectedSalidasEarly={setSelectedSalidasEarly}
+                      allTraits={allTraits}
+                      allChampions={allChampions}
+                      versionNumber={versionNumber}
+                      style={style}
+                    />
+                  )}
+                  {activeEarlyTab === 'aumentos' && (
+                    <FiltroAumentosWrapper
+                      selectedAugmentTiers={selectedAugmentTiers}
+                      toggleArrayFilter={toggleArrayFilter}
+                      setSelectedAugmentTiers={setSelectedAugmentTiers}
+                      sortAugmentsByName={sortAugmentsByName}
+                      setSortAugmentsByName={setSortAugmentsByName}
+                      sortAugmentsByCount={sortAugmentsByCount}
+                      setSortAugmentsByCount={setSortAugmentsByCount}
+                      opEarlyAugmentsMap={opEarlyAugmentsMap}
+                      dbAumentos={dbAumentos}
+                      selectedSmallCats={selectedSmallCats}
+                      earlyHighlightedAugments={earlyHighlightedAugments}
+                      selectedHardAugments={selectedHardAugments}
+                      setSelectedHardAugments={setSelectedHardAugments}
+                      allChampions={allChampions}
+                      versionNumber={versionNumber}
+                      style={style}
+                    />
+                  )}
+                </div>
+              </fieldset>
+            </div>
+            <div className={style.containerResults}>
+              <ResultadosWrapper
+                filteredCompos={filteredCompos}
+                setActiveComp={setActiveComp}
+                allCompos={allCompos}
+                allChampions={allChampions}
+                activateMissingOPM={activateMissingOPM}
+                selectedSoftItems={selectedSoftItems}
+                selectedSoftChampions={selectedSoftChampions}
+                selectedSoftTraits={selectedSoftTraits}
+                selectedSoftAugments={selectedSoftAugments}
+                gruposSalidasEarly={gruposSalidasEarly}
+                selectedAugmentTiers={selectedAugmentTiers}
+                style={style}
+              />
+            </div>
           </div>
         </div>
       </div>
+
+      
       <div className={style.containerMid}>
         {activeComp && (
           <div id={"activeCompContainer"} className={style.activeCompContainer}>
