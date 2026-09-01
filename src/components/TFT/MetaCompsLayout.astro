@@ -73,11 +73,11 @@ const tiersInfo = [
   //   title: "Hero",
   //   text: "Composiciones que tienen aumento de heroe.",
   // },
-  // {
-  //   tier: "X",
-  //   title: "Situacional",
-  //   text: "Cuando cumplen ciertos requisitos.",
-  // },
+  {
+    tier: "X",
+    title: "Situacional",
+    text: "Cuando cumplen ciertos requisitos.",
+  },
 ];
 
 
@@ -249,7 +249,12 @@ const tableOfContentIndividual = [
       }
       {
         tiersInfo.map((tier, index) => {
-          const compsForThisTier = compsInSet.filter(comp => comp.tier === tier.tier);
+          let compsForThisTier = [];
+          if (tier.tier === "X") {
+            compsForThisTier = compsInSet.filter(comp => comp.tierExtra === "X");
+          } else {
+            compsForThisTier = compsInSet.filter(comp => comp.tier === tier.tier && comp.tierExtra !== "X");
+          }
           
           if (compsForThisTier.length === 0) return null;
 
@@ -265,17 +270,35 @@ const tableOfContentIndividual = [
               <div class="container-champs-tier">
                 {compsForThisTier.map((comp, index) => {
                   const isActive = String(comp.urlSEO) === String(activeId);
+                  // Colores según el Tier para el badge flotante
+                  const badgeColors = {
+                    "S": "#f59e0b", // Dorado
+                    "A": "#ec4899", // Rosa/Rojo
+                    "B": "#6b7280", // Gris
+                    "C": "#8b4513", // Marrón
+                    "H": "#10b981", // Verde
+                    "N/A": "#888"
+                  };
+                  const badgeBg = badgeColors[comp.tier] || "#fff";
+
                   return (
-                    <CampeonImgInTierList
-                      apiNameCampeon={comp?.campeonMeta?.apiNameCampeon}
-                      apiNameItems={comp?.campeonMeta?.apiNameItemsDelCampeon}
-                      estrellas={comp?.campeonMeta?.estrellas}
-                      aumento={comp?.campeonMeta?.aumento}
-                      emblema={comp?.campeonMeta?.emblema}
-                      compUrl={comp.urlSEO}
-                      client:load
-                      transition:persist
-                    />
+                    <div style="position: relative; display: inline-block;">
+                      {tier.tier === "X" && (
+                        <span style={`position: absolute; top: -14px; left: 50%; transform: translateX(-50%); color: ${badgeBg}; font-size: 18px; font-weight: 900; z-index: 10; -webkit-text-stroke: 1px #000; text-shadow: 0px 2px 4px rgba(0,0,0,0.9), 0px 0px 2px rgba(0,0,0,1); letter-spacing: 1px;`}>
+                          {comp.tier}
+                        </span>
+                      )}
+                      <CampeonImgInTierList
+                        apiNameCampeon={comp?.campeonMeta?.apiNameCampeon}
+                        apiNameItems={comp?.campeonMeta?.apiNameItemsDelCampeon}
+                        estrellas={comp?.campeonMeta?.estrellas}
+                        aumento={comp?.campeonMeta?.aumento}
+                        emblema={comp?.campeonMeta?.emblema}
+                        compUrl={comp.urlSEO}
+                        client:load
+                        transition:persist
+                      />
+                    </div>
                   );
                 })}
               </div>

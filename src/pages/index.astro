@@ -85,10 +85,32 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
             <li>✔ Saber cuándo pivotear o forzar</li>
           </ul>
           
-          <form class="subscription-form" action="/login" method="GET">
-            <input type="hidden" name="redirect" value={Astro.url.pathname} />
-            <button type="submit">Registrarme</button>
-          </form>
+          <div class="subscription-form">
+            <button id="masterplan-btn" onclick="window.location.href='/login?redirect=/tft/master-plan'">Registrarme</button>
+          </div>
+
+          <script>
+            import { $user } from "../stores/auth.js";
+
+            $user.subscribe((user) => {
+              const btn = document.getElementById('masterplan-btn');
+              if (btn) {
+                if (user) {
+                  const hasPlan = user.master_plan == 1 || user.master_plan == '1' || user.role === 'admin' || user.role === 'superadmin';
+                  if (hasPlan) {
+                    btn.onclick = () => window.location.href = '/tft/master-plan/app';
+                    btn.innerText = 'Ir a la App';
+                  } else {
+                    btn.onclick = () => window.location.href = '/tft/master-plan';
+                    btn.innerText = 'Obtener Master Plan';
+                  }
+                } else {
+                  btn.onclick = () => window.location.href = '/login?redirect=/tft/master-plan';
+                  btn.innerText = 'Registrarme';
+                }
+              }
+            });
+          </script>
         </div>
       </div>
     </section>
