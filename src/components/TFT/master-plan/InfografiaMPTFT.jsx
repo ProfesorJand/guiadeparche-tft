@@ -63,9 +63,9 @@ const InfografiaMPTFT = ({comp = {}, gruposSalidasEarly = []}) => {
                 <span className={style.dificultadCard} data-dificultad={comp?.dificultad}>{comp?.dificultad}</span>
                 <span className={style.categoriaCard} data-categoria={comp?.categoria}>{comp?.categoria}</span>
                 <span className={style.dañoCard} data-tipoDeDano={comp?.tipoDeDano}>{comp?.tipoDeDano}</span>
-                <div className={style.containerTextoInfoPrimarioCode} onClick={(e)=>copyToClipboard(e, "codigo copiado", codeForPBE(tableroArray.map((info)=>info.apiNameCampeon)))}>
-                  {"COPIAR CODIGO 📋"}
-                </div>
+                {/* <div className={style.containerTextoInfoPrimarioCode} onClick={(e)=>copyToClipboard(e, "codigo copiado", codeForPBE(tableroArray.map((info)=>info.apiNameCampeon)))}>
+                  {"COPIAR CÓDIGO 📋"}
+                </div> */}
               </div>
             </div>
           </div>

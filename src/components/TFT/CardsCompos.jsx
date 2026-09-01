@@ -77,10 +77,12 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
   }
 
   function codeForPBE(allChampionsApiName) {
-    let sinDuplicados = [...new Set(allChampionsApiName)];
+    // allChampionsApiName es un array de objetos [{apiName: "tft18_krug"}], extraemos el string para que Set funcione
+    let apiNamesStrings = allChampionsApiName.map(c => c.apiName);
+    let sinDuplicados = [...new Set(apiNamesStrings)];
     let championsCode = "02";
-    let cantidadDeCampeones = sinDuplicados.length;
-    sinDuplicados.forEach(({ apiName }) => {
+    let cantidadDeCampeones = Math.min(sinDuplicados.length, 10);
+    sinDuplicados.slice(0, 10).forEach((apiName) => {
       championsCode = championsCode.concat(codeOfChampions[apiName] || "");
     });
     let espaciosVacios = 10 - cantidadDeCampeones;
@@ -298,7 +300,14 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
     };
   })
     .filter(Boolean) // Omitir campeones excluidos o no encontrados (los null)
-    .sort((a, b) => (a?.campeon?.cost || 0) - (b?.campeon?.cost || 0));
+    .sort((a, b) => {
+      const costDiff = (a?.campeon?.cost || 0) - (b?.campeon?.cost || 0);
+      if (costDiff !== 0) return costDiff;
+      // Sort alphabetically by apiName as secondary criteria to match TFT client expectations
+      const apiA = a?.campeon?.apiName || "";
+      const apiB = b?.campeon?.apiName || "";
+      return apiA.localeCompare(apiB);
+    });
 
   const allChampionsApiName = campeones.map(({ campeon }) => {
     return { apiName: campeon.apiName }
@@ -432,9 +441,9 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
                 </div>
               ) : (
                 <div className={`${style.btnAdmins} ${!isInfografia ? "hideForCapture" : ""}`}>
-                  <button className={`${style.buttonLink} ${style.buttonLinkCopy}`} onClick={(e) => copyToClipboard(e, (currentVersion === "pbe" ? codeForPBE(allChampionsApiName) : codeForPBE(allChampionsApiName)))}>
+                  {/* <button className={`${style.buttonLink} ${style.buttonLinkCopy}`} onClick={(e) => copyToClipboard(e, (currentVersion === "pbe" ? codeForPBE(allChampionsApiName) : codeForPBE(allChampionsApiName)))}>
                     Copiar Código
-                  </button>
+                  </button> */}
                   <a
                     href={isActive ? "/tft/meta-comps-tier-list-teamfight-tactics" : `/tft/meta-comps-tier-list-teamfight-tactics/${comp.urlSEO}`}
                     className={style.buttonLink}

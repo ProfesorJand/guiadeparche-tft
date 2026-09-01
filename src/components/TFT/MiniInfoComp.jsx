@@ -223,11 +223,11 @@ function Tags({ colorDificulty, compo, show, codeForPBE, allChampionsApiName, ge
       <div className={style.dificultad} style={{ border: `1px solid ${colorDificulty}`, color: `${colorDificulty}` }}>{compo.dificultad}</div>
       <div className={style.category}>{compo.infographicCategory}</div>
 
-          {!webInfografia && <div className={`${style.containerTips} adminOptions`} >
+          {/* {!webInfografia && <div className={`${style.containerTips} adminOptions`} >
             <div className={style.containerTextoInfoPrimarioCode} onClick={(e)=>copyToClipboard(e,(currentVersion === "pbe" ? codeForPBE(allChampionsApiName) : generatorCodeBuilder(allChampionsApiName)))}>
-              {"COPIAR CODIGO 📋"}
+              {"COPIAR CÓDIGO 📋"}
             </div>
-          </div>}
+          </div>} */}
 
     </div>
   )
