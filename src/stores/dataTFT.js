@@ -403,8 +403,51 @@ export const getTeamPlannerCodeAPI = async () => {
     const data = await response.json();
 
     const formattedData = Object.values(data?.[versionTFT.get() === "pbe" ? setMutatorPBE : setMutatorLatest] || [])
-      .reduce((acc, { character_id, team_planner_code }) => {
-        acc[character_id] = team_planner_code.toString(16).padStart(3, '0');
+      .reduce((acc, { character_id, display_name, team_planner_code }) => {
+        const hexCode = team_planner_code.toString(16).padStart(3, '0');
+        acc[character_id] = hexCode;
+        if (character_id) {
+           acc[character_id.toLowerCase()] = hexCode;
+        }
+
+        // Crear mapeos adicionales basados en el nombre porque Riot usa "DA_18_Ahri" y nosotros "TFT18_Ahri"
+        if (display_name) {
+          let cleanName = display_name.replace(/[^a-zA-Z0-9]/g, '');
+          
+          acc[`TFT18_${cleanName}`] = hexCode;
+          acc[`TFT17_${cleanName}`] = hexCode;
+          acc[`tft18_${cleanName.toLowerCase()}`] = hexCode;
+          acc[`tft17_${cleanName.toLowerCase()}`] = hexCode;
+          
+          // Casos especiales comunes
+          if (cleanName === "NunuWillump") {
+            acc[`TFT18_Nunu`] = hexCode;
+            acc[`TFT17_Nunu`] = hexCode;
+            acc[`tft18_nunu`] = hexCode;
+            acc[`tft17_nunu`] = hexCode;
+          }
+          if (cleanName === "DrMundo") {
+            acc[`TFT18_DrMundo`] = hexCode;
+            acc[`TFT17_DrMundo`] = hexCode;
+            acc[`TFT18_Mundo`] = hexCode;
+            acc[`TFT17_Mundo`] = hexCode;
+            acc[`tft18_drmundo`] = hexCode;
+            acc[`tft18_mundo`] = hexCode;
+          }
+          if (cleanName === "RekSai") {
+             acc[`TFT18_Reksai`] = hexCode;
+             acc[`TFT17_Reksai`] = hexCode;
+             acc[`tft18_reksai`] = hexCode;
+             acc[`tft17_reksai`] = hexCode;
+          }
+        }
+        
+        // Mapeo extra limpiando el character_id (ej: DA_18_Sentry -> Sentry, DA_Gromp18_AP -> Gromp)
+        if (character_id && character_id.startsWith("DA_")) {
+          let cleanId = character_id.replace(/^DA_/i, '').replace(/18/g, '').replace(/_AP$/i, '').replace(/^_/, '');
+          acc[`TFT18_${cleanId}`] = hexCode;
+          acc[`tft18_${cleanId.toLowerCase()}`] = hexCode;
+        }
         return acc;
       }, {});
 
