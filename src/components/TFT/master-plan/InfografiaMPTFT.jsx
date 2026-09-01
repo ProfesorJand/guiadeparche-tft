@@ -21,7 +21,6 @@ const InfografiaMPTFT = ({comp = {}, gruposSalidasEarly = []}) => {
   const codeOfChampions = useStore(teamPlannerCode);
   const currentVersion = useStore(versionTFT)
   const [hoveredItemApiName, setHoveredItemApiName] = useState(null);
-  console.log({comp})
 
   const handleBestItemHelper = (apiName, action) => {
     if (action === "show") {
@@ -425,7 +424,6 @@ const InfografiaMPTFT = ({comp = {}, gruposSalidasEarly = []}) => {
                 const infoItems = (itemsName || []).map((itemName)=>AllItems.find(i => i.apiName === itemName))
                 return infoItems
               });
-              console.log({itemsDataSpecial})
               const campeonData = AllChampions.find((campeon) => campeon.apiName === info.apiNameCampeon);
               return (
                 <div key={index} className={`${style.cardCampeonBIS}`} style={{ borderColor: `var(--color-hex-cost-${campeonData?.cost}, var(--border-purple-color))`,backgroundColor: `rgba(0, 0, 0, 0.5)` }}>

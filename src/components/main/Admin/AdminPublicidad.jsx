@@ -225,6 +225,114 @@ function UsersManager() {
                     ))}
                 </tbody>
             </table>
+            
+            {users.length > 0 && <OverlayBuilder users={users} />}
+        </div>
+    );
+}
+
+function OverlayBuilder({ users }) {
+    const [alias, setAlias] = useState(users.length > 0 ? users[0].alias : 'test');
+    const [campId, setCampId] = useState('1');
+    const [w, setW] = useState(300);
+    const [h, setH] = useState(300);
+    const [vPos, setVPos] = useState({ type: 'b', val: 50 }); // b = bottom, t = top
+    const [hPos, setHPos] = useState({ type: 'l', val: 50 }); // l = left, r = right
+
+    const url = `https://guiadeparche.com/publicidad/overlay?alias=${alias}&camp=${campId}&w=${w}&h=${h}&${vPos.type}=${vPos.val}&${hPos.type}=${hPos.val}&test=1`;
+
+    const containerRef = React.useRef(null);
+    const [scale, setScale] = React.useState(1);
+
+    React.useEffect(() => {
+        if (!containerRef.current) return;
+        const resizeObserver = new ResizeObserver(entries => {
+            for (let entry of entries) {
+                setScale(entry.contentRect.width / 1920);
+            }
+        });
+        resizeObserver.observe(containerRef.current);
+        return () => resizeObserver.disconnect();
+    }, []);
+
+    return (
+        <div style={{ marginTop: '30px', padding: '20px', background: '#1e1e1e', borderRadius: '8px', border: '1px solid #444' }}>
+            <h3 style={{ marginTop: 0, color: '#00c9ff' }}>🛠️ Creador y Previsualizador de Overlay (OBS)</h3>
+            <p style={{ fontSize: '0.9rem', color: '#aaa' }}>Configura las dimensiones y posición. Copia la URL final para ponerla en OBS.</p>
+            
+            <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
+                <div style={{ flex: '1 1 300px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    <label>
+                        Alias del Streamer:
+                        <select value={alias} onChange={e => setAlias(e.target.value)} style={{ width: '100%', padding: '5px' }}>
+                            {users.map(u => <option key={u.id} value={u.alias}>{u.alias}</option>)}
+                            <option value="test">test (Pruebas)</option>
+                        </select>
+                    </label>
+                    <label>
+                        ID de Campaña (Para el preview):
+                        <input type="number" value={campId} onChange={e => setCampId(e.target.value)} style={{ width: '100%', padding: '5px' }} />
+                    </label>
+                    
+                    <div style={{ display: 'flex', gap: '10px' }}>
+                        <label style={{flex: 1}}>Ancho (w): <input type="number" value={w} onChange={e => setW(e.target.value)} style={{ width: '100%', padding: '5px' }} /></label>
+                        <label style={{flex: 1}}>Alto (h): <input type="number" value={h} onChange={e => setH(e.target.value)} style={{ width: '100%', padding: '5px' }} /></label>
+                    </div>
+
+                    <div style={{ display: 'flex', gap: '10px' }}>
+                        <label style={{flex: 1}}>Posición Vertical:
+                            <select value={vPos.type} onChange={e => setVPos({...vPos, type: e.target.value})} style={{ width: '100%', padding: '5px' }}>
+                                <option value="b">Abajo (bottom)</option>
+                                <option value="t">Arriba (top)</option>
+                            </select>
+                        </label>
+                        <label style={{flex: 1}}>Distancia (px): <input type="number" value={vPos.val} onChange={e => setVPos({...vPos, val: e.target.value})} style={{ width: '100%', padding: '5px' }} /></label>
+                    </div>
+
+                    <div style={{ display: 'flex', gap: '10px' }}>
+                        <label style={{flex: 1}}>Pos. Horizontal:
+                            <select value={hPos.type} onChange={e => setHPos({...hPos, type: e.target.value})} style={{ width: '100%', padding: '5px' }}>
+                                <option value="l">Izquierda (left)</option>
+                                <option value="r">Derecha (right)</option>
+                            </select>
+                        </label>
+                        <label style={{flex: 1}}>Distancia (px): <input type="number" value={hPos.val} onChange={e => setHPos({...hPos, val: e.target.value})} style={{ width: '100%', padding: '5px' }} /></label>
+                    </div>
+
+                    <div style={{ marginTop: '10px' }}>
+                        <strong style={{ color: '#00ff88' }}>🔗 URL Final para OBS:</strong>
+                        <input type="text" readOnly value={url.replace('&test=1', '')} style={{ width: '100%', padding: '8px', marginTop: '5px', background: '#000', color: '#fff', border: '1px solid #555' }} />
+                        <button onClick={() => { navigator.clipboard.writeText(url.replace('&test=1', '')); alert('URL copiada al portapapeles'); }} style={{ width: '100%', marginTop: '5px', padding: '10px', background: '#00ff88', color: '#000', fontWeight: 'bold' }}>Copiar URL de OBS</button>
+                    </div>
+                </div>
+
+                <div style={{ flex: '1 1 500px', display: 'flex', flexDirection: 'column' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <strong>Vista Previa (Simulada a escala real 1920x1080)</strong>
+                        <button onClick={() => document.getElementById('preview-iframe').src = `/publicidad/overlay?alias=${alias}&camp=${campId}&w=${w}&h=${h}&${vPos.type}=${vPos.val}&${hPos.type}=${hPos.val}&test=1`} style={{ padding: '5px 10px', fontSize: '0.8rem', background: '#444' }}>🔄 Forzar Anuncio</button>
+                    </div>
+                    {/* Contenedor responsivo 16:9 con ResizeObserver */}
+                    <div ref={containerRef} style={{ position: 'relative', width: '100%', aspectRatio: '16/9', background: '#222 url("/tft/assets/background_preview.jpg") center/cover', border: '2px solid #555', overflow: 'hidden', marginTop: '10px' }}>
+                        {/* El iframe se fuerza a 1920x1080 internamente y luego se escala matemáticamente al contenedor exterior */}
+                        <iframe 
+                            id="preview-iframe" 
+                            src={`/publicidad/overlay?alias=${alias}&camp=${campId}&w=${w}&h=${h}&${vPos.type}=${vPos.val}&${hPos.type}=${hPos.val}&test=1`} 
+                            style={{ 
+                                position: 'absolute', 
+                                top: 0, 
+                                left: 0, 
+                                width: '1920px', 
+                                height: '1080px', 
+                                transformOrigin: 'top left',
+                                transform: `scale(${scale})`,
+                                border: 'none', 
+                                background: 'transparent' 
+                            }} 
+                            allow="autoplay" 
+                        />
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }

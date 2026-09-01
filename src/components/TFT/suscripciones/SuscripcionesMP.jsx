@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useStore } from "@nanostores/react";
 import { $user, setUser } from "../../../stores/auth";
 import style from './css/SuscripcionesMP.module.css';
@@ -15,6 +15,7 @@ const API_URL = "https://api.guiadeparche.com/tft/mercado_pago_mp/planes.php";
  */
 const SuscripcionesMP = () => {
   const user = useStore($user);
+  const captureLock = useRef(false);
   const [planes, setPlanes] = useState([]);
   const [loadingPlanes, setLoadingPlanes] = useState(true);
   const [loadingPlanId, setLoadingPlanId] = useState(null);
@@ -231,6 +232,11 @@ const SuscripcionesMP = () => {
       .catch(e => console.error("Error fatal al vincular pago único:", e));
     }
     else if (paypal_token && payer_id && user && user.email) {
+      if (captureLock.current) {
+        console.log("🔒 Petición doble bloqueada por el candado anti-spam.");
+        return;
+      }
+      captureLock.current = true;
       console.log("4. Todo en orden, llamando a GoDaddy para capturar PAYPAL:", paypal_token);
       fetch("https://api.guiadeparche.com/tft/paypal/capturar_pago_paypal.php", {
         method: 'POST',
