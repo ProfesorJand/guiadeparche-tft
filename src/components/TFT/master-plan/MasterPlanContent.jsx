@@ -8,10 +8,53 @@ const MasterPlanContent = () => {
   const user = useStore($user);
   const hasMasterPlan = useStore($hasMasterPlan);
   const superAdmin = useStore($superAdmin);
+
+  const [activePlanFeatures, setActivePlanFeatures] = React.useState([]);
+
+  React.useEffect(() => {
+    if (hasMasterPlan) {
+      fetch("https://api.guiadeparche.com/tft/mercado_pago_mp/planes.php?action=list")
+        .then(res => res.json())
+        .then(data => {
+          if (data && data.success && Array.isArray(data.planes)) {
+            let userPlan = data.planes.find(p => p.id == user?.plan_id || p.id == user?.master_plan_id || p.mp_plan_id == user?.mp_plan_id);
+            if (!userPlan && data.planes.length > 0) {
+              userPlan = data.planes[0]; // Fallback if user object lacks the specific ID
+            }
+            
+            if (userPlan) {
+              const featuresList = [];
+              if (userPlan.features) {
+                try {
+                  const parsed = JSON.parse(userPlan.features);
+                  if (Array.isArray(parsed)) {
+                    parsed.forEach(f => {
+                      if (typeof f === 'string') featuresList.push({ text: f, enabled: true });
+                      else if (f?.text && f?.enabled !== false) featuresList.push({ text: f.text, enabled: true });
+                    });
+                  }
+                } catch(e) {}
+              }
+              if (featuresList.length === 0) {
+                featuresList.push(
+                  { text: "Acceso ilimitado al Master Plan TFT", enabled: true }
+                );
+              }
+              setActivePlanFeatures(featuresList);
+            }
+          }
+        })
+        .catch(err => console.error("Error cargando plan features:", err));
+    }
+  }, [hasMasterPlan, user]);
+
   return (
     <div className="bodyContainerMid">
       <video controls preload="auto" playsInline style={{ width: '100%', height: 'auto', maxWidth: '640px', margin: '0 auto', display: 'block', alignSelf: 'center' }}>
-        <source src="https://api.guiadeparche.com/tft/videos/VSL_Master_Plan_2026.mp4" type="video/mp4" />
+        <source 
+          aria-label="Video explicativo sobre el TFT Master Plan de GUIADEPARCHE"
+          src="https://api.guiadeparche.com/tft/videos/VSL_Master_Plan_2026.mp4" 
+          type="video/mp4" />
         Tu navegador no soporta la etiqueta de video.
       </video>
 
@@ -26,9 +69,17 @@ const MasterPlanContent = () => {
           <div className={styles.benefitsList}>
             <h3>Tus Beneficios:</h3>
             <ul>
-              <li>✅ Acceso ilimitado a las herramientas del Master Plan TFT</li>
-              <li>✅ Filtros Soft/Hard aditivos avanzados para composiciones</li>
-              <li>✅ Actualizaciones en tiempo real del meta actual</li>
+              {activePlanFeatures.length > 0 ? (
+                activePlanFeatures.map((feat, i) => (
+                  <li key={i}>✅ {feat.text}</li>
+                ))
+              ) : (
+                <>
+                  <li>✅ Acceso ilimitado a las herramientas del Master Plan TFT</li>
+                  <li>✅ Filtros Soft/Hard aditivos avanzados para composiciones</li>
+                  <li>✅ Actualizaciones en tiempo real del meta actual</li>
+                </>
+              )}
             </ul>
           </div>
           
@@ -148,28 +199,14 @@ const MasterPlanContent = () => {
           <details>
             <summary>¿Qué es exactamente el TFT Master Plan?</summary>
             <p style={{ margin: '10px 0', lineHeight: '1.5' }}>
-              Es una herramienta avanzada de filtrado en tiempo real diseñada para usarse <em>durante</em> tus partidas. A diferencia de las Tier Lists estáticas tradicionales, el Master Plan adapta el meta actual a lo que el juego te da en tus primeras rondas, guiándote paso a paso hacia la composición correcta.
-            </p>
-          </details>
-
-          <details>
-            <summary>¿Cómo funciona el Filtro de Salidas Early y Aumentos?</summary>
-            <p style={{ margin: '10px 0', lineHeight: '1.5' }}>
-              ¿Te salió un aumento Prismático en la etapa 2-1 y no sabes qué jugar? Con nuestro algoritmo de filtros, solo tienes que seleccionar el aumento que tomaste o las fichas que te salieron en early. Instantáneamente, la herramienta filtrará y te mostrará las composiciones meta que tienen la mayor probabilidad de hacer Top 4 con ese arranque específico.
-            </p>
-          </details>
-
-          <details>
-            <summary>¿Realmente me ayudará a subir de ELO?</summary>
-            <p style={{ margin: '10px 0', lineHeight: '1.5' }}>
-              Absolutamente. El mayor error de los jugadores es forzar composiciones o dudar demasiado al hacer la transición. El Master Plan elimina la "parálisis por análisis". Al saber matemáticamente hacia dónde pivotar desde el minuto uno, jugarás de forma más óptima, salvarás más vida en las etapas 3 y 4, y asegurarás más victorias.
+              Es una herramienta avanzada de filtrado en tiempo real diseñada para usarse <em>antes</em> (de estudio) y <em>durante</em> tus partidas. A diferencia de las Tier Lists estáticas tradicionales, el Master Plan adapta el meta actual a lo que el juego te da en tus primeras rondas, guiándote paso a paso hacia la composición correcta.
             </p>
           </details>
 
           <details>
             <summary>¿Las composiciones están siempre actualizadas?</summary>
             <p style={{ margin: '10px 0', lineHeight: '1.5' }}>
-              Sí. Nuestro equipo analiza el meta en cada parche para asegurar que las composiciones sugeridas por los filtros sean siempre las más fuertes y precisas. No importa si Riot cambia los números, el Master Plan siempre sabrá qué es lo mejor.
+              Sí. Nuestro equipo analiza el meta en cada parche para asegurar que las composiciones sugeridas por los filtros sean fuertes y precisas.
             </p>
           </details>
 
