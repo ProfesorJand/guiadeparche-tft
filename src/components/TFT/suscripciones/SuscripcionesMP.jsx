@@ -126,7 +126,6 @@ const SuscripcionesMP = () => {
       // Fallback si la columna está vacía o el JSON falla (compatibilidad)
       features.push(
         { text: "Acceso ilimitado al Master Plan TFT", enabled: true },
-        { text: "Filtros Soft/Hard aditivos avanzados", enabled: true }
       );
     }
 

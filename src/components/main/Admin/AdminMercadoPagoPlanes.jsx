@@ -96,9 +96,7 @@ const AdminMercadoPagoPlanes = () => {
     badgeText: "",
     features: [
       { text: "Acceso ilimitado al Master Plan TFT", enabled: true },
-      { text: "Filtros Soft/Hard aditivos avanzados", enabled: true },
-      { text: "Códigos de tablero exportables", enabled: true },
-      { text: "Análisis y Tier List de Meta por parche", enabled: true }
+      { text: "Libre de Anuncios (NO ADS)", enabled: true }
     ],
 
     // --- NUEVO: TIPO DE PLAN ---
