@@ -39,38 +39,111 @@ const Sinergias = ({ sinergias, orientacion, show, version }) => {
   let calculatedSinergias = {};
   if (Array.isArray(sinergias)) {
     const processedChampionTraits = new Set();
-    sinergias.forEach(champObj => {
-      const champData = safeGlobalChampions.find(c => c.apiName === champObj.apiNameCampeon);
-      if (!champData) return;
+    
+    // 1. Simular la estructura de boardData de NuevoBuilderTFT para asegurar 100% compatibilidad
+    const boardData = {};
+    sinergias.forEach((champ, index) => {
+      if (!champ) return;
+      const isEspinaNegra = champ.sinergiaExtraMissFortune === "Espina Negra";
+      const champData = safeGlobalChampions.find(c => c.apiName === champ?.apiNameCampeon);
+      
+      if (!champData && !isEspinaNegra) return;
 
-      let resolvedTraits = (champData.traits || []).map(traitName => {
-        const traitObj = safeSinergiasData.find(t => t.name === traitName || t.apiName === traitName);
-        return traitObj ? traitObj.apiName : traitName;
-      });
+      let itemsData = [];
+      if (champData) {
+        itemsData = (champ.apiNameItemsDelCampeon || []).map(apiNameItem => {
+          if (!apiNameItem) return null;
+          const apiNameStr = typeof apiNameItem === 'object' ? apiNameItem.apiName : apiNameItem;
+          const itemData = safeGlobalItems.find(i => i.apiName === apiNameStr);
+          if (!itemData) return null;
 
-      if (champObj.sinergiaExtraMissFortune) {
-        resolvedTraits = resolvedTraits.filter(t => !t.toLowerCase().includes("undetermined"));
-        const extraObj = safeSinergiasData.find(t => t.name === champObj.sinergiaExtraMissFortune || t.apiName === champObj.sinergiaExtraMissFortune);
-        if (extraObj) resolvedTraits.push(extraObj.apiName);
-        else resolvedTraits.push(champObj.sinergiaExtraMissFortune);
+          let traitExtra = null;
+          if (itemData.incompatibleTraits && itemData.incompatibleTraits.length > 0) {
+            traitExtra = safeSinergiasData.find((t) => t.apiName === itemData.incompatibleTraits[0]);
+          }
+
+          return {
+            apiName: itemData.apiName || itemData.name,
+            traitExtra
+          };
+        }).filter(Boolean);
       }
 
-      resolvedTraits.forEach(traitApiName => {
-        const uniqueKey = `${champData.apiName}_${traitApiName}`;
+      let resolvedTraits = [];
+      if (champData) {
+        resolvedTraits = (champData.traits || []).map(traitName => {
+          const traitObj = safeSinergiasData.find(t => t.name === traitName || t.apiName === traitName);
+          return traitObj ? traitObj : { apiName: traitName, name: traitName };
+        }).filter(Boolean);
+
+        // Si tiene sinergiaExtra (Doble sinergia / Lux / Headliner)
+        if (champ.sinergiaExtraMissFortune && champ.sinergiaExtraMissFortune !== "Espina Negra") {
+          resolvedTraits = resolvedTraits.filter(t => !t.apiName.toLowerCase().includes("undetermined"));
+          const extraTraitObj = safeSinergiasData.find(t => t.apiName === champ.sinergiaExtraMissFortune || t.name === champ.sinergiaExtraMissFortune);
+          if (extraTraitObj) {
+            resolvedTraits.push(extraTraitObj);
+          }
+        }
+      }
+
+      boardData[index] = {
+        apiName: champData ? champData.apiName : null,
+        traits: resolvedTraits,
+        items: itemsData,
+        extraSynergy: champ.sinergiaExtraMissFortune || null,
+      };
+    });
+
+    // Constante para campeones que aplican x2 en su sinergia
+    // Formato: { "apiName_del_campeon": ["apiName_de_la_sinergia"] }
+    const doubleTraitChampions = {
+      "tft18_lux_coven": ["DA_18_Coven"],
+      "tft18_lux_inferno":["DA_18_Inferno"],
+      "tft18_lux_blackthorn":["DA_18_Blackthorn"],
+      "tft18_lux_blossom":["DA_18_Blossom"],
+      "tft18_lux_elderwood":["DA_18_Elderwood"],
+      "tft18_lux_fae":["DA_18_Fae"],
+      "tft18_lux_lunar":["DA_18_Lunar"],
+      "tft18_lux_primal":["DA_Primal18"],
+      "tft18_lux_solar":["DA_18_Solar"],
+      "tft18_elderdragon":["DA_Riftbeast18"],
+    };
+
+    // 2. Iterar boardData de la misma forma que NuevoBuilderTFT para contar
+    Object.values(boardData).forEach(champ => {
+      if (!champ.apiName) return;
+
+      const collectedTraits = new Set();
+      
+      champ.traits.forEach(trait => {
+        collectedTraits.add(trait.apiName);
+        
+        // Evitamos doble conteo de copias del mismo campeón
+        const uniqueKey = `${champ.apiName}_${trait.apiName}`;
         if (!processedChampionTraits.has(uniqueKey)) {
           processedChampionTraits.add(uniqueKey);
-          calculatedSinergias[traitApiName] = (calculatedSinergias[traitApiName] || 0) + 1;
+          
+          // Verifica si el campeón tiene la sinergia marcada como x2 en la constante
+          const isDouble = doubleTraitChampions[champ.apiName]?.includes(trait.apiName);
+          const countToAdd = isDouble ? 2 : 1;
+          calculatedSinergias[trait.apiName] = (calculatedSinergias[trait.apiName] || 0) + countToAdd;
         }
       });
 
-      const itemsData = (champObj.apiNameItemsDelCampeon || []).map(apiNameItem => safeGlobalItems.find(i => i.apiName === apiNameItem)).filter(Boolean);
-      itemsData.forEach(item => {
-        if (item.incompatibleTraits && item.incompatibleTraits.length > 0) {
-          const traitExtra = item.incompatibleTraits[0];
-          calculatedSinergias[traitExtra] = (calculatedSinergias[traitExtra] || 0) + 1;
-        }
-      });
+      if (champ.items) {
+        champ.items.forEach(item => {
+          if (item.traitExtra) {
+            // Un item sí puede sumar sinergia incluso si es copia, pero no si ya la tiene nativamente?
+            // NuevoBuilderTFT dice: && !collectedTraits.has(item.traitExtra.apiName)
+            if (!collectedTraits.has(item.traitExtra.apiName)) {
+              collectedTraits.add(item.traitExtra.apiName);
+              calculatedSinergias[item.traitExtra.apiName] = (calculatedSinergias[item.traitExtra.apiName] || 0) + 1;
+            }
+          }
+        });
+      }
     });
+
   } else {
     calculatedSinergias = sinergias || {};
   }
