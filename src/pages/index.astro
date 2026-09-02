@@ -98,15 +98,15 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
                 if (user) {
                   const hasPlan = user.master_plan == 1 || user.master_plan == '1' || user.role === 'admin' || user.role === 'superadmin';
                   if (hasPlan) {
-                    btn.onclick = () => window.location.href = '/tft/master-plan/app';
-                    btn.innerText = 'Ir a la App';
+                    btn.onclick = () => window.location.href = '/tft/master-plan';
+                    btn.innerText = 'TFT Master Plan';
                   } else {
                     btn.onclick = () => window.location.href = '/tft/master-plan';
-                    btn.innerText = 'Obtener Master Plan';
+                    btn.innerText = 'TFT Master Plan';
                   }
                 } else {
                   btn.onclick = () => window.location.href = '/login?redirect=/tft/master-plan';
-                  btn.innerText = 'Registrarme';
+                  btn.innerText = 'TFT Master Plan';
                 }
               }
             });
