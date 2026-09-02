@@ -234,10 +234,11 @@ function UsersManager() {
 function OverlayBuilder({ users }) {
     const [alias, setAlias] = useState(users.length > 0 ? users[0].alias : 'test');
     const [campId, setCampId] = useState('1');
-    const [w, setW] = useState(300);
-    const [h, setH] = useState(300);
-    const [vPos, setVPos] = useState({ type: 'b', val: 50 }); // b = bottom, t = top
-    const [hPos, setHPos] = useState({ type: 'l', val: 50 }); // l = left, r = right
+    const [w, setW] = useState(550);
+    const [h, setH] = useState(550);
+    const [vPos, setVPos] = useState({ type: 'b', val: 5}); // b = bottom, t = top
+    const [hPos, setHPos] = useState({ type: 'l', val: 5 }); // l = left, r = right
+    const [campaigns, setCampaigns] = useState([]);
 
     const url = `https://guiadeparche.com/publicidad/overlay?alias=${alias}&camp=${campId}&w=${w}&h=${h}&${vPos.type}=${vPos.val}&${hPos.type}=${hPos.val}&test=1`;
 
@@ -245,6 +246,18 @@ function OverlayBuilder({ users }) {
     const [scale, setScale] = React.useState(1);
 
     React.useEffect(() => {
+        fetch(`${API_URL}?action=campaigns`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    setCampaigns(data.data);
+                    if (data.data.length > 0) {
+                        setCampId(data.data[0].id.toString());
+                    }
+                }
+            })
+            .catch(e => console.error(e));
+            
         if (!containerRef.current) return;
         const resizeObserver = new ResizeObserver(entries => {
             for (let entry of entries) {
@@ -254,6 +267,9 @@ function OverlayBuilder({ users }) {
         resizeObserver.observe(containerRef.current);
         return () => resizeObserver.disconnect();
     }, []);
+
+    const activeCamp = campaigns.find(c => c.id == campId);
+    const campName = activeCamp ? activeCamp.name : 'Desconocida';
 
     return (
         <div style={{ marginTop: '30px', padding: '20px', background: '#1e1e1e', borderRadius: '8px', border: '1px solid #444' }}>
@@ -270,8 +286,10 @@ function OverlayBuilder({ users }) {
                         </select>
                     </label>
                     <label>
-                        ID de Campaña (Para el preview):
-                        <input type="number" value={campId} onChange={e => setCampId(e.target.value)} style={{ width: '100%', padding: '5px' }} />
+                        Campaña (Para el preview):
+                        <select value={campId} onChange={e => setCampId(e.target.value)} style={{ width: '100%', padding: '5px' }}>
+                            {campaigns.map(c => <option key={c.id} value={c.id}>{c.id} - {c.name}</option>)}
+                        </select>
                     </label>
                     
                     <div style={{ display: 'flex', gap: '10px' }}>

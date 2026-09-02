@@ -877,7 +877,11 @@ export default function AdminCorreos() {
                                             )}
                                         </td>
                                         <td style={{ fontSize: '0.9em', color: '#ccc' }}>
-                                            {new Date(u.fecha_intento).toLocaleString()}
+                                            {u.fecha_intento ? (
+                                                new Date(u.fecha_intento).toLocaleString()
+                                            ) : (
+                                                "null"
+                                            )}
                                         </td>
                                     </tr>
                                 )) : (

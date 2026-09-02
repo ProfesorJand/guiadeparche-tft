@@ -362,7 +362,12 @@ export default function MasterPlanPage() {
       if (compo.tier === "C") return false;
       if (selectedCategory.length > 0 && !selectedCategory.includes(compo.categoria)) return false;
       if (selectedDifficulty.length > 0 && !selectedDifficulty.includes(compo.dificultad)) return false;
-      if (selectedTier.length > 0 && !selectedTier.includes(compo.tier)) return false;
+      
+      if (selectedTier.length > 0) {
+        const matchTier = selectedTier.includes(compo.tier) || selectedTier.includes(compo.tierExtra) || selectedTier.includes(compo.extraTier);
+        if (!matchTier) return false;
+      }
+      
       if (selectedDamageType.length > 0 && !selectedDamageType.includes(compo.tipoDeDano)) return false;
       return true;
     });
@@ -1070,7 +1075,7 @@ export default function MasterPlanPage() {
         <div className={style.filtersSectionContainer}>
           <div className={style.sectionFiltersPlaystyles}>
             <FiltroHardWrapper
-              tiers={tiers} selectedTier={selectedTier} setSelectedTier={setSelectedTier}
+              tiers={[...tiers, 'X']} selectedTier={selectedTier} setSelectedTier={setSelectedTier}
               categorias={categorias} selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory}
               dificultades={dificultades} selectedDifficulty={selectedDifficulty} setSelectedDifficulty={setSelectedDifficulty}
               dañoTipo={dañoTipo} selectedDamageType={selectedDamageType} setSelectedDamageType={setSelectedDamageType}
