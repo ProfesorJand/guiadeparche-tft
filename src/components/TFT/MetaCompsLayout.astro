@@ -161,6 +161,19 @@ const tableOfContentIndividual = [
   }
 </script>
 
+<script>
+  import { versionTFT, swapVersionTFT } from "@stores/dataTFT.js";
+  
+  // Sincronizar el store con la versión de la página durante la navegación sin recargar (View Transitions)
+  document.addEventListener('astro:page-load', () => {
+    if (typeof window !== "undefined" && window.INITIAL_TFT_VERSION) {
+      if (versionTFT.get() !== window.INITIAL_TFT_VERSION) {
+        swapVersionTFT(window.INITIAL_TFT_VERSION);
+      }
+    }
+  });
+</script>
+
 <LayoutMaxWidth
   title={`${titleMain} ${titleHighlight}`}
   description={description}
