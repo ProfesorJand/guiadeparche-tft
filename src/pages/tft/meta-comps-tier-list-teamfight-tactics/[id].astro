@@ -11,15 +11,31 @@ import { getLocalTftImage } from "@utils/images";
 export async function getStaticPaths() {
   const todasLasCompsPBE = await getComposFromDB();
   
-  const top10Comps = [...todasLasCompsPBE.slice(0, 10)];
-  const restComps = [...todasLasCompsPBE.slice(10)];
+  // Agrupar por urlSEO y quedarse con la que tenga el set_number mayor
+  const compsUnicasPorUrl = {};
+  
+  todasLasCompsPBE.forEach(comp => {
+    if (comp.urlSEO && String(comp.urlSEO).trim() !== "") {
+      const url = String(comp.urlSEO).trim().toLowerCase();
+      const currentSet = Number(comp.set_number) || 0;
+      
+      if (!compsUnicasPorUrl[url]) {
+        compsUnicasPorUrl[url] = comp;
+      } else {
+        const existingSet = Number(compsUnicasPorUrl[url].set_number) || 0;
+        if (currentSet > existingSet) {
+          compsUnicasPorUrl[url] = comp; // Reemplazar si el set actual es mayor
+        }
+      }
+    }
+  });
 
-  return todasLasCompsPBE
-    .filter((comp) => comp.urlSEO && String(comp.urlSEO).trim() !== "")
-    .map((comp) => ({
-      params: { id: String(comp.urlSEO) },
-      props: { comp, allComps: todasLasCompsPBE },
-    }));
+  const compsFinales = Object.values(compsUnicasPorUrl);
+
+  return compsFinales.map((comp) => ({
+    params: { id: String(comp.urlSEO) },
+    props: { comp, allComps: todasLasCompsPBE },
+  }));
 }
 
 const { id } = Astro.params;
@@ -30,8 +46,14 @@ const [numberOfPatch, lastUpdateComps] = await Promise.all([
   getLastUpdateDate("composiciones_tft")
 ]);
 
-if (dataTFTChampions.get().length === 0) {
-  await loadDataTFTFromAPI();
+const targetVersion = (String(comp.set_number) === String(setNumberPBE)) ? "pbe" : "latest";
+
+// En SSR asegurarnos de que el store global tenga la versión correcta para esta página
+if (versionTFT.get() !== targetVersion) {
+  versionTFT.set(targetVersion);
+  await loadDataTFTFromAPI({ version: targetVersion });
+} else if (dataTFTChampions.get().length === 0) {
+  await loadDataTFTFromAPI({ version: targetVersion });
 }
 
 const championsPBE = dataTFTChampions.get();

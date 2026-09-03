@@ -122,7 +122,7 @@ const EditarCompoTFT = () => {
         .filter(comp => comp.version === currentVersion || (currentVersion === "latest" && !comp.version)) // Asumimos latest si no tiene version para retrocompatibilidad
         .map((comp, index)=>{
           return (
-            <div key={comp.id || index} style={{ opacity: comp.ocultar ? 0.5 : 1 }}>
+            <div key={comp.id || index} id={`comp-card-${comp.id}`} data-comp-id={comp.id} style={{ opacity: comp.ocultar ? 0.5 : 1 }}>
               <CardsCompos 
                 comp={comp}
                 numeracion={index + 1}
