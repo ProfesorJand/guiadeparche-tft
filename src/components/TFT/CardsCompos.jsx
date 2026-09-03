@@ -316,8 +316,8 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
   return (
     <div 
       ref={containerRef} 
-      className={`${style.container} ${isInfografia ? style.containerInfografia : ''}`}
-      style={isDownloading ? { padding: '27.375px 16px', aspectRatio:"4 / 5", boxSizing:"border-box" } : {}}
+      className={`${style.container} ${isInfografia ? style.containerInfografia : ''} ${isDownloading ? 'isDownloadingCapture' : ''}`}
+      style={isDownloading ? { padding: '24.875px 16px', aspectRatio:"4 / 5", boxSizing:"border-box" } : {}}
     >
       <div className={style.cardContainer} onClick={edit? null : handleToggleCardContainer}>
         <div className={`${style.leftContainer} ${isInfografia ? style.leftContainerInfografia : ''} ${!isInfografia && edit ? style.leftContainerFullWidth : ""}`}>
