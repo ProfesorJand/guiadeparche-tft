@@ -777,12 +777,16 @@ export default function MasterPlanPage() {
       }
 
       let compoScore = 0;
+      let countItemsPrio = 0;
+      let sumItemsPrio = 0;
+      let countOp = 0;
+      let sumOp = 0;
 
       matchedFilters = matchedFilters.map(mf => {
         let opStatus = null;
         let isCore = false;
         let isEarly = false;
-
+        
         const matchCond = (compo.condiciones || []).find(c => c.apiNameGrande === mf.apiName || c.ApiNamePequeno === mf.apiName);
         if (matchCond) {
           isCore = true;
@@ -819,12 +823,28 @@ export default function MasterPlanPage() {
 
         compoScore += indicatorScore;
 
+        if (matchPrio) {
+          countItemsPrio++;
+          sumItemsPrio += indicatorScore;
+        }
+        if (opStatus === 'op' || opStatus === 'opm') {
+          countOp++;
+          sumOp += indicatorScore;
+        }
+
         return { ...mf, opStatus, isCore, isEarly };
       });
 
-      const compoTier = (compo.categoria_tier || "").toUpperCase();
-      if (compoTier === 'S') compoScore += 1;
-      else if (compoTier === 'B') compoScore -= 1;
+      const compoTier = (compo.tier || "").toUpperCase();
+      let tierScore = 0;
+      if (compoTier === 'S') tierScore = 1;
+      else if (compoTier === 'B') tierScore = -1;
+      
+      compoScore += tierScore;
+      
+      if (matchedFilters.length > 0) {
+        console.log(`[${compo.titulo || compo.urlSEO}]: Tier ${compoTier} (${tierScore > 0 ? '+'+tierScore : tierScore}), item prio (cantidad:${countItemsPrio} suma:${sumItemsPrio.toFixed(1)}) , op (cantidad:${countOp}, suma:${sumOp.toFixed(1)}) | TOTAL SCORE: ${compoScore.toFixed(1)}`);
+      }
 
       matchedFilters.sort((a, b) => {
         const getVal = (s) => s === 'opm' ? 2 : s === 'op' ? 1 : 0;
