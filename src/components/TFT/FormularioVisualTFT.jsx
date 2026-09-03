@@ -104,7 +104,7 @@ const DatosBasicosVisual = ({ gruposSalidasEarly }) => {
           <label className={localStyle.styleBox3}>
             <span className={localStyle.styleBox4}>Url de la Composición:</span>
             <input type="text" value={comp.urlSEO || ""} onChange={e => actualizarComposicionTFT({
-            urlSEO: e.target.value.replace(/\s+/g, "-")
+            urlSEO: e.target.value.toLowerCase().replace(/\s+/g, "-")
           })} className={localStyle.styleBox5} />
           </label>
 
@@ -1684,8 +1684,44 @@ export default function FormularioVisualTFT({
 
   // Helper para guardar compo completa
   const guardarComposicion = async () => {
-    // La logica para guardar la compo (simulando lo de FormularioCrearCompoTFT.jsx)
     try {
+      const targetSet = currentVersion === "latest" ? setNumberLatest : setNumberPBE;
+      
+      // 1. Chequear si la URL ya existe en otra composición
+      const resCheck = await fetch("https://api.guiadeparche.com/tft/composicionesBD.php");
+      if (resCheck.ok) {
+        const dataCheck = await resCheck.json();
+        if (dataCheck.status === 'success' && dataCheck.data) {
+          const targetUrl = (comp.urlSEO || "").toLowerCase().trim();
+          const currentId = comp?.id || "";
+          
+          const conflict = dataCheck.data.find(c => c.urlSEO && c.urlSEO.toLowerCase().trim() === targetUrl && c.id !== currentId);
+          
+          if (conflict) {
+            if (conflict.set_number !== targetSet) {
+              const confirmDelete = window.confirm(`ATENCIÓN: La URL '${targetUrl}' ya está siendo usada por una composición antigua ("${conflict.nombre}", Set ${conflict.set_number || 'desconocido'}).\n\n¿Quieres ELIMINAR definitivamente esa composición antigua para que esta nueva pueda usar su URL?`);
+              if (confirmDelete) {
+                const delRes = await fetch("https://api.guiadeparche.com/tft/composicionesBD.php", {
+                  method: 'DELETE',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ id: conflict.id })
+                });
+                const delData = await delRes.json();
+                if (delData.status !== 'success') {
+                  alert("Error al intentar eliminar la compo antigua: " + delData.message);
+                  return;
+                }
+              } else {
+                return; // El usuario canceló
+              }
+            } else {
+              alert(`La URL '${targetUrl}' ya existe en este mismo Set en la compo "${conflict.nombre}". Por favor, cambia la URL para evitar conflictos.`);
+              return;
+            }
+          }
+        }
+      }
+
       const token = import.meta.env.PUBLIC_TOKEN_META || "dummy_token";
       const nivelesLimpios = (comp.niveles || []).map(nivel => ({
         ...nivel,
@@ -1696,7 +1732,7 @@ export default function FormularioVisualTFT({
         ...comp,
         niveles: nivelesLimpios,
         id: comp?.id ? comp.id : generadorID(),
-        set_number: currentVersion === "latest" ? setNumberLatest : setNumberPBE
+        set_number: targetSet
       };
       const response = await fetch("https://api.guiadeparche.com/tft/composicionesBD.php", {
         method: 'POST',

@@ -14,7 +14,7 @@ const initialStateDataTFTSets = [];
 const initialStateDataTFTChampions = [];
 const initialStateVersion = "pbe";
 const initialStateTeamPlannerCode = [];
-export const initialTFT_SET = "pbe";
+export const initialTFT_SET = (typeof window !== 'undefined' && window.INITIAL_TFT_VERSION) ? window.INITIAL_TFT_VERSION : "pbe";
 
 export const setNumberPBE = "18";
 export const setMutatorPBE = "TFTSet18";
@@ -345,36 +345,37 @@ export const updateDataTFT = async (data) => {
       });
     }
   }
-  dataTFTAllItems.set(allItems || []);
-  dataTFTAllAugments.set(augments || []);
+  const existingItems = dataTFTAllItems.get() || [];
+  const newItems = (allItems || []).filter(i => !existingItems.some(ei => ei.apiName === i.apiName));
+  const mergedItems = [...existingItems, ...newItems];
+  dataTFTAllItems.set(mergedItems);
+  
+  const existingAugments = dataTFTAllAugments.get() || [];
+  const newAugments = (augments || []).filter(a => !existingAugments.some(ea => ea.apiName === a.apiName));
+  const mergedAugments = [...existingAugments, ...newAugments];
+  dataTFTAllAugments.set(mergedAugments);
 
-  const allItemNames = (allItems || []).map(i => i.apiName);
+  const allItemNames = mergedItems.map(i => i.apiName);
 
   // Generar items crafteables directamente con todos los items
   // ignorando el filtro por set (ya que la DB de este backend es específica del set)
-  const listLatest = generateCraftableList(allItems || [], allItemNames, setNumberLatest);
+  const listLatest = generateCraftableList(mergedItems, allItemNames, setNumberLatest);
   apiNameOfCraftableItems.set(listLatest);
 
-  const listPBE = generateCraftableList(allItems || [], allItemNames, setNumberPBE);
+  const listPBE = generateCraftableList(mergedItems, allItemNames, setNumberPBE);
   apiNameOfCraftableItemsPBE.set(listPBE);
 
   // Guardar items por set
-  dataTFTItemsBySet.set(allItems || []);
+  dataTFTItemsBySet.set(mergedItems);
   dataTFTSetData.set(payload.setData || []);
 
   const allChampionsRaw = champions ? [...champions] : [];
+  
+  const existingChampions = dataTFTChampions.get() || [];
+  const newChampions = allChampionsRaw.filter(c => !existingChampions.some(ec => ec.apiName === c.apiName));
+  const mergedChampions = [...existingChampions, ...newChampions];
 
-  // if (!allChampionsRaw.some(c => c.apiName === "TFT15_ShenSword")) {
-  //   allChampionsRaw.push({
-  //     apiName: "TFT15_ShenSword",
-  //     name: "Shen's Sword",
-  //     cost: 1,
-  //     traits: [],
-  //     tileIcon: "/assets/characters/shen/hud/icons2d/shen_q.png",
-  //   });
-  // }
-
-  dataTFTChampions.set(allChampionsRaw.sort(
+  dataTFTChampions.set(mergedChampions.sort(
     (a, b) => {
       const nameA = a.name.toUpperCase();
       const nameB = b.name.toUpperCase();
@@ -388,7 +389,11 @@ export const updateDataTFT = async (data) => {
       return 0;
     })
   );
-  dataTFTTraits.set(traits || []);
+  
+  const existingTraits = dataTFTTraits.get() || [];
+  const newTraits = (traits || []).filter(t => !existingTraits.some(et => et.apiName === t.apiName));
+  const mergedTraits = [...existingTraits, ...newTraits];
+  dataTFTTraits.set(mergedTraits);
 };
 
 export const swapVersionTFT = (data) => {
