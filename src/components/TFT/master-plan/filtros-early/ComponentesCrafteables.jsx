@@ -12,7 +12,7 @@ export default function ComponentesCrafteables({ softItemsList, selectedSalidasE
       
       if (currentCount === 0) {
         return [...prev, apiName];
-      } else if (currentCount < 4) {
+      } else if (currentCount < 2) {
         return [...prev, apiName];
       } else {
         // Remove all instances
