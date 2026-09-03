@@ -565,7 +565,7 @@ const FooterBuild = ({comp})=>{
               <div className={style.containerBuildCard}>
                 {buildChampionData && (
                   <div className={style.buildCampeonItems}>
-                    <ImgCampeon championData={buildChampionData} imgType="icon" showName={true} borderColor={false}/>
+                    <ImgCampeon championData={buildChampionData} imgType="icon" showName={true} borderColor={false} className={style.imgCampeonRectangular}/>
                     <div className={style.containerBuildItemImg}>
                       {/* {bisItemsData.length > 0 && <span className={style.buildItemText}>BIS</span>} */}
                       {bisItemsData.map((item, idx) => (

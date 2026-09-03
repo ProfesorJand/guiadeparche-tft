@@ -429,7 +429,7 @@ const InfografiaMPTFT = ({comp = {}, gruposSalidasEarly = []}) => {
                 <div key={index} className={`${style.cardCampeonBIS}`} style={{ borderColor: `var(--color-hex-cost-${campeonData?.cost}, var(--border-purple-color))`,backgroundColor: `rgba(0, 0, 0, 0.5)` }}>
                   
                   {/* {campeonData?.name} */}
-                  <ImgCampeon championData={campeonData} imgType="icon" showName={true} borderColor={false}/>
+                  <ImgCampeon championData={campeonData} imgType="icon" showName={true} borderColor={false} className={style.imgCampeonRectangular}/>
                   <div className={style.cardCampeonBISItems}>
                     <span className={style.lineWithText}>BIS</span>
                     {

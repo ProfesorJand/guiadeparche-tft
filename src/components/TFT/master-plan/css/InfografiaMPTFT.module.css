@@ -554,3 +554,10 @@
 .lineWithText:not(:empty)::after {
   margin-left: 10px;
 }
+
+.imgCampeonRectangular {
+  aspect-ratio: 16 / 9;
+}
+.imgCampeonRectangular img {
+  height: 100%;
+}
