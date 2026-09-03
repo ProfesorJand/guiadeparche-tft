@@ -54,8 +54,7 @@ const CardsMasterPlanCompos = ({compo, activateMissingOPM, filtroSoft={}, grupos
     "B": "linear-gradient(135deg, #4b556399, #1f2937cc)",
     "C": "linear-gradient(135deg, #6e3c1e99, #3c1e0acc)",
   };
-  console.log({compo})
-  console.log({filtroSoft})
+
 
   const isItemHighlighted = (nombreItem) => {
     if (!filtroSoft?.selectedSoftItems || filtroSoft.selectedSoftItems.length === 0) return false;

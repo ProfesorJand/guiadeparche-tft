@@ -20,7 +20,6 @@ const GuiaFreeTFTMeta = ({comp, isInfografia=false, edit=false, isIndividual=fal
   const allAugmentsTFT = useStore(dataTFTAllAugments);
   const allTraitsTFT = useStore(dataTFTTraits);
   const [isMounted, setIsMounted] = useState(false);
- console.log({comp})
   useEffect(() => {
     setIsMounted(true);
     function handleClickOutside(event) {
