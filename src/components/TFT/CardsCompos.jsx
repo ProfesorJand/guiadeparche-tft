@@ -99,6 +99,7 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
   }, []);
 
   const [openForEdit, setOpenForEdit] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
   const activeEditId = useStore(compActiveId);
   const showFormForEdit = activeEditId === comp.id;
   const containerRef = useRef(null);
@@ -270,7 +271,6 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
 
     // Si no encuentra al campeón en la store, retornamos null
     if (!rawChamp) {
-      console.log(`[CardsCompos] No se encontró el campeón ${data.apiNameCampeon} en la store actual (version: ${currentVersion})`);
       return null;
     }
 
@@ -314,20 +314,24 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
   });
 
   return (
-    <div ref={containerRef} className={`${style.container} ${isInfografia ? style.containerInfografia : ''}`}>
+    <div 
+      ref={containerRef} 
+      className={`${style.container} ${isInfografia ? style.containerInfografia : ''}`}
+      style={isDownloading ? { padding: '27.375px 16px', aspectRatio:"4 / 5", boxSizing:"border-box" } : {}}
+    >
       <div className={style.cardContainer} onClick={edit? null : handleToggleCardContainer}>
         <div className={`${style.leftContainer} ${isInfografia ? style.leftContainerInfografia : ''} ${!isInfografia && edit ? style.leftContainerFullWidth : ""}`}>
 
           <div className={style.header}>
 
             <div className={style.tierContainer}>
-              <span className={`${style.tierNumber} ${style[`tier-card-${comp?.tier}`]}`}>{comp?.tier}</span>
+              <span className={`${style.tierNumber} ${style[`tier-card-${comp?.tier}`]}`} style={isDownloading ? { fontSize: '35px' } : {}}>{comp?.tier}</span>
             </div>
             <div className={style.nameContainer}>
-              {isIndividual && <h2>
+              {isIndividual && <h2 style={isDownloading ? { fontSize: '40px' } : {}}>
                 {comp?.nombre}
               </h2>}
-              {!isIndividual && <h3>
+              {!isIndividual && <h3 style={isDownloading ? { fontSize: '40px' } : {}}>
                 {numeracion ? numeracion +". ": ""}{comp?.nombre}
               </h3>}
             </div>
@@ -335,12 +339,12 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
             <div className={style.headerControls}>
               {
                 comp?.dificultad && (
-                  <span className={`${style.dificultad} ${style?.[`dificultad-${comp?.dificultad}`]}`}>{comp?.dificultad?.toUpperCase()}</span>
+                  <span className={`${style.dificultad} ${style?.[`dificultad-${comp?.dificultad}`]}`} style={isDownloading ? { fontSize: '28px' } : {}}>{comp?.dificultad?.toUpperCase()}</span>
                 )
               }
               {
                 comp?.categoria && (
-                  <span className={style.shadowCategory}>{comp?.categoria?.toUpperCase()}</span>
+                  <span className={style.shadowCategory} style={isDownloading ? { fontSize: '28px' } : {}}>{comp?.categoria?.toUpperCase()}</span>
                 )
               }
               {
@@ -429,12 +433,16 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
                     Eliminar
                   </button>
                   <button
-                    onClick={
-                      () => CapturarImagen({
-                        backgroundRef: containerRef,
-                        nombre: `TFT_MetaComp_${comp.tier}_${comp.urlSEO}`,
-                      })
-                    }
+                    onClick={async () => {
+                      setIsDownloading(true);
+                      setTimeout(async () => {
+                        await CapturarImagen({
+                          backgroundRef: containerRef,
+                          nombre: `TFT_MetaComp_${comp.tier}_${comp.urlSEO}`,
+                        });
+                        setIsDownloading(false);
+                      }, 100);
+                    }}
                   >
                     Descargar
                   </button>
