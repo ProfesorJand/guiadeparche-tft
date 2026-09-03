@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import CampeonImgInTierList from "@components/TFT/meta/CampeonImgInTierList.jsx";
 import { crearCompoMetaPHP } from "src/stores/dataTFT.js";
-import { versionTFT } from "src/stores/dataTFT.js";
+import { versionTFT, compActiveId } from "src/stores/dataTFT.js";
 import style from "./css/DragDropTierListEditor.module.css";
 import { useStore } from "@nanostores/react";
 
@@ -235,6 +235,28 @@ const DragDropTierListEditor = ({ comps = [] }) => {
                               {...provided.draggableProps}
                               {...provided.dragHandleProps}
                               className={`${style.draggableItem} ${snapshot.isDragging ? style.isDragging : ''}`}
+                              onPointerUp={(e) => {
+                                // react-beautiful-dnd a veces bloquea el onClick, onPointerUp es más confiable
+                                if (snapshot.isDragging) return; // No hacer nada si soltamos el click después de arrastrar
+                                
+                                // Abrir la edición
+                                compActiveId.set(compId);
+
+                                // Esperar a que se expanda y hacer scroll forzado
+                                setTimeout(() => {
+                                  // Intentar por ID y por atributo data
+                                  const el = document.getElementById(`comp-card-${compId}`) || document.querySelector(`[data-comp-id="${compId}"]`);
+                                  
+                                  if (el) {
+                                    const y = el.getBoundingClientRect().top + window.scrollY - 150;
+                                    window.scrollTo({ top: y, behavior: 'smooth' });
+                                    
+                                    el.style.transition = 'box-shadow 0.3s ease';
+                                    el.style.boxShadow = '0 0 20px 5px rgba(123, 97, 255, 0.8)';
+                                    setTimeout(() => { el.style.boxShadow = 'none'; }, 2500);
+                                  }
+                                }, 150);
+                              }}
                               style={{
                                 ...provided.draggableProps.style,
                                 ...(snapshot.isDragging ? {

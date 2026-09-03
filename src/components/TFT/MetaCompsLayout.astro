@@ -155,6 +155,11 @@ const tableOfContentIndividual = [
   }
 ]
 ---
+<script is:inline define:vars={{ compSetNumber: defaultSet, setNumberPBE, setNumberLatest }}>
+  if (typeof window !== "undefined") {
+    window.INITIAL_TFT_VERSION = (String(compSetNumber) === String(setNumberPBE)) ? "pbe" : "latest";
+  }
+</script>
 
 <LayoutMaxWidth
   title={`${titleMain} ${titleHighlight}`}
