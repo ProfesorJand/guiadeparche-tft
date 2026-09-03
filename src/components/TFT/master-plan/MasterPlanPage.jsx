@@ -364,6 +364,11 @@ export default function MasterPlanPage() {
       if (selectedDifficulty.length > 0 && !selectedDifficulty.includes(compo.dificultad)) return false;
       
       if (selectedTier.length > 0) {
+        // Si la compo tiene "X" (situacional) como tier o extra, requiere explícitamente que el filtro "X" esté activado
+        if ((compo.tier === 'X' || compo.tierExtra === 'X' || compo.extraTier === 'X') && !selectedTier.includes('X')) {
+          return false;
+        }
+
         const matchTier = selectedTier.includes(compo.tier) || selectedTier.includes(compo.tierExtra) || selectedTier.includes(compo.extraTier);
         if (!matchTier) return false;
       }
@@ -736,14 +741,22 @@ export default function MasterPlanPage() {
           const dbItem = allItems.find(i => i.apiName === apiName);
 
           if (dbItem?.composition && dbItem.composition.length > 0) {
-            let matchesAll = true;
+            const reqCounts = {};
             dbItem.composition.forEach(compReq => {
               const reqNormalized = compReq.replace('DA_Component_', '').replace('DA_', '').replace('TFT_Item_', '');
-              const isSelected = selectedSalidasEarlyComponents.some(sc => sc.replace('DA_Component_', '').replace('DA_', '').replace('TFT_Item_', '') === reqNormalized);
-              if (!isSelected) {
-                matchesAll = false;
-              }
+              reqCounts[reqNormalized] = (reqCounts[reqNormalized] || 0) + 1;
             });
+
+            let matchesAll = true;
+            for (const [req, count] of Object.entries(reqCounts)) {
+              const selectedCount = selectedSalidasEarlyComponents.filter(sc => 
+                (typeof sc === 'object' ? sc.apiName : sc).replace('DA_Component_', '').replace('DA_', '').replace('TFT_Item_', '') === req
+              ).length;
+              if (selectedCount < count) {
+                matchesAll = false;
+                break;
+              }
+            }
 
             if (matchesAll) {
               itemsToAdd.add(apiName);
