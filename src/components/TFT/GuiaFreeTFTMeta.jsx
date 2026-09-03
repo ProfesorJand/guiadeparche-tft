@@ -20,7 +20,7 @@ const GuiaFreeTFTMeta = ({comp, isInfografia=false, edit=false, isIndividual=fal
   const allAugmentsTFT = useStore(dataTFTAllAugments);
   const allTraitsTFT = useStore(dataTFTTraits);
   const [isMounted, setIsMounted] = useState(false);
-
+ console.log({comp})
   useEffect(() => {
     setIsMounted(true);
     function handleClickOutside(event) {
@@ -130,7 +130,7 @@ const Header1 = ({comp, allChampionsTFT, allItemsTFT, allAugmentsTFT, allTraitsT
       
       {/* Condicion OP */}
       <div className={`${style.blockBestRadiant} ${style.borderBlock}`}>
-          <h4>Condiciones OP (Early)</h4>
+          <h4>Condiciones OP</h4>
           <div className={style.containerCondicion}>
             {condicionOP && (() => {
               const condicionGrande= condicionOP.apiNameGrande;
@@ -220,7 +220,35 @@ const Header2 = ({comp, setHoveredAugment, augmentRef,  allChampionsTFT, allItem
   }
 
   // Aumentos
-  const aumentosVisibles = comp?.aumentos?.slice(0, 5) || [];
+  const aumentosConInfo = (comp?.aumentos || []).map(augRaw => {
+    const augmentDb = allAugmentsTFT.find(x => x.apiName === augRaw?.apiNameGrande);
+    return {
+      raw: augRaw,
+      db: augmentDb,
+      isEarly: augRaw.early === true || augRaw.early === 'true' || augRaw.early === 1,
+      tier: augmentDb?.categoria_tier || ""
+    };
+  });
+
+  const aumentosValidos = aumentosConInfo.filter(a => 
+    a.db?.icon || ["Win Streak", "Loss Streak", "Orbe"].includes(a.raw?.apiNameGrande)
+  );
+
+  const silverAugments = aumentosValidos.filter(a => a.tier === "Plata");
+  const goldAugments = aumentosValidos.filter(a => a.tier === "Oro");
+  const prismaticAugments = aumentosValidos.filter(a => a.tier === "Prismatico");
+
+  const getAugmentsPrioritizingEarly = (list, count) => {
+    const earlyList = list.filter(a => a.isEarly);
+    const nonEarlyList = list.filter(a => !a.isEarly);
+    return [...earlyList, ...nonEarlyList].slice(0, count);
+  };
+
+  const finalSilver = getAugmentsPrioritizingEarly(silverAugments, 2);
+  const finalGold = getAugmentsPrioritizingEarly(goldAugments, 4);
+  const finalPrismatic = getAugmentsPrioritizingEarly(prismaticAugments, 3);
+
+  const aumentosVisibles = [...finalSilver, ...finalGold, ...finalPrismatic].map(a => a.raw);
 
   // Solo aplicamos el hover si el dispositivo tiene capacidades de puntero (PC)
   const handleMouseEnter = (augment) => {
@@ -246,7 +274,8 @@ const Header2 = ({comp, setHoveredAugment, augmentRef,  allChampionsTFT, allItem
 
 
         <div className={`${style.borderBlock} ${style.blockColumn}`}>
-            <h4>Aumentos</h4>
+        
+          <h4>Aumentos 2-1</h4>
           <div ref={augmentRef} className={style.containerAugments} style={{display:"flex", gap:"5px", flexWrap:"wrap", alignItems:"center"}}>
             {
               aumentosVisibles?.map((augmentRaw, index) => {
@@ -277,6 +306,7 @@ const Header2 = ({comp, setHoveredAugment, augmentRef,  allChampionsTFT, allItem
                 )
               })
             }
+            
               <a href={typeof window !== 'undefined' ? `/login?redirect=${window.location.pathname}` : "/login"} target="_blank"className={style.augmentContainer}>
             <Tooltip type="default" text="Master Plan">
                 <img src={"/web/logoGPMP.webp"} className={style.imgMasterPlan}/>
@@ -284,9 +314,9 @@ const Header2 = ({comp, setHoveredAugment, augmentRef,  allChampionsTFT, allItem
               </a>
           </div>
         </div>
-        <div className={`${style.borderBlock} ${style.blockColumn}`}>
-            <h4>Condiciones OP</h4>
-            <div className={style.containerCondicionesOP}>
+        {/* <div className={`${style.borderBlock} ${style.blockColumn}`}>
+          <h4>Condiciones OP</h4>
+          <div className={style.containerCondicionesOP}>
 
             {condicionOP && (() => {
               let busquedaGrande;
@@ -354,16 +384,16 @@ const Header2 = ({comp, setHoveredAugment, augmentRef,  allChampionsTFT, allItem
               </Tooltip>
             </a>
           </div>
-        </div>
+        </div> */}
         {/* boton de plan B */}
-        <div className={`${style.borderBlock} ${style.blockRow}`}>
+        {/* <div className={`${style.borderBlock} ${style.blockRow}`}>
           <h4>Plan B</h4>
           <a href={typeof window !== 'undefined' ? `/login?redirect=${window.location.pathname}` : "/login"} target="_blank" className={style.planBContainer}>
             <Tooltip type="default" text="Master Plan">
             <img src="/web/logoGPMP.webp" alt="Master Plan" className={style.imgMasterPlan}/>
             </Tooltip>
           </a>
-        </div>
+        </div> */}
       </div>
       <Posicionamiento comp={comp}/>
 
@@ -533,15 +563,9 @@ const FooterBuild = ({comp})=>{
               }}
             >
               <div className={style.containerBuildCard}>
-                <h4>{buildChampionData?.name}</h4>
                 {buildChampionData && (
                   <div className={style.buildCampeonItems}>
-                    <img 
-                      src={getLocalTftImage(buildChampionData?.icon, 'champions/icon')} 
-                      alt={buildChampionData?.name} 
-                      className={style.buildChampionImg}
-                      title="BIS"
-                    />
+                    <ImgCampeon championData={buildChampionData} imgType="icon" showName={true} borderColor={false}/>
                     <div className={style.containerBuildItemImg}>
                       {/* {bisItemsData.length > 0 && <span className={style.buildItemText}>BIS</span>} */}
                       {bisItemsData.map((item, idx) => (

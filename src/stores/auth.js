@@ -51,7 +51,7 @@ const checkMasterPlanExpiration = (userData) => {
 export const setUser = (userRaw) => {
   const user = checkMasterPlanExpiration(userRaw);
   $user.set(user);
-  console.log({user})
+
 
   // 1. Verificamos si es superAdmin desde la base de datos (superAdmin == 1 o isSuperAdmin)
   const isSuperAdmin = !!(user?.superAdmin == 1 || user?.isSuperAdmin || user?.super_admin == 1);
@@ -89,11 +89,8 @@ if (typeof window !== 'undefined') {
   if (savedUser) {
     try {
       const userDataRaw = JSON.parse(savedUser);
-      console.log({savedUser})
       const userData = checkMasterPlanExpiration(userDataRaw);
       $user.set(userData);
-      console.log({userData})
-      
       const isSuper = !!(userData.isSuperAdmin || userData.superAdmin == 1 || userData.super_admin == 1);
       const isAdminNormal = !!(userData.isAdmin || userData.admin == 1);
 
