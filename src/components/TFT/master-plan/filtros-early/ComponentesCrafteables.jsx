@@ -5,18 +5,14 @@ export default function ComponentesCrafteables({ softItemsList, selectedSalidasE
 
   const handleItemClick = (apiName) => {
     setSelectedSalidasEarlyComponents(prev => {
-      // Filter out any objects just in case, though the state should just be strings here
       const normalize = (i) => typeof i === 'object' ? i.apiName : i;
       const cleanPrev = prev.map(normalize);
-      const currentCount = cleanPrev.filter(i => i === apiName).length;
+      const isSelected = cleanPrev.includes(apiName);
       
-      if (currentCount === 0) {
-        return [...prev, apiName];
-      } else if (currentCount < 2) {
-        return [...prev, apiName];
-      } else {
-        // Remove all instances
+      if (isSelected) {
         return prev.filter(i => normalize(i) !== apiName);
+      } else {
+        return [...prev, apiName];
       }
     });
   };

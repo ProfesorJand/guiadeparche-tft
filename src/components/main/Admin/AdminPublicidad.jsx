@@ -234,8 +234,8 @@ function UsersManager() {
 function OverlayBuilder({ users }) {
     const [alias, setAlias] = useState(users.length > 0 ? users[0].alias : 'test');
     const [campId, setCampId] = useState('1');
-    const [w, setW] = useState(550);
-    const [h, setH] = useState(550);
+    const [w, setW] = useState(400);
+    const [h, setH] = useState(400);
     const [vPos, setVPos] = useState({ type: 'b', val: 5}); // b = bottom, t = top
     const [hPos, setHPos] = useState({ type: 'l', val: 5 }); // l = left, r = right
     const [campaigns, setCampaigns] = useState([]);
