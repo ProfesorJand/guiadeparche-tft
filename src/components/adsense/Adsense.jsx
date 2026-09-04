@@ -10,9 +10,6 @@ const AdComponent = ({ direction = '', dimension = 'cuadrado', numeracion = 0 })
   
   const shouldHideAds = admin || superAdmin || (user && user.master_plan == 1);
 
-  if(shouldHideAds){
-    return null;
-  }
   const [pass, setPass] = useState(false);
   
   useEffect(() => {
@@ -54,6 +51,10 @@ const AdComponent = ({ direction = '', dimension = 'cuadrado', numeracion = 0 })
       return () => clearInterval(checkAdsByGoogle); // Limpia el intervalo cuando se desmonte el componente
     }
   }, [pass]);
+
+  if(shouldHideAds){
+    return null;
+  }
 
   
 

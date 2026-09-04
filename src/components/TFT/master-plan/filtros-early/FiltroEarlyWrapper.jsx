@@ -2,6 +2,7 @@ import React from 'react';
 import CampeonesCoste from './CampeonesCoste';
 import Sinergias from './Sinergias';
 import ComponentesCrafteables from './ComponentesCrafteables';
+import ObjetosCrafteables from './ObjetosCrafteables';
 import ObjetosEspecificos from './ObjetosEspecificos';
 import GruposSalidas from './GruposSalidas';
 
@@ -80,6 +81,17 @@ export default function FiltroEarlyWrapper({
               setSelectedSalidasEarlyComponents={setSelectedSalidasEarlyComponents}
               toggleArrayFilter={toggleArrayFilter}
               allItems={allItems}
+              style={style}
+            />
+            <ObjetosCrafteables 
+              condicionesGrandeItems={condicionesGrandeItems}
+              filteredComposPrimary={filteredComposPrimary}
+              selectedSalidasEarlyItems={selectedSalidasEarlyItems}
+              allItems={allItems}
+              softItemsList={softItemsList}
+              toggleArrayFilter={toggleArrayFilter}
+              setSelectedSalidasEarlyItems={setSelectedSalidasEarlyItems}
+              versionNumber={versionNumber}
               style={style}
             />
           </div>

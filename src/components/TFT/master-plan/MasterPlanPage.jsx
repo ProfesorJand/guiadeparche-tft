@@ -721,11 +721,12 @@ export default function MasterPlanPage() {
 
       if (selectedSalidasEarlyItems.length > 0) {
         selectedSalidasEarlyItems.forEach(item => {
+          const normalizeItem = (name) => name?.replace('DA_Component_', '')?.replace('DA_', '')?.replace('TFT_Item_', '');
+          const targetApi = normalizeItem(item.apiName);
+
           const matchItem =
-            compo.itemsPrio?.some(i => (typeof i === 'object' && i !== null ? i.apiName : i) === item.apiName) ||
-            compo.campeonMeta?.apiNameItemsDelCampeon?.includes(item.apiName) ||
-            compo.posicionamiento?.[0]?.tablero?.some(champ => champ.apiNameItemsDelCampeon?.includes(item.apiName)) ||
-            (compo.condiciones || []).some(c => c.apiNameGrande === item.apiName || c.ApiNamePequeno === item.apiName);
+            compo.itemsPrio?.some(i => normalizeItem(typeof i === 'object' && i !== null ? i.apiName : i) === targetApi) ||
+            (compo.condiciones || []).some(c => normalizeItem(c.apiNameGrande) === targetApi || normalizeItem(c.ApiNamePequeno) === targetApi);
           if (matchItem) {
             matchCount++;
             matchedFilters.push({ type: 'item', apiName: item.apiName, icon: item.icon, name: item.name });
