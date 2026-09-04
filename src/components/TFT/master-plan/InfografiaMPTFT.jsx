@@ -307,12 +307,12 @@ const InfografiaMPTFT = ({comp = {}, gruposSalidasEarly = []}) => {
 
     const activePos = comp.posicionamiento[activeTableroIndex] || comp.posicionamiento[0];
 
-    const NavegacionTableros = () => {
+    const renderNavegacionTableros = () => {
       // Si quieres que siempre se muestre la columna incluso con 1 tablero, quita esta condición.
       if (comp.posicionamiento.length <= 1) return null;
 
       return (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100px', flexShrink: 0 }}>
+        <div className={style.containerNavegacionTableros}>
           {comp.posicionamiento.map((pos, index) => {
             const condicion = pos.condicionExtra;
             let imgUrl = null;
@@ -331,23 +331,11 @@ const InfografiaMPTFT = ({comp = {}, gruposSalidasEarly = []}) => {
               <div 
                 key={index} 
                 onClick={() => setActiveTableroIndex(index)}
-                style={{
-                  cursor: 'pointer',
-                  padding: '8px',
-                  background: activeTableroIndex === index ? 'var(--bg-box-color-active, rgba(255, 255, 255, 0.2))' : 'var(--bg-box-color, rgba(0, 0, 0, 0.3))',
-                  border: activeTableroIndex === index ? '1px solid #fff' : '1px solid transparent',
-                  borderRadius: '8px',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  textAlign: 'center',
-                  minHeight: '60px',
-                  transition: 'all 0.2s'
-                }}
+                className={`${style.tableroNavegacionItem } ${activeTableroIndex === index ? style.tableroActive : ''}`}
                 title={pos.nombreTablero || `Tablero ${index + 1}`}
               >
                 {imgUrl ? (
-                  <img src={imgUrl} alt={pos.nombreTablero || `Tablero ${index + 1}`} style={{ width: '100%', objectFit: 'contain' }} />
+                  <img src={imgUrl} alt={pos.nombreTablero || `Tablero ${index + 1}`} className={style.imgChampTablero} style={{ width: '100%', objectFit: 'contain' }} />
                 ) : (
                   <span style={{ color: 'white', fontSize: '13px', fontWeight: 'bold', wordBreak: 'break-word', lineHeight: '1.2' }}>{pos.nombreTablero || `Tablero ${index + 1}`}</span>
                 )}
@@ -361,7 +349,7 @@ const InfografiaMPTFT = ({comp = {}, gruposSalidasEarly = []}) => {
     return (
       <div className={`${style.cBoxTitleInfo} ${style.cPosicionamiento}`}>
         <span className={style.tBox}>Posicionamiento</span>
-        <div style={{ display: 'flex', gap: '15px', width:"100%" }}>
+        <div className={style.posicionamientoContenedorGeneral}>
           
           <div className={style.cPosicionamientoInfo} style={{ flex: 1 }}>
             <div className={style.containerSinergiasActivas}>
@@ -370,7 +358,7 @@ const InfografiaMPTFT = ({comp = {}, gruposSalidasEarly = []}) => {
             <NuevoBuilderTFT customTablero={activePos.tablero} readOnly={true} />
           </div>
 
-          <NavegacionTableros />
+          {renderNavegacionTableros()}
 
         </div>
       </div>

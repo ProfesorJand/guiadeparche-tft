@@ -1,5 +1,6 @@
 import React from 'react';
 import { getLocalTftImage } from '@utils/images';
+import style from '../css/MasterPlanPage.module.css';
 
 export default function GruposSalidas({
   availableGruposSalidasEarly,
@@ -121,11 +122,11 @@ export default function GruposSalidas({
   });
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'row', width: '100%', gap: '10px', alignItems: 'flex-start' }}>
+    <div className={style.containerGruposSalidas} >
       {Object.entries(groupedGrupos).map(([groupName, grupos]) => {
         if (grupos.length === 0) return null;
         return (
-          <fieldset key={groupName} style={{ display: 'flex', flexDirection: 'column', gap: '6px', width: 'calc(33.33% - 7px)', minWidth: 0, maxWidth: '100%', boxSizing: 'border-box' }}>
+          <fieldset key={groupName} className={style.containerFieldsetGrupoSalidas}>
             <legend>{groupName === "N/A" ? `Tempo` : groupName}</legend>
             <div className={style.filterButtonsContainer} style={{ flexWrap: 'wrap', width: '100%' }}>
               {(() => {

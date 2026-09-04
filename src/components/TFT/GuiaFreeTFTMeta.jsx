@@ -175,11 +175,11 @@ const Header1 = ({comp, allChampionsTFT, allItemsTFT, allAugmentsTFT, allTraitsT
                 </div>
               );
             })()}
-            <a href={typeof window !== 'undefined' ? `/login?redirect=${window.location.pathname}` : "/login"} target="_blank" className={style.condicionOpEarly}>
-              <Tooltip type="default" text="Master Plan">
+            <div className={style.condicionOpEarly}>
+              <Tooltip type="default" text="Todas las condiciones de objetos radiantes, emblemas y artefactos rotos en: TFT Master Plan">
               <img src="/web/logoGPMP.webp" alt="Master Plan" className={style.imgMasterPlan}/>
               </Tooltip>
-            </a>
+            </div>
           </div>
       </div>
 
@@ -237,17 +237,42 @@ const Header2 = ({comp, setHoveredAugment, augmentRef,  allChampionsTFT, allItem
   const goldAugments = aumentosValidos.filter(a => a.tier === "Oro");
   const prismaticAugments = aumentosValidos.filter(a => a.tier === "Prismatico");
 
-  const getAugmentsPrioritizingEarly = (list, count) => {
+  const getAugmentsPrioritizingEarly = (list) => {
     const earlyList = list.filter(a => a.isEarly);
     const nonEarlyList = list.filter(a => !a.isEarly);
-    return [...earlyList, ...nonEarlyList].slice(0, count);
+    return [...earlyList, ...nonEarlyList];
   };
 
-  const finalSilver = getAugmentsPrioritizingEarly(silverAugments, 2);
-  const finalGold = getAugmentsPrioritizingEarly(goldAugments, 4);
-  const finalPrismatic = getAugmentsPrioritizingEarly(prismaticAugments, 3);
+  const silverSorted = getAugmentsPrioritizingEarly(silverAugments);
+  const goldSorted = getAugmentsPrioritizingEarly(goldAugments);
+  const prismaticSorted = getAugmentsPrioritizingEarly(prismaticAugments);
 
-  const aumentosVisibles = [...finalSilver, ...finalGold, ...finalPrismatic].map(a => a.raw);
+  let selectedAugments = [
+    ...silverSorted.slice(0, 2),
+    ...goldSorted.slice(0, 4),
+    ...prismaticSorted.slice(0, 3)
+  ];
+
+  if (selectedAugments.length < 9) {
+    const unselected = [
+      ...silverSorted.slice(2),
+      ...goldSorted.slice(4),
+      ...prismaticSorted.slice(3)
+    ];
+    selectedAugments.push(...unselected.slice(0, 9 - selectedAugments.length));
+  }
+
+  const tierOrder = { "Plata": 1, "Oro": 2, "Prismatico": 3 };
+  selectedAugments.sort((a, b) => {
+    if (tierOrder[a.tier] !== tierOrder[b.tier]) {
+      return (tierOrder[a.tier] || 99) - (tierOrder[b.tier] || 99);
+    }
+    if (a.isEarly && !b.isEarly) return -1;
+    if (!a.isEarly && b.isEarly) return 1;
+    return 0;
+  });
+
+  const aumentosVisibles = selectedAugments.map(a => a.raw);
 
   // Solo aplicamos el hover si el dispositivo tiene capacidades de puntero (PC)
   const handleMouseEnter = (augment) => {
@@ -306,11 +331,11 @@ const Header2 = ({comp, setHoveredAugment, augmentRef,  allChampionsTFT, allItem
               })
             }
             
-              <a href={typeof window !== 'undefined' ? `/login?redirect=${window.location.pathname}` : "/login"} target="_blank"className={style.augmentContainer}>
-            <Tooltip type="default" text="Master Plan">
+            <div className={style.augmentContainer}>
+              <Tooltip type="default" text="Todos los aumentos recomendados por ronda en: TFT Master Plan">
                 <img src={"/web/logoGPMP.webp"} className={style.imgMasterPlan}/>
-            </Tooltip>
-              </a>
+              </Tooltip>
+            </div>
           </div>
         </div>
         {/* <div className={`${style.borderBlock} ${style.blockColumn}`}>
@@ -401,13 +426,74 @@ const Header2 = ({comp, setHoveredAugment, augmentRef,  allChampionsTFT, allItem
 }
 
 const Posicionamiento = ({comp})=>{
+  const [activeTableroIndex, setActiveTableroIndex] = useState(0);
+  const allChampionsTFT = useStore(dataTFTChampions);
+  const allItemsTFT = useStore(dataTFTAllItems);
+  const allAugmentsTFT = useStore(dataTFTAllAugments);
+  const allTraitsTFT = useStore(dataTFTTraits);
+
+  if (!comp?.posicionamiento || comp.posicionamiento.length === 0) return null;
+
+  const activePos = comp.posicionamiento[activeTableroIndex] || comp.posicionamiento[0];
+
+  const renderNavegacionTableros = () => {
+    if (comp.posicionamiento.length <= 1) return null;
+
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '50px', flexShrink: 0 }}>
+        {comp.posicionamiento.map((pos, index) => {
+          const condicion = pos.condicionExtra;
+          let imgUrl = null;
+          if (condicion) {
+            if (condicion.type === 'campeon') imgUrl = getLocalTftImage(allChampionsTFT?.find(c => c.apiName === condicion.apiName)?.tileIcon, 'champions/tileIcon');
+            else if (condicion.type === 'item') imgUrl = getLocalTftImage(allItemsTFT?.find(i => i.apiName === condicion.apiName)?.icon, 'items');
+            else if (condicion.type === 'augment') imgUrl = getLocalTftImage(allAugmentsTFT?.find(a => a.apiName === condicion.apiName)?.icon, 'augments/choiceui');
+            else if (condicion.type === 'trait') imgUrl = getLocalTftImage(allTraitsTFT?.find(t => t.apiName === condicion.apiName)?.icon, 'traits');
+            else if (condicion.type === 'extra') {
+              const extrasMap = { "Win Streak": "/tft/assets/WinStreak.webp", "Loss Streak": "/tft/assets/LossStreak.webp", "orbedecampeon": "/tft/assets/Orbe.webp", "3 estrellas": "/tft/assets/3estrellas.webp", "4 estrellas": "/tft/assets/4estrellas.webp" };
+              imgUrl = extrasMap[condicion.apiName];
+            }
+          }
+
+          return (
+            <div 
+              key={index} 
+              onClick={() => setActiveTableroIndex(index)}
+              className={`
+                ${style.tableroNavegacionItem}
+                ${index === activeTableroIndex ? style.tableroActive : ''}`
+              } 
+              title={pos.nombreTablero || `Tablero ${index + 1}`}
+            >
+              {imgUrl ? (
+                <img src={imgUrl} alt={pos.nombreTablero || `Tablero ${index + 1}`} className={style.imgChampTablero} />
+              ) : (
+                <span style={{ color: 'white', fontSize: '11px', fontWeight: 'bold', wordBreak: 'break-word', lineHeight: '1.2' }}>{pos.nombreTablero || `Tablero ${index + 1}`}</span>
+              )}
+            </div>
+          )
+        })}
+        <div cclassName={style.tableroNavegacionItem}>
+          <Tooltip type="default" text="Todos los campeones a colocar miestras subes a cada nivel en: TFT Master Plan">
+              <img src={"/web/logoGPMP.webp"} className={style.imgMasterPlan}/>
+          </Tooltip>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className={`${style.borderBlock} ${style.containerPosicionamientoBlock}`}>
       <h4>Posicionamiento</h4>
-      <div className={style.containerSinergiasActivas}>
-        <Sinergias sinergias={comp?.posicionamiento?.[0]?.tablero} orientacion={"vertical"} show={true} version={"latest" || comp?.version} />
+      <div style={{ display: 'flex', gap: '15px', width: "100%" }}>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '15px' }}>
+          <div className={style.containerSinergiasActivas}>
+            <Sinergias sinergias={activePos.tablero} orientacion={"vertical"} show={true} version={"latest" || comp?.version} />
+          </div>
+          <NuevoBuilderTFT customTablero={activePos.tablero} readOnly={true} />
+        </div>
+        {renderNavegacionTableros()}
       </div>
-      <NuevoBuilderTFT customTablero={comp?.posicionamiento?.[0]?.tablero} readOnly={true} />
     </div>
   )
 }
@@ -588,11 +674,11 @@ const FooterBuild = ({comp})=>{
           )
         })
       }
-      <a href={typeof window !== 'undefined' ? `/login?redirect=${window.location.pathname}` : "/login"} target="_blank" className={`${style.containerVerMasBuilds} ${style.containerBuild}`}>
-        <Tooltip type="default" text="Master Plan">
+      <div className={`${style.containerVerMasBuilds} ${style.containerBuild}`}>
+        <Tooltip type="default" text="Todas las Builds completas con variaciones, artefactos, radiantes y emblemas en: TFT Master Plan">
         <img src="/web/logoGPMP.webp" alt="Logo Guiadeparche Master Plan" className={`${style.imgMasterPlan}`} />
         </Tooltip>
-      </a>
+      </div>
       </div>
     </div>
   )

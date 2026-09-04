@@ -308,4 +308,7 @@
     .containerBuilder{
         padding:0;
     }
+    .estrellas3{
+        font-size: x-small;
+    }
 }@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
