@@ -127,7 +127,7 @@ const defaultValuesComposicionTFT = {
   encuentros:[
     
   ], // intentar 3 o 4 o Texto como Tips // masterplan
-  
+  videosYoutube: [], // URLs de videos de YouTube
 }
 
 // Función para obtener una copia limpia y profunda de los valores por defecto (evita mutación de referencias)

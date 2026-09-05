@@ -11,6 +11,7 @@ import ImgItem from "./ImgItem";
 import ImgAugment from "./ImgAugment";
 import ImgCampeon from "./ImgCampeon";
 import ImgTrait from "./ImgTrait";
+import Youtube from "@components/youtube/Youtube";
 const GuiaFreeTFTMeta = ({comp, isInfografia=false, edit=false, isIndividual=false}) => {
   const [hoveredAugment, setHoveredAugment] = useState(null);
   const augmentRef = useRef(null);
@@ -20,6 +21,7 @@ const GuiaFreeTFTMeta = ({comp, isInfografia=false, edit=false, isIndividual=fal
   const allAugmentsTFT = useStore(dataTFTAllAugments);
   const allTraitsTFT = useStore(dataTFTTraits);
   const [isMounted, setIsMounted] = useState(false);
+  console.log({comp})
   useEffect(() => {
     setIsMounted(true);
     function handleClickOutside(event) {
@@ -53,6 +55,19 @@ const GuiaFreeTFTMeta = ({comp, isInfografia=false, edit=false, isIndividual=fal
       {/* <FooterTooltip augment={hoveredAugment} tooltipRef={tooltipRef} edit={edit} isInfografia={isInfografia}></FooterTooltip> */}
       <FooterBuild comp={comp}></FooterBuild>
       <FooterLogos edit={edit} ></FooterLogos>
+      
+      {comp?.videosYoutube && comp.videosYoutube.filter(v => v.trim() !== "").length > 0 && (
+        <div className={`${style.borderBlock} ${style.blockColumn} hideForCapture`} style={{ marginTop: '15px' }}>
+          <h4>Videos</h4>
+          <div className={style.videosGrid}>
+            {comp.videosYoutube.filter(v => v.trim() !== "").map((videoUrl, idx) => (
+              <div key={idx} style={{ width: '100%', aspectRatio: '16/9' }}>
+                <Youtube src={videoUrl} />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
