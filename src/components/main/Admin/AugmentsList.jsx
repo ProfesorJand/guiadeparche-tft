@@ -21,9 +21,13 @@ const AugmentsList = ({ onSelectAugment, showName= false }) => {
         : allAugments;
 
     const filteredAugments = baseAugments?.filter(aug => {
-        if (!aug || !aug.name) return false;
+        if (!aug || (!aug.name && !aug.name_EN)) return false;
         const s = search.toLowerCase();
-        return aug.name.toLowerCase().includes(s) || aug.apiName.toLowerCase().includes(s);
+        return (
+            (aug.name && aug.name.toLowerCase().includes(s)) || 
+            (aug.name_EN && aug.name_EN.toLowerCase().includes(s)) ||
+            (aug.apiName && aug.apiName.toLowerCase().includes(s))
+        );
     }) || [];
 
     return (

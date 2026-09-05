@@ -36,9 +36,10 @@ const AdminTFTAumentos = () => {
     if (!searchTerm) return true;
     const term = searchTerm.toLowerCase();
     const name = a.name?.toLowerCase() || "";
+    const nameEN = a.name_EN?.toLowerCase() || "";
     const desc = (a.desc || a.desc_item || "").toLowerCase();
     const apiName = a.apiName?.toLowerCase() || "";
-    return name.includes(term) || desc.includes(term) || apiName.includes(term);
+    return name.includes(term) || nameEN.includes(term) || desc.includes(term) || apiName.includes(term);
   });
   
   // localState to hold current edits before saving.
