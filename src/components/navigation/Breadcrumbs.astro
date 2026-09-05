@@ -108,7 +108,8 @@ const breadcrumbs = segments.map((segment, index) => {
     background-size: 8px 8px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.07);
     padding: 0.55rem 1.5rem;
-    position: relative;
+    position: sticky;
+    top: var(--height-header, 8vh);
     z-index: 8;
   }
 

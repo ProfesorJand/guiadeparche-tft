@@ -3,7 +3,7 @@ import { useStore } from '@nanostores/react';
 import { $user } from '../../stores/auth';
 import styles from './RegistrarseBTN.module.css';
 
-const RegistrarseBTN = ({ text, buttonText, layout = 'column', className = '', link = typeof window !== 'undefined' ? `/login?redirect=${window.location.pathname}` : "/login"}) => {
+const RegistrarseBTN = ({ text, buttonText, layout = 'column', className = '', link = typeof window !== 'undefined' ? `/login?redirect=${window.location.pathname}` : "/login", isIndividual}) => {
   const layoutClass = layout === 'row' ? styles.layout_row : styles.layout_column;
   
   const user = typeof window !== 'undefined' ? useStore($user) : null;
@@ -13,7 +13,7 @@ const RegistrarseBTN = ({ text, buttonText, layout = 'column', className = '', l
   let finalButtonText = buttonText;
 
   if (user) {
-    if (user.master_plan == 1) {
+    if (user.master_plan == 1 && !isIndividual) {
       finalText = "Accede al Master Plan";
       finalButtonText = "Ir a la App →";
       finalLink = "/tft/master-plan/app";
