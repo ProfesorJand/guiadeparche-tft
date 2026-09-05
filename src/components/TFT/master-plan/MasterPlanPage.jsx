@@ -165,7 +165,7 @@ export default function MasterPlanPage() {
     });
   }, [allItems]);
 
-  const [activeEarlyTab, setActiveEarlyTab] = useState('campeones');
+  const [activeEarlyTab, setActiveEarlyTab] = useState('objetos');
   const [selectedSoftItems, setSelectedSoftItems] = useState([]);
   const [selectedSoftChampions, setSelectedSoftChampions] = useState([]);
   const [selectedSoftTraits, setSelectedSoftTraits] = useState([]);
@@ -686,7 +686,8 @@ export default function MasterPlanPage() {
               apiName: grupoId,
               name: grupoObj ? grupoObj.nombre : `Salida Early ${grupoId}`,
               icon: null,
-              campeones: grupoObj && grupoObj.campeones ? grupoObj.campeones : []
+              campeones: grupoObj && grupoObj.campeones ? grupoObj.campeones : [],
+              isEarlyMatch: true
             });
           }
         });
@@ -702,7 +703,7 @@ export default function MasterPlanPage() {
             (compo.condiciones || []).some(c => c.apiNameGrande === champ.apiName || c.ApiNamePequeno === champ.apiName);
           if (matchChamp) {
             matchCount++;
-            matchedFilters.push({ type: 'campeon', apiName: champ.apiName, icon: champ.icon || (champ.tileIcon ? getLocalTftImage(champ.tileIcon, 'champions/tileIcon') : null), name: champ.name });
+            matchedFilters.push({ type: 'campeon', apiName: champ.apiName, icon: champ.icon || (champ.tileIcon ? getLocalTftImage(champ.tileIcon, 'champions/tileIcon') : null), name: champ.name, isEarlyMatch: true });
           }
         });
       }
@@ -714,7 +715,7 @@ export default function MasterPlanPage() {
           if (matchSinergia) {
             matchCount++;
             const traitObj = allTraits.find(t => t.apiName === apiName) || condicionesGrandeSinergias.find(t => t.apiName === apiName);
-            matchedFilters.push({ type: 'sinergia', apiName: apiName, icon: traitObj?.icon ? (traitObj.icon.includes("http") ? traitObj.icon.replace(".tex", ".png").toLowerCase() : getLocalTftImage(traitObj.icon, 'traits', versionNumber)) : null, name: traitObj?.name || apiName });
+            matchedFilters.push({ type: 'sinergia', apiName: apiName, icon: traitObj?.icon ? (traitObj.icon.includes("http") ? traitObj.icon.replace(".tex", ".png").toLowerCase() : getLocalTftImage(traitObj.icon, 'traits', versionNumber)) : null, name: traitObj?.name || apiName, isEarlyMatch: true });
           }
         });
       }
@@ -729,7 +730,7 @@ export default function MasterPlanPage() {
             (compo.condiciones || []).some(c => normalizeItem(c.apiNameGrande) === targetApi || normalizeItem(c.ApiNamePequeno) === targetApi);
           if (matchItem) {
             matchCount++;
-            matchedFilters.push({ type: 'item', apiName: item.apiName, icon: item.icon, name: item.name });
+            matchedFilters.push({ type: 'item', apiName: item.apiName, icon: item.icon, name: item.name, isEarlyMatch: true });
           }
         });
       }
@@ -785,7 +786,7 @@ export default function MasterPlanPage() {
             matchCount++;
             const itemData = allItems.find(i => i.apiName === apiName);
             const iconPath = itemData?.icon ? getLocalTftImage(itemData.icon, 'items') : null;
-            matchedFilters.push({ type: 'item', apiName: apiName, icon: iconPath, name: itemData?.name || apiName });
+            matchedFilters.push({ type: 'item', apiName: apiName, icon: iconPath, name: itemData?.name || apiName, isEarlyMatch: true });
           }
         });
       }
@@ -1053,19 +1054,19 @@ export default function MasterPlanPage() {
     return groups;
   }, [softChampionsList]);
 
-  const hasEarlyFiltersActive = selectedSalidasEarly.length > 0 || selectedSalidasEarlyItems.length > 0;
+  const hasEarlyFiltersActive = 
+    selectedSalidasEarly.length > 0 || 
+    selectedSalidasEarlyItems.length > 0 || 
+    selectedSalidasEarlyComponents.length > 0 ||
+    selectedSalidasEarlyChampions.length > 0 ||
+    selectedSalidasEarlySinergias.length > 0;
 
   const earlyHighlightedAugments = useMemo(() => {
     const highlighted = new Set();
     if (!hasEarlyFiltersActive) return highlighted;
 
-    const activeEarlyApiNames = new Set([
-      ...selectedSalidasEarly.map(String),
-      ...selectedSalidasEarlyItems.map(i => String(i.apiName))
-    ]);
-
     filteredCompos.forEach(compo => {
-      const matchesEarly = compo._matchedFilters && compo._matchedFilters.some(mf => activeEarlyApiNames.has(String(mf.apiName)));
+      const matchesEarly = compo._matchedFilters && compo._matchedFilters.some(mf => mf.isEarlyMatch);
 
       if (matchesEarly) {
         if (compo.aumentos && Array.isArray(compo.aumentos)) {
@@ -1089,7 +1090,7 @@ export default function MasterPlanPage() {
       }
     });
     return highlighted;
-  }, [filteredCompos, hasEarlyFiltersActive, selectedSalidasEarly, selectedSalidasEarlyItems]);
+  }, [filteredCompos, hasEarlyFiltersActive]);
 
   return (
     <div id={"masterPlanContainer"} className={style.masterPlanContainer}>
@@ -1121,8 +1122,8 @@ export default function MasterPlanPage() {
               <fieldset className={`${style.filtersSection} ${style.filtersSectionHard}`}>
                 <legend>Filtros Early (Dentro del Juego / Ingame)</legend>
                 <div className={style.tabsMenu}>
-                  <button type="button" onClick={() => setActiveEarlyTab('campeones')} className={`${style.tabButton} ${activeEarlyTab === 'campeones' ? style.tabButtonActive : ''}`}>Campeones & Salidas</button>
                   <button type="button" onClick={() => setActiveEarlyTab('objetos')} className={`${style.tabButton} ${activeEarlyTab === 'objetos' ? style.tabButtonActive : ''}`}>Objetos / Items</button>
+                  <button type="button" onClick={() => setActiveEarlyTab('campeones')} className={`${style.tabButton} ${activeEarlyTab === 'campeones' ? style.tabButtonActive : ''}`}>Campeones & Salidas</button>
                   <button type="button" onClick={() => setActiveEarlyTab('aumentos')} className={`${style.tabButton} ${activeEarlyTab === 'aumentos' ? style.tabButtonActive : ''}`}>Aumentos 2-1</button>
                 </div>
                 <div className={style.tabContent}>
