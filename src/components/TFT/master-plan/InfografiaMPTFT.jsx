@@ -12,6 +12,7 @@ import ImgTrait from "../ImgTrait";
 
 import copyToClipboard from "@functions/copyToClipboard.js";
 import { getLocalTftImage } from "@utils/images.js";
+import Youtube from "@components/youtube/Youtube";
 import { getTraitDisplayName } from "@components/main/Admin/TraitsList";
 const InfografiaMPTFT = ({comp = {}, gruposSalidasEarly = []}) => {
   const AllItems = useStore(dataTFTAllItems);
@@ -517,6 +518,19 @@ const InfografiaMPTFT = ({comp = {}, gruposSalidasEarly = []}) => {
         {(comp?.bestBuild || []).length > 0 && MejoresBuilds()}
       </div>
       
+      {comp?.videosYoutube && comp.videosYoutube.filter(v => v.trim() !== "").length > 0 && (
+        <div className={`${style.cBoxTitleInfo} hideForCapture`} style={{ width: '100%', marginTop: '15px' }}>
+          <span className={style.tBox}>Videos</span>
+          <div className={style.videosGrid}>
+            {comp.videosYoutube.filter(v => v.trim() !== "").map((videoUrl, idx) => (
+              <div key={idx} style={{ width: '100%', aspectRatio: '16/9' }}>
+                <Youtube src={videoUrl} />
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
     </div>
   )
 }

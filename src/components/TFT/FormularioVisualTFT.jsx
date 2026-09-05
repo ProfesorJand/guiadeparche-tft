@@ -1866,6 +1866,49 @@ export default function FormularioVisualTFT({
           </label>
         </div>
 
+        {/* --- NUEVO BLOQUE: VIDEOS YOUTUBE --- */}
+        <div className={`${style.cBoxTitleInfo}`} style={{ marginTop: '20px' }}>
+          <span className={style.tBox}>Videos de YouTube</span>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '15px', width:'100%', padding: '15px' }}>
+            {(comp.videosYoutube || []).map((videoUrl, index) => (
+              <div key={index} style={{ display: 'flex', gap: '10px', width: '100%' }}>
+                <input
+                  type="text"
+                  placeholder="https://www.youtube.com/watch?v=..."
+                  value={videoUrl}
+                  onChange={(e) => {
+                    const newVideos = [...(comp.videosYoutube || [])];
+                    newVideos[index] = e.target.value;
+                    actualizarComposicionTFT({ videosYoutube: newVideos });
+                  }}
+                  className={localStyle.styleBox80}
+                  style={{ flex: 1 }}
+                />
+                <button
+                  onClick={() => {
+                    const newVideos = [...(comp.videosYoutube || [])];
+                    newVideos.splice(index, 1);
+                    actualizarComposicionTFT({ videosYoutube: newVideos });
+                  }}
+                  style={{ background: '#d9534f', color: '#fff', border: 'none', borderRadius: '4px', padding: '0 15px', cursor: 'pointer' }}
+                >
+                  X
+                </button>
+              </div>
+            ))}
+          </div>
+          <button
+            onClick={() => {
+              const newVideos = [...(comp.videosYoutube || []), ""];
+              actualizarComposicionTFT({ videosYoutube: newVideos });
+            }}
+            style={{ padding: '10px', background: '#0af', color: '#000', border: 'none', cursor: 'pointer', borderRadius: '4px', fontWeight: 'bold', width: 'fit-content', marginLeft: '15px', marginBottom: '15px' }}
+          >
+            + Añadir Video de YouTube
+          </button>
+        </div>
+        {/* ------------------------------------ */}
+
         {/* Botones de acción general */}
       <div className={localStyle.styleBox79}>
         <button onClick={() => {
