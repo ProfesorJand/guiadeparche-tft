@@ -369,6 +369,9 @@
   overflow: hidden;
 
 }
+.textExtra{
+  width:100%
+}
 .highlight{
   border-color: currentColor;
 }
