@@ -199,45 +199,42 @@ const CardsMasterPlanCompos = ({compo, activateMissingOPM, filtroSoft={}, grupos
       <div className={style.row1}>
         <div className={`${style.initialFundamentals} ${style.borderContainer}`}>
           <span className={style.titleMiniInfoCard}>Objetos Prio</span>
-          <div className={style.containerItemsEarlyPrio}>
-            <div className={style.containerItemsPrio}>
-              {compo.itemsPrio.map((itemEntry, index)=>{
-                const nombreItem = typeof itemEntry === 'object' && itemEntry !== null ? itemEntry.apiName : itemEntry;
-                const opStatus = typeof itemEntry === 'object' && itemEntry !== null ? itemEntry.op : false;
-                if (!nombreItem) return null;
-                return (
-                  <div key={index} className={`${style.containerItemPrio} ${style.highlightable} ${isItemHighlighted(nombreItem) ? style.highlight : ""}`}>
-                    <ImgItem item={allItemsTFT.find(x => x.apiName === nombreItem)}/>
-                    {opStatus && <span className={opStatus === 'opm' ? style.opmText || style.opText : style.opText}>{opStatus === 'opm' ? 'OPM' : 'OP'}</span>}
-                  </div>
-                )
-              })}
-            </div>
-            <div className={style.containerItemsPrioTanque}>
-            </div>
+          <div className={style.containerObjetosPrioDoble}>
+            {/* 8 Objetos Prio */}
+            {(compo.itemsPrio || []).slice(0, 8).map((itemEntry, index) => {
+              const nombreItem = typeof itemEntry === 'object' && itemEntry !== null ? itemEntry.apiName : itemEntry;
+              const opStatus = typeof itemEntry === 'object' && itemEntry !== null ? itemEntry.op : false;
+              if (!nombreItem) return null;
+              
+              const row = index < 4 ? 1 : 2;
+              const col = (index % 4) + 1;
+              
+              return (
+                <div key={`P-${index}`} className={`${style.containerItemPrio} ${style.highlightable} ${isItemHighlighted(nombreItem) ? style.highlight : ""}`} style={{ gridColumn: col, gridRow: row, width: '100%' }}>
+                  <ImgItem item={allItemsTFT.find(x => x.apiName === nombreItem)}/>
+                  {opStatus && <span className={opStatus === 'opm' ? style.opmText || style.opText : style.opText}>{opStatus === 'opm' ? 'OPM' : 'OP'}</span>}
+                </div>
+              );
+            })}
+            
+            {/* 2 Objetos Tanques */}
+            {(compo.itemsPrioTanque || []).slice(0, 2).map((itemEntry, index) => {
+              const nombreItem = typeof itemEntry === 'object' && itemEntry !== null ? itemEntry.apiName : itemEntry;
+              const opStatus = typeof itemEntry === 'object' && itemEntry !== null ? itemEntry.op : false;
+              if (!nombreItem) return null;
+              
+              const row = index + 1;
+              const col = 5;
+              
+              return (
+                <div key={`T-${index}`} className={`${style.containerItemPrio} ${style.highlightable} ${isItemHighlighted(nombreItem) ? style.highlight : ""}`} style={{ gridColumn: col, gridRow: row, width: '100%' }}>
+                  <ImgItem item={allItemsTFT.find(x => x.apiName === nombreItem)}/>
+                  {opStatus && <span className={opStatus === 'opm' ? style.opmText || style.opText : style.opText}>{opStatus === 'opm' ? 'OPM' : 'OP'}</span>}
+                </div>
+              );
+            })}
           </div>
         </div>
-        
-         <div className={`${style.initialFundamentals} ${style.borderContainer}`} style={{flex:2}}>
-            <span className={style.titleMiniInfoCard}>Objetos Tanques</span>
-            <div className={style.containerItemsEarlyPrio}>
-              <div className={style.containerItemsPrio} >
-                {(compo.itemsPrioTanque || []).map((itemEntry, index)=>{
-                  const nombreItem = typeof itemEntry === 'object' && itemEntry !== null ? itemEntry.apiName : itemEntry;
-                  const opStatus = typeof itemEntry === 'object' && itemEntry !== null ? itemEntry.op : false;
-                  if (!nombreItem) return null;
-                  return (
-                    <div key={index} className={`${style.containerItemPrio} ${style.highlightable} ${isItemHighlighted(nombreItem) ? style.highlight : ""}`} style={{width:"45%"}}>
-                      <ImgItem item={allItemsTFT.find(x => x.apiName === nombreItem)}/>
-                      {opStatus && <span className={opStatus === 'opm' ? style.opmText || style.opText : style.opText}>{opStatus === 'opm' ? 'OPM' : 'OP'}</span>}
-                    </div>
-                  )
-                })}
-              </div>
-              <div className={style.containerItemsPrioTanque}>
-
-              </div>
-            </div>
 
           {/* <div className={`${style.containerFundamentalsCampeones} ${style.borderContainer}`}>
             <span className={style.titleMiniInfoCard}>Salidas Early</span>
@@ -275,7 +272,6 @@ const CardsMasterPlanCompos = ({compo, activateMissingOPM, filtroSoft={}, grupos
               })}
             </div>
           </div> */}
-        </div>
 
         <div className={`${style.initialCondiciones} ${style.borderContainer}`}>
           <span className={style.titleMiniInfoCard}>Condiciones</span>
