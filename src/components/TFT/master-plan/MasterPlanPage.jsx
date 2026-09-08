@@ -495,6 +495,18 @@ export default function MasterPlanPage() {
             }
           });
         }
+        if (comp.itemsPrioTanque && Array.isArray(comp.itemsPrioTanque)) {
+          comp.itemsPrioTanque.forEach(item => {
+            if (item && typeof item === 'object' && (item.op === true || item.op === "true") && item.apiName && !uniqueMap.has(item.apiName)) {
+              uniqueMap.set(item.apiName, {
+                apiName: item.apiName,
+                name: getConditionDisplayName(item.apiName, targetType),
+                icon: getConditionIconUrl(item.apiName, targetType),
+                type: targetType
+              });
+            }
+          });
+        }
       });
     }
 
@@ -591,6 +603,7 @@ export default function MasterPlanPage() {
         selectedItems.forEach(item => {
           const matchItem =
             compo.itemsPrio?.some(i => (typeof i === 'object' && i !== null ? i.apiName : i) === item.apiName) ||
+            compo.itemsPrioTanque?.some(i => (typeof i === 'object' && i !== null ? i.apiName : i) === item.apiName) ||
             compo.campeonMeta?.apiNameItemsDelCampeon?.includes(item.apiName) ||
             compo.posicionamiento?.[0]?.tablero?.some(champ => champ.apiNameItemsDelCampeon?.includes(item.apiName)) ||
             (compo.condiciones || []).some(c => c.apiNameGrande === item.apiName || c.ApiNamePequeno === item.apiName);
@@ -727,6 +740,7 @@ export default function MasterPlanPage() {
 
           const matchItem =
             compo.itemsPrio?.some(i => normalizeItem(typeof i === 'object' && i !== null ? i.apiName : i) === targetApi) ||
+            compo.itemsPrioTanque?.some(i => normalizeItem(typeof i === 'object' && i !== null ? i.apiName : i) === targetApi) ||
             (compo.condiciones || []).some(c => normalizeItem(c.apiNameGrande) === targetApi || normalizeItem(c.ApiNamePequeno) === targetApi);
           if (matchItem) {
             matchCount++;
@@ -773,6 +787,10 @@ export default function MasterPlanPage() {
         };
 
         (compo.itemsPrio || []).forEach(prioItem => {
+          const apiName = typeof prioItem === 'object' && prioItem !== null ? prioItem.apiName : prioItem;
+          checkItem(apiName);
+        });
+        (compo.itemsPrioTanque || []).forEach(prioItem => {
           const apiName = typeof prioItem === 'object' && prioItem !== null ? prioItem.apiName : prioItem;
           checkItem(apiName);
         });
@@ -823,13 +841,15 @@ export default function MasterPlanPage() {
         }
 
         const matchPrio = compo.itemsPrio?.find(i => (typeof i === 'object' ? i.apiName : i) === mf.apiName);
-        if (matchPrio) {
+        const matchPrioTanque = compo.itemsPrioTanque?.find(i => (typeof i === 'object' ? i.apiName : i) === mf.apiName);
+        const finalMatchPrio = matchPrio || matchPrioTanque;
+        if (finalMatchPrio) {
           isCore = true;
           if (opStatus !== 'opm') {
-            if (matchPrio.op === 'opm') opStatus = 'opm';
-            else if (matchPrio.op) opStatus = 'op';
+            if (finalMatchPrio.op === 'opm') opStatus = 'opm';
+            else if (finalMatchPrio.op) opStatus = 'op';
           }
-          if (matchPrio.early === true || matchPrio.early === 'true' || matchPrio.early === 1) isEarly = true;
+          if (finalMatchPrio.early === true || finalMatchPrio.early === 'true' || finalMatchPrio.early === 1) isEarly = true;
         }
 
         if (opStatus !== 'opm') {
@@ -893,8 +913,9 @@ export default function MasterPlanPage() {
       });
 
       let missingOPM = null;
-      if (compo.itemsPrio) {
-        const opmItem = compo.itemsPrio.find(i => typeof i === 'object' && i.op === 'opm');
+      if (compo.itemsPrio || compo.itemsPrioTanque) {
+        const opmItem = (compo.itemsPrio || []).find(i => typeof i === 'object' && i.op === 'opm') || 
+                        (compo.itemsPrioTanque || []).find(i => typeof i === 'object' && i.op === 'opm');
         if (opmItem &&
           !selectedItems.some(i => (typeof i === 'object' ? i.apiName : i) === opmItem.apiName) &&
           !selectedSalidasEarlyItems.some(i => (typeof i === 'object' ? i.apiName : i) === opmItem.apiName)) {
@@ -963,6 +984,17 @@ export default function MasterPlanPage() {
     filteredCompos.forEach(comp => {
       if (comp.itemsPrio && Array.isArray(comp.itemsPrio)) {
         comp.itemsPrio.forEach(prio => {
+          const nombreItem = typeof prio === 'object' && prio !== null ? prio.apiName : prio;
+          if (!nombreItem) return;
+          set.add(nombreItem);
+          const itemData = allItems.find(x => x.apiName === nombreItem);
+          if (itemData?.composition && Array.isArray(itemData.composition)) {
+            itemData.composition.forEach(compApiName => set.add(compApiName));
+          }
+        });
+      }
+      if (comp.itemsPrioTanque && Array.isArray(comp.itemsPrioTanque)) {
+        comp.itemsPrioTanque.forEach(prio => {
           const nombreItem = typeof prio === 'object' && prio !== null ? prio.apiName : prio;
           if (!nombreItem) return;
           set.add(nombreItem);

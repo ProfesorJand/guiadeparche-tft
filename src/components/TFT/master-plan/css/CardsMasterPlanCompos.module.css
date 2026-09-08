@@ -16,7 +16,7 @@
   flex-direction: row;
   width: 100%;
   justify-content: flex-start;
-  align-items: center;
+  align-items: stretch;
   gap: 5px;
 }
 .containerHeader{
@@ -248,10 +248,9 @@
 .initialFundamentals{
   display:flex;
   flex-direction: column;
-  flex: 3;
+  flex: 5;
   box-sizing: border-box;
-  gap:10px;
-  height:100%;
+  gap:5px;
   min-width: 0;
 }
 .containerFundamentalsItems{
@@ -281,23 +280,11 @@
   flex-direction: column;
   gap:5px;
 }
-.containerItemsPrio{
-  display:flex;
-  flex-direction:row;
-  gap:5px;
-  flex:4;
-  flex-wrap: wrap;
-  align-items: center;
-  position: relative;
-}
-.containerItemsPrioTanque{
-  display:flex;
-  flex-direction:row;
-  gap:5px;
-  flex:1;
-  flex-wrap: wrap;
-  align-items: center;
-  position: relative;
+.containerObjetosPrioDoble {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 5px;
+  width: 100%;
 }
 
 .containerItemPrio{
@@ -399,6 +386,7 @@
 .containerCuadroCondicionGrande{
   display: flex;
   flex-direction: row;
+  width: 100%;
 }
 .containerCuadroCondicionPequeno{
   display: flex;
@@ -441,25 +429,21 @@
   display:flex;
   flex-direction: column;
   flex: 2;
-  padding:10px;
-  gap:10px;
+  gap:5px;
   box-sizing: border-box;
   border: 1px solid rgba(255, 0, 0, 0.5);
-  height:100%;
   min-width: 0;
 }
 .containerCondicion{
-  display:flex;
-  flex-direction:row;
-  width:100%;
-  flex-wrap:wrap;
-  gap:5px;
-  justify-content:center;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  width: 100%;
+  gap: 5px;
 }
 .containerCuadrosCondicion{
   display:flex;
   position:relative;
-  width: 48px;
+  width: 100%;
   background-color:rgba(0, 0, 0, 0.50);
   aspect-ratio: 1 / 1;
 }
@@ -482,26 +466,22 @@
   display:flex;
   flex-direction: column;
   flex: 2;
-  padding:10px;
-  gap:10px;
+  gap:5px;
   box-sizing: border-box;
   border: 1px solid rgba(255, 0, 0, 0.5);
-  height:100%;
   min-width: 0;
 }
 .containerAumentos{
-  display:flex;
-  flex-direction: row;
-  gap:5px;
-  width:100%;
-  flex-wrap:wrap;
-  justify-content:center;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  width: 100%;
+  gap: 5px;
 }
 
 .containerCuadrosAumentos{
   display:flex;
   flex-direction:row;
-  width: 48px;
+  width: 100%;
   aspect-ratio: 1/1;
   position: relative;
   background-color:rgba(0, 0, 0, 0.50);
