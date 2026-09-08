@@ -1701,6 +1701,18 @@ export default function FormularioVisualTFT({
             op: false
           };
         }),
+        itemsPrioTanque: (compo.itemsPrioTanque || []).map(item => {
+          if (typeof item === 'object' && item !== null) {
+            return {
+              apiName: item.apiName || "",
+              op: !!item.op
+            };
+          }
+          return {
+            apiName: item || "",
+            op: false
+          };
+        }),
         posicionamiento: compo.posicionamiento,
         tipSEO: compo.tipSEO || compo.tipSeo || "",
         urlSEO: compo.urlSEO || compo.urlSeo || compo.compUrl || "",
