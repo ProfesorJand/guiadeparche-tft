@@ -791,11 +791,23 @@ export default function MasterPlanPage() {
         });
       }
 
+      // --- CONSTANTES DE PUNTUACIÓN DE COMPOSICIÓN (SCORE) ---
+      // Modifica estos valores para ajustar cuánto vale cada acierto en los filtros.
+      const SCORE_VALUES = {
+        base: 0.5,         // Puntos base por cualquier coincidencia
+        opm: 3,          // Puntos extra si está marcado como 'OPM'
+        op: 1,         // Puntos extra si está marcado como 'OP'
+        early: 1,      // Puntos extra si es parte del 'Early'
+        salida: 0.3,     // Puntos extra si coincide con una 'Salida'
+        tierS: 2,        // Puntos extra sumados a la compo si es Tier S
+        tierA: 1,        // Puntos sumados si es Tier A (por defecto 0)
+        tierB: 0,       // Puntos restados (penalización) si es Tier B
+        tierC: -2        // Puntos restados (penalización) si es Tier C
+      };
+      // -------------------------------------------------------
+
       let compoScore = 0;
-      let countItemsPrio = 0;
-      let sumItemsPrio = 0;
-      let countOp = 0;
-      let sumOp = 0;
+      let breakdown = { base: 0, op: 0, early: 0, salida: 0 };
 
       matchedFilters = matchedFilters.map(mf => {
         let opStatus = null;
@@ -829,36 +841,50 @@ export default function MasterPlanPage() {
           }
         }
 
-        let indicatorScore = 1;
-        if (opStatus === 'opm') indicatorScore += 2;
-        else if (opStatus === 'op') indicatorScore += 0.5;
+        let indicatorScore = SCORE_VALUES.base;
+        breakdown.base += SCORE_VALUES.base;
 
-        if (isEarly) indicatorScore += 0.2;
-        if (mf.type === 'salida') indicatorScore += 0.4;
+        if (opStatus === 'opm') {
+          indicatorScore += SCORE_VALUES.opm;
+          breakdown.op += SCORE_VALUES.opm;
+        } else if (opStatus === 'op') {
+          indicatorScore += SCORE_VALUES.op;
+          breakdown.op += SCORE_VALUES.op;
+        }
+
+        if (isEarly) {
+          indicatorScore += SCORE_VALUES.early;
+          breakdown.early += SCORE_VALUES.early;
+        }
+        
+        if (mf.type === 'salida') {
+          indicatorScore += SCORE_VALUES.salida;
+          breakdown.salida += SCORE_VALUES.salida;
+        }
 
         compoScore += indicatorScore;
-
-        if (matchPrio) {
-          countItemsPrio++;
-          sumItemsPrio += indicatorScore;
-        }
-        if (opStatus === 'op' || opStatus === 'opm') {
-          countOp++;
-          sumOp += indicatorScore;
-        }
 
         return { ...mf, opStatus, isCore, isEarly };
       });
 
       const compoTier = (compo.tier || "").toUpperCase();
       let tierScore = 0;
-      if (compoTier === 'S') tierScore = 1;
-      else if (compoTier === 'B') tierScore = -1;
+      if (compoTier === 'S') tierScore = SCORE_VALUES.tierS;
+      else if (compoTier === 'A') tierScore = SCORE_VALUES.tierA;
+      else if (compoTier === 'B') tierScore = SCORE_VALUES.tierB;
+      else if (compoTier === 'C') tierScore = SCORE_VALUES.tierC;
       
       compoScore += tierScore;
       
       if (matchedFilters.length > 0) {
-        console.log(`[${compo.titulo || compo.urlSEO}]: Tier ${compoTier} (${tierScore > 0 ? '+'+tierScore : tierScore}), item prio (cantidad:${countItemsPrio} suma:${sumItemsPrio.toFixed(1)}) , op (cantidad:${countOp}, suma:${sumOp.toFixed(1)}) | TOTAL SCORE: ${compoScore.toFixed(1)}`);
+        console.log(
+          `[${compo.titulo || compo.urlSEO}] TOTAL SCORE: ${compoScore.toFixed(1)} puntos ` +
+          `=> Tier ${compoTier}(${tierScore > 0 ? '+'+tierScore : tierScore}) ` +
+          `| Coincidencias Base(+${breakdown.base.toFixed(1)}) ` +
+          `${breakdown.op > 0 ? '| Bonus OP(+'+breakdown.op.toFixed(1)+') ' : ''}` +
+          `${breakdown.early > 0 ? '| Bonus Early(+'+breakdown.early.toFixed(1)+') ' : ''}` +
+          `${breakdown.salida > 0 ? '| Bonus Salida(+'+breakdown.salida.toFixed(1)+')' : ''}`
+        );
       }
 
       matchedFilters.sort((a, b) => {
@@ -1094,13 +1120,19 @@ export default function MasterPlanPage() {
 
   return (
     <div id={"masterPlanContainer"} className={style.masterPlanContainer}>
+       <div className={style.containerTop}>
+        <a 
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://discord.gg/fKChyHGMW"
+          className={style.btnDiscord}
+          >
+           Soporte - Master Plan
+          </a>
+      </div>
       <div className={style.containerTop}>
+
         {/* <div className={style.containerBtnsVersion}>
-          <button 
-            style={{ padding: '8px 16px', borderRadius: '4px', border: 'none', background: version === 'latest' ? '#ffcc00' : '#444', color: version === 'latest' ? '#000' : '#fff', cursor: 'pointer', fontWeight: 'bold' }}
-            onClick={() => swapVersionTFT('latest')}>
-            Set {setNumberLatest} (Latest)
-          </button>
           <button 
             style={{ padding: '8px 16px', borderRadius: '4px', border: 'none', background: version === 'pbe' ? '#ffcc00' : '#444', color: version === 'pbe' ? '#000' : '#fff', cursor: 'pointer', fontWeight: 'bold' }}
             onClick={() => swapVersionTFT('pbe')}>

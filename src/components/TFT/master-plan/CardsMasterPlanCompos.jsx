@@ -80,7 +80,7 @@ const CardsMasterPlanCompos = ({compo, activateMissingOPM, filtroSoft={}, grupos
   return (
     <div className={style.container} style={{background: cardColorTier[compo.tier]}}>
       {compo._missingOPM && (
-        <div 
+        <div
           className={style.opmLockOverlay}
           onClick={(e) => {
             e.stopPropagation();
@@ -109,14 +109,14 @@ const CardsMasterPlanCompos = ({compo, activateMissingOPM, filtroSoft={}, grupos
           {/* Meta Campeon & Compo Name */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px', background: 'rgba(255,255,255,0.05)', padding: '6px 12px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)' }}>
             <div style={{ position: 'relative', width: '36px', height: '36px' }}>
-              <img 
-                src={getLocalTftImage(allChampionsTFT.find(x => x.apiName === compo?.campeonMeta?.apiNameCampeon)?.tileIcon, 'champions/tileIcon')} 
+              <img
+                src={getLocalTftImage(allChampionsTFT.find(x => x.apiName === compo?.campeonMeta?.apiNameCampeon)?.tileIcon, 'champions/tileIcon')}
                 alt="Campeón Meta"
                 style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px', border: '1px solid #777' }}
               />
               {compo?.campeonMeta?.estrellas && (
-                <img 
-                  src="/tft/assets/3-estrellas.webp" 
+                <img
+                  src="/tft/assets/3-estrellas.webp"
                   alt="3 estrellas"
                   style={{ position: 'absolute', top: '0', left: '0', width: '100%' }}
                 />
@@ -136,68 +136,70 @@ const CardsMasterPlanCompos = ({compo, activateMissingOPM, filtroSoft={}, grupos
               <img src={compo._missingOPM.icon} alt={compo._missingOPM.name} style={{ width: '42px', height: '42px', objectFit: 'contain', borderRadius: '6px', border: '2px solid #ff4500' }} />
             )}
           </div>
-          
+
           <span style={{ fontSize: '0.8rem', color: '#bbb', maxWidth: '90%', lineHeight: '1.2' }}>
             Activa <strong>{compo._missingOPM.name}</strong> para jugar
           </span>
-          
+
           <span style={{ fontSize: '0.75rem', background: '#ff4500', padding: '4px 10px', borderRadius: '12px', marginTop: '2px' }}>
             Click para desbloquear
           </span>
         </div>
       )}
-      <div className={style.header}>
-            <span
-              className={style.tierCard}
-              data-tier={compo.tier}
-            >{compo.tier}
-            </span>
-              <div className={style.containerTags}>
-                <span 
-                  className={style.dificultadCard}
-                  data-dificultad={compo.dificultad}
-                >{compo.dificultad}
-                </span>
-                <span 
-                  className={style.categoriaCard}
-                  data-categoria={compo.categoria}
-                >{compo.categoria}
-                </span>
-                {compo.tipoDeDano && <span className={style.dañoCard} data-tipoDeDano={compo.tipoDeDano}>{compo.tipoDeDano}</span>}
-              </div>
-        {/* <span className={style.titleComp} style={{fontSize: compo?.titulo?.length > 10 ? "8px" : "10px"}}>{compo.titulo}</span> */}
-      </div>
-      <div className={style.body}>
-        <div className={`${style.initialInfoComp} ${style.borderContainer}`}>
+      <div className={style.row1}>
+        <div className={style.containerHeader}>
           <div className={style.containerCampeonMeta}>
-            <img 
-              className={style.imgCampeonCard} 
-              src={getLocalTftImage(allChampionsTFT.find(x => x.apiName === compo?.campeonMeta?.apiNameCampeon)?.tileIcon, 'champions/tileIcon')} 
+            <img
+              className={style.imgCampeonCard}
+              src={getLocalTftImage(allChampionsTFT.find(x => x.apiName === compo?.campeonMeta?.apiNameCampeon)?.tileIcon, 'champions/tileIcon')}
               alt="Img Campeon"/>
             {compo?.campeonMeta?.estrellas &&
-              <img 
-              className={style.imgEstrellasCard} 
-              src="/tft/assets/3-estrellas.webp" 
+              <img
+              className={style.imgEstrellasCard}
+              src="/tft/assets/3-estrellas.webp"
               alt="estrellas del campeon"/>}
             {compo.campeonMeta.aumento &&
-                <img 
-                className={style.imgAumentoCard} 
-                src={getLocalTftImage(allItemsTFT.find(x => x.apiName === compo.campeonMeta.aumento)?.icon, 'augments/choiceui')} 
+                <img
+                className={style.imgAumentoCard}
+                src={getLocalTftImage(allItemsTFT.find(x => x.apiName === compo.campeonMeta.aumento)?.icon, 'augments/choiceui')}
                 alt="aumento del campeon meta"/>}
             {compo.campeonMeta.emblema &&
-              <img 
-              className={style.imgEmblemaCard} 
-              src={getLocalTftImage(allItemsTFT.find(x => x.apiName === compo.campeonMeta.emblema)?.icon, 'items')} 
+              <img
+              className={style.imgEmblemaCard}
+              src={getLocalTftImage(allItemsTFT.find(x => x.apiName === compo.campeonMeta.emblema)?.icon, 'items')}
               alt="emblema del campeon meta"/>}
           </div>
-          <div className={style.containerName}>
+          <div className={style.containerInfoTextCard}>
+            <div className={style.containerName}>
               <span className={`${style.textFillSize}`}>{compo.nombre}</span>
+            </div>
+            <div className={style.row1}>
+              <span
+                className={style.tierCard}
+                data-tier={compo.tier}
+              >
+                {compo.tier}
+              </span>
+              <span
+                className={style.dificultadCard}
+                data-dificultad={compo.dificultad}
+              >{compo.dificultad}
+              </span>
+              <span
+                className={style.categoriaCard}
+                data-categoria={compo.categoria}
+              >{compo.categoria}
+              </span>
+              {compo.tipoDeDano && <span className={style.dañoCard} data-tipoDeDano={compo.tipoDeDano}>{compo.tipoDeDano}</span>}
+            </div>
           </div>
-          
         </div>
-        <div className={`${style.initialFundamentals}` }>
-          <div className={`${style.containerFundamentalsItems} ${style.borderContainer}`}>
-            <span className={style.titleMiniInfoCard}>Objetos Prio</span>    
+      </div>
+
+      <div className={style.row1}>
+        <div className={`${style.initialFundamentals} ${style.borderContainer}`}>
+          <span className={style.titleMiniInfoCard}>Objetos Prio</span>
+          <div className={style.containerItemsEarlyPrio}>
             <div className={style.containerItemsPrio}>
               {compo.itemsPrio.map((itemEntry, index)=>{
                 const nombreItem = typeof itemEntry === 'object' && itemEntry !== null ? itemEntry.apiName : itemEntry;
@@ -211,8 +213,33 @@ const CardsMasterPlanCompos = ({compo, activateMissingOPM, filtroSoft={}, grupos
                 )
               })}
             </div>
+            <div className={style.containerItemsPrioTanque}>
+            </div>
           </div>
-          <div className={`${style.containerFundamentalsCampeones} ${style.borderContainer}`}>
+        </div>
+        
+         <div className={`${style.initialFundamentals} ${style.borderContainer}`} style={{flex:2}}>
+            <span className={style.titleMiniInfoCard}>Objetos Tanques</span>
+            <div className={style.containerItemsEarlyPrio}>
+              <div className={style.containerItemsPrio} >
+                {(compo.itemsPrioTanque || []).map((itemEntry, index)=>{
+                  const nombreItem = typeof itemEntry === 'object' && itemEntry !== null ? itemEntry.apiName : itemEntry;
+                  const opStatus = typeof itemEntry === 'object' && itemEntry !== null ? itemEntry.op : false;
+                  if (!nombreItem) return null;
+                  return (
+                    <div key={index} className={`${style.containerItemPrio} ${style.highlightable} ${isItemHighlighted(nombreItem) ? style.highlight : ""}`} style={{width:"45%"}}>
+                      <ImgItem item={allItemsTFT.find(x => x.apiName === nombreItem)}/>
+                      {opStatus && <span className={opStatus === 'opm' ? style.opmText || style.opText : style.opText}>{opStatus === 'opm' ? 'OPM' : 'OP'}</span>}
+                    </div>
+                  )
+                })}
+              </div>
+              <div className={style.containerItemsPrioTanque}>
+
+              </div>
+            </div>
+
+          {/* <div className={`${style.containerFundamentalsCampeones} ${style.borderContainer}`}>
             <span className={style.titleMiniInfoCard}>Salidas Early</span>
             <div className={style.containerCampeonesEarly} style={{ display: 'flex', flexDirection: 'column', gap: '5px', overflowY: 'auto', maxHeight: '90%' }}>
               {(compo.salidasEarly || []).map((grupoId, index)=>{
@@ -229,13 +256,13 @@ const CardsMasterPlanCompos = ({compo, activateMissingOPM, filtroSoft={}, grupos
                         grupo.campeones.map(apiName => {
                           const champ = allChampionsTFT?.find(c => c.apiName === apiName);
                           if (!champ) return null;
-                          
+
                           return (
                             <div key={apiName} style={{ height: 'stretch', flex: 1, minWidth: 0, minHeight: 0, boxSizing: 'border-box' }}>
-                              <ImgCampeon 
-                                championData={champ} 
-                                showName={false} 
-                                showBorderColor={true} 
+                              <ImgCampeon
+                                championData={champ}
+                                showName={false}
+                                showBorderColor={true}
                                 className={style.stretchEarlyImg}
                               />
                             </div>
@@ -246,17 +273,15 @@ const CardsMasterPlanCompos = ({compo, activateMissingOPM, filtroSoft={}, grupos
                   </div>
                 );
               })}
-            </div>        
-          </div>
+            </div>
+          </div> */}
         </div>
-      </div>
-      <div className={style.footer}>
+
         <div className={`${style.initialCondiciones} ${style.borderContainer}`}>
           <span className={style.titleMiniInfoCard}>Condiciones</span>
           <div className={style.containerCondicion}>
-            {compo.condiciones.map((condicion, index)=>{
+            {compo.condiciones.slice(0, 4).map((condicion, index)=>{
               if(condicion.early){
-
                 const condicionGrande = condicion.apiNameGrande;
                 const condicionPequeno = condicion.ApiNamePequeno;
                 return (
@@ -270,10 +295,11 @@ const CardsMasterPlanCompos = ({compo, activateMissingOPM, filtroSoft={}, grupos
                     {condicion.op && <span className={condicion.op === 'opm' ? style.opmText || style.opText : style.opText}>{condicion.op === 'opm' ? 'OPM' : 'OP'}</span>}
                   </div>
                 );
-            }
+              }
             })}
           </div>
         </div>
+
         <div className={`${style.initialAumentos} ${style.borderContainer}`}>
           <span className={style.titleMiniInfoCard}>Aumentos 2-1</span>
           <div className={style.containerAumentos}>
@@ -294,7 +320,6 @@ const CardsMasterPlanCompos = ({compo, activateMissingOPM, filtroSoft={}, grupos
               .sort((a, b) => (b.op ? 1 : 0) - (a.op ? 1 : 0))
               .slice(0, 4)
               .map((aumento, index) => {
-              console.log({aumento})
               let busquedaGrande;
               let busquedaPequeno;
               const extras = ["Win Streak","Loss Streak","Orbe"]
@@ -333,7 +358,7 @@ const CardsMasterPlanCompos = ({compo, activateMissingOPM, filtroSoft={}, grupos
           </div>
         </div>
       </div>
-      
+
     </div>
   )
 }

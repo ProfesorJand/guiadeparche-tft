@@ -19,8 +19,8 @@ export default function FiltrosRapidos({
           className={`${style.filterOptionBox} ${((selectedTier.includes("S") && selectedTier.includes("A") && selectedDifficulty.includes("Facil"))) ? '' : style.grayWhenInactive}`}
           onClick={() => {
             resetAllFilters();
-            setSelectedTier(["S", "A"]);
-            setSelectedDifficulty(["Facil"]);
+            setSelectedTier(["S"]);
+            setSelectedDifficulty(["Facil","Medio"]);
           }}
           style={{
             padding: '8px 12px',

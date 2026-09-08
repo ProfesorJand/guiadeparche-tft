@@ -1,71 +1,86 @@
 .container{
   display:flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap:10px;
-  padding:10px;
+  flex-direction: column;
+  gap:5px;
+  padding:5px;
   width:100%;
   border-radius: 0 0 8px 8px;
   position:relative;
   box-sizing:border-box;
-  container-type:size;
-  height: fit-content;
-  aspect-ratio: 4 / 4.4;
+  container-type: inline-size;
+  height: auto;
 }
 
-.header{
+.row1 {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 5px;
+}
+.containerHeader{
+  display:flex;
+  width: 100%;
+  position:relative;
+  gap:5px;
+  flex-direction: row;
+}
+.row2 {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+}
+
+.row3 {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 15px;
+  align-items: stretch;
+}
+
+.containerName {
   display:flex;
   flex-direction:row;
-  width:100%;
-  justify-content: space-between;
-  align-items: center;
-  height: calc( (100% - (10px * 2)) / 12 * 1);
-  gap:10px;
-  container-type: size;
-}
-.containerName{
-  display:flex;
-  flex-direction:column;
-  width:100%;
   flex: 1;
-  container-type:inline-size;
   align-items: center;
-  justify-content: center;
-  padding: 5px;
-  box-sizing: border-box;
-}
-.body{
-  display:flex;
-  flex-direction:row;
-  width:100%;
-  height: calc( (100% - (10px * 2)) / 12 * 6);
-  gap:2cqh;
-
-}
-.footer{
-  display:flex;
-  flex-direction:row;
-  width:100%;
-  height: calc( (100% - (10px * 2)) / 12 * 5);
-  gap:2cqh;
+  justify-content: flex-start;
 }
 .titleComp{
-  font-size:45cqh;
+  font-size: 1rem;
   font-family: 'ObvioslyWideBold', sans-serif;
 }
 .containerCampeonMeta{
+  display: flex;
+  width: 60px;
+  height: 100%;
+  aspect-ratio: 1 / 1;
+  align-self: center;
+  position: relative;
+}
+.containerInfoTextCard{
   display:flex;
-  width: 100%;
-  aspect-ratio: 1/1;
-  position:relative
+  flex-direction: column;
+  gap:5px;
+}
+
+.containerNameTier{
+  display:flex;
+  flex-direction: row;
+  gap:5px;
 }
 
 .initialInfoComp{
   display:flex;
   flex-direction: column;
-  width:calc((100% - 2cqh) / 12 * 5);
+  flex: 2;
   position:relative;
   height:100%;
+  min-width: 0;
 }
 .imgEstrellasCard{
   position: absolute;
@@ -100,14 +115,11 @@
 .tierCard{
   position: relative;
   z-index: 2;
-  /* padding: 8px 8px; */
   font-weight: 900;
   text-align: left;
-  /* font-size: 100cqh; */
-  text-fit:grow;
-  width:calc((100% - 5px) / 12 );
+  width: auto;
+  font-size: 22px;
   text-transform: uppercase;
-  /* font-family: 'Inter', system-ui, sans-serif; */
   letter-spacing: 2px;
   font-family: 'ObvioslyWideBold', sans-serif;
   
@@ -146,10 +158,8 @@
   font-family: 'ObvioslyWideBold', sans-serif;
   text-transform: uppercase;
   color: white;
-  font-size: 8px;
-  text-align: center;
-  text-wrap: balance;
-  word-break: break-word;
+  font-size: 15px;
+  text-align: left;
   line-height: 1.2;
 }
 .dificultadCard{
@@ -238,24 +248,25 @@
 .initialFundamentals{
   display:flex;
   flex-direction: column;
-  width:calc((100% - 2cqh) / 12 * 7);
-  container-type:size;
+  flex: 3;
   box-sizing: border-box;
-  gap:2cqh;
+  gap:10px;
   height:100%;
+  min-width: 0;
 }
 .containerFundamentalsItems{
   display:flex;
   flex:1;
   position:relative;
   flex-direction: column;
+  min-width: 0;
 }
 .containerFundamentalsCampeones{
   display:flex;
   flex:1;
   position:relative;
   flex-direction: column;
-  
+  min-width: 0;
 }
 .titleMiniInfoCard{
   text-align:center;
@@ -264,19 +275,34 @@
   font-weight: bold;
   text-transform: uppercase;
 }
+.containerItemsEarlyPrio{
+  display:flex;
+  position:relative;
+  flex-direction: column;
+  gap:5px;
+}
 .containerItemsPrio{
   display:flex;
   flex-direction:row;
-  gap:2cqh;
-  width:100%;
+  gap:5px;
+  flex:4;
   flex-wrap: wrap;
-  align-content: center;
-  height: 90%;
+  align-items: center;
   position: relative;
 }
+.containerItemsPrioTanque{
+  display:flex;
+  flex-direction:row;
+  gap:5px;
+  flex:1;
+  flex-wrap: wrap;
+  align-items: center;
+  position: relative;
+}
+
 .containerItemPrio{
   display:flex;
-  width: calc((100% - (2cqh * 3)) / 4);
+  width: calc((100% - (5px * 3)) / 4);
   aspect-ratio: 1/1;
   position: relative; /* Necesario para posicionar el brillo */
   box-sizing: border-box;
@@ -310,10 +336,11 @@
 }
 .containerCampeonesEarly{
   display:flex;
+  flex-direction: row;
   width:100%;
-  gap:2cqh;
-  height: 90%;
+  gap:10px;
   align-items: center;
+  overflow-x: auto;
 }
 .campeonEarly{
   display:flex;
@@ -413,28 +440,26 @@
 .initialCondiciones{
   display:flex;
   flex-direction: column;
-  width:calc((100% - 2cqh) / 2);
-  container-type:size;
-  padding:2cqh;
-  gap:2cqh;
+  flex: 2;
+  padding:10px;
+  gap:10px;
   box-sizing: border-box;
   border: 1px solid rgba(255, 0, 0, 0.5);
   height:100%;
+  min-width: 0;
 }
 .containerCondicion{
   display:flex;
   flex-direction:row;
-  container-type: size;
   width:100%;
   flex-wrap:wrap;
-  gap:5cqh;
+  gap:5px;
   justify-content:center;
-  height:90%;
 }
 .containerCuadrosCondicion{
   display:flex;
   position:relative;
-  height: calc((100% - 5cqh) / 2);
+  width: 48px;
   background-color:rgba(0, 0, 0, 0.50);
   aspect-ratio: 1 / 1;
 }
@@ -456,29 +481,28 @@
 .initialAumentos{
   display:flex;
   flex-direction: column;
-  width:calc((100% - 2cqh) / 2);
-  padding:2cqh;
-  gap:2cqh;
+  flex: 2;
+  padding:10px;
+  gap:10px;
   box-sizing: border-box;
   border: 1px solid rgba(255, 0, 0, 0.5);
-  container-type: size;
   height:100%;
+  min-width: 0;
 }
 .containerAumentos{
   display:flex;
   flex-direction: row;
-  gap:5cqh;
+  gap:5px;
   width:100%;
   flex-wrap:wrap;
   justify-content:center;
-  height: 90%;
-  container-type: size;
 }
 
 .containerCuadrosAumentos{
   display:flex;
   flex-direction:row;
-  height:calc((100% - 5cqh) / 2);
+  width: 48px;
+  aspect-ratio: 1/1;
   position: relative;
   background-color:rgba(0, 0, 0, 0.50);
 }
@@ -558,14 +582,12 @@
 
 .borderContainer{
   border-radius: 8px;
-    overflow: hidden;
-    border: 2px solid #000000;
-    /* background: linear-gradient(#727272 0 0) padding-box, linear-gradient(135deg, #000000 0%, #000000 100%) border-box; */
-    box-sizing: border-box;
-    backdrop-filter: blur(20px);
-    background-color: rgb(0 0 0 / 59%);
-    backdrop-filter: blur(10px);
-    padding: 2cqh;
+  overflow: hidden;
+  border: 2px solid #000000;
+  box-sizing: border-box;
+  backdrop-filter: blur(20px);
+  background-color: rgb(0 0 0 / 59%);
+  padding: 5px;
 }
 
 @keyframes tooltipFadeIn {
@@ -580,16 +602,13 @@
 }
 
 @media (max-width:900px){
-  .container{
-    gap:5px;
+  .row1, .row2, .row3 {
     flex-direction: column;
-    width:100%;
+    align-items: flex-start;
   }
-  .initialInfoComp{
-    width:100%;
-  }
-  .initialFundamentals{
-    width:100%;
+  .initialInfoComp, .initialFundamentals, .initialCondiciones, .initialAumentos {
+    width: 100%;
+    flex: none;
   }
 }
 

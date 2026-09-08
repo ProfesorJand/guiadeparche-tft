@@ -829,12 +829,47 @@ const FundamentalsVisual = () => {
 
   const addItemPrio = apiName => {
     const newItemsPrio = [...(comp.itemsPrio || [])];
+    if (newItemsPrio.length >= 8) return;
     newItemsPrio.push({
       apiName: apiName,
       op: false
     });
     actualizarComposicionTFT({
       itemsPrio: newItemsPrio
+    });
+  };
+
+  const addItemPrioTanque = apiName => {
+    const newItemsPrioTanque = [...(comp.itemsPrioTanque || [])];
+    if (newItemsPrioTanque.length >= 2) return;
+    newItemsPrioTanque.push({
+      apiName: apiName,
+      op: false
+    });
+    actualizarComposicionTFT({
+      itemsPrioTanque: newItemsPrioTanque
+    });
+  };
+
+  const removeItemPrioTanque = index => {
+    const newItemsPrioTanque = [...(comp.itemsPrioTanque || [])];
+    newItemsPrioTanque.splice(index, 1);
+    actualizarComposicionTFT({
+      itemsPrioTanque: newItemsPrioTanque
+    });
+  };
+
+  const toggleOpItemPrioTanque = (index, e) => {
+    e.preventDefault();
+    const newItemsPrioTanque = [...(comp.itemsPrioTanque || [])];
+    const currentItem = newItemsPrioTanque[index];
+    if (typeof currentItem === "object" && currentItem !== null) {
+      newItemsPrioTanque[index] = { ...currentItem, op: !currentItem.op };
+    } else {
+      newItemsPrioTanque[index] = { apiName: currentItem, op: true };
+    }
+    actualizarComposicionTFT({
+      itemsPrioTanque: newItemsPrioTanque
     });
   };
   const removeItemPrio = index => {
@@ -880,6 +915,34 @@ const FundamentalsVisual = () => {
             e.preventDefault();
             const item = e.dataTransfer.getData("item");
             if (item) addItemPrio(JSON.parse(item).apiName);
+          }} className={localStyle.styleBox32}>
+              <span className={localStyle.styleBox33}>+</span>
+            </div>
+          </div>
+        </div>
+        
+        <div className={`${style.cBoxTitleInfo} ${style.cPrioridadObjetos}`} style={{marginTop: '20px'}}>
+          <span className={style.tBox}>Objetos Tanques</span>
+          <div className={`${style.cPrioridadObjetosInfo} ${localStyle.styleBox30}`}>
+            {(comp.itemsPrioTanque || []).map((itemEntry, index) => {
+            const itemName = typeof itemEntry === "object" && itemEntry !== null ? itemEntry.apiName : itemEntry;
+            const isOp = typeof itemEntry === "object" && itemEntry !== null ? !!itemEntry.op : false;
+            const itemData = allItemsTFT?.find(i => i.apiName === itemName);
+            return itemData ? <React.Fragment key={index}>
+                  <div className={`${style.carouselItem} ${localStyle.styleBox31}`} onContextMenu={e => toggleOpItemPrioTanque(index, e)} title="Click derecho para marcar como OP">
+                    <ImgItem item={itemData} />
+                    {isOp && <div className={style.opAumento}>
+                        <span className={style.textOP}>OP</span>
+                      </div>}
+                    <button onClick={() => removeItemPrioTanque(index)} className={localStyle.styleBox22}>X</button>
+                  </div>
+                  {index < (comp.itemsPrioTanque || []).length - 1 && <span className={style.mayorQue}>{'>'}</span>}
+                </React.Fragment> : null;
+          })}
+            <div onDragOver={e => e.preventDefault()} onDrop={e => {
+            e.preventDefault();
+            const item = e.dataTransfer.getData("item");
+            if (item) addItemPrioTanque(JSON.parse(item).apiName);
           }} className={localStyle.styleBox32}>
               <span className={localStyle.styleBox33}>+</span>
             </div>

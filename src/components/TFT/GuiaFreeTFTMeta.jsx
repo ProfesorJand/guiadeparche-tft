@@ -202,7 +202,7 @@ const Header1 = ({comp, allChampionsTFT, allItemsTFT, allAugmentsTFT, allTraitsT
       <div className={`${style.blockItems} ${style.borderBlock}`}>
           <h4>Prioridad de Objetos</h4>
           <div className={style.itemsCarouselContainer}>
-            {itemsPrio.map((itemEntry, index) => {
+            {itemsPrio.slice(0,4).map((itemEntry, index) => {
               const itemName = typeof itemEntry === 'object' && itemEntry !== null ? itemEntry.apiName : itemEntry;
               const isOp = typeof itemEntry === 'object' && itemEntry !== null ? !!itemEntry.op : false;
               const itemData = allItemsTFT.find(i => i.apiName === itemName);
