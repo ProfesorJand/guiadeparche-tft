@@ -388,10 +388,10 @@ function StatsDashboard() {
                 <div style={{ flex: 1 }}>
                     <h3>Métricas por Campaña</h3>
                     <table className={style.table}>
-                        <thead><tr><th>Campaña</th><th>Impresiones Totales</th><th>Pico de Viewers</th></tr></thead>
+                        <thead><tr><th>Campaña</th><th>Impresiones Totales</th><th>Suma Total Viewers</th></tr></thead>
                         <tbody>
                             {stats.campaigns.map((c, i) => (
-                                <tr key={i}><td>{c.name}</td><td>{c.impressions}</td><td>{c.peak_viewers || 0}</td></tr>
+                                <tr key={i}><td>{c.name}</td><td>{c.impressions}</td><td>{c.total_viewers || 0}</td></tr>
                             ))}
                         </tbody>
                     </table>
@@ -399,10 +399,10 @@ function StatsDashboard() {
                 <div style={{ flex: 1 }}>
                     <h3>Métricas por Streamer</h3>
                     <table className={style.table}>
-                        <thead><tr><th>Streamer (Alias)</th><th>Impresiones Totales</th><th>Pico de Viewers</th></tr></thead>
+                        <thead><tr><th>Streamer (Alias)</th><th>Impresiones Totales</th><th>Suma Total Viewers</th></tr></thead>
                         <tbody>
                             {stats.streamers.map((s, i) => (
-                                <tr key={i}><td>{s.alias}</td><td>{s.impressions}</td><td>{s.peak_viewers || 0}</td></tr>
+                                <tr key={i}><td>{s.alias}</td><td>{s.impressions}</td><td>{s.total_viewers || 0}</td></tr>
                             ))}
                         </tbody>
                     </table>

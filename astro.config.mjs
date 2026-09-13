@@ -35,6 +35,15 @@ export default defineConfig({
   output: 'static', // <-- Muy importante
   redirects: {
     '/tft/meta-comps-tier-list-teamfight-tactics/bel-veth/': '/tft/meta-comps-tier-list-teamfight-tactics/belveth/',
+    '/tft/meta-comps-tier-list-teamfight-tactics/Akali/': '/tft/meta-comps-tier-list-teamfight-tactics/akali/',
+    '/tft/meta-comps-tier-list-teamfight-tactics/Caitlyn/': '/tft/meta-comps-tier-list-teamfight-tactics/caitlyn/',
+    '/tft/meta-comps-tier-list-teamfight-tactics/master-Yi/': '/tft/meta-comps-tier-list-teamfight-tactics/master-yi/',
+    '/tft/meta-comps-tier-list-teamfight-tactics/Nidalee/': '/tft/meta-comps-tier-list-teamfight-tactics/nidalee/',
+    '/tft/meta-comps-tier-list-teamfight-tactics/SivirGnar/': '/tft/meta-comps-tier-list-teamfight-tactics/sivir/',
+    '/tft/meta-comps-tier-list-teamfight-tactics/Soraka/': '/tft/meta-comps-tier-list-teamfight-tactics/soraka/',
+    '/tft/meta-comps-tier-list-teamfight-tactics/Xayah/': '/tft/meta-comps-tier-list-teamfight-tactics/xayah/',
+    //'/tft/meta-comps-tier-list-teamfight-tactics/KogMaw/': '/tft/meta-comps-tier-list-teamfight-tactics/kogmaw/',
+    //'/tft/meta-comps-tier-list-teamfight-tactics/Zyra/': '/tft/meta-comps-tier-list-teamfight-tactics/zyra/',
   },
   integrations: [
     react(),
