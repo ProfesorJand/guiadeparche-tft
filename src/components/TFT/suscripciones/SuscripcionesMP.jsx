@@ -34,6 +34,20 @@ const SuscripcionesMP = () => {
     fetchPlanes();
   }, []);
 
+  useEffect(() => {
+    const handleGlobalCoupon = (e) => {
+      const code = e.detail;
+      if (!code || planes.length === 0) return;
+      
+      planes.forEach(plan => {
+         applyCouponDirect(plan, code);
+      });
+    };
+    
+    window.addEventListener('apply-global-coupon', handleGlobalCoupon);
+    return () => window.removeEventListener('apply-global-coupon', handleGlobalCoupon);
+  }, [planes]);
+
   const fetchPlanes = async () => {
     setLoadingPlanes(true);
     setErrorMsg("");
@@ -426,10 +440,13 @@ const SuscripcionesMP = () => {
   const handleApplyCoupon = async (plan) => {
     const cState = couponStates[plan.id];
     if (!cState || !cState.code || !cState.code.trim()) return;
-    
+    await applyCouponDirect(plan, cState.code);
+  };
+
+  const applyCouponDirect = async (plan, code) => {
     setCouponStates(prev => ({
       ...prev,
-      [plan.id]: { ...prev[plan.id], status: 'loading', errorMsg: '' }
+      [plan.id]: { ...prev[plan.id], code: code.toUpperCase(), status: 'loading', errorMsg: '' }
     }));
     
     try {
@@ -437,7 +454,7 @@ const SuscripcionesMP = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          codigo: cState.code.trim(),
+          codigo: code.trim(),
           plan_id: plan.id
         })
       });
@@ -449,6 +466,7 @@ const SuscripcionesMP = () => {
           ...prev,
           [plan.id]: {
             ...prev[plan.id],
+            code: code.toUpperCase(),
             status: 'success',
             discountData: {
               originalPrice: plan.amount,
@@ -463,6 +481,7 @@ const SuscripcionesMP = () => {
           ...prev,
           [plan.id]: {
             ...prev[plan.id],
+            code: code.toUpperCase(),
             status: 'error',
             errorMsg: data.message || "Cupón inválido o expirado"
           }
@@ -473,6 +492,7 @@ const SuscripcionesMP = () => {
         ...prev,
         [plan.id]: {
           ...prev[plan.id],
+          code: code.toUpperCase(),
           status: 'error',
           errorMsg: "Error de conexión al validar cupón"
         }
@@ -481,7 +501,7 @@ const SuscripcionesMP = () => {
   };
 
   return (
-    <div className={style.container}>
+    <div className={style.container} id="suscripciones-section">
       <div className={style.header}>
         <h2 className={style.title}>Elige tu Master Plan</h2>
       </div>

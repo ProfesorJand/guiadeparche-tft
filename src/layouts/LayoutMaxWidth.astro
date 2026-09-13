@@ -9,6 +9,7 @@ import { ViewTransitions } from 'astro:transitions';
 import PageLoader from '@components/PageLoader';
 import Youtube from '@components/youtube/Youtube.jsx';
 import UserMenu from '@components/headers/UserMenu';
+import BannerDescuentoMP from "@components/TFT/master-plan/BannerDescuentoMP.jsx";
 const admin = typeof window !== "undefined" ? window.localStorage.getItem("gp_admin") : false;
 interface Props {
   title: string;
@@ -113,6 +114,7 @@ const absoluteSnippetImgUrl = new URL(resolvedSnippetImgUrl, Astro.site || "http
         </header> 
       </div>
       <Breadcrumbs />
+      <BannerDescuentoMP client:only="react" />
       <main class="bodyMain">
           <slot></slot>
       </main>

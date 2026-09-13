@@ -112,7 +112,7 @@ const MasterPlanContent = () => {
           {/* Botón de login para los no logueados */}
           {!user && (
             <a href="/login?redirect=/tft/master-plan" className={styles.button} style={{ display: 'block', textAlign: 'center', marginTop: '20px', alignSelf: "anchor-center" }}>
-              Reservar mi acceso
+              Obtener TFT Master Plan
             </a>
           )}
         </>
