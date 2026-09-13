@@ -30,24 +30,27 @@ export default function ObjetosCrafteables({
   });
 
   (filteredComposPrimary || []).forEach(comp => {
-    if (comp.itemsPrio && Array.isArray(comp.itemsPrio)) {
-      comp.itemsPrio.forEach(item => {
-        const rawApiName = typeof item === 'object' && item !== null ? item.apiName : item;
-        if (rawApiName) {
-          const norm = normalizeItem(rawApiName);
-          if (norm && !uniqueItemsMap.has(norm)) {
-            const dbItem = allItems.find(i => normalizeItem(i.apiName) === norm);
-            if (dbItem) {
-              uniqueItemsMap.set(norm, {
-                apiName: dbItem.apiName,
-                name: dbItem.name,
-                icon: formatIcon(dbItem.icon || dbItem.img)
-              });
-            }
+    const allPrios = [
+      ...(Array.isArray(comp.itemsPrio) ? comp.itemsPrio : []),
+      ...(Array.isArray(comp.itemsPrioTanque) ? comp.itemsPrioTanque : [])
+    ];
+
+    allPrios.forEach(item => {
+      const rawApiName = typeof item === 'object' && item !== null ? item.apiName : item;
+      if (rawApiName) {
+        const norm = normalizeItem(rawApiName);
+        if (norm && !uniqueItemsMap.has(norm)) {
+          const dbItem = allItems.find(i => normalizeItem(i.apiName) === norm);
+          if (dbItem) {
+            uniqueItemsMap.set(norm, {
+              apiName: dbItem.apiName,
+              name: dbItem.name,
+              icon: formatIcon(dbItem.icon || dbItem.img)
+            });
           }
         }
-      });
-    }
+      }
+    });
   });
 
   const allRelevantItems = Array.from(uniqueItemsMap.values());

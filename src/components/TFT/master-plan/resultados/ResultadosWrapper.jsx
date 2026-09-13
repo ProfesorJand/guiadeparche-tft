@@ -25,13 +25,22 @@ export default function ResultadosWrapper({
             <div key={compo.id || compo.titulo || Math.random()} className={style.cardContainer} onClick={() => setActiveComp(allCompos.find((comp) => comp.id === compo.id))}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '5px', background: 'rgba(0,0,0,0.3)', borderRadius: '8px 8px 0px 0px', }}>
                 <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.1)' }}></div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '8px', minHeight: '32px' }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '2px', minHeight: '32px' }}>
                   {compo._matchedFilters.map((f, i) => {
-                    const showDivider = i > 0 && f.opStatus !== compo._matchedFilters[i - 1].opStatus;
+                    const isItemPrio = f.type === 'item' && f.prioIndex !== undefined && f.prioIndex < 999;
+                    const prevF = i > 0 ? compo._matchedFilters[i - 1] : null;
+                    const prevIsItemPrio = prevF && prevF.type === 'item' && prevF.prioIndex !== undefined && prevF.prioIndex < 999;
+                    
+                    const showArrow = isItemPrio && prevIsItemPrio;
+                    const showDivider = i > 0 && !showArrow && (f.opStatus !== prevF.opStatus || f.type !== prevF.type);
+                    
                     return (
-                      <div key={i} style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                      <React.Fragment key={i}>
                         {showDivider && (
-                          <div style={{ width: '20px', height: '1px', background: 'rgba(255,255,255,0.1)' }}></div>
+                          <div style={{ width: '20px', height: '1px', background: 'rgba(255,255,255,0.1)', alignSelf: 'center' }}></div>
+                        )}
+                        {showArrow && (
+                          <div style={{ fontWeight: 'bold', color: 'rgba(255,255,255,0.4)', margin: '0 2px', fontSize: '14px', display: 'flex', alignItems: 'center' }}>&gt;</div>
                         )}
                         <div style={{ position: 'relative', display: 'flex' }}>
                           {f.type === 'salida' && f.campeones && f.campeones.length > 0 ? (
@@ -61,7 +70,7 @@ export default function ResultadosWrapper({
                             </div>
                           )}
                         </div>
-                      </div>
+                      </React.Fragment>
                     );
                   })}
                 </div>

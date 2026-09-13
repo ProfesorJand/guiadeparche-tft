@@ -820,12 +820,18 @@ export default function MasterPlanPage() {
         tierS: 2,        // Puntos extra sumados a la compo si es Tier S
         tierA: 1,        // Puntos sumados si es Tier A (por defecto 0)
         tierB: 0,       // Puntos restados (penalización) si es Tier B
-        tierC: -2        // Puntos restados (penalización) si es Tier C
+        tierC: -2,       // Puntos restados (penalización) si es Tier C
+        dificil: -0.4,   // Puntos restados si la compo es Dificil
+        medio: 0,        // Puntos sumados si la compo es Medio
+        facil: 0.4,       // Puntos sumados si la compo es Facil
+        itemPrio1: 0.3,
+        itemPrio2:0.1,
+        itemPrioTanque: 0.1,
       };
       // -------------------------------------------------------
 
       let compoScore = 0;
-      let breakdown = { base: 0, op: 0, early: 0, salida: 0 };
+      let breakdown = { base: 0, op: 0, early: 0, salida: 0, itemPrio: 0, itemPrioDetails: [] };
 
       matchedFilters = matchedFilters.map(mf => {
         let opStatus = null;
@@ -840,8 +846,10 @@ export default function MasterPlanPage() {
           if (matchCond.early === true || matchCond.early === 'true' || matchCond.early === 1) isEarly = true;
         }
 
-        const matchPrio = compo.itemsPrio?.find(i => (typeof i === 'object' ? i.apiName : i) === mf.apiName);
-        const matchPrioTanque = compo.itemsPrioTanque?.find(i => (typeof i === 'object' ? i.apiName : i) === mf.apiName);
+        const matchPrioIndex = compo.itemsPrio?.findIndex(i => (typeof i === 'object' ? i.apiName : i) === mf.apiName) ?? -1;
+        const matchPrioTanqueIndex = compo.itemsPrioTanque?.findIndex(i => (typeof i === 'object' ? i.apiName : i) === mf.apiName) ?? -1;
+        const matchPrio = matchPrioIndex !== -1 ? compo.itemsPrio[matchPrioIndex] : null;
+        const matchPrioTanque = matchPrioTanqueIndex !== -1 ? compo.itemsPrioTanque[matchPrioTanqueIndex] : null;
         const finalMatchPrio = matchPrio || matchPrioTanque;
         if (finalMatchPrio) {
           isCore = true;
@@ -882,9 +890,43 @@ export default function MasterPlanPage() {
           breakdown.salida += SCORE_VALUES.salida;
         }
 
+        if (mf.type === 'item') {
+          const itemData = allItems.find(i => i.apiName === mf.apiName);
+          const itemName = itemData?.name || mf.apiName;
+
+          if (matchPrioTanqueIndex !== -1) {
+            indicatorScore += SCORE_VALUES.itemPrioTanque;
+            breakdown.itemPrio += SCORE_VALUES.itemPrioTanque;
+            breakdown.itemPrioDetails.push(`${itemName} (Tanque: +${SCORE_VALUES.itemPrioTanque})`);
+          } else if (matchPrioIndex !== -1) {
+            const isTop4 = matchPrioIndex < 4;
+            const isEmblem = mf.apiName.includes("Emblem") || itemData?.name?.toLowerCase().includes("emblem") || itemData?.name?.toLowerCase().includes("emblema");
+            const isCraftable = itemData?.composition && Array.isArray(itemData.composition) && itemData.composition.length > 0 && !isEmblem;
+
+            if (isTop4 && isCraftable) {
+              indicatorScore += SCORE_VALUES.itemPrio1;
+              breakdown.itemPrio += SCORE_VALUES.itemPrio1;
+              breakdown.itemPrioDetails.push(`${itemName} (Top4 Crafteable: +${SCORE_VALUES.itemPrio1})`);
+            } else {
+              indicatorScore += SCORE_VALUES.itemPrio2;
+              breakdown.itemPrio += SCORE_VALUES.itemPrio2;
+              breakdown.itemPrioDetails.push(`${itemName} (Normal/Secundario: +${SCORE_VALUES.itemPrio2})`);
+            }
+          }
+        }
+
+        let prioIndex = 999;
+        if (mf.type === 'item') {
+          if (matchPrioTanqueIndex !== -1) {
+            prioIndex = 100 + matchPrioTanqueIndex;
+          } else if (matchPrioIndex !== -1) {
+            prioIndex = matchPrioIndex;
+          }
+        }
+
         compoScore += indicatorScore;
 
-        return { ...mf, opStatus, isCore, isEarly };
+        return { ...mf, opStatus, isCore, isEarly, prioIndex };
       });
 
       const compoTier = (compo.tier || "").toUpperCase();
@@ -894,22 +936,48 @@ export default function MasterPlanPage() {
       else if (compoTier === 'B') tierScore = SCORE_VALUES.tierB;
       else if (compoTier === 'C') tierScore = SCORE_VALUES.tierC;
       
+      const compoDificultadObj = compo.dificultad || "";
+      const compoDificultad = typeof compoDificultadObj === 'string' ? compoDificultadObj.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "") : "";
+      let diffScore = 0;
+      if (compoDificultad === 'dificil') diffScore = SCORE_VALUES.dificil;
+      else if (compoDificultad === 'medio') diffScore = SCORE_VALUES.medio;
+      else if (compoDificultad === 'facil') diffScore = SCORE_VALUES.facil;
+
       compoScore += tierScore;
+      compoScore += diffScore;
       
+      let logString = null;
       if (matchedFilters.length > 0) {
-        console.log(
-          `[${compo.titulo || compo.urlSEO}] TOTAL SCORE: ${compoScore.toFixed(1)} puntos ` +
+        const itemPrioDetailsStr = breakdown.itemPrioDetails.length > 0 ? ` [${breakdown.itemPrioDetails.join(', ')}]` : '';
+        logString = `[${compo.titulo || compo.urlSEO}] TOTAL SCORE: ${compoScore.toFixed(1)} puntos ` +
           `=> Tier ${compoTier}(${tierScore > 0 ? '+'+tierScore : tierScore}) ` +
+          `| Dificultad ${compo.dificultad || "N/A"}(${diffScore > 0 ? '+'+diffScore : diffScore}) ` +
           `| Coincidencias Base(+${breakdown.base.toFixed(1)}) ` +
           `${breakdown.op > 0 ? '| Bonus OP(+'+breakdown.op.toFixed(1)+') ' : ''}` +
           `${breakdown.early > 0 ? '| Bonus Early(+'+breakdown.early.toFixed(1)+') ' : ''}` +
-          `${breakdown.salida > 0 ? '| Bonus Salida(+'+breakdown.salida.toFixed(1)+')' : ''}`
-        );
+          `${breakdown.salida > 0 ? '| Bonus Salida(+'+breakdown.salida.toFixed(1)+') ' : ''}` +
+          `${breakdown.itemPrio > 0 ? '| Bonus ItemPrio(+'+breakdown.itemPrio.toFixed(1)+')' + itemPrioDetailsStr : ''}`;
       }
 
       matchedFilters.sort((a, b) => {
+        const getTypeOrder = (type) => {
+          if (type === 'item') return 1;
+          if (type === 'salida' || type === 'campeon' || type === 'champion' || type === 'championGroup') return 2;
+          if (type === 'aumento' || type === 'augment' || type === 'aumentos') return 3;
+          return 4;
+        };
+        const typeOrderDiff = getTypeOrder(a.type) - getTypeOrder(b.type);
+        if (typeOrderDiff !== 0) return typeOrderDiff;
+
+        if (a.type === 'item' && a.prioIndex < 999 && b.prioIndex < 999) {
+          return a.prioIndex - b.prioIndex;
+        }
+
         const getVal = (s) => s === 'opm' ? 2 : s === 'op' ? 1 : 0;
-        return getVal(b.opStatus) - getVal(a.opStatus);
+        const opDiff = getVal(b.opStatus) - getVal(a.opStatus);
+        if (opDiff !== 0) return opDiff;
+        
+        return (a.prioIndex || 999) - (b.prioIndex || 999);
       });
 
       let missingOPM = null;
@@ -966,10 +1034,18 @@ export default function MasterPlanPage() {
         }
       }
 
-      results.push({ ...compo, _matchCount: matchCount, _score: compoScore, _matchedFilters: matchedFilters, _missingOPM: missingOPM });
+      results.push({ ...compo, _matchCount: matchCount, _score: compoScore, _matchedFilters: matchedFilters, _missingOPM: missingOPM, _logString: logString });
     });
 
     results.sort((a, b) => b._score - a._score);
+    
+    // Imprimir los logs ordenados por puntuación de mayor a menor
+    results.forEach(res => {
+      if (res._logString) {
+        console.log(res._logString);
+      }
+    });
+
     return results;
   }, [
     filteredComposPrimary, selectedItems, selectedChampions, selectedExtras, selectedSinergias,
