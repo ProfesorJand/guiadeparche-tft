@@ -38,7 +38,7 @@ const paragraphs = Array.isArray(textInfo)
           </h1>
           {paragraphs.map((paragraph) => {
             const trimmed = typeof paragraph === 'string' ? paragraph.trim() : paragraph;
-            return trimmed ? <p>{trimmed}</p> : null;
+            return trimmed ? <p style={{textAlign:"justify"}}>{trimmed}</p> : null;
           })}
           <slot name="moreInfoHeader"/>
         </div>

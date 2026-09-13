@@ -223,7 +223,7 @@ const VisualizadorMetaWildrift = () => {
           </div>
           <div className={style.footer}>
             <img src="/tft/assets/Jupeson_LOGO_Sin_Publicidad.png" alt="logo Jupeson" style={{transform:"scale(0.6)"}}></img>
-            <img src="/wildrift/logo/League_of_Legends_Wild_Rift_logo.webp" style={{transform:"scale(0.6)"}} alt="logo League of Legends Wildrift"></img>
+            <img src="/wildrift/logo/League_of_Legends_Wild_Rift_logo.webp" style={{transform:"scale(0.5)"}} alt="logo League of Legends Wildrift"></img>
             {logoMovilnet &&  <img src="/tft/assets/logoMovilnet-e-letras-blancas.png" alt="logo Movilnet" ></img> }
             {logoGuiadeparche && 
               <LogoGuiadeparche/>

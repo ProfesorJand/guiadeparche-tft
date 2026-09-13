@@ -305,6 +305,27 @@ const PerfilUsuario = () => {
           )}
         </ul>
 
+        {!isMasterPlanActive && (
+          <div style={{ marginTop: '20px', marginBottom: '20px' }}>
+            <a 
+              href="/tft/master-plan"
+              style={{
+                display: 'inline-block',
+                padding: '12px 24px',
+                background: 'linear-gradient(135deg, #00C9FF 0%, #92FE9D 100%)',
+                color: '#000',
+                textDecoration: 'none',
+                fontWeight: 'bold',
+                borderRadius: '8px',
+                fontSize: '1rem',
+                boxShadow: '0 4px 6px rgba(0,0,0,0.2)'
+              }}
+            >
+              ¡Ya disponible Master Plan!
+            </a>
+          </div>
+        )}
+
         {/* Sección Discord */}
         <div className={styles.infoCard} style={{ border: '1px solid #5865F2', marginTop: '30px' }}>
           <span className={styles.infoLabel} style={{ color: '#5865F2' }}>Comunidad de Discord</span>

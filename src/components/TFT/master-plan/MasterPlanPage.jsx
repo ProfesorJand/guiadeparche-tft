@@ -812,10 +812,10 @@ export default function MasterPlanPage() {
       // --- CONSTANTES DE PUNTUACIÓN DE COMPOSICIÓN (SCORE) ---
       // Modifica estos valores para ajustar cuánto vale cada acierto en los filtros.
       const SCORE_VALUES = {
-        base: 0.5,         // Puntos base por cualquier coincidencia
-        opm: 3,          // Puntos extra si está marcado como 'OPM'
+        base: 0.6,         // Puntos base por cualquier coincidencia
+        opm: 2,          // Puntos extra si está marcado como 'OPM'
         op: 1,         // Puntos extra si está marcado como 'OP'
-        early: 1,      // Puntos extra si es parte del 'Early'
+        early: 1,      // Puntos extra si es parte del 'Early' de objetos aumentos campeones
         salida: 0.3,     // Puntos extra si coincide con una 'Salida'
         tierS: 2,        // Puntos extra sumados a la compo si es Tier S
         tierA: 1,        // Puntos sumados si es Tier A (por defecto 0)
