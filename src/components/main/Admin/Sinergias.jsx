@@ -148,11 +148,13 @@ const Sinergias = ({ sinergias, orientacion, show, version }) => {
     calculatedSinergias = sinergias || {};
   }
 
-  const sortable = Object.entries(calculatedSinergias)
-    .sort(([, a], [, b]) => b - a)
-    .reduce((r, [k, v]) => ({ ...r, [k]: v }), {});
-
-
+  const colorWeight = {
+    "hex-prismatic.webp": 4,
+    "hex-gold.webp": 3,
+    "hex-silver.webp": 2,
+    "hex-bronze.webp": 1,
+    "hex-default.webp": 0
+  };
   function getMinMaxTraits(traits) {
     const result = [];
     Object.entries(traits).forEach(([trait, value]) => {
@@ -215,9 +217,20 @@ const Sinergias = ({ sinergias, orientacion, show, version }) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  const traitsWithMinMax = getMinMaxTraits(calculatedSinergias).sort((a, b) => {
+    const weightA = colorWeight[a.hexColor] || 0;
+    const weightB = colorWeight[b.hexColor] || 0;
+    
+    if (weightA !== weightB) {
+      return weightB - weightA;
+    }
+    
+    return b.hexLevel - a.hexLevel;
+  });
+
   return (
     <div className={show ? [style.containerSinergia, orientacion === "horizontal" ? style.containerSinergiaHorizontal : ""].join(" ") : style.containerSinergiaOculto}>
-      {Object.keys(calculatedSinergias).length > 0 && getMinMaxTraits(sortable).map((key, i) => {
+      {Object.keys(calculatedSinergias).length > 0 && traitsWithMinMax.map((key, i) => {
         if (show ? i < 9 : i < 9) {
           if (key.hexColor !== "hex-default.webp") {
             return (

@@ -36,12 +36,13 @@
   display: flex;
     position: relative;
     flex-direction: row;
-    flex: 0 0 calc((100%/var(--division-sinergias)) - var(--gap-sinergias) + (var(--gap-sinergias)/ var(--division-sinergias)));
+    width:50px;
+    gap:5px;
     align-items: center;
-    /* clip-path: polygon(37.5% 0, 75% 25%, 100% 24%, 100% 75%, 75% 75%, 37.5% 100%, 0 75%, 0 25%) */
-    clip-path: polygon(32.60869565217391% 0, 65.21739130434783% 25%, 100% 25%, 100% 75%, 65.21739130434783% 75%, 32.60869565217391% 100%, 0 75%, 0 25%);
+    border-radius: 4px;
     background-color: black;
     filter: brightness(0.9);
+    padding: 2px 8px;
 }
 
 .containerSinergiaHexOculto{
@@ -50,21 +51,21 @@
   flex-direction: row;
   flex: 0 0 calc((100%/var(--division-sinergias-oculto)) - var(--gap-sinergias-oculto) + (var(--gap-sinergias-oculto)/ var(--division-sinergias-oculto)));
   align-items: center;
-  /* clip-path: polygon(37.5% 0, 75% 25%, 100% 24%, 100% 75%, 75% 75%, 37.5% 100%, 0 75%, 0 25%) */
-  clip-path: polygon(32.60869565217391% 0, 65.21739130434783% 25%, 100% 25%, 100% 75%, 65.21739130434783% 75%, 32.60869565217391% 100%, 0 75%, 0 25%);
+  border-radius: 4px;
   background-color: black;
   filter: brightness(0.9);
+  padding: 2px;
 }
 
 
 .borderHex{
   position: absolute;
-    width:  calc(100% - 5px); 
-    height: calc(100% - 5px);
+    width:  calc(100% - 2px); 
+    height: calc(100% - 2px);
     bottom:50%;
     left:50%;
     transform: translate(-50%, 50%);
-    clip-path: polygon(32.60869565217391% 0, 65.21739130434783% 25%, 100% 25%, 100% 75%, 65.21739130434783% 75%, 32.60869565217391% 100%, 0 75%, 0 25%);
+    border-radius: 4px;
     box-shadow: 2cqh;
 }
 
@@ -79,23 +80,26 @@
 .imgSinergia{
   display: flex;
   position: relative;
-  flex:3;
+  flex: 2;
   z-index: 2;
   overflow: hidden;
-  scale:0.6;
   filter: invert(1);
+  max-width: 40px;
+  object-fit: contain;
+  padding: 2px;
 }
 
 .infoSinergia{
   display: flex;
   position: relative;
-  flex:1.6;
-  font-size: 0.73em;
+  flex: 1;
+  font-size: 20px;
   font-weight: 800;
   padding: 0;
   margin: 0;
   justify-content: center;
-  color:black;
+  align-items: center;
+  color: black;
 }
 
 @media only screen and (max-width:900px){ 
