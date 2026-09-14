@@ -892,6 +892,53 @@ const FundamentalsVisual = () => {
       itemsPrio: newItemsPrio
     });
   };
+
+  const handleDropOnItemPrio = (e, targetIndex) => {
+    e.preventDefault();
+    const draggedIndex = e.dataTransfer.getData("draggedItemIndex");
+    const newItemData = e.dataTransfer.getData("item");
+
+    if (draggedIndex !== "") {
+      const sourceIndex = parseInt(draggedIndex, 10);
+      if (sourceIndex === targetIndex) return;
+
+      const newItemsPrio = [...(comp.itemsPrio || [])];
+      const temp = newItemsPrio[sourceIndex];
+      newItemsPrio[sourceIndex] = newItemsPrio[targetIndex];
+      newItemsPrio[targetIndex] = temp;
+      actualizarComposicionTFT({ itemsPrio: newItemsPrio });
+    } else if (newItemData) {
+      const newItemObj = JSON.parse(newItemData);
+      const newItemsPrio = [...(comp.itemsPrio || [])];
+      const currentOp = typeof newItemsPrio[targetIndex] === 'object' ? newItemsPrio[targetIndex].op : false;
+      newItemsPrio[targetIndex] = { apiName: newItemObj.apiName, op: currentOp };
+      actualizarComposicionTFT({ itemsPrio: newItemsPrio });
+    }
+  };
+
+  const handleDropOnItemTanque = (e, targetIndex) => {
+    e.preventDefault();
+    const draggedIndex = e.dataTransfer.getData("draggedItemTanqueIndex");
+    const newItemData = e.dataTransfer.getData("item");
+
+    if (draggedIndex !== "") {
+      const sourceIndex = parseInt(draggedIndex, 10);
+      if (sourceIndex === targetIndex) return;
+
+      const newItemsTanque = [...(comp.itemsPrioTanque || [])];
+      const temp = newItemsTanque[sourceIndex];
+      newItemsTanque[sourceIndex] = newItemsTanque[targetIndex];
+      newItemsTanque[targetIndex] = temp;
+      actualizarComposicionTFT({ itemsPrioTanque: newItemsTanque });
+    } else if (newItemData) {
+      const newItemObj = JSON.parse(newItemData);
+      const newItemsTanque = [...(comp.itemsPrioTanque || [])];
+      const currentOp = typeof newItemsTanque[targetIndex] === 'object' ? newItemsTanque[targetIndex].op : false;
+      newItemsTanque[targetIndex] = { apiName: newItemObj.apiName, op: currentOp };
+      actualizarComposicionTFT({ itemsPrioTanque: newItemsTanque });
+    }
+  };
+
   return <div className={style.cFundamentalsInfo}>
         <div className={`${style.cBoxTitleInfo} ${style.cPrioridadObjetos}`}>
           <span className={style.tBox}>Prioridad de Objetos</span>
@@ -901,14 +948,24 @@ const FundamentalsVisual = () => {
             const isOp = typeof itemEntry === "object" && itemEntry !== null ? !!itemEntry.op : false;
             const itemData = allItemsTFT?.find(i => i.apiName === itemName);
             return itemData ? <React.Fragment key={index}>
-                  <div className={`${style.carouselItem} ${localStyle.styleBox31}`} onContextMenu={e => toggleOpItemPrio(index, e)} title="Click derecho para marcar como OP">
+                  <div 
+                    className={`${style.carouselItem} ${localStyle.styleBox31}`} 
+                    onContextMenu={e => toggleOpItemPrio(index, e)} 
+                    title="Click derecho para marcar como OP. Arrastra para intercambiar."
+                    draggable
+                    onDragStart={e => {
+                      e.dataTransfer.setData("draggedItemIndex", index.toString());
+                    }}
+                    onDragOver={e => e.preventDefault()}
+                    onDrop={e => handleDropOnItemPrio(e, index)}
+                  >
                     <ImgItem item={itemData} />
                     {isOp && <div className={style.opAumento}>
                         <span className={style.textOP}>OP</span>
                       </div>}
                     <button onClick={() => removeItemPrio(index)} className={localStyle.styleBox22}>X</button>
                   </div>
-                  {index < (comp.itemsPrio || []).length - 1 && <span className={style.mayorQue}>{'>'}</span>}
+                  {(index < (comp.itemsPrio || []).length - 1) && index !== 3 && <span className={style.mayorQue}>{'>'}</span>}
                 </React.Fragment> : null;
           })}
             <div onDragOver={e => e.preventDefault()} onDrop={e => {
@@ -929,7 +986,17 @@ const FundamentalsVisual = () => {
             const isOp = typeof itemEntry === "object" && itemEntry !== null ? !!itemEntry.op : false;
             const itemData = allItemsTFT?.find(i => i.apiName === itemName);
             return itemData ? <React.Fragment key={index}>
-                  <div className={`${style.carouselItem} ${localStyle.styleBox31}`} onContextMenu={e => toggleOpItemPrioTanque(index, e)} title="Click derecho para marcar como OP">
+                  <div 
+                    className={`${style.carouselItem} ${localStyle.styleBox31}`} 
+                    onContextMenu={e => toggleOpItemPrioTanque(index, e)} 
+                    title="Click derecho para marcar como OP. Arrastra para intercambiar."
+                    draggable
+                    onDragStart={e => {
+                      e.dataTransfer.setData("draggedItemTanqueIndex", index.toString());
+                    }}
+                    onDragOver={e => e.preventDefault()}
+                    onDrop={e => handleDropOnItemTanque(e, index)}
+                  >
                     <ImgItem item={itemData} />
                     {isOp && <div className={style.opAumento}>
                         <span className={style.textOP}>OP</span>
@@ -1079,13 +1146,19 @@ const NivelesVisual = () => {
   const allChampionsTFT = useStore(dataTFTChampions);
   const addLevel = () => {
     const nuevosNiveles = [...(comp.niveles || [])];
-    nuevosNiveles.push({
-      lv: 1,
-      etapa: 1,
-      ronda: 1,
-      roll: false,
-      campeones: []
-    });
+    if (nuevosNiveles.length > 0) {
+      const lastLevel = nuevosNiveles[nuevosNiveles.length - 1];
+      const duplicatedLevel = JSON.parse(JSON.stringify(lastLevel));
+      nuevosNiveles.push(duplicatedLevel);
+    } else {
+      nuevosNiveles.push({
+        lv: 1,
+        etapa: 1,
+        ronda: 1,
+        roll: false,
+        campeones: []
+      });
+    }
     actualizarComposicionTFT({
       niveles: nuevosNiveles
     });
@@ -1169,14 +1242,39 @@ const PosicionamientoVisual = () => {
 
   const addTablero = () => {
     const nuevoPosicionamiento = [...(comp.posicionamiento || [])];
-    nuevoPosicionamiento.push({
-      tablero: [],
-      nombreTablero: "Tablero " + (nuevoPosicionamiento.length + 1),
-      condicionExtra: null
-    });
+    if (nuevoPosicionamiento.length > 0) {
+      const lastTablero = nuevoPosicionamiento[nuevoPosicionamiento.length - 1];
+      const duplicatedTablero = JSON.parse(JSON.stringify(lastTablero));
+      duplicatedTablero.nombreTablero = "Tablero " + (nuevoPosicionamiento.length + 1);
+      nuevoPosicionamiento.push(duplicatedTablero);
+    } else {
+      nuevoPosicionamiento.push({
+        tablero: [],
+        nombreTablero: "Tablero " + (nuevoPosicionamiento.length + 1),
+        condicionExtra: null
+      });
+    }
     actualizarComposicionTFT({
       posicionamiento: nuevoPosicionamiento
     });
+  };
+
+  const moveTableroUp = (index) => {
+    if (index === 0) return;
+    const nuevoPosicionamiento = [...(comp.posicionamiento || [])];
+    const temp = nuevoPosicionamiento[index - 1];
+    nuevoPosicionamiento[index - 1] = nuevoPosicionamiento[index];
+    nuevoPosicionamiento[index] = temp;
+    actualizarComposicionTFT({ posicionamiento: nuevoPosicionamiento });
+  };
+
+  const moveTableroDown = (index) => {
+    const nuevoPosicionamiento = [...(comp.posicionamiento || [])];
+    if (index === nuevoPosicionamiento.length - 1) return;
+    const temp = nuevoPosicionamiento[index + 1];
+    nuevoPosicionamiento[index + 1] = nuevoPosicionamiento[index];
+    nuevoPosicionamiento[index] = temp;
+    actualizarComposicionTFT({ posicionamiento: nuevoPosicionamiento });
   };
 
   const removeTablero = index => {
@@ -1287,7 +1385,11 @@ const PosicionamientoVisual = () => {
                 placeholder={`Tablero ${index + 1}`}
               />
               
-              <button onClick={() => removeTablero(index)} className={localStyle.styleBox52}>X Tablero</button>
+              <div style={{ display: 'flex', gap: '5px' }}>
+                <button onClick={() => moveTableroUp(index)} className={localStyle.styleBox52} style={{ padding: '5px 10px', background: '#333', opacity: index === 0 ? 0.5 : 1 }} title="Subir Tablero" disabled={index === 0}>↑</button>
+                <button onClick={() => moveTableroDown(index)} className={localStyle.styleBox52} style={{ padding: '5px 10px', background: '#333', opacity: index === (comp.posicionamiento || []).length - 1 ? 0.5 : 1 }} title="Bajar Tablero" disabled={index === (comp.posicionamiento || []).length - 1}>↓</button>
+                <button onClick={() => removeTablero(index)} className={localStyle.styleBox52}>X Tablero</button>
+              </div>
             </div>
             <NuevoBuilderTFT posicionIndex={index} />
           </div>)}
