@@ -1,0 +1,134 @@
+---
+import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
+import CardsCompos from "@components/TFT/CardsCompos.jsx";
+import Youtube from "@components/youtube/Youtube.jsx";
+import { setNumberPBE, setNumberLatest } from "@stores/dataTFT";
+
+const { data, allComps, resolvedTileIcon, lastUpdate, version } = Astro.props;
+
+// Filtrar comps: campeones están dentro de compo.posicionamiento (array) donde campeon === data.apiName
+// O de manera genérica: compo.posicionamiento.some(p => p.campeon === data.apiName)
+const relatedComps = allComps.filter(comp => {
+  if (!comp.posicionamiento) return false;
+  // Puede venir como string JSON o ya parseado
+  let pos = comp.posicionamiento;
+  if (typeof pos === 'string') {
+    try { pos = JSON.parse(pos); } catch(e) { return false; }
+  }
+  return pos.some(p => p.campeon === data.apiName);
+});
+
+const title = data.titulo_seo || `${data.name} TFT Build & Mejores Composiciones`;
+const description = data.descripcion_seo || `Descubre las mejores composiciones para jugar con ${data.name} en Teamfight Tactics.`;
+const currentVersion = String(data.tft_set) === String(setNumberPBE) ? version.MetaCompVersionPBE : version.MetaCompVersion;
+
+let parsedSecciones = [];
+if (typeof data.secciones === 'string') {
+  try { parsedSecciones = JSON.parse(data.secciones); } catch(e) {}
+} else if (Array.isArray(data.secciones)) {
+  parsedSecciones = data.secciones;
+}
+
+---
+
+<LayoutMaxWidth
+  title={title}
+  description={description}
+  snippetImgUrl={resolvedTileIcon || data.icon}
+>
+  <div class="header-section">
+    <div class="two-columns">
+      <div id="container-info">
+        <h1 class="colored-text">{data.name} TFT Meta</h1>
+        <p>{description}</p>
+        <p>Última actualización: {lastUpdate} | Parche {currentVersion}</p>
+      </div>
+      {data.video_url && (
+        <div class="container-video">
+          <Youtube src={data.video_url} client:load />
+        </div>
+      )}
+    </div>
+  </div>
+
+  <div class="dynamic-sections">
+    {parsedSecciones.length > 0 && parsedSecciones.map(sec => (
+      <div class="section-block">
+        <h2>{sec.titulo}</h2>
+        <div class="section-content" set:html={sec.descripcion} />
+      </div>
+    ))}
+  </div>
+
+  {relatedComps.length > 0 && (
+    <div class="related-comps-section">
+      <h2 style="margin-top: 40px; margin-bottom: 20px;">Mejores Composiciones con {data.name}</h2>
+      <div class="comps-grid">
+        {relatedComps.map((comp, index) => (
+          <article class="comp-card" style="margin-bottom: 20px;">
+            <CardsCompos
+              comp={comp}
+              numeracion={index + 1}
+              client:load
+            />
+          </article>
+        ))}
+      </div>
+    </div>
+  )}
+</LayoutMaxWidth>
+
+<style>
+  .header-section {
+    width: 100%;
+    margin-bottom: 30px;
+    max-width: 1200px;
+    background: rgba(18, 16, 52, 0.5);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid rgba(123, 97, 255, 0.3);
+  }
+  .two-columns {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    justify-content: space-between;
+  }
+  #container-info {
+    width: 60%;
+  }
+  .container-video {
+    width: 40%;
+  }
+  .colored-text {
+    color: #7b61ff;
+  }
+  .dynamic-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+  .section-block {
+    background: rgba(28, 22, 54, 0.6);
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid #7b61ff;
+  }
+  .section-block h2 {
+    color: #ffc832;
+    margin-top: 0;
+  }
+  .section-content {
+    color: #e5e7eb;
+    line-height: 1.6;
+  }
+  @media (max-width: 768px) {
+    .two-columns {
+      flex-direction: column;
+    }
+    #container-info, .container-video {
+      width: 100%;
+    }
+  }
+</style>

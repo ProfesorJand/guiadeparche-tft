@@ -3,10 +3,15 @@ import MetaCompsLayout from "@components/TFT/MetaCompsLayout.astro";
 import {
   getComposFromDB,
   getConstantes,
-  getLastUpdateDate
+  getLastUpdateDate,
+  getMetaEntidades
 } from "../../../lib/cache/tftCache.js";
 import { setNumberPBE, dataTFTChampions, loadDataTFTFromAPI, versionTFT, numberOfVersionTFT } from "@stores/dataTFT";
 import { getLocalTftImage } from "@utils/images";
+
+import ChampionMetaDetail from "@components/TFT/meta/ChampionMetaDetail.astro";
+import SynergyMetaDetail from "@components/TFT/meta/SynergyMetaDetail.astro";
+import ItemMetaDetail from "@components/TFT/meta/ItemMetaDetail.astro";
 
 export async function getStaticPaths() {
   const todasLasCompsPBE = await getComposFromDB();
@@ -32,21 +37,42 @@ export async function getStaticPaths() {
 
   const compsFinales = Object.values(compsUnicasPorUrl);
 
-  return compsFinales.map((comp) => ({
+  const paths = compsFinales.map((comp) => ({
     params: { id: String(comp.urlSEO) },
-    props: { comp, allComps: todasLasCompsPBE },
+    props: { type: 'compo', data: comp, allComps: todasLasCompsPBE },
   }));
+
+  // Cargar meta entidades
+  const campeonesMeta = await getMetaEntidades("campeones_tft");
+  const sinergiasMeta = await getMetaEntidades("traits_TFT_set_18");
+  const itemsMeta = await getMetaEntidades("items_tft_set_18");
+
+  campeonesMeta.forEach(c => {
+    if (c.url_seo) paths.push({ params: { id: String(c.url_seo).toLowerCase() }, props: { type: 'campeon', data: c, allComps: todasLasCompsPBE } });
+  });
+
+  sinergiasMeta.forEach(s => {
+    if (s.url_seo) paths.push({ params: { id: String(s.url_seo).toLowerCase() }, props: { type: 'sinergia', data: s, allComps: todasLasCompsPBE } });
+  });
+
+  itemsMeta.forEach(i => {
+    if (i.url_seo) paths.push({ params: { id: String(i.url_seo).toLowerCase() }, props: { type: 'item', data: i, allComps: todasLasCompsPBE } });
+  });
+
+  return paths;
 }
 
 const { id } = Astro.params;
-const { comp, allComps } = Astro.props;
+const { type, data, allComps } = Astro.props;
+
+const comp = type === 'compo' ? data : null; // Para mantener retrocompatibilidad con el código actual de compo
 
 const [numberOfPatch, lastUpdateComps] = await Promise.all([
   getConstantes(),
   getLastUpdateDate("composiciones_tft")
 ]);
 
-const targetVersion = (String(comp.set_number) === String(setNumberPBE)) ? "pbe" : "latest";
+const targetVersion = (String(data?.set_number || comp?.set_number) === String(setNumberPBE)) ? "pbe" : "latest";
 
 // En SSR asegurarnos de que el store global tenga la versión correcta para esta página
 if (versionTFT.get() !== targetVersion) {
@@ -57,35 +83,38 @@ if (versionTFT.get() !== targetVersion) {
 }
 
 const championsPBE = dataTFTChampions.get();
-const targetApiName = comp?.campeonMeta?.apiNameCampeon;
+const targetApiName = comp?.campeonMeta?.apiNameCampeon || data?.apiName;
 const champInfo = championsPBE.find(c => c.apiName === targetApiName);
-const resolvedTileIcon = champInfo?.tileIcon ? getLocalTftImage(champInfo.tileIcon, 'champions/tileIcon') : "";
-// Obtener datos de video
-// const getYoutubeId = (url) => {
-//   const match = url.match(/(?:youtube\.com\/.*v=|youtu\.be\/)([^"&?/ ]{11})/);
-//   return match ? match[1] : null;
-// };
+const resolvedTileIcon = (champInfo?.tileIcon || data?.tileIcon) ? getLocalTftImage(champInfo?.tileIcon || data?.tileIcon, 'champions/tileIcon') : "";
 
-// const videoId = getYoutubeId("https://www.youtube.com/watch?v=-xeetqszewY");
-
-// const video = {
-//   id: videoId,
-//   title: "7 Best Meta Team Compositions in TFT - Patch 17.3",
-//   thumbnail: `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`,
-// };
 ---
-<MetaCompsLayout
-  titleMain={`${comp.urlSEO.toUpperCase().replace("-"," ")} TFT Comp & Items Build - Set ${comp.set_number || 17}`}
-  titleHighlight={``}
-  description={comp.tipSEO ||
-    `Guía completa paso a paso de la composición ${comp.titulo} para el parche actual de TFT.`}
-  lastUpdate={`${lastUpdateComps} Parche ${comp?.set_number === setNumberPBE ? numberOfPatch.MetaCompVersionPBE : numberOfPatch.MetaCompVersion}` }
-  allComps={allComps}
-  comp={comp}
-  activeId={id}
-  snippetImgUrl={resolvedTileIcon}
-  isIndividual={true}
-/>
+
+{type === 'compo' && comp && (
+  <MetaCompsLayout
+    titleMain={`${comp.urlSEO.toUpperCase().replace("-"," ")} TFT Comp & Items Build - Set ${comp.set_number || 17}`}
+    titleHighlight={``}
+    description={comp.tipSEO ||
+      `Guía completa paso a paso de la composición ${comp.titulo} para el parche actual de TFT.`}
+    lastUpdate={`${lastUpdateComps} Parche ${comp?.set_number === setNumberPBE ? numberOfPatch.MetaCompVersionPBE : numberOfPatch.MetaCompVersion}` }
+    allComps={allComps}
+    comp={comp}
+    activeId={id}
+    snippetImgUrl={resolvedTileIcon}
+    isIndividual={true}
+  />
+)}
+
+{type === 'campeon' && data && (
+  <ChampionMetaDetail data={data} allComps={allComps} resolvedTileIcon={resolvedTileIcon} lastUpdate={lastUpdateComps} version={numberOfPatch} />
+)}
+
+{type === 'sinergia' && data && (
+  <SynergyMetaDetail data={data} allComps={allComps} lastUpdate={lastUpdateComps} version={numberOfPatch} allChampions={championsPBE} />
+)}
+
+{type === 'item' && data && (
+  <ItemMetaDetail data={data} allComps={allComps} lastUpdate={lastUpdateComps} version={numberOfPatch} />
+)}
 
 <style>
   .compo-detail-card {

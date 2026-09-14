@@ -1,0 +1,375 @@
+---
+import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
+import CardsCompos from "@components/TFT/CardsCompos.jsx";
+import Youtube from "@components/youtube/Youtube.jsx";
+import { setNumberPBE, setNumberLatest } from "@stores/dataTFT";
+import { dataTFTTraits } from "@stores/dataTFT";
+import { getLocalTftImage } from "@utils/images";
+
+const { data, allComps, lastUpdate, version, allChampions } = Astro.props;
+
+// Filtrar comps: comprobar si la sinergia está activa en la compo.
+const relatedComps = allComps.filter(comp => {
+  if (comp.sinergias && Array.isArray(comp.sinergias)) {
+    return comp.sinergias.some(s => s.apiName === data.apiName || s.name === data.name);
+  }
+  if (comp.posicionamiento) {
+    let pos = comp.posicionamiento;
+    if (typeof pos === 'string') {
+      try { pos = JSON.parse(pos); } catch(e) { return false; }
+    }
+  }
+  return false;
+});
+
+const title = data.titulo_seo || `${data.name} TFT Build & Composiciones Sinergia`;
+const description = data.descripcion_seo || `Descubre cómo jugar la sinergia ${data.name} y sus mejores composiciones en Teamfight Tactics.`;
+const currentVersion = String(data.tft_set) === String(setNumberPBE) ? version.MetaCompVersionPBE : version.MetaCompVersion;
+
+let parsedSecciones = [];
+if (typeof data.secciones === 'string') {
+  try { parsedSecciones = JSON.parse(data.secciones); } catch(e) {}
+} else if (Array.isArray(data.secciones)) {
+  parsedSecciones = data.secciones;
+}
+
+let parsedCustomEffects = {};
+if (typeof data.effects === 'string') {
+  try { parsedCustomEffects = JSON.parse(data.effects); } catch(e) {}
+} else if (typeof data.effects === 'object') {
+  parsedCustomEffects = data.effects || {};
+}
+
+// Obtener datos crudos de la sinergia (para saber los niveles requeridos y estilos)
+const traits = dataTFTTraits.get();
+const currentTraitData = traits.find(t => t.apiName === data.apiName) || {};
+
+// Campeones de la sinergia
+const championsInTrait = allChampions?.filter(c => {
+  return c.traits?.includes(data.apiName) || c.traits?.includes(data.name);
+}) || [];
+
+const styleMapping = {
+  1: "hex-bronze.webp",
+  2: "hex-bronze.webp",
+  3: "hex-silver.webp",
+  4: "hex-prismatic.webp",
+  5: "hex-gold.webp",
+  6: "hex-prismatic.webp",
+  7: "hex-prismatic.webp",
+};
+
+const colorHex = {
+  bronze: "#a16f44",
+  silver: "#909090",
+  gold: "#b8860b", // un dorado más oscuro
+  prismatic: { backgroundImage: "url(https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/hex-prismatic.webp)", backgroundSize: "125%", backgroundPosition: "center" },
+  default: "#333333"
+};
+
+function checkColor(hexColor) {
+  if (!hexColor) return { backgroundColor: colorHex.default };
+  if (hexColor === "hex-prismatic.webp") {
+    return colorHex.prismatic;
+  }
+  const colorKey = hexColor.replace("hex-", "").replace(".webp", "");
+  return { backgroundColor: colorHex[colorKey] || colorHex.default };
+}
+
+function getChampionCostBorder(cost) {
+  switch (cost) {
+    case 1: return "#ffffff";
+    case 2: return "#3e9e64";
+    case 3: return "#1e69ee";
+    case 4: return "#b534f5";
+    case 5: return "#f58220";
+    default: return "#444";
+  }
+}
+
+const resolvedIcon = data.icon.startsWith("http") ? data.icon : getLocalTftImage(data.icon, 'traits', currentVersion);
+
+---
+
+<LayoutMaxWidth
+  title={title}
+  description={description}
+  snippetImgUrl={resolvedIcon}
+>
+  <div class="header-section">
+    <div class="two-columns">
+      
+      <div id="container-info" class="trait-main-card">
+        <div class="trait-header">
+          <div class="trait-icon-bg">
+            <img src={resolvedIcon} alt={data.name} class="trait-icon-img" />
+          </div>
+          <h1>Sinergia {data.name} TFT SET {data.tft_set || "18"}</h1>
+        </div>
+        
+        {data.desc_trait && (
+          <div class="trait-desc" set:html={data.desc_trait.replace(/\n/g, '<br />')} />
+        )}
+
+        <div class="trait-effects">
+          {currentTraitData.effects?.map((effect, idx) => (
+            <div class="effect-row" key={idx}>
+              <div class="effect-badge" style={checkColor(styleMapping[effect.style])}>
+                {effect.minUnits}
+              </div>
+              <div class="effect-text">
+                {parsedCustomEffects[effect.minUnits] || ""}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div class="trait-champions">
+          {championsInTrait.map(c => {
+            const tileIcon = c.tileIcon ? getLocalTftImage(c.tileIcon, 'champions/tileIcon') : "";
+            return (
+              <div class="champion-hex-container">
+                <div class="champion-hex-shape" style={`background-color: ${getChampionCostBorder(c.cost)};`}>
+                  <img src={tileIcon} alt={c.name} />
+                </div>
+                <span class="champion-name">{c.name}</span>
+                
+                <div class="champion-traits-overlay">
+                  {c.traits?.map(tName => {
+                    const tData = traits.find(tr => tr.name === tName || tr.apiName === tName);
+                    const tIcon = tData?.icon ? getLocalTftImage(tData.icon, 'traits') : "";
+                    return (
+                      <div class="small-trait-hex">
+                        <img src={tIcon} alt={tName} />
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+
+      {data.video_url && (
+        <div class="container-video">
+          <Youtube src={data.video_url} client:load />
+        </div>
+      )}
+    </div>
+  </div>
+
+  <div class="dynamic-sections">
+    {parsedSecciones.length > 0 && parsedSecciones.map(sec => (
+      <div class="section-block">
+        <h2>{sec.titulo}</h2>
+        <div class="section-content" set:html={sec.descripcion} />
+      </div>
+    ))}
+  </div>
+
+  {relatedComps.length > 0 && (
+    <div class="related-comps-section">
+      <h2 style="margin-top: 40px; margin-bottom: 20px;">Mejores Composiciones de {data.name}</h2>
+      <div class="comps-grid">
+        {relatedComps.map((comp, index) => (
+          <article class="comp-card" style="margin-bottom: 20px;">
+            <CardsCompos
+              comp={comp}
+              numeracion={index + 1}
+              client:load
+            />
+          </article>
+        ))}
+      </div>
+    </div>
+  )}
+</LayoutMaxWidth>
+
+<style>
+  .header-section {
+    width: 100%;
+    margin-bottom: 30px;
+    max-width: 1200px;
+  }
+  .two-columns {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  #container-info {
+    width: 60%;
+  }
+  .container-video {
+    width: 40%;
+  }
+
+  .trait-main-card {
+    background-color: #211c47; /* Morado oscuro como en el mockup */
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  }
+
+  .trait-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+  }
+  .trait-icon-bg {
+    background-color: #1a1a1a;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #555;
+  }
+  .trait-icon-img {
+    width: 30px;
+    height: 30px;
+    filter: invert(1);
+  }
+  .trait-header h1 {
+    font-size: 1.5rem;
+    color: #fff;
+    margin: 0;
+    font-weight: bold;
+  }
+
+  .trait-desc {
+    color: #e5e7eb;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 30px;
+  }
+
+  .trait-effects {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+  }
+  .effect-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  .effect-badge {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    color: white;
+    font-size: 1.1rem;
+    border-radius: 4px;
+    flex-shrink: 0;
+    border: 1px solid rgba(255,255,255,0.2);
+  }
+  .effect-text {
+    color: #e5e7eb;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .trait-champions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 30px;
+  }
+
+  /* Hexágono de campeones (parecido a Image 4) */
+  .champion-hex-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 70px;
+  }
+
+  .champion-hex-shape {
+    width: 70px;
+    height: 80px;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .champion-hex-shape img {
+    width: 64px;
+    height: 74px;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    object-fit: cover;
+  }
+
+  .champion-name {
+    margin-top: 5px;
+    font-size: 0.8rem;
+    color: #fff;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px black;
+    text-align: center;
+  }
+
+  .champion-traits-overlay {
+    position: absolute;
+    top: -10px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    gap: 2px;
+  }
+
+  .small-trait-hex {
+    width: 20px;
+    height: 24px;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    background-color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .small-trait-hex img {
+    width: 14px;
+    height: 14px;
+    filter: invert(1);
+  }
+
+  .dynamic-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+  .section-block {
+    background-color: #211c47;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  }
+  .section-block h2 {
+    color: #ffc832;
+    margin-top: 0;
+  }
+  .section-content {
+    color: #e5e7eb;
+    line-height: 1.6;
+  }
+  
+  @media (max-width: 768px) {
+    .two-columns {
+      flex-direction: column;
+    }
+    #container-info, .container-video {
+      width: 100%;
+    }
+  }
+</style>

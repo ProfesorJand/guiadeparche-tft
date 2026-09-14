@@ -91,6 +91,31 @@ export async function getComposFromDB() {
   }
 }
 
+let metaEntidadesCache = {};
+export async function getMetaEntidades(tableName) {
+  if (metaEntidadesCache[tableName]) return metaEntidadesCache[tableName];
+
+  try {
+    const response = await fetch(`https://api.guiadeparche.com/tft/getMetaEntidades.php?table=${tableName}`, {
+      headers: FETCH_HEADERS,
+      cache: "reload"
+    });
+    // Si la API aún no existe o hay error, no rompemos el build
+    if (!response.ok) return []; 
+    
+    // Suponemos que la API retorna { data: [...] } o simplemente [...]
+    const text = await response.text();
+    if (!text) return [];
+    
+    const result = JSON.parse(text);
+    metaEntidadesCache[tableName] = result.data || result || [];
+    return metaEntidadesCache[tableName];
+  } catch (err) {
+    console.error(`Error fetching ${tableName} remotely:`, err);
+    return [];
+  }
+}
+
 export async function getComposMeta() {
   if (composMetaCache) return composMetaCache;
 
