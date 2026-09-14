@@ -5,7 +5,8 @@ export default function Tiers({ tiers, selectedTier, toggleArrayFilter, setSelec
     <div className={style.filterInputGroup}>
       <label>Tiers</label>
       <div className={style.filterButtonsContainer}>
-        {tiers?.filter(t => t !== "C").map(t => (
+        {console.log({tiers})}
+        {tiers?.filter(t => t !== "C" && t !== "B").map(t => (
           <button
             key={t}
             type="button"
