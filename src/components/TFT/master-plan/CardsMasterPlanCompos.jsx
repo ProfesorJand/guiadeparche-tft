@@ -216,6 +216,23 @@ const CardsMasterPlanCompos = ({compo, activateMissingOPM, filtroSoft={}, grupos
                 </div>
               );
             })}
+            {/* Borde decorativo para Tanques */}
+            {(compo.itemsPrioTanque || []).length > 0 && (
+              <div 
+                style={{ 
+                  gridColumn: 5, 
+                  gridRow: '1 / span 2', 
+                  border: '1px dashed #00c3ffff', 
+                  borderRadius: '6px',
+                  pointerEvents: 'none',
+                  zIndex: 0,
+                  margin: '-2px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              />
+            )}
             
             {/* 2 Objetos Tanques */}
             {(compo.itemsPrioTanque || []).slice(0, 2).map((itemEntry, index) => {
