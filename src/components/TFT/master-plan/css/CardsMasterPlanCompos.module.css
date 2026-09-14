@@ -572,6 +572,14 @@
   background-color: rgb(0 0 0 / 59%);
   padding: 5px;
 }
+.cInfoCards{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: flex-start;
+  align-items: stretch;
+  gap: 5px;
+}
 
 @keyframes tooltipFadeIn {
   from {
@@ -585,13 +593,25 @@
 }
 
 @media (max-width:900px){
-  .row1, .row2, .row3 {
+  .row1{
+    flex-direction: row;
+  }
+  .cInfoCards{
+    flex-direction: column;
+  }
+  .row2, .row3 {
     flex-direction: column;
     align-items: flex-start;
   }
   .initialInfoComp, .initialFundamentals, .initialCondiciones, .initialAumentos {
     width: 100%;
     flex: none;
+  }
+  .containerCondicion{
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .containerAumentos{
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
