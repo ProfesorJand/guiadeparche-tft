@@ -196,7 +196,7 @@ const CardsMasterPlanCompos = ({compo, activateMissingOPM, filtroSoft={}, grupos
         </div>
       </div>
 
-      <div className={style.row1}>
+      <div className={style.cInfoCards}>
         <div className={`${style.initialFundamentals} ${style.borderContainer}`}>
           <span className={style.titleMiniInfoCard}>Objetos Prio</span>
           <div className={style.containerObjetosPrioDoble}>
