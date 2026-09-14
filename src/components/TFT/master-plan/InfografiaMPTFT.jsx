@@ -216,7 +216,7 @@ const InfografiaMPTFT = ({comp = {}, gruposSalidasEarly = []}) => {
                         </div>
                       )}
                     </div>,
-                    index < (comp?.itemsPrio?.length || 0) - 1 ? <span key={`itemPrio-gt-${index}`} className={style.mayorQue}>{'>'}</span> : null
+                    (index < (comp?.itemsPrio?.length || 0) - 1  && index !== 3) ? <span key={`itemPrio-gt-${index}`} className={style.mayorQue}>{'>'}</span> : null
                   ] : null;
                 })}
             </div>
