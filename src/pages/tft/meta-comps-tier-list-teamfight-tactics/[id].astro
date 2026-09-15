@@ -72,7 +72,11 @@ const [numberOfPatch, lastUpdateComps] = await Promise.all([
   getLastUpdateDate("composiciones_tft")
 ]);
 
-const targetVersion = (String(data?.set_number || comp?.set_number) === String(setNumberPBE)) ? "pbe" : "latest";
+let entitySetNumber = comp?.set_number || data?.set_number || data?.tft_set;
+if (!entitySetNumber && type !== 'compo') {
+  entitySetNumber = "18"; // Metas by default are Set 18 if they don't have the column
+}
+const targetVersion = (String(entitySetNumber) === String(setNumberPBE)) ? "pbe" : "latest";
 
 // En SSR asegurarnos de que el store global tenga la versión correcta para esta página
 if (versionTFT.get() !== targetVersion) {

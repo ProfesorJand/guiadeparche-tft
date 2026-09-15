@@ -164,12 +164,12 @@ const AdminCrearPaginaMetaTFT = () => {
     });
   };
 
-  const updateEffect = (minUnits, value) => {
+  const updateEffect = (key, value) => {
     setFormData(prev => ({
       ...prev,
       effects: {
         ...prev.effects,
-        [minUnits]: value
+        [key]: value
       }
     }));
   };
@@ -436,8 +436,8 @@ const AdminCrearPaginaMetaTFT = () => {
                       <textarea 
                         className={style.input} 
                         style={{ height: '60px', flex: 1, resize: 'vertical' }}
-                        value={formData.effects[effect.minUnits] || ""} 
-                        onChange={e => updateEffect(effect.minUnits, e.target.value)} 
+                        value={formData.effects[i] !== undefined ? formData.effects[i] : (formData.effects[effect.minUnits] || "")} 
+                        onChange={e => updateEffect(i, e.target.value)} 
                         placeholder={`Descripción del efecto al tener ${effect.minUnits} campeones...`}
                       />
                     </div>

@@ -5,9 +5,9 @@ import Youtube from "@components/youtube/Youtube.jsx";
 import { setNumberPBE, setNumberLatest } from "@stores/dataTFT";
 import { dataTFTTraits } from "@stores/dataTFT";
 import { getLocalTftImage } from "@utils/images";
+import ImgTrait from "../ImgTrait.jsx";
 
 const { data, allComps, lastUpdate, version, allChampions } = Astro.props;
-
 // Filtrar comps: comprobar si la sinergia está activa en la compo.
 const relatedComps = allComps.filter(comp => {
   if (comp.sinergias && Array.isArray(comp.sinergias)) {
@@ -45,9 +45,9 @@ const traits = dataTFTTraits.get();
 const currentTraitData = traits.find(t => t.apiName === data.apiName) || {};
 
 // Campeones de la sinergia
-const championsInTrait = allChampions?.filter(c => {
-  return c.traits?.includes(data.apiName) || c.traits?.includes(data.name);
-}) || [];
+const championsInTrait = allChampions?.filter(c => 
+c.traits?.includes(data.apiName) || c.traits?.includes(data.name)) 
+|| [];
 
 const styleMapping = {
   1: "hex-bronze.webp",
@@ -87,7 +87,7 @@ function getChampionCostBorder(cost) {
   }
 }
 
-const resolvedIcon = data.icon.startsWith("http") ? data.icon : getLocalTftImage(data.icon, 'traits', currentVersion);
+const resolvedIcon = data.icon.startsWith("http") ? data.icon : getLocalTftImage(data.icon, 'traits', data.tft_set || "18");
 
 ---
 
@@ -102,7 +102,7 @@ const resolvedIcon = data.icon.startsWith("http") ? data.icon : getLocalTftImage
       <div id="container-info" class="trait-main-card">
         <div class="trait-header">
           <div class="trait-icon-bg">
-            <img src={resolvedIcon} alt={data.name} class="trait-icon-img" />
+            <ImgTrait trait={data} version={data.tft_set || "18"} showName={false} />
           </div>
           <h1>Sinergia {data.name} TFT SET {data.tft_set || "18"}</h1>
         </div>
@@ -118,7 +118,7 @@ const resolvedIcon = data.icon.startsWith("http") ? data.icon : getLocalTftImage
                 {effect.minUnits}
               </div>
               <div class="effect-text">
-                {parsedCustomEffects[effect.minUnits] || ""}
+                {parsedCustomEffects[idx] !== undefined ? parsedCustomEffects[idx] : (parsedCustomEffects[effect.minUnits] || "")}
               </div>
             </div>
           ))}
