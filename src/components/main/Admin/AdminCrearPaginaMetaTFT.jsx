@@ -75,23 +75,25 @@ const AdminCrearPaginaMetaTFT = () => {
     // Parsear campos que vengan como string JSON desde la BD
     let parsedTraits = [];
     let parsedSecciones = [];
-    let parsedEffects = {};
+    let parsedEffects = [];
     
     try { parsedTraits = typeof entity.traits === 'string' ? JSON.parse(entity.traits) : (entity.traits || []); } catch(e) {}
     try { parsedSecciones = typeof entity.secciones === 'string' ? JSON.parse(entity.secciones) : (entity.secciones || []); } catch(e) {}
     try { 
-      const effectsData = typeof entity.effects === 'string' ? JSON.parse(entity.effects) : (entity.effects || {}); 
+      const effectsData = typeof entity.effects === 'string' ? JSON.parse(entity.effects) : (entity.effects || []); 
       if (Array.isArray(effectsData)) {
-        // Si el usuario guardó el JSON original de Riot (Array de objetos)
-        parsedEffects = {};
-      } else {
-        // Asegurarse de que todos los valores sean strings, no subobjetos
-        for (const [key, val] of Object.entries(effectsData)) {
-          parsedEffects[key] = typeof val === 'object' ? "" : String(val);
+        if (effectsData.length > 0 && typeof effectsData[0].style !== 'undefined' && typeof effectsData[0].description === 'undefined') {
+          // Si el usuario guardó el JSON original de Riot (Array de objetos, sin description)
+          parsedEffects = [];
+        } else {
+          // Formato propio de descripciones: [{minUnits, style, description}]
+          parsedEffects = effectsData;
         }
+      } else {
+        parsedEffects = [];
       }
     } catch(e) {
-      parsedEffects = {};
+      parsedEffects = [];
     }
 
     setFormData({
@@ -164,14 +166,12 @@ const AdminCrearPaginaMetaTFT = () => {
     });
   };
 
-  const updateEffect = (key, value) => {
-    setFormData(prev => ({
-      ...prev,
-      effects: {
-        ...prev.effects,
-        [key]: value
-      }
-    }));
+  const updateEffect = (index, minUnits, styleValue, value) => {
+    setFormData(prev => {
+      const newEffects = [...(prev.effects || [])];
+      newEffects[index] = { minUnits, style: styleValue, description: value };
+      return { ...prev, effects: newEffects };
+    });
   };
 
   const currentTraitData = allTraits.find(t => t.apiName === formData.apiName);
@@ -181,7 +181,7 @@ const AdminCrearPaginaMetaTFT = () => {
       id: null,
       name: "", apiName: "", tileIcon: "", icon: "", squareIcon: "", cost: "", role: "", traits: [],
       titulo_seo: "", descripcion_seo: "", video_url: "", url_seo: "", secciones: [],
-      desc_trait: "", effects: {}
+      desc_trait: "", effects: []
     });
   };
 
@@ -194,6 +194,7 @@ const AdminCrearPaginaMetaTFT = () => {
       const token = import.meta.env.PUBLIC_TOKEN_META || "dummy_token";
       const payload = {
         ...formData,
+        effects: formData.effects, // PHP ya lo convierte con json_encode, no necesitamos stringificar aquí
         cost: formData.cost ? Number(formData.cost) : null,
         tft_set: targetSet,
         tableName: getTableName()
@@ -426,24 +427,66 @@ const AdminCrearPaginaMetaTFT = () => {
               ) : (
                 <div style={{ background: "rgba(0,0,0,0.2)", padding: "15px", borderRadius: "8px", marginTop: "10px" }}>
                   <p style={{ color: "#a78bfa", fontSize: "14px", marginBottom: "15px" }}>
-                    Basado en los datos oficiales, esta sinergia requiere las siguientes cantidades de campeones. Escribe la descripción para cada nivel:
+                    Puedes verificar o modificar la cantidad de unidades y el color (Style). Escribe la descripción para cada nivel:
                   </p>
-                  {currentTraitData.effects?.map((effect, i) => (
-                    <div key={i} style={{ display: "flex", gap: "10px", marginBottom: "15px", alignItems: "flex-start" }}>
-                      <div style={{ background: "#333", padding: "10px", borderRadius: "4px", minWidth: "60px", textAlign: "center", fontWeight: "bold" }}>
-                        {effect.minUnits}
+                  {Array.from({ length: Math.max(currentTraitData.effects?.length || 0, formData.effects?.length || 0) }).map((_, i) => {
+                    const officialEffect = currentTraitData.effects?.[i] || {};
+                    const savedEffect = formData.effects?.[i] || {};
+                    const currentMinUnits = savedEffect.minUnits !== undefined ? savedEffect.minUnits : (officialEffect.minUnits !== undefined ? officialEffect.minUnits : 1);
+                    const currentStyle = savedEffect.style !== undefined ? savedEffect.style : (officialEffect.style !== undefined ? officialEffect.style : 1);
+                    const currentDesc = savedEffect.description || savedEffect.desc || (typeof savedEffect === 'string' ? savedEffect : "");
+                    
+                    return (
+                      <div key={i} style={{ display: "flex", gap: "10px", marginBottom: "15px", alignItems: "flex-start" }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                          <input 
+                            type="number"
+                            className={style.input}
+                            style={{ width: '70px', padding: '10px', textAlign: 'center' }}
+                            value={currentMinUnits}
+                            onChange={e => updateEffect(i, Number(e.target.value), currentStyle, currentDesc)}
+                            title="minUnits (Campeones requeridos)"
+                          />
+                          <select 
+                            className={style.input} 
+                            style={{ width: '90px', padding: '10px 5px', fontSize: '12px' }}
+                            value={currentStyle}
+                            onChange={e => updateEffect(i, currentMinUnits, Number(e.target.value), currentDesc)}
+                            title="Style (Color)"
+                          >
+                            <option value={1}>Bronce (1)</option>
+                            <option value={2}>Bronce (2)</option>
+                            <option value={3}>Plata (3)</option>
+                            <option value={5}>Oro (5)</option>
+                            <option value={4}>Prismático (4)</option>
+                            <option value={6}>Prismático (6)</option>
+                            <option value={7}>Prismático (7)</option>
+                          </select>
+                        </div>
+                        <textarea 
+                          className={style.input} 
+                          style={{ height: '80px', flex: 1, resize: 'vertical' }}
+                          value={currentDesc} 
+                          onChange={e => updateEffect(i, currentMinUnits, currentStyle, e.target.value)} 
+                          placeholder={`Descripción del efecto al tener ${currentMinUnits} campeones...`}
+                        />
                       </div>
-                      <textarea 
-                        className={style.input} 
-                        style={{ height: '60px', flex: 1, resize: 'vertical' }}
-                        value={formData.effects[i] !== undefined ? formData.effects[i] : (formData.effects[effect.minUnits] || "")} 
-                        onChange={e => updateEffect(i, e.target.value)} 
-                        placeholder={`Descripción del efecto al tener ${effect.minUnits} campeones...`}
-                      />
-                    </div>
-                  ))}
-                  {(!currentTraitData.effects || currentTraitData.effects.length === 0) && (
-                    <p style={{ color: "#aaa", fontSize: "14px" }}>Esta sinergia no tiene efectos en niveles en los archivos del juego.</p>
+                    );
+                  })}
+                  
+                  <button 
+                    type="button" 
+                    onClick={() => {
+                      const maxLen = Math.max(currentTraitData.effects?.length || 0, formData.effects?.length || 0);
+                      updateEffect(maxLen, 1, 1, "");
+                    }}
+                    style={{ background: "#4caf50", color: "#fff", border: "none", padding: "8px 15px", borderRadius: "4px", cursor: "pointer", fontSize: "14px", marginTop: "10px" }}
+                  >
+                    + Agregar Nivel
+                  </button>
+
+                  {(!currentTraitData.effects || currentTraitData.effects.length === 0) && (!formData.effects || formData.effects.length === 0) && (
+                    <p style={{ color: "#aaa", fontSize: "14px", marginTop: "15px" }}>Esta sinergia no tiene efectos oficiales. Puedes agregar uno manualmente.</p>
                   )}
                 </div>
               )}

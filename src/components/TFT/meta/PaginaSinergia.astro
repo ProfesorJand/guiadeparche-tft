@@ -8,6 +8,7 @@ import { getLocalTftImage } from "@utils/images";
 import ImgTrait from "../ImgTrait.jsx";
 
 const { data, allComps, lastUpdate, version, allChampions } = Astro.props;
+console.log({data})
 // Filtrar comps: comprobar si la sinergia está activa en la compo.
 const relatedComps = allComps.filter(comp => {
   if (comp.sinergias && Array.isArray(comp.sinergias)) {
@@ -33,16 +34,17 @@ if (typeof data.secciones === 'string') {
   parsedSecciones = data.secciones;
 }
 
-let parsedCustomEffects = {};
+let parsedCustomEffects = [];
 if (typeof data.effects === 'string') {
   try { parsedCustomEffects = JSON.parse(data.effects); } catch(e) {}
-} else if (typeof data.effects === 'object') {
-  parsedCustomEffects = data.effects || {};
+} else if (Array.isArray(data.effects)) {
+  parsedCustomEffects = data.effects;
 }
 
 // Obtener datos crudos de la sinergia (para saber los niveles requeridos y estilos)
 const traits = dataTFTTraits.get();
 const currentTraitData = traits.find(t => t.apiName === data.apiName) || {};
+console.log("DEBUG currentTraitData.effects: ", currentTraitData.effects);
 
 // Campeones de la sinergia
 const championsInTrait = allChampions?.filter(c => 
@@ -118,7 +120,7 @@ const resolvedIcon = data.icon.startsWith("http") ? data.icon : getLocalTftImage
                 {effect.minUnits}
               </div>
               <div class="effect-text">
-                {parsedCustomEffects[idx] !== undefined ? parsedCustomEffects[idx] : (parsedCustomEffects[effect.minUnits] || "")}
+                {parsedCustomEffects[idx]?.description || parsedCustomEffects[idx]?.desc || (typeof parsedCustomEffects[idx] === 'string' ? parsedCustomEffects[idx] : "")}
               </div>
             </div>
           ))}

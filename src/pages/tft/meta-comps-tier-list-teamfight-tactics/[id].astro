@@ -9,9 +9,9 @@ import {
 import { setNumberPBE, dataTFTChampions, loadDataTFTFromAPI, versionTFT, numberOfVersionTFT } from "@stores/dataTFT";
 import { getLocalTftImage } from "@utils/images";
 
-import ChampionMetaDetail from "@components/TFT/meta/ChampionMetaDetail.astro";
-import SynergyMetaDetail from "@components/TFT/meta/SynergyMetaDetail.astro";
-import ItemMetaDetail from "@components/TFT/meta/ItemMetaDetail.astro";
+import PaginaCampeon from "@components/TFT/meta/PaginaCampeon.astro";
+import PaginaSinergia from "@components/TFT/meta/PaginaSinergia.astro";
+import PaginaItem from "@components/TFT/meta/PaginaItem.astro";
 
 export async function getStaticPaths() {
   const todasLasCompsPBE = await getComposFromDB();
@@ -109,15 +109,15 @@ const resolvedTileIcon = (champInfo?.tileIcon || data?.tileIcon) ? getLocalTftIm
 )}
 
 {type === 'campeon' && data && (
-  <ChampionMetaDetail data={data} allComps={allComps} resolvedTileIcon={resolvedTileIcon} lastUpdate={lastUpdateComps} version={numberOfPatch} />
+  <PaginaCampeon data={data} allComps={allComps} resolvedTileIcon={resolvedTileIcon} lastUpdate={lastUpdateComps} version={numberOfPatch} />
 )}
 
 {type === 'sinergia' && data && (
-  <SynergyMetaDetail data={data} allComps={allComps} lastUpdate={lastUpdateComps} version={numberOfPatch} allChampions={championsPBE} />
+  <PaginaSinergia data={data} allComps={allComps} lastUpdate={lastUpdateComps} version={numberOfPatch} allChampions={championsPBE} />
 )}
 
 {type === 'item' && data && (
-  <ItemMetaDetail data={data} allComps={allComps} lastUpdate={lastUpdateComps} version={numberOfPatch} />
+  <PaginaItem data={data} allComps={allComps} lastUpdate={lastUpdateComps} version={numberOfPatch} />
 )}
 
 <style>
