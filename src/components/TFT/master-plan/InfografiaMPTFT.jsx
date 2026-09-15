@@ -167,35 +167,38 @@ const InfografiaMPTFT = ({comp = {}, gruposSalidasEarly = []}) => {
     );
   }
   const Fundamentals = ()=>{
-    const allEarlyChamps = (comp.salidasEarly || [])
+    const allEarlyGroups = (comp.salidasEarly || [])
                     .map(grupoId => gruposSalidasEarly.find(g => g.id === grupoId))
-                    .filter(Boolean)
-                    .flatMap(grupo => grupo.campeones);
+                    .filter(Boolean);
                   
-    const uniqueChamps = [...new Set(allEarlyChamps)].slice(0, 6);
     return(
         <div className={style.cFundamentalsInfo}>
           <div className={`${style.cBoxTitleInfo} ${style.cCampeonesPrio}`}> 
             <span className={style.tBox}>Salidas Early</span>
             <div className={style.cCampeonesPrioInfo}>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
 
                   
-                 {(uniqueChamps.length === 0) ? (
+                 {(allEarlyGroups.length === 0) ? (
                    <span style={{ fontSize: '0.85rem', color: '#aaa', fontStyle: 'italic' }}>Sin salidas early</span>
                   )
                   :
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', width: '100%', justifyContent: 'center' }}>
-                      {uniqueChamps.map(apiName => {
-                        const champ = AllChampions.find(c => c.apiName === apiName);
-                        return champ ? (
-                          <div key={apiName} style={{ width: 'calc((100% - (4px *4)) / 5)'}}>
-                            <ImgCampeon championData={champ} imgType="tileIcon" showName={true} />
-                          </div>
-                        ) : null;
-                      })}
+                  allEarlyGroups.map((grupo, index) => (
+                    <div key={index} style={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'center', marginBottom: '8px' }}>
+                      <span style={{ fontSize: '0.9rem', fontWeight: 'bold', marginBottom: '4px', color: '#fff' }}>{grupo?.tipo && grupo.tipo !== '' && grupo.tipo !== 'N/A' ? grupo.tipo : 'Tempo'}</span>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', width: '100%', justifyContent: 'center' }}>
+                        {grupo.campeones.map(apiName => {
+                          const champ = AllChampions.find(c => c.apiName === apiName);
+                          return champ ? (
+                            <div key={apiName} style={{ width: 'calc((100% - (4px *4)) / 5)'}}>
+                              <ImgCampeon championData={champ} imgType="tileIcon" showName={true} />
+                            </div>
+                          ) : null;
+                        })}
+                      </div>
                     </div>
-                    }
+                  ))
+                 }
                   
               </div>
             </div>
