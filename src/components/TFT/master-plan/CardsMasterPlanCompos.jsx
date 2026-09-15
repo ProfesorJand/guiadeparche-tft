@@ -314,7 +314,7 @@ const CardsMasterPlanCompos = ({compo, activateMissingOPM, filtroSoft={}, grupos
         </div>
 
         <div className={`${style.initialAumentos} ${style.borderContainer}`}>
-          <span className={style.titleMiniInfoCard}>Aumentos 2-1</span>
+          <span className={style.titleMiniInfoCard}>Aumentos</span>
           <div className={style.containerAumentos}>
             {compo.aumentos
               .filter(aumento => aumento.op || aumento.early)
