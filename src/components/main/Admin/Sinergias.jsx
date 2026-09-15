@@ -217,16 +217,18 @@ const Sinergias = ({ sinergias, orientacion, show, version }) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const traitsWithMinMax = getMinMaxTraits(calculatedSinergias).sort((a, b) => {
-    const weightA = colorWeight[a.hexColor] || 0;
-    const weightB = colorWeight[b.hexColor] || 0;
-    
-    if (weightA !== weightB) {
-      return weightB - weightA;
-    }
-    
-    return b.hexLevel - a.hexLevel;
-  });
+  const traitsWithMinMax = getMinMaxTraits(calculatedSinergias)
+    .filter(key => !(key.hexColor === "hex-prismatic.webp" && key.hexLevel === 1))
+    .sort((a, b) => {
+      const weightA = colorWeight[a.hexColor] || 0;
+      const weightB = colorWeight[b.hexColor] || 0;
+      
+      if (weightA !== weightB) {
+        return weightB - weightA;
+      }
+      
+      return b.hexLevel - a.hexLevel;
+    });
 
   return (
     <div className={show ? [style.containerSinergia, orientacion === "horizontal" ? style.containerSinergiaHorizontal : ""].join(" ") : style.containerSinergiaOculto}>

@@ -158,7 +158,7 @@
   font-family: 'ObvioslyWideBold', sans-serif;
   text-transform: uppercase;
   color: white;
-  font-size: 15px;
+  font-size: 11px;
   text-align: left;
   line-height: 1.2;
 }
@@ -270,7 +270,7 @@
 .titleMiniInfoCard{
   text-align:center;
   /* font-family: 'ObvioslyWideBold', sans-serif; */
-  font-size: 12px;
+  font-size: 10px;
   font-weight: bold;
   text-transform: uppercase;
 }
