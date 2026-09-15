@@ -335,7 +335,7 @@ const PerfilUsuario = () => {
           <button 
             onClick={() => {
               const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-              window.location.href = `https://api.guiadeparche.com/discord/discord_oauth.php?login=1&user_email=${user.email}${isLocal ? '&local=1' : ''}`;
+              window.location.href = `https://api.guiadeparche.com/discord/discord_oauth.php?login=1&user_email=${user.email}${isLocal ? '&local=1' : ''}&redirect=/perfil`;
             }}
             style={{
               padding: '8px 16px',
