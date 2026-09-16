@@ -22,7 +22,19 @@ export default function ResultadosWrapper({
       <div className={style.composGrid}>
         {filteredCompos.length > 0 ? (
           filteredCompos.map(compo => (
-            <div key={compo.id || compo.titulo || Math.random()} className={style.cardContainer} onClick={() => setActiveComp(allCompos.find((comp) => comp.id === compo.id))}>
+            <div 
+              key={compo.id || compo.titulo || Math.random()} 
+              className={style.cardContainer} 
+              onClick={() => {
+                setActiveComp(allCompos.find((comp) => comp.id === compo.id));
+                setTimeout(() => {
+                  const el = document.getElementById('activeCompContainer');
+                  if (el) {
+                    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  }
+                }, 50);
+              }}
+            >
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '5px', background: 'rgba(0,0,0,0.3)', borderRadius: '8px 8px 0px 0px', }}>
                 <div style={{ flex: 1, height: '1px', background: 'rgba(255,255,255,0.1)' }}></div>
                 <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '2px', minHeight: '32px' }}>
