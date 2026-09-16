@@ -43,14 +43,12 @@ export default function FiltroEarlyWrapper({
               toggleSelectedSalidasEarlyChampion={toggleSelectedSalidasEarlyChampion}
               style={style}
             />
-            {/* <Sinergias 
-              condicionesGrandeSinergias={condicionesGrandeSinergias}
-              selectedSalidasEarlySinergias={selectedSalidasEarlySinergias}
-              toggleArrayFilter={toggleArrayFilter}
-              setSelectedSalidasEarlySinergias={setSelectedSalidasEarlySinergias}
-              style={style}
-            /> */}
           </div>
+        </div>
+      )}
+
+      {activeTab === 'salidas' && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', marginTop: '8px', marginBottom: '5px' }}>
           <div style={{ display: 'flex', flexDirection: 'row', gap: '5px', marginTop: '5px', width: '100%' }}>
             <GruposSalidas 
               availableGruposSalidasEarly={availableGruposSalidasEarly}

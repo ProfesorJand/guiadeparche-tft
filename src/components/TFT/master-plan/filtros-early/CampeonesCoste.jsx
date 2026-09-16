@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 export default function CampeonesCoste({ champsList, selectedSalidasEarlyChampions, toggleSelectedSalidasEarlyChampion, style }) {
-  const [activeCost, setActiveCost] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
 
   if (!champsList || champsList.length === 0) return null;
@@ -13,11 +12,11 @@ export default function CampeonesCoste({ champsList, selectedSalidasEarlyChampio
     groupedChamps[c].push(champ);
   });
 
-  const availableCosts = [1, 2, 3, 4].filter(c => groupedChamps[c] && groupedChamps[c].length > 0);
-  const currentCost = availableCosts.includes(activeCost) ? activeCost : availableCosts[0];
+  const availableCosts = [1, 2, 3, 4, 5].filter(c => groupedChamps[c] && groupedChamps[c].length > 0);
 
-  const champsInCost = groupedChamps[currentCost] || [];
-  champsInCost.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
+  availableCosts.forEach(cost => {
+    groupedChamps[cost].sort((a, b) => (a.name || "").localeCompare(b.name || ""));
+  });
 
   const normalizeSearchString = (str) => {
     return (str || "")
@@ -31,30 +30,8 @@ export default function CampeonesCoste({ champsList, selectedSalidasEarlyChampio
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', width: '100%', boxSizing: 'border-box' }}>
-      {/* Tabs and Search Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
-        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-          {availableCosts.map(cost => (
-            <button
-              key={cost}
-              type="button"
-              onClick={() => setActiveCost(cost)}
-              style={{
-                padding: '6px 12px',
-                background: currentCost === cost ? `var(--color-hex-cost-${cost})` : 'rgba(0,0,0,0.5)',
-                border: currentCost === cost ? '1px solid white' : '1px solid #444',
-                color: currentCost === cost ? 'white' : '#aaa',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                fontWeight: currentCost === cost ? 'bold' : 'normal',
-                transition: 'all 0.2s ease'
-              }}
-            >
-              Coste {cost}
-            </button>
-          ))}
-        </div>
-        
+      {/* Search Header */}
+      <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
         <div style={{ position: 'relative' }}>
           <input 
             type="text" 
@@ -127,48 +104,52 @@ export default function CampeonesCoste({ champsList, selectedSalidasEarlyChampio
         </div>
       </div>
 
-      {/* Champions Grid */}
-      <div className={style.filterButtonsContainerRow} style={{ minHeight: '120px', alignContent: 'flex-start' }}>
-        {champsInCost.map(champ => {
-          const isSelected = selectedSalidasEarlyChampions.some(c => c.apiName === champ.apiName);
-          
-          return (
-            <button
-              key={champ.apiName}
-              type="button"
-              className={`${style.filterOptionBox} ${isSelected ? style.filterOptionBoxActive : ''}`}
-              onClick={() => toggleSelectedSalidasEarlyChampion(champ)}
-              style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '8px 10px', minWidth: '70px', gap: '6px' }}
-            >
-              <div style={{ position: 'relative' }}>
-                {champ.icon && <img src={champ.icon} alt={champ.name} style={{ minWidth: '60px', minHeight: '60px', width: '60px', height: '60px', objectFit: 'contain', borderRadius: '4px', border: `3px solid var(--color-hex-cost-${champ.cost})`, boxSizing: 'border-box' }} />}
-                {champ.iconPequeno && (
-                  <img 
-                    src={champ.iconPequeno} 
-                    alt="condición" 
-                    style={{ 
-                      position: 'absolute', 
-                      top: '-4px', 
-                      right: '-4px', 
-                      width: '20px', 
-                      height: '20px', 
-                      borderRadius: '50%', 
-                      border: '1px solid white', 
-                      background: '#000',
-                      objectFit: 'contain'
-                    }} 
-                  />
-                )}
-              </div>
-              <span style={{ fontSize: '1rem', textAlign: 'center', lineHeight: '1.1' }}>{champ.name}</span>
-            </button>
-          );
-        })}
-        {champsInCost.length === 0 && (
-           <div style={{ width: '100%', textAlign: 'center', padding: '20px', color: '#888', fontStyle: 'italic' }}>
-             No hay campeones de este coste
-           </div>
-        )}
+      {/* Champions by Cost Rows */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        {availableCosts.map(cost => (
+          <div key={cost} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <h4 style={{ margin: 0, color: '#fff', fontSize: '1rem', borderBottom: `2px solid var(--color-hex-cost-${cost})`, paddingBottom: '4px', width: 'fit-content' }}>
+              Coste {cost}
+            </h4>
+            <div className={style.filterButtonsContainerRow} style={{ minHeight: '80px', alignContent: 'flex-start' }}>
+              {groupedChamps[cost].map(champ => {
+                const isSelected = selectedSalidasEarlyChampions.some(c => c.apiName === champ.apiName);
+                
+                return (
+                  <button
+                    key={champ.apiName}
+                    type="button"
+                    className={`${style.filterOptionBox} ${isSelected ? style.filterOptionBoxActive : ''}`}
+                    onClick={() => toggleSelectedSalidasEarlyChampion(champ)}
+                    style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '8px 10px', minWidth: '70px', gap: '6px' }}
+                  >
+                    <div style={{ position: 'relative' }}>
+                      {champ.icon && <img src={champ.icon} alt={champ.name} style={{ minWidth: '60px', minHeight: '60px', width: '60px', height: '60px', objectFit: 'contain', borderRadius: '4px', border: `3px solid var(--color-hex-cost-${champ.cost})`, boxSizing: 'border-box' }} />}
+                      {champ.iconPequeno && (
+                        <img 
+                          src={champ.iconPequeno} 
+                          alt="condición" 
+                          style={{ 
+                            position: 'absolute', 
+                            top: '-4px', 
+                            right: '-4px', 
+                            width: '20px', 
+                            height: '20px', 
+                            borderRadius: '50%', 
+                            border: '1px solid white', 
+                            background: '#000',
+                            objectFit: 'contain'
+                          }} 
+                        />
+                      )}
+                    </div>
+                    <span style={{ fontSize: '1rem', textAlign: 'center', lineHeight: '1.1' }}>{champ.name}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        ))}
       </div>
 
       {/* Selected Champions */}

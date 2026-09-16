@@ -1273,7 +1273,9 @@ export default function MasterPlanPage() {
         </fieldset>
         <fieldset className={`${style.filtersSection} ${style.cInstruction}`} style={{ flex:2, borderRadius: '8px', overflow: 'hidden' }}>
           <legend>Video Explicativo</legend>
-          <Youtube src="https://www.youtube.com/watch?v=9XgjkEpevZ8" />
+          <div style={{ alignContent: 'center', width: '100%', aspectRatio: '16/9' }}>
+            <Youtube src="https://www.youtube.com/watch?v=9XgjkEpevZ8" />
+          </div>
         </fieldset>
         <fieldset className={style.filtersSection} style={{ display: 'flex', gap: '15px', alignItems: 'center', flexWrap: 'wrap', flexDirection:"column", flex:1}}>
           <legend>Más Información</legend>
@@ -1341,7 +1343,8 @@ export default function MasterPlanPage() {
                 <div className={style.tabsMenu}>
                   <button type="button" onClick={() => setActiveEarlyTab('objetos')} className={`${style.tabButton} ${activeEarlyTab === 'objetos' ? style.tabButtonActive : ''}`}>Objetos / Items</button>
                   <button type="button" onClick={() => setActiveEarlyTab('aumentos')} className={`${style.tabButton} ${activeEarlyTab === 'aumentos' ? style.tabButtonActive : ''}`}>Aumentos 2-1</button>
-                  <button type="button" onClick={() => setActiveEarlyTab('campeones')} className={`${style.tabButton} ${activeEarlyTab === 'campeones' ? style.tabButtonActive : ''}`}>Campeones & Salidas</button>
+                  <button type="button" onClick={() => setActiveEarlyTab('campeones')} className={`${style.tabButton} ${activeEarlyTab === 'campeones' ? style.tabButtonActive : ''}`}>Campeones</button>
+                  <button type="button" onClick={() => setActiveEarlyTab('salidas')} className={`${style.tabButton} ${activeEarlyTab === 'salidas' ? style.tabButtonActive : ''}`}>Salidas</button>
                 </div>
                 <div className={style.tabContent}>
                   {activeEarlyTab !== 'aumentos' && (
