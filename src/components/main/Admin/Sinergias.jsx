@@ -84,6 +84,16 @@ const Sinergias = ({ sinergias, orientacion, show, version }) => {
             resolvedTraits.push(extraTraitObj);
           }
         }
+
+        // Si tiene sinergias extra (Khazix)
+        if (champ.sinergiasExtraKhazix && Array.isArray(champ.sinergiasExtraKhazix)) {
+          champ.sinergiasExtraKhazix.forEach(khazixTrait => {
+            const extraTraitObj = safeSinergiasData.find(t => t.apiName === khazixTrait || t.name === khazixTrait);
+            if (extraTraitObj) {
+              resolvedTraits.push(extraTraitObj);
+            }
+          });
+        }
       }
 
       boardData[index] = {
@@ -91,6 +101,7 @@ const Sinergias = ({ sinergias, orientacion, show, version }) => {
         traits: resolvedTraits,
         items: itemsData,
         extraSynergy: champ.sinergiaExtraMissFortune || null,
+        extraSynergyKhazix: champ.sinergiasExtraKhazix || null,
       };
     });
 

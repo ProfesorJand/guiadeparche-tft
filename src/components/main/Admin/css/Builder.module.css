@@ -311,4 +311,26 @@
     .estrellas3{
         font-size: x-small;
     }
-}@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+}
+
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+@keyframes showFirstGroup {
+  0%, 45% { opacity: 1; visibility: visible; }
+  50%, 95% { opacity: 0; visibility: hidden; }
+  100% { opacity: 1; visibility: visible; }
+}
+
+@keyframes showSecondGroup {
+  0%, 45% { opacity: 0; visibility: hidden; }
+  50%, 95% { opacity: 1; visibility: visible; }
+  100% { opacity: 0; visibility: hidden; }
+}
+
+.animateGroupA {
+  animation: showFirstGroup 4s infinite;
+}
+
+.animateGroupB {
+  animation: showSecondGroup 4s infinite;
+}

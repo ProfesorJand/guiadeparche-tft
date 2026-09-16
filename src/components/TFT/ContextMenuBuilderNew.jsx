@@ -25,13 +25,33 @@ const ContextMenuBuilderNew = ({
   if (champion && champion.apiName === "TFT17_MissFortune") {
     OPTIONS.splice(4, 0, ...extraOptions);
   }
+
+  // Regla especial para Khazix (Set 13)
+  const khazixOptions = [
+    { label: "Rapidfire", apiName: "DA_18_Rapidfire" },
+    { label: "Spellweaver", apiName: "DA_18_Spellweaver" },
+    { label: "Ravager", apiName: "DA_18_Slayer" },
+    { label: "Executioner", apiName: "DA_18_Executioner" }
+  ];
+
+  if (champion && champion.apiName === "tft18_khazix") {
+    const kOptions = khazixOptions.map(opt => {
+      const isSelected = champion.extraSynergyKhazix?.includes(opt.apiName);
+      return isSelected ? `Quitar ${opt.label}` : `Añadir ${opt.label}`;
+    });
+    OPTIONS.splice(4, 0, ...kOptions);
+  }
   
   const hasEspinaNegra = champion && champion.extraSynergy === "Espina Negra";
   OPTIONS.push(hasEspinaNegra ? "Quitar Espina Negra" : "Espina Negra");
 
+  const hasRiftbeast = champion && champion.isRiftbeast;
+  OPTIONS.push(hasRiftbeast ? "Quitar Riftbeast" : "Añadir Riftbeast");
+
   const handleMenu = (opcion) => {
     const newBoard = { ...boardData };
-    let currentChampion = newBoard[hexIndex] ? { ...newBoard[hexIndex] } : { apiName: null, items: [], traits: [] };
+    let currentChampion = newBoard[hexIndex] ? { ...newBoard[hexIndex] } : { apiName: null, items: [], traits: [], extraSynergyKhazix: [] };
+    if (!currentChampion.extraSynergyKhazix) currentChampion.extraSynergyKhazix = [];
 
     switch (opcion) {
       case "★ 4 stars":
@@ -64,8 +84,27 @@ const ContextMenuBuilderNew = ({
            currentChampion.extraSynergy = null;
         }
         break;
+      case "Añadir Riftbeast":
+        currentChampion.isRiftbeast = true;
+        break;
+      case "Quitar Riftbeast":
+        currentChampion.isRiftbeast = false;
+        break;
       default:
-        // Manejar selecciones de sinergias extras
+        if (opcion.startsWith("Añadir ") || opcion.startsWith("Quitar ")) {
+          const label = opcion.replace("Añadir ", "").replace("Quitar ", "");
+          const khazixOpt = khazixOptions.find(opt => opt.label === label);
+          if (khazixOpt) {
+            if (opcion.startsWith("Añadir ")) {
+              currentChampion.extraSynergyKhazix.push(khazixOpt.apiName);
+            } else {
+              currentChampion.extraSynergyKhazix = currentChampion.extraSynergyKhazix.filter(x => x !== khazixOpt.apiName);
+            }
+            break;
+          }
+        }
+
+        // Manejar selecciones de sinergias extras (Miss Fortune)
         const extraTrait = findExtraOptions.find((t) => t.name === opcion);
         if (extraTrait) {
           if (currentChampion.extraSynergy === extraTrait.apiName || currentChampion.extraSynergy === extraTrait.name) {
