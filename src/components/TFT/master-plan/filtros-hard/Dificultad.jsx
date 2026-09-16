@@ -4,7 +4,7 @@ export default function Dificultad({ dificultades, selectedDifficulty, toggleArr
   return (
     <div className={style.filterInputGroup}>
       <label>Dificultad</label>
-      <div className={style.filterButtonsContainer}>
+      <div className={style.filterButtonsContainerRow}>
         {dificultades?.Es?.map(d => (
           <button
             key={d}

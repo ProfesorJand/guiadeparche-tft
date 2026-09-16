@@ -1226,7 +1226,7 @@ export default function MasterPlanPage() {
     });
     return highlighted;
   }, [filteredCompos, hasEarlyFiltersActive]);
- console.log({user})
+
   return (
     <div id={"masterPlanContainer"} className={style.masterPlanContainer}>
       <fieldset className={`${style.filtersSection} ${style.cInstruction}`}>
@@ -1253,7 +1253,7 @@ export default function MasterPlanPage() {
                     Selecciona los aumentos que tienes. Si obtienes algún aumento que te dé algún item, emblema o artefacto, vuelve a la pestaña de item y añádelo.
                   </li>
                   <li>
-                    Selecciona los campeones que tienes para poder brindarte mejores resultados.
+                    (OPCIONAL) Selecciona los campeones que tienes para estudiar posibles salidas.
                   </li>
                 </ul>
               </li>
@@ -1264,7 +1264,7 @@ export default function MasterPlanPage() {
                     Los primeros que te aparecen serán tu mejor opción para arrancar la partida. Selecciona 1 para abrir más información.
                   </li>
                   <li>
-                    La infografía te dará la información necesaria y útil para que puedas maximizar tus probabilidades de victoria.
+                    La infografía te dará la información útil para que puedas maximizar tus probabilidades de victoria.
                   </li>
                 </ul>
               </li>

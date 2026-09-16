@@ -379,6 +379,8 @@ const InfografiaMPTFT = ({comp = {}, gruposSalidasEarly = []}) => {
                 .flatMap(data => data?.apiNameItemsDelCampeon || []);
               const uniqueItems = [...new Set(allItemApiNames)];
 
+              if (uniqueItems.length === 0) return null;
+
               return (
                 <div key={index} className={style.cBestItemCompItem}>
                   <span className={style.tBox}>{key}</span>

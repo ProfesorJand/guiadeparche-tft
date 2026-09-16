@@ -4,7 +4,7 @@ export default function Categorias({ categorias, selectedCategory, toggleArrayFi
   return (
     <div className={style.filterInputGroup}>
       <label>Categorías</label>
-      <div className={style.filterButtonsContainer}>
+      <div className={style.filterButtonsContainerRow}>
         {categorias?.Es?.map(cat => (
           <button
             key={cat}

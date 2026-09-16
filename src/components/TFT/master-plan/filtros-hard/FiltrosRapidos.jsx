@@ -13,7 +13,7 @@ export default function FiltrosRapidos({
   return (
     <div className={style.filterInputGroup}>
       <label>Filtros Rápidos</label>
-      <div className={style.filterButtonsContainer}>
+      <div className={style.filterButtonsContainerRow}>
         <button
           type="button"
           className={`${style.filterOptionBox} ${((selectedTier.includes("S") && selectedTier.includes("A") && selectedDifficulty.includes("Facil"))) ? '' : style.grayWhenInactive}`}
