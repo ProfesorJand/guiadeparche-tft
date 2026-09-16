@@ -4,6 +4,7 @@ import Categorias from './Categorias';
 import Dificultad from './Dificultad';
 import TipoDeDano from './TipoDeDano';
 import FiltrosRapidos from './FiltrosRapidos';
+import Youtube from "@components/youtube/Youtube.jsx";
 
 export default function FiltroHardWrapper({
   tiers, selectedTier, setSelectedTier,
