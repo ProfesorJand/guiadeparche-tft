@@ -3,21 +3,157 @@ import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
 import CardsCompos from "@components/TFT/CardsCompos.jsx";
 import Youtube from "@components/youtube/Youtube.jsx";
 import { setNumberPBE, setNumberLatest } from "@stores/dataTFT";
-import { dataTFTTraits } from "@stores/dataTFT";
+import { dataTFTTraits, dataTFTChampions, dataTFTAllItems } from "@stores/dataTFT";
 import { getLocalTftImage } from "@utils/images";
 import ImgTrait from "../ImgTrait.jsx";
 
 const { data, allComps, lastUpdate, version, allChampions } = Astro.props;
-console.log({data})
-// Filtrar comps: comprobar si la sinergia está activa en la compo.
-const relatedComps = allComps.filter(comp => {
-  if (comp.sinergias && Array.isArray(comp.sinergias)) {
-    return comp.sinergias.some(s => s.apiName === data.apiName || s.name === data.name);
+
+const safeGlobalChampions = dataTFTChampions.get() || [];
+const safeGlobalItems = dataTFTAllItems.get() || [];
+const safeSinergiasData = dataTFTTraits.get() || [];
+
+const doubleTraitChampions = {
+  "tft18_lux_coven": ["DA_18_Coven"],
+  "tft18_lux_inferno":["DA_18_Inferno"],
+  "tft18_lux_blackthorn":["DA_18_Blackthorn"],
+  "tft18_lux_blossom":["DA_18_Blossom"],
+  "tft18_lux_elderwood":["DA_18_Elderwood"],
+  "tft18_lux_fae":["DA_18_Fae"],
+  "tft18_lux_lunar":["DA_18_Lunar"],
+  "tft18_lux_primal":["DA_Primal18"],
+  "tft18_lux_solar":["DA_18_Solar"],
+  "tft18_elderdragon":["DA_Riftbeast18"],
+};
+
+function getActiveSynergies(tablero) {
+  const calculatedSinergias = {};
+  const processedChampionTraits = new Set();
+  
+  if (Array.isArray(tablero)) {
+    const boardData = {};
+    for (let index = 0; index < tablero.length; index++) {
+      const champ = tablero[index];
+      if (champ) {
+        const isEspinaNegra = champ.sinergiaExtraMissFortune === "Espina Negra";
+        const champData = safeGlobalChampions.find(c => c.apiName === champ?.apiNameCampeon);
+        
+        if (champData || isEspinaNegra) {
+          let itemsData = [];
+          if (champData) {
+            const rawItems = champ.apiNameItemsDelCampeon || [];
+            for (let j = 0; j < rawItems.length; j++) {
+              const apiNameItem = rawItems[j];
+              if (apiNameItem) {
+                const apiNameStr = typeof apiNameItem === 'object' ? apiNameItem.apiName : apiNameItem;
+                const itemData = safeGlobalItems.find(i => i.apiName === apiNameStr);
+                if (itemData) {
+                  let traitExtra = null;
+                  if (itemData.incompatibleTraits && itemData.incompatibleTraits.length > 0) {
+                    traitExtra = safeSinergiasData.find((t) => t.apiName === itemData.incompatibleTraits[0]);
+                  }
+                  itemsData.push({
+                    apiName: itemData.apiName || itemData.name,
+                    traitExtra
+                  });
+                }
+              }
+            }
+          }
+
+          let resolvedTraits = [];
+          if (champData) {
+            const rawTraits = champData.traits || [];
+            for (let k = 0; k < rawTraits.length; k++) {
+              const traitName = rawTraits[k];
+              const traitObj = safeSinergiasData.find(t => t.name === traitName || t.apiName === traitName);
+              resolvedTraits.push(traitObj ? traitObj : { apiName: traitName, name: traitName });
+            }
+
+            if (champ.sinergiaExtraMissFortune && champ.sinergiaExtraMissFortune !== "Espina Negra") {
+              resolvedTraits = resolvedTraits.filter(t => !t.apiName.toLowerCase().includes("undetermined"));
+              const extraTraitObj = safeSinergiasData.find(t => t.apiName === champ.sinergiaExtraMissFortune || t.name === champ.sinergiaExtraMissFortune);
+              if (extraTraitObj) {
+                resolvedTraits.push(extraTraitObj);
+              }
+            }
+
+            if (champ.sinergiasExtraKhazix && Array.isArray(champ.sinergiasExtraKhazix)) {
+              champ.sinergiasExtraKhazix.forEach(khazixTrait => {
+                const extraTraitObj = safeSinergiasData.find(t => t.apiName === khazixTrait || t.name === khazixTrait);
+                if (extraTraitObj) {
+                  resolvedTraits.push(extraTraitObj);
+                }
+              });
+            }
+          }
+
+          boardData[index] = {
+            apiName: champData ? champData.apiName : null,
+            traits: resolvedTraits,
+            items: itemsData,
+            extraSynergy: champ.sinergiaExtraMissFortune || null,
+            extraSynergyKhazix: champ.sinergiasExtraKhazix || null,
+          };
+        }
+      }
+    }
+
+    const boardValues = Object.values(boardData);
+    for (let idx = 0; idx < boardValues.length; idx++) {
+      const champ = boardValues[idx];
+      if (champ.apiName) {
+        const collectedTraits = new Set();
+        
+        const traitsList = champ.traits || [];
+        for (let tIdx = 0; tIdx < traitsList.length; tIdx++) {
+          const trait = traitsList[tIdx];
+          collectedTraits.add(trait.apiName);
+          const uniqueKey = `${champ.apiName}_${trait.apiName}`;
+          if (!processedChampionTraits.has(uniqueKey)) {
+            processedChampionTraits.add(uniqueKey);
+            let isDouble = false;
+            if (doubleTraitChampions[champ.apiName]) {
+              isDouble = doubleTraitChampions[champ.apiName].includes(trait.apiName);
+            }
+            const countToAdd = isDouble ? 2 : 1;
+            calculatedSinergias[trait.apiName] = (calculatedSinergias[trait.apiName] || 0) + countToAdd;
+          }
+        }
+
+        if (champ.items) {
+          for (let iIdx = 0; iIdx < champ.items.length; iIdx++) {
+            const item = champ.items[iIdx];
+            if (item.traitExtra) {
+              if (!collectedTraits.has(item.traitExtra.apiName)) {
+                collectedTraits.add(item.traitExtra.apiName);
+                calculatedSinergias[item.traitExtra.apiName] = (calculatedSinergias[item.traitExtra.apiName] || 0) + 1;
+              }
+            }
+          }
+        }
+      }
+    }
   }
+  return calculatedSinergias;
+}
+
+const currentTraitData = safeSinergiasData.find(t => t.apiName === data.apiName) || {};
+const minRequired = currentTraitData.effects && currentTraitData.effects.length > 0 
+  ? Math.min(...currentTraitData.effects.map(e => e.minUnits)) 
+  : 999;
+
+const relatedComps = allComps.filter(comp => {
   if (comp.posicionamiento) {
     let pos = comp.posicionamiento;
     if (typeof pos === 'string') {
       try { pos = JSON.parse(pos); } catch(e) { return false; }
+    }
+    const tablero = pos[0]?.tablero;
+    if (tablero) {
+      const activeSynergies = getActiveSynergies(tablero);
+      const traitCount = activeSynergies[data.apiName] || 0;
+      return traitCount >= minRequired;
     }
   }
   return false;
@@ -43,13 +179,17 @@ if (typeof data.effects === 'string') {
 
 // Obtener datos crudos de la sinergia (para saber los niveles requeridos y estilos)
 const traits = dataTFTTraits.get();
-const currentTraitData = traits.find(t => t.apiName === data.apiName) || {};
 console.log("DEBUG currentTraitData.effects: ", currentTraitData.effects);
 
 // Campeones de la sinergia
-const championsInTrait = allChampions?.filter(c => 
-c.traits?.includes(data.apiName) || c.traits?.includes(data.name)) 
-|| [];
+const championsInTrait = (allChampions?.filter(c => 
+  c.traits?.includes(data.apiName) || c.traits?.includes(data.name)) 
+  || []).sort((a, b) => {
+    if (a.cost !== b.cost) {
+      return a.cost - b.cost;
+    }
+    return a.name.localeCompare(b.name);
+  });
 
 const styleMapping = {
   1: "hex-bronze.webp",
@@ -159,8 +299,6 @@ const resolvedIcon = data.icon.startsWith("http") ? data.icon : getLocalTftImage
         </div>
       )}
     </div>
-  </div>
-
   <div class="dynamic-sections">
     {parsedSecciones.length > 0 && parsedSecciones.map(sec => (
       <div class="section-block">
@@ -179,6 +317,7 @@ const resolvedIcon = data.icon.startsWith("http") ? data.icon : getLocalTftImage
             <CardsCompos
               comp={comp}
               numeracion={index + 1}
+              expandInline={true}
               client:load
             />
           </article>
@@ -186,6 +325,8 @@ const resolvedIcon = data.icon.startsWith("http") ? data.icon : getLocalTftImage
       </div>
     </div>
   )}
+  </div>
+
 </LayoutMaxWidth>
 
 <style>
@@ -193,6 +334,7 @@ const resolvedIcon = data.icon.startsWith("http") ? data.icon : getLocalTftImage
     width: 100%;
     margin-bottom: 30px;
     max-width: 1200px;
+    align-self: center;
   }
   .two-columns {
     display: flex;

@@ -16,11 +16,12 @@ const EXCLUDED_API_NAMES = [
   "TFT15_ShenSword"
 ];
 
-const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = false, isIndividual = false }) => {
+const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = false, isIndividual = false, expandInline = false }) => {
   const currentVersion = useStore(versionTFT);
   const codeOfChampions = useStore(teamPlannerCode);
   const championsTFT = useStore(dataTFTChampions);
   const allItemsTFT = useStore(dataTFTAllItems);
+  const [localIsActive, setLocalIsActive] = useState(false);
 
   function copyToClipboard(e, codigo) {
     e.preventDefault();
@@ -193,6 +194,11 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
 
   const handleToggle = async (e) => {
     e.preventDefault();
+
+    if (expandInline) {
+      setLocalIsActive(!localIsActive);
+      return;
+    }
 
     try {
       if (containerRef.current) {
@@ -453,18 +459,21 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
                     Copiar Código
                   </button> */}
                   <a
-                    href={isActive ? "/tft/meta-comps-tier-list-teamfight-tactics" : `/tft/meta-comps-tier-list-teamfight-tactics/${comp.urlSEO}`}
+                    href={expandInline ? "#" : (isActive ? "/tft/meta-comps-tier-list-teamfight-tactics" : `/tft/meta-comps-tier-list-teamfight-tactics/${comp.urlSEO}`)}
                     className={style.buttonLink}
                     onClick={handleToggle}
                   >
-                    {isActive ? "TFT Meta ⬆" : `${comp?.urlSEO?.replace("-", " ")?.toUpperCase()} TFT ⬇`}
+                    {expandInline 
+                      ? (localIsActive ? "OCULTAR ⬆" : `${comp?.urlSEO?.replace("-", " ")?.toUpperCase()} TFT ⬇`)
+                      : (isActive ? "TFT Meta ⬆" : `${comp?.urlSEO?.replace("-", " ")?.toUpperCase()} TFT ⬇`)
+                    }
                   </a>
                 </div>
               )
             }
           </div>}
       </div>
-      {(isActive || openForEdit) && (
+      {(isActive || openForEdit || localIsActive) && (
         <div className={style.detailsWrapper}>
           {/* <GuiaFreeTFTMeta comp={composTestB?.S?.[0]} isInfografia={false} edit={false} /> */}
           <GuiaFreeTFTMeta comp={comp} isInfografia={isInfografia} edit={edit} isIndividual={isIndividual} />
