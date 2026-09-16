@@ -73,7 +73,8 @@ export default function GruposSalidas({
           if (selectedSalidasEarlyComponents.length > 0) {
             const dbItem = allItems.find(i => i.apiName === apiName);
             if (dbItem?.composition && dbItem.composition.length > 0) {
-              if (dbItem.composition.every(comp => selectedSalidasEarlyComponents.includes(comp))) {
+              const hasDuplicates = new Set(dbItem.composition).size !== dbItem.composition.length;
+              if (!hasDuplicates && dbItem.composition.every(comp => selectedSalidasEarlyComponents.includes(comp))) {
                 uniqueCraftedItems.add(apiName);
               }
             } else {
@@ -90,6 +91,10 @@ export default function GruposSalidas({
           }
         };
         (c.itemsPrio || []).forEach(prioItem => {
+          const apiName = typeof prioItem === 'object' ? prioItem.apiName : prioItem;
+          checkItem(apiName);
+        });
+        (c.itemsPrioTanque || []).forEach(prioItem => {
           const apiName = typeof prioItem === 'object' ? prioItem.apiName : prioItem;
           checkItem(apiName);
         });
@@ -158,7 +163,8 @@ export default function GruposSalidas({
                         if (selectedSalidasEarlyComponents.length > 0) {
                           const dbItem = allItems.find(i => i.apiName === apiName);
                           if (dbItem?.composition && dbItem.composition.length > 0) {
-                            if (dbItem.composition.every(comp => selectedSalidasEarlyComponents.includes(comp))) {
+                            const hasDuplicates = new Set(dbItem.composition).size !== dbItem.composition.length;
+                            if (!hasDuplicates && dbItem.composition.every(comp => selectedSalidasEarlyComponents.includes(comp))) {
                               addedByComponent = true;
                             }
                           } else {
@@ -182,6 +188,11 @@ export default function GruposSalidas({
                       };
 
                       (c.itemsPrio || []).forEach(prioItem => {
+                        const apiName = typeof prioItem === 'object' ? prioItem.apiName : prioItem;
+                        checkItem(apiName);
+                      });
+
+                      (c.itemsPrioTanque || []).forEach(prioItem => {
                         const apiName = typeof prioItem === 'object' ? prioItem.apiName : prioItem;
                         checkItem(apiName);
                       });

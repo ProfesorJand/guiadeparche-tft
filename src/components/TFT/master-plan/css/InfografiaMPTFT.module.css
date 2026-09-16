@@ -379,6 +379,7 @@
   width: 100%;
   flex-direction: row;
   gap:var(--gapInside);
+  flex-wrap: wrap;
 }
 
 .cardCampeonBIS{
@@ -529,6 +530,9 @@
   }
   .cBestItemsInfo{
     flex-wrap: wrap;
+  }
+  .cBestItemComp{
+    display: none;
   }
 }
 
