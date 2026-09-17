@@ -285,11 +285,12 @@
   grid-template-columns: repeat(5, 1fr);
   gap: 5px;
   width: 100%;
+  align-content: start;
 }
 
 .containerItemPrio{
   display:flex;
-  width: calc((100% - (5px * 3)) / 4);
+  width: 100%;
   aspect-ratio: 1/1;
   position: relative; /* Necesario para posicionar el brillo */
   box-sizing: border-box;
