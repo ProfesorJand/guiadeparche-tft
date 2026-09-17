@@ -58,17 +58,20 @@ const absoluteSnippetImgUrl = new URL(resolvedSnippetImgUrl, Astro.site || "http
     <!-- google ads dynamically loaded (no ads for admin) -->
     <script is:inline>
       (function() {
-        var isAdmin = false;
+        var hideAds = false;
         try {
           var savedUser = localStorage.getItem('gp_user');
           if (savedUser) {
-            isAdmin = !!JSON.parse(savedUser).isAdmin;
+            var parsed = JSON.parse(savedUser);
+            var isAdmin = !!parsed.isAdmin;
+            var isMasterPlan = !!(parsed.master_plan == 1);
+            hideAds = isAdmin || isMasterPlan;
           } else {
-            isAdmin = localStorage.getItem('gp_admin') === 'true';
+            hideAds = localStorage.getItem('gp_admin') === 'true';
           }
         } catch (e) {}
 
-        if (!isAdmin) {
+        if (!hideAds) {
           // google ads mobile
           var ampAdScript = document.createElement('script');
           ampAdScript.async = true;
