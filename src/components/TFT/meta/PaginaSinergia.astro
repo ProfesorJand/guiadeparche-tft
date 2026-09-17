@@ -230,7 +230,7 @@ function getChampionCostBorder(cost) {
 }
 
 const resolvedIcon = data.icon.startsWith("http") ? data.icon : getLocalTftImage(data.icon, 'traits', data.tft_set || "18");
-
+console.log({data})
 ---
 
 <LayoutMaxWidth
@@ -246,7 +246,7 @@ const resolvedIcon = data.icon.startsWith("http") ? data.icon : getLocalTftImage
           <div class="trait-icon-bg">
             <ImgTrait trait={data} version={data.tft_set || "18"} showName={false} />
           </div>
-          <h1>Sinergia {data.name} TFT SET {data.tft_set || "18"}</h1>
+          <h1>TFT {data.titulo_seo} : Meta Comps & Builds - Set {data.tft_set || "18"}</h1>
         </div>
         
         {data.desc_trait && (

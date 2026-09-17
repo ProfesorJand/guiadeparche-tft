@@ -39,7 +39,8 @@ const AdminCrearPaginaMetaTFT = () => {
     url_seo: "",
     secciones: [], // Array of { titulo: "", descripcion: "" }
     desc_trait: "",
-    effects: {} // Objeto mapeando minUnits a descripción { "2": "Daño mágico", "4": "..." }
+    effects: {}, // Objeto mapeando minUnits a descripción { "2": "Daño mágico", "4": "..." }
+    tft_set: ""
   });
 
   const [status, setStatus] = useState({ type: "", message: "" });
@@ -112,7 +113,8 @@ const AdminCrearPaginaMetaTFT = () => {
       url_seo: entity.url_seo || "",
       secciones: parsedSecciones,
       desc_trait: entity.desc_trait || "",
-      effects: parsedEffects
+      effects: parsedEffects,
+      tft_set: entity.tft_set || ""
     });
     setSearchQuery("");
     setIsSearching(false);
@@ -181,7 +183,7 @@ const AdminCrearPaginaMetaTFT = () => {
       id: null,
       name: "", apiName: "", tileIcon: "", icon: "", squareIcon: "", cost: "", role: "", traits: [],
       titulo_seo: "", descripcion_seo: "", video_url: "", url_seo: "", secciones: [],
-      desc_trait: "", effects: []
+      desc_trait: "", effects: [], tft_set: ""
     });
   };
 
@@ -196,7 +198,7 @@ const AdminCrearPaginaMetaTFT = () => {
         ...formData,
         effects: formData.effects, // PHP ya lo convierte con json_encode, no necesitamos stringificar aquí
         cost: formData.cost ? Number(formData.cost) : null,
-        tft_set: targetSet,
+        tft_set: formData.tft_set ? formData.tft_set : targetSet,
         tableName: getTableName()
       };
 
@@ -408,6 +410,17 @@ const AdminCrearPaginaMetaTFT = () => {
             <h3>Configuración de la Sinergia</h3>
             
             <div className={style.formGroup}>
+              <label>Set de la Sinergia (tft_set)</label>
+              <input 
+                type="text"
+                className={style.input} 
+                value={formData.tft_set} 
+                onChange={e => setFormData({...formData, tft_set: e.target.value})} 
+                placeholder={`Ejemplo: ${targetSet}`}
+              />
+            </div>
+
+            <div className={style.formGroup}>
               <label>Descripción de la Sinergia (desc_trait)</label>
               <textarea 
                 className={style.input} 
@@ -457,8 +470,8 @@ const AdminCrearPaginaMetaTFT = () => {
                             <option value={1}>Bronce (1)</option>
                             <option value={2}>Bronce (2)</option>
                             <option value={3}>Plata (3)</option>
-                            <option value={5}>Oro (5)</option>
-                            <option value={4}>Prismático (4)</option>
+                            <option value={4}>Oro (5)</option>
+                            <option value={5}>Prismático (4)</option>
                             <option value={6}>Prismático (6)</option>
                             <option value={7}>Prismático (7)</option>
                           </select>
