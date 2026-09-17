@@ -195,9 +195,9 @@ const styleMapping = {
   1: "hex-bronze.webp",
   2: "hex-bronze.webp",
   3: "hex-silver.webp",
-  4: "hex-prismatic.webp",
+  4: "hex-gold.webp", // En el set actual 4 es Oro
   5: "hex-gold.webp",
-  6: "hex-prismatic.webp",
+  6: "hex-prismatic.webp", // En el set actual 6 es Prismático
   7: "hex-prismatic.webp",
 };
 
@@ -239,21 +239,30 @@ console.log({data})
   snippetImgUrl={resolvedIcon}
 >
   <div class="header-section">
-    <div class="two-columns">
-      
-      <div id="container-info" class="trait-main-card">
+    <div class="trait-main-card two-columns">
+      <div class={`container-info-left ${!data.video_url ? 'full-width' : ''}`}>
         <div class="trait-header">
           <div class="trait-icon-bg">
             <ImgTrait trait={data} version={data.tft_set || "18"} showName={false} />
           </div>
           <h1>TFT {data.titulo_seo} : Meta Comps & Builds - Set {data.tft_set || "18"}</h1>
         </div>
-        
         {data.desc_trait && (
           <div class="trait-desc" set:html={data.desc_trait.replace(/\n/g, '<br />')} />
         )}
-
-        <div class="trait-effects">
+      </div>
+      {data.video_url && (
+        <>
+          <div class="vertical-divider"></div>
+          <div class="container-info-video">
+            <Youtube src={data.video_url} client:load />
+          </div>
+        </>
+      )}
+    </div>
+    <div class="trait-main-card two-columns">
+        <div class="trait-effects container-info-left">
+          <h2>¿Qué hace el rasgo {data.titulo_seo} en TFT?</h2>
           {currentTraitData.effects?.map((effect, idx) => (
             <div class="effect-row" key={idx}>
               <div class="effect-badge" style={checkColor(styleMapping[effect.style])}>
@@ -265,12 +274,18 @@ console.log({data})
             </div>
           ))}
         </div>
+        
+        <div class="vertical-divider"></div>
 
-        <div class="trait-champions">
+        <div class="trait-champions container-info-right">
+          <h2>Campeones de {data.titulo_seo} en TFT Set {data.tft_set}</h2>
+          <p>Estos son todos los campeones que forman parte del rasgo {data.titulo_seo} en TFT Set {data.tft_set}. Puedes seleccionar cada campeón para consultar sus habilidades, objetos recomendados y las composiciones en las que aparece</p>
+          <div class="list-champions">
           {championsInTrait.map(c => {
             const tileIcon = c.tileIcon ? getLocalTftImage(c.tileIcon, 'champions/tileIcon') : "";
+            const urlName = c.name.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
             return (
-              <div class="champion-hex-container">
+              <a href={`/tft/meta-comps-tier-list-teamfight-tactics/${urlName}`} class="champion-hex-container" style="text-decoration: none; color: inherit;">
                 <div class="champion-hex-shape" style={`background-color: ${getChampionCostBorder(c.cost)};`}>
                   <img src={tileIcon} alt={c.name} />
                 </div>
@@ -287,30 +302,24 @@ console.log({data})
                     )
                   })}
                 </div>
-              </div>
+              </a>
             )
           })}
-        </div>
-      </div>
-
-      {data.video_url && (
-        <div class="container-video">
-          <Youtube src={data.video_url} client:load />
-        </div>
-      )}
+          </div>
     </div>
-  <div class="dynamic-sections">
-    {parsedSecciones.length > 0 && parsedSecciones.map(sec => (
+
+    </div>
+    
+  {parsedSecciones.length > 0 && parsedSecciones.map(sec => (
       <div class="section-block">
         <h2>{sec.titulo}</h2>
         <div class="section-content" set:html={sec.descripcion} />
       </div>
     ))}
-  </div>
 
   {relatedComps.length > 0 && (
     <div class="related-comps-section">
-      <h2 style="margin-top: 40px; margin-bottom: 20px;">Mejores Composiciones de {data.name}</h2>
+      <h2>Mejores Composiciones de {data.name}</h2>
       <div class="comps-grid">
         {relatedComps.map((comp, index) => (
           <article class="comp-card" style="margin-bottom: 20px;">
@@ -331,23 +340,37 @@ console.log({data})
 
 <style>
   .header-section {
+    display: flex;
+    flex-direction: column;
     width: 100%;
     margin-bottom: 30px;
     max-width: 1200px;
     align-self: center;
+    gap:15px;
   }
   .two-columns {
     display: flex;
     flex-direction: row;
-    gap: 2rem;
+    gap: 15px;
     justify-content: space-between;
     align-items: flex-start;
   }
-  #container-info {
+  .container-info-left {
     width: 60%;
   }
-  .container-video {
+  .full-width {
+    width: 100% !important;
+  }
+  .container-info-right {
     width: 40%;
+  }
+  .container-info-video {
+    width: 40%;
+  }
+  .vertical-divider {
+    width: 1px;
+    background-color: rgba(255, 255, 255, 0.2);
+    align-self: stretch;
   }
 
   .trait-main-card {
@@ -389,14 +412,12 @@ console.log({data})
     color: #e5e7eb;
     font-size: 1rem;
     line-height: 1.6;
-    margin-bottom: 30px;
   }
 
   .trait-effects {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    margin-bottom: 30px;
   }
   .effect-row {
     display: flex;
@@ -425,8 +446,17 @@ console.log({data})
   .trait-champions {
     display: flex;
     flex-wrap: wrap;
+    flex-direction: column;
+    gap:15px;
+
+  }
+  .list-champions{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-self: center;
     gap: 20px;
-    margin-top: 30px;
+    margin-top:10px;
   }
 
   /* Hexágono de campeones (parecido a Image 4) */
@@ -507,13 +537,26 @@ console.log({data})
     color: #e5e7eb;
     line-height: 1.6;
   }
+  p{
+    margin-block-start:0;
+    margin-block-end:0;
+  }
+  h2{
+    margin-block-start:0;
+    margin-block-end:0;
+  }
   
   @media (max-width: 768px) {
     .two-columns {
       flex-direction: column;
     }
-    #container-info, .container-video {
+    .container-info-left, .container-info-right, .container-info-video {
       width: 100%;
+    }
+    .vertical-divider {
+      width: 100%;
+      height: 1px;
+      margin: 10px 0;
     }
   }
 </style>
