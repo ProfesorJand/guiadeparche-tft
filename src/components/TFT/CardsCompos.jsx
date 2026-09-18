@@ -331,8 +331,8 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
               {isIndividual && <h2 style={isDownloading ? { fontSize: '40px' } : {}}>
                 {comp?.nombre}
               </h2>}
-              {!isIndividual && <h3 style={isDownloading ? { fontSize: '40px' } : {}}>
-                {numeracion ? numeracion +". ": ""}{comp?.nombre}
+              {!isIndividual && <h3 style={isDownloading ? { fontSize: '40px' } : {}} >
+                {(!isDownloading && numeracion) ? numeracion +". ": ""}{comp?.nombre}
               </h3>}
             </div>
 
