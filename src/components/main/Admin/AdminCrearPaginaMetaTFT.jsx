@@ -468,12 +468,9 @@ const AdminCrearPaginaMetaTFT = () => {
                             title="Style (Color)"
                           >
                             <option value={1}>Bronce (1)</option>
-                            <option value={2}>Bronce (2)</option>
                             <option value={3}>Plata (3)</option>
-                            <option value={4}>Oro (5)</option>
-                            <option value={5}>Prismático (4)</option>
+                            <option value={5}>Oro (5)</option>
                             <option value={6}>Prismático (6)</option>
-                            <option value={7}>Prismático (7)</option>
                           </select>
                         </div>
                         <textarea 

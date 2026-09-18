@@ -8,7 +8,6 @@ import { getLocalTftImage } from "@utils/images";
 import ImgTrait from "../ImgTrait.jsx";
 
 const { data, allComps, lastUpdate, version, allChampions } = Astro.props;
-
 const safeGlobalChampions = dataTFTChampions.get() || [];
 const safeGlobalItems = dataTFTAllItems.get() || [];
 const safeSinergiasData = dataTFTTraits.get() || [];
@@ -193,19 +192,16 @@ const championsInTrait = (allChampions?.filter(c =>
 
 const styleMapping = {
   1: "hex-bronze.webp",
-  2: "hex-bronze.webp",
   3: "hex-silver.webp",
-  4: "hex-gold.webp", // En el set actual 4 es Oro
   5: "hex-gold.webp",
-  6: "hex-prismatic.webp", // En el set actual 6 es Prismático
-  7: "hex-prismatic.webp",
+  6: "hex-prismatic.webp",
 };
 
 const colorHex = {
   bronze: "#a16f44",
   silver: "#909090",
   gold: "#b8860b", // un dorado más oscuro
-  prismatic: { backgroundImage: "url(https://raw.communitydragon.org/latest/game/assets/maps/particles/tft/hex-prismatic.webp)", backgroundSize: "125%", backgroundPosition: "center" },
+  prismatic: {}, // El estilo prismático se maneja por la clase CSS animada
   default: "#333333"
 };
 
@@ -265,7 +261,7 @@ console.log({data})
           <h2>¿Qué hace el rasgo {data.titulo_seo} en TFT?</h2>
           {currentTraitData.effects?.map((effect, idx) => (
             <div class="effect-row" key={idx}>
-              <div class="effect-badge" style={checkColor(styleMapping[effect.style])}>
+              <div class={`effect-badge ${styleMapping[effect.style] === 'hex-prismatic.webp' ? 'prismatic-animated' : ''}`} style={styleMapping[effect.style] !== 'hex-prismatic.webp' ? checkColor(styleMapping[effect.style]) : {}}>
                 {effect.minUnits}
               </div>
               <div class="effect-text">
@@ -436,11 +432,27 @@ console.log({data})
     border-radius: 4px;
     flex-shrink: 0;
     border: 1px solid rgba(255,255,255,0.2);
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
   }
   .effect-text {
     color: #e5e7eb;
     font-size: 0.95rem;
     line-height: 1.5;
+  }
+
+  @keyframes prismaticShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .prismatic-animated {
+    background: linear-gradient(135deg, #00f2fe, #4facfe, #f093fb, #f5576c, #00f2fe);
+    background-size: 300% 300%;
+    animation: prismaticShift 4s ease infinite;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+    border: 1px solid rgba(255, 255, 255, 0.6);
   }
 
   .trait-champions {
