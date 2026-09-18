@@ -717,6 +717,9 @@
   width:100%;
   position:relative;
 }
+:global(.isDownloadingCapture) .panelControlLogos{
+  flex-direction: unset;
+}
 .controlesLogos{
   display:flex;
   flex-direction: row;
