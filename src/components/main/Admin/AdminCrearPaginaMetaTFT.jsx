@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import style from "./css/AdminCrearPaginaMetaTFT.module.css";
 import { useStore } from "@nanostores/react";
 import { dataTFTTraits, versionTFT, setNumberLatest, setNumberPBE, swapVersionTFT } from "@stores/dataTFT";
+import Items from "./Items";
+import ImgItem from "../../TFT/ImgItem";
 
 const ROLES = [
   "HFighter", "APTank", "APReaper", "APFighter", "APCaster", "APCarry", 
@@ -40,7 +42,9 @@ const AdminCrearPaginaMetaTFT = () => {
     secciones: [], // Array of { titulo: "", descripcion: "" }
     desc_trait: "",
     effects: {}, // Objeto mapeando minUnits a descripción { "2": "Daño mágico", "4": "..." }
-    tft_set: ""
+    tft_set: "",
+    ability: { name: "", icon: "", desc: "" },
+    itemCombinations: []
   });
 
   const [status, setStatus] = useState({ type: "", message: "" });
@@ -78,8 +82,13 @@ const AdminCrearPaginaMetaTFT = () => {
     let parsedSecciones = [];
     let parsedEffects = [];
     
+    let parsedAbility = { name: "", icon: "", desc: "" };
+    let parsedItemCombinations = [];
+    
     try { parsedTraits = typeof entity.traits === 'string' ? JSON.parse(entity.traits) : (entity.traits || []); } catch(e) {}
     try { parsedSecciones = typeof entity.secciones === 'string' ? JSON.parse(entity.secciones) : (entity.secciones || []); } catch(e) {}
+    try { parsedAbility = typeof entity.ability === 'string' ? JSON.parse(entity.ability) : (entity.ability || { name: "", icon: "", desc: "" }); } catch(e) {}
+    try { parsedItemCombinations = typeof entity.itemCombinations === 'string' ? JSON.parse(entity.itemCombinations) : (entity.itemCombinations || []); } catch(e) {}
     try { 
       const effectsData = typeof entity.effects === 'string' ? JSON.parse(entity.effects) : (entity.effects || []); 
       if (Array.isArray(effectsData)) {
@@ -114,7 +123,9 @@ const AdminCrearPaginaMetaTFT = () => {
       secciones: parsedSecciones,
       desc_trait: entity.desc_trait || "",
       effects: parsedEffects,
-      tft_set: entity.tft_set || ""
+      tft_set: entity.tft_set || "",
+      ability: parsedAbility,
+      itemCombinations: parsedItemCombinations
     });
     setSearchQuery("");
     setIsSearching(false);
@@ -178,13 +189,64 @@ const AdminCrearPaginaMetaTFT = () => {
 
   const currentTraitData = allTraits.find(t => t.apiName === formData.apiName);
 
+  const [activeComboIndex, setActiveComboIndex] = useState(null);
+
+  const handleSelectItem = (itemData) => {
+    if (activeComboIndex === null) {
+      alert("Por favor, selecciona o agrega una combinación primero haciendo clic en su recuadro.");
+      return;
+    }
+    
+    setFormData(prev => {
+      const combos = [...(prev.itemCombinations || [])];
+      if (!combos[activeComboIndex]) combos[activeComboIndex] = [];
+      
+      if (combos[activeComboIndex].length < 3) {
+        combos[activeComboIndex] = [...combos[activeComboIndex], itemData.apiName];
+      } else {
+        alert("Máximo 3 objetos por combinación.");
+      }
+      return { ...prev, itemCombinations: combos };
+    });
+  };
+
+  const addCombination = () => {
+    setFormData(prev => {
+      const newCombos = [...(prev.itemCombinations || []), []];
+      setActiveComboIndex(newCombos.length - 1);
+      return { ...prev, itemCombinations: newCombos };
+    });
+  };
+
+  const removeCombination = (idx) => {
+    setFormData(prev => {
+      const combos = [...(prev.itemCombinations || [])];
+      combos.splice(idx, 1);
+      return { ...prev, itemCombinations: combos };
+    });
+    if (activeComboIndex === idx) setActiveComboIndex(null);
+  };
+
+  const removeItemFromCombo = (comboIdx, itemIdx) => {
+    setFormData(prev => {
+      const combos = [...(prev.itemCombinations || [])];
+      const updatedCombo = [...combos[comboIdx]];
+      updatedCombo.splice(itemIdx, 1);
+      combos[comboIdx] = updatedCombo;
+      return { ...prev, itemCombinations: combos };
+    });
+  };
+
   const resetForm = () => {
     setFormData({
       id: null,
       name: "", apiName: "", tileIcon: "", icon: "", squareIcon: "", cost: "", role: "", traits: [],
       titulo_seo: "", descripcion_seo: "", video_url: "", url_seo: "", secciones: [],
-      desc_trait: "", effects: [], tft_set: ""
+      desc_trait: "", effects: [], tft_set: "",
+      ability: { name: "", icon: "", desc: "" },
+      itemCombinations: []
     });
+    setActiveComboIndex(null);
   };
 
   const handleSubmit = async (e) => {
@@ -401,6 +463,90 @@ const AdminCrearPaginaMetaTFT = () => {
                 ))}
               </div>
             </div>
+
+            <hr style={{ borderColor: "#444", margin: "30px 0" }} />
+            <h3>Habilidad del Campeón</h3>
+            <div className={style.formGroup}>
+              <label>Nombre de la Habilidad</label>
+              <input 
+                type="text" 
+                className={style.input} 
+                value={formData.ability?.name || ""} 
+                onChange={e => setFormData({...formData, ability: {...formData.ability, name: e.target.value}})} 
+              />
+            </div>
+            <div className={style.formGroup}>
+              <label>URL Icono de Habilidad (https será descargado y guardado en servidor local)</label>
+              <input 
+                type="text" 
+                className={style.input} 
+                value={formData.ability?.icon || ""} 
+                onChange={e => setFormData({...formData, ability: {...formData.ability, icon: e.target.value}})} 
+                placeholder="https://..."
+              />
+            </div>
+            <div className={style.formGroup}>
+              <label>Descripción de Habilidad</label>
+              <textarea 
+                className={style.input} 
+                style={{ height: '80px', resize: 'vertical' }}
+                value={formData.ability?.desc || ""} 
+                onChange={e => setFormData({...formData, ability: {...formData.ability, desc: e.target.value}})} 
+                rows="4"
+              />
+            </div>
+
+            <hr style={{ borderColor: "#444", margin: "30px 0" }} />
+            <h3>Combinaciones de Objetos (Best in Slot)</h3>
+            <p style={{ color: "#aaa", fontSize: "14px", marginBottom: "15px" }}>
+              Haz clic en "Agregar Combinación", selecciona el recuadro de la combinación, y luego haz clic en los objetos del catálogo para añadirlos (máximo 3 por grupo).
+            </p>
+            <div style={{ display: "flex", gap: "20px" }}>
+              <div style={{ flex: "1", display: "flex", flexDirection: "column", gap: "10px" }}>
+                {(formData.itemCombinations || []).map((combo, comboIdx) => (
+                  <div 
+                    key={comboIdx} 
+                    style={{ 
+                      border: activeComboIndex === comboIdx ? "2px solid #7b61ff" : "1px solid #444", 
+                      padding: "10px", 
+                      borderRadius: "8px", 
+                      background: activeComboIndex === comboIdx ? "rgba(123, 97, 255, 0.1)" : "transparent",
+                      cursor: "pointer"
+                    }}
+                    onClick={() => setActiveComboIndex(comboIdx)}
+                  >
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
+                      <strong>Combinación {comboIdx + 1}</strong>
+                      <button type="button" onClick={(e) => { e.stopPropagation(); removeCombination(comboIdx); }} style={{ background: "red", color: "white", border: "none", borderRadius: "4px", padding: "4px 8px", cursor: "pointer" }}>Eliminar</button>
+                    </div>
+                    <div style={{ display: "flex", gap: "10px", minHeight: "50px", background: "rgba(0,0,0,0.3)", padding: "10px", borderRadius: "4px" }}>
+                      {combo.map((itemApiName, itemIdx) => (
+                        <div key={itemIdx} style={{ position: "relative", width: "40px", height: "40px" }} onClick={(e) => { e.stopPropagation(); removeItemFromCombo(comboIdx, itemIdx); }}>
+                          <ImgItem item={itemApiName} />
+                          <div style={{ position: "absolute", top: "-5px", right: "-5px", background: "red", color: "white", borderRadius: "50%", width: "16px", height: "16px", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px", cursor: "pointer" }}>x</div>
+                        </div>
+                      ))}
+                      {combo.length === 0 && <span style={{ color: "#777", alignSelf: "center", fontStyle: "italic", fontSize: "12px" }}>Vacío... Haz clic en objetos.</span>}
+                    </div>
+                  </div>
+                ))}
+                
+                <button 
+                  type="button" 
+                  onClick={addCombination} 
+                  style={{ background: "#4caf50", color: "#fff", border: "none", padding: "8px 15px", borderRadius: "4px", cursor: "pointer", fontSize: "14px", marginTop: "10px", alignSelf: "flex-start" }}
+                >
+                  + Agregar Combinación
+                </button>
+              </div>
+
+              <div style={{ flex: "1", maxHeight: "600px", overflowY: "auto", border: "1px solid #444", borderRadius: "8px", padding: "10px", background: "#111", overflowX: "hidden" }}>
+                <h4 style={{ margin: "0 0 10px 0" }}>Catálogo de Objetos</h4>
+                <div style={{ width: "100%", transform: "scale(0.8)", transformOrigin: "top left" }}>
+                  <Items onSelectItem={handleSelectItem} />
+                </div>
+              </div>
+            </div>
           </>
         )}
 
@@ -513,9 +659,17 @@ const AdminCrearPaginaMetaTFT = () => {
             type="text" 
             className={style.input} 
             value={formData.url_seo} 
-            onChange={e => setFormData({...formData, url_seo: e.target.value})} 
+            onChange={e => {
+              let val = e.target.value
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "") // Quitar tildes
+                .replace(/\s+/g, "-") // Espacios a guiones
+                .replace(/[^a-z0-9-]/g, ""); // Quitar caracteres especiales
+              setFormData({...formData, url_seo: val});
+            }} 
             required 
-            placeholder="Ej: jinx"
+            placeholder="Ej: fuego-rapido"
           />
         </div>
 
