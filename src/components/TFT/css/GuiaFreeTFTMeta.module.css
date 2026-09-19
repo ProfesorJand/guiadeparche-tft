@@ -716,6 +716,7 @@
   flex-direction:column;
   width:100%;
   position:relative;
+  
 }
 :global(.isDownloadingCapture) .panelControlLogos{
   flex-direction: unset;
@@ -736,7 +737,8 @@
   display: flex;
   width: 100%;
   gap: 20px;
-  height: 100px;
+  min-height: 180px;
+  max-height: 200px;
   flex-direction: row;
   /* flex-wrap: wrap; */
   /* justify-content: center; */
@@ -761,6 +763,12 @@
 }
 .imgLogoSetTFT{
   width:70%
+}
+.imgLogoJupeson{
+  width:80%
+}
+.imgLogoGuiadeparche{
+  width:40%;
 }
 .logoTextGuiadeparche{
   position:relative;
