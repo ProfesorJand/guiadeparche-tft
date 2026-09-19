@@ -16,6 +16,7 @@ const API_URL = "https://api.guiadeparche.com/tft/mercado_pago_mp/planes.php";
 const SuscripcionesMP = () => {
   const user = useStore($user);
   const captureLock = useRef(false);
+  const urlCouponApplied = useRef(false);
   const [planes, setPlanes] = useState([]);
   const [loadingPlanes, setLoadingPlanes] = useState(true);
   const [loadingPlanId, setLoadingPlanId] = useState(null);
@@ -45,6 +46,18 @@ const SuscripcionesMP = () => {
     };
     
     window.addEventListener('apply-global-coupon', handleGlobalCoupon);
+
+    if (planes.length > 0 && !urlCouponApplied.current) {
+      const params = new URLSearchParams(window.location.search);
+      const urlCoupon = params.get('coupon');
+      if (urlCoupon) {
+        urlCouponApplied.current = true;
+        planes.forEach(plan => {
+           applyCouponDirect(plan, urlCoupon);
+        });
+      }
+    }
+
     return () => window.removeEventListener('apply-global-coupon', handleGlobalCoupon);
   }, [planes]);
 

@@ -750,7 +750,7 @@ const FooterLogos = ({edit})=>{
       <div className={style.containersLogos}>
       {logos.filter(logo => logo.show).map((logo, index) => (
         <div key={index} className={style.containerLogo}>
-          <img className={`${style.imgLogo} ${logo.label === "SetTFT" ? style.imgLogoSetTFT : ''}`} src={logo.url} alt={logo.label} />
+          <img className={`${style.imgLogo} ${logo.label === "SetTFT" ? style.imgLogoSetTFT : logo.label === "Jupeson" ? style.imgLogoJupeson : logo.label === "Guiadeparche" ? style.imgLogoGuiadeparche : ''}`} src={logo.url} alt={logo.label} />
           {logo.label === "Guiadeparche" && <img src="/textoGuiadeparcheSinEspacios.png" className={style.logoTextGuiadeparche}/>}
         </div>
       ))}
