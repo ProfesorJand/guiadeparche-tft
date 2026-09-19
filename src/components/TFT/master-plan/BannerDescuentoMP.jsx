@@ -50,9 +50,14 @@ const BannerDescuentoMP = () => {
     return () => clearInterval(interval);
   }, [EXPIRATION_DATE]);
 
-  if (!mounted || isExpired || !user || hasMasterPlan) return null;
+  if (!mounted || isExpired || hasMasterPlan) return null;
 
   const handleBannerClick = () => {
+    if (!user) {
+      window.location.href = '/login?redirect=' + encodeURIComponent('/tft/master-plan?coupon=' + COUPON_CODE);
+      return;
+    }
+
     if (window.location.pathname.includes('/tft/master-plan')) {
       const event = new CustomEvent('apply-global-coupon', { detail: COUPON_CODE });
       window.dispatchEvent(event);
