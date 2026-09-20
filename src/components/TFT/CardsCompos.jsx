@@ -444,9 +444,6 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
                 </div>
               ) : (
                 <div className={`${style.btnAdmins} ${!isInfografia ? "hideForCapture" : ""}`}>
-                  {/* <button className={`${style.buttonLink} ${style.buttonLinkCopy}`} onClick={(e) => copyToClipboard(e, (currentVersion === "pbe" ? codeForPBE(allChampionsApiName) : codeForPBE(allChampionsApiName)))}>
-                    Copiar Código
-                  </button> */}
                   <a
                     href={isActive ? "/tft/meta-comps-tier-list-teamfight-tactics" : `/tft/meta-comps-tier-list-teamfight-tactics/${comp.urlSEO}`}
                     className={style.buttonLink}
@@ -454,6 +451,13 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
                   >
                     {isActive ? "TFT Meta ⬆" : `${comp?.urlSEO?.replace("-", " ")?.toUpperCase()} TFT ⬇`}
                   </a>
+                  <button 
+                    className={`${style.buttonLink} ${style.buttonLinkCopy}`} 
+                    onClick={(e) => copyToClipboard(e, buildTeamPlannerCode(allChampionsApiName))}
+                    title="Copiar código de campeones"
+                  >
+                    📋 Copiar Código
+                  </button>
                 </div>
               )
             }

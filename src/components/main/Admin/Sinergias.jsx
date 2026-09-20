@@ -121,9 +121,11 @@ const Sinergias = ({ sinergias, orientacion, show, version }) => {
     };
 
     // 2. Iterar boardData de la misma forma que NuevoBuilderTFT para contar
-    Object.values(boardData).forEach(champ => {
+    console.log("=== INICIO CÁLCULO DE SINERGIAS ===");
+    Object.entries(boardData).forEach(([index, champ]) => {
       if (!champ.apiName) return;
 
+      console.log(`Procesando campeón en slot ${index}: ${champ.apiName}`);
       const collectedTraits = new Set();
       
       champ.traits.forEach(trait => {
@@ -131,6 +133,8 @@ const Sinergias = ({ sinergias, orientacion, show, version }) => {
         
         // Evitamos doble conteo de copias del mismo campeón
         const uniqueKey = `${champ.apiName}_${trait.apiName}`;
+        console.log(`  -> Evaluando rasgo: ${trait.apiName}. uniqueKey = ${uniqueKey}`);
+        
         if (!processedChampionTraits.has(uniqueKey)) {
           processedChampionTraits.add(uniqueKey);
           
@@ -138,22 +142,31 @@ const Sinergias = ({ sinergias, orientacion, show, version }) => {
           const isDouble = doubleTraitChampions[champ.apiName]?.includes(trait.apiName);
           const countToAdd = isDouble ? 2 : 1;
           calculatedSinergias[trait.apiName] = (calculatedSinergias[trait.apiName] || 0) + countToAdd;
+          
+          console.log(`     [NUEVO] Se sumó +${countToAdd} a ${trait.apiName}. Total actual = ${calculatedSinergias[trait.apiName]}`);
+        } else {
+          console.log(`     [OMITIDO] El campeón ${champ.apiName} ya sumó el rasgo ${trait.apiName} previamente.`);
         }
       });
 
       if (champ.items) {
-        champ.items.forEach(item => {
+        champ.items.forEach((item, itemIdx) => {
           if (item.traitExtra) {
+            console.log(`  -> Evaluando item ${itemIdx} en ${champ.apiName}: otorga rasgo ${item.traitExtra.apiName}`);
             // Un item sí puede sumar sinergia incluso si es copia, pero no si ya la tiene nativamente?
             // NuevoBuilderTFT dice: && !collectedTraits.has(item.traitExtra.apiName)
             if (!collectedTraits.has(item.traitExtra.apiName)) {
               collectedTraits.add(item.traitExtra.apiName);
               calculatedSinergias[item.traitExtra.apiName] = (calculatedSinergias[item.traitExtra.apiName] || 0) + 1;
+              console.log(`     [ÍTEM NUEVO] Se sumó +1 a ${item.traitExtra.apiName}. Total actual = ${calculatedSinergias[item.traitExtra.apiName]}`);
+            } else {
+              console.log(`     [ÍTEM OMITIDO] El rasgo ${item.traitExtra.apiName} ya está en los collectedTraits de este campeón.`);
             }
           }
         });
       }
     });
+    console.log("=== FIN CÁLCULO DE SINERGIAS ===");
 
   } else {
     calculatedSinergias = sinergias || {};

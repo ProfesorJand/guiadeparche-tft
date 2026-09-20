@@ -62,8 +62,8 @@ export const fixChampionTypos = (data) => {
   if (!data) return data;
   let dataStr = JSON.stringify(data);
   // Reemplazo global y seguro de los errores tipográficos en la base de datos
-  dataStr = dataStr.replace(/"tft18_exreal"/g, '"tft18_ezreal"');
-  dataStr = dataStr.replace(/"tft18_fiddlestick"/g, '"tft18_fiddlesticks"');
+  // dataStr = dataStr.replace(/"tft18_exreal"/g, '"tft18_ezreal"');
+  // dataStr = dataStr.replace(/"tft18_fiddlestick"/g, '"tft18_fiddlesticks"');
   return JSON.parse(dataStr);
 };
 
@@ -498,6 +498,28 @@ export const buildTeamPlannerCode = (championsArray) => {
   // Eliminamos duplicados
   const uniqueApiNames = [...new Set(filteredApiNames)];
   
+  // Obtenemos los datos completos de los campeones para poder ordenar
+  const allChamps = dataTFTChampions.get() || [];
+  
+  // Ordenar por coste y luego alfabéticamente
+  uniqueApiNames.sort((apiA, apiB) => {
+    const champA = allChamps.find(c => c.apiName === apiA) || { cost: 0, name: apiA };
+    const champB = allChamps.find(c => c.apiName === apiB) || { cost: 0, name: apiB };
+    
+    // 1. Ordenar por costo (ascendente)
+    if (champA.cost !== champB.cost) {
+      return (champA.cost || 0) - (champB.cost || 0);
+    }
+    
+    // 2. Si tienen el mismo costo, ordenar alfabéticamente
+    const nameA = (champA.name || "").toLowerCase();
+    const nameB = (champB.name || "").toLowerCase();
+    
+    if (nameA < nameB) return -1;
+    if (nameA > nameB) return 1;
+    return 0;
+  });
+
   // Obtenemos el diccionario actual de códigos de campeones (de la store)
   const codeDict = teamPlannerCode.get(); 
   
@@ -513,9 +535,16 @@ export const buildTeamPlannerCode = (championsArray) => {
   
   for (let i = 0; i < maxChampions; i++) {
     const apiName = uniqueApiNames[i];
-    const champHexCode = codeDict[apiName];
     
-    console.log(`Campeón ${i + 1}: apiName = "${apiName}" -> hexCode generado = "${champHexCode || 'undefined'}"`);
+    // Normalizar sufijos específicos como tft18_lux_coven o tft18_lux_aquelarre a tft18_lux
+    let searchApiName = apiName;
+    if (searchApiName.toLowerCase().startsWith("tft18_lux_")) {
+      searchApiName = "tft18_lux";
+    }
+
+    const champHexCode = codeDict[searchApiName];
+    
+    console.log(`Campeón ${i + 1}: apiName = "${apiName}" (buscado como "${searchApiName}") -> hexCode generado = "${champHexCode || 'undefined'}"`);
     
     // Si Riot/CommunityDragon tiene el código lo añadimos, si no "000" para no corromper el string
     if (champHexCode) {
