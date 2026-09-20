@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import style from "./css/CardsCompos.module.css";
-import { composMetaJSON, dataTFTAllItems, teamPlannerCode, versionTFT, setMutatorPBE, setMutatorLatest, dataTFTChampions, compActiveId } from "@stores/dataTFT";
+import { composMetaJSON, dataTFTAllItems, teamPlannerCode, versionTFT, setMutatorPBE, setMutatorLatest, dataTFTChampions, compActiveId, buildTeamPlannerCode, EXCLUDED_API_NAMES } from "@stores/dataTFT";
 import GuiaFreeTFTMeta from "./GuiaFreeTFTMeta.jsx";
 import { navigate } from "astro:transitions/client";
 import { CapturarImagen } from "@functions/CapturarImagen.js";
@@ -10,13 +10,6 @@ import { useStore } from "@nanostores/react";
 
 import ImgCampeon from "./ImgCampeon.jsx";
 import ImgItem from "./ImgItem.jsx";
-// Añade aquí manualmente los apiName de los campeones que NO quieres que se muestren
-const EXCLUDED_API_NAMES = [
-  "TFT17_Summon",
-  "TFT15_ShenSword",
-  "TFT18_Arbol",
-  "TFT18_Vitalflor",
-];
 
 const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = false, isIndividual = false }) => {
   const currentVersion = useStore(versionTFT);
@@ -421,7 +414,7 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
                 <div className={`${style.btnAdmins} ${!isInfografia ? "hideForCapture" : ""}`}>
 
                   <button onClick={() => setOpenForEdit(!openForEdit)}>{isActive ? "TFT Meta" : `${comp?.urlSEO?.replace("-", " ")?.toUpperCase()} TFT`}</button>
-                  <button onClick={(e) => copyToClipboard(e, (currentVersion === "pbe" ? codeForPBE(allChampionsApiName) : codeForPBE(allChampionsApiName)))}>Copiar Código</button>
+                  <button onClick={(e) => copyToClipboard(e, buildTeamPlannerCode(allChampionsApiName))}>Copiar Código</button>
                   <button onClick={() => {
                     if (showFormForEdit) {
                       compActiveId.set(null);
