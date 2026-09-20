@@ -62,10 +62,8 @@ export const fixChampionTypos = (data) => {
   if (!data) return data;
   let dataStr = JSON.stringify(data);
   // Reemplazo global y seguro de los errores tipográficos en la base de datos
-  dataStr = dataStr.replace(/"tft18_exreal"/g, '"tft18_ezreal"');
-  dataStr = dataStr.replace(/"TFT18_Exreal"/g, '"TFT18_Ezreal"');
-  dataStr = dataStr.replace(/"tft18_fiddlestick"/g, '"tft18_fiddlesticks"');
-  dataStr = dataStr.replace(/"TFT18_Fiddlestick"/g, '"TFT18_Fiddlesticks"');
+  dataStr = dataStr.replace(/"tft18_ezreal"/g, '"tft18_exreal"');
+  dataStr = dataStr.replace(/"tft18_fiddlesticks"/g, '"tft18_fiddlestick"');
   return JSON.parse(dataStr);
 };
 
