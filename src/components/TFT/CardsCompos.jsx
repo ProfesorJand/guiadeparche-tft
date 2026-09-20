@@ -13,7 +13,9 @@ import ImgItem from "./ImgItem.jsx";
 // Añade aquí manualmente los apiName de los campeones que NO quieres que se muestren
 const EXCLUDED_API_NAMES = [
   "TFT17_Summon",
-  "TFT15_ShenSword"
+  "TFT15_ShenSword",
+  "TFT18_Arbol",
+  "TFT18_Vitalflor",
 ];
 
 const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = false, isIndividual = false }) => {
