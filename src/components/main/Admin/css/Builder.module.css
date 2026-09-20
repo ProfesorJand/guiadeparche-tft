@@ -127,9 +127,10 @@
   width: 45px;
   height: 30px;
   align-items: center;
-  clip-path: polygon(32.60869565217391% 0, 65.21739130434783% 25%, 100% 25%, 100% 75%, 65.21739130434783% 75%, 32.60869565217391% 100%, 0 75%, 0 25%);
+  border-radius: 4px;
   background-color: black;
   filter: brightness(0.9);
+  padding: 2px 8px;
 }
 
 .borderHexShow{
@@ -139,7 +140,7 @@
   bottom:50%;
   left:50%;
   transform: translate(-50%, 50%);
-  clip-path: polygon(32.60869565217391% 0, 65.21739130434783% 25%, 100% 25%, 100% 75%, 65.21739130434783% 75%, 32.60869565217391% 100%, 0 75%, 0 25%);
+  border-radius: 4px;
   box-shadow: 2cqh;
 }
 

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import style from "./css/InfografiaMPTFT.module.css";
-import { dataTFTAllAugments, dataTFTAllItems, dataTFTChampions,dataTFTTraits,teamPlannerCode,setMutatorPBE,setMutatorLatest,versionTFT } from "@stores/dataTFT";
+import { dataTFTAllAugments, dataTFTAllItems, dataTFTChampions,dataTFTTraits,teamPlannerCode,setMutatorPBE,setMutatorLatest,versionTFT, buildTeamPlannerCode } from "@stores/dataTFT";
 import { useStore } from "@nanostores/react";
 import Sinergias from "@components/main/Admin/Sinergias";
 import ImgItem from "@components/TFT/ImgItem";
@@ -31,20 +31,7 @@ const InfografiaMPTFT = ({comp = {}, gruposSalidasEarly = []}) => {
     }
   };
   const Header= ()=>{
-    function codeForPBE(allChampionsApiName) {
-    let sinDuplicados = [...new Set(allChampionsApiName)];
-    let championsCode = "02";
-    let cantidadDeCampeones = sinDuplicados.length;
-    sinDuplicados.forEach(( apiName) => {
-      championsCode = championsCode.concat(codeOfChampions[apiName] || "")
-    })
-    let espaciosVacios = 10 - cantidadDeCampeones;
-    if (espaciosVacios > 0) {
-      championsCode = championsCode.concat("000".repeat(espaciosVacios));
-    }
-    championsCode = championsCode.concat(currentVersion === "pbe" ? setMutatorPBE : setMutatorLatest)
-    return championsCode
-  }
+
     const campeonMetaObj = comp?.campeonMeta?.apiNameCampeon ? AllChampions.find((apiName)=>apiName.apiName===comp.campeonMeta.apiNameCampeon) : null;
     const tableroArray = comp?.posicionamiento?.[0]?.tablero || [];
     return (
@@ -63,9 +50,9 @@ const InfografiaMPTFT = ({comp = {}, gruposSalidasEarly = []}) => {
                 <span className={style.dificultadCard} data-dificultad={comp?.dificultad}>{comp?.dificultad}</span>
                 <span className={style.categoriaCard} data-categoria={comp?.categoria}>{comp?.categoria}</span>
                 <span className={style.dañoCard} data-tipoDeDano={comp?.tipoDeDano}>{comp?.tipoDeDano}</span>
-                {/* <div className={style.containerTextoInfoPrimarioCode} onClick={(e)=>copyToClipboard(e, "codigo copiado", codeForPBE(tableroArray.map((info)=>info.apiNameCampeon)))}>
+                <div className={style.containerTextoInfoPrimarioCode} onClick={(e)=>copyToClipboard(e, "Código de campeones copiado", buildTeamPlannerCode(tableroArray.map((info)=> ({ apiName: info.apiNameCampeon }))))}>
                   {"COPIAR CÓDIGO 📋"}
-                </div> */}
+                </div>
               </div>
             </div>
           </div>

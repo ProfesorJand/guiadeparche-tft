@@ -130,18 +130,25 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
   };
 
   const synergiesCount = {};
+  const processedChampionTraits = new Set();
+  
   Object.values(boardData).forEach((champion) => {
     if (!champion.apiName) return; // Skip empty hexes like Espina Negra
     const collectedTraits = new Set();
     champion.traits.forEach((trait) => {
       collectedTraits.add(trait.apiName);
       
-      // Verifica si el campeón tiene la sinergia marcada como x2 en la constante
-      const isDouble = doubleTraitChampions[champion.apiName]?.includes(trait.apiName);
-      const countToAdd = isDouble ? 2 : 1;
+      const uniqueKey = `${champion.apiName}_${trait.apiName}`;
+      if (!processedChampionTraits.has(uniqueKey)) {
+        processedChampionTraits.add(uniqueKey);
+        
+        // Verifica si el campeón tiene la sinergia marcada como x2 en la constante
+        const isDouble = doubleTraitChampions[champion.apiName]?.includes(trait.apiName);
+        const countToAdd = isDouble ? 2 : 1;
 
-      const currentCount = synergiesCount[trait.apiName]?.count || 0;
-      synergiesCount[trait.apiName] = { count: currentCount + countToAdd, icon: trait.icon };
+        const currentCount = synergiesCount[trait.apiName]?.count || 0;
+        synergiesCount[trait.apiName] = { count: currentCount + countToAdd, icon: trait.icon };
+      }
     });
     if (champion.items) {
       champion.items.forEach((item) => {
