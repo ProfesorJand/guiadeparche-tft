@@ -246,44 +246,14 @@ console.log({data})
         {data.desc_trait && (
           <div class="trait-desc" set:html={data.desc_trait.replace(/\n/g, '<br />')} />
         )}
-      </div>
-      {data.video_url && (
-        <>
-          <div class="vertical-divider"></div>
-          <div class="container-info-video">
-            <Youtube src={data.video_url} client:load />
-          </div>
-        </>
-      )}
-    </div>
-    <div class="trait-main-card two-columns">
-        <div class="trait-effects container-info-left">
-          <h2>¿Qué hace el rasgo {data.titulo_seo} en TFT?</h2>
-          {currentTraitData.effects?.map((effect, idx) => (
-            <div class="effect-row" key={idx}>
-              <div class={`effect-badge ${styleMapping[effect.style] === 'hex-prismatic.webp' ? 'prismatic-animated' : ''}`} style={styleMapping[effect.style] !== 'hex-prismatic.webp' ? checkColor(styleMapping[effect.style]) : {}}>
-                {effect.minUnits}
-              </div>
-              <div class="effect-text">
-                {parsedCustomEffects[idx]?.description || parsedCustomEffects[idx]?.desc || (typeof parsedCustomEffects[idx] === 'string' ? parsedCustomEffects[idx] : "")}
-              </div>
-            </div>
-          ))}
-        </div>
-        
-        <div class="vertical-divider"></div>
-
-        <div class="trait-champions container-info-right">
-          <h2>Campeones de {data.titulo_seo} en TFT Set {data.tft_set}</h2>
-          <p>Estos son todos los campeones que forman parte del rasgo {data.titulo_seo} en TFT Set {data.tft_set}. Puedes seleccionar cada campeón para consultar sus habilidades, objetos recomendados y las composiciones en las que aparece</p>
-          <div class="list-champions">
+        <div class="list-champions">
           {championsInTrait.map(c => {
             const tileIcon = c.tileIcon ? getLocalTftImage(c.tileIcon, 'champions/tileIcon') : "";
             const urlName = c.name.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
             return (
               <a href={`/tft/meta-comps-tier-list-teamfight-tactics/${urlName}`} class="champion-hex-container" style="text-decoration: none; color: inherit;">
                 <div class="champion-hex-shape" style={`background-color: ${getChampionCostBorder(c.cost)};`}>
-                  <img src={tileIcon} alt={c.name} />
+                  <img src={tileIcon} alt={`Campeon ${c.name} de sinergia ${data.titulo_seo} set ${data.tft_set}`} />
                 </div>
                 <span class="champion-name">{c.name}</span>
                 
@@ -302,8 +272,30 @@ console.log({data})
             )
           })}
           </div>
+      </div>
+      {data.video_url && (
+        <>
+          <div class="vertical-divider"></div>
+          <div class="container-info-video">
+            <Youtube src={data.video_url} client:load />
+          </div>
+        </>
+      )}
     </div>
-
+    <div class="trait-main-card two-columns">
+        <div class="trait-effects">
+          <h2>¿Qué hace el rasgo {data.titulo_seo} en TFT?</h2>
+          {currentTraitData.effects?.map((effect, idx) => (
+            <div class="effect-row" key={idx}>
+              <div class={`effect-badge ${styleMapping[effect.style] === 'hex-prismatic.webp' ? 'prismatic-animated' : ''}`} style={styleMapping[effect.style] !== 'hex-prismatic.webp' ? checkColor(styleMapping[effect.style]) : {}}>
+                {effect.minUnits}
+              </div>
+              <div class="effect-text">
+                {parsedCustomEffects[idx]?.description || parsedCustomEffects[idx]?.desc || (typeof parsedCustomEffects[idx] === 'string' ? parsedCustomEffects[idx] : "")}
+              </div>
+            </div>
+          ))}
+        </div>
     </div>
     
   {parsedSecciones.length > 0 && parsedSecciones.map(sec => (
