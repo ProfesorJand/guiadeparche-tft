@@ -35,7 +35,6 @@ export async function getComposMetaPBE() {
   //     const filePath = path.join(process.cwd(), 'src/data/composMetaPBE.json');
   //     const fileContent = await fs.readFile(filePath, 'utf-8');
   //     const data = JSON.parse(fileContent);
-  //     console.log({data:data['S']})
   //     composMetaPBECache = sortComps(data);
   //     return composMetaPBECache;
   //   } catch (err) {

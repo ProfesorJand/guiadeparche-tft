@@ -27,7 +27,6 @@ export const Items = ({ onSelectItem })=>{
   const [tooltip, setTooltip] = useState(null);
   const allItemsApiNames = useStore(dataTFTItemsBySet);
   const allItemsInfo = useStore(dataTFTAllItems);
-  console.log({allItemsInfo, allItemsApiNames})
   const [allEmblemsItems, setAllEmblemsItems] = useState(null);
   const [allSupportsItems, setAllSupportsItems] = useState(null);
   const [allChemBaronItems, setAllChemBaronItems] = useState(null);

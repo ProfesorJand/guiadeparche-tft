@@ -414,14 +414,12 @@ export const swapVersionTFT = (data) => {
 export const getTeamPlannerCodeAPI = async () => {
   try {
     const url = `https://raw.communitydragon.org/${versionTFT.get()}/plugins/rcp-be-lol-game-data/global/default/v1/tftchampions-teamplanner.json`;
-    console.log("Fetching Team Planner JSON from:", url);
     const response = await fetch(url);
     const data = await response.json();
 
     const setKey = versionTFT.get() === "pbe" ? setMutatorPBE : setMutatorLatest;
     const championsData = data?.[setKey] || [];
     
-    console.log(`Team Planner JSON parseado. Encontrados ${championsData.length} campeones para el set ${setKey}`);
 
     const formattedData = Object.values(championsData)
       .reduce((acc, { character_id, display_name, team_planner_code }) => {
@@ -475,7 +473,6 @@ export const getTeamPlannerCodeAPI = async () => {
       }, {});
 
     teamPlannerCode.set(formattedData);
-    console.log("Diccionario teamPlannerCode cargado exitosamente. Total keys:", Object.keys(formattedData).length);
   } catch (e) {
     console.error("Error getting team planner code from API:", e);
     // throw e; // Quitamos el throw para que no rompa la ejecución silenciosamente
@@ -522,10 +519,7 @@ export const buildTeamPlannerCode = (championsArray) => {
 
   // Obtenemos el diccionario actual de códigos de campeones (de la store)
   const codeDict = teamPlannerCode.get(); 
-  
-  console.log("=== INICIO GENERACIÓN DE CÓDIGO TEAM PLANNER ===");
-  // Imprimir unos cuantos del diccionario para poder ver qué llaves estamos recibiendo de la API y compararlas
-  console.log("Muestra del diccionario de Riot (5 items):", Object.entries(codeDict).slice(0, 5));
+
   
   // La versión actual de los códigos del Team Planner es "02" (3 caracteres hexadecimales por slot)
   let code = "02"; 
@@ -544,8 +538,6 @@ export const buildTeamPlannerCode = (championsArray) => {
 
     const champHexCode = codeDict[searchApiName];
     
-    console.log(`Campeón ${i + 1}: apiName = "${apiName}" (buscado como "${searchApiName}") -> hexCode generado = "${champHexCode || 'undefined'}"`);
-    
     // Si Riot/CommunityDragon tiene el código lo añadimos, si no "000" para no corromper el string
     if (champHexCode) {
       code += champHexCode;
@@ -563,9 +555,6 @@ export const buildTeamPlannerCode = (championsArray) => {
   // Añadimos el setMutator al final del código (ej. "TFTSet14")
   const setMutator = versionTFT.get() === "pbe" ? setMutatorPBE : setMutatorLatest;
   code += setMutator;
-  
-  console.log("CÓDIGO FINAL GENERADO:", code);
-  console.log("=== FIN GENERACIÓN DE CÓDIGO TEAM PLANNER ===");
   
   return code;
 };

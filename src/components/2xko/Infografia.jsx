@@ -3,7 +3,6 @@ import style from "./Infografia.module.css"
 const Infografia = ({meta2xko, titulo, version, logoMovilnet, logoGuiadeparche, backgroundRef, admin})=>{
   const urlImgBackground= "/2xko/fondos/Background_RedV2.png";
   const urlImgBackground2 = "/2xko/fondos/Background_Red.png";
-  console.log({meta2xko})
   return (
     <div className={style.container} ref={backgroundRef}>
       {/* Imagen Background */}
