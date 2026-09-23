@@ -488,7 +488,7 @@ const Posicionamiento = ({comp})=>{
             </div>
           )
         })}
-        <div cclassName={style.tableroNavegacionItem}>
+        <div className={style.tableroNavegacionItem}>
           <Tooltip type="default" text="Todos los campeones a colocar miestras subes a cada nivel en: TFT Master Plan">
               <img src={"/web/logoGPMP.webp"} className={style.imgMasterPlan}/>
           </Tooltip>

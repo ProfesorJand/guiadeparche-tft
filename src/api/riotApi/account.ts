@@ -58,7 +58,6 @@ export const getAccountInfo = async ({ plataforma, puuid }): Promise<GETACCOUNTI
     const ACCOUNT_LINK = `https://${plataforma}.api.riotgames.com/tft/summoner/v1/summoners/by-puuid/${puuid}?api_key=${api_key}`;
     const resAccount = await fetch(ACCOUNT_LINK, {cache:"reload"});
     const result = await resAccount.json();
-    console.log(result)
     return result;
   } catch (error) {
     console.log('error en getPuuid', error.message);
@@ -78,7 +77,6 @@ export const getPUUID = async ({ region, invocador, etiqueta }): Promise<GETPUUI
     const ACCOUNT_LINK = `https://${ruta}/riot/account/v1/accounts/by-riot-id/${invocador}/${etiqueta}?api_key=${api_key}`;
     const response = await fetch(ACCOUNT_LINK, {cache:"reload"});
     const result = await response.json();
-    console.log(result)
     return result;
   } catch (error) {
     console.log('error en getPuuid', error.message);
@@ -91,7 +89,6 @@ export const getRank = async ({ summonerId, plataforma }): Promise<GETRANK> | nu
     const url = `https://${plataforma}.api.riotgames.com/tft/league/v1/entries/by-summoner/${summonerId}?api_key=${api_key}`;
     const response = await fetch(url, {cache:"reload"});
     const result = await response.json();
-    console.log(result);
     return result;
   }catch(error){
     console.log("Error en getRank",  error.message);

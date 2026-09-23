@@ -73,7 +73,6 @@ const LoginForm = () => {
   }, [codeTimer]);
 
   useEffect(() => {
-    console.log({ user })
     if (!user) {
       setStep('choice');
     }
@@ -90,7 +89,6 @@ const LoginForm = () => {
     });
 
     const result = await verifyRes.json();
-    console.log("Verification API Result:", result);
 
     if (result.status === 'success' && result.user) {
       const datosUsuario = result.user;
@@ -112,7 +110,6 @@ const LoginForm = () => {
       setStep('success');
     } else {
       // User not found in DB
-      console.log("User not found in DB, proceeding to profile completion");
 
       if (typeLogin === 'google' && googleData) {
         setFormData({
@@ -130,16 +127,13 @@ const LoginForm = () => {
   }
 
   const handleGoogleResponse = async (response) => {
-    console.log("Google Login Response Received:", response);
     setLoading(true);
     setError(null);
 
     try {
       const decoded = decodeJWT(response.credential);
-      console.log("Decoded Google JWT:", decoded);
 
       if (decoded.email) {
-        console.log("Verifying user with email:", decoded.email);
         await verifyUser(decoded.email, 'google', decoded)
       } else {
         throw new Error("No se pudo obtener el email de la cuenta Google.");
@@ -154,7 +148,6 @@ const LoginForm = () => {
 
   const initializeGoogleSignIn = () => {
     try {
-      console.log("Initializing Google Sign-In with Client ID:", GOOGLE_CLIENT_ID);
       window.google.accounts.id.initialize({
         client_id: GOOGLE_CLIENT_ID,
         callback: handleGoogleResponse,
@@ -196,7 +189,6 @@ const LoginForm = () => {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    console.log({ email })
     try {
       const response = await fetch('https://api.guiadeparche.com/send-code.php', {
         method: 'POST',

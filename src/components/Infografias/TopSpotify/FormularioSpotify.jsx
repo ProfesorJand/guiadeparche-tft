@@ -106,7 +106,6 @@ const FormularioSpotify = ({
       // Ordenar por listeners de mayor a menor (por artista)
       
       sortedData = [...dataToUse.filter(item => item.month === currentMonth)].sort((a, b) => (b.listeners || 0) - (a.listeners || 0));
-      console.log({sortedData})
     }
 
     // 2. Tomar los elementos según el inicio y el total permitido
