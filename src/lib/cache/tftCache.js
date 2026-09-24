@@ -174,7 +174,6 @@ export async function getConstantes() {
   })().finally(() => {
     fetchingConstantesPromise = null;
   });
-  })();
 
   return fetchingConstantesPromise;
 }
