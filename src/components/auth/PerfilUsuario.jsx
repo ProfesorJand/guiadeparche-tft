@@ -289,7 +289,7 @@ const PerfilUsuario = () => {
               ))
             ) : (
               <>
-                <li>Acceso completo a composiciones premium</li>
+                <li>Acceso completo a composiciones prémium</li>
                 <li>Filtros avanzados en la Tier List</li>
                 <li>Prioridad en actualizaciones del Meta</li>
                 <li>Rol exclusivo en nuestro servidor de Discord VIP</li>

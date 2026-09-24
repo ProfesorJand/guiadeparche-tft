@@ -40,7 +40,7 @@
   display: flex;
   position: relative;
   flex-direction: column;
-  /* Estilos premium para el fieldset */
+  /* Estilos prémium para el fieldset */
   border: 1px solid rgba(168, 85, 247, 0.3); /* Borde morado sutil */
   border-radius: 12px;
   padding: 10px;
