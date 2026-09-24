@@ -20,8 +20,9 @@ interface Props {
   canonical?: string;
   hide?:boolean;
   snippetImgUrl?: string;
+  hideBanner?: boolean;
 }
-const { title, JSONSchema, description, keywords, image, canonical, hide=false, snippetImgUrl } = Astro.props;
+const { title, JSONSchema, description, keywords, image, canonical, hide=false, snippetImgUrl, hideBanner=false } = Astro.props;
 
 // Si no se define snippetImgUrl, usamos image o la ruta por defecto del logo en la carpeta public
 const resolvedSnippetImgUrl = snippetImgUrl || image || "/web/logoGP2026.png";
@@ -117,7 +118,7 @@ const absoluteSnippetImgUrl = new URL(resolvedSnippetImgUrl, Astro.site || "http
         </header> 
       </div>
       <Breadcrumbs />
-      <BannerDescuentoMP client:only="react" />
+      {!hideBanner && <BannerDescuentoMP client:only="react" />}
       <main class="bodyMain">
           <slot></slot>
       </main>
