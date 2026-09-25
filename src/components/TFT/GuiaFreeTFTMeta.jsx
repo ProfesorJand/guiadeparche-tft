@@ -11,7 +11,7 @@ import ImgItem from "./ImgItem";
 import ImgAugment from "./ImgAugment";
 import ImgCampeon from "./ImgCampeon";
 import ImgTrait from "./ImgTrait";
-import YouTube from "@components/youtube/Youtube";
+import YouTube from "@components/youtube/Youtube.jsx";
 const GuiaFreeTFTMeta = ({comp, isInfografia=false, edit=false, isIndividual=false, activeTableroIndex=0, setActiveTableroIndex}) => {
   const [hoveredAugment, setHoveredAugment] = useState(null);
   const augmentRef = useRef(null);
