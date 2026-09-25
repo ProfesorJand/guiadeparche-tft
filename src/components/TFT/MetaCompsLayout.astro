@@ -240,15 +240,17 @@ const tableOfContentIndividual = [
         return (
           <div class={`set-content-container set-content-${setObj.id}`} style={`display: ${isActiveSet ? 'flex' : 'none'}; flex-direction: column; gap: 10px;`}>
             {
-              !isIndividual && 
-
-        <h2 id="TierList">Mejores TFT Comps del Meta Actual (Parche {setObj.id === setNumberPBE ? constantes.MetaCompVersionPBE : constantes.MetaCompVersion})</h2>
-        <p>
-        Las compos están ordenadas por fuerza dentro del meta actual, desde las
-        mejores opciones para subir elo hasta alternativas viables según tu
-        spot.
-        </p>
-      }
+              !isIndividual && (
+                <>
+                  <h2 id="TierList">Mejores TFT Comps del Meta Actual (Parche {setObj.id === setNumberPBE ? constantes.MetaCompVersionPBE : constantes.MetaCompVersion})</h2>
+                  <p>
+                  Las compos están ordenadas por fuerza dentro del meta actual, desde las
+                  mejores opciones para subir elo hasta alternativas viables según tu
+                  spot.
+                  </p>
+                </>
+              )
+            }
       {
         isIndividual && [...top10Comps, ...restComps].filter((comp) => comp.urlSEO === activeId).map((comp, index) => (
           <article id={comp.urlSEO} class={`comp-card`}>
@@ -324,6 +326,7 @@ const tableOfContentIndividual = [
                     </div>
                   );
                 })}
+              </div>
               </div>
             );
           })
