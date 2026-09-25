@@ -211,7 +211,7 @@ const tableOfContentIndividual = [
     </div>
   </div>
   <DynamicSection hasSidebar={!isIndividual}>
-    <div slot="main">
+    <div slot="main" style="display: flex; flex-direction: column; gap: 10px;">
       <!-- <div class="set-switcher" style="display: flex; gap: 10px; margin-bottom: 20px; justify-content: center;">
         {sets.map(s => {
           const isActive = s.id === defaultSet;
@@ -238,7 +238,7 @@ const tableOfContentIndividual = [
         const isActiveSet = setObj.id === defaultSet;
 
         return (
-          <div class={`set-content-container set-content-${setObj.id}`} style={`display: ${isActiveSet ? 'block' : 'none'};`}>
+          <div class={`set-content-container set-content-${setObj.id}`} style={`display: ${isActiveSet ? 'flex' : 'none'}; flex-direction: column; gap: 10px;`}>
             {
               !isIndividual && 
 
@@ -247,7 +247,7 @@ const tableOfContentIndividual = [
         Las compos están ordenadas por fuerza dentro del meta actual, desde las
         mejores opciones para subir elo hasta alternativas viables según tu
         spot.
-      </p>
+        </p>
       }
       {
         isIndividual && [...top10Comps, ...restComps].filter((comp) => comp.urlSEO === activeId).map((comp, index) => (
@@ -258,6 +258,7 @@ const tableOfContentIndividual = [
               client:load
               isIndividual={isIndividual}
               transition:persist
+              expandInline={true}
             />
           </article>
         ))
@@ -302,27 +303,27 @@ const tableOfContentIndividual = [
                     };
                     const badgeBg = badgeColors[comp.tier] || "#fff";
 
-                    return (
-                      <div style="position: relative; display: inline-block;">
-                        {tier.tier === "X" && (
-                          <span style={`position: absolute; top: -14px; left: 50%; transform: translateX(-50%); color: ${badgeBg}; font-size: 18px; font-weight: 900; z-index: 10; -webkit-text-stroke: 1px #000; text-shadow: 0px 2px 4px rgba(0,0,0,0.9), 0px 0px 2px rgba(0,0,0,1); letter-spacing: 1px;`}>
-                            {comp.tier}
-                          </span>
-                        )}
-                        <CampeonImgInTierList
-                          apiNameCampeon={comp?.campeonMeta?.apiNameCampeon}
-                          apiNameItems={comp?.campeonMeta?.apiNameItemsDelCampeon}
-                          estrellas={comp?.campeonMeta?.estrellas}
-                          aumento={comp?.campeonMeta?.aumento}
-                          emblema={comp?.campeonMeta?.emblema}
-                          compUrl={comp.urlSEO}
-                          client:load
-                          transition:persist
-                        />
-                      </div>
-                    );
-                  })}
-                </div>
+                  return (
+                    <div style="position: relative; display: inline-block;">
+                      {tier.tier === "X" && (
+                        <span style={`position: absolute; top: -14px; left: 50%; transform: translateX(-50%); color: ${badgeBg}; font-size: 18px; font-weight: 900; z-index: 10; -webkit-text-stroke: 1px #000; text-shadow: 0px 2px 4px rgba(0,0,0,0.9), 0px 0px 2px rgba(0,0,0,1); letter-spacing: 1px;`}>
+                          {comp.tier}
+                        </span>
+                      )}
+                      <CampeonImgInTierList
+                        comp={comp}
+                        apiNameCampeon={comp?.campeonMeta?.apiNameCampeon}
+                        apiNameItems={comp?.campeonMeta?.apiNameItemsDelCampeon}
+                        estrellas={comp?.campeonMeta?.estrellas}
+                        aumento={comp?.campeonMeta?.aumento}
+                        emblema={comp?.campeonMeta?.emblema}
+                        compUrl={comp.urlSEO}
+                        client:load
+                        transition:persist
+                      />
+                    </div>
+                  );
+                })}
               </div>
             );
           })
@@ -337,24 +338,25 @@ const tableOfContentIndividual = [
               isActive={String(comp.urlSEO) === String(activeId)}
               client:load
               transition:persist
+              expandInline={true}
             />
           </article>
         ))
       }
-      {
+      {/* {
         !isIndividual && restComps.length > 0 && (
-          <button id={`ver-mas-button-${setObj.id}`} class="ver-mas-button" data-expanded="false" data-set-btn={setObj.id}>
+          <button id={`ver-mas-button`} class="ver-mas-button" data-expanded="false" data-set-btn={setObj.id}>
             Ver todas las composiciones
           </button>
         )
-      }
+      } */}
       {
         !isIndividual &&restComps &&
           restComps.map((comp, index) => {
             const isCurrentActive = String(comp.urlSEO) === String(activeId);
             return (
               <div
-                class={`comp-card rest-comp-card ${isCurrentActive ? "" : "hidden-comp"}`}
+                class={`comp-card rest-comp-card`}
                 data-active={isCurrentActive ? "true" : "false"}
               >
                 <CardsCompos
@@ -363,6 +365,7 @@ const tableOfContentIndividual = [
                   isActive={isCurrentActive}
                   client:load
                   transition:persist
+                  expandInline={true}
                 />
               </div>
             );
@@ -981,7 +984,6 @@ const tableOfContentIndividual = [
     border-radius: 0.5rem;
     width: 100%;
     font-size: 2rem;
-    margin-bottom: 20px;
     text-align: center;
     justify-content: center;
   }

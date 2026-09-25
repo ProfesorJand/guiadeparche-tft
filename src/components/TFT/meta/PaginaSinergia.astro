@@ -1,0 +1,582 @@
+---
+import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
+import CardsCompos from "@components/TFT/CardsCompos.jsx";
+import Youtube from "@components/youtube/Youtube.jsx";
+import { setNumberPBE, setNumberLatest } from "@stores/dataTFT";
+import { dataTFTTraits, dataTFTChampions, dataTFTAllItems } from "@stores/dataTFT";
+import { getLocalTftImage } from "@utils/images";
+import ImgTrait from "../ImgTrait.jsx";
+
+const { data, allComps, lastUpdate, version, allChampions } = Astro.props;
+const safeGlobalChampions = dataTFTChampions.get() || [];
+const safeGlobalItems = dataTFTAllItems.get() || [];
+const safeSinergiasData = dataTFTTraits.get() || [];
+
+const doubleTraitChampions = {
+  "tft18_lux_coven": ["DA_18_Coven"],
+  "tft18_lux_inferno":["DA_18_Inferno"],
+  "tft18_lux_blackthorn":["DA_18_Blackthorn"],
+  "tft18_lux_blossom":["DA_18_Blossom"],
+  "tft18_lux_elderwood":["DA_18_Elderwood"],
+  "tft18_lux_fae":["DA_18_Fae"],
+  "tft18_lux_lunar":["DA_18_Lunar"],
+  "tft18_lux_primal":["DA_Primal18"],
+  "tft18_lux_solar":["DA_18_Solar"],
+  "tft18_elderdragon":["DA_Riftbeast18"],
+};
+
+function getActiveSynergies(tablero) {
+  const calculatedSinergias = {};
+  const processedChampionTraits = new Set();
+  
+  if (Array.isArray(tablero)) {
+    const boardData = {};
+    for (let index = 0; index < tablero.length; index++) {
+      const champ = tablero[index];
+      if (champ) {
+        const isEspinaNegra = champ.sinergiaExtraMissFortune === "Espina Negra";
+        const champData = safeGlobalChampions.find(c => c.apiName === champ?.apiNameCampeon);
+        
+        if (champData || isEspinaNegra) {
+          let itemsData = [];
+          if (champData) {
+            const rawItems = champ.apiNameItemsDelCampeon || [];
+            for (let j = 0; j < rawItems.length; j++) {
+              const apiNameItem = rawItems[j];
+              if (apiNameItem) {
+                const apiNameStr = typeof apiNameItem === 'object' ? apiNameItem.apiName : apiNameItem;
+                const itemData = safeGlobalItems.find(i => i.apiName === apiNameStr);
+                if (itemData) {
+                  let traitExtra = null;
+                  if (itemData.incompatibleTraits && itemData.incompatibleTraits.length > 0) {
+                    traitExtra = safeSinergiasData.find((t) => t.apiName === itemData.incompatibleTraits[0]);
+                  }
+                  itemsData.push({
+                    apiName: itemData.apiName || itemData.name,
+                    traitExtra
+                  });
+                }
+              }
+            }
+          }
+
+          let resolvedTraits = [];
+          if (champData) {
+            const rawTraits = champData.traits || [];
+            for (let k = 0; k < rawTraits.length; k++) {
+              const traitName = rawTraits[k];
+              const traitObj = safeSinergiasData.find(t => t.name === traitName || t.apiName === traitName);
+              resolvedTraits.push(traitObj ? traitObj : { apiName: traitName, name: traitName });
+            }
+
+            if (champ.sinergiaExtraMissFortune && champ.sinergiaExtraMissFortune !== "Espina Negra") {
+              resolvedTraits = resolvedTraits.filter(t => !t.apiName.toLowerCase().includes("undetermined"));
+              const extraTraitObj = safeSinergiasData.find(t => t.apiName === champ.sinergiaExtraMissFortune || t.name === champ.sinergiaExtraMissFortune);
+              if (extraTraitObj) {
+                resolvedTraits.push(extraTraitObj);
+              }
+            }
+
+            if (champ.sinergiasExtraKhazix && Array.isArray(champ.sinergiasExtraKhazix)) {
+              champ.sinergiasExtraKhazix.forEach(khazixTrait => {
+                const extraTraitObj = safeSinergiasData.find(t => t.apiName === khazixTrait || t.name === khazixTrait);
+                if (extraTraitObj) {
+                  resolvedTraits.push(extraTraitObj);
+                }
+              });
+            }
+          }
+
+          boardData[index] = {
+            apiName: champData ? champData.apiName : null,
+            traits: resolvedTraits,
+            items: itemsData,
+            extraSynergy: champ.sinergiaExtraMissFortune || null,
+            extraSynergyKhazix: champ.sinergiasExtraKhazix || null,
+          };
+        }
+      }
+    }
+
+    const boardValues = Object.values(boardData);
+    for (let idx = 0; idx < boardValues.length; idx++) {
+      const champ = boardValues[idx];
+      if (champ.apiName) {
+        const collectedTraits = new Set();
+        
+        const traitsList = champ.traits || [];
+        for (let tIdx = 0; tIdx < traitsList.length; tIdx++) {
+          const trait = traitsList[tIdx];
+          collectedTraits.add(trait.apiName);
+          const uniqueKey = `${champ.apiName}_${trait.apiName}`;
+          if (!processedChampionTraits.has(uniqueKey)) {
+            processedChampionTraits.add(uniqueKey);
+            let isDouble = false;
+            if (doubleTraitChampions[champ.apiName]) {
+              isDouble = doubleTraitChampions[champ.apiName].includes(trait.apiName);
+            }
+            const countToAdd = isDouble ? 2 : 1;
+            calculatedSinergias[trait.apiName] = (calculatedSinergias[trait.apiName] || 0) + countToAdd;
+          }
+        }
+
+        if (champ.items) {
+          for (let iIdx = 0; iIdx < champ.items.length; iIdx++) {
+            const item = champ.items[iIdx];
+            if (item.traitExtra) {
+              if (!collectedTraits.has(item.traitExtra.apiName)) {
+                collectedTraits.add(item.traitExtra.apiName);
+                calculatedSinergias[item.traitExtra.apiName] = (calculatedSinergias[item.traitExtra.apiName] || 0) + 1;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  return calculatedSinergias;
+}
+
+const currentTraitData = safeSinergiasData.find(t => t.apiName === data.apiName) || {};
+const minRequired = currentTraitData.effects && currentTraitData.effects.length > 0 
+  ? Math.min(...currentTraitData.effects.map(e => e.minUnits)) 
+  : 999;
+
+const relatedComps = allComps.filter(comp => {
+  if (comp.posicionamiento) {
+    let pos = comp.posicionamiento;
+    if (typeof pos === 'string') {
+      try { pos = JSON.parse(pos); } catch(e) { return false; }
+    }
+    const tablero = pos[0]?.tablero;
+    if (tablero) {
+      const activeSynergies = getActiveSynergies(tablero);
+      const traitCount = activeSynergies[data.apiName] || 0;
+      return traitCount >= minRequired;
+    }
+  }
+  return false;
+});
+
+const title = data.titulo_seo || `${data.name} TFT Build & Composiciones Sinergia`;
+const description = data.descripcion_seo || `Descubre cómo jugar la sinergia ${data.name} y sus mejores composiciones en Teamfight Tactics.`;
+const currentVersion = String(data.tft_set) === String(setNumberPBE) ? version.MetaCompVersionPBE : version.MetaCompVersion;
+
+let parsedSecciones = [];
+if (typeof data.secciones === 'string') {
+  try { parsedSecciones = JSON.parse(data.secciones); } catch(e) {}
+} else if (Array.isArray(data.secciones)) {
+  parsedSecciones = data.secciones;
+}
+
+let parsedCustomEffects = [];
+if (typeof data.effects === 'string') {
+  try { parsedCustomEffects = JSON.parse(data.effects); } catch(e) {}
+} else if (Array.isArray(data.effects)) {
+  parsedCustomEffects = data.effects;
+}
+
+// Obtener datos crudos de la sinergia (para saber los niveles requeridos y estilos)
+const traits = dataTFTTraits.get();
+
+// Campeones de la sinergia
+const championsInTrait = (allChampions?.filter(c => 
+  c.traits?.includes(data.apiName) || c.traits?.includes(data.name)) 
+  || []).sort((a, b) => {
+    if (a.cost !== b.cost) {
+      return a.cost - b.cost;
+    }
+    return a.name.localeCompare(b.name);
+  });
+
+const styleMapping = {
+  1: "hex-bronze.webp",
+  3: "hex-silver.webp",
+  5: "hex-gold.webp",
+  6: "hex-prismatic.webp",
+};
+
+const colorHex = {
+  bronze: "#a16f44",
+  silver: "#909090",
+  gold: "#b8860b", // un dorado más oscuro
+  prismatic: {}, // El estilo prismático se maneja por la clase CSS animada
+  default: "#333333"
+};
+
+function checkColor(hexColor) {
+  if (!hexColor) return { backgroundColor: colorHex.default };
+  if (hexColor === "hex-prismatic.webp") {
+    return colorHex.prismatic;
+  }
+  const colorKey = hexColor.replace("hex-", "").replace(".webp", "");
+  return { backgroundColor: colorHex[colorKey] || colorHex.default };
+}
+
+function getChampionCostBorder(cost) {
+  switch (cost) {
+    case 1: return "#ffffff";
+    case 2: return "#3e9e64";
+    case 3: return "#1e69ee";
+    case 4: return "#b534f5";
+    case 5: return "#f5e020ff";
+    default: return "#444";
+  }
+}
+
+const resolvedIcon = data.icon.startsWith("http") ? data.icon : getLocalTftImage(data.icon, 'traits', data.tft_set || "18");
+---
+
+<LayoutMaxWidth
+  title={title}
+  description={description}
+  snippetImgUrl={resolvedIcon}
+>
+  <div class="header-section">
+    <div class="trait-main-card two-columns">
+      <div class={`container-info-left ${!data.video_url ? 'full-width' : ''}`}>
+        <div class="trait-header">
+          <div class="trait-icon-bg">
+            <ImgTrait trait={data} version={data.tft_set || "18"} showName={false} />
+          </div>
+          <h1>TFT {data.titulo_seo} - Meta Comps & Builds - Set {data.tft_set || "18"}</h1>
+        </div>
+        {data.desc_trait && (
+          <div class="trait-desc" set:html={data.desc_trait.replace(/\n/g, '<br />')} />
+        )}
+        <div class="list-champions">
+          {championsInTrait.map(c => {
+            const tileIcon = c.tileIcon ? getLocalTftImage(c.tileIcon, 'champions/tileIcon') : "";
+            const urlName = c.name.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+            return (
+              <a style="pointer-events: none; cursor: default; text-decoration: none;" href={`/tft/meta-comps-tier-list-teamfight-tactics/${urlName}`} class="champion-hex-container" style="text-decoration: none; color: inherit;">
+                <div class="champion-hex-shape" style={`background-color: ${getChampionCostBorder(c.cost)};`}>
+                  <img src={tileIcon} alt={`Campeon ${c.name} de sinergia ${data.titulo_seo} set ${data.tft_set}`} />
+                </div>
+                <span class="champion-name">{c.name}</span>
+                
+                <div class="champion-traits-overlay">
+                  {c.traits?.map(tName => {
+                    const tData = traits.find(tr => tr.name === tName || tr.apiName === tName);
+                    const tIcon = tData?.icon ? getLocalTftImage(tData.icon, 'traits') : "";
+                    return (
+                      <div class="small-trait-hex">
+                        <img src={tIcon} alt={tName} />
+                      </div>
+                    )
+                  })}
+                </div>
+              </a>
+            )
+          })}
+          </div>
+      </div>
+      {data.video_url && (
+        <>
+          <div class="vertical-divider"></div>
+          <div class="container-info-video">
+            <Youtube src={data.video_url} client:load />
+          </div>
+        </>
+      )}
+    </div>
+    <div class="trait-main-card two-columns">
+        <div class="trait-effects">
+          <h2>¿Qué hace el rasgo {data.titulo_seo} en TFT?</h2>
+          {currentTraitData.effects?.map((effect, idx) => (
+            <div class="effect-row" key={idx}>
+              <div class={`effect-badge ${styleMapping[effect.style] === 'hex-prismatic.webp' ? 'prismatic-animated' : ''}`} style={styleMapping[effect.style] !== 'hex-prismatic.webp' ? checkColor(styleMapping[effect.style]) : {}}>
+                {effect.minUnits}
+              </div>
+              <div class="effect-text">
+                {parsedCustomEffects[idx]?.description || parsedCustomEffects[idx]?.desc || (typeof parsedCustomEffects[idx] === 'string' ? parsedCustomEffects[idx] : "")}
+              </div>
+            </div>
+          ))}
+        </div>
+    </div>
+    
+  {parsedSecciones.length > 0 && parsedSecciones.map(sec => (
+      <div class="section-block">
+        <h2>{sec.titulo}</h2>
+        <div class="section-content" set:html={sec.descripcion} />
+      </div>
+    ))}
+
+  {relatedComps.length > 0 && (
+    <div class="related-comps-section">
+      <h2>Mejores Composiciones de {data.name}</h2>
+      <div class="comps-grid">
+        {relatedComps.map((comp, index) => (
+          <article class="comp-card" style="margin-bottom: 20px;">
+            <CardsCompos
+              comp={comp}
+              numeracion={index + 1}
+              expandInline={true}
+              client:load
+            />
+          </article>
+        ))}
+      </div>
+    </div>
+  )}
+  </div>
+
+</LayoutMaxWidth>
+
+<style>
+  .header-section {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 30px;
+    max-width: 1200px;
+    align-self: center;
+    gap:15px;
+  }
+  .two-columns {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .container-info-left {
+    width: 60%;
+  }
+  .full-width {
+    width: 100% !important;
+  }
+  .container-info-right {
+    width: 40%;
+  }
+  .container-info-video {
+    width: 40%;
+  }
+  .vertical-divider {
+    width: 1px;
+    background-color: rgba(255, 255, 255, 0.2);
+    align-self: stretch;
+  }
+
+  .trait-main-card {
+    background-color: #211c47; /* Morado oscuro como en el mockup */
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  }
+  .related-comps-section{
+    margin-top:10px;
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+    max-width:900px;
+    align-self:center;
+  }
+
+  .trait-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+  }
+  .trait-icon-bg {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .trait-icon-img {
+    width: 30px;
+    height: 30px;
+    filter: invert(1);
+  }
+  .trait-header h1 {
+    font-size: 1.5rem;
+    color: #fff;
+    margin: 0;
+    font-weight: bold;
+  }
+
+  .trait-desc {
+    color: #e5e7eb;
+    font-size: 1rem;
+    line-height: 1.6;
+    text-align: justify;
+  }
+
+  .trait-effects {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    text-align: justify;
+  }
+  .effect-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  .effect-badge {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    color: white;
+    font-size: 1.1rem;
+    border-radius: 4px;
+    flex-shrink: 0;
+    border: 1px solid rgba(255,255,255,0.2);
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+  }
+  .effect-text {
+    color: #e5e7eb;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  @keyframes prismaticShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .prismatic-animated {
+    background: linear-gradient(135deg, #00f2fe, #4facfe, #f093fb, #f5576c, #00f2fe);
+    background-size: 300% 300%;
+    animation: prismaticShift 4s ease infinite;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+  }
+
+  .trait-champions {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    gap:15px;
+
+  }
+  .list-champions{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-self: center;
+    gap: 20px;
+    width:100%;
+    margin-top:10px;
+  }
+
+  /* Hexágono de campeones (parecido a Image 4) */
+  .champion-hex-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 70px;
+    max-width: 100px;
+    flex:1;
+  }
+
+  .champion-hex-shape {
+    width: 70px;
+    height: 80px;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .champion-hex-shape img {
+    width: 64px;
+    height: 74px;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    object-fit: cover;
+  }
+
+  .champion-name {
+    margin-top: 5px;
+    font-size: 0.8rem;
+    color: #fff;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px black;
+    text-align: center;
+  }
+
+  .champion-traits-overlay {
+    position: absolute;
+    top: -10px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    gap: 2px;
+  }
+
+  .small-trait-hex {
+    width: 20px;
+    height: 24px;
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    background-color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .small-trait-hex img {
+    width: 14px;
+    height: 14px;
+    filter: invert(1);
+  }
+
+  .dynamic-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 40px;
+  }
+  .section-block {
+    background-color: #211c47;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  }
+  .section-block h2 {
+    color: #ffc832;
+    margin-top: 0;
+  }
+  .section-content {
+    color: #e5e7eb;
+    line-height: 1.6;
+  }
+  p{
+    margin-block-start:0;
+    margin-block-end:0;
+  }
+  h2{
+    margin-block-start:0;
+    margin-block-end:0;
+  }
+  
+  @media (max-width: 900px) {
+    .two-columns {
+      flex-direction: column;
+    }
+    .container-info-left, .container-info-right, .container-info-video {
+      width: 100%;
+    }
+    .vertical-divider {
+      width: 100%;
+      height: 1px;
+      margin: 10px 0;
+    }
+    .trait-header{
+      flex-direction: column;
+      gap:5px;
+      margin-bottom:10px;
+    }
+    .list-champions{
+      max-width:calc(100% - (20px * 2) / 3);
+    }
+  }
+</style>
