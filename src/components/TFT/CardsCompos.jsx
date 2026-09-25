@@ -11,11 +11,13 @@ import { useStore } from "@nanostores/react";
 import ImgCampeon from "./ImgCampeon.jsx";
 import ImgItem from "./ImgItem.jsx";
 
-const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = false, isIndividual = false }) => {
+const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = false, isIndividual = false, expandInline = false, hideToggleButton = false, hideRightContainer = false }) => {
   const currentVersion = useStore(versionTFT);
   const codeOfChampions = useStore(teamPlannerCode);
   const championsTFT = useStore(dataTFTChampions);
   const allItemsTFT = useStore(dataTFTAllItems);
+  const [localIsActive, setLocalIsActive] = useState(false);
+  const [activeTableroIndex, setActiveTableroIndex] = useState(0);
 
   function copyToClipboard(e, codigo) {
     e.preventDefault();
@@ -189,6 +191,11 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
   const handleToggle = async (e) => {
     e.preventDefault();
 
+    if (expandInline) {
+      setLocalIsActive(!localIsActive);
+      return;
+    }
+
     try {
       if (containerRef.current) {
         // Guardar siempre a qué distancia de la pantalla estaba este elemento al hacer click
@@ -261,7 +268,7 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
   }
 
   // Mapear, parsear y filtrar campeones, y debe ordenarse por "cost" que se obtiene en campeonInfo
-  const campeones = !isMounted ? [] : (comp?.posicionamiento?.[0]?.tablero || []).map((data) => {
+  const campeones = !isMounted ? [] : (comp?.posicionamiento?.[activeTableroIndex]?.tablero || []).map((data) => {
     const rawChamp = championsTFT?.find(champ => champ?.apiName === data.apiNameCampeon);
 
     // Si no encuentra al campeón en la store, retornamos null
@@ -407,7 +414,7 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
           </div>
         </div>
         {
-          !isInfografia &&
+          (!isInfografia && !hideRightContainer) &&
           <div className={`${style.rightContainer} ${!isInfografia ? "hideForCapture" : ""}`}>
             {
               edit ? (
@@ -444,13 +451,19 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
                 </div>
               ) : (
                 <div className={`${style.btnAdmins} ${!isInfografia ? "hideForCapture" : ""}`}>
-                  <a
-                    href={isActive ? "/tft/meta-comps-tier-list-teamfight-tactics" : `/tft/meta-comps-tier-list-teamfight-tactics/${comp.urlSEO}`}
-                    className={style.buttonLink}
-                    onClick={handleToggle}
-                  >
-                    {isActive ? "TFT Meta ⬆" : `${comp?.urlSEO?.replace("-", " ")?.toUpperCase()} TFT ⬇`}
-                  </a>
+                 
+                  {!hideToggleButton && (
+                    <a
+                      href={expandInline ? "#" : (isActive ? "/tft/meta-comps-tier-list-teamfight-tactics" : `/tft/meta-comps-tier-list-teamfight-tactics/${comp.urlSEO}`)}
+                      className={style.buttonLink}
+                      onClick={handleToggle}
+                    >
+                      {expandInline 
+                        ? ((localIsActive || isActive) ? "OCULTAR ⬆" : `${comp?.urlSEO?.replace("-", " ")?.toUpperCase()} TFT ⬇`)
+                        : (isActive ? "TFT Meta ⬆" : `${comp?.urlSEO?.replace("-", " ")?.toUpperCase()} TFT ⬇`)
+                      }
+                    </a>
+                  )}
                   <button 
                     className={`${style.buttonLink} ${style.buttonLinkCopy}`} 
                     onClick={(e) => copyToClipboard(e, buildTeamPlannerCode(allChampionsApiName))}
@@ -463,10 +476,10 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
             }
           </div>}
       </div>
-      {(isActive || openForEdit) && (
+      {(isActive || openForEdit || localIsActive) && (
         <div className={style.detailsWrapper}>
           {/* <GuiaFreeTFTMeta comp={composTestB?.S?.[0]} isInfografia={false} edit={false} /> */}
-          <GuiaFreeTFTMeta comp={comp} isInfografia={isInfografia} edit={edit} isIndividual={isIndividual} />
+          <GuiaFreeTFTMeta comp={comp} isInfografia={isInfografia} edit={edit} isIndividual={isIndividual} activeTableroIndex={activeTableroIndex} setActiveTableroIndex={setActiveTableroIndex} />
         </div>
       )}
       {showFormForEdit &&

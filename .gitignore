@@ -31,3 +31,6 @@ Thumbs.db
 
 # jetbrains setting folder
 .idea/
+
+# Backend files (server-only)
+/apiGuiadeparche

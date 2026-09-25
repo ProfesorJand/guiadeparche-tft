@@ -11,8 +11,8 @@ import ImgItem from "./ImgItem";
 import ImgAugment from "./ImgAugment";
 import ImgCampeon from "./ImgCampeon";
 import ImgTrait from "./ImgTrait";
-import Youtube from "@components/youtube/Youtube";
-const GuiaFreeTFTMeta = ({comp, isInfografia=false, edit=false, isIndividual=false}) => {
+import YouTube from "@components/youtube/Youtube";
+const GuiaFreeTFTMeta = ({comp, isInfografia=false, edit=false, isIndividual=false, activeTableroIndex=0, setActiveTableroIndex}) => {
   const [hoveredAugment, setHoveredAugment] = useState(null);
   const augmentRef = useRef(null);
   const tooltipRef = useRef(null);
@@ -51,7 +51,7 @@ const GuiaFreeTFTMeta = ({comp, isInfografia=false, edit=false, isIndividual=fal
   return(
     <div className={style.container}>
       <Header1 comp={comp} allChampionsTFT={safeChampionsTFT} allItemsTFT={safeItemsTFT} allAugmentsTFT={safeAugmentsTFT} allTraitsTFT={allTraitsTFT}></Header1>
-      <Header2 comp={comp} setHoveredAugment={setHoveredAugment} augmentRef={augmentRef} allChampionsTFT={safeChampionsTFT} allItemsTFT={safeItemsTFT} allAugmentsTFT={safeAugmentsTFT} ></Header2>
+      <Header2 comp={comp} setHoveredAugment={setHoveredAugment} augmentRef={augmentRef} allChampionsTFT={safeChampionsTFT} allItemsTFT={safeItemsTFT} allAugmentsTFT={safeAugmentsTFT} activeTableroIndex={activeTableroIndex} setActiveTableroIndex={setActiveTableroIndex}></Header2>
       {/* <FooterTooltip augment={hoveredAugment} tooltipRef={tooltipRef} edit={edit} isInfografia={isInfografia}></FooterTooltip> */}
       <FooterBuild comp={comp}></FooterBuild>
       <FooterLogos edit={edit} ></FooterLogos>
@@ -62,7 +62,7 @@ const GuiaFreeTFTMeta = ({comp, isInfografia=false, edit=false, isIndividual=fal
           <div className={style.videosGrid}>
             {comp.videosYoutube.filter(v => v.trim() !== "").map((videoUrl, idx) => (
               <div key={idx} style={{ width: '100%', aspectRatio: '16/9' }}>
-                <Youtube src={videoUrl} />
+                <YouTube src={videoUrl} />
               </div>
             ))}
           </div>
@@ -224,7 +224,7 @@ const Header1 = ({comp, allChampionsTFT, allItemsTFT, allAugmentsTFT, allTraitsT
   )
 }
 
-const Header2 = ({comp, setHoveredAugment, augmentRef,  allChampionsTFT, allItemsTFT, allAugmentsTFT})=>{
+const Header2 = ({comp, setHoveredAugment, augmentRef,  allChampionsTFT, allItemsTFT, allAugmentsTFT, activeTableroIndex, setActiveTableroIndex})=>{
 
   // 3. Condicion OP
   const condiciones = comp?.condiciones || [];
@@ -434,14 +434,17 @@ const Header2 = ({comp, setHoveredAugment, augmentRef,  allChampionsTFT, allItem
           </a>
         </div> */}
       </div>
-      <Posicionamiento comp={comp}/>
+      <Posicionamiento comp={comp} activeTableroIndex={activeTableroIndex} setActiveTableroIndex={setActiveTableroIndex} />
 
     </div>
   )
 }
 
-const Posicionamiento = ({comp})=>{
-  const [activeTableroIndex, setActiveTableroIndex] = useState(0);
+const Posicionamiento = ({comp, activeTableroIndex=0, setActiveTableroIndex})=>{
+  const [internalActiveTableroIndex, setInternalActiveTableroIndex] = useState(0);
+
+  const currentIndex = setActiveTableroIndex ? activeTableroIndex : internalActiveTableroIndex;
+  const setIndex = setActiveTableroIndex ? setActiveTableroIndex : setInternalActiveTableroIndex;
   const allChampionsTFT = useStore(dataTFTChampions);
   const allItemsTFT = useStore(dataTFTAllItems);
   const allAugmentsTFT = useStore(dataTFTAllAugments);
@@ -449,13 +452,13 @@ const Posicionamiento = ({comp})=>{
 
   if (!comp?.posicionamiento || comp.posicionamiento.length === 0) return null;
 
-  const activePos = comp.posicionamiento[activeTableroIndex] || comp.posicionamiento[0];
+  const activePos = comp.posicionamiento[currentIndex] || comp.posicionamiento[0];
 
   const renderNavegacionTableros = () => {
     if (comp.posicionamiento.length <= 1) return null;
 
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '50px', flexShrink: 0 }}>
+      <div className={style.containerTableros}>
         {comp.posicionamiento.map((pos, index) => {
           const condicion = pos.condicionExtra;
           let imgUrl = null;
@@ -473,10 +476,10 @@ const Posicionamiento = ({comp})=>{
           return (
             <div 
               key={index} 
-              onClick={() => setActiveTableroIndex(index)}
+              onClick={() => setIndex(index)}
               className={`
                 ${style.tableroNavegacionItem}
-                ${index === activeTableroIndex ? style.tableroActive : ''}`
+                ${index === currentIndex ? style.tableroActive : ''}`
               } 
               title={pos.nombreTablero || `Tablero ${index + 1}`}
             >
@@ -500,8 +503,8 @@ const Posicionamiento = ({comp})=>{
   return (
     <div className={`${style.borderBlock} ${style.containerPosicionamientoBlock}`}>
       <h4>Posicionamiento</h4>
-      <div style={{ display: 'flex', gap: '15px', width: "100%" }}>
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '15px' }}>
+      <div className={style.posicionamientoLayout}>
+        <div className={style.posicionamientoBoard}>
           <div className={style.containerSinergiasActivas}>
             <Sinergias sinergias={activePos.tablero} orientacion={"vertical"} show={true} version={"latest" || comp?.version} />
           </div>

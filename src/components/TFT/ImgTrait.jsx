@@ -7,7 +7,8 @@ import style from "./css/ImgTrait.module.css";
 const ImgTrait = ({
   trait,
   showName = true,
-  className = ""
+  className = "",
+  version
 }) => {
   if (!trait) {
     return (
@@ -24,8 +25,9 @@ const ImgTrait = ({
   if (imageSrc.includes("http")) {
     imageSrc = imageSrc.replace(".tex", ".png").toLowerCase();
   } else if (imageSrc) {
-    imageSrc = getLocalTftImage(imageSrc, 'traits');
+    imageSrc = getLocalTftImage(imageSrc, 'traits', version);
   }
+
 
   return (
     <Tooltip type="default" text={name}>

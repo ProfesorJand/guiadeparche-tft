@@ -23,7 +23,7 @@ import FormularioCrearCompoTFT from "@components/TFT/FormularioCrearCompoTFT.jsx
 import FormularioVisualTFT from "@components/TFT/FormularioVisualTFT.jsx";
 import AdminPublicidad from "./AdminPublicidad.jsx";
 import AdminTFTCampeonesEarly from "./AdminTFTCampeonesEarly.jsx";
-import AdminCrearCampeonesTFT from "./AdminCrearCampeonesTFT.jsx";
+import AdminCrearPaginaMetaTFT from "./AdminCrearPaginaMetaTFT.jsx";
 import AdminMercadoPagoPlanes from "./AdminMercadoPagoPlanes.jsx";
 import AdminMercadoPagoCupones from "./AdminMercadoPagoCupones.jsx";
 import AdminCorreos from "./AdminCorreos.jsx";
@@ -37,7 +37,7 @@ const AdminPanel = ()=>{
         secundario:[
           { nombre: "Crear", admin: true, superAdmin: true },
           { nombre: "Editar", admin: true, superAdmin: true },
-          { nombre: "Creacion de campeones", admin: true, superAdmin: true },
+          { nombre: "Páginas Meta TFT", admin: true, superAdmin: true },
           { nombre: "Infografia Comps", admin: false, superAdmin: true },
           { nombre: "Tier List Items", admin: false, superAdmin: true },
           { nombre: "Tier List Augments", admin: false, superAdmin: true },
@@ -246,7 +246,7 @@ const AdminPanel = ()=>{
                 {action === "TFT-Tier List Augments" && <CreateAugmentsTierList admin={admin || superAdmin}/>}
                 {action === "TFT-Aumentos" && <AdminTFTAumentos />}
                 {action === "TFT-Campeones Early" && <AdminTFTCampeonesEarly />}
-                {action === "TFT-Creacion de campeones" && <AdminCrearCampeonesTFT />}
+                {action === "TFT-Páginas Meta TFT" && <AdminCrearPaginaMetaTFT />}
                 {action === "TFT-Deploy" && <button onClick={() => handleDeploy("Añadí compos nuevas de TFT")}>Desplegar Cambios</button>}
                 {action?.includes(pestanas[1].primario) && <FormularioMetaLOL />}
                 {action?.includes(pestanas[2].primario) && <FormularioTierListValorant />}

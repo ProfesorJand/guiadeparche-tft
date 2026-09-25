@@ -129,3 +129,21 @@
   }
 }
 
+.modalScroll::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modalScroll::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+}
+
+.modalScroll::-webkit-scrollbar-thumb {
+  background: #2a2a4a;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modalScroll::-webkit-scrollbar-thumb:hover {
+  background: #3b3b66;
+}
