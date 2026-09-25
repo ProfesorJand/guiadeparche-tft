@@ -37,29 +37,46 @@ export async function getStaticPaths() {
 
   const compsFinales = Object.values(compsUnicasPorUrl);
 
-  const paths = compsFinales.map((comp) => ({
-    params: { id: String(comp.urlSEO) },
-    props: { type: 'compo', data: comp, allComps: todasLasCompsPBE },
-  }));
-
-  // Cargar meta entidades
   const campeonesMeta = await getMetaEntidades("campeones_tft");
   const sinergiasMeta = await getMetaEntidades("traits_TFT_set_18");
   const itemsMeta = await getMetaEntidades("items_tft_set_18");
 
-  campeonesMeta.forEach(c => {
-    if (c.url_seo) paths.push({ params: { id: String(c.url_seo).toLowerCase() }, props: { type: 'campeon', data: c, allComps: todasLasCompsPBE } });
-  });
+  const metaUrls = new Set([
+    ...campeonesMeta.map(c => c.url_seo?.toLowerCase()),
+    ...sinergiasMeta.map(s => s.url_seo?.toLowerCase()),
+    ...itemsMeta.map(i => i.url_seo?.toLowerCase())
+  ].filter(Boolean));
 
-  sinergiasMeta.forEach(s => {
-    if (s.url_seo) paths.push({ params: { id: String(s.url_seo).toLowerCase() }, props: { type: 'sinergia', data: s, allComps: todasLasCompsPBE } });
-  });
+  const compsPaths = compsFinales
+    .filter(comp => {
+      const url = String(comp.urlSEO).toLowerCase();
+      return !metaUrls.has(url);
+    })
+    .map(comp => ({
+      params: { id: String(comp.urlSEO).toLowerCase() },
+      props: { type: 'compo', data: comp, allComps: todasLasCompsPBE },
+    }));
 
-  itemsMeta.forEach(i => {
-    if (i.url_seo) paths.push({ params: { id: String(i.url_seo).toLowerCase() }, props: { type: 'item', data: i, allComps: todasLasCompsPBE } });
-  });
+  const campeonesPaths = campeonesMeta
+    .filter(c => c.url_seo)
+    .map(c => ({ params: { id: String(c.url_seo).toLowerCase() }, props: { type: 'campeon', data: c, allComps: todasLasCompsPBE } }));
 
-  return paths;
+  const sinergiasPaths = sinergiasMeta
+    .filter(s => s.url_seo)
+    .map(s => ({ params: { id: String(s.url_seo).toLowerCase() }, props: { type: 'sinergia', data: s, allComps: todasLasCompsPBE } }));
+
+  const itemsPaths = itemsMeta
+    .filter(i => i.url_seo)
+    .map(i => ({ params: { id: String(i.url_seo).toLowerCase() }, props: { type: 'item', data: i, allComps: todasLasCompsPBE } }));
+
+  console.log("=== RUTAS GENERADAS ===");
+  console.log("Composiciones:", compsPaths.map(p => `${p.params.id} (Set: ${p.props.data.set_number || p.props.data.tft_set || '?'})`));
+  console.log("Campeones:", campeonesPaths.map(p => `${p.params.id} (Set: ${p.props.data.set_number || p.props.data.tft_set || '?'})`));
+  console.log("Sinergias:", sinergiasPaths.map(p => `${p.params.id} (Set: ${p.props.data.set_number || p.props.data.tft_set || '?'})`));
+  console.log("Items:", itemsPaths.map(p => `${p.params.id} (Set: ${p.props.data.set_number || p.props.data.tft_set || '?'})`));
+  console.log("=======================");
+
+  return [...compsPaths, ...campeonesPaths, ...sinergiasPaths, ...itemsPaths];
 }
 
 const { id } = Astro.params;

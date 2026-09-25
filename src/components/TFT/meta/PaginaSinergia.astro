@@ -178,7 +178,6 @@ if (typeof data.effects === 'string') {
 
 // Obtener datos crudos de la sinergia (para saber los niveles requeridos y estilos)
 const traits = dataTFTTraits.get();
-console.log("DEBUG currentTraitData.effects: ", currentTraitData.effects);
 
 // Campeones de la sinergia
 const championsInTrait = (allChampions?.filter(c => 
@@ -220,13 +219,12 @@ function getChampionCostBorder(cost) {
     case 2: return "#3e9e64";
     case 3: return "#1e69ee";
     case 4: return "#b534f5";
-    case 5: return "#f58220";
+    case 5: return "#f5e020ff";
     default: return "#444";
   }
 }
 
 const resolvedIcon = data.icon.startsWith("http") ? data.icon : getLocalTftImage(data.icon, 'traits', data.tft_set || "18");
-console.log({data})
 ---
 
 <LayoutMaxWidth
@@ -241,7 +239,7 @@ console.log({data})
           <div class="trait-icon-bg">
             <ImgTrait trait={data} version={data.tft_set || "18"} showName={false} />
           </div>
-          <h1>TFT {data.titulo_seo} : Meta Comps & Builds - Set {data.tft_set || "18"}</h1>
+          <h1>TFT {data.titulo_seo} - Meta Comps & Builds - Set {data.tft_set || "18"}</h1>
         </div>
         {data.desc_trait && (
           <div class="trait-desc" set:html={data.desc_trait.replace(/\n/g, '<br />')} />
@@ -251,7 +249,7 @@ console.log({data})
             const tileIcon = c.tileIcon ? getLocalTftImage(c.tileIcon, 'champions/tileIcon') : "";
             const urlName = c.name.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
             return (
-              <a href={`/tft/meta-comps-tier-list-teamfight-tactics/${urlName}`} class="champion-hex-container" style="text-decoration: none; color: inherit;">
+              <a style="pointer-events: none; cursor: default; text-decoration: none;" href={`/tft/meta-comps-tier-list-teamfight-tactics/${urlName}`} class="champion-hex-container" style="text-decoration: none; color: inherit;">
                 <div class="champion-hex-shape" style={`background-color: ${getChampionCostBorder(c.cost)};`}>
                   <img src={tileIcon} alt={`Campeon ${c.name} de sinergia ${data.titulo_seo} set ${data.tft_set}`} />
                 </div>
@@ -367,6 +365,14 @@ console.log({data})
     border-radius: 8px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.5);
   }
+  .related-comps-section{
+    margin-top:10px;
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+    max-width:900px;
+    align-self:center;
+  }
 
   .trait-header {
     display: flex;
@@ -375,14 +381,11 @@ console.log({data})
     margin-bottom: 25px;
   }
   .trait-icon-bg {
-    background-color: #1a1a1a;
     width: 50px;
     height: 50px;
-    border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 2px solid #555;
   }
   .trait-icon-img {
     width: 30px;
@@ -400,12 +403,14 @@ console.log({data})
     color: #e5e7eb;
     font-size: 1rem;
     line-height: 1.6;
+    text-align: justify;
   }
 
   .trait-effects {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    text-align: justify;
   }
   .effect-row {
     display: flex;
@@ -460,6 +465,7 @@ console.log({data})
     flex-direction: row;
     align-self: center;
     gap: 20px;
+    width:100%;
     margin-top:10px;
   }
 
@@ -470,6 +476,8 @@ console.log({data})
     flex-direction: column;
     align-items: center;
     width: 70px;
+    max-width: 100px;
+    flex:1;
   }
 
   .champion-hex-shape {
@@ -550,7 +558,7 @@ console.log({data})
     margin-block-end:0;
   }
   
-  @media (max-width: 768px) {
+  @media (max-width: 900px) {
     .two-columns {
       flex-direction: column;
     }
@@ -561,6 +569,14 @@ console.log({data})
       width: 100%;
       height: 1px;
       margin: 10px 0;
+    }
+    .trait-header{
+      flex-direction: column;
+      gap:5px;
+      margin-bottom:10px;
+    }
+    .list-champions{
+      max-width:calc(100% - (20px * 2) / 3);
     }
   }
 </style>

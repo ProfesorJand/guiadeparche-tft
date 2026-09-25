@@ -210,7 +210,7 @@ const tableOfContentIndividual = [
     </div>
   </div>
   <DynamicSection hasSidebar={!isIndividual}>
-    <div slot="main">
+    <div slot="main" style="display: flex; flex-direction: column; gap: 10px;">
       <!-- <div class="set-switcher" style="display: flex; gap: 10px; margin-bottom: 20px; justify-content: center;">
         {sets.map(s => {
           const isActive = s.id === defaultSet;
@@ -237,7 +237,7 @@ const tableOfContentIndividual = [
         const isActiveSet = setObj.id === defaultSet;
 
         return (
-          <div class={`set-content-container set-content-${setObj.id}`} style={`display: ${isActiveSet ? 'block' : 'none'};`}>
+          <div class={`set-content-container set-content-${setObj.id}`} style={`display: ${isActiveSet ? 'flex' : 'none'}; flex-direction: column; gap: 10px;`}>
             {
               !isIndividual && 
 
@@ -246,7 +246,7 @@ const tableOfContentIndividual = [
         Las compos están ordenadas por fuerza dentro del meta actual, desde las
         mejores opciones para subir elo hasta alternativas viables según tu
         spot.
-      </p>
+        </p>
       }
       {
         isIndividual && [...top10Comps, ...restComps].filter((comp) => comp.urlSEO === activeId).map((comp, index) => (
@@ -257,6 +257,7 @@ const tableOfContentIndividual = [
               client:load
               isIndividual={isIndividual}
               transition:persist
+              expandInline={true}
             />
           </article>
         ))
@@ -307,6 +308,7 @@ const tableOfContentIndividual = [
                         </span>
                       )}
                       <CampeonImgInTierList
+                        comp={comp}
                         apiNameCampeon={comp?.campeonMeta?.apiNameCampeon}
                         apiNameItems={comp?.campeonMeta?.apiNameItemsDelCampeon}
                         estrellas={comp?.campeonMeta?.estrellas}
@@ -333,24 +335,25 @@ const tableOfContentIndividual = [
               isActive={String(comp.urlSEO) === String(activeId)}
               client:load
               transition:persist
+              expandInline={true}
             />
           </article>
         ))
       }
-      {
+      {/* {
         !isIndividual && restComps.length > 0 && (
-          <button id={`ver-mas-button-${setObj.id}`} class="ver-mas-button" data-expanded="false" data-set-btn={setObj.id}>
+          <button id={`ver-mas-button`} class="ver-mas-button" data-expanded="false" data-set-btn={setObj.id}>
             Ver todas las composiciones
           </button>
         )
-      }
+      } */}
       {
         !isIndividual &&restComps &&
           restComps.map((comp, index) => {
             const isCurrentActive = String(comp.urlSEO) === String(activeId);
             return (
               <div
-                class={`comp-card rest-comp-card ${isCurrentActive ? "" : "hidden-comp"}`}
+                class={`comp-card rest-comp-card`}
                 data-active={isCurrentActive ? "true" : "false"}
               >
                 <CardsCompos
@@ -359,6 +362,7 @@ const tableOfContentIndividual = [
                   isActive={isCurrentActive}
                   client:load
                   transition:persist
+                  expandInline={true}
                 />
               </div>
             );
@@ -977,7 +981,6 @@ const tableOfContentIndividual = [
     border-radius: 0.5rem;
     width: 100%;
     font-size: 2rem;
-    margin-bottom: 20px;
     text-align: center;
     justify-content: center;
   }
