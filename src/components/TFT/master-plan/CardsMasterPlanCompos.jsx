@@ -107,7 +107,7 @@ const CardsMasterPlanCompos = ({compo, activateMissingOPM, filtroSoft={}, grupos
           }}
         >
           {/* Meta Campeon & Compo Name */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px', background: 'rgba(255,255,255,0.05)', padding: '6px 12px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginBottom: '4px', background: 'rgba(255,255,255,0.05)', padding: '6px 12px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)' }}>
             <div style={{ position: 'relative', width: '36px', height: '36px' }}>
               <img
                 src={getLocalTftImage(allChampionsTFT.find(x => x.apiName === compo?.campeonMeta?.apiNameCampeon)?.tileIcon, 'champions/tileIcon')}
@@ -127,7 +127,7 @@ const CardsMasterPlanCompos = ({compo, activateMissingOPM, filtroSoft={}, grupos
 
           <span style={{ fontSize: '1.05rem', fontWeight: 'bold', color: '#ff4d4d' }}>Composición Bloqueada</span>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '4px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ccc" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
               <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
@@ -135,15 +135,16 @@ const CardsMasterPlanCompos = ({compo, activateMissingOPM, filtroSoft={}, grupos
             {compo._missingOPM.icon && (
               <img src={compo._missingOPM.icon} alt={compo._missingOPM.name} style={{ width: '42px', height: '42px', objectFit: 'contain', borderRadius: '6px', border: '2px solid #ff4500' }} />
             )}
+            <span style={{ fontSize: '0.75rem', background: '#ff4500', padding: '4px 10px', borderRadius: '12px', marginTop: '2px' }}>
+            Click para desbloquear
+          </span>
           </div>
 
           <span style={{ fontSize: '0.8rem', color: '#bbb', maxWidth: '90%', lineHeight: '1.2' }}>
             Activa <strong>{compo._missingOPM.name}</strong> para jugar
           </span>
 
-          <span style={{ fontSize: '0.75rem', background: '#ff4500', padding: '4px 10px', borderRadius: '12px', marginTop: '2px' }}>
-            Click para desbloquear
-          </span>
+          
         </div>
       )}
       <div className={style.row1}>
@@ -196,7 +197,7 @@ const CardsMasterPlanCompos = ({compo, activateMissingOPM, filtroSoft={}, grupos
         </div>
       </div>
 
-      <div className={style.row1}>
+      <div className={style.cInfoCards}>
         <div className={`${style.initialFundamentals} ${style.borderContainer}`}>
           <span className={style.titleMiniInfoCard}>Objetos Prio</span>
           <div className={style.containerObjetosPrioDoble}>
@@ -314,7 +315,7 @@ const CardsMasterPlanCompos = ({compo, activateMissingOPM, filtroSoft={}, grupos
         </div>
 
         <div className={`${style.initialAumentos} ${style.borderContainer}`}>
-          <span className={style.titleMiniInfoCard}>Aumentos 2-1</span>
+          <span className={style.titleMiniInfoCard}>Aumentos</span>
           <div className={style.containerAumentos}>
             {compo.aumentos
               .filter(aumento => aumento.op || aumento.early)

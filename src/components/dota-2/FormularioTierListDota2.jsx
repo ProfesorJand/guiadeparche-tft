@@ -21,7 +21,6 @@ const FormularioTierListDota2 = () => {
   useEffect(()=>{
     const fetching = async () =>{
       const uploadMeta = await fetchHeroesMeta();
-      console.log("Meta Dota2 cargada", uploadMeta);
       setLocalMetaDota2(uploadMeta);
     }
     fetching();
@@ -82,7 +81,7 @@ const FormularioTierListDota2 = () => {
         throw new Error("Error saving MetaDota2");
       }
   
-      console.log("%cMetaDota2 saved successfully", "background:green;color:white");
+
   
       // 🔄 Actualizar el store con la versión más reciente desde el servidor
       const updatedMeta = await fetchHeroesMeta();

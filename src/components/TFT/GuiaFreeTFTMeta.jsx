@@ -670,7 +670,9 @@ const FooterBuild = ({comp})=>{
                   <div className={style.buildCampeonItems}>
                     <ImgCampeon championData={buildChampionData} imgType="icon" showName={true} borderColor={false} className={style.imgCampeonRectangular}/>
                     <div className={style.containerBuildItemImg}>
-                      {/* {bisItemsData.length > 0 && <span className={style.buildItemText}>BIS</span>} */}
+                      {bisItemsData.length === 0 && (
+                        <div className={style.cItemBuild} style={{ aspectRatio: '1/1' }}></div>
+                      )}
                       {bisItemsData.map((item, idx) => (
                         <div key={`build-item-${idx}`} className={style.cItemBuild}>
                           <ImgItem item={item}/>                      
@@ -678,7 +680,9 @@ const FooterBuild = ({comp})=>{
                       ))}
                     </div>
                     <div className={style.containerBuildItemImg}>
-                      {/* {specialBisItemsData.length > 0 && <span className={style.buildItemText}>BIS ESPECIAL</span>} */}
+                      {specialBisItemsData.length === 0 && (
+                        <div className={style.cItemBuild} style={{ aspectRatio: '1/1' }}></div>
+                      )}
                       {specialBisItemsData.map((item, idx) => (
                         <div key={`build-item-special-${idx}`} className={style.cItemBuild}>
                           <ImgItem item={item} />
@@ -694,7 +698,7 @@ const FooterBuild = ({comp})=>{
       }
       <div className={`${style.containerVerMasBuilds} ${style.containerBuild}`}>
         <Tooltip type="default" text="Todas las Builds completas con variaciones, artefactos, radiantes y emblemas en: TFT Master Plan">
-        <img src="/web/logoGPMP.webp" alt="Logo Guiadeparche Master Plan" className={`${style.imgMasterPlan}`} />
+          <img src="/web/logoGPMP.webp" alt="Logo Guiadeparche Master Plan" className={`${style.imgMasterPlan}`} />
         </Tooltip>
       </div>
       </div>
@@ -749,7 +753,7 @@ const FooterLogos = ({edit})=>{
       <div className={style.containersLogos}>
       {logos.filter(logo => logo.show).map((logo, index) => (
         <div key={index} className={style.containerLogo}>
-          <img className={`${style.imgLogo} ${logo.label === "SetTFT" ? style.imgLogoSetTFT : ''}`} src={logo.url} alt={logo.label} />
+          <img className={`${style.imgLogo} ${logo.label === "SetTFT" ? style.imgLogoSetTFT : logo.label === "Jupeson" ? style.imgLogoJupeson : logo.label === "Guiadeparche" ? style.imgLogoGuiadeparche : ''}`} src={logo.url} alt={logo.label} />
           {logo.label === "Guiadeparche" && <img src="/textoGuiadeparcheSinEspacios.png" className={style.logoTextGuiadeparche}/>}
         </div>
       ))}

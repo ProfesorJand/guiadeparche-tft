@@ -86,6 +86,17 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
           resolvedTraits.push(restExtra);
         }
       }
+
+      // Si tiene sinergias extra (Khazix)
+      if (champ.sinergiasExtraKhazix && Array.isArray(champ.sinergiasExtraKhazix)) {
+        champ.sinergiasExtraKhazix.forEach(khazixTrait => {
+          const extraTraitObj = safeGlobalTraits.find(t => t.apiName === khazixTrait || t.name === khazixTrait);
+          if (extraTraitObj) {
+            const { effects, desc, ...restExtra } = extraTraitObj;
+            resolvedTraits.push(restExtra);
+          }
+        });
+      }
     }
 
     boardData[hexIndex] = {
@@ -97,6 +108,8 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
       items: itemsData,
       estrellas: champ.estrella || 1,
       extraSynergy: champ.sinergiaExtraMissFortune || null,
+      extraSynergyKhazix: champ.sinergiasExtraKhazix || [],
+      isRiftbeast: champ.isRiftbeast || false,
       hexagono: hexIndex
     };
   });
@@ -117,18 +130,25 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
   };
 
   const synergiesCount = {};
+  const processedChampionTraits = new Set();
+  
   Object.values(boardData).forEach((champion) => {
     if (!champion.apiName) return; // Skip empty hexes like Espina Negra
     const collectedTraits = new Set();
     champion.traits.forEach((trait) => {
       collectedTraits.add(trait.apiName);
       
-      // Verifica si el campeón tiene la sinergia marcada como x2 en la constante
-      const isDouble = doubleTraitChampions[champion.apiName]?.includes(trait.apiName);
-      const countToAdd = isDouble ? 2 : 1;
+      const uniqueKey = `${champion.apiName}_${trait.apiName}`;
+      if (!processedChampionTraits.has(uniqueKey)) {
+        processedChampionTraits.add(uniqueKey);
+        
+        // Verifica si el campeón tiene la sinergia marcada como x2 en la constante
+        const isDouble = doubleTraitChampions[champion.apiName]?.includes(trait.apiName);
+        const countToAdd = isDouble ? 2 : 1;
 
-      const currentCount = synergiesCount[trait.apiName]?.count || 0;
-      synergiesCount[trait.apiName] = { count: currentCount + countToAdd, icon: trait.icon };
+        const currentCount = synergiesCount[trait.apiName]?.count || 0;
+        synergiesCount[trait.apiName] = { count: currentCount + countToAdd, icon: trait.icon };
+      }
     });
     if (champion.items) {
       champion.items.forEach((item) => {
@@ -151,7 +171,9 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
         apiNameCampeon: champ.apiName,
         apiNameItemsDelCampeon: champ.items.map(i => i.apiName),
         estrella: champ.estrellas || 1,
-        sinergiaExtraMissFortune: champ.extraSynergy || ""
+        sinergiaExtraMissFortune: champ.extraSynergy || "",
+        sinergiasExtraKhazix: champ.extraSynergyKhazix || [],
+        isRiftbeast: champ.isRiftbeast || false
       };
     });
 
@@ -231,7 +253,9 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
         items: [],
         estrellas: 1,
         hexagono: hexIndex,
-        extraSynergy: targetChampion?.extraSynergy === "Espina Negra" ? "Espina Negra" : null
+        extraSynergy: targetChampion?.extraSynergy === "Espina Negra" ? "Espina Negra" : null,
+        extraSynergyKhazix: [],
+        isRiftbeast: false
       };
 
       if (isFromBoard) {
@@ -401,24 +425,78 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
                       setActiveMenu(activeMenu === hexIndex ? null : hexIndex);
                     }}
                   >
-                    <div className={style.containerSinergias}>
-                      {champion.traits && champion.traits.map((syn, idx) => {
-                        const count = synergiesCount[syn.apiName]?.count || 1;
-                        const traitSVG = findClosestTraitImage(syn.apiName.replace(" ", ""), count);
-                        const iconUrl = syn.icon.startsWith("http")
-                          ? syn.icon.toLowerCase().replace(".tex", ".png")
-                          : getLocalTftImage(syn.icon, 'traits', versionNumber);
+                    {champion.traits && champion.traits.length > 3 ? (
+                      <>
+                        <div className={`${style.containerSinergias} ${style.animateGroupA}`}>
+                          {champion.traits.slice(0, 3).map((syn, idx) => {
+                            const count = synergiesCount[syn.apiName]?.count || 1;
+                            const traitSVG = findClosestTraitImage(syn.apiName.replace(" ", ""), count);
+                            const iconUrl = syn.icon.startsWith("http")
+                              ? syn.icon.toLowerCase().replace(".tex", ".png")
+                              : getLocalTftImage(syn.icon, 'traits', versionNumber);
 
-                        return (
-                          <div key={idx} className={style.containerTrait}>
-                            <img className={`${style.backgroundSinergia} ${syn.apiName.replace(" ", "")}`} src={`/hexagonos/${traitSVG}`} alt="hex" />
-                            <img className={style.sinergia} src={iconUrl} alt={syn.name} />
-                          </div>
-                        );
-                      })}
-                    </div>
+                            return (
+                              <div key={`groupA-${idx}`} className={style.containerTrait}>
+                                <img className={`${style.backgroundSinergia} ${syn.apiName.replace(" ", "")}`} src={`/hexagonos/${traitSVG}`} alt="hex" />
+                                <img className={style.sinergia} src={iconUrl} alt={syn.name} />
+                              </div>
+                            );
+                          })}
+                        </div>
+                        <div className={`${style.containerSinergias} ${style.animateGroupB}`}>
+                          {champion.traits.slice(3, 6).map((syn, idx) => {
+                            const count = synergiesCount[syn.apiName]?.count || 1;
+                            const traitSVG = findClosestTraitImage(syn.apiName.replace(" ", ""), count);
+                            const iconUrl = syn.icon.startsWith("http")
+                              ? syn.icon.toLowerCase().replace(".tex", ".png")
+                              : getLocalTftImage(syn.icon, 'traits', versionNumber);
+
+                            return (
+                              <div key={`groupB-${idx}`} className={style.containerTrait}>
+                                <img className={`${style.backgroundSinergia} ${syn.apiName.replace(" ", "")}`} src={`/hexagonos/${traitSVG}`} alt="hex" />
+                                <img className={style.sinergia} src={iconUrl} alt={syn.name} />
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </>
+                    ) : (
+                      <div className={style.containerSinergias}>
+                        {champion.traits && champion.traits.map((syn, idx) => {
+                          const count = synergiesCount[syn.apiName]?.count || 1;
+                          const traitSVG = findClosestTraitImage(syn.apiName.replace(" ", ""), count);
+                          const iconUrl = syn.icon.startsWith("http")
+                            ? syn.icon.toLowerCase().replace(".tex", ".png")
+                            : getLocalTftImage(syn.icon, 'traits', versionNumber);
+
+                          return (
+                            <div key={idx} className={style.containerTrait}>
+                              <img className={`${style.backgroundSinergia} ${syn.apiName.replace(" ", "")}`} src={`/hexagonos/${traitSVG}`} alt="hex" />
+                              <img className={style.sinergia} src={iconUrl} alt={syn.name} />
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
 
                     <img className={style.imageCampeonBuilder} src={champion.imagen} alt={champion.nombre} />
+
+                    {champion.isRiftbeast && (
+                      <div 
+                        className={style.containerTrait} 
+                        style={{ 
+                          position: 'absolute', 
+                          left: '-10%', 
+                          top: '50%', 
+                          transform: 'translateY(-50%)', 
+                          zIndex: 3, 
+                          width: '35%' 
+                        }}
+                      >
+                        <img className={`${style.backgroundSinergia} DA_Riftbeast18`} style={{width:"100%"}} src="/hexagonos/hex-prismatic.webp" alt="hex" />
+                        <img className={style.sinergia} src="/tft/sets/18/traits/trait_icon_18_riftbeast.png" alt="Riftbeast" />
+                      </div>
+                    )}
 
                     <span className={style.nombreCampeon}>{champion.nombre}</span>
 

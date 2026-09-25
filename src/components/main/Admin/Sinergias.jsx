@@ -84,6 +84,16 @@ const Sinergias = ({ sinergias, orientacion, show, version }) => {
             resolvedTraits.push(extraTraitObj);
           }
         }
+
+        // Si tiene sinergias extra (Khazix)
+        if (champ.sinergiasExtraKhazix && Array.isArray(champ.sinergiasExtraKhazix)) {
+          champ.sinergiasExtraKhazix.forEach(khazixTrait => {
+            const extraTraitObj = safeSinergiasData.find(t => t.apiName === khazixTrait || t.name === khazixTrait);
+            if (extraTraitObj) {
+              resolvedTraits.push(extraTraitObj);
+            }
+          });
+        }
       }
 
       boardData[index] = {
@@ -91,6 +101,7 @@ const Sinergias = ({ sinergias, orientacion, show, version }) => {
         traits: resolvedTraits,
         items: itemsData,
         extraSynergy: champ.sinergiaExtraMissFortune || null,
+        extraSynergyKhazix: champ.sinergiasExtraKhazix || null,
       };
     });
 
@@ -110,7 +121,7 @@ const Sinergias = ({ sinergias, orientacion, show, version }) => {
     };
 
     // 2. Iterar boardData de la misma forma que NuevoBuilderTFT para contar
-    Object.values(boardData).forEach(champ => {
+    Object.entries(boardData).forEach(([index, champ]) => {
       if (!champ.apiName) return;
 
       const collectedTraits = new Set();
@@ -120,6 +131,7 @@ const Sinergias = ({ sinergias, orientacion, show, version }) => {
         
         // Evitamos doble conteo de copias del mismo campeón
         const uniqueKey = `${champ.apiName}_${trait.apiName}`;
+        
         if (!processedChampionTraits.has(uniqueKey)) {
           processedChampionTraits.add(uniqueKey);
           
@@ -131,7 +143,7 @@ const Sinergias = ({ sinergias, orientacion, show, version }) => {
       });
 
       if (champ.items) {
-        champ.items.forEach(item => {
+        champ.items.forEach((item, itemIdx) => {
           if (item.traitExtra) {
             // Un item sí puede sumar sinergia incluso si es copia, pero no si ya la tiene nativamente?
             // NuevoBuilderTFT dice: && !collectedTraits.has(item.traitExtra.apiName)
@@ -148,11 +160,13 @@ const Sinergias = ({ sinergias, orientacion, show, version }) => {
     calculatedSinergias = sinergias || {};
   }
 
-  const sortable = Object.entries(calculatedSinergias)
-    .sort(([, a], [, b]) => b - a)
-    .reduce((r, [k, v]) => ({ ...r, [k]: v }), {});
-
-
+  const colorWeight = {
+    "hex-prismatic.webp": 4,
+    "hex-gold.webp": 3,
+    "hex-silver.webp": 2,
+    "hex-bronze.webp": 1,
+    "hex-default.webp": 0
+  };
   function getMinMaxTraits(traits) {
     const result = [];
     Object.entries(traits).forEach(([trait, value]) => {
@@ -215,9 +229,22 @@ const Sinergias = ({ sinergias, orientacion, show, version }) => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  const traitsWithMinMax = getMinMaxTraits(calculatedSinergias)
+    .filter(key => !(key.hexColor === "hex-prismatic.webp" && key.hexLevel === 1))
+    .sort((a, b) => {
+      const weightA = colorWeight[a.hexColor] || 0;
+      const weightB = colorWeight[b.hexColor] || 0;
+      
+      if (weightA !== weightB) {
+        return weightB - weightA;
+      }
+      
+      return b.hexLevel - a.hexLevel;
+    });
+
   return (
     <div className={show ? [style.containerSinergia, orientacion === "horizontal" ? style.containerSinergiaHorizontal : ""].join(" ") : style.containerSinergiaOculto}>
-      {Object.keys(calculatedSinergias).length > 0 && getMinMaxTraits(sortable).map((key, i) => {
+      {Object.keys(calculatedSinergias).length > 0 && traitsWithMinMax.map((key, i) => {
         if (show ? i < 9 : i < 9) {
           if (key.hexColor !== "hex-default.webp") {
             return (

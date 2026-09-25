@@ -43,6 +43,7 @@
   "devDependencies": {
     "@types/jsdom": "^21.1.7",
     "gh-pages": "^6.3.0",
+    "googleapis": "^144.0.0",
     "prettier-plugin-astro": "^0.13.0"
   }
 }

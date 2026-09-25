@@ -35,7 +35,6 @@ export async function getComposMetaPBE() {
   //     const filePath = path.join(process.cwd(), 'src/data/composMetaPBE.json');
   //     const fileContent = await fs.readFile(filePath, 'utf-8');
   //     const data = JSON.parse(fileContent);
-  //     console.log({data:data['S']})
   //     composMetaPBECache = sortComps(data);
   //     return composMetaPBECache;
   //   } catch (err) {
@@ -164,32 +163,42 @@ export async function getConstantes() {
   }
 
   fetchingConstantesPromise = (async () => {
-    try {
-      // Añadimos cache-busting (?_t=...) y cabeceras para que Cloudflare y proxys intermedios entreguen el valor fresco
-      const url = `https://api.guiadeparche.com/tft/constantes.json?_t=${Date.now()}`;
-      const response = await fetch(url, {
-        headers: {
-          ...FETCH_HEADERS,
-          'Cache-Control': 'no-cache, no-store, must-revalidate',
-          'Pragma': 'no-cache',
-          'Expires': '0'
-        },
-        cache: "reload"
-      });
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      const data = await response.json();
-      constantesCache = data;
-      constantesCacheTimestamp = Date.now();
-      return constantesCache;
-    } catch (err) {
-      console.error("Error fetching constantes.json remotely:", err);
-      // Fallback seguro al caché en memoria si la petición falla
-      if (constantesCache) return constantesCache;
-      throw err; // Solo falla el build si nunca se ha podido obtener datos
-    } finally {
-      fetchingConstantesPromise = null;
+    let lastError;
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      try {
+        // Añadimos cache-busting (?_t=...) y cabeceras para que proxys intermedios entreguen el valor fresco
+        const url = `https://api.guiadeparche.com/tft/constantes.json?_t=${Date.now()}`;
+        const response = await fetch(url, {
+          headers: {
+            ...FETCH_HEADERS,
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+          },
+          cache: "reload"
+        });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.json();
+        constantesCache = data;
+        constantesCacheTimestamp = Date.now();
+        return constantesCache;
+      } catch (err) {
+        lastError = err;
+        console.warn(`⚠️ Intento ${attempt} falló al obtener constantes.json:`, err.message);
+        if (attempt < 3) {
+          // Esperar 2 segundos antes de reintentar
+          await new Promise(resolve => setTimeout(resolve, 2000));
+        }
+      }
     }
-  })();
+    
+    console.error("❌ Error fatal fetching constantes.json remotely después de 3 intentos:", lastError);
+    // Fallback seguro al caché en memoria si la petición falla
+    if (constantesCache) return constantesCache;
+    throw lastError; // Solo falla el build si nunca se ha podido obtener datos
+  })().finally(() => {
+    fetchingConstantesPromise = null;
+  });
 
   return fetchingConstantesPromise;
 }

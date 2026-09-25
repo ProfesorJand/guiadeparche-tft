@@ -4,7 +4,7 @@ export default function TipoDeDano({ dañoTipo, selectedDamageType, toggleArrayF
   return (
     <div className={style.filterInputGroup}>
       <label>Tipo de Daño</label>
-      <div className={style.filterButtonsContainer}>
+      <div className={style.filterButtonsContainerRow}>
         {dañoTipo?.Es?.map(d => (
           <button
             key={d}

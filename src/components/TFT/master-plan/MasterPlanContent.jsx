@@ -2,7 +2,7 @@ import React from 'react';
 import { useStore } from '@nanostores/react';
 import { $user, $superAdmin, $hasMasterPlan } from '../../../stores/auth';
 import SuscripcionesMP from '../suscripciones/SuscripcionesMP';
-import styles from './MasterPlanContent.module.css';
+import styles from './css/MasterPlanContent.module.css';
 
 const MasterPlanContent = () => {
   const user = useStore($user);
@@ -59,7 +59,7 @@ const MasterPlanContent = () => {
       </video>
 
             {/* Si TIENE el plan activo */}
-      {hasMasterPlan ? (
+      {hasMasterPlan && (
         <div className={styles.activePlanContainer}>
           <div className={styles.successBadge}>
             <h2>¡Master Plan Activo!</h2>
@@ -104,67 +104,48 @@ const MasterPlanContent = () => {
             🔥 Accede al Master Plan 🔥
           </a>
         </div>
-      ) : (
-        /* Si NO tiene el plan activo (logueado o no) */
-        <>
-          {/* !hasMasterPlan &&  <SuscripcionesMP /> /* mostrar esto cuando ya dejemos las pruebas de MP en Mercado pago */}
+      ) }
 
-          {/* Botón de login para los no logueados */}
-          {!user && (
-            <a href="/login?redirect=/tft/master-plan" className={styles.button} style={{ display: 'block', textAlign: 'center', marginTop: '20px', alignSelf: "anchor-center" }}>
-              Obtener TFT Master Plan
-            </a>
-          )}
-        </>
-      )}
-
-      {!hasMasterPlan && user && <SuscripcionesMP />}
+      {!hasMasterPlan  && <SuscripcionesMP />}
       
-      <h2 className={styles.tituloCentrado}>Mejorar en TFT requiere conocimiento. El problema es cuánto tiempo tienes para conseguirlo.</h2>
-      <p>
-        Los mejores jugadores estudian el juego constantemente: analizan el meta, composiciones, objetos, aumentos, condiciones de victoria, posicionamiento y cientos de situaciones posibles.
-      </p>
-      <p>
-        Esa dedicación es una de las mejores formas de mejorar.
-      </p>
-      <p>
-        Pero no todos tenemos el tiempo, el grupo de estudio o las horas necesarias para hacer todo ese análisis por nuestra cuenta.
-      </p>
-      <p>
-        TFT Master Plan reduce ese umbral de conocimiento y concentra ese trabajo en un solo lugar, para que puedas acceder rápidamente a información que de otra forma te llevaría muchas horas encontrar y analizar.
-      </p>
-
-      <h2>Nosotros hacemos el trabajo de análisis. Tú decides cómo utilizarlo.</h2>
-      <p>
-        Master Plan no pretende enseñarte una única forma de jugar TFT ni sustituir el proceso de aprendizaje.
-        Te da un punto de partida mucho más rápido.
-        La herramienta reúne y organiza información sobre las composiciones del meta para que puedas entender rápidamente qué necesitas para jugarlas y cómo adaptarte cuando la partida no sale según lo planeado.
-      </p>
-      <p style={{fontStyle: "italic", fontWeight: "bold", marginTop: "10px", marginBottom: "10px"}}>
-        Menos tiempo buscando información. Más tiempo aplicándola en tus partidas.
-      </p>
-
+      <section className={styles.containerSection}>
+        <h2 className={styles.tituloCentrado}>Mejorar en TFT requiere conocimiento. El problema es cuánto tiempo tienes para conseguirlo.</h2>
+        <p>
+          Los mejores jugadores estudian el juego constantemente: analizan el meta, composiciones, objetos, aumentos, condiciones de victoria, posicionamiento y cientos de situaciones posibles.
+        </p>
+        <p>
+          Esa dedicación es una de las mejores formas de mejorar.
+        </p>
+        <p>
+          Pero no todos tenemos el tiempo, el grupo de estudio o las horas necesarias para hacer todo ese análisis por nuestra cuenta.
+        </p>
+        <p>
+          TFT Master Plan reduce ese umbral de conocimiento y concentra ese trabajo en un solo lugar, para que puedas acceder rápidamente a información que de otra forma te llevaría muchas horas encontrar y analizar.
+        </p>
+      </section>
+        
+      <section className={styles.containerSection}>
+        <h2>Nosotros hacemos el trabajo de análisis. Tú decides cómo utilizarlo.</h2>
+        <p>
+          Master Plan no pretende enseñarte una única forma de jugar TFT ni sustituir el proceso de aprendizaje.
+          Te da un punto de partida mucho más rápido.
+          La herramienta reúne y organiza información sobre las composiciones del meta para que puedas entender rápidamente qué necesitas para jugarlas y cómo adaptarte cuando la partida no sale según lo planeado.
+        </p>
+        <p style={{fontStyle: "italic", fontWeight: "bold", marginTop: "10px", marginBottom: "10px"}}>
+          Menos tiempo buscando información. Más tiempo aplicándola en tus partidas.
+        </p>
+      </section>
+      
+      <section className={styles.containerSection}>
       <h2>Todo el análisis que necesitas, organizado para usarlo durante tus partidas</h2>
-      <h3>Encuentra qué jugar</h3>
-      <p>
-        Explora las mejores líneas disponibles para cada composición y filtra según tus preferencias y el spot de partida.
-      </p>
-      <h3>Entiende cuándo una composición es realmente buena</h3>
-      <p>
-        Identifica las condiciones que hacen que una composición sea especialmente poderosa: aumentos, artefactos, emblemas, objetos y otras condiciones.
-      </p>
-      <h3>Aprende cuándo subir y cuándo rolear</h3>
-      <p>
-        Ten una referencia clara de los momentos importantes de cada composición para saber cuándo invertir tus recursos.
-      </p>
-      <h3>Ten alternativas cuando el plan falla</h3>
-      <p>
-        Si estás contestado, no encuentras tus unidades o tus objetos no encajan, descubre qué alternativas tienes.
-      </p>
-      <h3>Optimiza tu tablero</h3>
-      <p>
-        Builds, objetos, posicionamiento y variaciones para adaptar la composición a tu partida.
-      </p>
+      <ul>
+        <li><p><strong>Encuentra qué jugar:</strong> Explora las mejores líneas disponibles para cada composición y filtra según tus preferencias y el spot de partida.</p></li>
+        <li><p><strong>Entiende cuándo una composición es realmente buena:</strong> Identifica las condiciones que hacen que una composición sea especialmente poderosa: aumentos, artefactos, emblemas, objetos y otras condiciones.</p></li>
+        <li><p><strong>Aprende cuándo subir y cuándo rolear:</strong> Ten una referencia clara de los momentos importantes de cada composición para saber cuándo invertir tus recursos.</p></li>
+        <li><p><strong>Ten alternativas cuando el plan falla:</strong> Si estás contestado, no encuentras tus unidades o tus objetos no encajan, descubre qué alternativas tienes.</p></li>
+        <li><p><strong>Optimiza tu tablero:</strong> Builds, objetos, posicionamiento y variaciones para adaptar la composición a tu partida.</p></li>
+      </ul>
+      </section>
 
 
 
@@ -175,22 +156,22 @@ const MasterPlanContent = () => {
           <details open style={{ marginTop: '30px' }}>
             <summary>¿Para quién es?</summary>
             <ol>
-              <li>Jugadores que quieren subir de rango</li>
-              <li>No importa si eres Bronce o Challenger.</li>
-              <li>El objetivo es ayudarte a tomar mejores decisiones durante la partida.</li>
+              <li><p>Jugadores que quieren subir de rango</p></li>
+              <li><p>No importa si eres Bronce o Challenger.</p></li>
+              <li><p>El objetivo es ayudarte a tomar mejores decisiones durante la partida.</p></li>
             </ol>
           </details>
           
           <details open>
             <summary>¿Por qué lo estamos creando?</summary>
             <ol>
-              <li>Porque las composiciones son solo una parte de TFT.</li>
-              <li>La mayoría de jugadores pierde partidas por:
+              <li><p>Porque las composiciones son solo una parte de TFT.</p></li>
+              <li><p>La mayoría de jugadores pierde partidas por:</p>
                 <ul>
-                  <li>Elegir mal su composición</li>
-                  <li>No adaptar su plan</li>
-                  <li>Jugar una composición en el spot equivocado</li>
-                  <li>No entender cuándo pivotar</li>
+                  <li><p>Elegir mal su composición</p></li>
+                  <li><p>No adaptar su plan</p></li>
+                  <li><p>Jugar una composición en el spot equivocado</p></li>
+                  <li><p>No entender cuándo pivotar</p></li>
                 </ul>
               </li>
             </ol>
@@ -199,7 +180,7 @@ const MasterPlanContent = () => {
           <details>
             <summary>¿Qué es exactamente el TFT Master Plan?</summary>
             <p style={{ margin: '10px 0', lineHeight: '1.5' }}>
-              Es una herramienta avanzada de filtrado en tiempo real diseñada para usarse <em>antes</em> (de estudio) y <em>durante</em> tus partidas. A diferencia de las Tier Lists estáticas tradicionales, el Master Plan adapta el meta actual a lo que el juego te da en tus primeras rondas, guiándote paso a paso hacia la composición correcta.
+              Es una herramienta prémium de filtrado en tiempo real diseñada para usarse <em>antes</em> (de estudio) y <em>durante</em> tus partidas. A diferencia de las Tier Lists estáticas tradicionales, el Master Plan adapta el meta actual a lo que el juego te da en tus primeras rondas, guiándote paso a paso hacia la composición correcta.
             </p>
           </details>
 

@@ -58,6 +58,15 @@ export const composMetaPBEJSON = `${apiGPTFT}composicionesBD.php`;
 export const composMetaPBETestJSON = `${apiGPTFT}composicionesBD.php`;
 export const composTest = atom({})
 
+export const fixChampionTypos = (data) => {
+  if (!data) return data;
+  let dataStr = JSON.stringify(data);
+  // Reemplazo global y seguro de los errores tipográficos en la base de datos
+  // dataStr = dataStr.replace(/"tft18_exreal"/g, '"tft18_ezreal"');
+  // dataStr = dataStr.replace(/"tft18_fiddlestick"/g, '"tft18_fiddlesticks"');
+  return JSON.parse(dataStr);
+};
+
 let fetchingComposPromise = null;
 
 export const composMetaPBETest = async () => {
@@ -75,6 +84,7 @@ export const composMetaPBETest = async () => {
   })
     .then(response => response.json())
     .then(COMPOSTEST => {
+      COMPOSTEST = fixChampionTypos(COMPOSTEST);
       if (COMPOSTEST.status === "success" && Array.isArray(COMPOSTEST.data)) {
         const grouped = {};
         COMPOSTEST.data.forEach(compo => {
@@ -407,8 +417,14 @@ export const getTeamPlannerCodeAPI = async () => {
     const response = await fetch(url);
     const data = await response.json();
 
-    const formattedData = Object.values(data?.[versionTFT.get() === "pbe" ? setMutatorPBE : setMutatorLatest] || [])
+    const setKey = versionTFT.get() === "pbe" ? setMutatorPBE : setMutatorLatest;
+    const championsData = data?.[setKey] || [];
+    
+
+    const formattedData = Object.values(championsData)
       .reduce((acc, { character_id, display_name, team_planner_code }) => {
+        if (team_planner_code === undefined || team_planner_code === null) return acc;
+        
         const hexCode = team_planner_code.toString(16).padStart(3, '0');
         acc[character_id] = hexCode;
         if (character_id) {
@@ -459,8 +475,88 @@ export const getTeamPlannerCodeAPI = async () => {
     teamPlannerCode.set(formattedData);
   } catch (e) {
     console.error("Error getting team planner code from API:", e);
-    throw e;
+    // throw e; // Quitamos el throw para que no rompa la ejecución silenciosamente
   }
+};
+
+export const EXCLUDED_API_NAMES = [
+  "TFT17_Summon",
+  "TFT15_ShenSword",
+  "TFT18_Arbol",
+  "TFT18_Vitalflor",
+];
+
+export const buildTeamPlannerCode = (championsArray) => {
+  // Filtramos los campeones excluidos y extraemos los apiNames
+  const filteredApiNames = championsArray
+    .map(c => c.apiName)
+    .filter(apiName => !EXCLUDED_API_NAMES.includes(apiName));
+
+  // Eliminamos duplicados
+  const uniqueApiNames = [...new Set(filteredApiNames)];
+  
+  // Obtenemos los datos completos de los campeones para poder ordenar
+  const allChamps = dataTFTChampions.get() || [];
+  
+  // Ordenar por coste y luego alfabéticamente
+  uniqueApiNames.sort((apiA, apiB) => {
+    const champA = allChamps.find(c => c.apiName === apiA) || { cost: 0, name: apiA };
+    const champB = allChamps.find(c => c.apiName === apiB) || { cost: 0, name: apiB };
+    
+    // 1. Ordenar por costo (ascendente)
+    if (champA.cost !== champB.cost) {
+      return (champA.cost || 0) - (champB.cost || 0);
+    }
+    
+    // 2. Si tienen el mismo costo, ordenar alfabéticamente
+    const nameA = (champA.name || "").toLowerCase();
+    const nameB = (champB.name || "").toLowerCase();
+    
+    if (nameA < nameB) return -1;
+    if (nameA > nameB) return 1;
+    return 0;
+  });
+
+  // Obtenemos el diccionario actual de códigos de campeones (de la store)
+  const codeDict = teamPlannerCode.get(); 
+
+  
+  // La versión actual de los códigos del Team Planner es "02" (3 caracteres hexadecimales por slot)
+  let code = "02"; 
+  
+  // El código solo soporta hasta 10 campeones
+  const maxChampions = Math.min(uniqueApiNames.length, 10);
+  
+  for (let i = 0; i < maxChampions; i++) {
+    const apiName = uniqueApiNames[i];
+    
+    // Normalizar sufijos específicos como tft18_lux_coven o tft18_lux_aquelarre a tft18_lux
+    let searchApiName = apiName;
+    if (searchApiName.toLowerCase().startsWith("tft18_lux_")) {
+      searchApiName = "tft18_lux";
+    }
+
+    const champHexCode = codeDict[searchApiName];
+    
+    // Si Riot/CommunityDragon tiene el código lo añadimos, si no "000" para no corromper el string
+    if (champHexCode) {
+      code += champHexCode;
+    } else {
+      code += "000";
+    }
+  }
+  
+  // Rellenamos los huecos restantes con "000" hasta tener 10 slots ocupados
+  const emptySlots = 10 - maxChampions;
+  if (emptySlots > 0) {
+    code += "000".repeat(emptySlots);
+  }
+  
+  // Añadimos el setMutator al final del código (ej. "TFTSet14")
+  const setMutator = versionTFT.get() === "pbe" ? setMutatorPBE : setMutatorLatest;
+  code += setMutator;
+  
+  return code;
 };
 
 if (typeof window !== 'undefined') {
@@ -544,6 +640,7 @@ export const addRestCompsFetch = async (url) => {
       { cache: "no-cache" }
     );
     let data = await response.json();
+    data = fixChampionTypos(data);
 
     let dataPublic = {};
     let dataAdmin = {};
@@ -598,6 +695,7 @@ export const fetchAndSortComps = async (url) => {
       { cache: "no-cache" }
     );
     let data = await response.json();
+    data = fixChampionTypos(data);
 
     let dataPublic = {};
     let dataAdmin = {};
@@ -1499,9 +1597,9 @@ export const findTraitsStyles = (apiName) => {
     1: "hex-bronze.webp",
     2: "hex-bronze.webp",
     3: "hex-silver.webp",
-    4: "hex-prismatic.webp",
+    4: "hex-gold.webp", // En el set actual 4 es Oro
     5: "hex-gold.webp",
-    6: "hex-prismatic.webp",
+    6: "hex-prismatic.webp", // En el set actual 6 es Prismático
     7: "hex-prismatic.webp",
   };
 

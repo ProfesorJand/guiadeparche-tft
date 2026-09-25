@@ -1,6 +1,6 @@
 import { useState } from "react";
 import style from "./css/InfografiaMPTFT.module.css";
-import { dataTFTAllAugments, dataTFTAllItems, dataTFTChampions,dataTFTTraits,teamPlannerCode,setMutatorPBE,setMutatorLatest,versionTFT } from "@stores/dataTFT";
+import { dataTFTAllAugments, dataTFTAllItems, dataTFTChampions,dataTFTTraits,teamPlannerCode,setMutatorPBE,setMutatorLatest,versionTFT, buildTeamPlannerCode } from "@stores/dataTFT";
 import { useStore } from "@nanostores/react";
 import Sinergias from "@components/main/Admin/Sinergias";
 import ImgItem from "@components/TFT/ImgItem";
@@ -31,20 +31,7 @@ const InfografiaMPTFT = ({comp = {}, gruposSalidasEarly = []}) => {
     }
   };
   const Header= ()=>{
-    function codeForPBE(allChampionsApiName) {
-    let sinDuplicados = [...new Set(allChampionsApiName)];
-    let championsCode = "02";
-    let cantidadDeCampeones = sinDuplicados.length;
-    sinDuplicados.forEach(( apiName) => {
-      championsCode = championsCode.concat(codeOfChampions[apiName] || "")
-    })
-    let espaciosVacios = 10 - cantidadDeCampeones;
-    if (espaciosVacios > 0) {
-      championsCode = championsCode.concat("000".repeat(espaciosVacios));
-    }
-    championsCode = championsCode.concat(currentVersion === "pbe" ? setMutatorPBE : setMutatorLatest)
-    return championsCode
-  }
+
     const campeonMetaObj = comp?.campeonMeta?.apiNameCampeon ? AllChampions.find((apiName)=>apiName.apiName===comp.campeonMeta.apiNameCampeon) : null;
     const tableroArray = comp?.posicionamiento?.[0]?.tablero || [];
     return (
@@ -63,9 +50,9 @@ const InfografiaMPTFT = ({comp = {}, gruposSalidasEarly = []}) => {
                 <span className={style.dificultadCard} data-dificultad={comp?.dificultad}>{comp?.dificultad}</span>
                 <span className={style.categoriaCard} data-categoria={comp?.categoria}>{comp?.categoria}</span>
                 <span className={style.dañoCard} data-tipoDeDano={comp?.tipoDeDano}>{comp?.tipoDeDano}</span>
-                {/* <div className={style.containerTextoInfoPrimarioCode} onClick={(e)=>copyToClipboard(e, "codigo copiado", codeForPBE(tableroArray.map((info)=>info.apiNameCampeon)))}>
+                <div className={style.containerTextoInfoPrimarioCode} onClick={(e)=>copyToClipboard(e, "Código de campeones copiado", buildTeamPlannerCode(tableroArray.map((info)=> ({ apiName: info.apiNameCampeon }))))}>
                   {"COPIAR CÓDIGO 📋"}
-                </div> */}
+                </div>
               </div>
             </div>
           </div>
@@ -167,35 +154,38 @@ const InfografiaMPTFT = ({comp = {}, gruposSalidasEarly = []}) => {
     );
   }
   const Fundamentals = ()=>{
-    const allEarlyChamps = (comp.salidasEarly || [])
+    const allEarlyGroups = (comp.salidasEarly || [])
                     .map(grupoId => gruposSalidasEarly.find(g => g.id === grupoId))
-                    .filter(Boolean)
-                    .flatMap(grupo => grupo.campeones);
+                    .filter(Boolean);
                   
-    const uniqueChamps = [...new Set(allEarlyChamps)].slice(0, 6);
     return(
         <div className={style.cFundamentalsInfo}>
           <div className={`${style.cBoxTitleInfo} ${style.cCampeonesPrio}`}> 
             <span className={style.tBox}>Salidas Early</span>
             <div className={style.cCampeonesPrioInfo}>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
 
                   
-                 {(uniqueChamps.length === 0) ? (
+                 {(allEarlyGroups.length === 0) ? (
                    <span style={{ fontSize: '0.85rem', color: '#aaa', fontStyle: 'italic' }}>Sin salidas early</span>
                   )
                   :
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', width: '100%', justifyContent: 'center' }}>
-                      {uniqueChamps.map(apiName => {
-                        const champ = AllChampions.find(c => c.apiName === apiName);
-                        return champ ? (
-                          <div key={apiName} style={{ width: 'calc((100% - (4px *4)) / 5)'}}>
-                            <ImgCampeon championData={champ} imgType="tileIcon" showName={true} />
-                          </div>
-                        ) : null;
-                      })}
+                  allEarlyGroups.map((grupo, index) => (
+                    <div key={index} style={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'center', marginBottom: '8px' }}>
+                      <span style={{ fontSize: '0.9rem', fontWeight: 'bold', marginBottom: '4px', color: '#fff' }}>{grupo?.tipo && grupo.tipo !== '' && grupo.tipo !== 'N/A' ? grupo.tipo : 'Tempo'}</span>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', width: '100%', justifyContent: 'center' }}>
+                        {grupo.campeones.map(apiName => {
+                          const champ = AllChampions.find(c => c.apiName === apiName);
+                          return champ ? (
+                            <div key={apiName} style={{ width: 'calc((100% - (4px *4)) / 5)'}}>
+                              <ImgCampeon championData={champ} imgType="tileIcon" showName={true} />
+                            </div>
+                          ) : null;
+                        })}
+                      </div>
                     </div>
-                    }
+                  ))
+                 }
                   
               </div>
             </div>
@@ -216,7 +206,7 @@ const InfografiaMPTFT = ({comp = {}, gruposSalidasEarly = []}) => {
                         </div>
                       )}
                     </div>,
-                    index < (comp?.itemsPrio?.length || 0) - 1 ? <span key={`itemPrio-gt-${index}`} className={style.mayorQue}>{'>'}</span> : null
+                    (index < (comp?.itemsPrio?.length || 0) - 1  && index !== 3) ? <span key={`itemPrio-gt-${index}`} className={style.mayorQue}>{'>'}</span> : null
                   ] : null;
                 })}
             </div>
@@ -375,6 +365,8 @@ const InfografiaMPTFT = ({comp = {}, gruposSalidasEarly = []}) => {
               const allItemApiNames = (comp?.mejoresItems?.[key] || [])
                 .flatMap(data => data?.apiNameItemsDelCampeon || []);
               const uniqueItems = [...new Set(allItemApiNames)];
+
+              if (uniqueItems.length === 0) return null;
 
               return (
                 <div key={index} className={style.cBestItemCompItem}>

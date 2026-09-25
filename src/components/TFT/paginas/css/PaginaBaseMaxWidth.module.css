@@ -20,7 +20,7 @@
   width:60%;
   gap:12px;
   & p{
-    font-size:1.2rem;
+    font-size:18px;
     margin-block-end: 0;
     margin-block-start: 0;
   }
@@ -31,7 +31,7 @@
   text-decoration: none;
   margin-block-end: 0px;
   margin-block-start: 0px;
-  font-size: 3.5rem;
+  font-size: 40px;
 }
 
 
@@ -58,13 +58,6 @@
   flex: 1 1 calc(50% - 10px);
   max-width: calc(50% - 10px);
   box-sizing: border-box;
-}
-
-@media (max-width: 600px) {
-  .headerVideo > * {
-    flex: 1 1 100%;
-    max-width: 100%;
-  }
 }
 
 .headerInfoFull {
@@ -116,11 +109,21 @@
   .headerSection{
     width:100%;
     & h1{
-      font-size: 1.5rem;
+      font-size: 30px;
     }
   }
   .headerInfo{
     width:100%;
+    padding: 0 10px;
+    text-align: center;
+  }
+  .headerVideo > * {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+  .headerInfo p {
+    font-size:16px;
+  
   }
 
 }

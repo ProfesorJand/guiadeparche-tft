@@ -99,7 +99,6 @@ const saveConstantes2xko = async () => {
   useEffect(()=>{
     const fetchData = async()=>{
       const data = await fetchCampeones2xkoMeta();
-      console.log({data})
       setMeta2xko(data);
     }
     fetchData();
@@ -249,7 +248,6 @@ const saveConstantes2xko = async () => {
                 <select
                   key={posicion +"fuses"}
                   onChange={(e)=>{
-                    console.log({VEEEER:e.target.value})
                     const nuevoFuse = e.target.value === "remover" ? null : e.target.value ;
                     const nuevoMeta = {...meta2xko};
                     nuevoMeta[tierSeleccionado] = nuevoMeta[tierSeleccionado] || []

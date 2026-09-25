@@ -40,7 +40,7 @@
   display: flex;
   position: relative;
   flex-direction: column;
-  /* Estilos premium para el fieldset */
+  /* Estilos prémium para el fieldset */
   border: 1px solid rgba(168, 85, 247, 0.3); /* Borde morado sutil */
   border-radius: 12px;
   padding: 10px;
@@ -60,6 +60,9 @@
   text-transform: uppercase;
   letter-spacing: 1px;
   text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+.cInstruction{
+  flex-direction: row;
 }
 
 .tabsMenu {
@@ -124,12 +127,12 @@
 }
 .sectionFiltersEarly{
   display:flex;
-  width:60%;
+  width:55%;
   flex-direction: column;
 }
 .containerResults{
   display:flex;
-  width:40%;
+  width:45%;
   position:relative;
   flex-direction: column;
 }
@@ -352,14 +355,32 @@
 .filterOptionBox[data-dificultad="Dificil"], .filterOptionBox[data-dificultad="Hard"], .filterOptionBoxActive[data-dificultad="Dificil"]::after, .filterOptionBoxActive[data-dificultad="Hard"]::after { background-color: #e00000; }
 
 /* Categorías */
-.filterOptionBox[data-categoria="Fast 8"] { background-color: #cc6104; }
-.filterOptionBox[data-categoria="Fast 9"] { background-color: #e00000; }
-.filterOptionBox[data-categoria="3 Estrellas"], .filterOptionBox[data-categoria="3 Stars"] { background-color: #1ba716; }
+.filterOptionBox[data-categoria="Fast 8"], 
+.filterOptionBoxActive[data-categoria="Fast 8"]::after { background-color: #cc6104; }
+
+.filterOptionBox[data-categoria="Fast 9"], 
+.filterOptionBoxActive[data-categoria="Fast 9"]::after { background-color: #e00000; }
+
+.filterOptionBox[data-categoria="3 Estrellas"], 
+.filterOptionBox[data-categoria="3 Stars"], 
+.filterOptionBoxActive[data-categoria="3 Estrellas"]::after, 
+.filterOptionBoxActive[data-categoria="3 Stars"]::after { background-color: #1ba716; }
 
 /* Tipo de Daño */
-.filterOptionBox[data-tipodedano="AP"], .filterOptionBox[data-tipoDeDano="AP"] { background-color: #8a0a8a; }
-.filterOptionBox[data-tipodedano="AD"], .filterOptionBox[data-tipoDeDano="AD"] { background-color: #d43504; }
-.filterOptionBox[data-tipodedano="Híbrido"], .filterOptionBox[data-tipoDeDano="Híbrido"] { background-color: #1ba716; }
+.filterOptionBox[data-tipodedano="AP"], 
+.filterOptionBox[data-tipoDeDano="AP"],
+.filterOptionBoxActive[data-tipodedano="AP"]::after,
+.filterOptionBoxActive[data-tipoDeDano="AP"]::after { background-color: #8a0a8a; }
+
+.filterOptionBox[data-tipodedano="AD"], 
+.filterOptionBox[data-tipoDeDano="AD"],
+.filterOptionBoxActive[data-tipodedano="AD"]::after,
+.filterOptionBoxActive[data-tipoDeDano="AD"]::after { background-color: #d43504; }
+
+.filterOptionBox[data-tipodedano="Híbrido"], 
+.filterOptionBox[data-tipoDeDano="Híbrido"],
+.filterOptionBoxActive[data-tipodedano="Híbrido"]::after,
+.filterOptionBoxActive[data-tipoDeDano="Híbrido"]::after { background-color: #1ba716; }
 .selectedTags {
   display: flex;
   flex-wrap: wrap;
@@ -507,7 +528,7 @@
   display:flex;
   position:relative;
   min-width:250px;
-  width:100%;
+  flex:1;
   flex-direction: column;
 }
 .noResults {
@@ -638,4 +659,7 @@
   .containerResults{
     width:100%;
   }
+  .cInstruction{
+  flex-direction: column;
+}
 }@keyframes pulseEarlyHighlight { 0% { box-shadow: 0 0 0 rgba(0, 255, 204, 0); border-color: rgba(0, 255, 204, 0.3); } 50% { box-shadow: 0 0 8px rgba(0, 255, 204, 0.4); border-color: rgba(0, 255, 204, 0.8); } 100% { box-shadow: 0 0 0 rgba(0, 255, 204, 0); border-color: rgba(0, 255, 204, 0.3); } } .earlyHighlightPulse { animation: pulseEarlyHighlight 2.5s infinite ease-in-out; background-color: rgba(0, 255, 204, 0.08) !important; border-style: solid; border-width: 2px; }

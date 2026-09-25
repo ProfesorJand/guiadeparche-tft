@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import style from "./css/CardsCompos.module.css";
-import { composMetaJSON, dataTFTAllItems, teamPlannerCode, versionTFT, setMutatorPBE, setMutatorLatest, dataTFTChampions, compActiveId } from "@stores/dataTFT";
+import { composMetaJSON, dataTFTAllItems, teamPlannerCode, versionTFT, setMutatorPBE, setMutatorLatest, dataTFTChampions, compActiveId, buildTeamPlannerCode, EXCLUDED_API_NAMES } from "@stores/dataTFT";
 import GuiaFreeTFTMeta from "./GuiaFreeTFTMeta.jsx";
 import { navigate } from "astro:transitions/client";
 import { CapturarImagen } from "@functions/CapturarImagen.js";
@@ -10,11 +10,6 @@ import { useStore } from "@nanostores/react";
 
 import ImgCampeon from "./ImgCampeon.jsx";
 import ImgItem from "./ImgItem.jsx";
-// Añade aquí manualmente los apiName de los campeones que NO quieres que se muestren
-const EXCLUDED_API_NAMES = [
-  "TFT17_Summon",
-  "TFT15_ShenSword"
-];
 
 const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = false, isIndividual = false, expandInline = false, hideToggleButton = false, hideRightContainer = false }) => {
   const currentVersion = useStore(versionTFT);
@@ -338,8 +333,8 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
               {isIndividual && <h2 style={isDownloading ? { fontSize: '40px' } : {}}>
                 {comp?.nombre}
               </h2>}
-              {!isIndividual && <h3 style={isDownloading ? { fontSize: '40px' } : {}}>
-                {numeracion ? numeracion +". ": ""}{comp?.nombre}
+              {!isIndividual && <h3 style={isDownloading ? { fontSize: '40px' } : {}} >
+                {(!isDownloading && numeracion) ? numeracion +". ": ""}{comp?.nombre}
               </h3>}
             </div>
 
@@ -426,7 +421,7 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
                 <div className={`${style.btnAdmins} ${!isInfografia ? "hideForCapture" : ""}`}>
 
                   <button onClick={() => setOpenForEdit(!openForEdit)}>{isActive ? "TFT Meta" : `${comp?.urlSEO?.replace("-", " ")?.toUpperCase()} TFT`}</button>
-                  <button onClick={(e) => copyToClipboard(e, (currentVersion === "pbe" ? codeForPBE(allChampionsApiName) : codeForPBE(allChampionsApiName)))}>Copiar Código</button>
+                  <button onClick={(e) => copyToClipboard(e, buildTeamPlannerCode(allChampionsApiName))}>Copiar Código</button>
                   <button onClick={() => {
                     if (showFormForEdit) {
                       compActiveId.set(null);
@@ -456,9 +451,7 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
                 </div>
               ) : (
                 <div className={`${style.btnAdmins} ${!isInfografia ? "hideForCapture" : ""}`}>
-                  {/* <button className={`${style.buttonLink} ${style.buttonLinkCopy}`} onClick={(e) => copyToClipboard(e, (currentVersion === "pbe" ? codeForPBE(allChampionsApiName) : codeForPBE(allChampionsApiName)))}>
-                    Copiar Código
-                  </button> */}
+                 
                   {!hideToggleButton && (
                     <a
                       href={expandInline ? "#" : (isActive ? "/tft/meta-comps-tier-list-teamfight-tactics" : `/tft/meta-comps-tier-list-teamfight-tactics/${comp.urlSEO}`)}
@@ -471,6 +464,13 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
                       }
                     </a>
                   )}
+                  <button 
+                    className={`${style.buttonLink} ${style.buttonLinkCopy}`} 
+                    onClick={(e) => copyToClipboard(e, buildTeamPlannerCode(allChampionsApiName))}
+                    title="Copiar código de campeones"
+                  >
+                    📋 Copiar Código
+                  </button>
                 </div>
               )
             }

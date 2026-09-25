@@ -11,6 +11,7 @@ import ChampionsList from '@components/main/Admin/ChampionsList';
 import TraitsList from '@components/main/Admin/TraitsList';
 import AugmentsList from '@components/main/Admin/AugmentsList';
 import style from './css/MasterPlanPage.module.css';
+import Youtube from '@components/youtube/Youtube';
 import { getLocalTftImage } from '@utils/images';
 import InfografiaMPTFT from "./InfografiaMPTFT"
 import { getTraitDisplayName } from '../../main/Admin/TraitsList';
@@ -1228,16 +1229,94 @@ export default function MasterPlanPage() {
 
   return (
     <div id={"masterPlanContainer"} className={style.masterPlanContainer}>
-       <div className={style.containerTop}>
-        <a 
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://discord.gg/fKChyHGMW"
-          className={style.btnDiscord}
-          >
-           Soporte - Master Plan
-          </a>
-      </div>
+      <fieldset className={`${style.filtersSection} ${style.cInstruction}`}>
+        
+        <legend>Master Plan</legend>
+        <fieldset className={`${style.filtersSection} ${style.cInstruction}`} style={{ display: 'flex', gap: '15px', alignItems: 'center', flexWrap: 'wrap', flexDirection:"column", flex:3}}>
+          <legend>Instrucciones</legend>
+          <div style={{ color: '#ccc', fontSize: '1rem', margin: 0, lineHeight: '1.5' }}>
+            <ul style={{ display: 'flex', flexDirection: 'column', gap: '12px', paddingLeft: '20px', margin: 0 }}>
+              <li>
+                <strong>Filtro Hard</strong>:
+                <ul style={{ display: 'flex', flexDirection: 'column', gap: '8px', paddingLeft: '20px', marginTop: '8px' }}>
+                  <li>Selecciona tu estilo de juego, recomendamos si eres nuevo en TFT selecciones <strong>Filtro Principiante</strong></li>
+                  <li>Por defecto estan todas activadas, hasta que selecciones 1 de las opciones.</li>
+                </ul> 
+              </li>
+              <li>
+                <strong>Filtro Soft</strong>: 
+                <ul style={{ display: 'flex', flexDirection: 'column', gap: '8px', paddingLeft: '20px', marginTop: '8px' }}>
+                  <li>
+                    Selecciona los primeros items/objetos que tienes antes del primer aumento.
+                  </li>
+                  <li>
+                    Selecciona los aumentos que tienes. Si obtienes algún aumento que te dé algún item, emblema o artefacto, vuelve a la pestaña de item y añádelo.
+                  </li>
+                  <li>
+                    (OPCIONAL) Selecciona los campeones que tienes para estudiar posibles salidas.
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <strong>Resultados</strong>
+                <ul style={{ display: 'flex', flexDirection: 'column', gap: '8px', paddingLeft: '20px', marginTop: '8px' }}>
+                  <li>
+                    Los primeros que te aparecen serán tu mejor opción para arrancar la partida. Selecciona 1 para abrir más información.
+                  </li>
+                  <li>
+                    La infografía te dará la información útil para que puedas maximizar tus probabilidades de victoria.
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </fieldset>
+        <fieldset className={`${style.filtersSection} ${style.cInstruction}`} style={{ flex:2, borderRadius: '8px', overflow: 'hidden' }}>
+          <legend>Video Explicativo</legend>
+          <div style={{ alignContent: 'center', width: '100%', aspectRatio: '16/9' }}>
+            <Youtube src="https://www.youtube.com/watch?v=9XgjkEpevZ8" />
+          </div>
+        </fieldset>
+        <fieldset className={style.filtersSection} style={{ display: 'flex', gap: '15px', alignItems: 'center', flexWrap: 'wrap', flexDirection:"column", flex:1}}>
+          <legend>Más Información</legend>
+          {(user?.discord_role_active == 1 || user?.discord_role_active === '1') ? (
+            <a 
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://discord.com/channels/1544108504522956915/1545178413625647214"
+              className={style.btnDiscord}
+            >
+              Soporte - Master Plan
+            </a>
+          ) : (
+            <button 
+              onClick={() => {
+                const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+                window.location.href = `https://api.guiadeparche.com/discord/discord_oauth.php?login=1&user_email=${user?.email}${isLocal ? '&local=1' : ''}&redirect=/tft/master-plan/app`;
+              }}
+              style={{
+                padding: '8px 16px',
+                backgroundColor: '#5865F2',
+                color: 'white',
+                border: 'none',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                fontWeight: 'bold',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                width: 'fit-content'
+              }}
+              title="Vincular cuenta y entrar al canal VIP"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189z"/>
+              </svg>
+              Vincular con Discord
+            </button>
+          )}
+        </fieldset>
+      </fieldset>
       <div className={style.containerTop}>
 
         {/* <div className={style.containerBtnsVersion}>
@@ -1263,8 +1342,9 @@ export default function MasterPlanPage() {
                 <legend>Filtros Early (Dentro del Juego / Ingame)</legend>
                 <div className={style.tabsMenu}>
                   <button type="button" onClick={() => setActiveEarlyTab('objetos')} className={`${style.tabButton} ${activeEarlyTab === 'objetos' ? style.tabButtonActive : ''}`}>Objetos / Items</button>
-                  <button type="button" onClick={() => setActiveEarlyTab('campeones')} className={`${style.tabButton} ${activeEarlyTab === 'campeones' ? style.tabButtonActive : ''}`}>Campeones & Salidas</button>
                   <button type="button" onClick={() => setActiveEarlyTab('aumentos')} className={`${style.tabButton} ${activeEarlyTab === 'aumentos' ? style.tabButtonActive : ''}`}>Aumentos 2-1</button>
+                  <button type="button" onClick={() => setActiveEarlyTab('campeones')} className={`${style.tabButton} ${activeEarlyTab === 'campeones' ? style.tabButtonActive : ''}`}>Campeones</button>
+                  <button type="button" onClick={() => setActiveEarlyTab('salidas')} className={`${style.tabButton} ${activeEarlyTab === 'salidas' ? style.tabButtonActive : ''}`}>Salidas</button>
                 </div>
                 <div className={style.tabContent}>
                   {activeEarlyTab !== 'aumentos' && (

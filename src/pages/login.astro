@@ -8,7 +8,7 @@ import Main from '@components/main/Main.astro';
 const GOOGLE_CLIENT_ID = import.meta.env.PUBLIC_ID_CLIENT_GOOGLE_CLOUD_OAUTH;
 ---
 
-<LayoutMaxWidth title="Iniciar Sesión | Guiadeparche">
+<LayoutMaxWidth title="Iniciar Sesión | Guiadeparche" hideBanner={true}>
   <!-- Metatags and scripts moved directly into the layout's slot -->
   <meta name="google-signin-client_id" content={GOOGLE_CLIENT_ID}>
   <script src="https://apis.google.com/js/api.js" is:inline></script>

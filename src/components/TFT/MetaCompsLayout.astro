@@ -5,6 +5,7 @@ import { getConstantes, getMetadata, getLastUpdateDate } from "src/lib/cache/tft
 import { setNumberPBE, setNumberLatest, initialTFT_SET } from "@stores/dataTFT";
 import { crearJSONSchema } from "src/json/schema/crearJSONSchema";
 import RegistrarseBTN from "./RegistrarseBTN.jsx";
+import BotonCaptura from "./BotonCaptura.jsx";
 import Youtube from "@components/youtube/Youtube.jsx";
 import CampeonImgInTierList from "@components/TFT/meta/CampeonImgInTierList.jsx";
 import TableOfContent from "@layouts/sidebar/TableOfContent.astro";
@@ -266,39 +267,41 @@ const tableOfContentIndividual = [
         isIndividual && 
         <h2 id={"TierList"}>Tier List TFT</h2>
       }
-      {
-        tiersInfo.map((tier, index) => {
-          let compsForThisTier = [];
-          if (tier.tier === "X") {
-            compsForThisTier = compsInSet.filter(comp => comp.tierExtra === "X");
-          } else {
-            compsForThisTier = compsInSet.filter(comp => comp.tier === tier.tier && comp.tierExtra !== "X");
-          }
-          
-          if (compsForThisTier.length === 0) return null;
+      <div id={`tier-list-general-${setObj.id}`} style="position: relative; padding: 20px 0;">
+        <BotonCaptura targetId={`tier-list-general-${setObj.id}`} nombreCompo={`Tier_List_Set_${setObj.id}`} client:load />
+        {
+          tiersInfo.map((tier, index) => {
+            let compsForThisTier = [];
+            if (tier.tier === "X") {
+              compsForThisTier = compsInSet.filter(comp => comp.tierExtra === "X");
+            } else {
+              compsForThisTier = compsInSet.filter(comp => comp.tier === tier.tier && comp.tierExtra !== "X");
+            }
+            
+            if (compsForThisTier.length === 0) return null;
 
-          return (
-            <div class={`tier-info tier-card-${tier.tier}`}>
-              <h3 class="tier-header">
-                <div class="container-tier-text">
-                  <span class={`tier-number tier-number-${tier.tier}`}>
-                    {tier.tier}
-                  </span>
-                </div>
-              </h3>
-              <div class="container-champs-tier">
-                {compsForThisTier.map((comp, index) => {
-                  const isActive = String(comp.urlSEO) === String(activeId);
-                  // Colores según el Tier para el badge flotante
-                  const badgeColors = {
-                    "S": "#f59e0b", // Dorado
-                    "A": "#ec4899", // Rosa/Rojo
-                    "B": "#6b7280", // Gris
-                    "C": "#8b4513", // Marrón
-                    "H": "#10b981", // Verde
-                    "N/A": "#888"
-                  };
-                  const badgeBg = badgeColors[comp.tier] || "#fff";
+            return (
+              <div class={`tier-info tier-card-${tier.tier}`}>
+                <h3 class="tier-header">
+                  <div class="container-tier-text">
+                    <span class={`tier-number tier-number-${tier.tier}`}>
+                      {tier.tier}
+                    </span>
+                  </div>
+                </h3>
+                <div class="container-champs-tier">
+                  {compsForThisTier.map((comp, index) => {
+                    const isActive = String(comp.urlSEO) === String(activeId);
+                    // Colores según el Tier para el badge flotante
+                    const badgeColors = {
+                      "S": "#f59e0b", // Dorado
+                      "A": "#ec4899", // Rosa/Rojo
+                      "B": "#6b7280", // Gris
+                      "C": "#8b4513", // Marrón
+                      "H": "#10b981", // Verde
+                      "N/A": "#888"
+                    };
+                    const badgeBg = badgeColors[comp.tier] || "#fff";
 
                   return (
                     <div style="position: relative; display: inline-block;">
@@ -322,10 +325,10 @@ const tableOfContentIndividual = [
                   );
                 })}
               </div>
-            </div>
-          );
-        })
-      }
+            );
+          })
+        }
+      </div>
       {
         !isIndividual && top10Comps.map((comp, index) => (
           <article class={`comp-card`}>
