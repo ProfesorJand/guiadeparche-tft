@@ -137,7 +137,7 @@ console.log({video:data.video_url})
       <div class="hero-info">
         <h1>{data.name} TFT - Builds, Items & Comps</h1>
         <div class="dataChamp">
-           <p class="seo-desc"><span class="colored-text">{data.name}</span> es un campeón de <span class="colored-text">coste {data.cost}</span> de TFT Set {data.tft_set} que combina los rasgos <span class="colored-text">{traitsList.map(t => t.name).join(', ')}</span>. En esta página encontrarás los mejores objetos para <span class="colored-text">{data.name}</span> TFT, las composiciones que lo utilizan y las recomendaciones para aprovecharlo en el meta actual{bestItems.length > 0 ? <>, y los mejores items son: <span class="colored-text">{bestItems.map(i => i.name).join(', ')}</span>.</> : '. Este campeón no tiene objetos recomendados.'}  
+           <p class="seo-desc"><span class="colored-text">{data.name}</span> es un campeón de <span class="colored-text">coste {data.cost}</span> de TFT Set {data.tft_set} que combina los rasgos <span class="colored-text">{traitsList.map(t => t.name).join(', ')}</span>. En esta página encontrarás los mejores builds para <span class="colored-text">{data.name}</span>, las composiciones que lo utilizan y recomendaciones para aprovecharlo en el meta actual{bestItems.length > 0 ? <>. Sus mejores items son: <span class="colored-text">{bestItems.map(i => i.name).join(', ')}</span>.</> : '. Este campeón no tiene objetos recomendados.'}  
           </p>
           
           <div class="info-2-champ">
@@ -261,6 +261,9 @@ console.log({video:data.video_url})
             />
           </article>
         ))}
+      </div>
+      <div class="trait-main-card">
+        <p class="text-centered">¿Buscas más opciones? Explora todas las <a style="color:#f5e020ff; font-weight: bold;" href="/tft/meta-comps-tier-list-teamfight-tactics/">Meta Comps de TFT</a> actualizadas para encontrar qué jugar en el parche actual.</p>
       </div>
     </div>
   ) : (
