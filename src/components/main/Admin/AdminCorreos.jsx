@@ -1,11 +1,29 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import style from './css/AdminCorreos.module.css';
 
-export default function AdminCorreos() {
+const AdminCorreos = () => {
     const [activeTab, setActiveTab] = useState("envios");
     const [loading, setLoading] = useState(false);
     const [logs, setLogs] = useState("");
     const [testUser, setTestUser] = useState({ nombre: "", email: "", pais: "Argentina" });
+    const [activeCampaigns, setActiveCampaigns] = useState([]);
+
+    useEffect(() => {
+        const fetchCampanas = () => {
+            fetch('https://api.guiadeparche.com/tft/correos/listar_campanas.php')
+                .then(res => res.json())
+                .then(data => {
+                    if (data && data.success) {
+                        setActiveCampaigns(data.data);
+                    }
+                })
+                .catch(e => console.error("Error cargando campañas en cola:", e));
+        };
+
+        fetchCampanas();
+        const interval = setInterval(fetchCampanas, 5000);
+        return () => clearInterval(interval);
+    }, []);
     const [templates, setTemplates] = useState([]);
     const [selectedTemplate, setSelectedTemplate] = useState("");
     const [incluirMp, setIncluirMp] = useState(false);
@@ -264,50 +282,42 @@ export default function AdminCorreos() {
             alert("Por favor selecciona una plantilla HTML primero.");
             return;
         }
-        if (!confirm(`⚠️ ADVERTENCIA: Esto iniciará el envío automático de la plantilla '${selectedTemplate}' a los usuarios de ${filtroPais === 'Todos' ? 'TODOS los países' : filtroPais}.\nEl proceso se hará en lotes de 25 para proteger el servidor.\n¿Estás completamente seguro de continuar?`)) return;
+        if (!confirm(`⚠️ ADVERTENCIA: Esto pondrá en COLA el envío de la plantilla '${selectedTemplate}' a los usuarios de ${filtroPais === 'Todos' ? 'TODOS los países' : filtroPais}.
+El servidor de GoDaddy se encargará de enviarlo en segundo plano.
+¿Estás completamente seguro de continuar?`)) return;
         
         setLoading(true);
-        setLogs(`Iniciando envío automático por lotes...\nPlantilla: ${selectedTemplate}\nPaís: ${filtroPais}\nIncluir usuarios con Master Plan: ${incluirMp ? 'Sí' : 'No'}\nReenviar: ${reenviar ? 'Sí' : 'No'}\n\n`);
+        setLogs(`Enviando orden al servidor...
+Plantilla: ${selectedTemplate}
+País: ${filtroPais}
+Incluir MP: ${incluirMp ? 'Sí' : 'No'}
+Reenviar: ${reenviar ? 'Sí' : 'No'}
+
+`);
         
-        let quedanUsuarios = true;
-        let loteNum = 1;
-
-        while (quedanUsuarios) {
-            setLogs(prev => prev + `\n--- Iniciando Lote #${loteNum} ---\n`);
+        try {
+            const res = await fetch('https://api.guiadeparche.com/tft/correos/iniciar_campana.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    template: selectedTemplate,
+                    incluir_mp: incluirMp,
+                    asunto: asunto,
+                    pais: filtroPais,
+                    reenviar: reenviar
+                })
+            });
+            const data = await res.json();
             
-            try {
-                const res = await fetch('https://api.guiadeparche.com/tft/correos/enviar_correo_html.php', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        template: selectedTemplate,
-                        incluir_mp: incluirMp,
-                        asunto: asunto,
-                        pais: filtroPais,
-                        reenviar: reenviar,
-                        offset: reenviar ? (loteNum - 1) * 25 : 0
-                    })
-                });
-                const text = await res.text();
-                setLogs(prev => prev + text);
-
-                if (text.includes("No hay usuarios pendientes") || text.includes("Total procesados en este lote: 0") || text.includes("Error:")) {
-                    quedanUsuarios = false;
-                    if (text.includes("Error:")) {
-                        setLogs(prev => prev + "\n\n❌ El proceso se detuvo porque ocurrió un error en el servidor PHP.");
-                    } else {
-                        setLogs(prev => prev + "\n\n✅ ¡Envío masivo completado! Todos los correos han sido enviados.");
-                    }
-                } else {
-                    loteNum++;
-                    setLogs(prev => prev + "\nEsperando 10 segundos antes de enviar el siguiente lote para proteger el servidor...\n");
-                    await new Promise(resolve => setTimeout(resolve, 10000));
-                }
-            } catch (e) {
-                setLogs(prev => prev + "\nError de red al intentar enviar: " + e.message);
-                quedanUsuarios = false;
+            if (data.success) {
+                setLogs(prev => prev + `✅ ¡Orden recibida por el servidor!\nEl Cron Job empezará a enviarlos en el próximo minuto.\nPuedes cerrar esta pestaña o ir a hacer otra cosa, el servidor hará todo el trabajo de forma segura.\nRevisa la tabla de abajo para ver el progreso en vivo.`);
+            } else {
+                setLogs(prev => prev + "❌ Error del servidor: " + data.message);
             }
+        } catch (e) {
+            setLogs(prev => prev + `\n❌ Error de red al intentar conectar: ` + e.message);
         }
+        
         setLoading(false);
     };
 
@@ -579,8 +589,7 @@ export default function AdminCorreos() {
                                     <div style={{ background: '#222', padding: '10px', borderTopLeftRadius: '8px', borderTopRightRadius: '8px', color: '#a0a6b8', fontSize: '0.9rem', fontWeight: 'bold' }}>
                                         👨‍💻 Código HTML
                                     </div>
-                                    <textarea
-                                        value={editorContent}
+                                    <textarea value={editorContent}
                                         onChange={e => setEditorContent(e.target.value)}
                                         spellCheck="false"
                                         style={{ flex: '1', width: '100%', padding: '15px', background: '#0a0d14', color: '#a0a6b8', border: '1px solid #444', borderBottomLeftRadius: '8px', borderBottomRightRadius: '8px', fontFamily: 'monospace', fontSize: '14px', resize: 'none', outline: 'none' }}
@@ -709,6 +718,44 @@ export default function AdminCorreos() {
                         </button>
                     </div>
 
+                                        {/* TABLA DE PROGRESO EN VIVO */}
+                    <div style={{ marginTop: '20px', padding: '15px', background: '#111', borderRadius: '8px', border: '1px solid #333' }}>
+                        <h3 style={{ color: '#00d4ff', marginTop: 0, marginBottom: '15px' }}>⏱️ Progreso del Servidor en Vivo</h3>
+                        {activeCampaigns.length === 0 ? (
+                            <p style={{ color: '#888' }}>No hay campañas activas ni en cola en este momento.</p>
+                        ) : (
+                            <table style={{ width: '100%', textAlign: 'left', borderCollapse: 'collapse', fontSize: '0.9rem' }}>
+                                <thead>
+                                    <tr style={{ borderBottom: '1px solid #444', color: '#aaa' }}>
+                                        <th style={{ paddingBottom: '10px' }}>Plantilla</th>
+                                        <th style={{ paddingBottom: '10px' }}>Estado</th>
+                                        <th style={{ paddingBottom: '10px', textAlign: 'center' }}>Enviados</th>
+                                        <th style={{ paddingBottom: '10px', textAlign: 'center' }}>Fallidos</th>
+                                        <th style={{ paddingBottom: '10px' }}>Fecha Orden</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {activeCampaigns.map(c => (
+                                        <tr key={c.id} style={{ borderBottom: '1px solid #222' }}>
+                                            <td style={{ padding: '10px 0', color: '#fff', fontWeight: 'bold' }}>{c.template}</td>
+                                            <td style={{ padding: '10px 0' }}>
+                                                <span style={{ 
+                                                    padding: '3px 8px', borderRadius: '4px', fontWeight: 'bold',
+                                                    background: c.estado === 'completada' ? 'rgba(0,255,136,0.1)' : c.estado === 'en_progreso' ? 'rgba(0,212,255,0.1)' : 'rgba(240,185,11,0.1)',
+                                                    color: c.estado === 'completada' ? '#00ff88' : c.estado === 'en_progreso' ? '#00d4ff' : '#f0b90b' 
+                                                }}>
+                                                    {c.estado.toUpperCase().replace('_', ' ')}
+                                                </span>
+                                            </td>
+                                            <td style={{ padding: '10px 0', textAlign: 'center', color: '#00ff88', fontWeight: 'bold' }}>{c.enviados}</td>
+                                            <td style={{ padding: '10px 0', textAlign: 'center', color: '#ff4444' }}>{c.fallidos}</td>
+                                            <td style={{ padding: '10px 0', color: '#888' }}>{new Date(c.fecha_creacion).toLocaleString()}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        )}
+                    </div>
                     <div className={style.consoleContainer}>
                         <div className={style.consoleHeader}>
                             <span>Registro del Servidor (Output)</span>
@@ -917,4 +964,6 @@ export default function AdminCorreos() {
             )}
         </div>
     );
-}
+};
+
+export default AdminCorreos;
