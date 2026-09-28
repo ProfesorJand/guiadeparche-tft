@@ -187,8 +187,18 @@ const procesarTexto = (texto) => {
     /(?<!!)\[([^\]]+)\]\(([^)]+)\)/g, 
     '<a href="$2" target="_blank" rel="noopener noreferrer" class="link-dinamico">$1</a>'
   );
-  parseado = parseado.replace(/\n/g, '<br />');
-  return parseado;
+  
+  // Separar por saltos de línea y envolver en <p>
+  const lineas = parseado.split('\n');
+  const resultado = lineas.map(linea => {
+    const trimmed = linea.trim();
+    if (!trimmed) return '';
+    // Si la línea ya empieza con la etiqueta figure (imagen), no la envolvemos en p
+    if (trimmed.startsWith('<figure')) return trimmed;
+    return `<p>${trimmed}</p>`;
+  }).filter(Boolean).join('');
+  
+  return resultado;
 };
 
 // Obtener datos crudos de la sinergia (para saber los niveles requeridos y estilos)
@@ -555,23 +565,30 @@ const resolvedIcon = data.icon.startsWith("http") ? data.icon : getLocalTftImage
     margin-bottom: 40px;
   }
   .section-block {
+    display: flex;
+    flex-direction: column;
     background-color: #211c47;
     padding: 30px;
     border-radius: 8px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    max-width:900px;
+    box-sizing: border-box;
+    align-self: center;
+    gap:20px;
   }
   .section-block h2 {
-    color: #ffc832;
     margin-top: 0;
   }
   .section-content {
+    display: flex;
+    flex-direction: column;
     color: #e5e7eb;
     line-height: 1.6;
+    gap: 20px;
   }
   
   /* Estilos para el texto procesado (Markdown) */
   .section-content :global(.imagen-dinamica) {
-    margin: 20px 0;
     text-align: center;
   }
   .section-content :global(.imagen-dinamica img) {
@@ -595,6 +612,10 @@ const resolvedIcon = data.icon.startsWith("http") ? data.icon : getLocalTftImage
   .section-content :global(.link-dinamico:hover) {
     color: #0088cc;
     text-decoration: underline;
+  }
+  .section-content :global(p) {
+    margin-block-start:0;
+    margin-block-end:0;
   }
   p{
     margin-block-start:0;
