@@ -5,3 +5,5 @@ export const currentStreamer = atom({
   name: 'reliclol',
   platform: 'kick',
 });
+
+export const isStreamerOnline = atom(false);

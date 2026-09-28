@@ -1,0 +1,81 @@
+---
+import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro"
+import { crearJSONSchema } from "@json/schema/crearJSONSchema";
+import PaginaBaseMaxWidth from "@components/TFT/paginas/PaginaBaseMaxWidth.astro";
+import Youtube from "@components/youtube/Youtube.jsx";
+import Cards from "@components/TFT/como-jugar/Cards";
+import RegistrarseBTN from "@components/TFT/RegistrarseBTN";
+import { getConstantes } from "src/lib/cache/tftCache.js";
+import { initialTFT_SET } from "@stores/dataTFT.js";
+
+const constantes = await getConstantes();
+const isCurrentSetPBE = initialTFT_SET === "pbe";
+const currentPatch = isCurrentSetPBE ? constantes.MetaCompVersionPBE : constantes.MetaCompVersion;
+
+const topTitle=`TFT Patch ${currentPatch}: Notas del Parche`;
+const lowerTitle = "Notas del Parche";
+const title = `${topTitle} ${lowerTitle}`;
+// como hacer para colocar mucho texto en varias lineas?
+const description =[
+  `Estas son las notas del parche actual de TFT, con todos los cambios de campeones, rasgos, objetos, aumentos y sistemas de la versión ${currentPatch}. En esta guía encontrarás un resumen de los cambios más importantes del parche, además del detalle completo de las modificaciones que afectan al meta de TFT.`
+];
+const keywords = "parche tft, tft parche, ultima version tft, patch tft, parche teamfight tactics, notas parche tft";
+const imgUrl ="";
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const baseSchema = JSON.parse(
+  crearJSONSchema({title, description:description})
+)
+const JSONSchema = JSON.stringify(baseSchema);
+const body=null;
+const currentPath = Astro.url.pathname;
+---
+
+<LayoutMaxWidth
+  title={title}
+  description={description}
+  keywords={keywords}
+  JSONSchema={JSONSchema}
+  canonical={canonical}
+>
+
+  <PaginaBaseMaxWidth
+    topTitle={topTitle}
+    lowerTitle={lowerTitle}
+    textInfo={description}
+  >
+
+    <div slot="bodyContainerLeft">
+      <!-- Puedes poner contenido aquí para la columna izquierda en el futuro -->
+    </div>
+      <div slot="bodyContainerMid">
+        <div style={{ maxWidth: "600px", marginBottom: '30px', alignSelf:"center", margin: "0 auto" }}>
+          <Youtube src={"https://youtube.com/playlist?list=PLxRnNvReiLMHHtPFxG2tCBzNCrIz_-rnq&si=JutNo4TolaIizyoa"} client:only="react" />
+        </div>
+        <!-- <RegistrarseBTN
+          client:load
+          text="¿Quieres mejorar más rápido en TFT?"
+          buttonText="Próximamente: TFT Master Plan"
+          layout="column"
+          className="mb-25"
+        /> -->
+        <aside style={{ margin: "0 auto" }}>
+          <h2 class="cards-title">Guías y Tutoriales de TFT</h2>
+          <Cards currentPath={currentPath} client:load transition:persist/>
+        </aside>
+              
+      </div>
+    <div slot="bodyContainerRight">
+      <!-- Puedes poner contenido aquí para la columna derecha en el futuro -->
+    </div>
+
+  </PaginaBaseMaxWidth>
+</LayoutMaxWidth>
+
+<style>
+  .mb-25 {
+    margin-bottom: 25px;
+  }
+  .cards-title{
+    text-align: center;
+  }
+</style>

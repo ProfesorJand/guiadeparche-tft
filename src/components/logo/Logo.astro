@@ -43,7 +43,8 @@ interface ImageMetadata {
     height:  calc(var(--height-header) - 10px);
   }
   .textLogo{
-    font-family: Fantasy, ObvioslyWideBold, sans-serif;;
+    display:none;
+    font-family: Fantasy, ObvioslyWideBold, sans-serif;
   }
   .logoContainer{
     display: flex;
@@ -76,6 +77,9 @@ interface ImageMetadata {
       width: calc((100% - 1200px ) / 2);
       justify-content: center;
       align-items: center;
+    }
+    .textLogo{
+      display:flex;
     }
   }
 </style>

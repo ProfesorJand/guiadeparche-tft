@@ -90,7 +90,7 @@ const CampeonImgInTierList = ({comp, id, aumento, emblema, apiNameCampeon, apiNa
              <div style={{ position: 'sticky', top: '10px', zIndex: 10, height: 0, display: 'flex', justifyContent: 'flex-end' }}>
                 <button onClick={() => setLocalIsActive(false)} style={{ transform: 'translate(-15px, 5px)', background: '#e11d48', border: 'none', color: 'white', fontSize: '24px', cursor: 'pointer', lineHeight: '1', width: '35px', height: '35px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>&times;</button>
              </div>
-             <CardsCompos comp={comp} isInfografia={isInfografia} isActive={true} expandInline={true} hideToggleButton={true} hideRightContainer={true} />
+             <CardsCompos comp={comp} isInfografia={isInfografia} isActive={true} expandInline={true} hideToggleButton={true} hideRightContainer={true} preventScroll={true} />
           </div>
         </div>
       )}
