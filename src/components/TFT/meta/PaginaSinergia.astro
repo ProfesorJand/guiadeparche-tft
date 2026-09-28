@@ -176,6 +176,21 @@ if (typeof data.effects === 'string') {
   parsedCustomEffects = data.effects;
 }
 
+// Función para procesar Markdown básico (imágenes, enlaces y saltos de línea)
+const procesarTexto = (texto) => {
+  if (!texto) return "";
+  let parseado = texto.replace(
+    /!\[([^\]]+)\]\(([^)]+)\)/g, 
+    '<figure class="imagen-dinamica"><img src="$2" alt="$1" /><figcaption>$1</figcaption></figure>'
+  );
+  parseado = parseado.replace(
+    /(?<!!)\[([^\]]+)\]\(([^)]+)\)/g, 
+    '<a href="$2" target="_blank" rel="noopener noreferrer" class="link-dinamico">$1</a>'
+  );
+  parseado = parseado.replace(/\n/g, '<br />');
+  return parseado;
+};
+
 // Obtener datos crudos de la sinergia (para saber los niveles requeridos y estilos)
 const traits = dataTFTTraits.get();
 
@@ -284,7 +299,7 @@ const resolvedIcon = data.icon.startsWith("http") ? data.icon : getLocalTftImage
   {parsedSecciones.length > 0 && parsedSecciones.map(sec => (
       <div class="section-block">
         <h2>{sec.titulo}</h2>
-        <div class="section-content" set:html={sec.descripcion} />
+        <div class="section-content" set:html={procesarTexto(sec.descripcion)} />
       </div>
     ))}
 
@@ -552,6 +567,34 @@ const resolvedIcon = data.icon.startsWith("http") ? data.icon : getLocalTftImage
   .section-content {
     color: #e5e7eb;
     line-height: 1.6;
+  }
+  
+  /* Estilos para el texto procesado (Markdown) */
+  .section-content :global(.imagen-dinamica) {
+    margin: 20px 0;
+    text-align: center;
+  }
+  .section-content :global(.imagen-dinamica img) {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  }
+  .section-content :global(.imagen-dinamica figcaption) {
+    margin-top: 8px;
+    font-size: 0.9em;
+    color: #aaa;
+    font-style: italic;
+  }
+  .section-content :global(.link-dinamico) {
+    color: #00c9ff;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.2s ease-in-out;
+  }
+  .section-content :global(.link-dinamico:hover) {
+    color: #0088cc;
+    text-decoration: underline;
   }
   p{
     margin-block-start:0;

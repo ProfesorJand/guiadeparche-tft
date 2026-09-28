@@ -13,7 +13,7 @@ const isCurrentSetPBE = initialTFT_SET === "pbe";
 const currentPatch = isCurrentSetPBE ? constantes.MetaCompVersionPBE : constantes.MetaCompVersion;
 
 const topTitle=`TFT Patch ${currentPatch}: Notas del Parche`;
-const lowerTitle = "Notas del Parche";
+const lowerTitle = "";
 const title = `${topTitle} ${lowerTitle}`;
 // como hacer para colocar mucho texto en varias lineas?
 const description =[
@@ -59,8 +59,9 @@ const currentPath = Astro.url.pathname;
           className="mb-25"
         /> -->
         <aside style={{ margin: "0 auto" }}>
-          <h2 class="cards-title">Guías y Tutoriales de TFT</h2>
-          <Cards currentPath={currentPath} client:load transition:persist/>
+          <div class="trait-main-card">
+            <p class="text-centered">¿Quieres ver qué jugar en el meta actual? Descubre las <a style="color:#f5e020ff; font-weight: bold;" href="/tft/meta-comps-tier-list-teamfight-tactics/">mejores composiciones de TFT</a>.</p>
+          </div>
         </aside>
               
       </div>
@@ -77,5 +78,15 @@ const currentPath = Astro.url.pathname;
   }
   .cards-title{
     text-align: center;
+  }
+  .trait-main-card {
+    background-color: #211c47; /* Morado oscuro como en el mockup */
+    margin-top: 15px;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  }
+   .text-centered{
+    text-align:center;
   }
 </style>
