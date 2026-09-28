@@ -235,34 +235,45 @@ const PerfilUsuario = () => {
             <p style={{ fontSize: '0.9rem', color: '#ccc', margin: '10px 0' }}>
               Vincula tu cuenta de Twitch para permitir que el mensaje de publicidad se envíe a tu chat en tu nombre cuando se muestre el anuncio en tu OBS.
             </p>
-            <button 
-              onClick={() => {
-                const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-                window.location.href = `https://api.guiadeparche.com/publicidad/twitch_streamer_oauth.php?login=1&user_email=${user.email}${isLocal ? '&local=1' : ''}`;
-              }}
-              style={{
-                padding: '8px 16px',
-                backgroundColor: '#9146FF',
-                color: 'white',
-                border: 'none',
-                borderRadius: '6px',
-                cursor: 'pointer',
-                fontWeight: 'bold',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '8px',
-                width: 'fit-content'
-              }}
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/>
-              </svg>
-              Vincular con Twitch
-            </button>
-            {window.location.search.includes('twitch_linked=success') && (
-              <span style={{ color: '#4CAF50', fontSize: '0.9rem', display: 'block', marginTop: '8px', fontWeight: 'bold' }}>
-                ¡Cuenta de Twitch vinculada correctamente!
-              </span>
+
+            {(user?.twitch_linked == 1 || user?.twitch_linked === true || user?.twitch_linked === '1') ? (
+              <div style={{ marginTop: '15px' }}>
+                <span style={{ color: '#4CAF50', fontSize: '0.9rem', display: 'block', marginBottom: '10px', fontWeight: 'bold' }}>
+                  ✓ Cuenta de Twitch vinculada exitosamente.
+                </span>
+              </div>
+            ) : (
+              <>
+                <button 
+                  onClick={() => {
+                    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+                    window.location.href = `https://api.guiadeparche.com/publicidad/twitch_streamer_oauth.php?login=1&user_email=${user.email}${isLocal ? '&local=1' : ''}`;
+                  }}
+                  style={{
+                    padding: '8px 16px',
+                    backgroundColor: '#9146FF',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '6px',
+                    cursor: 'pointer',
+                    fontWeight: 'bold',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    width: 'fit-content'
+                  }}
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/>
+                  </svg>
+                  Vincular con Twitch
+                </button>
+                {window.location.search.includes('twitch_linked=success') && (
+                  <span style={{ color: '#4CAF50', fontSize: '0.9rem', display: 'block', marginTop: '8px', fontWeight: 'bold' }}>
+                    ¡Cuenta de Twitch vinculada correctamente!
+                  </span>
+                )}
+              </>
             )}
           </div>
         )}
@@ -420,6 +431,7 @@ const PerfilUsuario = () => {
       <main className={styles.contentArea}>
         {activeTab === 'data' && renderUserData()}
         {activeTab === 'master-plan' && renderMasterPlan()}
+        {activeTab === 'publicidad_gp' && <PublicidadGPTab user={user} styles={styles} />}
         {activeTab === 'riot' && renderRiotAccount()}
         {activeTab === 'admin' && (
           <Suspense fallback={<div className={styles.loadingSpinner}>Cargando panel de administración...</div>}>
@@ -428,6 +440,90 @@ const PerfilUsuario = () => {
         )}
         {activeTab === 'logout' && <p>Cerrando sesión...</p>}
       </main>
+    </div>
+  );
+};
+
+const PublicidadGPTab = ({ user, styles }) => {
+  const [stats, setStats] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const res = await fetch(`https://api.guiadeparche.com/publicidad/publicidad_api.php?action=streamer_stats&email=${user.email}`);
+        const data = await res.json();
+        if (data.status === 'success') {
+          setStats(data.data);
+        }
+      } catch (err) {
+        console.error("Error fetching stats:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    if (user?.email) {
+      fetchStats();
+    }
+  }, [user]);
+
+  return (
+    <div className={styles.tabContent}>
+      <div className={styles.contentHeader}>
+        <h2>Publicidad GP</h2>
+        <p>Revisa tus estadísticas y ganancias generadas por mostrar publicidad en tu stream.</p>
+      </div>
+
+      {loading ? (
+        <div className={styles.loadingSpinner}>Cargando estadísticas...</div>
+      ) : !stats ? (
+        <p>No se encontraron datos.</p>
+      ) : (
+        <>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px', marginBottom: '30px' }}>
+            <div className={styles.infoCard} style={{ textAlign: 'center', border: '1px solid #4CAF50' }}>
+              <span className={styles.infoLabel} style={{ color: '#4CAF50' }}>Ganancias Totales</span>
+              <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#fff' }}>${stats.total_earned} USD</div>
+            </div>
+            <div className={styles.infoCard} style={{ textAlign: 'center', border: '1px solid #7b61ff' }}>
+              <span className={styles.infoLabel} style={{ color: '#7b61ff' }}>Impresiones Totales</span>
+              <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#fff' }}>{stats.total_impressions}</div>
+            </div>
+            <div className={styles.infoCard} style={{ textAlign: 'center', border: '1px solid #ff9800' }}>
+              <span className={styles.infoLabel} style={{ color: '#ff9800' }}>Espectadores Impactados</span>
+              <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#fff' }}>{stats.total_viewers}</div>
+            </div>
+          </div>
+
+          <h3>Historial de Impresiones</h3>
+          {stats.impressions && stats.impressions.length > 0 ? (
+            <div style={{ overflowX: 'auto' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '10px' }}>
+                <thead>
+                  <tr style={{ background: 'rgba(255,255,255,0.1)', textAlign: 'left' }}>
+                    <th style={{ padding: '10px', borderBottom: '1px solid #444', color: '#ccc' }}>Fecha/Hora</th>
+                    <th style={{ padding: '10px', borderBottom: '1px solid #444', color: '#ccc' }}>Campaña</th>
+                    <th style={{ padding: '10px', borderBottom: '1px solid #444', color: '#ccc' }}>Viewers (Twitch)</th>
+                    <th style={{ padding: '10px', borderBottom: '1px solid #444', color: '#ccc' }}>Generado</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {stats.impressions.map((imp, idx) => (
+                    <tr key={idx} style={{ borderBottom: '1px solid #333' }}>
+                      <td style={{ padding: '10px', color: '#fff' }}>{new Date(imp.timestamp).toLocaleString()}</td>
+                      <td style={{ padding: '10px', color: '#fff' }}>{imp.campaign}</td>
+                      <td style={{ padding: '10px', color: '#fff' }}>{imp.twitch_viewers}</td>
+                      <td style={{ padding: '10px', color: '#4CAF50', fontWeight: 'bold' }}>${imp.earned} USD</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <p style={{ color: '#aaa' }}>Aún no hay impresiones registradas.</p>
+          )}
+        </>
+      )}
     </div>
   );
 };

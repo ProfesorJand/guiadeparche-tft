@@ -11,7 +11,7 @@ import { useStore } from "@nanostores/react";
 import ImgCampeon from "./ImgCampeon.jsx";
 import ImgItem from "./ImgItem.jsx";
 
-const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = false, isIndividual = false, expandInline = false, hideToggleButton = false, hideRightContainer = false }) => {
+const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = false, isIndividual = false, expandInline = false, hideToggleButton = false, hideRightContainer = false, preventScroll = false }) => {
   const currentVersion = useStore(versionTFT);
   const codeOfChampions = useStore(teamPlannerCode);
   const championsTFT = useStore(dataTFTChampions);
@@ -173,7 +173,7 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
       }
 
       setTimeout(() => {
-        if (!containerRef.current) return;
+        if (!containerRef.current || preventScroll) return;
 
         const headerHtml = document.getElementsByClassName("bodyHeader");
         const headerHeight = headerHtml[0] ? headerHtml[0].clientHeight : 80;
@@ -339,6 +339,7 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
             </div>
 
             <div className={style.headerControls}>
+              
               {
                 comp?.dificultad && (
                   <span className={`${style.dificultad} ${style?.[`dificultad-${comp?.dificultad}`]}`} style={isDownloading ? { fontSize: '28px' } : {}}>{comp?.dificultad?.toUpperCase()}</span>
@@ -352,6 +353,18 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
               {
                 comp?.infographicCategory && (
                   <span className={style.infographicCategory}>{comp?.infographicCategory?.toUpperCase()}</span>
+                )
+              }
+              {
+                hideRightContainer && (
+                  <button 
+                    className={`${style.buttonLink} ${style.buttonLinkCopy} hideForCapture`} 
+                    style={{width:"fit-content", fontSize: "12px", padding: "8px"}}
+                    onClick={(e) => copyToClipboard(e, buildTeamPlannerCode(allChampionsApiName))}
+                    title="Copiar código de campeones"
+                  >
+                    📋 Copiar Código
+                  </button>
                 )
               }
             </div>

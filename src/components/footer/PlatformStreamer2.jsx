@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useStore } from '@nanostores/react';
 import { STREAMERS } from 'src/stores/menuFiltradoAdmin';
-import { currentStreamer } from 'src/stores/streamers';
+import { currentStreamer, isStreamerOnline } from 'src/stores/streamers';
 import Twitch from '@components/embed/Twitch2';
 import Kick from '@components/embed/Kick2';
 import loadingSpinner from 'src/assets/loading-180-v2.svg';
@@ -51,6 +51,7 @@ const PlatformStreamer = () => {
       if (index >= allStreamers.length) {
         const first = allStreamers[0];
         currentStreamer.set(first || { name: 'jupeson', platform: 'twitch' });
+        isStreamerOnline.set(false);
         setIsOnline(false);
         setLoading(false);
 
@@ -69,6 +70,7 @@ const PlatformStreamer = () => {
         const online = await isKickOnline(s.name);
         if (online) {
           currentStreamer.set({ name: s.name, platform: 'kick' });
+          isStreamerOnline.set(true);
           setIsOnline(true);
           setLoading(false);
           // Revisar de nuevo en 5 minutos en caso de que se apague el stream
@@ -83,6 +85,7 @@ const PlatformStreamer = () => {
         const online = await isTwitchOnline(s.name);
         if (online) {
           currentStreamer.set({ name: s.name, platform: 'twitch' });
+          isStreamerOnline.set(true);
           setIsOnline(true);
           setLoading(false);
           timeoutId = setTimeout(() => {

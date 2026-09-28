@@ -1,0 +1,35 @@
+---
+// Componente para detectar el navegador de Instagram
+---
+
+<script>
+  document.addEventListener("astro:page-load", () => {
+    const ua = navigator.userAgent || navigator.vendor || window.opera;
+    const isInstagram = ua.indexOf('Instagram') > -1;
+    // También se podría incluir FB: ua.indexOf('FBAN') > -1 || ua.indexOf('FBAV') > -1
+    
+    if (isInstagram && !sessionStorage.getItem('inAppAlertShown')) {
+      sessionStorage.setItem('inAppAlertShown', 'true');
+      
+      // setTimeout para no bloquear el renderizado inicial de golpe
+      setTimeout(() => {
+        const isAndroid = /android/i.test(ua);
+        const isIOS = /ipad|iphone|ipod/i.test(ua);
+        const currentUrl = window.location.href;
+
+        if (isAndroid) {
+          const wantsToOpen = window.confirm("Si quieres una mejor experiencia de usuario utiliza el navegador por defecto de tu dispositivo móvil.");
+          if (wantsToOpen) {
+            // Usa Intent de Android para forzar a abrir en Chrome
+            const urlWithoutProtocol = currentUrl.replace(/^https?:\/\//, '');
+            window.location.href = `intent://${urlWithoutProtocol}#Intent;scheme=https;package=com.android.chrome;end`;
+          }
+        } else if (isIOS) {
+          // En iOS, el sistema no permite forzar la salida a Safari vía JS, 
+          // así que le damos instrucciones directas al usuario.
+          window.alert("Para una mejor experiencia, toca los tres puntos (•••) en la esquina de tu pantalla y selecciona 'Abrir en el navegador' o 'Abrir en Safari'.");
+        }
+      }, 500);
+    }
+  });
+</script>

@@ -28,7 +28,7 @@ return (
   <aside className={styles.sidebar}>
     <ProfileSummary user={user} styles={styles}/>
 
-    <Menu activeTab={activeTab} setActiveTab={setActiveTab} styles={styles} admin={admin || superAdmin} />
+    <Menu activeTab={activeTab} setActiveTab={setActiveTab} styles={styles} admin={admin || superAdmin} user={user} />
     {/* {activeTab==="admin" &&
      <TierListMetaComps todasLasCompsPBE={todasLasCompsPBE} />
     } */}

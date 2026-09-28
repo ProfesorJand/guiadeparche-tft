@@ -29,7 +29,7 @@ export default function AdminPublicidad() {
 function CampaignsManager() {
     const [campaigns, setCampaigns] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [form, setForm] = useState({ name: '', media_url: '', chat_message: '', interval_minutes: 15, is_active: 1 });
+    const [form, setForm] = useState({ name: '', media_url: '', chat_message: '', interval_minutes: 15, is_active: 1, price: 2.00, viewers_per_price: 1000 });
     const [mediaFile, setMediaFile] = useState(null);
 
     useEffect(() => { loadCampaigns(); }, []);
@@ -52,6 +52,8 @@ function CampaignsManager() {
             formData.append('chat_message', form.chat_message);
             formData.append('interval_minutes', form.interval_minutes);
             formData.append('is_active', form.is_active);
+            formData.append('price', form.price);
+            formData.append('viewers_per_price', form.viewers_per_price);
             if (form.id) formData.append('id', form.id);
             
             if (mediaFile) {
@@ -64,7 +66,7 @@ function CampaignsManager() {
                 method: 'POST',
                 body: formData // No seteamos Content-Type, fetch lo hace automático con FormData
             });
-            setForm({ name: '', media_url: '', chat_message: '', interval_minutes: 15, is_active: 1 });
+            setForm({ name: '', media_url: '', chat_message: '', interval_minutes: 15, is_active: 1, price: 2.00, viewers_per_price: 1000 });
             setMediaFile(null);
             loadCampaigns();
         } catch (e) { console.error(e); }
@@ -101,6 +103,18 @@ function CampaignsManager() {
                     Intervalo en minutos (cada cuánto se muestra en el stream):
                     <input type="number" min="1" value={form.interval_minutes} onChange={e => setForm({...form, interval_minutes: e.target.value})} required />
                 </label>
+
+                <div style={{ display: 'flex', gap: '15px', marginTop: '10px' }}>
+                    <label style={{ flex: 1 }}>
+                        Precio a pagar (USD):
+                        <input type="number" step="0.01" min="0" value={form.price} onChange={e => setForm({...form, price: parseFloat(e.target.value)})} required />
+                    </label>
+                    <label style={{ flex: 1 }}>
+                        Cada cuántos Viewers:
+                        <input type="number" min="1" value={form.viewers_per_price} onChange={e => setForm({...form, viewers_per_price: parseInt(e.target.value)})} required />
+                    </label>
+                </div>
+
                 <label style={{display: 'flex', alignItems: 'center', gap: '10px', marginTop: '10px'}}>
                     <input type="checkbox" checked={form.is_active === 1 || form.is_active === true} onChange={e => setForm({...form, is_active: e.target.checked ? 1 : 0})} style={{width: '20px', height: '20px'}} />
                     <strong>Campaña Activa</strong> (Si se desmarca, no se mostrará en los streams)
@@ -112,7 +126,7 @@ function CampaignsManager() {
             {loading ? <p>Cargando...</p> : (
                 <table className={style.table}>
                     <thead>
-                        <tr><th>ID</th><th>Nombre</th><th>Estado</th><th>Intervalo</th><th>Mensaje</th><th>Acciones</th></tr>
+                        <tr><th>ID</th><th>Nombre</th><th>Estado</th><th>Paga</th><th>Intervalo</th><th>Mensaje</th><th>Acciones</th></tr>
                     </thead>
                     <tbody>
                         {campaigns.map(c => (
@@ -122,6 +136,7 @@ function CampaignsManager() {
                                 <td style={{ color: c.is_active ? '#00ff88' : '#ff4444', fontWeight: 'bold' }}>
                                     {c.is_active ? 'Activa' : 'Inactiva'}
                                 </td>
+                                <td>${c.price} / {c.viewers_per_price}v</td>
                                 <td>{c.interval_minutes} min</td>
                                 <td>{c.chat_message}</td>
                                 <td>
@@ -139,7 +154,7 @@ function CampaignsManager() {
 
 function UsersManager() {
     const [users, setUsers] = useState([]);
-    const [form, setForm] = useState({ alias: '', twitch_channel: '', youtube_channel_id: '', kick_channel: '' });
+    const [form, setForm] = useState({ alias: '', email: '', twitch_channel: '', youtube_channel_id: '', kick_channel: '' });
 
     useEffect(() => { loadUsers(); }, []);
 
@@ -154,12 +169,17 @@ function UsersManager() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await fetch(`${API_URL}?action=users`, {
+            const res = await fetch(`${API_URL}?action=users`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(form)
             });
-            setForm({ alias: '', twitch_channel: '', youtube_channel_id: '', kick_channel: '' });
+            const data = await res.json();
+            if (data.status === 'error') {
+                alert(data.message);
+                return;
+            }
+            setForm({ alias: '', email: '', twitch_channel: '', youtube_channel_id: '', kick_channel: '' });
             loadUsers();
         } catch (e) { console.error(e); }
     };
@@ -187,6 +207,7 @@ function UsersManager() {
         <div>
             <h3>Registrar Streamer (PublicityUser)</h3>
             <form onSubmit={handleSubmit} className={style.form}>
+                <input type="email" placeholder="Correo del usuario registrado (Requerido)" value={form.email || ''} onChange={e => setForm({...form, email: e.target.value})} required />
                 <input type="text" placeholder="Alias (Único, ej. relic)" value={form.alias} onChange={e => setForm({...form, alias: e.target.value.toLowerCase().replace(/\s+/g, '')})} required />
                 <input type="text" placeholder="Canal de Twitch (ej. relic_lol)" value={form.twitch_channel} onChange={e => setForm({...form, twitch_channel: e.target.value})} />
                 <input type="text" placeholder="Canal/ID de YouTube" value={form.youtube_channel_id} onChange={e => setForm({...form, youtube_channel_id: e.target.value})} />
@@ -357,72 +378,130 @@ function OverlayBuilder({ users }) {
 
 function StatsDashboard() {
     const [stats, setStats] = useState(null);
+    const [campaignsList, setCampaignsList] = useState([]);
+    const [streamersList, setStreamersList] = useState([]);
+
+    const [filterMonth, setFilterMonth] = useState('');
+    const [filterCampaign, setFilterCampaign] = useState('all');
+    const [filterStreamer, setFilterStreamer] = useState('all');
 
     useEffect(() => {
-        fetch(`${API_URL}?action=stats`).then(r => r.json()).then(data => {
-            if(data.status === 'success') setStats(data.data);
+        fetch(`${API_URL}?action=campaigns`).then(r => r.json()).then(d => {
+            if (d.status === 'success') setCampaignsList(d.data);
+        });
+        fetch(`${API_URL}?action=users`).then(r => r.json()).then(d => {
+            if (d.status === 'success') setStreamersList(d.data);
         });
     }, []);
 
-    if (!stats) return <p>Cargando métricas...</p>;
+    const fetchStats = () => {
+        let url = `${API_URL}?action=stats`;
+        if (filterMonth) url += `&month=${filterMonth}`;
+        if (filterCampaign !== 'all') url += `&campaign_id=${filterCampaign}`;
+        if (filterStreamer !== 'all') url += `&streamer_id=${filterStreamer}`;
+
+        fetch(url).then(r => r.json()).then(data => {
+            if(data.status === 'success') setStats(data.data);
+        });
+    };
+
+    useEffect(() => {
+        fetchStats();
+    }, [filterMonth, filterCampaign, filterStreamer]);
 
     return (
         <div>
-            <h3>Resumen Global</h3>
-            <div style={{ display: 'flex', gap: '20px', marginBottom: '20px' }}>
-                <div style={{ background: '#333', padding: '15px', borderRadius: '8px', flex: 1, textAlign: 'center' }}>
-                    <h2 style={{margin: '0', color: '#007bff'}}>{stats.general.total_impressions || 0}</h2>
-                    <p>Total de Publicidades mostradas</p>
-                </div>
-                <div style={{ background: '#333', padding: '15px', borderRadius: '8px', flex: 1, textAlign: 'center' }}>
-                    <h2 style={{margin: '0', color: '#28a745'}}>{stats.general.total_sessions || 0}</h2>
-                    <p>Sesiones de Streaming registradas</p>
-                </div>
-                <div style={{ background: '#333', padding: '15px', borderRadius: '8px', flex: 1, textAlign: 'center' }}>
-                    <h2 style={{margin: '0', color: '#ffc107'}}>{stats.general.peak_viewers || 0}</h2>
-                    <p>Pico máximo histórico de Viewers (Twitch)</p>
-                </div>
+            <h3>Filtros</h3>
+            <div style={{ display: 'flex', gap: '15px', marginBottom: '20px', background: '#222', padding: '15px', borderRadius: '8px' }}>
+                <label style={{ flex: 1 }}>
+                    Mes:
+                    <input type="month" value={filterMonth} onChange={e => setFilterMonth(e.target.value)} style={{ width: '100%', marginTop: '5px' }} />
+                </label>
+                <label style={{ flex: 1 }}>
+                    Campaña:
+                    <select value={filterCampaign} onChange={e => setFilterCampaign(e.target.value)} style={{ width: '100%', marginTop: '5px' }}>
+                        <option value="all">Todas las campañas</option>
+                        {campaignsList.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                    </select>
+                </label>
+                <label style={{ flex: 1 }}>
+                    Streamer:
+                    <select value={filterStreamer} onChange={e => setFilterStreamer(e.target.value)} style={{ width: '100%', marginTop: '5px' }}>
+                        <option value="all">Todos los streamers</option>
+                        {streamersList.map(s => <option key={s.id} value={s.id}>{s.alias}</option>)}
+                    </select>
+                </label>
+                <button onClick={() => { setFilterMonth(''); setFilterCampaign('all'); setFilterStreamer('all'); }} style={{ alignSelf: 'flex-end', background: '#555' }}>
+                    Limpiar
+                </button>
             </div>
 
-            <div style={{ display: 'flex', gap: '20px', marginBottom: '20px' }}>
-                <div style={{ flex: 1 }}>
-                    <h3>Métricas por Campaña</h3>
+            {!stats ? <p>Cargando métricas...</p> : (
+            <>
+                <h3>Resumen Global</h3>
+                <div style={{ display: 'flex', gap: '20px', marginBottom: '20px' }}>
+                    <div style={{ background: '#333', padding: '15px', borderRadius: '8px', flex: 1, textAlign: 'center' }}>
+                        <h2 style={{margin: '0', color: '#007bff'}}>{stats.general.total_impressions || 0}</h2>
+                        <p>Impresiones Totales</p>
+                    </div>
+                    <div style={{ background: '#333', padding: '15px', borderRadius: '8px', flex: 1, textAlign: 'center' }}>
+                        <h2 style={{margin: '0', color: '#28a745'}}>{stats.general.total_sessions || 0}</h2>
+                        <p>Sesiones de Streaming</p>
+                    </div>
+                    <div style={{ background: '#333', padding: '15px', borderRadius: '8px', flex: 1, textAlign: 'center' }}>
+                        <h2 style={{margin: '0', color: '#ffc107'}}>{stats.general.peak_viewers || 0}</h2>
+                        <p>Pico de Viewers</p>
+                    </div>
+                    <div style={{ background: '#333', padding: '15px', borderRadius: '8px', flex: 1, textAlign: 'center', border: '1px solid #e91e63' }}>
+                        <h2 style={{margin: '0', color: '#e91e63'}}>${stats.general.total_expenses || '0.00'}</h2>
+                        <p>Gasto Total (USD)</p>
+                    </div>
+                </div>
+
+                <div style={{ display: 'flex', gap: '20px', marginBottom: '20px' }}>
+                    <div style={{ flex: 1, overflowX: 'auto' }}>
+                        <h3>Por Campaña</h3>
+                        <table className={style.table}>
+                            <thead><tr><th>Campaña</th><th>Impresiones</th><th>Viewers</th><th>Gasto</th></tr></thead>
+                            <tbody>
+                                {stats.campaigns.map((c, i) => (
+                                    <tr key={i}><td>{c.name}</td><td>{c.impressions}</td><td>{c.total_viewers || 0}</td><td style={{ color: '#e91e63' }}>${parseFloat(c.expenses || 0).toFixed(2)}</td></tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style={{ flex: 1, overflowX: 'auto' }}>
+                        <h3>Por Streamer</h3>
+                        <table className={style.table}>
+                            <thead><tr><th>Streamer</th><th>Impresiones</th><th>Viewers</th><th>Ganado</th></tr></thead>
+                            <tbody>
+                                {stats.streamers.map((s, i) => (
+                                    <tr key={i}><td>{s.alias}</td><td>{s.impressions}</td><td>{s.total_viewers || 0}</td><td style={{ color: '#4caf50' }}>${parseFloat(s.expenses || 0).toFixed(2)}</td></tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <h3>Últimas 15 Impresiones (Filtradas)</h3>
+                <div style={{ overflowX: 'auto' }}>
                     <table className={style.table}>
-                        <thead><tr><th>Campaña</th><th>Impresiones Totales</th><th>Suma Total Viewers</th></tr></thead>
+                        <thead><tr><th>Fecha/Hora</th><th>Streamer</th><th>Campaña</th><th>Viewers</th><th>Costo</th></tr></thead>
                         <tbody>
-                            {stats.campaigns.map((c, i) => (
-                                <tr key={i}><td>{c.name}</td><td>{c.impressions}</td><td>{c.total_viewers || 0}</td></tr>
+                            {stats.recent.map((r, i) => (
+                                <tr key={i}>
+                                    <td>{new Date(r.timestamp).toLocaleString()}</td>
+                                    <td>{r.streamer}</td>
+                                    <td>{r.campaign}</td>
+                                    <td>{r.twitch_viewers}</td>
+                                    <td style={{ color: '#e91e63' }}>${parseFloat(r.expense || 0).toFixed(2)}</td>
+                                </tr>
                             ))}
                         </tbody>
                     </table>
                 </div>
-                <div style={{ flex: 1 }}>
-                    <h3>Métricas por Streamer</h3>
-                    <table className={style.table}>
-                        <thead><tr><th>Streamer (Alias)</th><th>Impresiones Totales</th><th>Suma Total Viewers</th></tr></thead>
-                        <tbody>
-                            {stats.streamers.map((s, i) => (
-                                <tr key={i}><td>{s.alias}</td><td>{s.impressions}</td><td>{s.total_viewers || 0}</td></tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <h3>Últimas 15 Impresiones (Tiempo real)</h3>
-            <table className={style.table}>
-                <thead><tr><th>Fecha/Hora</th><th>Streamer</th><th>Campaña</th><th>Viewers Simultáneos</th></tr></thead>
-                <tbody>
-                    {stats.recent.map((r, i) => (
-                        <tr key={i}>
-                            <td>{new Date(r.timestamp).toLocaleString()}</td>
-                            <td>{r.streamer}</td>
-                            <td>{r.campaign}</td>
-                            <td>{r.twitch_viewers} <span style={{fontSize:'0.8em', color:'#aaa'}}>{r.twitch_viewers == 999 ? '(Prueba)' : ''}</span></td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+            </>
+            )}
         </div>
     );
 }
