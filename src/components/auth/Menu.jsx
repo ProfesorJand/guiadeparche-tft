@@ -21,7 +21,7 @@ const Menu = ({activeTab, setActiveTab, styles, admin, user}) =>{
       tab: "publicidad_gp",
       admin: false,
       available:true,
-      condition: user?.twitch_linked == 1 || user?.twitch_linked === true || user?.twitch_linked === '1'
+      condition: (user?.twitch_linked == 1 || user?.twitch_linked === true || user?.twitch_linked === '1') && (user?.is_streamer == 1 || user?.is_streamer === true || user?.is_streamer === '1' || admin)
     },
     {
       name: "Cuenta de Riot",

@@ -13,7 +13,7 @@ import ChampionsList from "@components/main/Admin/ChampionsList";
 import { Items as ItemsList } from "@components/main/Admin/Items";
 import AugmentsList from "@components/main/Admin/AugmentsList";
 import TraitsList, { getTraitDisplayName } from "@components/main/Admin/TraitsList";
-import { composicionTFT as datosCompos, actualizarComposicionTFT, reiniciarComposicionTFT, dificultades, categorias, tiers, tiersExtras, dañoTipo, dioses as listaDioses } from "@stores/tft/dataFormularioCrear.js";
+import { composicionTFT as datosCompos, actualizarComposicionTFT, reiniciarComposicionTFT, dificultades, categorias, tiers, tiersExtras, dañoTipo, dioses as listaDioses, EXTRAS_ITEMS } from "@stores/tft/dataFormularioCrear.js";
 import { getLocalTftImage } from "@utils/images";
 import CardsMasterPlanCompos from "@components/TFT/master-plan/CardsMasterPlanCompos.jsx";
 import AdminTFTCampeonesEarly from "@components/main/Admin/AdminTFTCampeonesEarly";
@@ -294,11 +294,7 @@ const CampeonMetaVisual = () => {
     </div>;
 };
 
-export const EXTRAS_ITEMS = [
-  { apiName: 'winstreak', name: 'Win Streak', icon: '/tft/assets/WinStreak.webp' },
-  { apiName: 'lossstreak', name: 'Loss Streak', icon: '/tft/assets/LossStreak.webp' },
-  { apiName: 'orbedecampeon', name: 'Orbe de Campeón', icon: '/tft/assets/Orbe.webp' }
-];
+
 
 const ExtrasList = () => {
   return (
@@ -1512,6 +1508,23 @@ const BestBuildYMejoresItemsVisual = () => {
       bestBuild: newBestBuild
     });
   };
+  const moveBestBuildRow = (index, direction) => {
+    const newBestBuild = [...bestBuild];
+    if (index + direction < 0 || index + direction >= newBestBuild.length) return;
+    const temp = newBestBuild[index];
+    newBestBuild[index] = newBestBuild[index + direction];
+    newBestBuild[index + direction] = temp;
+    actualizarComposicionTFT({ bestBuild: newBestBuild });
+  };
+  const moveItemsRowInBestBuild = (rowIndex, type, listIdx, direction) => {
+    const newBestBuild = [...bestBuild];
+    const itemsList = newBestBuild[rowIndex][type];
+    if (listIdx + direction < 0 || listIdx + direction >= itemsList.length) return;
+    const temp = itemsList[listIdx];
+    itemsList[listIdx] = itemsList[listIdx + direction];
+    itemsList[listIdx + direction] = temp;
+    actualizarComposicionTFT({ bestBuild: newBestBuild });
+  };
   const updateBestBuildChamp = (index, apiName) => {
     const newBestBuild = [...bestBuild];
     newBestBuild[index].apiNameCampeon = apiName;
@@ -1608,7 +1621,20 @@ const BestBuildYMejoresItemsVisual = () => {
               const c = e.dataTransfer.getData("campeon");
               if (c) updateBestBuildChamp(rowIndex, JSON.parse(c).apiName || JSON.parse(c).name);
             }} onDoubleClick={() => updateBestBuildChamp(rowIndex, "")} className={localStyle.styleBox56}>
-                  {champImgUrl ? <img src={champImgUrl} alt={build.apiNameCampeon} className={localStyle.styleBox57} /> : <span className={localStyle.styleBox58}>Arrastrar Campeón</span>}
+                  {champImgUrl ? <img src={champImgUrl} alt={build.apiNameCampeon} className={localStyle.styleBox57} /> : 
+                    <div style={{display: 'flex', flexDirection: 'column', gap: '5px', alignItems: 'center'}}>
+                      <span className={localStyle.styleBox58}>Arrastrar Campeón</span>
+                      <select 
+                        onChange={(e) => {
+                          if (e.target.value) updateBestBuildChamp(rowIndex, e.target.value);
+                        }}
+                        style={{ background: '#111', color: '#fff', border: '1px solid #333', padding: '2px', fontSize: '10px', maxWidth: '80px' }}
+                      >
+                        <option value="">Seleccionar...</option>
+                        {allChampionsTFT?.sort((a,b) => a.name.localeCompare(b.name)).map(c => <option key={c.apiName} value={c.apiName}>{c.name}</option>)}
+                      </select>
+                    </div>
+                  }
                 </div>
 
                 {/* BIS y Special BIS */}
@@ -1635,7 +1661,11 @@ const BestBuildYMejoresItemsVisual = () => {
                               {itemImgUrl && <img src={itemImgUrl} alt={apiNameItem} className={localStyle.styleBox45} />}
                             </div>;
                   })}
-                        <button onClick={() => removeItemsRowFromBestBuild(rowIndex, "apiNameItemsBisDelCampeon", listIdx)} className={localStyle.styleBox63}>-</button>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', marginLeft: '5px' }}>
+                          <button onClick={() => moveItemsRowInBestBuild(rowIndex, "apiNameItemsBisDelCampeon", listIdx, -1)} style={{ background: '#333', color: 'white', border: 'none', borderRadius: '2px', cursor: 'pointer', padding: '1px 5px', fontSize: '10px' }}>↑</button>
+                          <button onClick={() => removeItemsRowFromBestBuild(rowIndex, "apiNameItemsBisDelCampeon", listIdx)} className={localStyle.styleBox63} style={{ margin: 0 }}>-</button>
+                          <button onClick={() => moveItemsRowInBestBuild(rowIndex, "apiNameItemsBisDelCampeon", listIdx, 1)} style={{ background: '#333', color: 'white', border: 'none', borderRadius: '2px', cursor: 'pointer', padding: '1px 5px', fontSize: '10px' }}>↓</button>
+                        </div>
                       </div>)}
                     <button onClick={() => addItemsRowToBestBuild(rowIndex, "apiNameItemsBisDelCampeon")} className={localStyle.styleBox64}>+ Fila BIS</button>
                   </div>
@@ -1661,13 +1691,21 @@ const BestBuildYMejoresItemsVisual = () => {
                               {itemImgUrl && <img src={itemImgUrl} alt={apiNameItem} className={localStyle.styleBox45} />}
                             </div>;
                   })}
-                        <button onClick={() => removeItemsRowFromBestBuild(rowIndex, "apiNameItemsSpecialBisDelCampeon", listIdx)} className={localStyle.styleBox63}>-</button>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', marginLeft: '5px' }}>
+                          <button onClick={() => moveItemsRowInBestBuild(rowIndex, "apiNameItemsSpecialBisDelCampeon", listIdx, -1)} style={{ background: '#333', color: 'white', border: 'none', borderRadius: '2px', cursor: 'pointer', padding: '1px 5px', fontSize: '10px' }}>↑</button>
+                          <button onClick={() => removeItemsRowFromBestBuild(rowIndex, "apiNameItemsSpecialBisDelCampeon", listIdx)} className={localStyle.styleBox63} style={{ margin: 0 }}>-</button>
+                          <button onClick={() => moveItemsRowInBestBuild(rowIndex, "apiNameItemsSpecialBisDelCampeon", listIdx, 1)} style={{ background: '#333', color: 'white', border: 'none', borderRadius: '2px', cursor: 'pointer', padding: '1px 5px', fontSize: '10px' }}>↓</button>
+                        </div>
                       </div>)}
                     <button onClick={() => addItemsRowToBestBuild(rowIndex, "apiNameItemsSpecialBisDelCampeon")} className={localStyle.styleBox64}>+ Fila Special</button>
                   </div>
                 </div>
 
-                <button onClick={() => removeBestBuildRow(rowIndex)} className={localStyle.styleBox66}>X</button>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', justifyContent: 'center' }}>
+                  <button onClick={() => moveBestBuildRow(rowIndex, -1)} style={{ background: '#333', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', padding: '2px 8px' }}>↑</button>
+                  <button onClick={() => removeBestBuildRow(rowIndex)} className={localStyle.styleBox66} style={{ margin: 0 }}>X</button>
+                  <button onClick={() => moveBestBuildRow(rowIndex, 1)} style={{ background: '#333', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', padding: '2px 8px' }}>↓</button>
+                </div>
               </div>
 
               {/* Extras (Artefactos, Radiantes, Emblemas, Especiales) para este campeón */}

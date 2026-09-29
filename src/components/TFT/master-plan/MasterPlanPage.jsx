@@ -5,7 +5,7 @@ import { dificultades, categorias, tiers, dañoTipo } from '@stores/tft/dataForm
 import { dataTFTAllItems, dataTFTChampions, dataTFTAllAugments, dataTFTTraits, metaCompsTFT, fetchAndSortComps, composMetaJSON, composMetaPBEJSON, versionTFT, setNumberLatest, setNumberPBE, dataDBTFTAumentos, swapVersionTFT } from '@stores/dataTFT';
 import CardsMasterPlanCompos from './CardsMasterPlanCompos';
 import ImgAugment from "@components/TFT/ImgAugment";
-import { EXTRAS_ITEMS } from '@components/TFT/FormularioVisualTFT';
+import { EXTRAS_ITEMS } from '@stores/tft/dataFormularioCrear';
 import { Items as ItemsList } from '@components/main/Admin/Items';
 import ChampionsList from '@components/main/Admin/ChampionsList';
 import TraitsList from '@components/main/Admin/TraitsList';

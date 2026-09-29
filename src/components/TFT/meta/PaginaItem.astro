@@ -46,6 +46,12 @@ if (typeof data.secciones === 'string') {
         <h1>{data.name} <span class="colored-text">Ítem TFT</span></h1>
         <p>{description}</p>
         <p>Última actualización: {lastUpdate} | Parche {currentVersion}</p>
+        {data.tip_jupeson && (
+          <div class="tip-jupeson-container">
+            <span class="tip-jupeson-title">💡 Tip Jupeson:</span>
+            <span class="tip-jupeson-text">{data.tip_jupeson}</span>
+          </div>
+        )}
       </div>
       {data.video_url && (
         <div class="container-video">
@@ -107,6 +113,26 @@ if (typeof data.secciones === 'string') {
   }
   .colored-text {
     color: #7b61ff;
+  }
+  .tip-jupeson-container {
+    margin-top: 15px;
+    padding: 15px;
+    background: rgba(123, 97, 255, 0.1);
+    border: 1px solid rgba(123, 97, 255, 0.3);
+    border-left: 4px solid #a78bfa;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+  .tip-jupeson-title {
+    color: #a78bfa;
+    font-weight: bold;
+    margin-right: 5px;
+  }
+  .tip-jupeson-text {
+    color: #ffffff;
   }
   .dynamic-sections {
     display: flex;

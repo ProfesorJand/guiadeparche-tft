@@ -139,6 +139,12 @@ console.log({video:data.video_url})
         <div class="dataChamp">
            <p class="seo-desc"><span class="colored-text">{data.name}</span> es un campeón de <span class="colored-text">coste {data.cost}</span> de TFT Set {data.tft_set} que combina los rasgos <span class="colored-text">{traitsList.map(t => t.name).join(', ')}</span>. En esta página encontrarás los mejores builds para <span class="colored-text">{data.name}</span>, las composiciones que lo utilizan y recomendaciones para aprovecharlo en el meta actual{bestItems.length > 0 ? <>. Sus mejores items son: <span class="colored-text">{bestItems.map(i => i.name).join(', ')}</span>.</> : '. Este campeón no tiene objetos recomendados.'}  
           </p>
+          {data.tip_jupeson && (
+            <div class="tip-jupeson-container">
+              <span class="tip-jupeson-title">💡 Tip Jupeson:</span>
+              <span class="tip-jupeson-text">{data.tip_jupeson}</span>
+            </div>
+          )}
           
           <div class="info-2-champ">
             <div class="hero-image-wrapper">
@@ -361,6 +367,9 @@ console.log({video:data.video_url})
 
   .hero-info {
     flex-grow: 1;
+    gap: 15px;
+    display: flex;
+    flex-direction: column;
   }
   .colored-text{
     color:#ff9fd8;
@@ -410,7 +419,33 @@ console.log({video:data.video_url})
   .seo-desc {
     font-size: 1.1rem;
     color: #cbd5e1;
-    margin: 0 0 5px 0;
+    margin-block-start: 0;
+    margin-block-end: 0;
+  }
+
+  .tip-jupeson-container {
+    padding: 15px;
+    background: rgba(123, 97, 255, 0.1);
+    border: 1px solid rgba(123, 97, 255, 0.3);
+    border-left: 4px solid #a78bfa;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    display:flex;
+    flex-direction: column;
+    width:100%
+  }
+
+  .tip-jupeson-title {
+    color: #a78bfa;
+    font-weight: bold;
+    margin-right: 5px;
+  }
+
+  .tip-jupeson-text {
+    color: #ffffff;
   }
 
   .update-info {

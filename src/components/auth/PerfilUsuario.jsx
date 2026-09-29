@@ -21,6 +21,26 @@ const PerfilUsuario = () => {
   const [newsletter, setNewsletter] = useState(user.newsletter !== 0 && user.newsletter !== "0");
   const [isSavingNewsletter, setIsSavingNewsletter] = useState(false);
   const [activePlanFeatures, setActivePlanFeatures] = useState([]);
+  const [isClaimingSub, setIsClaimingSub] = useState(false);
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('twitch_linked') === 'success') {
+      const claimStatus = urlParams.get('claim');
+      if (claimStatus === 'success') {
+        alert(`¡Felicidades! Se ha verificado tu suscripción a Jupeson y se añadieron 7 días de "MASTER PLAN TFT" a tu cuenta.`);
+      } else if (claimStatus === 'already_claimed') {
+        alert(`¡Conexión verificada! Ya se te añadieron los 7 días gratis de "MASTER PLAN TFT" este mes.`);
+      } else if (claimStatus === 'not_subbed') {
+        alert(`¡Conexión verificada! Como recordatorio puedes suscribirte al canal de Twitch de Jupeson para obtener 7 días adicionales de "MASTER PLAN TFT".`);
+      } else {
+        alert("¡Cuenta de Twitch vinculada exitosamente!");
+      }
+      
+      // Limpiar URL para que no vuelva a salir el alert al recargar
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, []);
 
   useEffect(() => {
     const isMasterPlanActive = user?.master_plan == 1 || user?.master_plan === true || user?.master_plan === '1';
@@ -241,6 +261,23 @@ const PerfilUsuario = () => {
                 <span style={{ color: '#4CAF50', fontSize: '0.9rem', display: 'block', marginBottom: '10px', fontWeight: 'bold' }}>
                   ✓ Cuenta de Twitch vinculada exitosamente.
                 </span>
+                <button 
+                  onClick={() => {
+                    const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+                    window.location.href = `https://api.guiadeparche.com/publicidad/twitch_streamer_oauth.php?login=1&user_email=${user.email}${isLocal ? '&local=1' : ''}`;
+                  }}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: '#9146FF',
+                    textDecoration: 'underline',
+                    cursor: 'pointer',
+                    padding: 0,
+                    fontSize: '0.85rem'
+                  }}
+                >
+                  Actualizar conexión / permisos de Twitch
+                </button>
               </div>
             ) : (
               <>
@@ -336,6 +373,73 @@ const PerfilUsuario = () => {
             </a>
           </div>
         )}
+
+        {/* Sección Twitch para Master Plan */}
+        <div className={styles.infoCard} style={{ border: '1px solid #9146FF', marginTop: '30px' }}>
+          <span className={styles.infoLabel} style={{ color: '#9146FF' }}>Regalo por Suscripción en Twitch</span>
+          <p style={{ fontSize: '0.9rem', color: '#ccc', margin: '10px 0' }}>
+            Si estás suscrito al canal de Twitch de <strong>jupeson</strong>, puedes reclamar 7 días de Master Plan gratis cada mes.
+          </p>
+          
+          {(user?.twitch_linked == 1 || user?.twitch_linked === true || user?.twitch_linked === '1') ? (
+            <div style={{ marginTop: '15px' }}>
+              <span style={{ color: '#4CAF50', fontSize: '0.9rem', display: 'block', marginBottom: '10px', fontWeight: 'bold' }}>
+                ✓ Cuenta de Twitch vinculada exitosamente.
+              </span>
+              <p style={{ fontSize: '0.85rem', color: '#a0a6b8' }}>
+                Tu suscripción se validará automáticamente. Si te suscribes, recibirás los 7 días de beneficio al instante.
+              </p>
+              <button 
+                onClick={() => {
+                  const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+                  window.location.href = `https://api.guiadeparche.com/publicidad/twitch_streamer_oauth.php?login=1&user_email=${user.email}${isLocal ? '&local=1' : ''}`;
+                }}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: '#9146FF',
+                  textDecoration: 'underline',
+                  cursor: 'pointer',
+                  padding: 0,
+                  fontSize: '0.8rem',
+                  marginTop: '5px'
+                }}
+              >
+                ¿No te llegó el premio por renovación automática? Haz clic aquí para verificar manualmente.
+              </button>
+            </div>
+          ) : (
+            <>
+              <p style={{ fontSize: '0.9rem', color: '#f5e020ff', marginBottom: '10px', fontWeight: 'bold' }}>
+                ¡Vincula tu cuenta de Twitch para reclamar!
+              </p>
+              <button 
+                onClick={() => {
+                  const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+                  window.location.href = `https://api.guiadeparche.com/publicidad/twitch_streamer_oauth.php?login=1&user_email=${user.email}${isLocal ? '&local=1' : ''}`;
+                }}
+                style={{
+                  padding: '8px 16px',
+                  backgroundColor: '#9146FF',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  fontWeight: 'bold',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  width: 'fit-content'
+                }}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/>
+                </svg>
+                Vincular con Twitch
+              </button>
+            </>
+          )}
+        </div>
 
         {/* Sección Discord */}
         {isMasterPlanActive && (

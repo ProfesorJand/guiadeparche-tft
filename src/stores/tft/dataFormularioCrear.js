@@ -1,4 +1,10 @@
 import { deepMap, atom, task } from "nanostores";
+export const EXTRAS_ITEMS = [
+  { apiName: 'winstreak', name: 'Win Streak', icon: '/tft/assets/WinStreak.webp' },
+  { apiName: 'lossstreak', name: 'Loss Streak', icon: '/tft/assets/LossStreak.webp' },
+  { apiName: 'orbedecampeon', name: 'Orbe de Campeón', icon: '/tft/assets/Orbe.webp' }
+];
+
 export const dificultades = {
   Es: ["Facil", "Medio", "Dificil"],
   En: ["Easy", "Medium", "Hard"]
