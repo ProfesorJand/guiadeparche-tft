@@ -44,7 +44,8 @@ const AdminCrearPaginaMetaTFT = () => {
     effects: {}, // Objeto mapeando minUnits a descripción { "2": "Daño mágico", "4": "..." }
     tft_set: "",
     ability: { name: "", icon: "", desc: "" },
-    itemCombinations: []
+    itemCombinations: [],
+    tip_jupeson: ""
   });
 
   const [status, setStatus] = useState({ type: "", message: "" });
@@ -125,7 +126,8 @@ const AdminCrearPaginaMetaTFT = () => {
       effects: parsedEffects,
       tft_set: entity.tft_set || "",
       ability: parsedAbility,
-      itemCombinations: parsedItemCombinations
+      itemCombinations: parsedItemCombinations,
+      tip_jupeson: entity.tip_jupeson || ""
     });
     setSearchQuery("");
     setIsSearching(false);
@@ -244,7 +246,8 @@ const AdminCrearPaginaMetaTFT = () => {
       titulo_seo: "", descripcion_seo: "", video_url: "", url_seo: "", secciones: [],
       desc_trait: "", effects: [], tft_set: "",
       ability: { name: "", icon: "", desc: "" },
-      itemCombinations: []
+      itemCombinations: [],
+      tip_jupeson: ""
     });
     setActiveComboIndex(null);
   };
@@ -692,6 +695,17 @@ const AdminCrearPaginaMetaTFT = () => {
             value={formData.descripcion_seo} 
             onChange={e => setFormData({...formData, descripcion_seo: e.target.value})} 
             placeholder="Ej: Aprende a jugar Jinx con los mejores objetos..."
+          />
+        </div>
+
+        <div className={style.formGroup}>
+          <label>Tip Jupeson (Opcional)</label>
+          <textarea 
+            className={style.input} 
+            style={{ height: '80px', resize: 'vertical' }}
+            value={formData.tip_jupeson} 
+            onChange={e => setFormData({...formData, tip_jupeson: e.target.value})} 
+            placeholder="Ej: Recuerda posicionar a este campeón en la segunda línea..."
           />
         </div>
 
