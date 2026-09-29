@@ -42,7 +42,7 @@ export default defineConfig({
     '/tft/meta-comps-tier-list-teamfight-tactics/SivirGnar/': '/tft/meta-comps-tier-list-teamfight-tactics/sivir/',
     '/tft/meta-comps-tier-list-teamfight-tactics/Soraka/': '/tft/meta-comps-tier-list-teamfight-tactics/soraka/',
     '/tft/meta-comps-tier-list-teamfight-tactics/Xayah/': '/tft/meta-comps-tier-list-teamfight-tactics/xayah/',
-    '/tft/meta-comps-tier-list-teamfight-tactics/fuegorapido/': '/tft/meta-comps-tier-list-teamfight-tactics/fuegorrpido/',
+    '/tft/meta-comps-tier-list-teamfight-tactics/fuegorrpido/': '/tft/meta-comps-tier-list-teamfight-tactics/fuegorapido/',
     //'/tft/meta-comps-tier-list-teamfight-tactics/Zyra/': '/tft/meta-comps-tier-list-teamfight-tactics/zyra/',
   },
   integrations: [
