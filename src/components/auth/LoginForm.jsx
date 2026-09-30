@@ -302,7 +302,7 @@ const LoginForm = () => {
     const dateInArgentina = new Date(new Date().toLocaleString("en-US", { timeZone: "America/Argentina/Buenos_Aires" }));
     const termsAcceptedAtStr = `${dateInArgentina.getFullYear()}-${String(dateInArgentina.getMonth() + 1).padStart(2, '0')}-${String(dateInArgentina.getDate()).padStart(2, '0')} ${String(dateInArgentina.getHours()).padStart(2, '0')}:${String(dateInArgentina.getMinutes()).padStart(2, '0')}:${String(dateInArgentina.getSeconds()).padStart(2, '0')}`;
 
-    const fullPhone = `${formData.phoneCode || ''} ${formData.phone || ''}`.trim();
+    const fullPhone = formData.phone ? `${formData.phoneCode || ''} ${formData.phone}`.trim() : '';
     const submissionData = {
       ...formData,
       phone: fullPhone,
@@ -491,8 +491,7 @@ const LoginForm = () => {
               type="tel"
               value={formData.phone}
               onChange={(e) => setFormData({ ...formData, phone: e.target.value.replace(/\D/g, '') })}
-              placeholder="Número sin 0 ni 15"
-              required
+              placeholder="Número sin 0 ni 15 (Opcional)"
               className={styles.input}
               style={{ flex: 1, marginBottom: 0 }}
               disabled={loading}
