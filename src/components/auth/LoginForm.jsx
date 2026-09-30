@@ -491,8 +491,7 @@ const LoginForm = () => {
               type="tel"
               value={formData.phone}
               onChange={(e) => setFormData({ ...formData, phone: e.target.value.replace(/\D/g, '') })}
-              placeholder="Número sin 0 ni 15"
-              required
+              placeholder="Número sin 0 ni 15 (Opcional)"
               className={styles.input}
               style={{ flex: 1, marginBottom: 0 }}
               disabled={loading}
