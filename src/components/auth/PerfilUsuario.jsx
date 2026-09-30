@@ -1,5 +1,5 @@
 import { useEffect, lazy, Suspense, useState } from 'react';
-import { $user, $admin, $superAdmin, logOut, $activeTab, setActiveTab, setUser } from "@stores/auth";
+import { $user, $admin, $superAdmin, logOut, $activeTab, setActiveTab, setUser, refreshUserData } from "@stores/auth";
 import { useStore } from "@nanostores/react";
 import styles from './PerfilUsuario.module.css';
 import { fetchAndSortComps, composMetaPBEJSON, composMetaPBETestJSON, addRestCompsFetch } from "@stores/dataTFT";
@@ -40,6 +40,26 @@ const PerfilUsuario = () => {
       // Limpiar URL para que no vuelva a salir el alert al recargar
       window.history.replaceState({}, document.title, window.location.pathname);
     }
+  }, []);
+
+  // Actualizar datos del usuario cuando la pestaña vuelve a tener foco (ej. vuelve de Twitch)
+  useEffect(() => {
+    const handleFocus = () => {
+      refreshUserData();
+    };
+    
+    window.addEventListener('focus', handleFocus);
+    // También escuchamos visibilitychange por mayor compatibilidad
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        handleFocus();
+      }
+    });
+
+    return () => {
+      window.removeEventListener('focus', handleFocus);
+      document.removeEventListener('visibilitychange', handleFocus);
+    };
   }, []);
 
   useEffect(() => {
