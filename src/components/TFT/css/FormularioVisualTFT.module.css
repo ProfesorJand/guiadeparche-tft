@@ -628,7 +628,12 @@
 .boxCondicionesInfo{
   display:flex;
   position:relative;
-  width:calc((100% - (5px * 2)) / 3)
+  width:calc((100% - (10px * 2)) / 3)
+}
+.boxCondicionesInfo2{
+  display:flex;
+  position:relative;
+  width:calc((100% - (10px * 2)) / 3)
 }
 .cAumento{
   display:flex;

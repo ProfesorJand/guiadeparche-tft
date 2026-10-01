@@ -612,7 +612,7 @@ const PreliminaresOPVisual = ({ title = "Preliminares OP", condTypeGrande, condT
             return (
               <div 
                 key={index} 
-                className={`${style.cCondicionOP} ${localStyle.boxCondicionesInfo}`}
+                className={` ${localStyle.boxCondicionesInfo2}`}
                 onContextMenu={(e) => toggleOp(e, index)}
                 title="Click derecho para cambiar estado OP/OPM"
               >
