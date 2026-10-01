@@ -84,6 +84,7 @@ export default function MasterPlanPage() {
   const [selectedHardAugments, setSelectedHardAugments] = useState([]);
   const [sortAugmentsByName, setSortAugmentsByName] = useState(null);
   const [sortAugmentsByCount, setSortAugmentsByCount] = useState(null);
+  const [showOnlyOP, setShowOnlyOP] = useState(false);
 
   const listaAumentosHeroes = [
     "TFT17_Augment_GragasCarry"
@@ -471,14 +472,19 @@ export default function MasterPlanPage() {
       if (!cond) return;
       const tGrande = (cond.condTypeGrande || cond.typeGrande || cond.condType || "").toLowerCase();
 
-      if (tGrande === target && cond.apiNameGrande && !uniqueMap.has(cond.apiNameGrande)) {
-        uniqueMap.set(cond.apiNameGrande, {
-          apiName: cond.apiNameGrande,
-          apiNamePequeno: cond.ApiNamePequeno || cond.apiNamePequeno,
-          name: getConditionDisplayName(cond.apiNameGrande, targetType),
-          icon: getConditionIconUrl(cond.apiNameGrande, targetType),
-          type: targetType
-        });
+      if (tGrande === target && cond.apiNameGrande) {
+        if (!uniqueMap.has(cond.apiNameGrande)) {
+          uniqueMap.set(cond.apiNameGrande, {
+            apiName: cond.apiNameGrande,
+            apiNamePequeno: cond.ApiNamePequeno || cond.apiNamePequeno,
+            name: getConditionDisplayName(cond.apiNameGrande, targetType),
+            icon: getConditionIconUrl(cond.apiNameGrande, targetType),
+            type: targetType,
+            appearCount: 1
+          });
+        } else {
+          uniqueMap.get(cond.apiNameGrande).appearCount += 1;
+        }
       }
     });
 
@@ -486,25 +492,35 @@ export default function MasterPlanPage() {
       filteredComposPrimary.forEach(comp => {
         if (comp.itemsPrio && Array.isArray(comp.itemsPrio)) {
           comp.itemsPrio.forEach(item => {
-            if (item && typeof item === 'object' && (item.op === true || item.op === "true") && item.apiName && !uniqueMap.has(item.apiName)) {
-              uniqueMap.set(item.apiName, {
-                apiName: item.apiName,
-                name: getConditionDisplayName(item.apiName, targetType),
-                icon: getConditionIconUrl(item.apiName, targetType),
-                type: targetType
-              });
+            if (item && typeof item === 'object' && (item.op === true || item.op === "true") && item.apiName) {
+              if (!uniqueMap.has(item.apiName)) {
+                uniqueMap.set(item.apiName, {
+                  apiName: item.apiName,
+                  name: getConditionDisplayName(item.apiName, targetType),
+                  icon: getConditionIconUrl(item.apiName, targetType),
+                  type: targetType,
+                  appearCount: 1
+                });
+              } else {
+                uniqueMap.get(item.apiName).appearCount += 1;
+              }
             }
           });
         }
         if (comp.itemsPrioTanque && Array.isArray(comp.itemsPrioTanque)) {
           comp.itemsPrioTanque.forEach(item => {
-            if (item && typeof item === 'object' && (item.op === true || item.op === "true") && item.apiName && !uniqueMap.has(item.apiName)) {
-              uniqueMap.set(item.apiName, {
-                apiName: item.apiName,
-                name: getConditionDisplayName(item.apiName, targetType),
-                icon: getConditionIconUrl(item.apiName, targetType),
-                type: targetType
-              });
+            if (item && typeof item === 'object' && (item.op === true || item.op === "true") && item.apiName) {
+              if (!uniqueMap.has(item.apiName)) {
+                uniqueMap.set(item.apiName, {
+                  apiName: item.apiName,
+                  name: getConditionDisplayName(item.apiName, targetType),
+                  icon: getConditionIconUrl(item.apiName, targetType),
+                  type: targetType,
+                  appearCount: 1
+                });
+              } else {
+                uniqueMap.get(item.apiName).appearCount += 1;
+              }
             }
           });
         }
@@ -1390,6 +1406,8 @@ export default function MasterPlanPage() {
                       earlyHighlightedAugments={earlyHighlightedAugments}
                       selectedHardAugments={selectedHardAugments}
                       setSelectedHardAugments={setSelectedHardAugments}
+                      showOnlyOP={showOnlyOP}
+                      setShowOnlyOP={setShowOnlyOP}
                       allChampions={allChampions}
                       versionNumber={versionNumber}
                       style={style}

@@ -85,6 +85,7 @@ export default function FiltroEarlyWrapper({
               condicionesGrandeItems={condicionesGrandeItems}
               filteredComposPrimary={filteredComposPrimary}
               selectedSalidasEarlyItems={selectedSalidasEarlyItems}
+              selectedSalidasEarlyComponents={selectedSalidasEarlyComponents}
               allItems={allItems}
               softItemsList={softItemsList}
               toggleArrayFilter={toggleArrayFilter}
