@@ -16,6 +16,8 @@ export default function FiltroAumentosWrapper({
   earlyHighlightedAugments,
   selectedHardAugments,
   setSelectedHardAugments,
+  showOnlyOP,
+  setShowOnlyOP,
   allChampions,
   versionNumber,
   style
@@ -33,6 +35,8 @@ export default function FiltroAumentosWrapper({
           setSortAugmentsByName={setSortAugmentsByName}
           sortAugmentsByCount={sortAugmentsByCount}
           setSortAugmentsByCount={setSortAugmentsByCount}
+          showOnlyOP={showOnlyOP}
+          setShowOnlyOP={setShowOnlyOP}
           style={style}
         />
         
@@ -47,6 +51,7 @@ export default function FiltroAumentosWrapper({
           selectedHardAugments={selectedHardAugments}
           toggleArrayFilter={toggleArrayFilter}
           setSelectedHardAugments={setSelectedHardAugments}
+          showOnlyOP={showOnlyOP}
           allChampions={allChampions}
           versionNumber={versionNumber}
           style={style}

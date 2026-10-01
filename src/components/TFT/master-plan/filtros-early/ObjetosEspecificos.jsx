@@ -30,7 +30,7 @@ export default function ObjetosEspecificos({
             <fieldset key={groupName} style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
               <legend style={{ fontSize: '0.75rem' }}>{groupName}</legend>
               <div className={style.filterButtonsContainerRow}>
-                {items.map(item => {
+                {[...items].sort((a, b) => (b.appearCount || 0) - (a.appearCount || 0)).map(item => {
                   const isSelected = selectedSalidasEarlyItems.some(i => i.apiName === item.apiName);
                   const fullItem = allItems.find(i => i.apiName === item.apiName) || item;
                   const hasComposition = fullItem.composition && fullItem.composition.length > 0;
@@ -48,11 +48,35 @@ export default function ObjetosEspecificos({
                       title={item.name}
                       className={`${style.filterOptionBox} ${isSelected ? style.filterOptionBoxActive : ''}`}
                       onClick={() => toggleArrayFilter(setSelectedSalidasEarlyItems, item)}
-                      style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '6px', gap: '4px' }}
+                      style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '6px', gap: '4px', position: 'relative' }}
                     >
                       {item.icon && (
-                        <div className={matchedCount === 2 && !isSelected ? style.spinningHighlight : style.spinningHighlightIdle} style={{ borderRadius: '4px' }}>
-                          <img src={item.icon} alt={item.name} style={{ width: '45px', height: '45px', objectFit: 'contain', borderRadius: '3px' }} />
+                        <div style={{ position: 'relative' }}>
+                          <div className={matchedCount === 2 && !isSelected ? style.spinningHighlight : style.spinningHighlightIdle} style={{ borderRadius: '4px' }}>
+                            <img src={item.icon} alt={item.name} style={{ width: '45px', height: '45px', objectFit: 'contain', borderRadius: '3px' }} />
+                          </div>
+                          {item.appearCount > 0 && (
+                            <div style={{
+                              position: 'absolute',
+                              bottom: '-6px',
+                              left: '50%',
+                              transform: 'translateX(-50%)',
+                              backgroundColor: 'rgba(0,0,0,0.85)',
+                              color: '#ffcc00',
+                              border: '1px solid #ffcc00',
+                              borderRadius: '50%',
+                              width: '18px',
+                              height: '18px',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              fontSize: '0.9rem',
+                              fontWeight: 'bold',
+                              zIndex: 3
+                            }}>
+                              {item.appearCount}
+                            </div>
+                          )}
                         </div>
                       )}
                       {hasComposition && (

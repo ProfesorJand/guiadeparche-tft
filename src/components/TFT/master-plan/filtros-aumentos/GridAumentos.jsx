@@ -13,6 +13,7 @@ export default function GridAumentos({
   selectedHardAugments,
   toggleArrayFilter,
   setSelectedHardAugments,
+  showOnlyOP,
   allChampions,
   versionNumber,
   style
@@ -25,6 +26,7 @@ export default function GridAumentos({
         }
 
         const augsInTier = opEarlyAugmentsMap.filter(aug => {
+          if (showOnlyOP && !aug.isOp && !aug.isOpm) return false;
           let augTier = (dbAumentos[aug.apiName]?.categoria_tier || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
           if (tierName === "Otros") {
