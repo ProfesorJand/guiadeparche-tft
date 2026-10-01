@@ -72,7 +72,7 @@ export default function FiltroEarlyWrapper({
 
       {activeTab === 'objetos' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-          <div style={{ display: 'flex', flexDirection: 'row', gap: '5px', marginBottom: '8px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', marginBottom: '8px' }}>
             <ComponentesCrafteables 
               softItemsList={softItemsList}
               selectedSalidasEarlyComponents={selectedSalidasEarlyComponents}

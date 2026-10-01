@@ -472,7 +472,7 @@ export default function MasterPlanPage() {
       if (!cond) return;
       const tGrande = (cond.condTypeGrande || cond.typeGrande || cond.condType || "").toLowerCase();
 
-      if (tGrande === target && cond.apiNameGrande) {
+      if (tGrande === target && cond.apiNameGrande && cond.apiNameGrande !== 'orbedecampeon') {
         if (!uniqueMap.has(cond.apiNameGrande)) {
           uniqueMap.set(cond.apiNameGrande, {
             apiName: cond.apiNameGrande,
@@ -1108,7 +1108,7 @@ export default function MasterPlanPage() {
       if (comp.campeonesEarly && Array.isArray(comp.campeonesEarly)) {
         comp.campeonesEarly.forEach(early => {
           const apiName = typeof early === 'object' && early !== null ? early.apiNameCampeon : early;
-          if (apiName) {
+          if (apiName && apiName !== 'orbedecampeon') {
             if (!uniqueMap.has(apiName)) {
               const champ = allChampions.find(c => c.apiName === apiName);
               uniqueMap.set(apiName, {
@@ -1130,7 +1130,7 @@ export default function MasterPlanPage() {
           const grupoObj = gruposSalidasEarly.find(g => String(g.id) === String(groupId));
           if (grupoObj && grupoObj.campeones && Array.isArray(grupoObj.campeones)) {
             grupoObj.campeones.forEach(apiName => {
-              if (apiName) {
+              if (apiName && apiName !== 'orbedecampeon') {
                 if (!uniqueMap.has(apiName)) {
                   const champ = allChampions.find(c => c.apiName === apiName);
                   uniqueMap.set(apiName, {
@@ -1151,7 +1151,7 @@ export default function MasterPlanPage() {
     });
 
     condicionesGrandeCampeones.forEach(champCond => {
-      if (champCond.apiName) {
+      if (champCond.apiName && champCond.apiName !== 'orbedecampeon') {
         let iconPequeno = null;
         if (champCond.apiNamePequeno) {
           let obj = allAugments.find(a => a.apiName === champCond.apiNamePequeno);
