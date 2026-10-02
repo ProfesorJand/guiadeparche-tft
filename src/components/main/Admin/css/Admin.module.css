@@ -5,6 +5,11 @@
   flex-wrap: wrap;
   margin-bottom: 10px;
 }
+.titlePestanaSecundario{
+  display:flex;
+  flex-direction: row;
+  gap:5px;
+}
 
 .compos{
   display: flex;
