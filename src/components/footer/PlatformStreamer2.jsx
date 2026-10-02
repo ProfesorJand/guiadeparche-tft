@@ -145,16 +145,84 @@ const PlatformStreamer = () => {
     );
   }
 
+  // Constante para decidir si renderizamos el embed de Twitch
+  const SHOW_TWITCH_EMBED = false;
 
   if (streamer?.platform === "twitch") {
-    return <Twitch name={streamer.name} />;
+    if (SHOW_TWITCH_EMBED) {
+      return <Twitch name={streamer.name} />;
+    } else {
+      // Si no queremos el embed, mostramos la tarjeta indicando que está en vivo
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%', background: '#111', padding: '1rem', textAlign: 'center' }}>
+          <img src={gpLogo.src} alt="Live" style={{ maxWidth: '100px', opacity: 0.8, marginBottom: '1rem' }} />
+          <h3 style={{ color: '#ffcc00', margin: '0 0 0.5rem 0' }}>¡{streamer.name} está en vivo en Twitch!</h3>
+          <p style={{ color: '#aaa', margin: '0 0 1rem 0', fontSize: '0.9rem' }}>Visita su canal para verlo ahora</p>
+          <a 
+            href={`https://twitch.tv/${streamer.name}`} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              padding: '8px 16px',
+              backgroundColor:  '#9146FF',
+              color:'#fff',
+              textDecoration: 'none',
+              borderRadius: '4px',
+              fontWeight: 'bold',
+              transition: 'opacity 0.2s'
+            }}
+          >
+            <div style={{ width: '10px', height: '10px', backgroundColor: '#fff', borderRadius: '50%', animation: 'pulse-red 1.5s infinite' }}></div>
+            Ver en Twitch
+          </a>
+          <style>{`
+            @keyframes pulse-red {
+              0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); }
+              70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(255, 255, 255, 0); }
+              100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+            }
+          `}</style>
+        </div>
+      );
+    }
   }
 
   if (streamer?.platform === "kick") {
     return <Kick name={streamer.name} />;
   }
 
-  return <Twitch name="jupeson" />;
+  // Fallback
+  if (SHOW_TWITCH_EMBED) {
+    return <Twitch name="jupeson" />;
+  } else {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%', background: '#111', padding: '1rem', textAlign: 'center' }}>
+        <img src={gpLogo.src} alt="Offline" style={{ maxWidth: '100px', opacity: 0.8, marginBottom: '1rem' }} />
+        <h3 style={{ color: '#fff', margin: '0 0 0.5rem 0' }}>¡Streamers Offline!</h3>
+        <p style={{ color: '#aaa', margin: '0 0 1rem 0', fontSize: '0.9rem' }}>Visita el canal de Jupeson</p>
+        <a 
+          href="https://twitch.tv/jupeson" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          style={{
+            display: 'inline-block',
+            padding: '8px 16px',
+            backgroundColor:  '#9146FF',
+            color:'#fff',
+            textDecoration: 'none',
+            borderRadius: '4px',
+            fontWeight: 'bold',
+            transition: 'opacity 0.2s'
+          }}
+        >
+          Ver en Twitch
+        </a>
+      </div>
+    );
+  }
 };
 
 export default PlatformStreamer;

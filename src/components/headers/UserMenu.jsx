@@ -3,6 +3,7 @@ import { useStore } from '@nanostores/react';
 import { $user, setUser, $hasMasterPlan } from '../../stores/auth';
 import styles from './UserMenu.module.css';
 import btnStyles from '../TFT/RegistrarseBTN.module.css';
+import StreamerOnlineLight from './StreamerOnlineLight.jsx';
 
 const UserMenu = () => {
   const user = useStore($user);
@@ -49,13 +50,18 @@ const UserMenu = () => {
 
   if (!user) {
     return (
-      <a href="/login" className={styles.login_link}>
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-          <circle cx="12" cy="7" r="4"></circle>
-        </svg>
-        <span>Ingresar</span>
-      </a>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+        <div className={styles.hide_on_mobile}>
+          <StreamerOnlineLight />
+        </div>
+        <a href="/login" className={styles.login_link}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          <span>Ingresar</span>
+        </a>
+      </div>
     );
   }
 
@@ -63,6 +69,9 @@ const UserMenu = () => {
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+      <div className={styles.hide_on_mobile}>
+        <StreamerOnlineLight />
+      </div>
       {getMasterPlanBtn(false)}
       <div 
         className={styles.user_profile} 
@@ -102,21 +111,23 @@ export const MasterPlanMobileMenu = () => {
 
   // Estilos pensados para mezclarse bien con el menú lateral móvil
   return (
-    <a 
-      href={link} 
-      className={styles.mobile_menu_item}
-      style={{ 
-        display: 'block', 
-        padding: '18px 25px', 
-        color: '#00d4ff', 
-        fontWeight: 'bold', 
-        textDecoration: 'none', 
-        borderBottom: '1px solid rgba(255,255,255,0.05)',
-        fontSize: '1.1rem'
-      }}
-    >
-      👑 Accede al Master Plan
-    </a>
+    <>
+      <a 
+        href={link} 
+        className={styles.mobile_menu_item}
+        style={{ 
+          display: 'block', 
+          padding: '18px 25px', 
+          color: '#00d4ff', 
+          fontWeight: 'bold', 
+          textDecoration: 'none', 
+          borderBottom: '1px solid rgba(255,255,255,0.05)',
+          fontSize: '1.1rem'
+        }}
+      >
+        👑 Accede al Master Plan
+      </a>
+    </>
   );
 };
 

@@ -128,7 +128,6 @@ const menus = [
         })
       }
       <!-- <UserMenu client:only="react" /> -->
-      <StreamerOnlineLight client:only="react" />
     </div>
     <div class:list={["menuMobile"]}>
       <StreamerOnlineLight client:only="react" />
@@ -171,7 +170,7 @@ const menus = [
   nav{
     display: flex;
     position: relative;
-    width: 1200px;
+    flex: 1;
   }
   .menuContainer {
     display: none;
@@ -210,7 +209,7 @@ const menus = [
     height: var(--height-header);
   }
 
-  @media only screen and (min-width: 900px) {
+  @media only screen and (min-width: 1150px) {
 
     .sideMenu {
       display: none !important;
