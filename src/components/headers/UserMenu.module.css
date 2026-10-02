@@ -53,7 +53,7 @@
     opacity: 0;
   }
 }
-@media (max-width: 900px) {
+@media (max-width: 1150px) {
   .login_link span {
     display: none;
   }
@@ -219,9 +219,12 @@
   animation: none;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1150px) {
   .master_plan_btn {
     display: none;
+  }
+  .hide_on_mobile {
+    display: none !important;
   }
 }
 
