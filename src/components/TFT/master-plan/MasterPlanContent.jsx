@@ -53,7 +53,7 @@ const MasterPlanContent = () => {
       <video controls preload="auto" playsInline style={{ width: '100%', height: 'auto', maxWidth: '640px', margin: '0 auto', display: 'block', alignSelf: 'center' }}>
         <source 
           aria-label="Video explicativo sobre el TFT Master Plan de GUIADEPARCHE"
-          src="https://api.guiadeparche.com/tft/videos/VSL_Master_Plan_2026.mp4" 
+          src="https://api.guiadeparche.com/tft/videos/Video_Explicativo_Master_Plan_TFT_Octubre_2026.mp4" 
           type="video/mp4" />
         Tu navegador no soporta la etiqueta de video.
       </video>
