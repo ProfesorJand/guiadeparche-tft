@@ -1290,7 +1290,7 @@ export default function MasterPlanPage() {
         <fieldset className={`${style.filtersSection} ${style.cInstruction}`} style={{ flex:2, borderRadius: '8px', overflow: 'hidden' }}>
           <legend>Video Explicativo</legend>
           <div style={{ alignContent: 'center', width: '100%', aspectRatio: '16/9' }}>
-            <Youtube src="https://www.youtube.com/watch?v=9XgjkEpevZ8" />
+            <Youtube src="https://www.youtube.com/watch?v=ZCC-l81yqRo" />
           </div>
         </fieldset>
         <fieldset className={style.filtersSection} style={{ display: 'flex', gap: '15px', alignItems: 'center', flexWrap: 'wrap', flexDirection:"column", flex:1}}>

@@ -39,14 +39,34 @@ const VideoComponent = ({ src, loading = "lazy", titulo = "video de Jupeson" }) 
   const [video, setVideo] = useState(null);
   const [imgError, setImgError] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
-      const videoData = await getId(src, titulo);
-      setVideo(videoData);
+      try {
+        const videoData = await getId(src, titulo);
+        if (videoData) {
+          setVideo(videoData);
+        } else {
+          setHasError(true);
+        }
+      } catch (e) {
+        console.error("Error al cargar datos del video de YouTube:", e);
+        setHasError(true);
+      }
     };
     fetchData();
   }, [src, titulo]);
+
+  if (hasError) {
+    return (
+      <div className={style.divIframe} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '20px', backgroundColor: '#1e1f22', border: '1px solid #444', borderRadius: '8px' }}>
+        <a href={src} target="_blank" rel="noopener noreferrer" style={{ color: '#5865F2', textDecoration: 'underline', fontWeight: 'bold' }}>
+          Video no disponible. Haz clic aquí para intentar verlo directo en YouTube.
+        </a>
+      </div>
+    );
+  }
 
   if (!video) {
     return (

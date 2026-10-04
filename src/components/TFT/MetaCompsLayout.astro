@@ -380,6 +380,21 @@ const tableOfContentIndividual = [
 
       {
         !isIndividual &&
+        <div id="MejoresSalidas">
+          <div class="resources-header">
+            <h2 id="resource-title">LAS MEJORES SALIDAS de TFT para SUBIR ELO | Parche {isCurrentSetPBE ? constantes.MetaCompVersionPBE : constantes.MetaCompVersion}</h2>
+            <p>Guía de las mejores salidas de TFT, openers y estrategias de early game para subir ELO en el Parche {isCurrentSetPBE ? constantes.MetaCompVersionPBE : constantes.MetaCompVersion}: que composiciones jugar con tus campeones, objetos, artefactos, emblemas y aumentos según lo que te salga en juego temprano</p>
+            <Youtube
+              src={"https://www.youtube.com/watch?v=eIYLWZpR1Uw"}
+              client:load
+              transition:persist={`youtube-mejores-salidas`}
+            />
+          </div>
+        </div>
+      }
+
+      {
+        !isIndividual &&
         <div id="RecursosTFT">
           <div class="resources-header">
             <h2 id="resource-title">Recursos TFT</h2>
@@ -401,6 +416,7 @@ const tableOfContentIndividual = [
           </div>
         </div>
       }
+      
     </div>
     <div slot="sidebar">
       {isIndividual ? (
