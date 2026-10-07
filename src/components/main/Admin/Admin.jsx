@@ -27,6 +27,8 @@ import AdminCrearPaginaMetaTFT from "./AdminCrearPaginaMetaTFT.jsx";
 import AdminMercadoPagoPlanes from "./AdminMercadoPagoPlanes.jsx";
 import AdminMercadoPagoCupones from "./AdminMercadoPagoCupones.jsx";
 import AdminCorreos from "./AdminCorreos.jsx";
+import AdminSorteoDiscord from "./AdminSorteoDiscord.jsx";
+
 const AdminPanel = ()=>{
     const admin = useStore($admin);
     const superAdmin = useStore($superAdmin);
@@ -121,6 +123,14 @@ const AdminPanel = ()=>{
         primario:"Correos",
         secundario:[
           { nombre: "Newsletters", admin: false, superAdmin: true }
+        ],
+        admin: false,
+        superAdmin: true
+      },
+      {
+        primario:"Discord",
+        secundario:[
+          { nombre: "Sorteos", admin: false, superAdmin: true }
         ],
         admin: false,
         superAdmin: true
@@ -255,7 +265,7 @@ const AdminPanel = ()=>{
                 {action === "TFT-Páginas Meta TFT" && <AdminCrearPaginaMetaTFT />}
                 {action === "TFT-Deploy" && (() => {
                   const versionLabel = currentVersion === "pbe" ? (constantes?.MetaCompVersionPBE || "") : (constantes?.MetaCompVersion || "");
-                  const defaultMsg = `@Guiadeparche Actualización Meta TFT ${versionLabel} :Jupe_Vuamoo:\n\nhttps://guiadeparche.com/tft/meta-comps-tier-list-teamfight-tactics/`;
+                  const defaultMsg = `@Guiadeparche Actualización Meta TFT ${versionLabel} \n\nhttps://guiadeparche.com/tft/meta-comps-tier-list-teamfight-tactics/`;
                   const currentMsg = discordMessage !== null ? discordMessage : defaultMsg;
 
                   return (
@@ -344,6 +354,7 @@ const AdminPanel = ()=>{
                 {action === "Mercado Pago-Cupones de descuentos" && <AdminMercadoPagoCupones />}
                 {action?.includes("Publicidad GP") && <AdminPublicidad />}
                 {action === "Correos-Newsletters" && <AdminCorreos />}
+                {action === "Discord-Sorteos" && <AdminSorteoDiscord />}
                 {/* {action === "champsItemsTierList" && <CrearTierListChampItem />} */}
             </div>
             <button className={style.btnCerrarSesion} onClick={()=>cerrarSesion()}>cerrar sesión</button>

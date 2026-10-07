@@ -254,7 +254,12 @@ console.log({admin})
 
   html {
   background: transparent;
+  scroll-behavior: smooth;
 }
+
+  [id] {
+    scroll-margin-top: calc(var(--height-header) + 60px);
+  }
 
   body::-webkit-scrollbar {
     width: 12px; /* width of the entire scrollbar */

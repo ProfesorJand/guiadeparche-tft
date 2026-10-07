@@ -11,7 +11,7 @@ import { useStore } from "@nanostores/react";
 import ImgCampeon from "./ImgCampeon.jsx";
 import ImgItem from "./ImgItem.jsx";
 
-const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = false, isIndividual = false, expandInline = false, hideToggleButton = false, hideRightContainer = false, preventScroll = false }) => {
+const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = false, isIndividual = false, expandInline = false, hideToggleButton = false, hideRightContainer = false, preventScroll = false, h4Title = false }) => {
   const currentVersion = useStore(versionTFT);
   const codeOfChampions = useStore(teamPlannerCode);
   const championsTFT = useStore(dataTFTChampions);
@@ -333,9 +333,12 @@ const CardsCompos = ({ comp, numeracion, isActive, edit = false, isInfografia = 
               {isIndividual && <h2 style={isDownloading ? { fontSize: '40px' } : {}}>
                 {comp?.nombre}
               </h2>}
-              {!isIndividual && <h3 style={isDownloading ? { fontSize: '40px' } : {}} >
+              {!isIndividual && !h4Title && <h3 style={isDownloading ? { fontSize: '40px' } : {}} >
                 {(!isDownloading && numeracion) ? numeracion +". ": ""}{comp?.nombre}
               </h3>}
+              {!isIndividual && h4Title && <h4 style={{ marginBlockEnd: "0px", marginBlockStart: "0px", ...(isDownloading ? { fontSize: '40px' } : {}) }}>
+                {(!isDownloading && numeracion) ? numeracion +". ": ""}{comp?.nombre}
+              </h4>}
             </div>
 
             <div className={style.headerControls}>
