@@ -234,6 +234,11 @@ const mainBgSize = mainBackground === "solid" ? "none" : "4px 4px";
     background-image: radial-gradient(circle, #000000 1px, transparent 1px);
     background-size: 4px 4px;
     opacity: 1;
+    scroll-behavior: smooth;
+  }
+
+  [id] {
+    scroll-margin-top: calc(var(--height-header) + 60px);
   }
   body::-webkit-scrollbar {
     width: 12px; /* width of the entire scrollbar */

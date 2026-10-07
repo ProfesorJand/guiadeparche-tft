@@ -41,7 +41,7 @@ const defaultSetNumber = initialTFT_SET === "pbe" ? setNumberPBE : setNumberLate
 const defaultSet = activeComp?.set_number || allComps.find(c => c.urlSEO === activeId)?.set_number || defaultSetNumber;
 const isCurrentSetPBE = defaultSet === setNumberPBE;
 
-const titleMain = Astro.props.titleMain || `TFT Meta Comps: Mejores Composiciones & Builds Set ${defaultSet}`;
+const titleMain = Astro.props.titleMain || `TFT Comps, Meta, Builds, Compos, composiciones y Tier List Set ${defaultSet}`;
 const description = Astro.props.description || `Descubre las mejores TFT comps y composiciones TFT del Set ${defaultSet} actualizadas para el parche ${isCurrentSetPBE ? constantes.MetaCompVersionPBE : constantes.MetaCompVersion}. Aquí encontrarás builds, objetos BIS, aumentos y estrategias para jugar las compos más fuertes del meta de Teamfight Tactics y subir elo más rápido.`;
 const sets = [
   { id: setNumberLatest, name: `Set ${setNumberLatest} (Latest)` },
@@ -111,35 +111,32 @@ const urlRecursosTFT = [
 ];
 
 const buildTOCForSet = (setId) => {
-  let globalIndex = 1;
-  const tierChildren = !isIndividual ? tiersInfo.map((tier) => {
-    const compsInTier = allComps.filter(
-      (comp) => comp.tier === tier.tier && (comp.set_number || setNumberLatest) === setId
-    );
-    if (compsInTier.length === 0) return null;
-    return {
-      label: `Tier ${tier.tier}`,
-      children: compsInTier.map((comp) => {
-        const currentIndex = globalIndex++;
-        const isActive = String(comp.urlSEO) === String(activeId);
-        return {
-          label: `${currentIndex}. ${comp.nombre || comp.urlSEO}`,
-          href: `/tft/meta-comps-tier-list-teamfight-tactics/${comp.urlSEO}`,
-          isActive: isActive
-        };
-      })
-    };
-  }).filter(Boolean) : [];
+  const compsInSet = allComps.filter(c => (c.set_number || setNumberLatest) === setId);
+  
+  const Fast8Comps = compsInSet.filter(c => c.categoria === "Fast 8" && (c.tier === "S" || c.tier === "A") && (c.dificultad === "Facil" || c.dificultad === "Medio"));
+  const RerollsComps = compsInSet.filter(c => c.categoria === "3 Estrellas" && (c.tier === "S" || c.tier === "A") && (c.dificultad === "Facil" || c.dificultad === "Medio"));
+  const Fast9Comps = compsInSet.filter(c => c.categoria === "Fast 9");
+  const SituacionalesComps = compsInSet.filter(c => c.tier === "tierExtra");
+
+  let mejoresCompsChildren = [];
+  if (Fast8Comps.length > 0) mejoresCompsChildren.push({ label: "Compos fáciles de Fast 8 - Forzables/Default", href: `#fast8-${setId}` });
+  if (RerollsComps.length > 0) mejoresCompsChildren.push({ label: "Compos fáciles de Rerolls", href: `#rerolls-${setId}` });
+  if (Fast9Comps.length > 0) mejoresCompsChildren.push({ label: "Compos de Fast 9", href: `#fast9-${setId}` });
+  if (SituacionalesComps.length > 0) mejoresCompsChildren.push({ label: "Compos Situacionales", href: `#situacionales-${setId}` });
 
   return [
     !isIndividual && {
-      label: `Comps Tier List`,
-      href: "#TierList",
-      children: tierChildren
+      label: "TFT Tierlist",
+      href: `#tierlist-${setId}`
     },
     !isIndividual && {
-      label: "Recursos TFT",
-      href: "#RecursosTFT"
+      label: "Mejores Composiciones Tier S y A",
+      href: `#mejorescomps-${setId}`,
+      children: mejoresCompsChildren.length > 0 ? mejoresCompsChildren : undefined
+    },
+    !isIndividual && {
+      label: "Las mejores salidas de TFT para subir ELO",
+      href: "#mejoressalidas"
     }
   ].filter(Boolean);
 };
@@ -152,7 +149,7 @@ const tableOfContentIndividual = [
   },
   {
     label:"Tier List TFT",
-    href:"#TierList"
+    href:`#tierlist-${defaultSet}`
   }
 ]
 ---
@@ -233,6 +230,10 @@ const tableOfContentIndividual = [
 
       {sets.map(setObj => {
         const compsInSet = allComps.filter(c => (c.set_number || setNumberLatest) === setObj.id);
+        const Fast8Comps = compsInSet.filter(c => c.categoria === "Fast 8" && (c.tier === "S" || c.tier === "A") && (c.dificultad === "Facil" || c.dificultad === "Medio"));
+        const RerollsComps = compsInSet.filter(c => c.categoria === "3 Estrellas" && (c.tier === "S" || c.tier === "A") && (c.dificultad === "Facil" || c.dificultad === "Medio"));
+        const Fast9Comps = compsInSet.filter(c => c.categoria === "Fast 9");
+        const SituacionalesComps = compsInSet.filter(c => c.tier === "tierExtra");
         const top10Comps = compsInSet.slice(0, 10);
         const restComps = compsInSet.slice(10);
         const isActiveSet = setObj.id === defaultSet;
@@ -242,7 +243,7 @@ const tableOfContentIndividual = [
             {
               !isIndividual && (
                 <>
-                  <h2 id="TierList">Mejores TFT Comps del Meta Actual (Parche {setObj.id === setNumberPBE ? constantes.MetaCompVersionPBE : constantes.MetaCompVersion})</h2>
+                  <h2 id={`tierlist-${setObj.id}`}>TFT Tierlist (Parche {setObj.id === setNumberPBE ? constantes.MetaCompVersionPBE : constantes.MetaCompVersion})</h2>
                   <p>
                   Las compos están ordenadas por fuerza dentro del meta actual, desde las
                   mejores opciones para subir elo hasta alternativas viables según tu
@@ -267,7 +268,7 @@ const tableOfContentIndividual = [
       }
       {
         isIndividual && 
-        <h2 id={"TierList"}>Tier List TFT</h2>
+        <h2 id={`tierlist-${setObj.id}`}>Tier List TFT</h2>
       }
       <div id={`tier-list-general-${setObj.id}`} style="position: relative; padding: 20px 0;">
         <BotonCaptura targetId={`tier-list-general-${setObj.id}`} nombreCompo={`Tier_List_Set_${setObj.id}`} client:load />
@@ -332,55 +333,105 @@ const tableOfContentIndividual = [
           })
         }
       </div>
+
       {
-        !isIndividual && top10Comps.map((comp, index) => (
-          <article class={`comp-card`}>
-            <CardsCompos
-              comp={comp}
-              numeracion={index + 1}
-              isActive={String(comp.urlSEO) === String(activeId)}
-              client:load
-              transition:persist
-              expandInline={true}
-            />
-          </article>
-        ))
-      }
-      {/* {
-        !isIndividual && restComps.length > 0 && (
-          <button id={`ver-mas-button`} class="ver-mas-button" data-expanded="false" data-set-btn={setObj.id}>
-            Ver todas las composiciones
-          </button>
-        )
-      } */}
-      {
-        !isIndividual &&restComps &&
-          restComps.map((comp, index) => {
-            const isCurrentActive = String(comp.urlSEO) === String(activeId);
-            return (
-              <div
-                class={`comp-card rest-comp-card`}
-                data-active={isCurrentActive ? "true" : "false"}
-              >
-                <CardsCompos
-                  comp={comp}
-                  numeracion={index + 11}
-                  isActive={isCurrentActive}
-                  client:load
-                  transition:persist
-                  expandInline={true}
-                />
+        !isIndividual && (
+          <article class="categoria-comps-container">
+            <h2 id={`mejorescomps-${setObj.id}`}>Mejores Composiciones Tier S y A (Parche {setObj.id === setNumberPBE ? constantes.MetaCompVersionPBE : constantes.MetaCompVersion})</h2>
+            <p>
+            En esta sección veras las comps de TFT más fáciles de jugar para esta versión como lo son las composiciones Fast 8 que se trata de subir y mantenerse en nivel 8 que son las que regularmente son las mas estables y faciles de lograr, luego tendremos los de reroll que son las composiciones de 3 estrellas de campeones de costo bajo, composiciones Fast 9 normalmente son las más fuertes pero no siempre es fácil de lograr, y luego las situacionales que son fuertes pero deben cumplir con ciertos requisitos.
+            </p>
+            {
+              Fast8Comps.length > 0 && (
+              <div class="meta-comps-flex-container">
+                <h3 id={`fast8-${setObj.id}`}>Compos fáciles de Fast 8 - Forzables/Default</h3>
+                {Fast8Comps.map((comp, index) => (
+                  <div class="container-cards">
+                    <CardsCompos
+                    comp={comp}
+                    numeracion={index + 1}
+                    isActive={String(comp.urlSEO) === String(activeId)}
+                    client:load
+                    transition:persist
+                    expandInline={true}
+                    h4Title={true}
+                    />
+                  </div>
+                ))}
               </div>
-            );
-          })
+              )
+            }
+
+            {
+              RerollsComps.length > 0 && (
+              <div class="meta-comps-flex-container">
+                <h3 id={`rerolls-${setObj.id}`}>Compos fáciles de Rerolls</h3>
+                {RerollsComps.map((comp, index) => (
+                  <div class="container-cards">
+                    <CardsCompos
+                      comp={comp}
+                      numeracion={index + 1}
+                      isActive={String(comp.urlSEO) === String(activeId)}
+                      client:load
+                      transition:persist
+                      expandInline={true}
+                      h4Title={true}
+                    />
+                  </div>  
+                ))}
+              </div>
+              ) 
+            }
+            {
+              Fast9Comps.length > 0 && (
+                <div class="meta-comps-flex-container">
+                  <h3 id={`fast9-${setObj.id}`}>Compos de Fast 9</h3>
+                  {Fast9Comps.map((comp, index) => (
+                    <div class="container-cards">
+                    <CardsCompos
+                      comp={comp}
+                      numeracion={index + 1}
+                      isActive={String(comp.urlSEO) === String(activeId)}
+                      client:load
+                      transition:persist
+                      expandInline={true}
+                      h4Title={true}
+                    />
+                    </div>
+                  ))}
+              </div>
+              ) 
+            }
+            {
+              SituacionalesComps.length > 0 && (
+                <div class="meta-comps-flex-container">
+                  <h3 id={`situacionales-${setObj.id}`}>Compos Situacionales</h3>
+                  {SituacionalesComps.map((comp, index) => (
+                    <div class="container-cards">
+                    <CardsCompos
+                      comp={comp}
+                      numeracion={index + 1}
+                      isActive={String(comp.urlSEO) === String(activeId)}
+                      client:load
+                      transition:persist
+                      expandInline={true}
+                      h4Title={true}
+                    />
+                    </div>
+                  ))}
+              </div>
+              ) 
+            }
+          </article>
+        )
       }
-          </div>
+      </div>
         );
       })}
 
       {
         !isIndividual &&
-        <div id="MejoresSalidas">
+        <div id="mejoressalidas">
           <div class="resources-header">
             <h2 id="resource-title">LAS MEJORES SALIDAS de TFT para SUBIR ELO | Parche {isCurrentSetPBE ? constantes.MetaCompVersionPBE : constantes.MetaCompVersion}</h2>
             <p>Guía de las mejores salidas de TFT, openers y estrategias de early game para subir ELO en el Parche {isCurrentSetPBE ? constantes.MetaCompVersionPBE : constantes.MetaCompVersion}: que composiciones jugar con tus campeones, objetos, artefactos, emblemas y aumentos según lo que te salga en juego temprano</p>
@@ -395,7 +446,7 @@ const tableOfContentIndividual = [
 
       {
         !isIndividual &&
-        <div id="RecursosTFT">
+        <aside id="RecursosTFT">
           <div class="resources-header">
             <h2 id="resource-title">Recursos TFT</h2>
           </div>
@@ -414,7 +465,7 @@ const tableOfContentIndividual = [
               })
             }
           </div>
-        </div>
+        </aside>
       }
       
     </div>
@@ -1017,6 +1068,47 @@ const tableOfContentIndividual = [
   .hidden-comp {
     display: none !important;
   }
+  .comp-card{
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap:15px;
+    background:black;
+    padding: 20px 20px;
+    margin-bottom: 20px;
+    
+  }
+  .categoria-comps-container{
+    display:flex;
+    flex-direction: column;
+    gap:10px;
+    & h2{
+      text-align: center;
+      margin-block-end: 0;
+      margin-block-start: 0;
+    }
+  }
+  .meta-comps-flex-container{
+    display:flex;
+    flex-direction: column;
+    gap:15px;
+    border:1px solid var(--border-color);
+    box-sizing: border-box;
+    padding: 10px 20px;
+    border-radius: 20px;
+    & h3{
+      text-align: center;
+      margin-block-end: 0;
+      margin-block-start: 0;
+    }
+  }
+  .container-cards{
+    display:flex;
+    flex-direction:column;
+    width:100%;
+    align-self: center;
+  }
+  
   @media only screen and (max-width: 900px) {
     #container-info {
       width: 100%;
