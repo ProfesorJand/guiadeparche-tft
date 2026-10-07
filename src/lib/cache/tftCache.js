@@ -167,7 +167,7 @@ export async function getConstantes() {
     for (let attempt = 1; attempt <= 3; attempt++) {
       try {
         // Añadimos cache-busting (?_t=...) y cabeceras para que proxys intermedios entreguen el valor fresco
-        const url = `https://api.guiadeparche.com/tft/constantes.json?_t=${Date.now()}`;
+        const url = `https://api.guiadeparche.com/tft/constantes.php?_t=${Date.now()}`;
         const response = await fetch(url, {
           headers: {
             ...FETCH_HEADERS,

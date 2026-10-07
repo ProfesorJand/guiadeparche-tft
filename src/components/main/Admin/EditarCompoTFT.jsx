@@ -56,10 +56,14 @@ const EditarCompoTFT = () => {
       });
 
       const result = await response.json();
-      alert(keyToUpdate + " actualizado a: " + newValue)
+      if (result.success === true) {
+        alert(keyToUpdate + " actualizado a: " + newValue + "\n\nData guardada: " + JSON.stringify(result.data).substring(0, 100) + "...");
+      } else {
+        alert("⚠️ Hubo un problema al actualizar: " + (result.message || JSON.stringify(result)));
+      }
     } catch (error) {
       console.error("Error actualizando constantes:", error);
-      alert(error)
+      alert("Error de red o del servidor: " + error.message)
     }
   };
 
@@ -90,6 +94,50 @@ const EditarCompoTFT = () => {
           
           <SelectVersion></SelectVersion>
         </label>
+
+        {/* CONTENEDOR PARA TEXTOS DE SEO Y ENCABEZADOS */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "10px", margin: "20px 0", padding: "15px", border: "1px solid #333", borderRadius: "8px" }}>
+          <h3 style={{ margin: "0 0 10px 0", color: "#fff" }}>Textos SEO y Encabezados ({currentVersion === "pbe" ? "PBE" : "Latest"})</h3>
+          <p style={{ margin: "0 0 15px 0", fontSize: "0.9rem", color: "#aaa" }}>
+            <strong>Etiquetas dinámicas que puedes usar:</strong><br />
+            <code>[numeroDelSet]</code> - Se reemplaza por el ID del set actual (ej. 17 o 18)<br />
+            <code>[numeroDelParche]</code> - Se reemplaza por la versión actual del parche (ej. 18.3b)
+          </p>
+          
+          {[
+            { id: "h1Title", label: "H1 Título Principal" },
+            { id: "h1Intro", label: "H1 Texto Introductorio" },
+            { id: "h2TierListTitle", label: "H2 Tier List Título" },
+            { id: "h2TierListIntro", label: "H2 Tier List Intro" },
+            { id: "h2MejoresCompsTitle", label: "H2 Mejores Compos Título" },
+            { id: "h2MejoresCompsIntro", label: "H2 Mejores Compos Intro" },
+            { id: "h3Fast8Title", label: "H3 Fast 8 Título" },
+            { id: "h3Fast8Intro", label: "H3 Fast 8 Intro" },
+            { id: "h3RerollsTitle", label: "H3 Rerolls Título" },
+            { id: "h3RerollsIntro", label: "H3 Rerolls Intro" },
+            { id: "h3Fast9Title", label: "H3 Fast 9 Título" },
+            { id: "h3Fast9Intro", label: "H3 Fast 9 Intro" },
+            { id: "h3SituacionalesTitle", label: "H3 Situacionales Título" },
+            { id: "h3SituacionalesIntro", label: "H3 Situacionales Intro" },
+          ].map(field => {
+            const keyToRead = currentVersion === "pbe" ? field.id + "PBE" : field.id;
+            return (
+              <label key={field.id} className={style.containerConstanteUpdate} style={{ marginBottom: "5px", display: "flex", gap: "10px", alignItems: "center" }}>
+                <span style={{ minWidth: "200px" }}>{field.label}:</span>
+                <textarea 
+                  id={`input${field.id}`} 
+                  placeholder={constantes?.[keyToRead] || ""} 
+                  style={{ flex: 1, padding: "8px", borderRadius: "4px", minHeight: "40px" }}
+                />
+                <input
+                  type="button"
+                  value="Update"
+                  onClick={() => actualizarConstantes(`input${field.id}`)}
+                />
+              </label>
+            );
+          })}
+        </div>
         {metaComps && metaComps.length > 0 && (
           <DragDropTierListEditor 
             comps={metaComps.filter(comp => comp.version === currentVersion || (currentVersion === "latest" && !comp.version))} 

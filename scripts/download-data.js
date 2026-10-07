@@ -22,7 +22,7 @@ const DOWNLOADS = [
     saveHeader: 'lastUpdatePBE'
   },
   {
-    url: 'https://api.guiadeparche.com/tft/constantes.json',
+    url: 'https://api.guiadeparche.com/tft/constantes.php',
     filename: 'constantes.json',
     isCritical: true
   },
