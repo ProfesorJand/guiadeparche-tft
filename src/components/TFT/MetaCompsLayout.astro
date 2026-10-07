@@ -37,12 +37,23 @@ const {
   isIndividual=false
 } = Astro.props;
 
+console.log({constantes})
+
 const defaultSetNumber = initialTFT_SET === "pbe" ? setNumberPBE : setNumberLatest;
 const defaultSet = activeComp?.set_number || allComps.find(c => c.urlSEO === activeId)?.set_number || defaultSetNumber;
 const isCurrentSetPBE = defaultSet === setNumberPBE;
 
-const titleMain = Astro.props.titleMain || `TFT Comps, Meta, Builds, Compos, composiciones y Tier List Set ${defaultSet}`;
-const description = Astro.props.description || `Descubre las mejores TFT comps y composiciones TFT del Set ${defaultSet} actualizadas para el parche ${isCurrentSetPBE ? constantes.MetaCompVersionPBE : constantes.MetaCompVersion}. Aquí encontrarás builds, objetos BIS, aumentos y estrategias para jugar las compos más fuertes del meta de Teamfight Tactics y subir elo más rápido.`;
+const replaceDynamicData = (text, setId) => {
+  if (!text) return "";
+  const version = setId === setNumberPBE ? constantes.MetaCompVersionPBE : constantes.MetaCompVersion;
+  return text.replaceAll("[numeroDelSet]", setId).replaceAll("[numeroDelParche]", version || "");
+};
+
+const titleMainRaw = Astro.props.titleMain || (isCurrentSetPBE ? constantes.h1TitlePBE : constantes.h1Title) || `TFT Comps: Mejores Composiciones Meta, Builds y Tier List Set [numeroDelSet]`;
+const titleMain = replaceDynamicData(titleMainRaw, defaultSet);
+
+const descriptionRaw = Astro.props.description || (isCurrentSetPBE ? constantes.h1IntroPBE : constantes.h1Intro) || `Descubre las mejores TFT comps y composiciones TFT del Set [numeroDelSet] actualizadas para el parche [numeroDelParche]. Aquí encontrarás builds, objetos BIS, aumentos y estrategias para jugar las compos más fuertes del meta de Teamfight Tactics y subir elo más rápido.`;
+const description = replaceDynamicData(descriptionRaw, defaultSet);
 const sets = [
   { id: setNumberLatest, name: `Set ${setNumberLatest} (Latest)` },
   { id: setNumberPBE, name: `Set ${setNumberPBE} (PBE)` }
@@ -113,10 +124,10 @@ const urlRecursosTFT = [
 const buildTOCForSet = (setId) => {
   const compsInSet = allComps.filter(c => (c.set_number || setNumberLatest) === setId);
   
-  const Fast8Comps = compsInSet.filter(c => c.categoria === "Fast 8" && (c.tier === "S" || c.tier === "A") && (c.dificultad === "Facil" || c.dificultad === "Medio"));
-  const RerollsComps = compsInSet.filter(c => c.categoria === "3 Estrellas" && (c.tier === "S" || c.tier === "A") && (c.dificultad === "Facil" || c.dificultad === "Medio"));
-  const Fast9Comps = compsInSet.filter(c => c.categoria === "Fast 9");
-  const SituacionalesComps = compsInSet.filter(c => c.tier === "tierExtra");
+  const Fast8Comps = compsInSet.filter(c => c.categoria === "Fast 8" && (c.tier === "S") && (c.dificultad === "Facil" || c.dificultad === "Medio"));
+  const RerollsComps = compsInSet.filter(c => c.categoria === "3 Estrellas" && (c.tier === "S") && (c.dificultad === "Facil" || c.dificultad === "Medio"));
+  const Fast9Comps = compsInSet.filter(c => c.categoria === "Fast 9" && (c.tier === "S"));
+  const SituacionalesComps = compsInSet.filter(c => c.tierExtra === "X" && (c.tier === "S"));
 
   let mejoresCompsChildren = [];
   if (Fast8Comps.length > 0) mejoresCompsChildren.push({ label: "Compos fáciles de Fast 8 - Forzables/Default", href: `#fast8-${setId}` });
@@ -126,7 +137,7 @@ const buildTOCForSet = (setId) => {
 
   return [
     !isIndividual && {
-      label: "TFT Tierlist",
+      label: "TFT Tier list",
       href: `#tierlist-${setId}`
     },
     !isIndividual && {
@@ -185,7 +196,7 @@ const tableOfContentIndividual = [
       <h1 id="meta-title-main" data-is-individual={isIndividual ? "true" : "false"}>
         {titleMain}<br /><span class="colored-text">{titleHighlight}</span>
       </h1>
-      <p>{description}</p>
+      <p class="text-justify">{description}</p>
       <p>Última actualización: {lastUpdate}</p>
       <div class="two-columns space-between">
         
@@ -230,24 +241,24 @@ const tableOfContentIndividual = [
 
       {sets.map(setObj => {
         const compsInSet = allComps.filter(c => (c.set_number || setNumberLatest) === setObj.id);
-        const Fast8Comps = compsInSet.filter(c => c.categoria === "Fast 8" && (c.tier === "S" || c.tier === "A") && (c.dificultad === "Facil" || c.dificultad === "Medio"));
-        const RerollsComps = compsInSet.filter(c => c.categoria === "3 Estrellas" && (c.tier === "S" || c.tier === "A") && (c.dificultad === "Facil" || c.dificultad === "Medio"));
-        const Fast9Comps = compsInSet.filter(c => c.categoria === "Fast 9");
-        const SituacionalesComps = compsInSet.filter(c => c.tier === "tierExtra");
+        const Fast8Comps = compsInSet.filter(c => c.categoria === "Fast 8" && (c.tier === "S") && (c.dificultad === "Facil" || c.dificultad === "Medio"));
+        const RerollsComps = compsInSet.filter(c => c.categoria === "3 Estrellas" && (c.tier === "S") && (c.dificultad === "Facil" || c.dificultad === "Medio"));
+        const Fast9Comps = compsInSet.filter(c => c.categoria === "Fast 9" && (c.tier === "S"));
+        const SituacionalesComps = compsInSet.filter(c => c.tierExtra === "X" && (c.tier === "S"));
         const top10Comps = compsInSet.slice(0, 10);
         const restComps = compsInSet.slice(10);
         const isActiveSet = setObj.id === defaultSet;
 
         return (
-          <div class={`set-content-container set-content-${setObj.id}`} style={`display: ${isActiveSet ? 'flex' : 'none'}; flex-direction: column; gap: 10px;`}>
+          <div class={`set-content-container set-content-${setObj.id} containerH2`} style={`display: ${isActiveSet ? 'flex' : 'none'}; flex-direction: column; gap: 10px;`}>
             {
               !isIndividual && (
                 <>
-                  <h2 id={`tierlist-${setObj.id}`}>TFT Tierlist (Parche {setObj.id === setNumberPBE ? constantes.MetaCompVersionPBE : constantes.MetaCompVersion})</h2>
+                  <h2 id={`tierlist-${setObj.id}`} class="titulo">
+                    {replaceDynamicData(setObj.id === setNumberPBE ? (constantes.h2TierListTitlePBE || `TFT Tier List (Parche [numeroDelParche])`) : (constantes.h2TierListTitle || `TFT Tier List (Parche [numeroDelParche])`), setObj.id)}
+                  </h2>
                   <p>
-                  Las compos están ordenadas por fuerza dentro del meta actual, desde las
-                  mejores opciones para subir elo hasta alternativas viables según tu
-                  spot.
+                    {replaceDynamicData(setObj.id === setNumberPBE ? (constantes.h2TierListIntroPBE || `Las compos están ordenadas por fuerza dentro del meta actual, desde las mejores opciones para subir elo hasta alternativas viables según tu spot.`) : (constantes.h2TierListIntro || `Las compos están ordenadas por fuerza dentro del meta actual, desde las mejores opciones para subir elo hasta alternativas viables según tu spot.`), setObj.id)}
                   </p>
                 </>
               )
@@ -337,14 +348,19 @@ const tableOfContentIndividual = [
       {
         !isIndividual && (
           <article class="categoria-comps-container">
-            <h2 id={`mejorescomps-${setObj.id}`}>Mejores Composiciones Tier S y A (Parche {setObj.id === setNumberPBE ? constantes.MetaCompVersionPBE : constantes.MetaCompVersion})</h2>
+            <h2 id={`mejorescomps-${setObj.id}`}>
+              {replaceDynamicData(setObj.id === setNumberPBE ? (constantes.h2MejoresCompsTitlePBE || `Mejores Composiciones Tier S y A (Parche [numeroDelParche])`) : (constantes.h2MejoresCompsTitle || `Mejores Composiciones Tier S y A (Parche [numeroDelParche])`), setObj.id)}
+            </h2>
             <p>
-            En esta sección veras las comps de TFT más fáciles de jugar para esta versión como lo son las composiciones Fast 8 que se trata de subir y mantenerse en nivel 8 que son las que regularmente son las mas estables y faciles de lograr, luego tendremos los de reroll que son las composiciones de 3 estrellas de campeones de costo bajo, composiciones Fast 9 normalmente son las más fuertes pero no siempre es fácil de lograr, y luego las situacionales que son fuertes pero deben cumplir con ciertos requisitos.
+              {replaceDynamicData(setObj.id === setNumberPBE ? (constantes.h2MejoresCompsIntroPBE || `En esta sección veras las comps de TFT más fáciles de jugar para esta versión como lo son las composiciones Fast 8 que se trata de subir y mantenerse en nivel 8 que son las que regularmente son las mas estables y faciles de lograr, luego tendremos los de reroll que son las composiciones de 3 estrellas de campeones de costo bajo, composiciones Fast 9 normalmente son las más fuertes pero no siempre es fácil de lograr, y luego las situacionales que son fuertes pero deben cumplir con ciertos requisitos.`) : (constantes.h2MejoresCompsIntro || `En esta sección veras las comps de TFT más fáciles de jugar para esta versión como lo son las composiciones Fast 8 que se trata de subir y mantenerse en nivel 8 que son las que regularmente son las mas estables y faciles de lograr, luego tendremos los de reroll que son las composiciones de 3 estrellas de campeones de costo bajo, composiciones Fast 9 normalmente son las más fuertes pero no siempre es fácil de lograr, y luego las situacionales que son fuertes pero deben cumplir con ciertos requisitos.`), setObj.id)}
             </p>
             {
               Fast8Comps.length > 0 && (
               <div class="meta-comps-flex-container">
-                <h3 id={`fast8-${setObj.id}`}>Compos fáciles de Fast 8 - Forzables/Default</h3>
+                <h3 id={`fast8-${setObj.id}`}>
+                  {replaceDynamicData(setObj.id === setNumberPBE ? (constantes.h3Fast8TitlePBE || `Compos fáciles de Fast 8 - Forzables/Default`) : (constantes.h3Fast8Title || `Compos fáciles de Fast 8 - Forzables/Default`), setObj.id)}
+                </h3>
+                {setObj.id === setNumberPBE ? (constantes.h3Fast8IntroPBE && <p>{replaceDynamicData(constantes.h3Fast8IntroPBE, setObj.id)}</p>) : (constantes.h3Fast8Intro && <p>{replaceDynamicData(constantes.h3Fast8Intro, setObj.id)}</p>)}
                 {Fast8Comps.map((comp, index) => (
                   <div class="container-cards">
                     <CardsCompos
@@ -365,7 +381,10 @@ const tableOfContentIndividual = [
             {
               RerollsComps.length > 0 && (
               <div class="meta-comps-flex-container">
-                <h3 id={`rerolls-${setObj.id}`}>Compos fáciles de Rerolls</h3>
+                <h3 id={`rerolls-${setObj.id}`}>
+                  {replaceDynamicData(setObj.id === setNumberPBE ? (constantes.h3RerollsTitlePBE || `Compos fáciles de Rerolls`) : (constantes.h3RerollsTitle || `Compos fáciles de Rerolls`), setObj.id)}
+                </h3>
+                {setObj.id === setNumberPBE ? (constantes.h3RerollsIntroPBE && <p>{replaceDynamicData(constantes.h3RerollsIntroPBE, setObj.id)}</p>) : (constantes.h3RerollsIntro && <p>{replaceDynamicData(constantes.h3RerollsIntro, setObj.id)}</p>)}
                 {RerollsComps.map((comp, index) => (
                   <div class="container-cards">
                     <CardsCompos
@@ -385,7 +404,10 @@ const tableOfContentIndividual = [
             {
               Fast9Comps.length > 0 && (
                 <div class="meta-comps-flex-container">
-                  <h3 id={`fast9-${setObj.id}`}>Compos de Fast 9</h3>
+                  <h3 id={`fast9-${setObj.id}`}>
+                    {replaceDynamicData(setObj.id === setNumberPBE ? (constantes.h3Fast9TitlePBE || `Compos de Fast 9`) : (constantes.h3Fast9Title || `Compos de Fast 9`), setObj.id)}
+                  </h3>
+                  {setObj.id === setNumberPBE ? (constantes.h3Fast9IntroPBE && <p>{replaceDynamicData(constantes.h3Fast9IntroPBE, setObj.id)}</p>) : (constantes.h3Fast9Intro && <p>{replaceDynamicData(constantes.h3Fast9Intro, setObj.id)}</p>)}
                   {Fast9Comps.map((comp, index) => (
                     <div class="container-cards">
                     <CardsCompos
@@ -405,7 +427,10 @@ const tableOfContentIndividual = [
             {
               SituacionalesComps.length > 0 && (
                 <div class="meta-comps-flex-container">
-                  <h3 id={`situacionales-${setObj.id}`}>Compos Situacionales</h3>
+                  <h3 id={`situacionales-${setObj.id}`}>
+                    {replaceDynamicData(setObj.id === setNumberPBE ? (constantes.h3SituacionalesTitlePBE || `Compos Situacionales`) : (constantes.h3SituacionalesTitle || `Compos Situacionales`), setObj.id)}
+                  </h3>
+                  {setObj.id === setNumberPBE ? (constantes.h3SituacionalesIntroPBE && <p>{replaceDynamicData(constantes.h3SituacionalesIntroPBE, setObj.id)}</p>) : (constantes.h3SituacionalesIntro && <p>{replaceDynamicData(constantes.h3SituacionalesIntro, setObj.id)}</p>)}
                   {SituacionalesComps.map((comp, index) => (
                     <div class="container-cards">
                     <CardsCompos
@@ -440,6 +465,19 @@ const tableOfContentIndividual = [
               client:load
               transition:persist={`youtube-mejores-salidas`}
             />
+          </div>
+        </div>
+      }
+
+      {
+        !isIndividual &&
+        <div id="mejoressalidas">
+          <div class="resources-header">
+            <h2 id="resource-title">Preguntas frecuentes sobre TFT Comps</h2>
+            <h3>¿Qué son las TFT Comps?</h3>
+            <p>Las TFT Comps son composiciones de campeones, rasgos y objetos que siguen una estrategia concreta para construir un tablero competitivo en Teamfight Tactics. Cada composición tiene diferentes condiciones para jugarla y puede ser más o menos efectiva dependiendo del parche y del estado del meta.</p>
+            <h3>¿Cómo saber qué composición jugar en TFT?</h3>
+            <p>La composición que debes jugar depende de los campeones, objetos, aumentos, economía, vida y otras condiciones que aparezcan durante tu partida. El Tier List muestra qué composiciones son fuertes en el meta, pero la mejor opción para cada partida depende de los recursos que hayas conseguido.</p>
           </div>
         </div>
       }
@@ -1108,6 +1146,18 @@ const tableOfContentIndividual = [
     width:100%;
     align-self: center;
   }
+  .titulo{
+    margin-block-start:0;
+    margin-block-end:0;
+  }
+  .containerH2{
+    & p {
+      margin-block-start:0;
+     margin-block-end:0;
+     text-align: justify;
+    }
+  }
+
   
   @media only screen and (max-width: 900px) {
     #container-info {
