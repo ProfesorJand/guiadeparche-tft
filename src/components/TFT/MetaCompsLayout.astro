@@ -10,6 +10,7 @@ import Youtube from "@components/youtube/Youtube.jsx";
 import CampeonImgInTierList from "@components/TFT/meta/CampeonImgInTierList.jsx";
 import TableOfContent from "@layouts/sidebar/TableOfContent.astro";
 import DynamicSection from "@layouts/sections/DynamicSection.astro";
+import InlineSEOEditor from "@components/main/Admin/InlineSEOEditor.jsx";
 const [constantes, lastUpdateComps] = await Promise.all([
   getConstantes(),
   getLastUpdateDate("composiciones_tft")
@@ -194,9 +195,16 @@ const tableOfContentIndividual = [
   <div class="two-columns header-section">
     <div id="container-info">
       <h1 id="meta-title-main" data-is-individual={isIndividual ? "true" : "false"}>
-        {titleMain}<br /><span class="colored-text">{titleHighlight}</span>
+        {titleMain}<br />
+        <span class="colored-text">
+          {titleHighlight}
+          {!isIndividual && <InlineSEOEditor client:load textKey={isCurrentSetPBE ? "h1TitlePBE" : "h1Title"} currentText={isCurrentSetPBE ? constantes.h1TitlePBE : constantes.h1Title} />}
+        </span>
       </h1>
-      <p class="text-justify">{description}</p>
+      <p class="text-justify">
+        {description}
+        {!isIndividual && <InlineSEOEditor client:load textKey={isCurrentSetPBE ? "h1IntroPBE" : "h1Intro"} currentText={isCurrentSetPBE ? constantes.h1IntroPBE : constantes.h1Intro} />}
+      </p>
       <p>Última actualización: {lastUpdate}</p>
       <div class="two-columns space-between">
         
@@ -256,9 +264,11 @@ const tableOfContentIndividual = [
                 <>
                   <h2 id={`tierlist-${setObj.id}`} class="titulo">
                     {replaceDynamicData(setObj.id === setNumberPBE ? (constantes.h2TierListTitlePBE || `TFT Tier List (Parche [numeroDelParche])`) : (constantes.h2TierListTitle || `TFT Tier List (Parche [numeroDelParche])`), setObj.id)}
+                    <InlineSEOEditor client:load textKey={setObj.id === setNumberPBE ? "h2TierListTitlePBE" : "h2TierListTitle"} currentText={setObj.id === setNumberPBE ? constantes.h2TierListTitlePBE : constantes.h2TierListTitle} />
                   </h2>
                   <p>
                     {replaceDynamicData(setObj.id === setNumberPBE ? (constantes.h2TierListIntroPBE || `Las compos están ordenadas por fuerza dentro del meta actual, desde las mejores opciones para subir elo hasta alternativas viables según tu spot.`) : (constantes.h2TierListIntro || `Las compos están ordenadas por fuerza dentro del meta actual, desde las mejores opciones para subir elo hasta alternativas viables según tu spot.`), setObj.id)}
+                    <InlineSEOEditor client:load textKey={setObj.id === setNumberPBE ? "h2TierListIntroPBE" : "h2TierListIntro"} currentText={setObj.id === setNumberPBE ? constantes.h2TierListIntroPBE : constantes.h2TierListIntro} />
                   </p>
                 </>
               )
@@ -350,17 +360,20 @@ const tableOfContentIndividual = [
           <article class="categoria-comps-container">
             <h2 id={`mejorescomps-${setObj.id}`}>
               {replaceDynamicData(setObj.id === setNumberPBE ? (constantes.h2MejoresCompsTitlePBE || `Mejores Composiciones Tier S y A (Parche [numeroDelParche])`) : (constantes.h2MejoresCompsTitle || `Mejores Composiciones Tier S y A (Parche [numeroDelParche])`), setObj.id)}
+              <InlineSEOEditor client:load textKey={setObj.id === setNumberPBE ? "h2MejoresCompsTitlePBE" : "h2MejoresCompsTitle"} currentText={setObj.id === setNumberPBE ? constantes.h2MejoresCompsTitlePBE : constantes.h2MejoresCompsTitle} />
             </h2>
             <p>
               {replaceDynamicData(setObj.id === setNumberPBE ? (constantes.h2MejoresCompsIntroPBE || `En esta sección veras las comps de TFT más fáciles de jugar para esta versión como lo son las composiciones Fast 8 que se trata de subir y mantenerse en nivel 8 que son las que regularmente son las mas estables y faciles de lograr, luego tendremos los de reroll que son las composiciones de 3 estrellas de campeones de costo bajo, composiciones Fast 9 normalmente son las más fuertes pero no siempre es fácil de lograr, y luego las situacionales que son fuertes pero deben cumplir con ciertos requisitos.`) : (constantes.h2MejoresCompsIntro || `En esta sección veras las comps de TFT más fáciles de jugar para esta versión como lo son las composiciones Fast 8 que se trata de subir y mantenerse en nivel 8 que son las que regularmente son las mas estables y faciles de lograr, luego tendremos los de reroll que son las composiciones de 3 estrellas de campeones de costo bajo, composiciones Fast 9 normalmente son las más fuertes pero no siempre es fácil de lograr, y luego las situacionales que son fuertes pero deben cumplir con ciertos requisitos.`), setObj.id)}
+              <InlineSEOEditor client:load textKey={setObj.id === setNumberPBE ? "h2MejoresCompsIntroPBE" : "h2MejoresCompsIntro"} currentText={setObj.id === setNumberPBE ? constantes.h2MejoresCompsIntroPBE : constantes.h2MejoresCompsIntro} />
             </p>
             {
               Fast8Comps.length > 0 && (
               <div class="meta-comps-flex-container">
                 <h3 id={`fast8-${setObj.id}`}>
                   {replaceDynamicData(setObj.id === setNumberPBE ? (constantes.h3Fast8TitlePBE || `Compos fáciles de Fast 8 - Forzables/Default`) : (constantes.h3Fast8Title || `Compos fáciles de Fast 8 - Forzables/Default`), setObj.id)}
+                  <InlineSEOEditor client:load textKey={setObj.id === setNumberPBE ? "h3Fast8TitlePBE" : "h3Fast8Title"} currentText={setObj.id === setNumberPBE ? constantes.h3Fast8TitlePBE : constantes.h3Fast8Title} />
                 </h3>
-                {setObj.id === setNumberPBE ? (constantes.h3Fast8IntroPBE && <p>{replaceDynamicData(constantes.h3Fast8IntroPBE, setObj.id)}</p>) : (constantes.h3Fast8Intro && <p>{replaceDynamicData(constantes.h3Fast8Intro, setObj.id)}</p>)}
+                {setObj.id === setNumberPBE ? (constantes.h3Fast8IntroPBE && <p>{replaceDynamicData(constantes.h3Fast8IntroPBE, setObj.id)} <InlineSEOEditor client:load textKey="h3Fast8IntroPBE" currentText={constantes.h3Fast8IntroPBE} /></p>) : (constantes.h3Fast8Intro && <p>{replaceDynamicData(constantes.h3Fast8Intro, setObj.id)} <InlineSEOEditor client:load textKey="h3Fast8Intro" currentText={constantes.h3Fast8Intro} /></p>)}
                 {Fast8Comps.map((comp, index) => (
                   <div class="container-cards">
                     <CardsCompos
@@ -383,8 +396,9 @@ const tableOfContentIndividual = [
               <div class="meta-comps-flex-container">
                 <h3 id={`rerolls-${setObj.id}`}>
                   {replaceDynamicData(setObj.id === setNumberPBE ? (constantes.h3RerollsTitlePBE || `Compos fáciles de Rerolls`) : (constantes.h3RerollsTitle || `Compos fáciles de Rerolls`), setObj.id)}
+                  <InlineSEOEditor client:load textKey={setObj.id === setNumberPBE ? "h3RerollsTitlePBE" : "h3RerollsTitle"} currentText={setObj.id === setNumberPBE ? constantes.h3RerollsTitlePBE : constantes.h3RerollsTitle} />
                 </h3>
-                {setObj.id === setNumberPBE ? (constantes.h3RerollsIntroPBE && <p>{replaceDynamicData(constantes.h3RerollsIntroPBE, setObj.id)}</p>) : (constantes.h3RerollsIntro && <p>{replaceDynamicData(constantes.h3RerollsIntro, setObj.id)}</p>)}
+                {setObj.id === setNumberPBE ? (constantes.h3RerollsIntroPBE && <p>{replaceDynamicData(constantes.h3RerollsIntroPBE, setObj.id)} <InlineSEOEditor client:load textKey="h3RerollsIntroPBE" currentText={constantes.h3RerollsIntroPBE} /></p>) : (constantes.h3RerollsIntro && <p>{replaceDynamicData(constantes.h3RerollsIntro, setObj.id)} <InlineSEOEditor client:load textKey="h3RerollsIntro" currentText={constantes.h3RerollsIntro} /></p>)}
                 {RerollsComps.map((comp, index) => (
                   <div class="container-cards">
                     <CardsCompos
@@ -406,8 +420,9 @@ const tableOfContentIndividual = [
                 <div class="meta-comps-flex-container">
                   <h3 id={`fast9-${setObj.id}`}>
                     {replaceDynamicData(setObj.id === setNumberPBE ? (constantes.h3Fast9TitlePBE || `Compos de Fast 9`) : (constantes.h3Fast9Title || `Compos de Fast 9`), setObj.id)}
+                    <InlineSEOEditor client:load textKey={setObj.id === setNumberPBE ? "h3Fast9TitlePBE" : "h3Fast9Title"} currentText={setObj.id === setNumberPBE ? constantes.h3Fast9TitlePBE : constantes.h3Fast9Title} />
                   </h3>
-                  {setObj.id === setNumberPBE ? (constantes.h3Fast9IntroPBE && <p>{replaceDynamicData(constantes.h3Fast9IntroPBE, setObj.id)}</p>) : (constantes.h3Fast9Intro && <p>{replaceDynamicData(constantes.h3Fast9Intro, setObj.id)}</p>)}
+                  {setObj.id === setNumberPBE ? (constantes.h3Fast9IntroPBE && <p>{replaceDynamicData(constantes.h3Fast9IntroPBE, setObj.id)} <InlineSEOEditor client:load textKey="h3Fast9IntroPBE" currentText={constantes.h3Fast9IntroPBE} /></p>) : (constantes.h3Fast9Intro && <p>{replaceDynamicData(constantes.h3Fast9Intro, setObj.id)} <InlineSEOEditor client:load textKey="h3Fast9Intro" currentText={constantes.h3Fast9Intro} /></p>)}
                   {Fast9Comps.map((comp, index) => (
                     <div class="container-cards">
                     <CardsCompos
@@ -429,8 +444,9 @@ const tableOfContentIndividual = [
                 <div class="meta-comps-flex-container">
                   <h3 id={`situacionales-${setObj.id}`}>
                     {replaceDynamicData(setObj.id === setNumberPBE ? (constantes.h3SituacionalesTitlePBE || `Compos Situacionales`) : (constantes.h3SituacionalesTitle || `Compos Situacionales`), setObj.id)}
+                    <InlineSEOEditor client:load textKey={setObj.id === setNumberPBE ? "h3SituacionalesTitlePBE" : "h3SituacionalesTitle"} currentText={setObj.id === setNumberPBE ? constantes.h3SituacionalesTitlePBE : constantes.h3SituacionalesTitle} />
                   </h3>
-                  {setObj.id === setNumberPBE ? (constantes.h3SituacionalesIntroPBE && <p>{replaceDynamicData(constantes.h3SituacionalesIntroPBE, setObj.id)}</p>) : (constantes.h3SituacionalesIntro && <p>{replaceDynamicData(constantes.h3SituacionalesIntro, setObj.id)}</p>)}
+                  {setObj.id === setNumberPBE ? (constantes.h3SituacionalesIntroPBE && <p>{replaceDynamicData(constantes.h3SituacionalesIntroPBE, setObj.id)} <InlineSEOEditor client:load textKey="h3SituacionalesIntroPBE" currentText={constantes.h3SituacionalesIntroPBE} /></p>) : (constantes.h3SituacionalesIntro && <p>{replaceDynamicData(constantes.h3SituacionalesIntro, setObj.id)} <InlineSEOEditor client:load textKey="h3SituacionalesIntro" currentText={constantes.h3SituacionalesIntro} /></p>)}
                   {SituacionalesComps.map((comp, index) => (
                     <div class="container-cards">
                     <CardsCompos
