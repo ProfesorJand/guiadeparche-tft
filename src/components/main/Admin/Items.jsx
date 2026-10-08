@@ -244,11 +244,6 @@ export const Items = ({ onSelectItem })=>{
       img:"",
     },
     {
-      nombre: "Spirit Visage",
-      apiName: "TFT4_Item_OrnnAnimaVisage",
-      img:"https://raw.communitydragon.org/latest/game/assets/maps/tft/icons/items/hexcore/tft4_item_ornnanimavisage.tft_set13.png",
-    },
-    {
       apiName:"TFT_Item_Artifact_TheIndomitable"
     },
     {apiName: "TFT_Item_Artifact_NavoriFlickerblades"},
@@ -306,8 +301,13 @@ export const Items = ({ onSelectItem })=>{
     },
     {
       nombre:"Horizon Focus",
+      apiName:"DA_Artifact_HorizonFocus",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/tft/icons/items/hexcore/tft_item_artifact_horizonfocus.png",
+    },
+    {
+      nombre:"Sniper Focus",
       apiName:"TFT9_Item_OrnnHorizonFocus",
-      img:"https://raw.communitydragon.org/latest/game/assets/maps/tft/icons/items/hexcore/tft9_item_ornnhorizonfocus.tft_set13.png",
+      img:"https://raw.communitydragon.org/latest/game/assets/maps/tft/icons/items/hexcore/tft_item_artifact_horizonfocus.png",
     },
     {
       nombre:"Hullcrusher",
@@ -560,12 +560,25 @@ export const Items = ({ onSelectItem })=>{
           <div className={style.containerItemsHorizontalOtros}>
             {pestana === 4 && 
               (version === "pbe" ? ARTEFACTOSPBE : ARTEFACTOS).map((dataItem,index)=>{
-                const dataItemInfo = allItemsInfo.find(({apiName})=>{
+                let dataItemInfo = allItemsInfo.find(({apiName})=>{
                   return dataItem.apiName === apiName
                 })
-                if (!dataItemInfo) return null; // Evita el error
-                const img = getLocalTftImage(dataItemInfo?.icon, 'items');
-                dataItemInfo.img = img
+                
+                if (!dataItemInfo) {
+                  // Si el ítem no está en la API oficial, usamos el img/nombre que pusimos manualmente
+                  if (!dataItem.img) return null;
+                  dataItemInfo = {
+                    apiName: dataItem.apiName,
+                    name: dataItem.nombre,
+                    img: dataItem.img,
+                    icon: dataItem.img
+                  };
+                } else {
+                  // Si está en la API oficial, procesamos la imagen localmente
+                  // Clonamos el objeto para no mutar el estado global (importante en React)
+                  dataItemInfo = { ...dataItemInfo, img: getLocalTftImage(dataItemInfo?.icon, 'items') };
+                }
+                
                 return ( 
                 <div className={style.itemsDropOtros} key={`otrosItems`+index}>
                   <img 
