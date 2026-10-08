@@ -13,6 +13,7 @@ const DragDropTierListEditor = ({ comps = [] }) => {
   const [data, setData] = useState({ items: {}, columns: {} });
   const [isSaving, setIsSaving] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
+  console.log({comps})
 
   useEffect(() => {
     // Inicializar los datos del drag and drop
@@ -258,6 +259,8 @@ const DragDropTierListEditor = ({ comps = [] }) => {
                                 }, 150);
                               }}
                               style={{
+                                opacity: comp.ocultar ? 0.4 : 1,
+                                filter: comp.ocultar ? 'grayscale(80%)' : 'none',
                                 ...provided.draggableProps.style,
                                 ...(snapshot.isDragging ? {
                                   zIndex: 99999,
