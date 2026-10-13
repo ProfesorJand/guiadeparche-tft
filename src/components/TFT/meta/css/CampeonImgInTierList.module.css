@@ -14,10 +14,12 @@
 
 .champTierImg{
   width: 100%;
+  aspect-ratio: 1 / 1;
   border: 2px solid;
   border-radius: .5rem;
   box-sizing: border-box;
-
+  object-fit: cover;
+  display: block;
 }
 .champTierImg::after{
   content: '';
@@ -51,12 +53,16 @@
   display:flex;
   position:relative;
   width: 100%;
+  min-height: 18px;
 }
 .champTierItemImg{
   width: calc(100% / 3);
+  aspect-ratio: 1 / 1;
   border-radius: 8px;
   border: 1px solid rgba(192, 190, 190, 0.795);
   box-sizing: border-box;
+  object-fit: cover;
+  display: block;
 }
 .imgEstrellas{
   display:flex;

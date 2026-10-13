@@ -46,7 +46,12 @@ const CampeonImgInTierList = ({comp, id, aumento, emblema, apiNameCampeon, apiNa
   if (!name) return (
     <a href={isDraggable ? "#" : `/tft/meta-comps-tier-list-teamfight-tactics/${compUrl}`} className={`${style.champTier} ${isInfografia ? (isSelectedForInfografia ? style.activeComp : "") : (id ? style.activeComp : "")}`}>
       <div className={style.containerChamp} style={{ width: "100%" }}>
-        <div className={style.champTierImg} style={{width: "100%", minWidth: "45px", height: "100%", minHeight: "45px", backgroundColor: "rgba(255,255,255,0.1)", borderRadius: "0.5rem", aspectRatio: "1/1"}}></div>
+        <div className={style.champTierImg} style={{ width: "100%", backgroundColor: "rgba(255,255,255,0.08)", borderRadius: "0.5rem", aspectRatio: "1/1" }}></div>
+      </div>
+      <div className={style.champTierItems}>
+        <div className={style.champTierItemImg} style={{ aspectRatio: "1/1", backgroundColor: "rgba(255,255,255,0.05)" }}></div>
+        <div className={style.champTierItemImg} style={{ aspectRatio: "1/1", backgroundColor: "rgba(255,255,255,0.05)" }}></div>
+        <div className={style.champTierItemImg} style={{ aspectRatio: "1/1", backgroundColor: "rgba(255,255,255,0.05)" }}></div>
       </div>
     </a>
   );
@@ -57,21 +62,21 @@ const CampeonImgInTierList = ({comp, id, aumento, emblema, apiNameCampeon, apiNa
         {
           (aumento || emblema) && 
           <div className={style.containerAugmentEmblema}>
-            {aumento && <img className={style.imgAumento} src={getLocalTftImage(aumentoIcon, 'augments/hexcore')}></img>}
-            {emblema && <img className={style.imgEmblema} src={getLocalTftImage(emblemaIcon, 'items')}></img>}
+            {aumento && <img className={style.imgAumento} src={getLocalTftImage(aumentoIcon, 'augments/hexcore')} width="20" height="20" alt="" />}
+            {emblema && <img className={style.imgEmblema} src={getLocalTftImage(emblemaIcon, 'items')} width="20" height="20" alt="" />}
           </div>
         }
-          <img className={`${style.champTierImg} ${style[`cost-${cost}`]}`} src={getLocalTftImage(squareIcon, 'champions/squareIcon')} alt={name} />
+          <img className={`${style.champTierImg} ${style[`cost-${cost}`]}`} src={getLocalTftImage(squareIcon, 'champions/squareIcon')} alt={name} width="50" height="60" />
           <div className={style.containerChampName}>
             <span className={style.champTierName}>{name}</span>
           </div>
         </div>
-        {estrellas && <img className={style.imgEstrellas} src={`/tft/assets/3-estrellas.webp`}></img>}
+        {estrellas && <img className={style.imgEstrellas} src={`/tft/assets/3-estrellas.webp`} width="50" height="50" alt="3 estrellas" />}
         <div className={style.champTierItems}>
           {
             items?.map((item, index)=>{
               return (
-                <img key={`item-${index}`} className={style.champTierItemImg} src={getLocalTftImage(item?.icon, 'items')} alt={item?.name} />
+                <img key={`item-${index}`} className={style.champTierItemImg} src={getLocalTftImage(item?.icon, 'items')} alt={item?.name || 'item'} width="20" height="20" />
               );
             })
           }

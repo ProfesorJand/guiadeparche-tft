@@ -14,6 +14,8 @@ const ImgItem = ({ item, className = "", type="item" }) => {
 						alt={`${item.name}`} 
 						crossOrigin="anonymous" 
 						className={style.itemIcon}
+						width="24"
+						height="24"
 					/>
 				)}
 			</div>
