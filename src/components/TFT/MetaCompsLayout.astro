@@ -248,7 +248,6 @@ const tableOfContentIndividual = [
       {sets.map(setObj => {
         const compsInSet = allComps.filter(c => (c.set_number || setNumberLatest) === setObj.id);
         const Fast8Comps = compsInSet.filter(c => c.categoria === "Fast 8" && (c.tier === "S") && (c.dificultad === "Facil" || c.dificultad === "Medio") && (c.tierExtra !== "X"));
-        console.log({Fast8Comps: Fast8Comps.length})
         const RerollsComps = compsInSet.filter(c => c.categoria === "3 Estrellas" && (c.tier === "S") && (c.dificultad === "Facil" || c.dificultad === "Medio") && (c.tierExtra !== "X"));
         const Fast9Comps = compsInSet.filter(c => c.categoria === "Fast 9" && (c.tier === "S") && (c.tierExtra !== "X"));
         const SituacionalesComps = compsInSet.filter(c => c.tierExtra === "X" && (c.tier === "S"));
