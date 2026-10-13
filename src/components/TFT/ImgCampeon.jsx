@@ -53,6 +53,8 @@ const ImgCampeon = ({
 						src={imageSrc} 
 						alt={name} 
 						crossOrigin="anonymous" 
+						width="60"
+						height="100%"
 					/>
 				)}
 

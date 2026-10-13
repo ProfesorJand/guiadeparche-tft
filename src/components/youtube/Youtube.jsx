@@ -70,12 +70,17 @@ const VideoComponent = ({ src, loading = "lazy", titulo = "video de Jupeson" }) 
 
   if (!video) {
     return (
-      <img
-        src={spinner180.src}
-        alt={"loading"}
-        loading="eager"
-        className={style.loading}
-      />)
+      <div className={style.loadingContainer}>
+        <img
+          src={spinner180.src}
+          alt={"loading"}
+          loading="eager"
+          className={style.loading}
+          width="48"
+          height="48"
+        />
+      </div>
+    );
   }
 
   if (isPlaying) {

@@ -25,15 +25,40 @@ const SuscripcionesMP = () => {
   // Estado para los cupones por plan (map de planId -> data)
   const [couponStates, setCouponStates] = useState({});
 
-  // Estado para el modal de pago
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [selectedPlanForPayment, setSelectedPlanForPayment] = useState(null);
   const [cryptoLoading, setCryptoLoading] = useState(false);
   const [paypalLoading, setPayPalLoading] = useState(false);
 
+  // Lógica Fundador
+  // Validamos si la primera vez que tuvo master plan es menor al 2 de octubre de 2026
+  const isFounder = user?.first_time_master_plan && new Date(user.first_time_master_plan) < new Date('2026-10-02T00:00:00Z');
+
   useEffect(() => {
     fetchPlanes();
   }, []);
+
+  // Pre-llenar el cupón FUNDADOR para los fundadores
+  useEffect(() => {
+    if (isFounder && planes.length > 0) {
+      setCouponStates(prev => {
+        const newStates = { ...prev };
+        let changed = false;
+        planes.forEach(plan => {
+          if (plan.tipo_plan === 'pago_unico') {
+            if (!newStates[plan.id]) {
+              newStates[plan.id] = { code: 'FUNDADOR', status: 'idle', errorMsg: '' };
+              changed = true;
+            } else if (newStates[plan.id].status === 'idle' && !newStates[plan.id].code) {
+              newStates[plan.id].code = 'FUNDADOR';
+              changed = true;
+            }
+          }
+        });
+        return changed ? newStates : prev;
+      });
+    }
+  }, [isFounder, planes]);
 
   useEffect(() => {
     const handleGlobalCoupon = (e) => {
@@ -467,7 +492,8 @@ const SuscripcionesMP = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           codigo: code.trim(),
-          plan_id: plan.id
+          plan_id: plan.id,
+          user_email: user?.email || ""
         })
       });
 
@@ -517,6 +543,13 @@ const SuscripcionesMP = () => {
       <div className={style.header}>
         <h2 className={style.title}>Elige tu Master Plan</h2>
       </div>
+
+      {isFounder && (
+        <div style={{ backgroundColor: 'rgba(255, 215, 0, 0.1)', border: '1px solid #ffd700', color: '#ffd700', padding: '15px', borderRadius: '8px', marginBottom: '20px', textAlign: 'center' }}>
+          <strong>¡Bienvenido de nuevo, fundador!</strong><br />
+          Gracias por confiar en Master Plan desde el principio. Como fundador, tienes un 50 % de descuento permanente en todos los planes.
+        </div>
+      )}
 
       {loadingPlanes ? (
         <div className={style.loadingContainer}>

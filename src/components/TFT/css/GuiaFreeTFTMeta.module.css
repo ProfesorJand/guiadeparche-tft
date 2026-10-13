@@ -243,6 +243,7 @@
   /* transform: translateX(-50%); */
   width:50%;
   border-radius:5px;
+  height:50%;
 }
 .condicionMP{
   display:flex;

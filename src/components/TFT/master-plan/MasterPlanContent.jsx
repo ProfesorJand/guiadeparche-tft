@@ -106,7 +106,7 @@ const MasterPlanContent = () => {
         </div>
       ) }
 
-      {!hasMasterPlan  && <SuscripcionesMP />}
+      <SuscripcionesMP />
       
       <section className={styles.containerSection}>
         <h2 className={styles.tituloCentrado}>Mejorar en TFT requiere conocimiento. El problema es cuánto tiempo tienes para conseguirlo.</h2>
