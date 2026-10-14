@@ -34,6 +34,22 @@ const SuscripcionesMP = () => {
   // Validamos si la primera vez que tuvo master plan es menor al 2 de octubre de 2026
   const isFounder = user?.first_time_master_plan && new Date(user.first_time_master_plan) < new Date('2026-10-02T00:00:00Z');
 
+  // Detección de país para determinar si se muestran precios en ARS o USD
+  // 1. Si el usuario está autenticado, manda su país registrado en la BD.
+  // 2. Si no está autenticado, detectamos por la zona horaria del navegador si está en Argentina.
+  const isArgentinaTimezone = () => {
+    try {
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+      return tz.includes("Argentina") || tz.includes("Buenos_Aires");
+    } catch (e) {
+      return false;
+    }
+  };
+
+  const isInternational = user 
+    ? (user.pais?.trim().toLowerCase() !== 'argentina') 
+    : !isArgentinaTimezone();
+
   useEffect(() => {
     fetchPlanes();
   }, []);
@@ -607,8 +623,6 @@ const SuscripcionesMP = () => {
                 ? Math.round(((parseFloat(basePrice) - parseFloat(plan.amount)) / parseFloat(basePrice)) * 100)
                 : 0;
 
-              const isInternational = user && user.pais !== 'Argentina';
-
               return (
                 <div
                   key={plan.id}
@@ -778,7 +792,7 @@ const SuscripcionesMP = () => {
                   <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
 
                     {/* Botón de Mercado Pago (Solo si es de Argentina) */}
-                    {user?.pais === 'Argentina' && (
+                    {user?.pais?.trim().toLowerCase() === 'argentina' && (
                       <button
                         className={style.btnMP}
                         onClick={handleMercadoPagoPayment}

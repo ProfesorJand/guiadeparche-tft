@@ -50,7 +50,7 @@ const UserMenu = () => {
 
   if (!user) {
     return (
-      <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+      <div className={styles.user_menu_container}>
         <div className={styles.hide_on_mobile}>
           <StreamerOnlineLight />
         </div>
@@ -68,7 +68,7 @@ const UserMenu = () => {
   const toggleMenu = () => setIsOpen(!isOpen);
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+    <div className={styles.user_menu_container}>
       <div className={styles.hide_on_mobile}>
         <StreamerOnlineLight />
       </div>
