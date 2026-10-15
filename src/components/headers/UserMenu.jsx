@@ -25,18 +25,8 @@ const UserMenu = () => {
   }, []);
 
   const getMasterPlanBtn = (isMobile) => {
-    let content = null;
-    let link = "";
-
-    if (user && !hasMasterPlan) {
-      content = <>Accede al <br/> Master Plan</>;
-      link = "/tft/master-plan";
-    } else if (user && hasMasterPlan) {
-      content = <>Accede al <br/> Master Plan</>;
-      link = "/tft/master-plan/app";
-    } else {
-      return null;
-    }
+    let content = <>Accede al <br/> Master Plan</>;
+    let link = user && hasMasterPlan ? "/tft/master-plan/app" : "/tft/master-plan";
 
     return (
       <a 
@@ -54,6 +44,7 @@ const UserMenu = () => {
         <div className={styles.hide_on_mobile}>
           <StreamerOnlineLight />
         </div>
+        {getMasterPlanBtn(false)}
         <a href="/login" className={styles.login_link}>
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
