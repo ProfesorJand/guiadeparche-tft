@@ -61,8 +61,10 @@
 }
 
 .draggableItem {
-  width: calc(100% / 10 - 10px);
+  width: calc((100% - (10px * 9)) / 10);
   min-width: 60px;
+  display:flex;
+  box-sizing: border-box;
 }
 
 .isDragging {
