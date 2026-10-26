@@ -5,9 +5,9 @@ import ImgItemSquare from "./ImgItemSquare";
 import ImgRune from "./ImgRune";
 import ImgSlotRune from "./ImgSlotRune";
 import { useStore } from "@nanostores/react";
-import { lanersChampionsMeta } from "@stores/dataLeagueOfLegends";
+import { lanersChampionsMeta, fetchChampionsMeta, LeagueOfLegendsConstantes } from "@stores/dataLeagueOfLegends";
 import VisualizadorMetaLOL from "./VisualizadorMetaLOL";
-import { fetchChampionsMeta } from "@stores/dataLeagueOfLegends";
+
 const FormularioMetaLOL = () =>{
   const numberOfChampions = 5; // Number of champions per laner
   const numberOfItems = 3; // Number of items per champion
@@ -18,6 +18,7 @@ const FormularioMetaLOL = () =>{
   const [runes, setRunes] = useState([]);
   const [localMeta, setLocalMeta] = useState({});
   const lanersChampionsMetaStore = useStore(lanersChampionsMeta);
+  const constantesLOL = useStore(LeagueOfLegendsConstantes);
   const [ddragonVersion, setDdragonVersion] = useState("16.16.1");
   
   
@@ -200,6 +201,36 @@ const saveChanges = async () => {
   }
 };
 
+const getMesAno = () => {
+  const fecha = new Date();
+  const mes = fecha.toLocaleDateString("es-ES", { month: "long" });
+  const ano = fecha.getFullYear();
+  return `${mes} ${ano}`;
+};
+
+const handleCopiarYAbrirChatGPT = async () => {
+  const versionParche = constantesLOL?.versionVisualizadorMeta || "25.11";
+  const mesAno = getMesAno();
+
+  const lanes = ["Top", "Jungle", "Mid", "Bot", "Support"];
+  const lineasCampeones = lanes.map(lane => {
+    const primerChampData = localMeta[lane]?.[0];
+    const champ = primerChampData?.champion?.name || "";
+    const runa = primerChampData?.slotsRunes?.[0]?.name || primerChampData?.runes?.[0]?.name || "";
+    return `${champ} ${runa}`.trim();
+  }).filter(Boolean);
+
+  const promptChatGPT = `perfecto ahora quiero para League of legends parche ${versionParche} ${mesAno}\n` + lineasCampeones.join("\n");
+
+  try {
+    await navigator.clipboard.writeText(promptChatGPT);
+  } catch (err) {
+    console.error("Error al copiar texto al portapapeles:", err);
+  }
+
+  // Abre tu conversación de ChatGPT en una nueva pestaña
+  window.open("https://chatgpt.com/c/696bbdbb-4afc-8326-85da-a18de913e695", "_blank");
+};
 
 useEffect(() => {
   setLocalMeta(JSON.parse(JSON.stringify(lanersChampionsMetaStore)));
@@ -208,6 +239,7 @@ useEffect(() => {
 return (
   <div>
     <h1>League of Legends Meta</h1>
+    <a href="https://lolalytics.com/lol/tierlist/" target="_blank" rel="noopener noreferrer">https://lolalytics.com/lol/tierlist/</a>
     {Object.keys(localMeta).map((laner, indexLaner) => {
       return (
         <div key={`laner ${indexLaner}`} className={style.containerLaners}>
@@ -424,7 +456,18 @@ return (
         </div>
       )}
     )}
-    <input type="button" value="Guardar Cambios" onClick={()=>{saveChanges()}}/>
+    <div className={style.containerBotonesAcciones}>
+      <input type="button" className={style.btnGuardar} value="Guardar Cambios" onClick={()=>{saveChanges()}}/>
+      <button 
+        type="button" 
+        className={style.btnAbrirChatGPT} 
+        onClick={handleCopiarYAbrirChatGPT}
+        title="Copia los campeones al portapapeles y abre tu conversación de ChatGPT"
+      >
+        🤖 Copiar y Abrir en ChatGPT
+      </button>
+    </div>
+
     <VisualizadorMetaLOL />
   </div>
 )

@@ -34,3 +34,5 @@ Thumbs.db
 
 # Backend files (server-only)
 /apiGuiadeparche
+
+/TFT_SET_18_Data
