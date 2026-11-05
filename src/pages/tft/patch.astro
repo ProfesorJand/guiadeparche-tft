@@ -1,32 +1,30 @@
 ---
-import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro"
+import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
 import { crearJSONSchema } from "@json/schema/crearJSONSchema";
 import PaginaBaseMaxWidth from "@components/TFT/paginas/PaginaBaseMaxWidth.astro";
 import Youtube from "@components/youtube/Youtube.jsx";
 import Cards from "@components/TFT/como-jugar/Cards";
-import RegistrarseBTN from "@components/TFT/RegistrarseBTN";
 import { getConstantes } from "src/lib/cache/tftCache.js";
 import { initialTFT_SET } from "@stores/dataTFT.js";
 
 const constantes = await getConstantes();
 const isCurrentSetPBE = initialTFT_SET === "pbe";
-const currentPatch = isCurrentSetPBE ? constantes.MetaCompVersionPBE : constantes.MetaCompVersion;
+const currentPatch = isCurrentSetPBE
+  ? (constantes.MetaTFTPatchPBE || constantes.MetaCompVersionPBE || "18.6")
+  : (constantes.MetaTFTPatch || constantes.MetaCompVersion || "18.6");
 
-const topTitle=`TFT Patch ${currentPatch}: Notas del Parche`;
+const topTitle = `TFT Patch ${currentPatch}: Notas del Parche`;
 const lowerTitle = "";
-const title = `${topTitle} ${lowerTitle}`;
-// como hacer para colocar mucho texto en varias lineas?
-const description =[
-  `Estas son las notas del parche actual de TFT, con todos los cambios de campeones, rasgos, objetos, aumentos y sistemas de la versión ${currentPatch}. En esta guía encontrarás un resumen de los cambios más importantes del parche, además del detalle completo de las modificaciones que afectan al meta de TFT.`
-];
-const keywords = "parche tft, tft parche, ultima version tft, patch tft, parche teamfight tactics, notas parche tft";
-const imgUrl ="";
-const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const title = `${topTitle} | Guía de Parche`;
+
+const description = `Notas del parche ${currentPatch} de Teamfight Tactics explicadas por Jupeson: mejoras a costes 4, buffs a Nidalee, nerfs a Bosqueviejo, aumentos y el nuevo cliente de TFT.`;
+const keywords = `parche tft, tft parche, notas parche tft, parche ${currentPatch} tft, tft patch ${currentPatch}, cambios tft, meta tft, tacticians crown`;
+const canonical = new URL(Astro.url.pathname, Astro.site || "https://guiadeparche.com").href;
+
 const baseSchema = JSON.parse(
-  crearJSONSchema({title, description:description})
-)
+  crearJSONSchema({ title, description })
+);
 const JSONSchema = JSON.stringify(baseSchema);
-const body=null;
 const currentPath = Astro.url.pathname;
 ---
 
@@ -37,56 +35,587 @@ const currentPath = Astro.url.pathname;
   JSONSchema={JSONSchema}
   canonical={canonical}
 >
-
   <PaginaBaseMaxWidth
     topTitle={topTitle}
     lowerTitle={lowerTitle}
-    textInfo={description}
   >
+    <!-- Texto de Introducción en la cabecera -->
+    <div slot="moreInfoHeader" class="introWrapper">
+      <div class="introAuthorBadge">
+        <img
+          src="/web/logoGP2026.webp"
+          alt="Jupeson - Guía de Parche"
+          class="introAvatar"
+        />
+        <div class="introAuthorMeta">
+          <span class="introAuthorName">Por Jupeson</span>
+          <span class="introAuthorRole">Challenger TFT & Creador de Guía de Parche</span>
+        </div>
+      </div>
+      <p class="introLead">
+        ¡Hola a todos! Soy <strong>Jupeson</strong> y ya tenemos entre nosotros la <strong>versión {currentPatch} de Teamfight Tactics</strong>, la versión oficial en la que se disputará el torneo más importante de todo el set: la <strong>Tactician's Crown</strong>. El objetivo principal que buscó el equipo de balance liderado por <strong>Truexy</strong> para esta actualización es buffear las unidades de <strong>coste 4</strong> para potenciar las composiciones de subir rápido a nivel 8 y abrir opciones flexibles en el meta. Además de los ajustes a campeones y aumentos, esta actualización marca un hito histórico con el lanzamiento del <strong>cliente independiente de TFT</strong>. ¡Acompañame a repasar lo más relevante y mis predicciones para que rompas tus partidas!
+      </p>
+    </div>
 
     <div slot="bodyContainerLeft">
-      <!-- Puedes poner contenido aquí para la columna izquierda en el futuro -->
-    </div>
-      <div slot="bodyContainerMid">
-        <div style={{ maxWidth: "600px", marginBottom: '30px', alignSelf:"center", margin: "0 auto" }}>
-          <Youtube src={"https://youtube.com/playlist?list=PLxRnNvReiLMHHtPFxG2tCBzNCrIz_-rnq&si=JutNo4TolaIizyoa"} client:only="react" />
-        </div>
-        <!-- <RegistrarseBTN
-          client:load
-          text="¿Quieres mejorar más rápido en TFT?"
-          buttonText="Próximamente: TFT Master Plan"
-          layout="column"
-          className="mb-25"
-        /> -->
-        <aside style={{ margin: "0 auto" }}>
-          <div class="trait-main-card">
-            <p class="text-centered">¿Quieres ver qué jugar en el meta actual? Descubre las <a style="color:#f5e020ff; font-weight: bold;" href="/tft/meta-comps-tier-list-teamfight-tactics/">mejores composiciones de TFT</a>.</p>
-          </div>
-        </aside>
-              
-      </div>
-    <div slot="bodyContainerRight">
-      <!-- Puedes poner contenido aquí para la columna derecha en el futuro -->
+      <!-- Columna izquierda reservada para widgets futuros -->
     </div>
 
+    <div slot="bodyContainerMid" class="patchBodyContent">
+      <!-- Video Playlist de Análisis del Parche -->
+      <section class="patchVideoSection">
+        <div class="videoWrapper">
+          <Youtube
+            src={"https://youtube.com/playlist?list=PLxRnNvReiLMHHtPFxG2tCBzNCrIz_-rnq&si=JutNo4TolaIizyoa"}
+            client:only="react"
+          />
+        </div>
+      </section>
+
+      <!-- 1. Composiciones de Coste 4 -->
+      <article class="patchCard">
+        <header class="patchCardHeader">
+          <span class="patchNumberBadge">01</span>
+          <h2>Composiciones de Coste 4: El regreso del AP Flex y tanques solitarios</h2>
+        </header>
+        <p class="patchText">
+          Uno de los enfoques centrales del parche {currentPatch} es devolverle protagonismo a las mesas flexibles de nivel 8. Para lograrlo, varias fichas de coste 4 y tanques clave recibieron mejoras directas:
+        </p>
+        <ul class="patchList">
+          <li>
+            <strong>Malphite:</strong> Recibe un buff muy necesario tanto en la tasa de poder de habilidad de su escudo (pasa a <strong>750/925/2000</strong> de AP) como en el daño de su habilidad (aumenta de <strong>40/60/2000</strong> a <strong>100/150/2000</strong> de AP). En mi opinión, Malphite estaba en un muy mal lugar en el meta, pero esta mejora le permite volver a ser un excelente tanque solitario al frente en composiciones de <strong>Espina Negra (Blackthorn)</strong> o junto a Soraka y Lux en juego tardío.
+          </li>
+          <li>
+            <strong>Guardián Azul:</strong> La tasa de vida de su escudo sube del <strong>10% al 12%</strong>. Al ser el tanque default en composiciones flexibles de poder de habilidad, este incremento hace que escalar con objetos de vida como <strong>Armadura de Warmog</strong> rinda muchísimo mejor.
+          </li>
+        </ul>
+      </article>
+
+      <!-- 2. Cuidado con la Puma -->
+      <article class="patchCard">
+        <header class="patchCardHeader">
+          <span class="patchNumberBadge">02</span>
+          <h2>Cuidado con la Puma: El buff "peligroso" a Nidalee</h2>
+        </header>
+        <p class="patchText">
+          Considero que la mejora a <strong>Nidalee</strong> es una de las más delicadas y potencialmente peligrosas de toda la versión. Nidalee no estaba mal en el meta, pero con estos ajustes en ambas formas va a estar en el radar de todo el mundo:
+        </p>
+        <ul class="patchList">
+          <li>
+            <strong>Forma de daño de ataque (AD):</strong> Su curación aumenta a <strong>325/550/2000</strong> y el daño adicional en su tercer lanzamiento pasa del <strong>125% al 140%</strong>. Esto le da mucha mayor supervivencia frente a composiciones de línea trasera como Ahri y Zyra.
+          </li>
+          <li>
+            <strong>Forma de poder de habilidad (AP):</strong> Su daño de ataque potenciado sube a <strong>195/295/2000</strong> y el daño de su tercer ataque alcanza <strong>350/525/3000</strong>.
+          </li>
+        </ul>
+        <div class="patchHighlightBox">
+          <p>
+            💡 <strong>Opinión de Jupeson:</strong> En los torneos regionales ya se empezaba a ver a Nidalee acompañando a Aphelios o Sivir. Con estas mejoras, preveo que mesas como <strong>Sivir / Nidalee</strong> o <strong>Aphelios / Nidalee</strong> se convertirán en dos de las opciones <strong>Tier 1</strong> más disputadas del parche.
+          </p>
+        </div>
+      </article>
+
+      <!-- 3. Sinergias Verticales -->
+      <article class="patchCard">
+        <header class="patchCardHeader">
+          <span class="patchNumberBadge">03</span>
+          <h2>Sinergias Verticales: Nerf a Bosqueviejo (9) y buffs a Floración y Aluxe</h2>
+        </header>
+        <p class="patchText">
+          El balance de las sinergias busca premiar el juego vertical pero corregir los picos extremos de poder:
+        </p>
+        <ul class="patchList">
+          <li>
+            <strong>Bosqueviejo:</strong> La vertical de <strong>Bosqueviejo (9)</strong> estaba completamente rota si lograbas conseguir el emblema. Para ajustar su poder, se reduce la vida adicional del equipo del <strong>25% al 10%</strong>.
+          </li>
+          <li>
+            <strong>Floración:</strong> Se mejora la vertical para recompensar a quienes jueguen el rasgo al máximo con emblemas, aumentando su Daño de Ataque y Poder de Habilidad en los tramos superiores (hasta <strong>65%</strong>).
+          </li>
+          <li>
+            <strong>Aluxe:</strong> Se incrementa el AD y AP del <strong>Aluxón a distancia</strong> (pasa de <strong>15/28/33%</strong> a <strong>15/30/38%</strong>), lo que le da mayor valor a la línea trasera sin necesidad de reforjar emblemas.
+          </li>
+        </ul>
+      </article>
+
+      <!-- 4. Juego Temprano y Rerrolls -->
+      <article class="patchCard">
+        <header class="patchCardHeader">
+          <span class="patchNumberBadge">04</span>
+          <h2>Juego Temprano y Rerrolls: Kobuko, Rek'Sai y Lóbrego al rescate</h2>
+        </header>
+        <p class="patchText">
+          Para enriquecer la variedad de salidas en las primeras fases del juego, varias fichas de coste 1 y 2 recibieron mejoras de sostenimiento y daño:
+        </p>
+        <ul class="patchList">
+          <li>
+            <strong>Kobuko y Rek'Sai:</strong> Kobuko aumenta la curación de su hechizo a <strong>300/350/550</strong> y Rek'Sai mejora su curación en 2 y 3 estrellas a <strong>16 y 24</strong>. Esto fortalece las aperturas de peleadores en el juego temprano y eleva el piso de poder de composiciones de rerroll como Teemo o Veigar.
+          </li>
+          <li>
+            <strong>Lóbrego:</strong> Su ataque potenciado a 3 estrellas aumenta de <strong>160 a 180 de AD</strong>. Esto abre la puerta a jugar la composición de rerroll de coste 2 junto a <strong>Warwick</strong>, una alternativa poco explotada que ahora gana mucha fuerza si te dan los componentes adecuados.
+          </li>
+        </ul>
+      </article>
+
+      <!-- 5. Aumentos y Elementales -->
+      <article class="patchCard">
+        <header class="patchCardHeader">
+          <span class="patchNumberBadge">05</span>
+          <h2>Aumentos y Elementales: Reajustes en la economía del meta</h2>
+        </header>
+        <ul class="patchList">
+          <li>
+            <strong>Agigantar:</strong> Recibe un nerf en el bono de AD y AP para las hadas, bajando del <strong>50% al 35%</strong>.
+          </li>
+          <li>
+            <strong>Incomparable (On Rival):</strong> El aumento específico del dúo <strong>Rengar y Kha'Zix</strong> recibe un buff importante: la curación compartida de Rengar sube al <strong>50%</strong> y el maná compartido de Kha'Zix al <strong>70%</strong>.
+          </li>
+          <li>
+            <strong>Carrito de Curiosidades (Curio Car):</strong> El costo de los emblemas aumenta de <strong>15 a 17 de oro</strong>. Mi recomendación táctica: <strong>comprá el emblema únicamente si es determinante para cerrar la condición de victoria de tu mesa</strong>; si es solo un emblema secundario, no vale la pena el gasto de oro.
+          </li>
+          <li>
+            <strong>Camino Medio:</strong> Su costo base sube de <strong>4 a 5 de oro</strong> y el costo de mejora aumenta a <strong>4 de oro</strong>.
+          </li>
+        </ul>
+      </article>
+
+      <!-- 6. Nuevo Cliente Independiente -->
+      <article class="patchCard">
+        <header class="patchCardHeader">
+          <span class="patchNumberBadge">06</span>
+          <h2>Nuevo Cliente Independiente de TFT y Recompensas del Set 19</h2>
+        </header>
+        <p class="patchText">
+          Con la versión {currentPatch} se lanza oficialmente la primera iteración del <strong>cliente independiente de TFT</strong>. A partir del Set 19 (versión 19.1), los elementos estéticos como minileyendas y gestos se desarrollarán en motores separados respecto a League of Legends.
+        </p>
+        <p class="patchText">
+          Para agradecer la paciencia de la comunidad durante esta transición, Riot incluirá <strong>misiones de agradecimiento</strong> al iniciar el Set 19:
+        </p>
+        <ul class="patchList rewardsList">
+          <li>
+            <strong>Jugar 1 partida del Set 19:</strong> Otorga <strong>500 Piezas del Tesoro</strong>.
+          </li>
+          <li>
+            <strong>Jugar 20 partidas del Set 19:</strong> Otorga un <strong>Chibi Mítico aleatorio</strong> (mediante una pieza de canje para una tienda exclusiva de chibis).
+          </li>
+          <li>
+            Quienes hayan adquirido un estratega o arena mítica antes de la versión 18.7 recibirán <strong>2 Medallones Míticos</strong>.
+          </li>
+        </ul>
+      </article>
+
+      <!-- 7. CTA Final -->
+      <section class="ctaPatchSection">
+        <div class="ctaCard">
+          <div class="ctaHeader">
+            <span class="ctaBadge">🏆 Dominá el Meta</span>
+            <h2>¿Querés dominar el meta del Parche {currentPatch}?</h2>
+          </div>
+          <p class="ctaText">
+            Para estar al día con los posicionamientos exactos, armados de objetos e instrucciones paso a paso de cada composición, podés consultar nuestra <strong>web del meta gratuita</strong>. Y si buscás dar el salto competitivo para tomar mejores decisiones en tiempo real durante tus partidas, echale un vistazo al <strong>TFT Masterplan</strong>. ¡Nos vemos en la Convergencia!
+          </p>
+          <div class="ctaActions">
+            <a
+              href="/tft/meta-comps-tier-list-teamfight-tactics/"
+              class="ctaBtn ctaBtnPrimary"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+              <span>Ver Mejores Composiciones</span>
+            </a>
+            <a
+              href="/tft/master-plan/"
+              class="ctaBtn ctaBtnSecondary"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+              </svg>
+              <span>Descubrir el TFT Master Plan</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sección de Más Guías -->
+      <div class="moreGuidesWrapper">
+        <h3 class="cardsTitle">Otras Guías Esenciales de TFT</h3>
+        <Cards currentPath={currentPath} client:load transition:persist />
+      </div>
+    </div>
+
+    <div slot="bodyContainerRight">
+      <!-- Columna derecha reservada para widgets futuros -->
+    </div>
   </PaginaBaseMaxWidth>
 </LayoutMaxWidth>
 
 <style>
-  .mb-25 {
-    margin-bottom: 25px;
+  /* ==========================================================================
+     ESTILOS DE LA PÁGINA DE NOTAS DEL PARCHE
+     ========================================================================== */
+
+  .introWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
   }
-  .cards-title{
-    text-align: center;
+
+  .introAuthorBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: rgba(33, 28, 71, 0.7);
+    border: 1px solid rgba(168, 85, 247, 0.35);
+    padding: 0.4rem 0.85rem;
+    border-radius: 9999px;
+    width: fit-content;
   }
-  .trait-main-card {
-    background-color: #211c47; /* Morado oscuro como en el mockup */
-    margin-top: 15px;
-    padding: 15px;
+
+  .introAvatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1.5px solid #f5e020;
+  }
+
+  .introAuthorMeta {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+  }
+
+  .introAuthorName {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #f8fafc;
+  }
+
+  .introAuthorRole {
+    font-size: 0.75rem;
+    color: #cbd5e1;
+  }
+
+  .introLead {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: #e2e8f0;
+    text-align: justify;
+    margin: 0;
+  }
+
+  .introLead strong {
+    color: #f5e020;
+    font-weight: 600;
+  }
+
+  .patchBodyContent {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+    width: 100%;
+  }
+
+  .patchVideoSection {
+    margin-bottom: 0.5rem;
+  }
+
+  .videoWrapper {
+    max-width: 650px;
+    margin: 0 auto;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(168, 85, 247, 0.3);
+  }
+
+  /* Tarjetas de Sección del Parche */
+  .patchCard {
+    background: #1c183a;
+    border: 1px solid rgba(147, 51, 234, 0.25);
+    border-radius: 14px;
+    padding: 1.5rem 1.75rem;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+
+  .patchCard:hover {
+    border-color: rgba(245, 224, 32, 0.4);
+    transform: translateY(-2px);
+  }
+
+  .patchCardHeader {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+  }
+
+  .patchNumberBadge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    height: 32px;
     border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    background: linear-gradient(135deg, #a855f7, #6366f1);
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+    margin-top: 0.15rem;
   }
-   .text-centered{
-    text-align:center;
+
+  .patchCardHeader h2 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #f8fafc;
+    margin: 0;
+    line-height: 1.35;
+  }
+
+  .patchText {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #cbd5e1;
+    margin: 0;
+    text-align: justify;
+  }
+
+  .patchText strong {
+    color: #f8fafc;
+  }
+
+  /* Listas de Ajustes */
+  .patchList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .patchList li {
+    position: relative;
+    padding-left: 1.4rem;
+    font-size: 0.98rem;
+    line-height: 1.65;
+    color: #cbd5e1;
+    text-align: justify;
+  }
+
+  .patchList li::before {
+    content: "•";
+    position: absolute;
+    left: 0.25rem;
+    top: -0.05rem;
+    color: #f5e020;
+    font-size: 1.3rem;
+    font-weight: bold;
+  }
+
+  .patchList li strong {
+    color: #ffffff;
+  }
+
+  /* Caja destacada con la opinión de Jupeson */
+  .patchHighlightBox {
+    background: rgba(147, 51, 234, 0.15);
+    border-left: 4px solid #f5e020;
+    padding: 0.9rem 1.15rem;
+    border-radius: 0 10px 10px 0;
+    margin-top: 0.25rem;
+  }
+
+  .patchHighlightBox p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: #e2e8f0;
+    text-align: justify;
+  }
+
+  /* Lista de recompensas */
+  .rewardsList li::before {
+    color: #38bdf8;
+  }
+
+  /* ==========================================================================
+     SECCIÓN CTA FINAL
+     ========================================================================== */
+  .ctaPatchSection {
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .ctaCard {
+    background: radial-gradient(circle at top, #2b225c 0%, #171333 100%);
+    border: 1.5px solid rgba(245, 224, 32, 0.5);
+    border-radius: 18px;
+    padding: 2.25rem 2rem;
+    text-align: center;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .ctaBadge {
+    display: inline-block;
+    background: rgba(245, 224, 32, 0.18);
+    color: #f5e020;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0.35rem 0.9rem;
+    border-radius: 9999px;
+    border: 1px solid rgba(245, 224, 32, 0.4);
+    margin-bottom: 0.25rem;
+  }
+
+  .ctaHeader h2 {
+    font-size: 1.65rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .ctaText {
+    max-width: 680px;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: #e2e8f0;
+    margin: 0 auto;
+  }
+
+  .ctaText strong {
+    color: #f5e020;
+  }
+
+  .ctaActions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 0.5rem;
+    width: 100%;
+  }
+
+  .ctaBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 0.85rem 1.6rem;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+
+  .ctaBtnPrimary {
+    background: linear-gradient(135deg, #f5e020 0%, #eab308 100%);
+    color: #121024;
+    box-shadow: 0 4px 15px rgba(245, 224, 32, 0.35);
+    border: 1px solid #f5e020;
+  }
+
+  .ctaBtnPrimary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(245, 224, 32, 0.5);
+    filter: brightness(1.05);
+  }
+
+  .ctaBtnSecondary {
+    background: rgba(168, 85, 247, 0.15);
+    color: #f8fafc;
+    border: 1.5px solid rgba(168, 85, 247, 0.6);
+  }
+
+  .ctaBtnSecondary:hover {
+    transform: translateY(-2px);
+    background: rgba(168, 85, 247, 0.3);
+    border-color: #a855f7;
+    color: #ffffff;
+  }
+
+  /* Sección de más guías */
+  .moreGuidesWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-top: 1rem;
+  }
+
+  .cardsTitle {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #f8fafc;
+    text-align: center;
+    margin: 0;
+  }
+
+  /* ==========================================================================
+     REGLA 8: DISEÑO RESPONSIVO Y MÓVILES (max-width: 900px)
+     ========================================================================== */
+  @media only screen and (max-width: 900px) {
+    .introLead {
+      font-size: 0.98rem;
+      line-height: 1.6;
+      text-align: left;
+    }
+
+    .patchCard {
+      padding: 1.2rem 1.15rem;
+      border-radius: 12px;
+    }
+
+    .patchCardHeader h2 {
+      font-size: 1.18rem;
+    }
+
+    .patchText,
+    .patchList li,
+    .patchHighlightBox p {
+      font-size: 0.92rem;
+      line-height: 1.55;
+      text-align: left;
+    }
+
+    .ctaCard {
+      padding: 1.5rem 1.15rem;
+    }
+
+    .ctaHeader h2 {
+      font-size: 1.35rem;
+    }
+
+    .ctaText {
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .ctaActions {
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .ctaBtn {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      font-size: 0.95rem;
+    }
   }
 </style>

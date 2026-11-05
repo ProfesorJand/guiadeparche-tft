@@ -1,0 +1,130 @@
+.gridContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.resultsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #94a3b8;
+  font-size: 0.95rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.countHighlight {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.clearFilterLink {
+  color: #c084fc;
+  background: none;
+  border: none;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+  transition: color 0.2s ease;
+}
+
+.clearFilterLink:hover {
+  color: #f3e8ff;
+}
+
+.cardsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+  gap: 1.75rem;
+  width: 100%;
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 1.5rem;
+  background: rgba(18, 24, 44, 0.5);
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  margin: 1rem 0;
+}
+
+.emptyIcon {
+  width: 64px;
+  height: 64px;
+  color: #a855f7;
+  margin-bottom: 1.25rem;
+  background: rgba(168, 85, 247, 0.1);
+  padding: 1rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.emptyTitle {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 0.5rem 0;
+}
+
+.emptyDescription {
+  color: #94a3b8;
+  font-size: 0.95rem;
+  max-width: 420px;
+  line-height: 1.6;
+  margin: 0 0 1.5rem 0;
+}
+
+.resetBtn {
+  background: linear-gradient(135deg, #6b2273 0%, #3b1d60 100%);
+  color: #ffffff;
+  border: 1px solid #c084fc;
+  padding: 0.65rem 1.5rem;
+  border-radius: 9999px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 14px rgba(107, 34, 115, 0.4);
+}
+
+.resetBtn:hover {
+  background: linear-gradient(135deg, #7e2988 0%, #4a2478 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(107, 34, 115, 0.6);
+}
+
+/* Regla 8: Media query para dispositivos móviles */
+@media only screen and (max-width: 900px) {
+  .cardsGrid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .resultsHeader {
+    font-size: 0.85rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .emptyState {
+    padding: 2.5rem 1rem;
+  }
+
+  .emptyTitle {
+    font-size: 1.15rem;
+  }
+
+  .emptyDescription {
+    font-size: 0.85rem;
+  }
+}

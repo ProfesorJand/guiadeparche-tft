@@ -28,6 +28,7 @@ import AdminMercadoPagoPlanes from "./AdminMercadoPagoPlanes.jsx";
 import AdminMercadoPagoCupones from "./AdminMercadoPagoCupones.jsx";
 import AdminCorreos from "./AdminCorreos.jsx";
 import AdminSorteoDiscord from "./AdminSorteoDiscord.jsx";
+import AdminBlog from "./AdminBlog.jsx";
 
 const AdminPanel = ()=>{
     const admin = useStore($admin);
@@ -133,6 +134,14 @@ const AdminPanel = ()=>{
           { nombre: "Sorteos", admin: false, superAdmin: true }
         ],
         admin: false,
+        superAdmin: true
+      },
+      {
+        primario:"Blog",
+        secundario:[
+          { nombre: "Gestionar / Crear", admin: true, superAdmin: true }
+        ],
+        admin: true,
         superAdmin: true
       }
     ]
@@ -355,6 +364,7 @@ const AdminPanel = ()=>{
                 {action?.includes("Publicidad GP") && <AdminPublicidad />}
                 {action === "Correos-Newsletters" && <AdminCorreos />}
                 {action === "Discord-Sorteos" && <AdminSorteoDiscord />}
+                {action?.includes("Blog") && <AdminBlog />}
                 {/* {action === "champsItemsTierList" && <CrearTierListChampItem />} */}
             </div>
             <button className={style.btnCerrarSesion} onClick={()=>cerrarSesion()}>cerrar sesión</button>

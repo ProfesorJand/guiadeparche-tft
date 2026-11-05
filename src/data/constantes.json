@@ -1,4 +1,5 @@
 {
+    "MetaTFTPatch": "14.8",
     "MetaCompVersion": "14.8",
     "Streamers": [
         {
@@ -6,6 +7,7 @@
             "platform": "twitch"
         }
     ],
+    "MetaTFTPatchPBE": "17.6",
     "MetaCompVersionPBE": "17.6",
     "videoPrincipal": "https:\/\/www.youtube.com\/watch?v=lORjiJsFkvI"
 }

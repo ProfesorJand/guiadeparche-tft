@@ -82,6 +82,18 @@
     transform: translate(-50%, -50%) scale(1.3);
 }
 
+/* Modos de aspecto vertical (9:16) para YouTube Shorts / Reels */
+.verticalContainer {
+    aspect-ratio: 9/16 !important;
+    max-width: 380px;
+    margin: 0 auto;
+}
+
+.verticalThumbnail {
+    aspect-ratio: 9/16 !important;
+    object-fit: cover;
+}
+
 @media only screen and (min-width: 900px){
     .youtube_play_button {
         width: 68px;
@@ -106,5 +118,9 @@
     .tituloYoutube{
         font-size: 11px;
         padding: 0.5rem;
+    }
+
+    .verticalContainer {
+        max-width: 320px;
     }
 }
