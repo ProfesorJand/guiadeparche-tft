@@ -1,0 +1,523 @@
+---
+import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
+import { getSortedBlogPosts, getBlogPostBySlug } from "@data/blogData";
+import { crearJSONSchema } from "@json/schema/crearJSONSchema";
+import BlogCard from "@components/blog/BlogCard.jsx";
+import Youtube from "@components/youtube/Youtube.jsx";
+
+export async function getStaticPaths() {
+  const posts = await getSortedBlogPosts();
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+let { post } = Astro.props;
+
+// Si el post no vino en props o le falta el contenido/biografía del autor, consultamos por slug
+if (!post || !post.content || !post.author?.bio) {
+  const currentSlug = post?.slug || Astro.params.slug;
+  if (currentSlug) {
+    post = await getBlogPostBySlug(currentSlug);
+  }
+}
+
+if (!post) {
+  return Astro.redirect('/blog/');
+}
+
+const title = `${post.title} | Blog Guía de Parche`;
+const description = post.excerpt;
+const keywords = `${post.tags.join(', ')}, Blog TFT, Guía de Parche, Noticias TFT`;
+const canonical = new URL(Astro.url.pathname, Astro.site || "https://guiadeparche.com").href;
+const imgPost = post.image;
+const thumbnail = post.image;
+const JSONSchema = crearJSONSchema({
+  title: post.title,
+  description: post.excerpt,
+  thumbnail,
+  imgPost
+});
+
+// Artículos recomendados (excluyendo el artículo actual)
+const allPosts = await getSortedBlogPosts();
+const relatedPosts = allPosts
+  .filter((p) => p.slug !== post.slug)
+  .slice(0, 2);
+---
+
+<LayoutMaxWidth
+  title={title}
+  description={description}
+  keywords={keywords}
+  JSONSchema={JSONSchema}
+  canonical={canonical}
+  image={imgPost}
+>
+  <article class="articleContainer">
+    <!-- Navegación de retorno -->
+    <nav class="backNav">
+      <a href="/blog/" class="backLink">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <line x1="19" y1="12" x2="5" y2="12" />
+          <polyline points="12 19 5 12 12 5" />
+        </svg>
+        Volver a todas las noticias
+      </a>
+    </nav>
+
+    <!-- Encabezado del Artículo -->
+    <header class="articleHeader">
+      <h1 class="articleTitle">{post.title}</h1>
+
+      <div class="metaBar">
+        <div class="authorInfo">
+          <img
+            src={post.author.avatar}
+            alt={post.author.name}
+            class="authorAvatar"
+          />
+          <div class="authorDetails">
+            <span class="authorName">{post.author.name}</span>
+            <span class="authorRole">{post.author.role}</span>
+          </div>
+        </div>
+
+        <div class="postDetails">
+          <span class="dateInfo">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+              <line x1="16" y1="2" x2="16" y2="6" />
+              <line x1="8" y1="2" x2="8" y2="6" />
+              <line x1="3" y1="10" x2="21" y2="10" />
+            </svg>
+            {post.formattedDate}
+          </span>
+          <span class="readTimeInfo">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12 6 12 12 16 14" />
+            </svg>
+            {post.readTime}
+          </span>
+        </div>
+      </div>
+
+      <div class="tagsList">
+        {post.tags.map((tag) => (
+          <a href={`/blog/?tag=${encodeURIComponent(tag)}`} class="tagBadge">#{tag}</a>
+        ))}
+      </div>
+    </header>
+
+    <!-- Video o Imagen Principal Destacada -->
+    {post.video ? (
+      <div class="heroVideoWrapper">
+        <Youtube src={post.video} client:load />
+      </div>
+    ) : (
+      <div class="heroImageWrapper">
+        <img
+          src={post.image}
+          alt={post.title}
+          class="heroImage"
+        />
+      </div>
+    )}
+
+    <!-- Cuerpo del Artículo -->
+    <section class="contentBody" set:html={post.content} />
+
+    <!-- Pie del Artículo y Redes -->
+    <footer class="articleFooter">
+      <div class="authorBox">
+        <img
+          src={post.author.avatar}
+          alt={post.author.name}
+          class="authorBoxAvatar"
+        />
+        <div class="authorBoxInfo">
+          <h4 class="authorBoxName">Escrito por {post.author.name}</h4>
+          {post.author.role && <span class="authorBoxRole">{post.author.role}</span>}
+          <p class="authorBoxBio">
+            {post.author.bio || 'Creador de contenido y analista en Guía de Parche. Especializado en análisis táctico de Teamfight Tactics y estrategias competitivas para el ladder.'}
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Artículos Relacionados -->
+    {relatedPosts.length > 0 && (
+      <section class="relatedSection">
+        <h3 class="relatedTitle">Otras Novedades Recomendadas</h3>
+        <div class="relatedGrid">
+          {relatedPosts.map((related) => (
+            <BlogCard post={related} client:load />
+          ))}
+        </div>
+      </section>
+    )}
+  </article>
+</LayoutMaxWidth>
+
+<style>
+  .articleContainer {
+    width: 100%;
+    max-width: 940px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 5rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .backNav {
+    margin-bottom: 2rem;
+  }
+
+  .backLink {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #c084fc;
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    padding: 0.4rem 0.8rem;
+    border-radius: 8px;
+    background: rgba(168, 85, 247, 0.08);
+    border: 1px solid rgba(168, 85, 247, 0.2);
+  }
+
+  .backLink:hover {
+    color: #ffffff;
+    background: rgba(168, 85, 247, 0.25);
+    transform: translateX(-3px);
+  }
+
+  .articleHeader {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2rem;
+  }
+
+  .tagsList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+  }
+
+  .tagBadge {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #c084fc;
+    background: rgba(168, 85, 247, 0.15);
+    border: 1px solid rgba(192, 132, 252, 0.3);
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .tagBadge:hover {
+    background: #6b2273;
+    color: #ffffff;
+  }
+
+  .articleTitle {
+    font-size: 2.75rem;
+    font-weight: 800;
+    line-height: 1.2;
+    color: #ffffff;
+    margin: 0 0 1.5rem 0;
+    letter-spacing: -0.02em;
+  }
+
+  .metaBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    padding: 1.25rem;
+    background: rgba(18, 24, 44, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    backdrop-filter: blur(8px);
+  }
+
+  .authorInfo {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+
+  .authorAvatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #a855f7;
+    background: #0f1322;
+  }
+
+  .authorDetails {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .authorName {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #ffffff;
+  }
+
+  .authorRole {
+    font-size: 0.82rem;
+    color: #94a3b8;
+  }
+
+  .postDetails {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    color: #94a3b8;
+    font-size: 0.9rem;
+  }
+
+  .dateInfo,
+  .readTimeInfo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .heroImageWrapper,
+  .heroVideoWrapper {
+    width: 100%;
+    border-radius: 18px;
+    overflow: hidden;
+    margin-bottom: 3rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: #0f1322;
+  }
+
+  .heroImage {
+    width: 100%;
+    height: auto;
+    display: block;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
+  /* Estilos del contenido del artículo */
+  .contentBody {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: #cbd5e1;
+  }
+
+  .contentBody :global(.lead) {
+    font-size: 1.3rem;
+    font-weight: 400;
+    line-height: 1.6;
+    color: #f1f5f9;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .contentBody :global(h2) {
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    line-height: 1.3;
+  }
+
+  .contentBody :global(h3) {
+    font-size: 1.45rem;
+    font-weight: 600;
+    color: #e2e8f0;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .contentBody :global(p) {
+    margin-bottom: 1.5rem;
+    color: #cbd5e1;
+  }
+
+  .contentBody :global(strong) {
+    color: #ffffff;
+  }
+
+  .contentBody :global(ul),
+  .contentBody :global(ol) {
+    margin: 1.25rem 0 2rem 1.5rem;
+    padding: 0;
+  }
+
+  .contentBody :global(li) {
+    margin-bottom: 0.75rem;
+    line-height: 1.6;
+  }
+
+  .contentBody :global(blockquote) {
+    margin: 2.5rem 0;
+    padding: 1.5rem 2rem;
+    background: rgba(107, 34, 115, 0.15);
+    border-left: 4px solid #a855f7;
+    border-radius: 0 14px 14px 0;
+    font-style: italic;
+    color: #f3e8ff;
+    font-size: 1.2rem;
+    line-height: 1.6;
+  }
+
+  /* Contenedores para videos de YouTube y Shorts incrustados en el contenido */
+  .contentBody :global(.videoWrapper) {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    max-width: 100%;
+    border-radius: 14px;
+    margin: 2rem 0;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    background: #0f1322;
+  }
+
+  .contentBody :global(.videoWrapper iframe) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .contentBody :global(.videoWrapperShort) {
+    padding-bottom: 0 !important;
+    height: auto !important;
+    aspect-ratio: 9 / 16;
+    max-width: 380px;
+    margin: 2rem auto;
+  }
+
+  @media only screen and (max-width: 900px) {
+    .contentBody :global(.videoWrapperShort) {
+      max-width: 320px;
+    }
+  }
+
+  .articleFooter {
+    margin-top: 3.5rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .authorBox {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.75rem;
+    background: rgba(18, 24, 44, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    backdrop-filter: blur(8px);
+  }
+
+  .authorBoxAvatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #a855f7;
+    background: #0f1322;
+    flex-shrink: 0;
+  }
+
+  .authorBoxName {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 0.4rem 0;
+  }
+
+  .authorBoxRole {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #c084fc;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+
+  .authorBoxBio {
+    font-size: 0.95rem;
+    color: #94a3b8;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .relatedSection {
+    margin-top: 4.5rem;
+  }
+
+  .relatedTitle {
+    font-size: 1.85rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 2rem;
+    text-align: left;
+  }
+
+  .relatedGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.75rem;
+  }
+
+  /* Regla 8: Media query para dispositivos móviles */
+  @media only screen and (max-width: 900px) {
+    .articleContainer {
+      padding: 1.25rem 1rem 3.5rem;
+    }
+
+    .articleTitle {
+      font-size: 1.85rem;
+    }
+
+    .metaBar {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .contentBody {
+      font-size: 1.05rem;
+    }
+
+    .contentBody :global(.lead) {
+      font-size: 1.15rem;
+    }
+
+    .authorBox {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .relatedGrid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -71,6 +71,23 @@ const EditarCompoTFT = () => {
     <>
         
         <label className={style.containerConstanteUpdate}>
+          <span>Versión Notas de Parche (/tft/patch):</span>
+          <input
+            id="inputMetaTFTPatch"
+            type="text"
+            placeholder={
+              currentVersion === "pbe"
+                ? (constantes?.MetaTFTPatchPBE || constantes?.MetaCompVersionPBE || "")
+                : (constantes?.MetaTFTPatch || constantes?.MetaCompVersion || "")
+            }
+          />
+          <input
+            type="button"
+            value="Update"
+            onClick={() => actualizarConstantes("inputMetaTFTPatch")}
+          />
+        </label>
+        <label className={style.containerConstanteUpdate}>
           <span>Label Meta Comps Version:</span>
           <input id="inputMetaCompVersion" type="text" placeholder={currentVersion === "pbe" ? (constantes?.MetaCompVersionPBE || "") : (constantes?.MetaCompVersion || "")} />
           <input

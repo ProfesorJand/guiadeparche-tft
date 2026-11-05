@@ -1,0 +1,27 @@
+---
+import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
+import { crearJSONSchema } from "@json/schema/crearJSONSchema";
+import MasterPlanEncuesta from "@components/TFT/master-plan/MasterPlanEncuesta";
+
+const topTitle = "Encuesta Master Plan TFT";
+const lowerTitle = "Tu opinión nos ayuda a mejorar la herramienta";
+const title = `${topTitle} | Guiadeparche`;
+const description = "Encuesta y evaluación del Master Plan de TFT para usuarios y miembros. Califica tu experiencia y déjanos tus sugerencias.";
+const keywords = "tft, master plan, encuesta, review, feedback, teamfight tactics";
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).href;
+const baseSchema = JSON.parse(
+  crearJSONSchema({ title, description })
+);
+const JSONSchema = JSON.stringify(baseSchema);
+---
+
+<LayoutMaxWidth 
+  title={title}
+  description={description}
+  keywords={keywords}
+  JSONSchema={JSONSchema}
+  canonical={canonicalURL}
+>
+  <MasterPlanEncuesta client:only="react" />
+</LayoutMaxWidth>
