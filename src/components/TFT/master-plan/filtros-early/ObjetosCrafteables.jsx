@@ -26,7 +26,7 @@ export default function ObjetosCrafteables({
   (condicionesGrandeItems || []).forEach(condItem => {
     if (condItem && condItem.apiName) {
       const norm = normalizeItem(condItem.apiName);
-      if (norm) uniqueItemsMap.set(norm, condItem);
+      if (norm) uniqueItemsMap.set(norm, { ...condItem });
     }
   });
 

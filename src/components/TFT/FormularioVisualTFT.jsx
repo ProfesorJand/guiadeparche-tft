@@ -198,10 +198,24 @@ const CampeonMetaVisual = () => {
     } else {
       newCampeonMeta[field] = value;
     }
-    actualizarComposicionTFT({
+    const updates = {
       campeonMeta: newCampeonMeta
-    });
+    };
+    if (field === "emblema" && !value && comp.champTrait) {
+      updates.champTrait = [];
+    }
+    actualizarComposicionTFT(updates);
   };
+
+  const handleDragEndElement = (e, field) => {
+    e.stopPropagation();
+    const dropTarget = (e.clientX && e.clientY) ? document.elementFromPoint(e.clientX, e.clientY) : null;
+    const isOutside = !dropTarget || !e.currentTarget.contains(dropTarget);
+    if (e.dataTransfer.dropEffect === "none" || isOutside) {
+      updateField(field, "");
+    }
+  };
+
   const champ = comp.campeonMeta?.apiNameCampeon;
   const items = comp.campeonMeta?.apiNameItemsDelCampeon || ["", "", ""];
   const emblema = comp.campeonMeta?.emblema;
@@ -210,7 +224,8 @@ const CampeonMetaVisual = () => {
   const isChampValid = allChampionsTFT?.some(c => c.apiName === champ);
   const isAumentoValid = AllAugments?.some(a => a.apiName === aumento);
   const isEmblemaValid = allItemsTFT?.some(i => i.apiName === emblema);
-  return <div className={`${style.cBoxTitleInfo} ${localStyle.styleBox7}`}>
+  return (
+    <div className={`${style.cBoxTitleInfo} ${localStyle.styleBox7}`}>
       <span className={style.tBox}>Campeón Meta</span>
       <div className={localStyle.styleBox8}>
         
@@ -223,18 +238,49 @@ const CampeonMetaVisual = () => {
               3 Estrellas
             </label>
           </div>
-          <div onDragOver={e => e.preventDefault()} onDrop={e => {
-          e.preventDefault();
-          const c = e.dataTransfer.getData("campeon");
-          if (c) updateField("apiNameCampeon", JSON.parse(c).apiName || JSON.parse(c).name);
-        }} onDoubleClick={() => updateField("apiNameCampeon", "")} onContextMenu={e => {
-          e.preventDefault();
-          updateField("estrellas", estrellas ? 1 : 3);
-        }} style={{
-          border: !isChampValid ? '2px dashed #777' : 'none'
-        }} title="Arrastra el campeón. Doble clic para borrar. Clic derecho para cambiar 3 estrellas" className={localStyle.styleBox10}>
+          <div
+            draggable={isChampValid}
+            onDragStart={e => {
+              if (isChampValid) {
+                e.dataTransfer.setData("campeon", JSON.stringify({ apiName: champ }));
+                e.dataTransfer.setData("text/plain", champ);
+                e.dataTransfer.effectAllowed = "all";
+              }
+            }}
+            onDragEnd={e => handleDragEndElement(e, "apiNameCampeon")}
+            onDragOver={e => e.preventDefault()}
+            onDrop={e => {
+              e.preventDefault();
+              const c = e.dataTransfer.getData("campeon");
+              if (c) updateField("apiNameCampeon", JSON.parse(c).apiName || JSON.parse(c).name);
+            }}
+            onDoubleClick={() => updateField("apiNameCampeon", "")}
+            onContextMenu={e => {
+              e.preventDefault();
+              updateField("estrellas", estrellas ? 1 : 3);
+            }}
+            style={{
+              border: !isChampValid ? '2px dashed #777' : 'none',
+              cursor: isChampValid ? 'grab' : 'pointer'
+            }}
+            title="Arrastra el campeón o arrastra fuera para borrar. Doble clic para borrar. Clic derecho para cambiar 3 estrellas"
+            className={localStyle.styleBox10}
+          >
             {isChampValid && <ImgCampeon championData={allChampionsTFT.find(c => c.apiName === champ)} imgType="tileIcon" showName={false} />}
             {estrellas && <img src="/tft/assets/3-estrellas.webp" alt="3 estrellas" className={localStyle.styleBox11} />}
+            {isChampValid && (
+              <button
+                type="button"
+                onClick={e => {
+                  e.stopPropagation();
+                  updateField("apiNameCampeon", "");
+                }}
+                className={localStyle.styleBox22}
+                title="Quitar campeón"
+              >
+                X
+              </button>
+            )}
             {!isChampValid && <span className={localStyle.styleBox12}>Champ</span>}
           </div>
         </div>
@@ -244,33 +290,96 @@ const CampeonMetaVisual = () => {
           <span className={localStyle.styleBox13}>Ítems</span>
           <div className={localStyle.styleBox14}>
             {[0, 1, 2].map(idx => {
-            const apiNameItem = items[idx];
-            const isItemValid = allItemsTFT?.some(i => i.apiName === apiNameItem);
-            return <div key={idx} onDragOver={e => e.preventDefault()} onDrop={e => {
-              e.preventDefault();
-              const i = e.dataTransfer.getData("item");
-              if (i) updateField(`item${idx}`, JSON.parse(i).apiName);
-            }} onDoubleClick={() => updateField(`item${idx}`, "")} style={{
-              border: !isItemValid ? '2px dashed #777' : 'none'
-            }} title="Arrastra el ítem. Doble clic para borrar." className={localStyle.styleBox15}>
+              const apiNameItem = items[idx];
+              const isItemValid = allItemsTFT?.some(i => i.apiName === apiNameItem);
+              return (
+                <div
+                  key={idx}
+                  draggable={isItemValid}
+                  onDragStart={e => {
+                    if (isItemValid) {
+                      e.dataTransfer.setData("item", JSON.stringify({ apiName: apiNameItem }));
+                      e.dataTransfer.setData("text/plain", apiNameItem);
+                      e.dataTransfer.effectAllowed = "all";
+                    }
+                  }}
+                  onDragEnd={e => handleDragEndElement(e, `item${idx}`)}
+                  onDragOver={e => e.preventDefault()}
+                  onDrop={e => {
+                    e.preventDefault();
+                    const i = e.dataTransfer.getData("item");
+                    if (i) updateField(`item${idx}`, JSON.parse(i).apiName);
+                  }}
+                  onDoubleClick={() => updateField(`item${idx}`, "")}
+                  style={{
+                    border: !isItemValid ? '2px dashed #777' : 'none',
+                    cursor: isItemValid ? 'grab' : 'pointer'
+                  }}
+                  title="Arrastra el ítem o arrastra fuera para borrar. Doble clic para borrar."
+                  className={localStyle.styleBox15}
+                >
                   {isItemValid && <ImgItem item={allItemsTFT.find(i => i.apiName === apiNameItem)} />}
+                  {isItemValid && (
+                    <button
+                      type="button"
+                      onClick={e => {
+                        e.stopPropagation();
+                        updateField(`item${idx}`, "");
+                      }}
+                      className={localStyle.styleBox22}
+                      title="Quitar ítem"
+                    >
+                      X
+                    </button>
+                  )}
                   {!isItemValid && <span className={localStyle.styleBox16}>{idx + 1}</span>}
-                </div>;
-          })}
+                </div>
+              );
+            })}
           </div>
         </div>
 
         {/* Emblema */}
         <div className={localStyle.styleBox9}>
           <span className={localStyle.styleBox4}>Emblema</span>
-          <div onDragOver={e => e.preventDefault()} onDrop={e => {
-          e.preventDefault();
-          const i = e.dataTransfer.getData("item");
-          if (i) updateField("emblema", JSON.parse(i).apiName);
-        }} onDoubleClick={() => updateField("emblema", "")} style={{
-          border: !isEmblemaValid ? '2px dashed #777' : 'none'
-        }} title="Arrastra el emblema. Doble clic para borrar." className={localStyle.styleBox15}>
+          <div
+            draggable={isEmblemaValid}
+            onDragStart={e => {
+              if (isEmblemaValid) {
+                e.dataTransfer.setData("item", JSON.stringify({ apiName: emblema }));
+                e.dataTransfer.setData("text/plain", emblema);
+                e.dataTransfer.effectAllowed = "all";
+              }
+            }}
+            onDragEnd={e => handleDragEndElement(e, "emblema")}
+            onDragOver={e => e.preventDefault()}
+            onDrop={e => {
+              e.preventDefault();
+              const i = e.dataTransfer.getData("item");
+              if (i) updateField("emblema", JSON.parse(i).apiName);
+            }}
+            onDoubleClick={() => updateField("emblema", "")}
+            style={{
+              border: !isEmblemaValid ? '2px dashed #777' : 'none',
+              cursor: isEmblemaValid ? 'grab' : 'pointer'
+            }}
+            title="Arrastra el emblema o arrastra fuera para borrar. Doble clic para borrar."
+            className={localStyle.styleBox15}
+          >
             {isEmblemaValid && <ImgItem item={allItemsTFT.find(i => i.apiName === emblema)} />}
+            {isEmblemaValid && (
+              <button
+                type="button"
+                onClick={e => {
+                  e.stopPropagation();
+                  updateField("emblema", "");
+                }}
+                className={localStyle.styleBox22}
+                title="Quitar emblema"
+              >
+                X
+              </button>
+            )}
             {!isEmblemaValid && <span className={localStyle.styleBox16}>Emb</span>}
           </div>
         </div>
@@ -278,20 +387,51 @@ const CampeonMetaVisual = () => {
         {/* Aumento */}
         <div className={localStyle.styleBox9}>
           <span className={localStyle.styleBox4}>Aumento</span>
-          <div onDragOver={e => e.preventDefault()} onDrop={e => {
-          e.preventDefault();
-          const a = e.dataTransfer.getData("augment");
-          if (a) updateField("aumento", JSON.parse(a).apiName);
-        }} onDoubleClick={() => updateField("aumento", "")} style={{
-          border: !isAumentoValid ? '2px dashed #777' : 'none'
-        }} title="Arrastra el aumento. Doble clic para borrar." className={localStyle.styleBox15}>
+          <div
+            draggable={isAumentoValid}
+            onDragStart={e => {
+              if (isAumentoValid) {
+                e.dataTransfer.setData("augment", JSON.stringify({ apiName: aumento }));
+                e.dataTransfer.setData("text/plain", aumento);
+                e.dataTransfer.effectAllowed = "all";
+              }
+            }}
+            onDragEnd={e => handleDragEndElement(e, "aumento")}
+            onDragOver={e => e.preventDefault()}
+            onDrop={e => {
+              e.preventDefault();
+              const a = e.dataTransfer.getData("augment");
+              if (a) updateField("aumento", JSON.parse(a).apiName);
+            }}
+            onDoubleClick={() => updateField("aumento", "")}
+            style={{
+              border: !isAumentoValid ? '2px dashed #777' : 'none',
+              cursor: isAumentoValid ? 'grab' : 'pointer'
+            }}
+            title="Arrastra el aumento o arrastra fuera para borrar. Doble clic para borrar."
+            className={localStyle.styleBox15}
+          >
             {isAumentoValid && <ImgAugment augment={AllAugments.find(a => a.apiName === aumento)} />}
+            {isAumentoValid && (
+              <button
+                type="button"
+                onClick={e => {
+                  e.stopPropagation();
+                  updateField("aumento", "");
+                }}
+                className={localStyle.styleBox22}
+                title="Quitar aumento"
+              >
+                X
+              </button>
+            )}
             {!isAumentoValid && <span className={localStyle.styleBox16}>Aug</span>}
           </div>
         </div>
 
       </div>
-    </div>;
+    </div>
+  );
 };
 
 

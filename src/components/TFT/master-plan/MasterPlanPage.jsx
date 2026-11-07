@@ -463,72 +463,87 @@ export default function MasterPlanPage() {
   }, [filteredComposPrimary, allAugments]);
 
 
-  // Obtiene una lista única sin duplicar de objetos { apiName, name, icon, type } buscando SOLO en condTypeGrande
+  // Obtiene una lista única sin duplicar de objetos { apiName, name, icon, type } buscando SOLO en condTypeGrande, deduplicando por composición
   const getUniqueConditionsGrandeByType = useCallback((targetType) => {
     const target = targetType.toLowerCase();
     const uniqueMap = new Map();
 
-    allConditions.forEach(cond => {
-      if (!cond) return;
-      const tGrande = (cond.condTypeGrande || cond.typeGrande || cond.condType || "").toLowerCase();
+    filteredComposPrimary.forEach(comp => {
+      const seenInThisComp = new Set();
 
-      if (tGrande === target && cond.apiNameGrande && cond.apiNameGrande !== 'orbedecampeon') {
-        if (!uniqueMap.has(cond.apiNameGrande)) {
-          uniqueMap.set(cond.apiNameGrande, {
-            apiName: cond.apiNameGrande,
-            apiNamePequeno: cond.ApiNamePequeno || cond.apiNamePequeno,
-            name: getConditionDisplayName(cond.apiNameGrande, targetType),
-            icon: getConditionIconUrl(cond.apiNameGrande, targetType),
-            type: targetType,
-            appearCount: 1
-          });
-        } else {
-          uniqueMap.get(cond.apiNameGrande).appearCount += 1;
+      (comp.condiciones || []).forEach(cond => {
+        if (!cond) return;
+        const tGrande = (cond.condTypeGrande || cond.typeGrande || cond.condType || "").toLowerCase();
+
+        if (tGrande === target && cond.apiNameGrande && cond.apiNameGrande !== 'orbedecampeon') {
+          if (!seenInThisComp.has(cond.apiNameGrande)) {
+            seenInThisComp.add(cond.apiNameGrande);
+
+            if (!uniqueMap.has(cond.apiNameGrande)) {
+              uniqueMap.set(cond.apiNameGrande, {
+                apiName: cond.apiNameGrande,
+                apiNamePequeno: cond.ApiNamePequeno || cond.apiNamePequeno,
+                name: getConditionDisplayName(cond.apiNameGrande, targetType),
+                icon: getConditionIconUrl(cond.apiNameGrande, targetType),
+                type: targetType,
+                appearCount: 1
+              });
+            } else {
+              uniqueMap.get(cond.apiNameGrande).appearCount += 1;
+            }
+          }
+        }
+      });
+
+      if (target === "item") {
+        const prioList = [
+          ...(Array.isArray(comp.itemsPrio) ? comp.itemsPrio : []),
+          ...(Array.isArray(comp.itemsPrioTanque) ? comp.itemsPrioTanque : [])
+        ];
+
+        prioList.forEach(item => {
+          if (item && typeof item === 'object' && (item.op === true || item.op === "true") && item.apiName) {
+            if (!seenInThisComp.has(item.apiName)) {
+              seenInThisComp.add(item.apiName);
+
+              if (!uniqueMap.has(item.apiName)) {
+                uniqueMap.set(item.apiName, {
+                  apiName: item.apiName,
+                  name: getConditionDisplayName(item.apiName, targetType),
+                  icon: getConditionIconUrl(item.apiName, targetType),
+                  type: targetType,
+                  appearCount: 1
+                });
+              } else {
+                uniqueMap.get(item.apiName).appearCount += 1;
+              }
+            }
+          }
+        });
+
+        if (comp.campeonMeta?.emblema) {
+          const emb = comp.campeonMeta.emblema;
+          if (!seenInThisComp.has(emb)) {
+            seenInThisComp.add(emb);
+
+            if (!uniqueMap.has(emb)) {
+              uniqueMap.set(emb, {
+                apiName: emb,
+                name: getConditionDisplayName(emb, targetType),
+                icon: getConditionIconUrl(emb, targetType),
+                type: targetType,
+                appearCount: 1
+              });
+            } else {
+              uniqueMap.get(emb).appearCount += 1;
+            }
+          }
         }
       }
     });
 
-    if (target === "item") {
-      filteredComposPrimary.forEach(comp => {
-        if (comp.itemsPrio && Array.isArray(comp.itemsPrio)) {
-          comp.itemsPrio.forEach(item => {
-            if (item && typeof item === 'object' && (item.op === true || item.op === "true") && item.apiName) {
-              if (!uniqueMap.has(item.apiName)) {
-                uniqueMap.set(item.apiName, {
-                  apiName: item.apiName,
-                  name: getConditionDisplayName(item.apiName, targetType),
-                  icon: getConditionIconUrl(item.apiName, targetType),
-                  type: targetType,
-                  appearCount: 1
-                });
-              } else {
-                uniqueMap.get(item.apiName).appearCount += 1;
-              }
-            }
-          });
-        }
-        if (comp.itemsPrioTanque && Array.isArray(comp.itemsPrioTanque)) {
-          comp.itemsPrioTanque.forEach(item => {
-            if (item && typeof item === 'object' && (item.op === true || item.op === "true") && item.apiName) {
-              if (!uniqueMap.has(item.apiName)) {
-                uniqueMap.set(item.apiName, {
-                  apiName: item.apiName,
-                  name: getConditionDisplayName(item.apiName, targetType),
-                  icon: getConditionIconUrl(item.apiName, targetType),
-                  type: targetType,
-                  appearCount: 1
-                });
-              } else {
-                uniqueMap.get(item.apiName).appearCount += 1;
-              }
-            }
-          });
-        }
-      });
-    }
-
     return Array.from(uniqueMap.values());
-  }, [allConditions, filteredComposPrimary, getConditionDisplayName, getConditionIconUrl]);
+  }, [filteredComposPrimary, getConditionDisplayName, getConditionIconUrl]);
 
   const condicionesGrandeCampeones = useMemo(() => getUniqueConditionsGrandeByType("campeon"), [getUniqueConditionsGrandeByType]);
   const condicionesGrandeItems = useMemo(() => getUniqueConditionsGrandeByType("item"), [getUniqueConditionsGrandeByType]);
@@ -622,6 +637,7 @@ export default function MasterPlanPage() {
             compo.itemsPrio?.some(i => (typeof i === 'object' && i !== null ? i.apiName : i) === item.apiName) ||
             compo.itemsPrioTanque?.some(i => (typeof i === 'object' && i !== null ? i.apiName : i) === item.apiName) ||
             compo.campeonMeta?.apiNameItemsDelCampeon?.includes(item.apiName) ||
+            compo.campeonMeta?.emblema === item.apiName ||
             compo.posicionamiento?.[0]?.tablero?.some(champ => champ.apiNameItemsDelCampeon?.includes(item.apiName)) ||
             (compo.condiciones || []).some(c => c.apiNameGrande === item.apiName || c.ApiNamePequeno === item.apiName);
           if (matchItem) {
@@ -758,6 +774,7 @@ export default function MasterPlanPage() {
           const matchItem =
             compo.itemsPrio?.some(i => normalizeItem(typeof i === 'object' && i !== null ? i.apiName : i) === targetApi) ||
             compo.itemsPrioTanque?.some(i => normalizeItem(typeof i === 'object' && i !== null ? i.apiName : i) === targetApi) ||
+            normalizeItem(compo.campeonMeta?.emblema) === targetApi ||
             (compo.condiciones || []).some(c => normalizeItem(c.apiNameGrande) === targetApi || normalizeItem(c.ApiNamePequeno) === targetApi);
           if (matchItem) {
             matchCount++;
@@ -875,6 +892,15 @@ export default function MasterPlanPage() {
             else if (finalMatchPrio.op) opStatus = 'op';
           }
           if (finalMatchPrio.early === true || finalMatchPrio.early === 'true' || finalMatchPrio.early === 1) isEarly = true;
+        }
+
+        if (mf.type === 'item' && compo.campeonMeta?.emblema) {
+          const normalizeItem = (name) => name?.replace('DA_Component_', '')?.replace('DA_', '')?.replace('TFT_Item_', '');
+          if (normalizeItem(compo.campeonMeta.emblema) === normalizeItem(mf.apiName)) {
+            isCore = true;
+            if (!opStatus) opStatus = 'op';
+            isEarly = true;
+          }
         }
 
         if (opStatus !== 'opm') {
