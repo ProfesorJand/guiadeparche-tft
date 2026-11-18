@@ -7,13 +7,19 @@ import RegistrarseBTN from "@components/TFT/RegistrarseBTN";
 import DynamicSection from "@layouts/sections/DynamicSection.astro";
 import TableOfContent from "@layouts/sidebar/TableOfContent.astro";
 
-const topTitle = "Set 18 TFT: Enchanted Wilds, Bosque Encantado, Foresta Encantada";
+const topTitle = "TFT Set 19: Prismatic Tour – Todos los Traits, campeones y novedades";
 const lowerTitle = "";
 const title = `${topTitle}`;
 
-const description = "Descubre todo sobre el nuevo Set de TFT: mecánicas de Enchanted Wilds, fecha de lanzamiento, duración del Set y consejos para empezar con ventaja.";
+const description = [
+  "Artículo basado en la presentación oficial de Riot Games, con comentarios y primeras impresiones de Jupeson tras probar el Set en el PBE.",
+  "El Set 19 de Teamfight Tactics llega con Prismatic Tour, una temática musical que reúne bandas legendarias, festivales y mecánicas que prometen cambiar la forma de jugar cada partida.",
+  "Riot Games apuesta por una mezcla de nostalgia y novedades: regresan los Unlocks, vuelven las unidades de coste 7 y encontramos Traits con mecánicas muy diferentes entre sí. Además, la música tendrá un papel mucho más importante durante los combates, reaccionando a las unidades que llevemos en nuestro tablero.",
+  "He tenido la oportunidad de probar el nuevo Set 19 en el servidor de pruebas (PBE) y, de primeras, tengo sensaciones muy positivas. Creo que estamos empezando a ver todo el potencial que puede ofrecer TFT después de su transición a Unreal Engine.",
+  "Vamos a repasar todas las novedades, los Traits y las unidades que llegarán con Prismatic Tour."
+];
 
-const keywords = "Nuevo Set TFT, Set 18 TFT, Teamfight Tactics Set 18, TFT Enchanted Wilds, fecha de lanzamiento Set 18, meta TFT";
+const keywords = "Nuevo Set TFT, Set 19 TFT, Teamfight Tactics Set 19, TFT Prismatic Tour, fecha de lanzamiento Set 19, meta TFT";
 
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 
@@ -22,20 +28,164 @@ const baseSchema = JSON.parse(
 );
 const JSONSchema = JSON.stringify(baseSchema);
 
-const SIDEBAR= [
+
+const SIDEBAR = [
   {
-    label:"¿Qué es el Set 18 de TFT?",
-    href:"#que-es-set-18"
+    label: "¿Qué es Prismatic Tour, el Set 19 de TFT?",
+    href: "#que-es-set-19-de-tft",
   },
   {
-    label:"Mecánica del Set",
-    href:"#mecanica-del-set",
+    label: "Todas las novedades del Set 19",
+    href: "#novedades-del-set-19-de-tft",
+    children: [
+      {
+        label: "Regresan los Unlocks: 32 campeones que tendrás que desbloquear",
+        href: "#regresan-los-unlocks",
+      },
+      {
+        label: "Prismatic Quests: consigue el nivel Prismático de un Trait",
+        href: "#prismatic-quests",
+      },
+      {
+        label: "La música ahora evoluciona con tu tablero",
+        href: "#musica-evoluciona-con-tu-tablero",
+      },
+    ],
   },
   {
-    label:"Fechas del Set",
-    href:"#fechas-del-set",
-  }
-]
+    label: "Todos los Traits del Set 19 de TFT",
+    href: "#sinergias-set-19-de-tft",
+    children: [
+      {
+        label: "Beach Pop (3/5/7)",
+        href: "#beach-pop",
+      },
+      {
+        label: "Classical (2/4/6)",
+        href: "#classical",
+      },
+      {
+        label: "EDM (2)",
+        href: "#edm",
+      },
+      {
+        label: "Gu Feng (2/3/4)",
+        href: "#gu-feng",
+      },
+      {
+        label: "Heartsteel (1/3/5/7)",
+        href: "#heartsteel",
+      },
+      {
+        label: "Hyperpop (2/3/4/5)",
+        href: "#hyperpop",
+      },
+      {
+        label: "Illbeats (2/3/4)",
+        href: "#illbeats",
+      },
+      {
+        label: "Ionic Spark (3/5/7)",
+        href: "#ionic-spark",
+      },
+      {
+        label: "Jazz (2/3/4)",
+        href: "#jazz",
+      },
+      {
+        label: "K/DA (3/5/7/10/13/15)",
+        href: "#kda",
+      },
+      {
+        label: "Pentakill (3/5/7)",
+        href: "#pentakill",
+      },
+      {
+        label: "R&B (1/2)",
+        href: "#r-and-b",
+      },
+      {
+        label: "Rock (3/4/5/7)",
+        href: "#rock",
+      },
+      {
+        label: "True Damage (3/5)",
+        href: "#true-damage",
+      },
+    ],
+  },
+  {
+    label: "Traits únicos: campeones que brillan por sí solos",
+    href: "#sinergias-unicas-set-19-de-tft",
+    children: [
+      {
+        label: "8-Bit (1) – Miss Fortune",
+        href: "#8-bit",
+      },
+      {
+        label: "Boy Band (1) – Rakan",
+        href: "#boy-band",
+      },
+      {
+        label: "Composer (1) – Malzahar",
+        href: "#composer",
+      },
+      {
+        label: "One Monster Band (1) – Baron Nashor",
+        href: "#one-monster-band",
+      },
+      {
+        label: "Synthwave (1) – Garen",
+        href: "#synthwave",
+      },
+      {
+        label: "Country (1) – Alistar",
+        href: "#country",
+      },
+      {
+        label: "Disco (1) – Nunu & Willump",
+        href: "#disco",
+      },
+      {
+        label: "Emo (1) – Amumu",
+        href: "#emo",
+      },
+      {
+        label: "Goth (1) – Zeri",
+        href: "#goth",
+      },
+      {
+        label: "Record Mogul (1) – Dr. Mundo",
+        href: "#record-mogul",
+      },
+      {
+        label: "Indie / Rising Star / Superstar (1) – Seraphine",
+        href: "#indie-rising-star-superstar",
+      },
+      {
+        label: "Mariachi (1) – Nidalee",
+        href: "#mariachi",
+      },
+      {
+        label: "Producer (1) – Sona",
+        href: "#producer",
+      },
+      {
+        label: "Tango (1) – Twisted Fate",
+        href: "#tango",
+      },
+    ],
+  },
+  {
+    label: "Mi opinión: ¿Prismatic Tour puede ser uno de los mejores Sets de TFT?",
+    href: "#opinion-set-19-de-tft",
+  },
+  {
+    label: "¿Cuándo sale el Set 19 de TFT?",
+    href: "#cuando-sale-set-19-de-tft",
+  },
+];
+
 
 ---
 
@@ -54,22 +204,9 @@ const SIDEBAR= [
       
       <DynamicSection>
         <div slot="main">
-          <Youtube src="https://youtu.be/tUcjzKuqYcY" client:load />
-          <h2 id="que-es-set-18">¿Qué es el Set 18 de TFT?</h2>
-          <p>
-            El Set 18 de Teamfight Tactics, titulado oficialmente <strong>TFT: Bosque Encantados / Foresta Encantada</strong> (o <em>Enchanted Wilds</em> en inglés), sumerge a los estrategas en naturaleza, bosques, y los wisp ( encantamientos mágicos que dan poder ).
-          </p>
-            
-          <!-- <RegistrarseBTN
-            client:load
-            text="Estamos construyendo una nueva herramienta para ayudarte a elegir mejor tus composiciones."
-            buttonText="Únete a la lista →"
-            layout="column"
-            className="mb-20"
-          /> -->
-    
-          <!-- Cards de Navegación de Secciones -->
-          <div class="cards-grid">
+          <!-- <Youtube src="https://youtu.be/tUcjzKuqYcY" client:load /> -->
+
+          <!-- <div class="cards-grid">
             <a href="/tft/nuevo-set/consejos-tips-para-mejorar" class="nav-card">
               <div class="nav-card-icon">💡</div>
               <div class="nav-card-info">
@@ -84,148 +221,357 @@ const SIDEBAR= [
                 <p>Consulta el tier list y las mejores configuraciones para subir de rango.</p>
               </div>
             </a>
-          </div>
-          <h2 id="mecanica-del-set">Mecánica del Set</h2>
-          <p>Los <strong>Wisp</strong>, la nueva mecánica de los Elementales, pueden cambiar completamente cómo juegas una partida, desde economía en juego temprano hasta combate en juego tardío.</p>
-          
+          </div> -->
+          <img src="https://cmsassets.rgpub.io/sanity/images/dsfx7636/news_live/c31535ee876aaaa636616f9144e49734b34fee82-1920x1080.jpg?accountingTag=TFT&fm=webp&q=80&w=1184" alt="" style="width:100%">
+          <h2 id="que-es-set-19-de-tft">¿Qué es Prismatic Tour, el Set 19 de TFT?</h2>
 
-        <!-- <h2 id="fechas-del-set">Fechas del Set 18 de TFT</h2>
-        <p>
-          Lleva el registro de las fases de desarrollo y duración oficial del Set 18. Esta información es crucial para planificar tu escalada competitiva antes de las finales del set.
-        </p>
-        
-        <div class="table-container">
-          <table class="dates-table">
-            <thead>
-              <tr>
-                <th>Fase / Evento</th>
-                <th>Fecha / Detalle</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>Lanzamiento PBE (Pruebas)</strong></td>
-                <td>31 de Marzo 2026</td>
-              </tr>
-              <tr>
-                <td><strong>Lanzamiento Servidor Oficial</strong></td>
-                <td>15 de Abril 2026</td>
-              </tr>
-              <tr>
-                <td><strong>Fin Estimado del Set</strong></td>
-                <td>15 de Agosto 2026</td>
-              </tr>
-              <tr>
-                <td><strong>Duración Aproximada</strong></td>
-                <td>4 Meses</td>
-              </tr>
-              <tr>
-                <td><strong>Siguiente Set (Set 18) Estimado</strong></td>
-                <td>16 de Agosto 2026</td>
-              </tr>
-            </tbody>
-          </table>
-        </div> -->
+<p>Prismatic Tour es el decimonoveno Set de Teamfight Tactics. Su temática gira alrededor de la música, los festivales y algunas de las bandas más reconocibles del universo de TFT, como K/DA, Pentakill, Heartsteel y True Damage.</p>
+
+<p>Cada grupo tendrá su propia identidad, mecánicas y, por supuesto, música.</p>
+
+<p>Una de las cosas que más me ha gustado es que Riot no se ha limitado a crear una temática musical para decorar el Set. La música forma parte de la experiencia de juego y está conectada directamente con las unidades que colocamos en el tablero.</p>
+
+<h2 id="novedades-del-set-19-de-tft">Todas las novedades del Set 19</h2>
+
+<h3 id="regresan-los-unlocks">Regresan los Unlocks: 32 campeones que tendrás que desbloquear</h3>
+
+<p>Una de las mecánicas que más me alegra volver a ver son los <strong>Unlocks</strong>.</p>
+
+<p>Prismatic Tour cuenta con 94 unidades en total, pero 32 de ellas estarán bloqueadas al comienzo de la partida. Para conseguirlas, tendrás que completar determinadas condiciones durante la partida.</p>
+
+<p>Una vez cumplas el requisito, el campeón aparecerá en tu siguiente tienda y podrás comprarlo como cualquier otra unidad.</p>
+
+<p>Las condiciones pueden ser muy diferentes. Algunas son bastante sencillas, como desbloquear a Tibbers colocando una Annie de dos estrellas con un objeto equipado. Otras requieren preparar mucho más tu partida, como Mordekaiser, para quien necesitarás acumular 10 niveles de estrellas únicos de unidades Pentakill.</p>
+
+<p>Riot ha dividido las condiciones de desbloqueo en tres grandes categorías:</p>
+
+<ul>
+    <li><strong>Flexible Options:</strong> unidades que puedes desbloquear en distintos momentos de la partida y que ayudan a ampliar tus opciones de composición, especialmente en el juego tardío.</li>
+    <li><strong>Capstones:</strong> unidades de coste 5 que requieren jugar su Trait vertical para desbloquearlas. Son campeones que necesitan esa sinergia para alcanzar todo su potencial y pueden llegar a decidir una partida.</li>
+    <li><strong>Chases:</strong> desbloqueos muy específicos que no conseguirás en todas las partidas, pero que pueden generar momentos especialmente satisfactorios cuando consigues cumplir sus condiciones.</li>
+</ul>
+
+<p>Personalmente, es una de las decisiones que más me gustan de este Set. Los Unlocks añaden objetivos durante la partida y hacen que no todas las composiciones se construyan de la misma manera. También generan situaciones en las que tienes que adaptar tu estrategia para conseguir una unidad concreta.</p>
+
+<h3 id="prismatic-quests">Prismatic Quests: consigue el nivel Prismático de un Trait</h3>
+
+<p>Los Traits Prismáticos siempre han sido uno de los momentos más emocionantes de TFT. Conseguir activar uno puede cambiar por completo el rumbo de una partida.</p>
+
+<p>En Prismatic Tour, Riot introduce las <strong>Prismatic Quests</strong>, misiones especiales asociadas a determinados Traits.</p>
+
+<p>Podrás conseguir estas misiones mediante Aumentos. Al completarlas, obtendrás directamente el nivel Prismático del Trait correspondiente.</p>
+
+<p>Este sistema también permite que los Emblemas sean más fuertes y aparezcan con mayor frecuencia, sin que los jugadores puedan alcanzar constantemente los niveles Prismáticos.</p>
+
+<p>Riot todavía no ha revelado las condiciones de estas misiones, así que tendremos que descubrirlas dentro del juego.</p>
+
+<h3 id="musica-evoluciona-con-tu-tablero">La música ahora evoluciona con tu tablero</h3>
+
+<p>Esta es, sin duda, otra de mis novedades favoritas.</p>
+
+<p>Si recuerdas TFT Remix Rumble, el Set 10, seguramente recuerdes cómo la música estaba integrada en las composiciones y cómo podías construir tu propia experiencia musical combinando diferentes unidades.</p>
+
+<p>En Prismatic Tour, Riot lleva esa idea todavía más lejos.</p>
+
+<p>A medida que construyes tu equipo y colocas campeones en el tablero, sus pistas musicales se mezclan en tiempo real. El resultado es una banda sonora personalizada que evoluciona durante los combates dependiendo de las unidades que estés utilizando.</p>
+
+<p>Después de probarlo en el PBE, siento que esta mecánica tiene todavía más profundidad que la que vimos en Remix Rumble. Hay más capas musicales y una interacción mucho mayor con lo que sucede en el tablero.</p>
+
+<p>Es uno de esos detalles que pueden parecer secundarios, pero que hacen que cada partida tenga una identidad propia.</p>
+
+<h2 id="sinergias-set-19-de-tft">Todos los Traits del Set 19 de TFT</h2>
+
+<p>A continuación, repasamos los Traits que Riot ha presentado oficialmente para Prismatic Tour, sus campeones y sus principales efectos.</p>
+
+<h3 id="beach-pop">Beach Pop (3/5/7)</h3>
+
+<p><strong>Campeones:</strong> Taric, Zoe, Ashe, Renekton, Syndra, Graves, Zac y Taliyah.</p>
+
+<p>Beach Pop permite conseguir instrumentos que puedes colocar en el tablero para potenciar a los aliados adyacentes.</p>
+
+<p>Los campeones potenciados recuperan vida, mientras que las unidades Beach Pop también reciben velocidad de ataque y regeneración de maná.</p>
+
+<Youtube src="https://www.youtube.com/watch?v=tOzFa0p-xro" client:load />
+
+<h3 id="classical">Classical (2/4/6)</h3>
+
+<p><strong>Campeones:</strong> Katarina, Nasus, Renata Glasc, Samira, Jhin, Thresh y Vladimir.</p>
+
+<p>Los campeones Classical cautivan a sus enemigos de diferentes maneras y consiguen Damage Amp por cada enemigo cautivado. Esta bonificación aumenta con el paso del tiempo.</p>
+
+<p>Es uno de los Traits que más me ha llamado la atención. Me parece una mecánica bastante diferente y con una identidad muy marcada. Es un Trait que busca potenciar a sus propias unidades a través de los enemigos que consigue capturar, algo que puede resultar muy interesante a la hora de construir una composición.</p>
+
+<Youtube src="https://www.youtube.com/watch?v=HmEZgzzLNoA" client:load />
+
+<h3 id="edm">EDM (2)</h3>
+
+<p><strong>Campeones:</strong> Jax y Vi.</p>
+
+<p>Las habilidades de los campeones EDM se vuelven más fuertes, mejores, rápidas y poderosas.</p>
+
+<h3 id="gu-feng">Gu Feng (2/3/4)</h3>
+
+<p><strong>Campeones:</strong> Wukong, Xayah, Janna y Lee Sin.</p>
+
+<p>Los campeones Gu Feng consiguen estadísticas adicionales que aumentan según tu nivel de jugador.</p>
+
+<p>Al alcanzar el breakpoint de 4, podrás elegir un Scroll para equipar. Entre las opciones disponibles hay uno que abre un camino peligroso hasta el nivel 11.</p>
+
+<p>Este es uno de los Traits que más dudas me genera a nivel de ejecución. Parece que requiere bastante planificación y que no será tan sencillo sacarle todo el partido. Sin embargo, por lo que he podido ver en el PBE, tiene muchísimo potencial y puede llegar a estar muy fuerte.</p>
+
+<img src="https://cmsassets.rgpub.io/sanity/images/dsfx7636/news_live/6e84ecd0bbc0a5083ff861f56baec2ad3479f286-1420x557.png" alt="" style="width:100%"/>
+<img src="https://cmsassets.rgpub.io/sanity/images/dsfx7636/news_live/0e5f7aa0e35bb04928e8f4f65496114fd454cd36-669x239.png" alt="" style="width:100%"/>
+
+<h3 id="heartsteel">Heartsteel (1/3/5/7)</h3>
+
+<p><strong>Campeones:</strong> Kayn, Sett, Ezreal, K'Sante, Alune, Yone y Aphelios.</p>
+
+<p>Los miembros de Heartsteel otorgan bonificaciones al equipo. Al alcanzar el breakpoint de 3, podrás elegir un Bias para potenciar sus habilidades. Al llegar a 5, podrás seleccionar un segundo Bias.</p>
+
+<Youtube src="https://www.youtube.com/watch?v=THscfnpTBA4" client:load />
+
+<h3 id="hyperpop">Hyperpop (2/3/4/5)</h3>
+
+<p><strong>Campeones:</strong> Kobuko, Ziggs, Lulu, Tristana y Teemo.</p>
+
+<p>Los campeones Hyperpop consiguen vida y velocidad de ataque.</p>
+
+<p>Después de cada combate contra otro jugador, generan Hype dependiendo de su nivel de estrellas y de los derribos que hayan conseguido. Al alcanzar determinados niveles de Hype, recibirás recompensas.</p>
+
+<Youtube src="https://www.youtube.com/watch?v=yoSsfy6HVzA" client:load />
+
+<h3 id="illbeats">Illbeats (2/3/4)</h3>
+
+<p><strong>Campeones:</strong> Illaoi, Braum, Draven y Yuumi.</p>
+
+<p>Illbeats incorpora una mecánica llamada <strong>Illbeats Mixer</strong>, que permite distribuir Decibels para otorgar diferentes estadísticas a los campeones de este Trait.</p>
+
+<p>Tu equipo también recibe una parte de las estadísticas que hayas configurado en la mezcla.</p>
+
+<Youtube src="https://www.youtube.com/watch?v=dLpJlRVK2Sk" client:load />
+
+<h3 id="ionic-spark">Ionic Spark (3/5/7)</h3>
+
+<p><strong>Campeones:</strong> Elise, Yunara, Annie, Lux, Briar, Tibbers, Aurora, Jinx, Shyvana y Gwen.</p>
+
+<p>Los fans entregan regalos a los miembros de Ionic Spark cada cierto tiempo. Además, los campeones de este Trait consiguen vida adicional.</p>
+
+<p>Los regalos pueden incluir cartas de curación, obsequios personalizados que mejoran sus estadísticas y recompensas permanentes al alcanzar los niveles superiores del Trait.</p>
+
+
+<img src="https://cmsassets.rgpub.io/sanity/images/dsfx7636/news_live/d5aec74a15f13acc8af4ec410b89ab82ab7bb5f0-1644x619.png" alt="" style="width:100%"/>
+
+<h3 id="jazz">Jazz (2/3/4)</h3>
+
+<p><strong>Campeones:</strong> Lucian, Bard, Galio y Smeech.</p>
+
+<p>Por cada Trait activo en tu equipo, excepto los Traits únicos, todos tus campeones consiguen vida adicional y Damage Amp.</p>
+
+<h3 id="kda">K/DA (3/5/7/10/13/15)</h3>
+
+<p><strong>Campeones:</strong> Lillia, Neeko, Gragas, Evelynn, Kai'Sa, Ahri, Leona y Akali.</p>
+
+<p>Los campeones K/DA lanzan nuevas canciones dependiendo de su nivel de estrellas total.</p>
+
+<p>Al comenzar el combate y durante la batalla, consiguen poder adicional por cada una de las canciones que hayan desbloqueado.</p>
+
+<Youtube src="https://www.youtube.com/watch?v=0E_vmj8Adgc" client:load />
+
+<h3 id="pentakill">Pentakill (3/5/7)</h3>
+
+<p><strong>Campeones:</strong> Gnar, Olaf, Karthus, Viego, Kayle, Yorick y Mordekaiser.</p>
+
+<p>Los campeones Pentakill consiguen daño de ataque y poder de habilidad.</p>
+
+<p>Además, los primeros enemigos que caigan por debajo de un determinado porcentaje de vida serán ejecutados y reemplazados por espectros aliados.</p>
+
+<Youtube src="https://www.youtube.com/watch?v=r69q82vu85s" client:load />
+
+<h3 id="r-and-b">R&amp;B (1/2)</h3>
+
+<p><strong>Campeones:</strong> Mel y Rell.</p>
+
+<p>Con una unidad, todo tu equipo recibe menos daño de las habilidades enemigas.</p>
+
+<p>Al alcanzar dos unidades, Mel y Rell quedan vinculadas mediante sus almas. Parte del daño que recibe Mel se transfiere a Rell, quien se cura en función del daño que Mel haya infligido.</p>
+
+<Youtube src="https://www.youtube.com/watch?v=km5sKCEPzvQ" client:load />
+
+<h3 id="rock">Rock (3/4/5/7)</h3>
+
+<p><strong>Campeones:</strong> Olaf, Varus, Camille, Swain, Locke, Vayne y Pyke.</p>
+
+<p>Rock permite invocar al <strong>Infernal Idol</strong>, una criatura que se vuelve más poderosa conforme aumentas el número de campeones de este Trait.</p>
+
+<p>En los niveles superiores, el Idol puede curarse con el daño de Rock, lanzar potentes explosiones y realizar ataques periódicos contra los enemigos cercanos.</p>
+
+<h3 id="true-damage">True Damage (3/5)</h3>
+
+<p><strong>Campeones:</strong> Kennen, Qiyana, Ekko, Senna, Yasuo y Akali.</p>
+
+<p>True Damage introduce una mecánica de riesgo y recompensa basada en el Bling.</p>
+
+<p>Conseguirás Bling al ganar en el lado A o perder en el lado B. Periódicamente podrás decidir si canjeas tus ganancias por recompensas o si sigues acumulándolas para conseguir premios mayores.</p>
+
+<p>Cada lado ofrece bonificaciones diferentes, así que tendrás que decidir cómo quieres jugar esta mecánica.</p>
+
+<Youtube src="https://www.youtube.com/watch?v=nG0jg4p7Tto" client:load />
+
+<h2 id="sinergias-unicas-set-19-de-tft">Traits únicos: campeones que brillan por sí solos</h2>
+
+<p>Además de los Traits tradicionales, Prismatic Tour incluye una gran cantidad de campeones con Traits únicos. Son unidades con mecánicas propias que pueden aportar valor a una composición sin necesitar una sinergia vertical tradicional.</p>
+
+<p>Esta es otra de las cosas que más me gustan del Set. Me recuerda a lo que sucedía con los antiguos Threats: unidades que podías incorporar a diferentes composiciones porque tenían suficiente valor por sí mismas.</p>
+
+<p>Es una forma de fomentar la flexibilidad y permitir que los jugadores construyan tableros diferentes en lugar de depender siempre de las mismas combinaciones de Traits.</p>
+
+<h3 id="8-bit">8-Bit (1) – Miss Fortune</h3>
+
+<p>Miss Fortune registra el daño total que realiza tu equipo, pero su propio daño cuenta el triple.</p>
+
+<p>Cuando consigues superar una puntuación récord, recibes un premio.</p>
+
+<Youtube src="https://www.youtube.com/watch?v=nG0jg4p7Tto" client:load />
+
+<h3 id="boy-band">Boy Band (1) – Rakan</h3>
+
+<p>Rakan está acompañado por clones que puedes colocar en el tablero.</p>
+
+<p>Estos clones tienen una parte de su vida y de su daño, y también copian sus objetos completos y Radiantes.</p>
+
+<img src="https://cmsassets.rgpub.io/sanity/images/dsfx7636/news_live/3243ca59d49ab567a0177dc97196bfdd5ceee532-1024x512.png" alt="" style="width:100%"/>
+
+<h3 id="composer">Composer (1) – Malzahar</h3>
+
+<p>Malzahar puede encontrar instrumentos místicos en la tienda.</p>
+
+<p>Cada instrumento otorga poder de habilidad al equipo, y esta bonificación se duplica para Malzahar.</p>
+
+<p>Cuando consigues reunir los cinco instrumentos y cumplir el requisito de daño, desbloqueas a Baron Nashor.</p>
+
+<Youtube src="https://www.youtube.com/watch?v=pCj8vBvxPE8" client:load />
+
+<h3 id="one-monster-band">One Monster Band (1) – Baron Nashor</h3>
+
+<p>Baron Nashor ocupa dos espacios del equipo y es imparable.</p>
+
+<p>Después de lanzar su primera habilidad, roba daño de ataque, poder de habilidad, velocidad de ataque y probabilidad de crítico a todos los enemigos.</p>
+
+<p>Es una de las unidades más llamativas del Set y, personalmente, tengo muchas ganas de probar todo lo que puede hacer en diferentes composiciones.</p>
+
+<Youtube src="https://www.youtube.com/watch?v=XGj9WfbC4HA" client:load/>
+
+<h3 id="synthwave">Synthwave (1) – Garen</h3>
+
+<p>Cuando Garen tiene poca vida, consigue un escudo basado en toda la curación y el escudo que haya recibido durante ese combate.</p>
+
+<h3 id="country">Country (1) – Alistar</h3>
+
+<p>Al comenzar el combate, si tu Alistar más fuerte tiene suficiente vida adicional, consigue Durability.</p>
+
+<Youtube src="https://www.youtube.com/watch?v=X5mmqFusycA" client:load/>
+
+<h3 id="disco">Disco (1) – Nunu &amp; Willump</h3>
+
+<p>Todo tu equipo recupera vida progresivamente.</p>
+
+<p>Si Nunu &amp; Willump lanzan suficientes habilidades, entran en <strong>Disco Fever</strong> y otorgan velocidad de ataque a todo el equipo.</p>
+
+<p>Y aquí tengo que reconocer que Nunu es uno de mis favoritos. ¡Vuelve con su característica bola! Siempre es divertido encontrar unidades con una identidad tan reconocible.</p>
+
+<Youtube src="https://www.youtube.com/watch?v=-_rsWxjj2bY" client:load/>
+
+<h3 id="emo">Emo (1) – Amumu</h3>
+
+<p>Amumu consigue armadura y resistencia mágica si comienza el combate sin aliados adyacentes. Esta bonificación aumenta según su nivel de estrellas.</p>
+
+<Youtube src="https://www.youtube.com/watch?v=nnTuD221moQ" client:load/>
+
+<h3 id="goth">Goth (1) – Zeri</h3>
+
+<p>La primera vez que tu Zeri más fuerte daña a un enemigo durante cada combate, unos murciélagos vampíricos roban parte del daño de ataque del objetivo y se lo transfieren a ella.</p>
+
+<Youtube src="https://www.youtube.com/watch?v=NCaLi3NL4Cw" client:load/>
+
+<h3 id="record-mogul">Record Mogul (1) – Dr. Mundo</h3>
+
+<p>Obtienes un Record Contract inmediatamente y periódicamente durante la partida.</p>
+
+<p>Los campeones contratados consiguen Damage Amp y, cada vez que eliminan a un enemigo, Dr. Mundo obtiene vida permanente.</p>
+
+<img src="https://cmsassets.rgpub.io/sanity/images/dsfx7636/news_live/9537b22fb00ee55f4d27736bf5fa5387182339e7-4024x2384.png" alt="" style="width:100%"/>
+
+<h3 id="indie-rising-star-superstar">Indie / Rising Star / Superstar (1) – Seraphine</h3>
+
+<p>Después de cada combate, Seraphine atrae nuevos seguidores que te otorgan un campeón aleatorio.</p>
+
+<p>Cuando consigues llevar campeones a tres estrellas, Seraphine mejora su habilidad y entrega recompensas a sus suscriptores.</p>
+
+<p>Su progresión pasa por tres etapas: Indie, Rising Star y Superstar.</p>
+
+<Youtube src="https://www.youtube.com/watch?v=bZs32jmxWlY" client:load/>
+
+<h3 id="mariachi">Mariachi (1) – Nidalee</h3>
+
+<p>Nidalee puede transformarse entre sus formas de Puma y Humana cuando lanza su habilidad y dependiendo de su vida.</p>
+
+<p>Cada forma tiene habilidades diferentes.</p>
+
+<Youtube src="https://www.youtube.com/watch?v=cO7Ac9XUmHs" client:load/>
+
+<h3 id="producer">Producer (1) – Sona</h3>
+
+<p>Cuando colocas a Sona en el tablero, puedes elegir una banda para destacar y conseguir su Trait.</p>
+
+<p>Además, Sona convierte todo el daño de ataque y velocidad de ataque adicionales que tenga en poder de habilidad.</p>
+
+<Youtube src="https://www.youtube.com/watch?v=JbmihtPZhMs" client:load/>
+
+<h3 id="tango">Tango (1) – Twisted Fate</h3>
+
+<p>Twisted Fate marca al aliado más cercano como su pareja de Tango.</p>
+
+<p>Ambos consiguen velocidad de ataque y sus ataques aplican Burn y Wound a los enemigos.</p>
+
+<p>Al comenzar el combate, Twisted Fate roba una carta por cada campeón que tengas en la tienda. Si has refrescado la tienda durante esa ronda, puedes conseguir botín dependiendo de las cartas obtenidas:</p>
+
+<ul>
+    <li><strong>1 o 2 cartas iguales:</strong> oro.</li>
+    <li><strong>3 cartas iguales:</strong> un campeón aleatorio.</li>
+    <li><strong>4 cartas iguales:</strong> un componente de objeto.</li>
+    <li><strong>5 cartas iguales:</strong> ¡una caja misteriosa!</li>
+</ul>
+
+<Youtube src="https://www.youtube.com/watch?v=SKn1aDOp_x4" client:load/>
+
+<h2 id="opinion-set-19-de-tft">Mi opinión: ¿Prismatic Tour puede ser uno de los mejores Sets de TFT?</h2>
+
+<p>Después de probar Prismatic Tour en el PBE, tengo una sensación muy clara: <strong>siento que estamos viendo una vuelta a la vida de TFT.</strong></p>
+
+<p>El Set 18 fue una etapa complicada, especialmente por todos los desafíos que supuso la transición del juego a Unreal Engine. Sin embargo, ahora empezamos a ver los beneficios de ese cambio y lo que realmente puede permitirle al equipo de desarrollo.</p>
+
+<p>Las nuevas mecánicas, las interacciones entre unidades y las posibilidades que ofrece el motor hacen que algunas ideas que antes no eran posibles ahora puedan formar parte del juego.</p>
+
+<p>Me gusta especialmente que el Set combine Traits verticales que parecen relativamente sencillos de jugar con otros que requieren mucha más planificación y ejecución. También hay unidades independientes que pueden encajar en muchas composiciones, lo que debería aportar flexibilidad a la hora de construir nuestros tableros.</p>
+
+<p>El regreso de los Unlocks, la música dinámica, las unidades de coste 7 y mecánicas como las de Classical o Gu Feng son buenos ejemplos de esa variedad.</p>
+
+<p>No quiero adelantarme a decir que será un Set perfecto ni que todas estas mecánicas estarán equilibradas desde el primer día. Eso tendremos que comprobarlo cuando llegue al servidor oficial y empecemos a descubrir el verdadero meta.</p>
+
+<p>Pero, en cuanto a creatividad y posibilidades, Prismatic Tour me parece espectacular. Tengo muchas ganas de seguir explorándolo.</p>
+
+<h2 id="cuando-sale-set-19-de-tft">¿Cuándo sale el Set 19 de TFT?</h2>
+
+<p>Según el anuncio oficial de Riot Games, <strong>Prismatic Tour estará disponible el 2 de diciembre de 2026</strong>.</p>
+
+<p>La presentación de Riot también adelanta que el Set incluirá alrededor de 100 Aumentos nuevos, actualizaciones de objetos y más novedades que todavía están por descubrir.</p>
+
+<p>Puedes consultar la presentación original en la página oficial de <a href="https://teamfighttactics.leagueoflegends.com/en-us/news/media/tft-set-19-prismatic-tour-overview/?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer">Riot Games</a>.</p>
         </div>
         <div slot="sidebar">
           <TableOfContent items={SIDEBAR}/>
         </div>
       </DynamicSection>
-
-      
-
-      <!-- Seccion 4: Consejos para Empezar el Set -->
-      <!-- <article id="consejos-inicio">
-        <h3>Consejos para Empezar el Set</h3>
-        <p>
-          Afrontar los primeros días de un nuevo set puede ser abrumador. Con estos consejos prácticos reducirás tu curva de aprendizaje y evitarás los errores más comunes de la comunidad.
-        </p>
-        
-        <div class="video-embed-container">
-          <Youtube src="https://www.youtube.com/watch?v=qoV9hH9s9RI" client:load />
-        </div>
-
-        <div class="consejos-grid">
-          <div class="consejo-item avoid">
-            <h4>❌ Qué evitar</h4>
-            <p>
-              Evita forzar una sola composición en todas tus partidas. El Set 18 recompensa fuertemente la flexibilidad, y forzar la misma mesa ignorando las rotaciones cósmicas y los aumentos orbitales es una receta segura para perder LP. Tampoco amontones a tus carrys en un solo hexágono orbital si el oponente tiene campeones de daño en área masivo.
-            </p>
-          </div>
-          <div class="consejo-item practice">
-            <h4>✔️ Qué practicar</h4>
-            <p>
-              Práctica el posicionamiento dinámico de tus carries y tanques sobre las casillas orbitales para aprovechar sus bonificaciones variables. Aprende las combinaciones de objetos híbridos (como chispa iónica o manto del ocaso) que son extremadamente potentes gracias al daño cósmico base incrementado de este set.
-            </p>
-          </div>
-          <div class="consejo-item mistakes">
-            <h4>⚠️ Qué suele hacer la gente mal</h4>
-            <p>
-              El error más común de los jugadores es descuidar las transiciones de nivel medio. Dado que los Dioses del Espacio tienen picos de poder muy marcados a nivel 7 y 8, quedarse atascado en composiciones de bajo coste (reroll de nivel 5) suele costar la partida si no se alcanza a estabilizar a tiempo con carries de coste 4 celestiales.
-            </p>
-          </div>
-        </div>
-      </article> -->
-
-      <!-- Seccion 6: Fechas del Set -->
-     
-
-      <!-- Seccion 7: Preguntas Frecuentes -->
-      <!-- <article id="preguntas-frecuentes" class="faq-section">
-        <h2>Preguntas Frecuentes (FAQ)</h2>
-        <div class="faq-list">
-          
-          <div class="faq-item">
-            <h4>¿Cuándo sale el nuevo Set 18 de TFT?</h4>
-            <p>
-              El Set 18, Dioses del Espacio, se lanzó oficialmente en todos los servidores el <strong>15 de Abril 2026</strong>. Su periodo de pruebas en el PBE comenzó el 31 de Marzo 2026.
-            </p>
-          </div>
-
-          <div class="faq-item">
-            <h4>¿Cuánto dura un Set de TFT?</h4>
-            <p>
-              Un Set principal de Teamfight Tactics dura aproximadamente <strong>4 meses</strong>. Durante este periodo se introducen múltiples parches quincenales de balance para mantener el meta competitivo saludable.
-            </p>
-          </div>
-
-          <div class="faq-item">
-            <h4>¿Cuál es el Set actual de TFT?</h4>
-            <p>
-              El Set actual activo es el <strong>Set 18: Dioses del Espacio</strong>, que reemplaza al set anterior introduciendo mecánicas celestes y tableros orbitales.
-            </p>
-          </div>
-
-          <div class="faq-item">
-            <h4>¿Qué cambia en cada Set?</h4>
-            <p>
-              Cada Set renueva por completo el catálogo de campeones, los rasgos de sinergias (clases y orígenes), añade una mecánica de juego global única, nuevos Aumentos y realiza reajustes al sistema de objetos.
-            </p>
-          </div>
-
-          <div class="faq-item">
-            <h4>¿Cuántos Sets tiene TFT en total?</h4>
-            <p>
-              Con la llegada de Dioses del Espacio, Teamfight Tactics ha completado y lanzado oficialmente <strong>18 sets temáticos</strong> desde su debut original en el año 2019.
-            </p>
-          </div>
-
-          <div class="faq-item">
-            <h4>¿Dónde puedo ver las mejores composiciones del Set?</h4>
-            <p>
-              Puedes consultar nuestra lista de mejores composiciones actualizadas en tiempo real en la sección de <a href="/tft/meta-comps-tier-list-teamfight-tactics">Meta Tier List de TFT</a>.
-            </p>
-          </div>
-
-          <div class="faq-item">
-            <h4>¿Dónde puedo aprender a jugar TFT?</h4>
-            <p>
-              Si eres principiante o buscas pulir tus fundamentos de economía y posicionamiento, te recomendamos leer nuestra completa <a href="/tft/como-jugar/">Guía para Aprender a Jugar TFT</a>.
-            </p>
-          </div>
-
-        </div>
-      </article> -->
   </PaginaBaseMaxWidth>
 </LayoutMaxWidth>
 
@@ -520,5 +866,21 @@ const SIDEBAR= [
 
   .mb-20 {
     margin-bottom: 20px;
+  }
+  p{
+    margin-block-end:12px;
+  }
+  h2{
+    margin-block-start: 0;
+    margin-block-end: 0;
+    padding-top:16px;
+    padding-bottom:12px;
+    border-top: 1px solid white
+  }
+  h3{
+    margin-block-end: 0;
+    margin-block-start: 0;
+    padding-top:16px;
+    padding-bottom:12px;
   }
 </style>

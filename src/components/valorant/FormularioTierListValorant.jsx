@@ -288,7 +288,7 @@ const maps = [
 
 const agentsRols = {
   "controller":["clove","omen","brimstone","viper","astra","harbor", "miks"],
-  "duelist":["reyna","jett","raze","pheonix","neon","iso","yoru","waylay"],
+  "duelist":["hush","reyna","jett","raze","pheonix","neon","iso","yoru","waylay"],
   "initiator":["sova","gekko","fade","breach","skye","kayo","tejo"],
   "sentinel":["cypher","sage","chamber","killjoy","vyse","deadlock","veto"],
 };
@@ -311,6 +311,7 @@ const agents = [
   "fade",
   "gekko",
   "harbor",
+  "hush",
   "iso",
   "jett",
   "kayo",

@@ -10,7 +10,7 @@
   flex-direction: row;
   width:100%;
   gap:12px;
-  width: calc(100% * 4 / 6);
+  width: 1200px;
   align-self: center;
 }
 
