@@ -1,0 +1,143 @@
+---
+import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
+import { crearJSONSchema } from "@json/schema/crearJSONSchema";
+import Set19Catalogo from "@components/TFT/Set19Catalogo.jsx";
+import set19Data from "@data/set19_es_MX.json";
+
+const title = "TFT Set 19: Prismatic Tour – Todos los Campeones, Habilidades y Sinergias (es-MX)";
+const description =
+  "Explora todos los campeones del Set 19 de Teamfight Tactics (Prismatic Tour) en español: habilidades completas, requisitos de desbloqueo (Unlock), rango de ataque, rol, coste en oro y todas las sinergias (Traits).";
+const keywords =
+  "TFT Set 19, Teamfight Tactics Set 19, campeones Set 19 TFT, sinergias Set 19 TFT, Prismatic Tour, unlocks TFT Set 19, habilidades TFT Set 19";
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const baseSchema = JSON.parse(crearJSONSchema({ title, description }));
+const JSONSchema = JSON.stringify(baseSchema);
+
+const champions = set19Data.champions || [];
+const traits = set19Data.traits || [];
+
+// Pestañas con galería de imágenes horizontales (16:9) que aparecen antes de Campeones y Rasgos.
+// Para añadir otro botón nuevo en el futuro, solo agrega otro objeto a este arreglo.
+const customTabs = [
+  {
+    id: "mecanicas",
+    label: "Mecánicas del Set",
+    images: [
+      // Agrega aquí tus imágenes 16:9 (se mostrarán una debajo de otra):
+      { src: "https://api.guiadeparche.com/tft/assets/set-mechanic-prismatic-tour.webp", alt: "mecánica del set 19 tft prismatic tour" },
+      { src: "https://api.guiadeparche.com/tft/assets/set-mechanic-unlocks.webp", alt: "mecánica del set 19 tft prismatic tour desbloqueo" },
+      { src: "https://api.guiadeparche.com/tft/assets/set-mechanic-music.webp", alt: "mecánica del set 19 tft prismatic tour música" },
+       
+    ],
+  },
+  {
+    id: "cambios-items",
+    label: "Cambios en Items",
+    images: [
+      { src: "https://api.guiadeparche.com/tft/assets/items-changes-set19-tft.webp", alt: "cambios en items del set 19 tft prismatic tour" },
+      { src: "https://api.guiadeparche.com/tft/assets/items-changes-set19-tft-1.webp", alt: "cambios en items del set 19 tft prismatic tour" },
+    ],
+  },
+  {
+    id: "aumentos",
+    label: "Aumentos",
+    images: [
+      { src: "https://api.guiadeparche.com/tft/assets/cambios-aumentos-set19-tft.webp", alt: "cambios en aumentos prismáticos y sinergias del set 19 tft prismatic tour" },
+      { src: "https://api.guiadeparche.com/tft/assets/cambios-aumentos-set19-tft-1.webp", alt: "cambios en aumentos prismáticos y sinergias del set 19 tft prismatic tour" },
+    ],
+  },
+];
+---
+
+<LayoutMaxWidth
+  title={title}
+  description={description}
+  keywords={keywords}
+  JSONSchema={JSONSchema}
+  canonical={canonical}
+>
+  <section class="set19-hero">
+    <div class="set19-hero-inner">
+      <h1 class="set19-title">Todo sobre el Set 19 de TFT Prismatic Tour</h1>
+      <p>
+        Prismatic Tour es el Set 19 de Teamfight Tactics (TFT) y llega con una temática musical que combina bandas, festivales y nuevas mecánicas que transforman la experiencia de juego. Entre sus principales novedades destacan el regreso de los campeones desbloqueables (Unlocks), las unidades de coste 7, los nuevos Traits verticales y los Solo Artists, campeones especiales diseñados para aportar mayor flexibilidad a las composiciones.
+      </p>
+      <p>
+        Una de las grandes apuestas de este Set es la integración de la música con las partidas, incorporando canciones y capas musicales que evolucionan según las unidades y las situaciones del tablero. También regresan mecánicas de progresión y desbloqueo que permiten alcanzar efectos especialmente poderosos al cumplir determinadas condiciones.
+      </p>
+      <p>
+        Prismatic Tour supone un nuevo paso en la evolución de TFT, aprovechando las posibilidades del motor gráfico de Unreal Engine para introducir nuevas formas de interactuar con el juego.
+      </p>
+      <p>
+        Si quieres conocer una valoración más personal sobre estas novedades, puedes leer el <a href="https://guiadeparche.com/blog/set-19-tft-resumen-jupeson" target="_blank">resumen y las primeras impresiones de Jupeson sobre el Set 19 de TFT</a>, después de probarlo en el PBE.
+      </p>
+      </div>
+  </section>
+
+  <Set19Catalogo
+    champions={champions}
+    traits={traits}
+    customTabs={customTabs}
+    client:load
+  />
+</LayoutMaxWidth>
+
+<style>
+  .set19-hero {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto 8px;
+    padding: 0 16px;
+    box-sizing: border-box;
+  }
+
+  .set19-hero-inner {
+    /* background: linear-gradient(135deg, rgba(16, 33, 54, 0.92), rgba(11, 22, 38, 0.96));
+    border: 1px solid #244066; */
+    border-radius: 14px;
+    padding: 0 24px;
+  }
+
+  p{
+    text-align: justify;
+  }
+
+  p > a{
+    color:var(--link-color-primary)
+  }
+
+  p > a:hover{
+    color:var(--link-color-secondary)
+  }
+
+
+  .set19-title {
+    margin: 0 0 10px;
+    font-size: 2rem;
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1.2;
+  }
+
+
+
+  @media only screen and (max-width: 900px) {
+    .set19-hero {
+      margin-top: 14px;
+      padding: 0 10px;
+    }
+
+    .set19-hero-inner {
+      padding: 18px 14px;
+    }
+
+    .set19-title {
+      font-size: 1.45rem;
+    }
+
+    .set19-subtitle {
+      font-size: 0.9rem;
+    }
+  }
+</style>

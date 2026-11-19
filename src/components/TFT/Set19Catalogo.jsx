@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef, useEffect } from "react";
 import style from "./css/Set19Catalogo.module.css";
 
 // Iconos inline de estadísticas disponibles en public/riot/assets/
@@ -119,12 +119,41 @@ const getBreakpointStyleClass = (styleCode) => {
   return style.bpBronze;
 };
 
-const Set19Catalogo = ({ champions = [], traits = [] }) => {
-  const [activeTab, setActiveTab] = useState("campeones"); // 'campeones' | 'sinergias'
+const Set19Catalogo = ({ champions = [], traits = [], customTabs = [] }) => {
+  const defaultTab = customTabs.length > 0 ? customTabs[0].id : "campeones";
+  const [activeTab, setActiveTab] = useState(defaultTab);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCost, setSelectedCost] = useState("all");
   const [selectedTrait, setSelectedTrait] = useState("all");
   const [onlyUnlockable, setOnlyUnlockable] = useState(false);
+  const catalogTopRef = useRef(null);
+
+  // Sincronizar con el hash de la URL al cargar (sin navegar a otra página)
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const hash = window.location.hash.replace(/^#/, "");
+    if (!hash) return;
+    const validIds = new Set([...customTabs.map((t) => t.id), "campeones", "sinergias"]);
+    if (validIds.has(hash)) {
+      setActiveTab(hash);
+    }
+  }, [customTabs]);
+
+  // Cambiar de pestaña manteniendo la misma página y volviendo arriba del catálogo si el usuario bajó
+  const handleSelectTab = (tabId) => {
+    setActiveTab(tabId);
+    if (typeof window !== "undefined") {
+      window.history.replaceState(null, "", `#${tabId}`);
+      if (catalogTopRef.current) {
+        const rect = catalogTopRef.current.getBoundingClientRect();
+        const headerOffset = Math.round(window.innerHeight * 0.08) + 8;
+        if (rect.top < headerOffset) {
+          const targetY = window.scrollY + rect.top - headerOffset;
+          window.scrollTo({ top: Math.max(0, targetY), behavior: "smooth" });
+        }
+      }
+    }
+  };
 
   // Mapa rápido de sinergias por apiName para cruzar en las tarjetas de campeones
   const traitsMap = useMemo(() => {
@@ -205,101 +234,175 @@ const Set19Catalogo = ({ champions = [], traits = [] }) => {
   );
 
   return (
-    <div className={style.catalogoWrapper}>
-      {/* Pestañas principales: Campeones / Sinergias */}
-      <div className={style.tabsBar}>
-        <button
-          type="button"
-          className={`${style.tabBtn} ${activeTab === "campeones" ? style.tabBtnActive : ""}`}
-          onClick={() => setActiveTab("campeones")}
-        >
-          <span>Campeones Set 19</span>
-          <span className={style.tabCount}>{champions.length}</span>
-        </button>
+    <div ref={catalogTopRef} className={style.catalogoWrapper}>
+      {/* Barra fija (sticky) de pestañas: permanece visible al bajar el scroll sin incluir filtros */}
+      <nav className={style.stickyTabsBar} aria-label="Secciones de TFT Set 19">
+        <div className={style.tabsBar} role="tablist" aria-label="Pestañas de TFT Set 19">
+          {customTabs.map((tab) => (
+            <button
+              key={tab.id}
+              type="button"
+              role="tab"
+              aria-selected={activeTab === tab.id}
+              aria-controls={`panel-${tab.id}`}
+              className={`${style.tabBtn} ${activeTab === tab.id ? style.tabBtnActive : ""}`}
+              onClick={() => handleSelectTab(tab.id)}
+            >
+              <span>{tab.label}</span>
+            </button>
+          ))}
 
-        <button
-          type="button"
-          className={`${style.tabBtn} ${activeTab === "sinergias" ? style.tabBtnActive : ""}`}
-          onClick={() => setActiveTab("sinergias")}
-        >
-          <span>Rasgos (Traits)</span>
-          <span className={style.tabCount}>{traits.length}</span>
-        </button>
-      </div>
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === "campeones"}
+            aria-controls="panel-campeones"
+            className={`${style.tabBtn} ${activeTab === "campeones" ? style.tabBtnActive : ""}`}
+            onClick={() => handleSelectTab("campeones")}
+          >
+            <span>Campeones Set 19</span>
+            <span className={style.tabCount}>{champions.length}</span>
+          </button>
 
-      {/* Panel de búsqueda y filtros */}
-      <div className={style.filtersPanel}>
-        <div className={style.filtersRow}>
-          <input
-            type="text"
-            className={style.searchInput}
-            placeholder={
-              activeTab === "campeones"
-                ? "Buscar campeón, habilidad, sinergia, rol o requisito de desbloqueo..."
-                : "Buscar sinergia o efecto..."
-            }
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
+          <button
+            type="button"
+            role="tab"
+            aria-selected={activeTab === "sinergias"}
+            aria-controls="panel-sinergias"
+            className={`${style.tabBtn} ${activeTab === "sinergias" ? style.tabBtnActive : ""}`}
+            onClick={() => handleSelectTab("sinergias")}
+          >
+            <span>Rasgos (Traits)</span>
+            <span className={style.tabCount}>{traits.length}</span>
+          </button>
+        </div>
+      </nav>
+
+      {/* VISTAS PERSONALIZADAS DE GALERÍA DE IMÁGENES 16:9: se mantienen montadas para cambiar de pestaña al instante sin recargar imágenes */}
+      {customTabs.map((tab) => {
+        const isTabActive = activeTab === tab.id;
+        return (
+          <section
+            key={tab.id}
+            id={`panel-${tab.id}`}
+            role="tabpanel"
+            className={`${style.imageGallerySection} ${!isTabActive ? style.tabPanelHidden : ""}`}
+            aria-label={tab.label}
+            aria-hidden={!isTabActive}
+          >
+            {Array.isArray(tab.images) && tab.images.length > 0 ? (
+              <div className={style.imageGalleryList}>
+                {tab.images.map((item, idx) => {
+                  const imgSrc = typeof item === "string" ? item : item?.src;
+                  const imgAlt =
+                    typeof item === "string"
+                      ? `${tab.label} ${idx + 1}`
+                      : item?.alt || `${tab.label} ${idx + 1}`;
+                  if (!imgSrc) return null;
+
+                  return (
+                    <figure key={`${tab.id}-img-${idx}`} className={style.galleryImageCard}>
+                      <img
+                        src={imgSrc}
+                        alt={imgAlt}
+                        className={style.galleryImage}
+                        loading="eager"
+                        decoding="async"
+                      />
+                    </figure>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className={style.emptyState}>
+                Próximamente: agrega tus imágenes 16:9 en <strong>{tab.label}</strong> dentro de{" "}
+                <code>src/pages/tft/set/set-19.astro</code>.
+              </div>
+            )}
+          </section>
+        );
+      })}
+
+      {/* Panel de búsqueda y filtros (solo visible en Campeones y Rasgos, NO sticky) */}
+      {(activeTab === "campeones" || activeTab === "sinergias") && (
+        <div className={style.filtersPanel}>
+          <div className={style.filtersRow}>
+            <input
+              type="text"
+              className={style.searchInput}
+              placeholder={
+                activeTab === "campeones"
+                  ? "Buscar campeón, habilidad, sinergia, rol o requisito de desbloqueo..."
+                  : "Buscar sinergia o efecto..."
+              }
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+
+            {activeTab === "campeones" && (
+              <select
+                className={style.traitSelect}
+                value={selectedTrait}
+                onChange={(e) => setSelectedTrait(e.target.value)}
+                aria-label="Filtrar por sinergia"
+              >
+                <option value="all">Todas las sinergias</option>
+                {traits.map((t) => (
+                  <option key={t.apiName} value={t.apiName}>
+                    {t.name}
+                  </option>
+                ))}
+              </select>
+            )}
+          </div>
 
           {activeTab === "campeones" && (
-            <select
-              className={style.traitSelect}
-              value={selectedTrait}
-              onChange={(e) => setSelectedTrait(e.target.value)}
-              aria-label="Filtrar por sinergia"
-            >
-              <option value="all">Todas las sinergias</option>
-              {traits.map((t) => (
-                <option key={t.apiName} value={t.apiName}>
-                  {t.name}
-                </option>
+            <div className={style.costFilterGroup}>
+              <button
+                type="button"
+                className={`${style.filterPill} ${selectedCost === "all" ? style.filterPillActive : ""}`}
+                onClick={() => setSelectedCost("all")}
+              >
+                Todos los costes
+              </button>
+
+              {availableCosts.map((cost) => (
+                <button
+                  key={cost}
+                  type="button"
+                  className={`${style.filterPill} ${style.costFilterPill} ${getCostCardClass(cost)} ${Number(selectedCost) === cost ? style.filterPillActive : ""}`}
+                  onClick={() => setSelectedCost(String(cost))}
+                >
+                  <span className={style.costFilterDot} />
+                  <span>{cost}</span>
+                  <span className={style.coinDot} />
+                </button>
               ))}
-            </select>
+
+              <button
+                type="button"
+                className={`${style.filterPill} ${onlyUnlockable ? style.unlockToggleActive : ""}`}
+                onClick={() => setOnlyUnlockable((prev) => !prev)}
+              >
+                <UnlockIcon size={13} />
+                <span>Solo Desbloqueables ({unlockableTotal})</span>
+              </button>
+            </div>
           )}
         </div>
+      )}
 
-        {activeTab === "campeones" && (
-          <div className={style.costFilterGroup}>
-            <button
-              type="button"
-              className={`${style.filterPill} ${selectedCost === "all" ? style.filterPillActive : ""}`}
-              onClick={() => setSelectedCost("all")}
-            >
-              Todos los costes
-            </button>
-
-            {availableCosts.map((cost) => (
-              <button
-                key={cost}
-                type="button"
-                className={`${style.filterPill} ${style.costFilterPill} ${getCostCardClass(cost)} ${Number(selectedCost) === cost ? style.filterPillActive : ""}`}
-                onClick={() => setSelectedCost(String(cost))}
-              >
-                <span className={style.costFilterDot} />
-                <span>{cost}</span>
-                <span className={style.coinDot} />
-              </button>
-            ))}
-
-            <button
-              type="button"
-              className={`${style.filterPill} ${onlyUnlockable ? style.unlockToggleActive : ""}`}
-              onClick={() => setOnlyUnlockable((prev) => !prev)}
-            >
-              <UnlockIcon size={13} />
-              <span>Solo Desbloqueables ({unlockableTotal})</span>
-            </button>
-          </div>
-        )}
-      </div>
-
-      {/* VISTA 1: CAMPEONES */}
-      {activeTab === "campeones" && (
-        <>
-          <div className={style.resultsInfo}>
-            Mostrando <strong>{filteredChampions.length}</strong> de {champions.length} campeones del Set 19
-          </div>
+      {/* VISTA 1: CAMPEONES (siempre en el HTML inicial para SEO; se alterna con CSS) */}
+      <section
+        id="panel-campeones"
+        role="tabpanel"
+        aria-label="Campeones Set 19"
+        className={activeTab !== "campeones" ? style.tabPanelHidden : ""}
+        aria-hidden={activeTab !== "campeones"}
+      >
+        <div className={style.resultsInfo}>
+          Mostrando <strong>{filteredChampions.length}</strong> de {champions.length} campeones del Set 19
+        </div>
 
           {filteredChampions.length === 0 ? (
             <div className={style.emptyState}>
@@ -432,15 +535,19 @@ const Set19Catalogo = ({ champions = [], traits = [] }) => {
               })}
             </div>
           )}
-        </>
-      )}
+      </section>
 
-      {/* VISTA 2: SINERGIAS (TRAITS) */}
-      {activeTab === "sinergias" && (
-        <>
-          <div className={style.resultsInfo}>
-            Mostrando <strong>{filteredTraits.length}</strong> de {traits.length} sinergias del Set 19 (es-MX)
-          </div>
+      {/* VISTA 2: SINERGIAS / RASGOS (siempre en el HTML inicial para SEO; se alterna con CSS) */}
+      <section
+        id="panel-sinergias"
+        role="tabpanel"
+        aria-label="Rasgos del Set 19"
+        className={activeTab !== "sinergias" ? style.tabPanelHidden : ""}
+        aria-hidden={activeTab !== "sinergias"}
+      >
+        <div className={style.resultsInfo}>
+          Mostrando <strong>{filteredTraits.length}</strong> de {traits.length} rasgos del Set 19
+        </div>
 
           {filteredTraits.length === 0 ? (
             <div className={style.emptyState}>
@@ -513,8 +620,7 @@ const Set19Catalogo = ({ champions = [], traits = [] }) => {
               })}
             </div>
           )}
-        </>
-      )}
+      </section>
     </div>
   );
 };
