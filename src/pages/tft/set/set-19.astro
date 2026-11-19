@@ -1,0 +1,105 @@
+---
+import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
+import { crearJSONSchema } from "@json/schema/crearJSONSchema";
+import Set19Catalogo from "@components/TFT/Set19Catalogo.jsx";
+import set19Data from "@data/set19_es_MX.json";
+
+const title = "TFT Set 19: Prismatic Tour – Todos los Campeones, Habilidades y Sinergias (es-MX)";
+const description =
+  "Explora todos los campeones del Set 19 de Teamfight Tactics (Prismatic Tour) en español: habilidades completas, requisitos de desbloqueo (Unlock), rango de ataque, rol, coste en oro y todas las sinergias (Traits).";
+const keywords =
+  "TFT Set 19, Teamfight Tactics Set 19, campeones Set 19 TFT, sinergias Set 19 TFT, Prismatic Tour, unlocks TFT Set 19, habilidades TFT Set 19";
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const baseSchema = JSON.parse(crearJSONSchema({ title, description }));
+const JSONSchema = JSON.stringify(baseSchema);
+
+const champions = set19Data.champions || [];
+const traits = set19Data.traits || [];
+---
+
+<LayoutMaxWidth
+  title={title}
+  description={description}
+  keywords={keywords}
+  JSONSchema={JSONSchema}
+  canonical={canonical}
+>
+  <section class="set19-hero">
+    <div class="set19-hero-inner">
+      <span class="set19-badge">TFT Set 19 · Prismatic Tour (es-MX)</span>
+      <h1 class="set19-title">Campeones y Sinergias de TFT Set 19</h1>
+      <p class="set19-subtitle">
+        Consulta todos los campeones, habilidades, costes, requisitos de desbloqueo (Unlock), roles, rangos de ataque y todas las sinergias del nuevo Set 19.
+      </p>
+    </div>
+  </section>
+
+  <Set19Catalogo champions={champions} traits={traits} client:load />
+</LayoutMaxWidth>
+
+<style>
+  .set19-hero {
+    width: 100%;
+    max-width: 1200px;
+    margin: 24px auto 8px;
+    padding: 0 16px;
+    box-sizing: border-box;
+  }
+
+  .set19-hero-inner {
+    background: linear-gradient(135deg, rgba(16, 33, 54, 0.92), rgba(11, 22, 38, 0.96));
+    border: 1px solid #244066;
+    border-radius: 14px;
+    padding: 26px 24px;
+    text-align: center;
+  }
+
+  .set19-badge {
+    display: inline-block;
+    background: rgba(77, 166, 255, 0.15);
+    border: 1px solid rgba(77, 166, 255, 0.45);
+    color: #7cc6ff;
+    font-size: 0.82rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 999px;
+    margin-bottom: 10px;
+    letter-spacing: 0.03em;
+  }
+
+  .set19-title {
+    margin: 0 0 10px;
+    font-size: 2rem;
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1.2;
+  }
+
+  .set19-subtitle {
+    margin: 0 auto;
+    max-width: 760px;
+    font-size: 0.98rem;
+    line-height: 1.5;
+    color: #b7cae0;
+  }
+
+  @media only screen and (max-width: 900px) {
+    .set19-hero {
+      margin-top: 14px;
+      padding: 0 10px;
+    }
+
+    .set19-hero-inner {
+      padding: 18px 14px;
+    }
+
+    .set19-title {
+      font-size: 1.45rem;
+    }
+
+    .set19-subtitle {
+      font-size: 0.9rem;
+    }
+  }
+</style>
