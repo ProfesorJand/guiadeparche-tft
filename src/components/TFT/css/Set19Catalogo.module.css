@@ -4,17 +4,24 @@
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px 16px 60px;
+  padding: 0 16px 60px;
   color: #e8eef7;
   box-sizing: border-box;
 }
 
-/* Barra superior de pestañas (Campeones / Sinergias) */
+/* Barra superior fija (sticky) de pestañas */
+.stickyTabsBar {
+  position: sticky;
+  top: var(--height-header, 64px);
+  z-index: 50;
+  padding: 12px 0;
+  margin-bottom: 22px;
+}
+
 .tabsBar {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   justify-content: center;
-  margin-bottom: 24px;
   flex-wrap: wrap;
 }
 
@@ -23,14 +30,15 @@
   color: #a8bdd8;
   border: 1px solid #243e61;
   border-radius: 10px;
-  padding: 12px 24px;
-  font-size: 1rem;
+  padding: 11px 20px;
+  font-size: 0.96rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  white-space: nowrap;
 }
 
 .tabBtn:hover {
@@ -51,6 +59,42 @@
   padding: 2px 8px;
   border-radius: 999px;
   font-size: 0.82rem;
+}
+
+/* Galería vertical de imágenes horizontales (16:9) para Mecánicas, Cambios en Items, etc. */
+.imageGallerySection {
+  width: 100%;
+}
+
+.tabPanelHidden {
+  display: none;
+}
+
+.imageGalleryList {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+.galleryImageCard {
+  margin: 0;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #081220;
+  border: 1px solid #244066;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.38);
+}
+
+.galleryImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
 /* Barra de filtros y búsqueda */
@@ -552,11 +596,25 @@
   gap: 3px;
 }
 
+.traitCardNameRow {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
 .traitCardName {
   margin: 0;
   font-size: 1.12rem;
   font-weight: 700;
   color: #ffffff;
+  text-align: left;
+}
+
+.traitCardNameEn {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #8ea9c9;
 }
 
 .traitBreakpointsRow {
@@ -651,15 +709,38 @@
     padding: 12px 10px 44px;
   }
 
+  .stickyTabsBar {
+    padding: 8px 0;
+    margin-bottom: 14px;
+  }
+
   .tabsBar {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
     gap: 8px;
+    padding-bottom: 2px;
+  }
+
+  .tabsBar::-webkit-scrollbar {
+    display: none;
   }
 
   .tabBtn {
-    flex: 1;
+    flex: 0 0 auto;
     justify-content: center;
-    padding: 10px 14px;
-    font-size: 0.92rem;
+    padding: 9px 14px;
+    font-size: 0.88rem;
+  }
+
+  .imageGalleryList {
+    gap: 12px;
+  }
+
+  .galleryImageCard {
+    border-radius: 8px;
   }
 
   .filtersPanel {
