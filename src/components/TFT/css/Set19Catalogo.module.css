@@ -1,0 +1,704 @@
+/* Estilos para el catálogo de Campeones y Sinergias de TFT Set 19 (Prismatic Tour) */
+
+.catalogoWrapper {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 16px 60px;
+  color: #e8eef7;
+  box-sizing: border-box;
+}
+
+/* Barra superior de pestañas (Campeones / Sinergias) */
+.tabsBar {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.tabBtn {
+  background: #102036;
+  color: #a8bdd8;
+  border: 1px solid #243e61;
+  border-radius: 10px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tabBtn:hover {
+  background: #172d4a;
+  color: #ffffff;
+  border-color: #3b6396;
+}
+
+.tabBtnActive {
+  background: linear-gradient(135deg, #1d4e89, #15345c);
+  color: #ffffff;
+  border-color: #4da6ff;
+  box-shadow: 0 4px 16px rgba(77, 166, 255, 0.25);
+}
+
+.tabCount {
+  background: rgba(255, 255, 255, 0.12);
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+}
+
+/* Barra de filtros y búsqueda */
+.filtersPanel {
+  background: #0d1a2d;
+  border: 1px solid #1e3554;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.filtersRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.searchInput {
+  flex: 1;
+  min-width: 220px;
+  background: #081220;
+  border: 1px solid #254066;
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: #ffffff;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.searchInput:focus {
+  border-color: #4da6ff;
+}
+
+.traitSelect {
+  background: #081220;
+  border: 1px solid #254066;
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: #e8eef7;
+  font-size: 0.9rem;
+  min-width: 190px;
+  cursor: pointer;
+}
+
+.costFilterGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.filterPill {
+  background: #13253e;
+  color: #c2d4ea;
+  border: 1px solid #264268;
+  border-radius: 8px;
+  padding: 7px 13px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.filterPill:hover {
+  background: #1b3457;
+  color: #ffffff;
+}
+
+.filterPillActive {
+  background: #255899;
+  color: #ffffff;
+  border-color: #66b3ff;
+}
+
+.costFilterPill {
+  border-color: var(--cost-border, #264268);
+}
+
+.costFilterPill:hover,
+.costFilterPill.filterPillActive {
+  background: var(--cost-bg, #255899);
+  border-color: var(--cost-color, #66b3ff);
+  color: #ffffff;
+}
+
+.costFilterDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--cost-color, #9aa7b8);
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.unlockToggleActive {
+  background: linear-gradient(135deg, #5a2d82, #3c1e66);
+  color: #ffffff;
+  border-color: #b47cff;
+}
+
+.resultsInfo {
+  font-size: 0.88rem;
+  color: #8ea9c9;
+  margin-bottom: 14px;
+}
+
+/* Paleta oficial de colores por coste de campeón en TFT */
+.cardCost1 {
+  --cost-color: #9aa7b8;
+  --cost-border: rgba(154, 167, 184, 0.55);
+  --cost-bg: rgba(154, 167, 184, 0.18);
+  --cost-glow: rgba(154, 167, 184, 0.2);
+}
+
+.cardCost2 {
+  --cost-color: #2ecc71;
+  --cost-border: rgba(46, 204, 113, 0.58);
+  --cost-bg: rgba(46, 204, 113, 0.18);
+  --cost-glow: rgba(46, 204, 113, 0.22);
+}
+
+.cardCost3 {
+  --cost-color: #3498db;
+  --cost-border: rgba(52, 152, 219, 0.65);
+  --cost-bg: rgba(52, 152, 219, 0.2);
+  --cost-glow: rgba(52, 152, 219, 0.25);
+}
+
+.cardCost4 {
+  --cost-color: #b545f5;
+  --cost-border: rgba(181, 69, 245, 0.65);
+  --cost-bg: rgba(181, 69, 245, 0.2);
+  --cost-glow: rgba(181, 69, 245, 0.26);
+}
+
+.cardCost5 {
+  --cost-color: #f1c40f;
+  --cost-border: rgba(241, 196, 15, 0.7);
+  --cost-bg: rgba(241, 196, 15, 0.2);
+  --cost-glow: rgba(241, 196, 15, 0.26);
+}
+
+.cardCost7 {
+  --cost-color: #ff66c4;
+  --cost-border: rgba(255, 102, 196, 0.72);
+  --cost-bg: rgba(255, 102, 196, 0.22);
+  --cost-glow: rgba(255, 102, 196, 0.28);
+}
+
+/* Grid de tarjetas de campeones (4 columnas en escritorio, misma altura por fila) */
+.championsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  align-items: stretch;
+}
+
+.championCard {
+  background: #102136;
+  border: 1px solid var(--cost-border, #1e3758);
+  border-top: 3px solid var(--cost-color, #9aa7b8);
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.championCard:hover {
+  transform: translateY(-2px);
+  border-color: var(--cost-color, #345d91);
+  box-shadow: 0 10px 26px var(--cost-glow, rgba(0, 0, 0, 0.4));
+}
+
+/* Cabecera de la tarjeta del campeón (Nombre + Coste + Color de coste) */
+.champHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 12px;
+  background: linear-gradient(90deg, var(--cost-bg, rgba(154, 167, 184, 0.14)) 0%, #0d1b2e 82%);
+  border-bottom: 2px solid var(--cost-color, #9aa7b8);
+}
+
+.champName {
+  margin: 0;
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.champCost {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: var(--cost-bg, rgba(154, 167, 184, 0.18));
+  border: 1px solid var(--cost-color, #9aa7b8);
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #ffffff;
+  flex-shrink: 0;
+}
+
+.coinDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fff2a6, #d99b1e 70%, #8a5c00);
+  border: 1px solid #ffe47a;
+  display: inline-block;
+}
+
+/* Banner de imagen del campeón (ruta icon) con sinergias superpuestas */
+.champBanner {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #07101c;
+  overflow: hidden;
+}
+
+.champSplashImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+  display: block;
+}
+
+.champBannerGradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(6, 14, 26, 0.88) 0%,
+    rgba(6, 14, 26, 0.45) 45%,
+    rgba(6, 14, 26, 0.08) 100%
+  );
+  pointer-events: none;
+}
+
+.unlockCornerBadge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(20, 14, 48, 0.88);
+  border: 1.5px solid #b48cff;
+  color: #e4d4ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.bannerTraitsOverlay {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  z-index: 2;
+}
+
+.bannerTraitItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.95);
+}
+
+.bannerTraitIcon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.9));
+}
+
+/* Cuerpo de información de la tarjeta */
+.champBody {
+  padding: 12px 13px 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+
+/* Bloque de Desbloqueo (Unlock) */
+.unlockBox {
+  background: rgba(94, 53, 158, 0.16);
+  border: 1px solid rgba(169, 126, 255, 0.35);
+  border-radius: 8px;
+  padding: 9px 11px;
+  font-size: 0.86rem;
+  color: #e2d8f8;
+}
+
+.unlockTitle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  color: #cbb0ff;
+  margin-bottom: 5px;
+}
+
+.unlockList {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  line-height: 1.38;
+}
+
+/* Fila de Rol + Rango de ataque */
+.roleRangeRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.rolePillsGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.rolePill {
+  background: #1a304d;
+  border: 1px solid #2d4c73;
+  color: #dce9f9;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.rangeBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #d6e4f5;
+  font-size: 0.92rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* Cabecera de habilidad (Icono + Nombre + Maná) */
+.abilityHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 4px;
+}
+
+.abilityTitleGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.abilityIcon {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid #305078;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: #081220;
+}
+
+.abilityName {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.25;
+}
+
+.manaBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: #7cc6ff;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Descripción de habilidad */
+.abilityDesc {
+  font-size: 0.87rem;
+  line-height: 1.48;
+  color: #d4e0ef;
+  word-break: break-word;
+}
+
+.abilityDesc strong {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.abilityDesc em {
+  color: #93acc9;
+  font-style: italic;
+}
+
+.inlineStatIcon {
+  width: 14px;
+  height: 14px;
+  vertical-align: -2px;
+  margin: 0 2px;
+  display: inline-block;
+}
+
+.inlineStatLabel {
+  color: #79d4ff;
+  font-weight: 700;
+  font-size: 0.82em;
+}
+
+/* ==================== SECCIÓN DE SINERGIAS (TRAITS) ==================== */
+
+.traitsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  align-items: stretch;
+}
+
+.traitCard {
+  background: #102136;
+  border: 1px solid #1e3758;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  height: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.traitCardHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #1e3758;
+}
+
+.traitIconBox {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: #0a1524;
+  border: 1px solid #2b4a73;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.traitCardIcon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.traitCardTitleWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.traitCardName {
+  margin: 0;
+  font-size: 1.12rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.traitBreakpointsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.breakpointBadge {
+  font-size: 0.74rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 5px;
+  background: #1c314d;
+  color: #d7e4f5;
+}
+
+.bpBronze { background: rgba(181, 118, 63, 0.25); color: #e8a76e; border: 1px solid rgba(205, 127, 50, 0.45); }
+.bpSilver { background: rgba(164, 184, 206, 0.22); color: #dce7f5; border: 1px solid rgba(192, 208, 224, 0.45); }
+.bpGold { background: rgba(241, 196, 15, 0.22); color: #ffe066; border: 1px solid rgba(241, 196, 15, 0.45); }
+.bpPrismatic { background: linear-gradient(135deg, rgba(168, 122, 255, 0.35), rgba(85, 224, 255, 0.3)); color: #ffffff; border: 1px solid rgba(199, 155, 255, 0.65); }
+
+.traitDesc {
+  font-size: 0.9rem;
+  line-height: 1.52;
+  color: #d4e0ef;
+}
+
+.traitDesc strong {
+  color: #ffffff;
+}
+
+.traitChampsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(30, 55, 88, 0.7);
+}
+
+.traitMiniChamp {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  width: 70px;
+  background: #0a1626;
+  border: 1px solid var(--cost-border, #223c5e);
+  border-top: 2px solid var(--cost-color, #9aa7b8);
+  border-radius: 8px;
+  padding: 6px 4px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.traitMiniChampImg {
+  width: 50px;
+  height: 50px;
+  border-radius: 6px;
+  border: 1.5px solid var(--cost-color, #9aa7b8);
+  object-fit: cover;
+  display: block;
+}
+
+.traitMiniChampName {
+  font-size: 0.74rem;
+  font-weight: 600;
+  line-height: 1.18;
+  color: #dce9f9;
+  width: 100%;
+  word-break: break-word;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 40px 20px;
+  background: #0d1a2d;
+  border: 1px dashed #2b4a73;
+  border-radius: 12px;
+  color: #93acc9;
+}
+
+/* Diseño Responsivo para Tablets y Móviles (Regla 8) */
+@media only screen and (max-width: 1200px) {
+  .championsGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  .catalogoWrapper {
+    padding: 12px 10px 44px;
+  }
+
+  .tabsBar {
+    gap: 8px;
+  }
+
+  .tabBtn {
+    flex: 1;
+    justify-content: center;
+    padding: 10px 14px;
+    font-size: 0.92rem;
+  }
+
+  .filtersPanel {
+    padding: 12px;
+  }
+
+  .searchInput,
+  .traitSelect {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .championsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .traitsGrid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .champHeader {
+    padding: 9px 12px;
+  }
+
+  .champBody {
+    padding: 10px 12px 14px;
+  }
+
+  .abilityDesc,
+  .traitDesc {
+    font-size: 0.85rem;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .championsGrid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+}
