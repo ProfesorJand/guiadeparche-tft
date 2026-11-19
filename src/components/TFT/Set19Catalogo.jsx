@@ -222,7 +222,7 @@ const Set19Catalogo = ({ champions = [], traits = [] }) => {
           className={`${style.tabBtn} ${activeTab === "sinergias" ? style.tabBtnActive : ""}`}
           onClick={() => setActiveTab("sinergias")}
         >
-          <span>Sinergias (Traits)</span>
+          <span>Rasgos (Traits)</span>
           <span className={style.tabCount}>{traits.length}</span>
         </button>
       </div>
@@ -298,7 +298,7 @@ const Set19Catalogo = ({ champions = [], traits = [] }) => {
       {activeTab === "campeones" && (
         <>
           <div className={style.resultsInfo}>
-            Mostrando <strong>{filteredChampions.length}</strong> de {champions.length} campeones del Set 19 (es-MX)
+            Mostrando <strong>{filteredChampions.length}</strong> de {champions.length} campeones del Set 19
           </div>
 
           {filteredChampions.length === 0 ? (
@@ -466,7 +466,12 @@ const Set19Catalogo = ({ champions = [], traits = [] }) => {
                       </div>
 
                       <div className={style.traitCardTitleWrap}>
-                        <h2 className={style.traitCardName}>{trait.name}</h2>
+                        <div className={style.traitCardNameRow}>
+                          <h2 className={style.traitCardName}>{trait.name}</h2>
+                          {trait.name_EN && trait.name_EN.toLowerCase() !== trait.name.toLowerCase() && (
+                            <span className={style.traitCardNameEn}>({trait.name_EN})</span>
+                          )}
+                        </div>
                         {Array.isArray(trait.effects) && trait.effects.length > 0 && (
                           <div className={style.traitBreakpointsRow}>
                             {trait.effects.map((eff, idx) => (

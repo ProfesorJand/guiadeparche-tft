@@ -552,11 +552,25 @@
   gap: 3px;
 }
 
+.traitCardNameRow {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
 .traitCardName {
   margin: 0;
   font-size: 1.12rem;
   font-weight: 700;
   color: #ffffff;
+  text-align: left;
+}
+
+.traitCardNameEn {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #8ea9c9;
 }
 
 .traitBreakpointsRow {
