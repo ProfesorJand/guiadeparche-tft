@@ -54,7 +54,7 @@ const GuiaFreeTFTMeta = ({comp, isInfografia=false, edit=false, isIndividual=fal
       <Header2 comp={comp} setHoveredAugment={setHoveredAugment} augmentRef={augmentRef} allChampionsTFT={safeChampionsTFT} allItemsTFT={safeItemsTFT} allAugmentsTFT={safeAugmentsTFT} activeTableroIndex={activeTableroIndex} setActiveTableroIndex={setActiveTableroIndex}></Header2>
       {/* <FooterTooltip augment={hoveredAugment} tooltipRef={tooltipRef} edit={edit} isInfografia={isInfografia}></FooterTooltip> */}
       <FooterBuild comp={comp}></FooterBuild>
-      <FooterLogos edit={edit} ></FooterLogos>
+      <FooterLogos edit={edit} comp={comp}></FooterLogos>
       
       {comp?.videosYoutube && comp.videosYoutube.filter(v => v.trim() !== "").length > 0 && (
         <div className={`${style.borderBlock} ${style.blockColumn} hideForCapture`} style={{ marginTop: '15px' }}>
@@ -706,9 +706,18 @@ const FooterBuild = ({comp})=>{
   )
 }
 
-const FooterLogos = ({edit})=>{
+const FooterLogos = ({edit, comp})=>{
   const activeVersion = useStore(versionTFT);
-  const setNumber = activeVersion === "pbe" ? setNumberPBE : setNumberLatest;
+  const setNumber = String(
+    comp?.set_number ||
+    (comp?.version === "pbe"
+      ? setNumberPBE
+      : comp?.version === "latest"
+        ? setNumberLatest
+        : activeVersion === "pbe"
+          ? setNumberPBE
+          : setNumberLatest)
+  );
 
   const [logos, setLogos] = useState([{
     label: "Jupeson",
@@ -753,7 +762,19 @@ const FooterLogos = ({edit})=>{
       <div className={style.containersLogos}>
       {logos.filter(logo => logo.show).map((logo, index) => (
         <div key={index} className={style.containerLogo}>
-          <img className={`${style.imgLogo} ${logo.label === "SetTFT" ? style.imgLogoSetTFT : logo.label === "Jupeson" ? style.imgLogoJupeson : logo.label === "Guiadeparche" ? style.imgLogoGuiadeparche : ''}`} src={logo.url} alt={logo.label} />
+          <img
+            className={`${style.imgLogo} ${
+              logo.label === "SetTFT"
+                ? `${style.imgLogoSetTFT} ${setNumber === "19" ? style.imgLogoSetTFT19 : ""}`
+                : logo.label === "Jupeson"
+                  ? style.imgLogoJupeson
+                  : logo.label === "Guiadeparche"
+                    ? style.imgLogoGuiadeparche
+                    : ""
+            }`}
+            src={logo.url}
+            alt={logo.label}
+          />
           {logo.label === "Guiadeparche" && <img src="/textoGuiadeparcheSinEspacios.png" className={style.logoTextGuiadeparche}/>}
         </div>
       ))}

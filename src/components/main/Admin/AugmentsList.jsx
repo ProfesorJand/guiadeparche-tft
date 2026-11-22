@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import style from "./css/AugmentsList.module.css";
-import { dataTFTAllAugments, versionTFT, setNumberLatest, setNumberPBE } from "@stores/dataTFT";
+import { dataTFTAllAugments, dataTFTAugmentsBySet, versionTFT, setNumberLatest, setNumberPBE } from "@stores/dataTFT";
 import { useStore } from "@nanostores/react";
 import { getLocalTftImage } from "@utils/images";
 import ImgAugment from "@components/TFT/ImgAugment";
@@ -8,17 +8,20 @@ import ImgAugment from "@components/TFT/ImgAugment";
 const AugmentsList = ({ onSelectAugment, showName= false }) => {
     const [search, setSearch] = useState("");
     const allAugments = useStore(dataTFTAllAugments);
+    const augmentsBySet = useStore(dataTFTAugmentsBySet);
     const currentVersion = useStore(versionTFT);
-    const versionNumber = currentVersion === "latest" ? setNumberLatest : setNumberPBE
+    const versionNumber = String(currentVersion === "latest" ? setNumberLatest : setNumberPBE);
 
     const handleDragStart = (e, augment) => {
         e.dataTransfer.setData("augment", JSON.stringify(augment));
         e.dataTransfer.setData("aumento", JSON.stringify(augment));
     };
 
-    const baseAugments = currentVersion === "pbe" 
-        ? allAugments?.filter(a => a.apiName && a.apiName.includes("DA_"))
-        : allAugments;
+    // Filtrar estrictamente por el set activo para no mezclar aumentos entre sets (Set 18 / 19 / futuros)
+    const baseAugments =
+        augmentsBySet?.[versionNumber] ||
+        allAugments?.filter(a => String(a.tft_set) === versionNumber) ||
+        [];
 
     const filteredAugments = baseAugments?.filter(aug => {
         if (!aug || (!aug.name && !aug.name_EN)) return false;

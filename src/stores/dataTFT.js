@@ -113,7 +113,9 @@ export const assets3Estrellas = `${apiGPTFT}3-estrellas.webp`;
 export const dataTFT = deepMap(initialStateDataTFT)
 export const dataTFTAllItems = atom(initialStateDataTFTItems);
 export const dataTFTAllAugments = atom([]);
+export const dataTFTAugmentsBySet = atom({});
 export const dataDBTFTAumentos = atom({});
+export const dataDBTFTAumentosError = atom(null);
 export const dataTFTSetData = atom(initialStateDataTFTSetData);
 export const dataTFTChampions = atom(initialStateDataTFTChampions);
 export const dataTFTTraits = atom([]);
@@ -238,7 +240,7 @@ export const loadDataTFTFromAPI = ({ version = versionTFT.get(), idioma = "es", 
         
         // Evitar race condition: solo actualizar si la versión no ha cambiado mientras hacíamos el fetch
         if (version === versionTFT.get()) {
-          updateDataTFT(data);
+          updateDataTFT(data, targetSet);
         }
         await loadConstantes();
       } catch (e) {
@@ -269,11 +271,18 @@ export const loadDataDBTFTAumentos = async (version = versionTFT.get()) => {
     const url = `https://api.guiadeparche.com/tft/get-aumentos-categorias.php?set=${targetSet}`;
     const response = await fetch(url);
     const result = await response.json();
-    if (result.status === "success") {
+    if (result.status === "success" && result.data) {
+      dataDBTFTAumentosError.set(null);
       dataDBTFTAumentos.set(result.data);
+    } else {
+      // Limpiar estado previo para evitar arrastrar categorías de otro set cuando falta la tabla/columnas del set nuevo
+      dataDBTFTAumentos.set({});
+      dataDBTFTAumentosError.set(result.message || `No se pudieron cargar las categorías del Set ${targetSet}`);
     }
   } catch(e) {
     console.error("Error fetching dataDBTFTAumentos", e);
+    dataDBTFTAumentos.set({});
+    dataDBTFTAumentosError.set(e?.message || "Error de conexión al cargar categorías de aumentos");
   }
 }
 
@@ -343,13 +352,20 @@ const generateCraftableList = (allItems, setItemNames, setNumber) => {
   return list;
 };
 
-export const updateDataTFT = async (data) => {
+export const updateDataTFT = async (data, targetSetOverride = null) => {
   // Soporte para la nueva estructura de la BD (data.data) o la vieja (CommunityDragon fallback)
   const isFromDB = !!data.data;
   const payload = isFromDB ? data.data : data;
+  const activeSetNumber = String(
+    targetSetOverride || (versionTFT.get() === "pbe" ? setNumberPBE : setNumberLatest)
+  );
 
   const items = payload.items || [];
-  const augments = payload.aumentos || []; // Nuevo para los aumentos
+  const rawAugments = payload.aumentos || []; // Nuevo para los aumentos
+  const augments = rawAugments.map((a) => ({
+    ...a,
+    tft_set: String(a.tft_set || activeSetNumber),
+  }));
   const champions = isFromDB ? payload.champions : payload.sets?.[versionTFT.get() === "pbe" ? setNumberPBE : setNumberLatest]?.champions;
   const traits = isFromDB ? payload.traits : payload.sets?.[versionTFT.get() === "pbe" ? setNumberPBE : setNumberLatest]?.traits;
   dataTFT.set(payload);
@@ -369,10 +385,18 @@ export const updateDataTFT = async (data) => {
   const newItems = (allItems || []).filter(i => !existingItems.some(ei => ei.apiName === i.apiName));
   const mergedItems = [...existingItems, ...newItems];
   dataTFTAllItems.set(mergedItems);
-  
+
+  // Guardar aumentos estrictamente separados por set para los paneles de Admin y formularios
+  dataTFTAugmentsBySet.set({
+    ...(dataTFTAugmentsBySet.get() || {}),
+    [activeSetNumber]: augments,
+  });
+
+  // Mantener caché global combinada para mostrar composiciones históricas sin romper lookups
   const existingAugments = dataTFTAllAugments.get() || [];
-  const newAugments = (augments || []).filter(a => !existingAugments.some(ea => ea.apiName === a.apiName));
-  const mergedAugments = [...existingAugments, ...newAugments];
+  const incomingApiNames = new Set(augments.map((a) => a.apiName));
+  const preservedAugments = existingAugments.filter((ea) => !incomingApiNames.has(ea.apiName));
+  const mergedAugments = [...preservedAugments, ...augments];
   dataTFTAllAugments.set(mergedAugments);
 
   const allItemNames = mergedItems.map(i => i.apiName);

@@ -183,3 +183,23 @@
   border-color: #007bff;
   font-weight: bold;
 }
+
+.dbErrorBanner {
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  background: rgba(239, 68, 68, 0.16);
+  border: 1px solid #ef4444;
+  color: #fecaca;
+  font-size: 0.9rem;
+}
+
+@media only screen and (max-width: 900px) {
+  .searchInput {
+    width: 100%;
+  }
+
+  .dbErrorBanner {
+    font-size: 0.84rem;
+  }
+}

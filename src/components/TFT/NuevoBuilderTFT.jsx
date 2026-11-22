@@ -5,7 +5,8 @@ import { dataTFTChampions, initialTFT_SET, dataTFTAllItems, dataTFTTraits, findT
 import { getLocalTftImage } from "@utils/images";
 import { composicionTFT as datosCompos, actualizarComposicionTFT } from "@stores/tft/dataFormularioCrear.js";
 import { traitsColors } from "@functions/campeonestft.js";
-import ContextMenuBuilderNew from "./ContextMenuBuilderNew.jsx";
+import ContextMenuBuilderNew, { OCEANSONG_INSTRUMENTS } from "./ContextMenuBuilderNew.jsx";
+import { isChampionUnlockable } from "@utils/unlockableChampions.js";
 
 import ImgItem from "./ImgItem.jsx";
 const championsColor = [
@@ -47,6 +48,7 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
     const hexIndex = champ.fila * 10 + champ.col;
 
     const isEspinaNegra = champ.sinergiaExtraMissFortune === "Espina Negra";
+    const isOceansongInstrument = Boolean(champ.oceansongInstrument);
     const isSet19Aatrox = champ?.apiNameCampeon === "tft19_aatrox";
     const champData = safeGlobalChampions.find(c => c.apiName === champ?.apiNameCampeon) || (isSet19Aatrox ? {
       apiName: "tft19_aatrox",
@@ -56,7 +58,7 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
       traits: [],
     } : null);
     
-    if (!champData && !isEspinaNegra) return;
+    if (!champData && !isEspinaNegra && !isOceansongInstrument) return;
 
     let itemsData = [];
     if (champData) {
@@ -123,6 +125,8 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
       extraSynergyKhazix: champ.sinergiasExtraKhazix || [],
       isRiftbeast: champ.isRiftbeast || false,
       heartsteelSelector: champ.heartsteelSelector || "",
+      oceansongInstrument: champ.oceansongInstrument || "",
+      isUnlockable: isChampionUnlockable(champData),
       hexagono: hexIndex
     };
   });
@@ -187,7 +191,8 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
         sinergiaExtraMissFortune: champ.extraSynergy || "",
         sinergiasExtraKhazix: champ.extraSynergyKhazix || [],
         isRiftbeast: champ.isRiftbeast || false,
-        heartsteelSelector: champ.heartsteelSelector || ""
+        heartsteelSelector: champ.heartsteelSelector || "",
+        oceansongInstrument: champ.oceansongInstrument || ""
       };
     });
 
@@ -270,7 +275,8 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
         extraSynergy: targetChampion?.extraSynergy === "Espina Negra" ? "Espina Negra" : null,
         extraSynergyKhazix: [],
         isRiftbeast: false,
-        heartsteelSelector: ""
+        heartsteelSelector: "",
+        oceansongInstrument: ""
       };
 
       if (isFromBoard) {
@@ -390,7 +396,16 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
 
           {row.map(hexIndex => {
             const champion = boardData[hexIndex];
-            const hexColor = champion && champion.apiName ? championsColor[champion.coste] || championsColor[0] : championsColor[0];
+            const oceansongInst =
+              champion && !champion.apiName && champion.oceansongInstrument
+                ? OCEANSONG_INSTRUMENTS.find((inst) => inst.key === champion.oceansongInstrument)
+                : null;
+            const hexColor =
+              champion && champion.apiName
+                ? championsColor[champion.coste] || championsColor[0]
+                : oceansongInst
+                  ? "var(--color-hex-cost-5)"
+                  : championsColor[0];
             const isEspinaNegra = champion && champion.extraSynergy === "Espina Negra";
 
             return (
@@ -400,9 +415,20 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
                 onDrop={readOnly ? undefined : (e) => handleDrop(e, hexIndex)}
                 onDragOver={readOnly ? undefined : (e) => e.preventDefault()}
                 onContextMenu={readOnly ? undefined : (e) => handleContextMenu(e, hexIndex)}
+                onClick={
+                  readOnly
+                    ? undefined
+                    : (e) => {
+                        if (!champion || !champion.apiName) {
+                          e.stopPropagation();
+                          setActiveMenu(activeMenu === hexIndex ? null : hexIndex);
+                        }
+                      }
+                }
                 style={{ 
                   boxShadow: isEspinaNegra ? "0 0 15px 3px rgba(128, 0, 128, 0.8)" : "none", 
                   borderRadius: "50%",
+                  cursor: !readOnly && (!champion || !champion.apiName) ? "pointer" : undefined,
                   transition: "box-shadow 0.3s ease" 
                 }}
               >
@@ -426,6 +452,20 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
                     }}></div>
                   )}
                 </div>
+
+                {oceansongInst && (
+                  <div
+                    className={style.oceansongInstrumentWrap}
+                    title={`${oceansongInst.label} (Pop Playero)`}
+                  >
+                    <img
+                      className={style.oceansongInstrumentImg}
+                      src={oceansongInst.icon}
+                      alt={oceansongInst.label}
+                    />
+                    <span className={style.nombreCampeon}>{oceansongInst.label}</span>
+                  </div>
+                )}
 
                 {champion && champion.apiName && (
                   <div
@@ -534,6 +574,19 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
                               ? "Heartsteel Naranja"
                               : "Heartsteel Azul"
                           }
+                        />
+                      </div>
+                    )}
+
+                    {champion.isUnlockable && (
+                      <div
+                        className={style.unlockBuffBadge}
+                        title="Campeón Desbloqueable (Unlock)"
+                      >
+                        <img
+                          className={style.unlockBuffImg}
+                          src="/tft/assets/unlock_badge.png"
+                          alt="Desbloqueable"
                         />
                       </div>
                     )}
