@@ -167,13 +167,16 @@ useEffect(()=>{
               </div>
               <Composicion compo={CompToShow} showHide={true} admin={false} show={false} allwaysOpen={true}/>
               <div className={style.lowerStyle}>
-                {showMovilnetLogo && 
-                  <div className={style.divWebMovilnetLogo}>
-                    <img className={style.imgMovilnetLogo} src="/tft/assets/logoMovilnet-e-letras-blancas.png" alt="logo Guiadeparche" />
-                  </div>
-                }
                 <div className={style.divJupesonLogo}>
                   <img className={style.imgJupesonLogo} src="/tft/assets/Jupeson_LOGO_Sin_Publicidad_Sin_Bordes.png" alt=""></img>
+                </div>
+                {showMovilnetLogo && 
+                  <div className={style.divWebMovilnetLogo}>
+                    <img className={style.imgMovilnetLogo} src="/tft/assets/logoMovilnet-e-letras-blancas.png" alt="logo Movilnet" />
+                  </div>
+                }
+                <div className={style.divSetTFTLogo}>
+                  <img className={style.imgSetTFTLogo} src={`/tft/sets/${currentVersion === "pbe" ? setNumberPBE : setNumberLatest}/logo2.png`} alt="TFT LOGO" />
                 </div>
                 {
                   !showMovilnetLogo && 
@@ -184,9 +187,6 @@ useEffect(()=>{
                     </span>
                 </div>
                 }
-                <div className={style.divSetTFTLogo}>
-                  <img className={style.imgSetTFTLogo} src={`/tft/sets/${currentVersion === "pbe" ? setNumberPBE : setNumberLatest}/logo2.png`} alt="TFT LOGO" />
-                </div>
                 {/* Mostrar logo según el estado */}
                 
               </div>

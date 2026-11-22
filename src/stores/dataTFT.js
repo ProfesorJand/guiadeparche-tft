@@ -112,6 +112,7 @@ export const assets3Estrellas = `${apiGPTFT}3-estrellas.webp`;
 
 export const dataTFT = deepMap(initialStateDataTFT)
 export const dataTFTAllItems = atom(initialStateDataTFTItems);
+export const dataTFTItemsBySetMap = atom({});
 export const dataTFTAllAugments = atom([]);
 export const dataTFTAugmentsBySet = atom({});
 export const dataDBTFTAumentos = atom({});
@@ -381,9 +382,21 @@ export const updateDataTFT = async (data, targetSetOverride = null) => {
       });
     }
   }
+  const taggedItems = (allItems || []).map((i) => ({
+    ...i,
+    tft_set: String(i.tft_set || activeSetNumber),
+  }));
+
+  // Guardar ítems separados estrictamente por set (evita mezclar emblemas entre Set 18 y Set 19)
+  dataTFTItemsBySetMap.set({
+    ...(dataTFTItemsBySetMap.get() || {}),
+    [activeSetNumber]: taggedItems,
+  });
+
   const existingItems = dataTFTAllItems.get() || [];
-  const newItems = (allItems || []).filter(i => !existingItems.some(ei => ei.apiName === i.apiName));
-  const mergedItems = [...existingItems, ...newItems];
+  const incomingItemNames = new Set(taggedItems.map((i) => i.apiName));
+  const preservedItems = existingItems.filter((ei) => !incomingItemNames.has(ei.apiName));
+  const mergedItems = [...preservedItems, ...taggedItems];
   dataTFTAllItems.set(mergedItems);
 
   // Guardar aumentos estrictamente separados por set para los paneles de Admin y formularios

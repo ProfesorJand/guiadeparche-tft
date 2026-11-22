@@ -20,6 +20,24 @@ const JSONSchema = JSON.stringify(baseSchema);
 // TODO: Cambia esta variable por tu lógica real de autenticación/suscripción
 //const hasMasterPlanActive = true; 
 ---
+<script is:inline>
+  if (typeof window !== "undefined") {
+    // Master Plan bloqueado temporalmente al Set activo (latest = Set 18)
+    window.INITIAL_TFT_VERSION = "latest";
+  }
+</script>
+<script>
+  import { versionTFT, swapVersionTFT } from "@stores/dataTFT.js";
+
+  document.addEventListener("astro:page-load", () => {
+    if (window.location.pathname.startsWith("/tft/master-plan/app")) {
+      window.INITIAL_TFT_VERSION = "latest";
+      if (versionTFT.get() !== "latest") {
+        swapVersionTFT("latest");
+      }
+    }
+  });
+</script>
 <LayoutMaxWidth 
   title={title}
   description={description}

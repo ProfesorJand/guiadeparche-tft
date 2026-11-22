@@ -345,13 +345,16 @@ function FooterTFT() {
         e.stopPropagation(); // 🔥 evita conflictos
         (admin || superAdmin) && setShowMovilnetLogo(v => !v);
       }}>
-      {showMovilnetLogo &&
-        <div className={style.divWebMovilnetLogo}>
-          <img className={style.imgMovilnetLogo} src="/tft/assets/logoMovilnet-e-letras-blancas.png" alt="logo Guiadeparche" />
-        </div>
-      }
       <div className={style.divJupesonLogo}>
         <img className={style.imgJupesonLogo} src="/tft/assets/logo-jupe-sin-publicidad.png" alt=""></img>
+      </div>
+      {showMovilnetLogo &&
+        <div className={style.divWebMovilnetLogo}>
+          <img className={style.imgMovilnetLogo} src="/tft/assets/logoMovilnet-e-letras-blancas.png" alt="logo Movilnet" />
+        </div>
+      }
+      <div className={style.divSetTFTLogo}>
+        <img className={style.imgSetTFTLogo} src={`/tft/sets/${currentVersion === "pbe" ? setNumberPBE : setNumberLatest}/logo2.${currentVersion === "pbe" ? "webp" : "png"}`} alt="TFT LOGO" />
       </div>
       {
         !showMovilnetLogo &&
@@ -366,9 +369,6 @@ function FooterTFT() {
           </span>
         </div>
       }
-      <div className={style.divSetTFTLogo}>
-        <img className={style.imgSetTFTLogo} src={`/tft/sets/${currentVersion === "pbe" ? setNumberPBE : setNumberLatest}/logo2.${currentVersion === "pbe" ? "webp" : "png"}`} alt="TFT LOGO" />
-      </div>
       {/* Mostrar logo según el estado */}
 
     </div>
