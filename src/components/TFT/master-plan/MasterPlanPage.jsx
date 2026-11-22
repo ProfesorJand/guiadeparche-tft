@@ -2,7 +2,7 @@ import { $hasMasterPlan, $user } from '@stores/auth';
 import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import { useStore } from '@nanostores/react';
 import { dificultades, categorias, tiers, dañoTipo } from '@stores/tft/dataFormularioCrear';
-import { dataTFTAllItems, dataTFTChampions, dataTFTAllAugments, dataTFTTraits, metaCompsTFT, fetchAndSortComps, composMetaJSON, composMetaPBEJSON, versionTFT, setNumberLatest, setNumberPBE, dataDBTFTAumentos, swapVersionTFT } from '@stores/dataTFT';
+import { dataTFTAllItems, dataTFTItemsBySetMap, dataTFTChampions, dataTFTAllAugments, dataTFTAugmentsBySet, dataTFTTraits, metaCompsTFT, fetchAndSortComps, composMetaJSON, composMetaPBEJSON, versionTFT, setNumberLatest, setNumberPBE, dataDBTFTAumentos, swapVersionTFT } from '@stores/dataTFT';
 import CardsMasterPlanCompos from './CardsMasterPlanCompos';
 import ImgAugment from "@components/TFT/ImgAugment";
 import { EXTRAS_ITEMS } from '@stores/tft/dataFormularioCrear';
@@ -55,15 +55,42 @@ export default function MasterPlanPage() {
   // La redirección está controlada en el useEffect. 
   // Ocultaremos el contenido más abajo.
 
-  const allItems = useStore(dataTFTAllItems) || [];
-  const allChampions = useStore(dataTFTChampions) || [];
+  // Bloqueo temporal: Master Plan solo muestra "latest" (Set 18) aunque el usuario haya pulsado Set 19 (PBE) en otra página
+  const MASTER_PLAN_LOCKED_VERSION = "latest";
+
+  const allItemsGlobal = useStore(dataTFTAllItems) || [];
+  const itemsBySetMap = useStore(dataTFTItemsBySetMap) || {};
+  const allChampionsGlobal = useStore(dataTFTChampions) || [];
   const allComposRaw = useStore(metaCompsTFT) || [];
-  const version = useStore(versionTFT);
+  const storeVersion = useStore(versionTFT);
+  const version = MASTER_PLAN_LOCKED_VERSION;
   const versionNumber = version === "latest" ? setNumberLatest : setNumberPBE;
+
+  useEffect(() => {
+    if (storeVersion !== MASTER_PLAN_LOCKED_VERSION) {
+      swapVersionTFT(MASTER_PLAN_LOCKED_VERSION);
+    }
+  }, [storeVersion]);
+
+  const allItems = useMemo(() => {
+    return itemsBySetMap[String(versionNumber)] || allItemsGlobal;
+  }, [itemsBySetMap, allItemsGlobal, versionNumber]);
+
+  const allChampions = useMemo(() => {
+    const filtered = allChampionsGlobal.filter(
+      (c) => String(c.tft_set) === String(versionNumber) || c.apiName?.toLowerCase().startsWith(`tft${versionNumber}_`)
+    );
+    return filtered.length > 0 ? filtered : allChampionsGlobal;
+  }, [allChampionsGlobal, versionNumber]);
+
   const allCompos = useMemo(() => {
     return allComposRaw.filter(comp => String(comp.set_number) === String(versionNumber) || comp.set_number === "all");
   }, [allComposRaw, versionNumber]);
-  const allAugments = useStore(dataTFTAllAugments) || [];
+  const allAugmentsGlobal = useStore(dataTFTAllAugments) || [];
+  const augmentsBySetMap = useStore(dataTFTAugmentsBySet) || {};
+  const allAugments = useMemo(() => {
+    return augmentsBySetMap[String(versionNumber)] || allAugmentsGlobal.filter((a) => String(a.tft_set) === String(versionNumber));
+  }, [augmentsBySetMap, allAugmentsGlobal, versionNumber]);
   const allTraits = useStore(dataTFTTraits) || [];
   const dbAumentos = useStore(dataDBTFTAumentos) || {};
 
@@ -216,8 +243,7 @@ export default function MasterPlanPage() {
     const loadDataTFT = async () => {
       const currentCompos = metaCompsTFT.get();
       if (!currentCompos || currentCompos.length === 0) {
-        const url = versionTFT.get() === "pbe" ? composMetaPBEJSON : composMetaJSON;
-        await fetchAndSortComps(url);
+        await fetchAndSortComps(composMetaJSON);
       }
     }
     loadDataTFT();

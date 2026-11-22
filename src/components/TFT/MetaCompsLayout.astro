@@ -204,6 +204,23 @@ const tableOfContentIndividual = [
         {!isIndividual && <InlineSEOEditor client:load textKey={isCurrentSetPBE ? "h1IntroPBE" : "h1Intro"} currentText={isCurrentSetPBE ? constantes.h1IntroPBE : constantes.h1Intro} />}
       </p>
       <p>Última actualización: {lastUpdate}</p>
+      {!isIndividual && (
+        <div class="set-switcher">
+          {sets.map(s => {
+            const isActive = String(s.id) === String(defaultSet);
+            const isLatest = String(s.id) === String(setNumberLatest);
+            return (
+              <button
+                type="button"
+                class={`set-toggle-btn ${isLatest ? "set-toggle-latest" : "set-toggle-pbe"} ${isActive ? "active" : ""}`}
+                data-target-set={s.id}
+              >
+                {s.name}
+              </button>
+            );
+          })}
+        </div>
+      )}
       <div class="two-columns space-between">
         
         <RegistrarseBTN
@@ -568,19 +585,8 @@ const tableOfContentIndividual = [
         // Update buttons styling
         setButtons.forEach(b => {
           b.classList.remove("active");
-          b.style.background = "#1a1a24";
-          b.style.color = "#888";
-          b.style.boxShadow = "none";
         });
-        
-        const activeBg = targetSet === setNumberLatest ? "rgba(0, 255, 196, 0.15)" : "rgba(255, 0, 160, 0.15)";
-        const activeColor = targetSet === setNumberLatest ? "#00ffc4" : "#ff00a0";
-        const activeShadow = targetSet === setNumberLatest ? "0 0 10px rgba(0,255,196,0.25)" : "0 0 10px rgba(255,0,160,0.25)";
-        
         e.currentTarget.classList.add("active");
-        e.currentTarget.style.background = activeBg;
-        e.currentTarget.style.color = activeColor;
-        e.currentTarget.style.boxShadow = activeShadow;
 
         // Update main title if not individual
         const mainTitle = document.getElementById("meta-title-main");
@@ -591,10 +597,10 @@ const tableOfContentIndividual = [
           }
         }
 
-        // Update containers visibility
+        // Update containers visibility (preservar display: flex en .containerH2)
         setContainers.forEach(container => {
           if (container.classList.contains(`set-content-${targetSet}`)) {
-            container.style.display = "block";
+            container.style.display = container.classList.contains("containerH2") ? "flex" : "block";
           } else {
             container.style.display = "none";
           }
@@ -711,6 +717,40 @@ const tableOfContentIndividual = [
     align-self: center;
     margin-bottom: 12px;
     max-width:1200px;
+  }
+  .set-switcher {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 6px 0 10px;
+    justify-content: flex-start;
+  }
+  .set-toggle-btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: #1a1a24;
+    color: #9ca3af;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .set-toggle-btn:hover {
+    color: #ffffff;
+    border-color: rgba(255, 255, 255, 0.35);
+  }
+  .set-toggle-latest.active {
+    background: rgba(0, 255, 196, 0.15);
+    color: #00ffc4;
+    border-color: rgba(0, 255, 196, 0.45);
+    box-shadow: 0 0 10px rgba(0, 255, 196, 0.25);
+  }
+  .set-toggle-pbe.active {
+    background: rgba(255, 0, 160, 0.15);
+    color: #ff4dc4;
+    border-color: rgba(255, 0, 160, 0.45);
+    box-shadow: 0 0 10px rgba(255, 0, 160, 0.25);
   }
   .table-content {
     display: flex;
@@ -1191,6 +1231,16 @@ const tableOfContentIndividual = [
     }
     .header-section {
       width: 100%;
+    }
+    .set-switcher {
+      width: 100%;
+      justify-content: center;
+    }
+    .set-toggle-btn {
+      flex: 1 1 auto;
+      text-align: center;
+      padding: 9px 12px;
+      font-size: 13px;
     }
 
     .container-video {

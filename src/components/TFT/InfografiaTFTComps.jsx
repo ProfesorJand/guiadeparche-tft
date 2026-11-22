@@ -92,7 +92,15 @@ useEffect(() => {
 
       {/* Footer */}
       <div className={style.footer}>
-        {/* Logo movilnet */}
+        {/* 1. Logo Jupeson */}
+        <div className={style.logoWrapper}>
+          <img 
+            src="/tft/assets/Jupeson_LOGO_Sin_Publicidad.png" 
+            alt="Logo" 
+            className={style.logoImage}
+          />
+        </div>
+        {/* 2. Logo Movilnet */}
         {
           logoMovilnet && 
           <div className={style.logoWrapper}>
@@ -102,22 +110,7 @@ useEffect(() => {
             className={style.logoImage}
           />
         </div>}
-        {/* logo jupeson */}
-        <div className={style.logoWrapper}>
-          <img 
-            src="/tft/assets/Jupeson_LOGO_Sin_Publicidad.png" 
-            alt="Logo" 
-            className={style.logoImage}
-          />
-        </div>
-        {
-          logoGuiadeparche && 
-          <div className={style.logoWrapper}>
-            <LogoGuiadeparche mostrarTexto={true} styles={{maxHeight:"80%"}}/>
-          </div>
-        }
-
-        {/* logo ko coliseum tft */}
+        {/* 3. Logo Set TFT */}
         <div className={style.logoWrapper}>
           <img 
             src={`/tft/sets/${currentVersion === "pbe" ? setNumberPBE : setNumberLatest}/logo2.${currentVersion === "pbe" ? "webp" : "webp"}`}
@@ -125,6 +118,13 @@ useEffect(() => {
             className={style.logoImage}
           />
         </div>
+        {/* 4. Logo Guiadeparche */}
+        {
+          logoGuiadeparche && 
+          <div className={style.logoWrapper}>
+            <LogoGuiadeparche mostrarTexto={true} styles={{maxHeight:"80%"}}/>
+          </div>
+        }
       </div>
     </div>
   )

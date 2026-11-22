@@ -1,4 +1,5 @@
 import React from 'react';
+import { getLocalTftImage } from '@utils/images';
 
 export default function ObjetosEspecificos({ 
   condicionesGrandeItems, 
@@ -10,8 +11,16 @@ export default function ObjetosEspecificos({
   softItemsList, 
   toggleArrayFilter, 
   setSelectedSalidasEarlyItems, 
+  versionNumber,
   style 
 }) {
+  const normalizeItem = (name) => name?.replace('DA_Component_', '')?.replace('DA_', '')?.replace('TFT_Item_', '');
+  const formatIcon = (iconPath) => {
+    if (!iconPath) return null;
+    if (iconPath.startsWith('/')) return iconPath;
+    if (iconPath.includes('http')) return iconPath.replace('.tex', '.png').toLowerCase();
+    return getLocalTftImage(iconPath, 'items', versionNumber);
+  };
   if (!(condicionesGrandeItems.length > 0 || (condicionesGrandeSinergias && condicionesGrandeSinergias.length > 0))) {
     return null;
   }
@@ -82,15 +91,18 @@ export default function ObjetosEspecificos({
                       {hasComposition && (
                         <div style={{ display: 'flex', gap: '2px' }}>
                           {fullItem.composition.map((compId, idx) => {
-                            const compData = softItemsList.find(i => i.apiName === compId) || allItems.find(i => i.apiName === compId);
-                            const normalizedCompId = compId.replace('DA_Component_', '').replace('DA_', '').replace('TFT_Item_', '');
+                            const normalizedCompId = normalizeItem(compId);
+                            const compData =
+                              softItemsList.find(i => i.apiName === compId || normalizeItem(i.apiName) === normalizedCompId) ||
+                              allItems.find(i => i.apiName === compId || normalizeItem(i.apiName) === normalizedCompId);
+                            const compIcon = formatIcon(compData?.icon || compData?.img);
                             const isCompSelected = selectedSalidasEarlyComponents.includes(compId) ||
-                              selectedSalidasEarlyComponents.some(c => c.replace('DA_Component_', '').replace('DA_', '').replace('TFT_Item_', '') === normalizedCompId);
+                              selectedSalidasEarlyComponents.some(c => normalizeItem(c) === normalizedCompId);
 
-                            return compData && compData.icon ? (
+                            return compData && compIcon ? (
                               <div key={`${compId}-${idx}`} className={isCompSelected && matchedCount < 2 ? style.spinningHighlight : style.spinningHighlightIdle} style={{ borderRadius: '3px' }}>
                                 <img
-                                  src={compData.icon}
+                                  src={compIcon}
                                   alt={compData.name}
                                   title={compData.name}
                                   style={{ width: '16px', height: '16px', objectFit: 'contain', borderRadius: '2px', display: 'block', backgroundColor: 'rgba(0,0,0,0.5)' }}

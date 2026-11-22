@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import style from "./css/Items.module.css";
-import {urlDragon, versionTFT, dataTFTSetData, dataTFTItemsBySet, dataTFTAllItems, apiNamesCrafteableItems, AllCraftableItems, setNumberPBE, setNumberLatest, AllBasicItems } from "@stores/dataTFT";
+import {urlDragon, versionTFT, dataTFTSetData, dataTFTItemsBySet, dataTFTItemsBySetMap, dataTFTAllItems, apiNamesCrafteableItems, AllCraftableItems, setNumberPBE, setNumberLatest, AllBasicItems } from "@stores/dataTFT";
 import { getLocalTftImage } from "@utils/images";
 import { useStore } from "@nanostores/react";
 export const Items = ({ onSelectItem })=>{
@@ -26,21 +26,27 @@ export const Items = ({ onSelectItem })=>{
   const [itemOver, setItemOver] = useState(null);
   const [tooltip, setTooltip] = useState(null);
   const allItemsApiNames = useStore(dataTFTItemsBySet);
+  const itemsBySetMap = useStore(dataTFTItemsBySetMap);
   const allItemsInfo = useStore(dataTFTAllItems);
-  const [allEmblemsItems, setAllEmblemsItems] = useState(null);
-  const [allSupportsItems, setAllSupportsItems] = useState(null);
-  const [allChemBaronItems, setAllChemBaronItems] = useState(null);
-  const [allChemtechItems, setAllChemtechItems] = useState(null);
-  const [allGarenModItems, setAllGarenModItems] = useState(null);
-  const [allBilgewaterItems, setAllBilgewaterItems] = useState(null);
-  const [allVoidItems, setAllVoidItems] = useState(null);
+  const activeSetNumber = String(version === "pbe" ? setNumberPBE : setNumberLatest);
+  const activeSetItems =
+    itemsBySetMap?.[activeSetNumber] ||
+    allItemsInfo.filter((item) => String(item.tft_set) === activeSetNumber);
+  const [allEmblemsItems, setAllEmblemsItems] = useState([]);
+  const [allSupportsItems, setAllSupportsItems] = useState([]);
+  const [allChemBaronItems, setAllChemBaronItems] = useState([]);
+  const [allChemtechItems, setAllChemtechItems] = useState([]);
+  const [allGarenModItems, setAllGarenModItems] = useState([]);
+  const [allBilgewaterItems, setAllBilgewaterItems] = useState([]);
+  const [allVoidItems, setAllVoidItems] = useState([]);
   //set 17 items
-  const [allPsionicItems, setAllPsionicItems] = useState(null);
-  const [allGodsArtifacts, setAllGodsArtifacts] = useState(null);
+  const [allPsionicItems, setAllPsionicItems] = useState([]);
+  const [allGodsArtifacts, setAllGodsArtifacts] = useState([]);
   const [MatrixCraftableItems, setMatrixCraftableItems] = useState([]);
   useEffect(()=>{
     const getAllItems = async ()=>{
-      setAllEmblemsItems(allItemsInfo.filter((item)=>{
+      const sourceItems = activeSetItems.length > 0 ? activeSetItems : allItemsInfo;
+      setAllEmblemsItems(sourceItems.filter((item)=>{
         return item?.apiName?.includes("Emblem") || (item?.name && (item.name.toLowerCase().includes("emblem") || item.name.toLowerCase().includes("emblema")));
         })
       )
@@ -164,7 +170,7 @@ export const Items = ({ onSelectItem })=>{
       })) 
     }
     getAllItems();
-  },[allItemsApiNames])
+  },[allItemsApiNames, itemsBySetMap, activeSetNumber])
 
   useEffect(()=>{
     if(itemOver){
@@ -521,7 +527,7 @@ export const Items = ({ onSelectItem })=>{
           <div className={style.containerItemsHorizontal}>
             {pestana === 2 &&
               allEmblemsItems.map((dataItem,index)=>{
-                const icono = getLocalTftImage(dataItem?.icon, 'items');
+                const icono = getLocalTftImage(dataItem?.icon, 'items', activeSetNumber);
                 return (
                   <div className={style.itemsDropOtros} key={index}>
                     <img  

@@ -724,16 +724,16 @@ const FooterLogos = ({edit, comp})=>{
     url:"/Jupeson_LOGO_Sin_Publicidad_Sin_Bordes.png",
     show: true
   },{
-    label: "Guiadeparche",
-    url:"/web/logoGPSinFondo2026.webp",
-    show: true
-  },{
     label: "Movilnet",
     url:"/tft/assets/logoMovilnet-e-letras-blancas.png",
     show: false
   },{
     label: "SetTFT",
     url:`/tft/sets/${setNumber}/logo2.webp`,
+    show: true
+  },{
+    label: "Guiadeparche",
+    url:"/web/logoGPSinFondo2026.webp",
     show: true
   }]);
 

@@ -17,9 +17,10 @@ export const getLocalTftImage = (iconPath, category, versionNumber) => {
 
   // Si el propio nombre de archivo indica un set específico (ej. tft18_..., tft19_..., trait_icon_18_..., augment_19_...),
   // usar siempre esa carpeta de set para evitar 404 al mezclar compos de distintos sets.
-  // Ignoramos prefijos antiguos de ítems compartidos (tft4_, tft5_, tft7_, tft9_ de Ornn/Radiantes).
+  // Ignoramos prefijos antiguos de ítems/artefactos compartidos (tft4_..tft16_artifact_*) que viven en la carpeta del set activo.
+  const isSharedArtifact = /^tft\d+_artifact_/i.test(fileName);
   const setFromFilename = fileName.match(/^(?:tft|trait_icon_|augment_)(\d+)_/i);
-  if (setFromFilename && Number(setFromFilename[1]) >= 15) {
+  if (!isSharedArtifact && setFromFilename && Number(setFromFilename[1]) >= 17) {
     finalVersion = setFromFilename[1];
   }
 
