@@ -292,6 +292,55 @@
     display: block;
 }
 
+.unlockBuffBadge{
+    position: absolute;
+    right: -12%;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
+    width: 34%;
+    aspect-ratio: 1 / 1;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.unlockBuffImg{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.8));
+}
+
+.oceansongInstrumentWrap{
+    display: flex;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+    container-type: size;
+}
+
+.oceansongInstrumentImg{
+    position: absolute;
+    top: var(--hex-border);
+    left: var(--hex-border);
+    width: calc(100% - var(--hex-border) * 2);
+    height: calc(100% - var(--hex-border) * 2);
+    -webkit-clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    background: radial-gradient(circle at 50% 45%, #163d66 0%, #0b1c33 78%, #071120 100%);
+    object-fit: contain;
+    padding: 6%;
+    box-sizing: border-box;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.75));
+    pointer-events: none;
+}
+
 .containerItems{
     display: flex;
     position:absolute;

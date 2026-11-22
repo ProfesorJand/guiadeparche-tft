@@ -6,6 +6,10 @@ import {
   nameOfSet,
   dataTFTAllItems,
   dataTFTAllAugments,
+  dataTFTAugmentsBySet,
+  versionTFT,
+  setNumberLatest,
+  setNumberPBE,
  } from "@stores/dataTFT"
 import { getLocalTftImage } from "@utils/images";
 import NuevoBuilderTFT from "./NuevoBuilderTFT";
@@ -389,7 +393,11 @@ const CampeonMeta = () => {
   const datosComposicionTFT = useStore(datosCompos);
   const allChampionsTFT = useStore(dataTFTChampions);
   const allItemsTFT = useStore(dataTFTAllItems);
-  const allAugmentsTFT = useStore(dataTFTAllAugments)
+  const currentVersion = useStore(versionTFT);
+  const activeSetNumber = String(currentVersion === "pbe" ? setNumberPBE : setNumberLatest);
+  const augmentsBySet = useStore(dataTFTAugmentsBySet);
+  const fallbackAugments = useStore(dataTFTAllAugments);
+  const allAugmentsTFT = augmentsBySet?.[activeSetNumber] || fallbackAugments;
   return (
     <div className={style.toggleContent}>
       <fieldset className={style.fieldsetCyan}>
@@ -919,7 +927,11 @@ const Condiciones = () => {
   const condiciones = useStore(datosCompos).condiciones || [];
   const allChampionsTFT = useStore(dataTFTChampions);
   const allItemsTFT = useStore(dataTFTAllItems);
-  const allAugmentsTFT = useStore(dataTFTAllAugments)
+  const currentVersion = useStore(versionTFT);
+  const activeSetNumber = String(currentVersion === "pbe" ? setNumberPBE : setNumberLatest);
+  const augmentsBySet = useStore(dataTFTAugmentsBySet);
+  const fallbackAugments = useStore(dataTFTAllAugments);
+  const allAugmentsTFT = augmentsBySet?.[activeSetNumber] || fallbackAugments;
 
   const addCondicion = () => {
     actualizarComposicionTFT(prev => ({

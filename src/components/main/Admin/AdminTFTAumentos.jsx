@@ -1,7 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useStore } from '@nanostores/react';
-import { dataTFTAllAugments, dataDBTFTAumentos, versionTFT, setNumberLatest, setNumberPBE, swapVersionTFT } from '@stores/dataTFT';
+import {
+  dataTFTAllAugments,
+  dataTFTAugmentsBySet,
+  dataDBTFTAumentos,
+  dataDBTFTAumentosError,
+  loadDataTFTFromAPI,
+  loadDataDBTFTAumentos,
+  versionTFT,
+  setNumberLatest,
+  setNumberPBE,
+  swapVersionTFT
+} from '@stores/dataTFT';
 import ImgAugment from '@components/TFT/ImgAugment';
 import TooltipAugment from '@components/tooltips/augment';
 import style from './css/AdminTFTAumentos.module.css';
@@ -21,16 +32,20 @@ const CATEGORIAS_ETAPAS = ["2-1", "3-2", "4-2"];
 
 const AdminTFTAumentos = () => {
   const rawAllAugments = useStore(dataTFTAllAugments);
+  const augmentsBySet = useStore(dataTFTAugmentsBySet);
   const dbAumentos = useStore(dataDBTFTAumentos);
+  const dbError = useStore(dataDBTFTAumentosError);
   const currentVersion = useStore(versionTFT);
-  
+  const activeSetNumber = String(currentVersion === "pbe" ? setNumberPBE : setNumberLatest);
+
   const [localAumentos, setLocalAumentos] = useState({});
   const [selectedAugment, setSelectedAugment] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const baseAugments = currentVersion === "pbe" 
-    ? rawAllAugments.filter(a => a.apiName && a.apiName.includes("DA_"))
-    : rawAllAugments;
+  // Leer exclusivamente los aumentos del set activo (Set 18, Set 19 o futuros sets) sin mezclar prefijos DA_
+  const baseAugments =
+    augmentsBySet?.[activeSetNumber] ||
+    rawAllAugments.filter((a) => String(a.tft_set) === activeSetNumber);
 
   const filteredAugments = baseAugments.filter(a => {
     if (!searchTerm) return true;
@@ -41,26 +56,53 @@ const AdminTFTAumentos = () => {
     const apiName = a.apiName?.toLowerCase() || "";
     return name.includes(term) || nameEN.includes(term) || desc.includes(term) || apiName.includes(term);
   });
-  
-  // localState to hold current edits before saving.
-  // Shape: { "apiName": { Combate: 1, AP: 0, ... } }
 
-  // Default to PBE (Set 18) only while latest is still Set 17. 
-  // Once latest updates to 18 on the 28th, it will default to latest.
+  // Asegurar que los aumentos y categorías del set activo estén cargados al entrar o cambiar de set
   useEffect(() => {
-    if (setNumberLatest === "17") {
-      swapVersionTFT("pbe");
-    } else {
-      swapVersionTFT("latest");
+    setSelectedAugment(null);
+    if (!augmentsBySet?.[activeSetNumber]) {
+      loadDataTFTFromAPI({ version: currentVersion });
     }
-  }, []);
+    loadDataDBTFTAumentos(currentVersion);
+  }, [currentVersion, activeSetNumber]);
 
-  // Initialize localAumentos from the database
+  // Sincronizar localAumentos siempre al cambiar de set/BD (incluso si viene vacío {}) para no arrastrar datos de otro set
   useEffect(() => {
-    if (dbAumentos && Object.keys(dbAumentos).length > 0) {
-      setLocalAumentos(dbAumentos);
-    }
-  }, [dbAumentos]);
+    const nextState = {};
+    const validApiNames = new Set(baseAugments.map((a) => a.apiName));
+
+    // Mantener solo las entradas de BD que pertenezcan al set activo (o todas si baseAugments aún está cargando)
+    Object.entries(dbAumentos || {}).forEach(([apiName, val]) => {
+      if (validApiNames.size === 0 || validApiNames.has(apiName)) {
+        nextState[apiName] = { ...val };
+      }
+    });
+
+    // Pre-cargar Tier y Etapa si ya vienen definidos desde la BD / FModel en el objeto del aumento
+    baseAugments.forEach((aug) => {
+      const current = nextState[aug.apiName] || {};
+      const nextEntry = { ...current };
+      if (!nextEntry.categoria_tier && aug.categoria_tier) {
+        nextEntry.categoria_tier = aug.categoria_tier;
+      }
+      if ((!nextEntry.categoria_etapa || nextEntry.categoria_etapa.length === 0) && aug.categoria_etapa) {
+        const parsedEtapas = Array.isArray(aug.categoria_etapa)
+          ? aug.categoria_etapa
+          : String(aug.categoria_etapa)
+              .split(",")
+              .map((s) => s.trim())
+              .filter(Boolean);
+        if (parsedEtapas.length > 0) {
+          nextEntry.categoria_etapa = parsedEtapas;
+        }
+      }
+      if (Object.keys(nextEntry).length > 0) {
+        nextState[aug.apiName] = nextEntry;
+      }
+    });
+
+    setLocalAumentos(nextState);
+  }, [dbAumentos, activeSetNumber, baseAugments.length]);
 
   // Func to determine if an augment has a Categoria Grande assigned
   const getCategoriaGrande = (apiName) => {
@@ -172,7 +214,7 @@ const AdminTFTAumentos = () => {
   return (
     <div className={style.container}>
       <div className={style.header}>
-        <h2>Info Aumentos (Set: {currentVersion})</h2>
+        <h2>Info Aumentos (Set {activeSetNumber} - {currentVersion})</h2>
         <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
           <input 
             type="text" 
@@ -184,16 +226,22 @@ const AdminTFTAumentos = () => {
           <button 
             className={`${style.btnSet} ${currentVersion !== 'pbe' ? style.btnSetActive : ''}`} 
             onClick={() => swapVersionTFT('latest')}>
-            Set 17 (Latest)
+            Set {setNumberLatest} (Latest)
           </button>
           <button 
             className={`${style.btnSet} ${currentVersion === 'pbe' ? style.btnSetActive : ''}`} 
             onClick={() => swapVersionTFT('pbe')}>
-            Set 18 (PBE)
+            Set {setNumberPBE} (PBE)
           </button>
           <button className={style.btnGuardar} onClick={handleSave}>Guardar Cambios</button>
         </div>
       </div>
+
+      {dbError && (
+        <div className={style.dbErrorBanner}>
+          ⚠️ Backend Set {activeSetNumber}: {dbError} (Agrega las columnas de categorías en la tabla <code>augments_set_{activeSetNumber}</code> antes de guardar).
+        </div>
+      )}
 
       <div className={style.section}>
         <h2>Sin Categorizar ({uncategorized.length})</h2>

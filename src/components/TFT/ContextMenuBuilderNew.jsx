@@ -2,6 +2,15 @@ import React from "react";
 import style from "./css/ContextMenuBuilder.module.css";
 import { dataTFTTraits } from "@stores/dataTFT.js";
 
+export const OCEANSONG_INSTRUMENTS = [
+  { key: "bongos", label: "Bongos", icon: "/tft/sets/19/traits/oceansong_bongos.png" },
+  { key: "maracas", label: "Maracas", icon: "/tft/sets/19/traits/oceansong_maracas.png" },
+  { key: "panflute", label: "Flauta de Pan", icon: "/tft/sets/19/traits/oceansong_panflute.png" },
+  { key: "rainstick", label: "Palo de Lluvia", icon: "/tft/sets/19/traits/oceansong_rainstick.png" },
+  { key: "steeldrum", label: "Tambores de Acero", icon: "/tft/sets/19/traits/oceansong_steeldrum.png" },
+  { key: "ukelele", label: "Ukelele", icon: "/tft/sets/19/traits/oceansong_ukelele.png" },
+];
+
 const ContextMenuBuilderNew = ({
   hexIndex,
   boardData,
@@ -77,6 +86,15 @@ const ContextMenuBuilderNew = ({
       champion.heartsteelSelector === opt.key ? `Quitar ${opt.label}` : `Añadir ${opt.label}`
     );
     OPTIONS.splice(4, 0, ...hsOptions);
+  }
+
+  // Regla especial para Pop Playero / Ocean Song (Set 19): instrumentos solo en hexágonos vacíos (sin campeón)
+  const isEmptyHex = !champion || !champion.apiName;
+  if (isEmptyHex) {
+    const instOptions = OCEANSONG_INSTRUMENTS.map((inst) =>
+      champion?.oceansongInstrument === inst.key ? `Quitar ${inst.label}` : `Añadir ${inst.label}`
+    );
+    OPTIONS.push(...instOptions);
   }
 
   // Regla especial para Khazix (Set 13)
@@ -165,6 +183,23 @@ const ContextMenuBuilderNew = ({
             break;
           }
 
+          // Instrumentos de Pop Playero / Ocean Song (solo en hexágono vacío, visual sin sinergia)
+          const instOpt = OCEANSONG_INSTRUMENTS.find((inst) => inst.label === label);
+          if (instOpt) {
+            if (opcion.startsWith("Añadir ")) {
+              currentChampion.oceansongInstrument = instOpt.key;
+            } else {
+              currentChampion.oceansongInstrument = "";
+              if (!currentChampion.apiName && !currentChampion.extraSynergy) {
+                delete newBoard[hexIndex];
+                updateTablero(newBoard);
+                setActiveMenu(null);
+                return;
+              }
+            }
+            break;
+          }
+
           // Bandas de Sona (Productor Set 19)
           const sonaOpt = sonaBandOptions.find((opt) => opt.label === label);
           if (sonaOpt && currentChampion.apiName === "tft19_sona") {
@@ -207,6 +242,8 @@ const ContextMenuBuilderNew = ({
       <ul>
         {OPTIONS.map((opcion, i) => {
           const hsMatch = heartsteelSelectorOptions.find((opt) => opcion.endsWith(opt.label));
+          const instMatch = OCEANSONG_INSTRUMENTS.find((inst) => opcion.endsWith(inst.label));
+          const iconMatch = hsMatch || instMatch;
           return (
             <li
               key={i}
@@ -217,10 +254,10 @@ const ContextMenuBuilderNew = ({
                 handleMenu(opcion);
               }}
             >
-              {hsMatch && (
+              {iconMatch && (
                 <img
-                  src={hsMatch.icon}
-                  alt={hsMatch.label}
+                  src={iconMatch.icon}
+                  alt={iconMatch.label}
                   className={style.optionIcon}
                 />
               )}
