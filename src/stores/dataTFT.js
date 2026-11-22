@@ -3,6 +3,7 @@ import { deepMap, atom, task } from "nanostores";
 import { useStore } from "@nanostores/react";
 import { getLocalTftImage } from "../utils/images.js";
 import { cachedFetch } from "../utils/cachedFetch.js";
+import { TEAM_PLANNER_CODES_SET_19 } from "../utils/teamPlannerCodesSet19.js";
 //import metaCompsTFTPBE from "../utils/metaCompsTFTPBE.json";
 import { constantesTFTLocal } from "../utils/constantesTFT.js";
 const token = import.meta.env.PUBLIC_TOKEN_META;
@@ -531,10 +532,18 @@ export const getTeamPlannerCodeAPI = async () => {
         return acc;
       }, {});
 
-    teamPlannerCode.set(formattedData);
+    // Fusionar códigos oficiales del Set 19 extraídos de FModel (no depende de CommunityDragon)
+    const mergedCodes = {
+      ...formattedData,
+      ...TEAM_PLANNER_CODES_SET_19,
+    };
+    teamPlannerCode.set(mergedCodes);
   } catch (e) {
     console.error("Error getting team planner code from API:", e);
-    // throw e; // Quitamos el throw para que no rompa la ejecución silenciosamente
+    teamPlannerCode.set({
+      ...(teamPlannerCode.get() || {}),
+      ...TEAM_PLANNER_CODES_SET_19,
+    });
   }
 };
 
@@ -544,13 +553,14 @@ export const EXCLUDED_API_NAMES = [
   "TFT18_Arbol",
   "TFT18_Vitalflor",
   "tft19_aatrox",
+  "tft19_chogath",
 ];
 
 export const buildTeamPlannerCode = (championsArray) => {
-  // Filtramos los campeones excluidos y extraemos los apiNames
-  const filteredApiNames = championsArray
-    .map(c => c.apiName)
-    .filter(apiName => !EXCLUDED_API_NAMES.includes(apiName));
+  // Filtramos hexágonos vacíos / instrumentos / campeones excluidos y extraemos los apiNames válidos
+  const filteredApiNames = (championsArray || [])
+    .map(c => c?.apiName)
+    .filter(apiName => Boolean(apiName) && !EXCLUDED_API_NAMES.includes(apiName));
 
   // Eliminamos duplicados
   const uniqueApiNames = [...new Set(filteredApiNames)];
@@ -577,8 +587,8 @@ export const buildTeamPlannerCode = (championsArray) => {
     return 0;
   });
 
-  // Obtenemos el diccionario actual de códigos de campeones (de la store)
-  const codeDict = teamPlannerCode.get(); 
+  // Obtenemos el diccionario actual de códigos de campeones (de la store + respaldo Set 19 de FModel)
+  const codeDict = teamPlannerCode.get() || {}; 
 
   
   // La versión actual de los códigos del Team Planner es "02" (3 caracteres hexadecimales por slot)
@@ -596,9 +606,13 @@ export const buildTeamPlannerCode = (championsArray) => {
       searchApiName = "tft18_lux";
     }
 
-    const champHexCode = codeDict[searchApiName];
+    const lowerKey = searchApiName.toLowerCase();
+    const champHexCode =
+      codeDict[searchApiName] ||
+      codeDict[lowerKey] ||
+      TEAM_PLANNER_CODES_SET_19[lowerKey];
     
-    // Si Riot/CommunityDragon tiene el código lo añadimos, si no "000" para no corromper el string
+    // Si existe el código lo añadimos, si no "000" para no corromper el string
     if (champHexCode) {
       code += champHexCode;
     } else {
@@ -612,8 +626,14 @@ export const buildTeamPlannerCode = (championsArray) => {
     code += "000".repeat(emptySlots);
   }
   
-  // Añadimos el setMutator al final del código (ej. "TFTSet14")
-  const setMutator = versionTFT.get() === "pbe" ? setMutatorPBE : setMutatorLatest;
+  // Detectar el setMutator según los campeones de la compo (evita desajustes si la store está en otra versión)
+  const isSet19Comp = uniqueApiNames.some((n) => n.toLowerCase().startsWith("tft19_"));
+  const isSet18Comp = uniqueApiNames.some((n) => n.toLowerCase().startsWith("tft18_"));
+  const setMutator = isSet19Comp
+    ? "TFTSet19"
+    : isSet18Comp
+      ? "TFTSet18"
+      : (versionTFT.get() === "pbe" ? setMutatorPBE : setMutatorLatest);
   code += setMutator;
   
   return code;
