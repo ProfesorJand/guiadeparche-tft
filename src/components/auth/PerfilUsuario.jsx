@@ -1,11 +1,69 @@
-import { useEffect, lazy, Suspense, useState } from 'react';
+import React, { useEffect, lazy, Suspense, useState, Component } from 'react';
 import { $user, $admin, $superAdmin, logOut, $activeTab, setActiveTab, setUser, refreshUserData } from "@stores/auth";
 import { useStore } from "@nanostores/react";
 import styles from './PerfilUsuario.module.css';
 import { fetchAndSortComps, composMetaPBEJSON, composMetaPBETestJSON, addRestCompsFetch } from "@stores/dataTFT";
 import { countryCodes } from '../../utils/countries';
 
-const AdminPanel = lazy(() => import("@components/main/Admin/Admin.jsx"));
+const AdminPanel = lazy(() =>
+  import("@components/main/Admin/Admin.jsx").catch((err) => {
+    console.warn("Fallo al importar dinámicamente AdminPanel (posible recarga de dependencias en Vite):", err);
+    if (typeof window !== 'undefined' && !sessionStorage.getItem('admin_dep_reload')) {
+      sessionStorage.setItem('admin_dep_reload', 'true');
+      window.location.reload();
+    }
+    throw err;
+  })
+);
+
+class AdminErrorBoundary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error("Error en panel de administración:", error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{ textAlign: 'center', padding: '3rem 1.5rem', background: 'rgba(18, 24, 44, 0.7)', borderRadius: '14px', border: '1px solid rgba(255, 255, 255, 0.1)' }}>
+          <h3 style={{ color: '#f87171', marginBottom: '0.75rem' }}>No se pudo cargar el Panel de Administración</h3>
+          <p style={{ color: '#94a3b8', fontSize: '0.9rem', marginBottom: '1.5rem', maxWidth: '500px', margin: '0 auto 1.5rem auto' }}>
+            Vite actualizó módulos pre-empaquetados en segundo plano (504 Outdated Dep) o hubo un error de conexión al cargar las dependencias del panel.
+          </p>
+          <button
+            type="button"
+            onClick={() => {
+              if (typeof window !== 'undefined') {
+                sessionStorage.removeItem('admin_dep_reload');
+                window.location.reload();
+              }
+            }}
+            style={{
+              padding: '0.65rem 1.35rem',
+              background: 'linear-gradient(135deg, #6b2273 0%, #3b1d60 100%)',
+              color: '#ffffff',
+              border: '1px solid #c084fc',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              fontWeight: 600
+            }}
+          >
+            🔄 Recargar Panel
+          </button>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 const PerfilUsuario = () => {
   const user = useStore($user);
@@ -558,9 +616,11 @@ const PerfilUsuario = () => {
         {activeTab === 'publicidad_gp' && <PublicidadGPTab user={user} styles={styles} />}
         {activeTab === 'riot' && renderRiotAccount()}
         {activeTab === 'admin' && (
-          <Suspense fallback={<div className={styles.loadingSpinner}>Cargando panel de administración...</div>}>
-            <AdminPanel />
-          </Suspense>
+          <AdminErrorBoundary>
+            <Suspense fallback={<div className={styles.loadingSpinner}>Cargando panel de administración...</div>}>
+              <AdminPanel />
+            </Suspense>
+          </AdminErrorBoundary>
         )}
         {activeTab === 'logout' && <p>Cerrando sesión...</p>}
       </main>

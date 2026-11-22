@@ -9,7 +9,7 @@
     --gapChampion: 5px;
     display: flex;
     position:relative;
-    width: calc((100% - (var(--gapChampion) * 7)) / 8);
+    width: calc((100% - (var(--gapChampion) * 5)) / 6);
     height: auto;
     aspect-ratio: 1/1;
     border: 3px solid;

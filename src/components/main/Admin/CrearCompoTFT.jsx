@@ -89,6 +89,8 @@ const CrearCompoTFT = ({edit=false,editId, edittier,editposicion,editdificultad,
       "var(--color-hex-cost-3)",
       "var(--color-hex-cost-4)",
       "var(--color-hex-cost-5)",
+      "var(--color-hex-cost-6)",
+      "var(--color-hex-cost-7)",
     ];
 
     useEffect(()=>{

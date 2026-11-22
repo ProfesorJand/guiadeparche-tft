@@ -12,17 +12,18 @@ const initialStateDataTFTItems = [];
 const initialStateDataTFTSetData = [];
 const initialStateDataTFTSets = [];
 const initialStateDataTFTChampions = [];
-const initialStateVersion = "pbe";
+// 👇 ÚNICA constante que debes cambiar para elegir la versión por defecto al entrar ("latest" o "pbe")
+const initialStateVersion = "latest";
 const initialStateTeamPlannerCode = [];
-export const initialTFT_SET = (typeof window !== 'undefined' && window.INITIAL_TFT_VERSION) ? window.INITIAL_TFT_VERSION : "pbe";
+export const initialTFT_SET = (typeof window !== 'undefined' && window.INITIAL_TFT_VERSION) ? window.INITIAL_TFT_VERSION : initialStateVersion;
 
-export const setNumberPBE = "18";
-export const setMutatorPBE = "TFTSet18";
-export const setNumberLatest = "17";
-export const setMutatorLatest = "TFTSet17";
+export const setNumberPBE = "19"; // Cambiar a "19" cuando se active Prismatic Tour en el selector
+export const setMutatorPBE = "TFTSet19"; // Cambiar a "TFTSet19" para el Set 19
+export const setNumberLatest = "18";
+export const setMutatorLatest = "TFTSet18";
 export const nameOfSet = {
-  "pbe": "Space Gods",
-  "latest": "Space Gods"
+  "pbe": "Prismatic Tour", // Set 19: "Prismatic Tour"
+  "latest": "Enchanted Wilds"
 }
 
 const orderedBaseItems = [
@@ -301,10 +302,19 @@ const findCraftableItem = (b1, b2, compositionMap, setNumber) => {
   if (candidates.length === 0) return null;
   if (candidates.length === 1) return candidates[0].apiName;
 
-  // For emblems
-  const emblemPrefix = `TFT${setNumber}_ITEM_`;
-  const exactEmblem = candidates.find(c => c.apiName.includes(emblemPrefix));
+  // Para emblemas (soporta formatos TFT18_ITEM_..., DA_18_Emblem..., DA_19_Emblem...)
+  const exactEmblem = candidates.find(c => {
+    const up = (c.apiName || '').toUpperCase();
+    return (
+      up.includes(`TFT${setNumber}_ITEM_`) ||
+      up.includes(`DA_${setNumber}_EMBLEM`) ||
+      up.includes(`DA_${setNumber}_`)
+    );
+  });
   if (exactEmblem) return exactEmblem.apiName;
+
+  const bySet = candidates.find(c => String(c.tft_set) === String(setNumber));
+  if (bySet) return bySet.apiName;
 
   return candidates[0].apiName;
 };
@@ -431,41 +441,53 @@ export const getTeamPlannerCodeAPI = async () => {
            acc[character_id.toLowerCase()] = hexCode;
         }
 
-        // Crear mapeos adicionales basados en el nombre porque Riot usa "DA_18_Ahri" y nosotros "TFT18_Ahri"
+        // Crear mapeos adicionales basados en el nombre porque Riot usa "DA_18_Ahri" / "DA_Ahri19" y nosotros "TFT18_Ahri" / "tft19_ahri"
         if (display_name) {
           let cleanName = display_name.replace(/[^a-zA-Z0-9]/g, '');
           
+          acc[`TFT19_${cleanName}`] = hexCode;
           acc[`TFT18_${cleanName}`] = hexCode;
           acc[`TFT17_${cleanName}`] = hexCode;
+          acc[`tft19_${cleanName.toLowerCase()}`] = hexCode;
           acc[`tft18_${cleanName.toLowerCase()}`] = hexCode;
           acc[`tft17_${cleanName.toLowerCase()}`] = hexCode;
           
           // Casos especiales comunes
           if (cleanName === "NunuWillump") {
+            acc[`TFT19_Nunu`] = hexCode;
             acc[`TFT18_Nunu`] = hexCode;
             acc[`TFT17_Nunu`] = hexCode;
+            acc[`tft19_nunu`] = hexCode;
             acc[`tft18_nunu`] = hexCode;
             acc[`tft17_nunu`] = hexCode;
           }
           if (cleanName === "DrMundo") {
+            acc[`TFT19_DrMundo`] = hexCode;
             acc[`TFT18_DrMundo`] = hexCode;
             acc[`TFT17_DrMundo`] = hexCode;
+            acc[`TFT19_Mundo`] = hexCode;
             acc[`TFT18_Mundo`] = hexCode;
             acc[`TFT17_Mundo`] = hexCode;
+            acc[`tft19_drmundo`] = hexCode;
+            acc[`tft19_mundo`] = hexCode;
             acc[`tft18_drmundo`] = hexCode;
             acc[`tft18_mundo`] = hexCode;
           }
           if (cleanName === "RekSai") {
+             acc[`TFT19_Reksai`] = hexCode;
              acc[`TFT18_Reksai`] = hexCode;
              acc[`TFT17_Reksai`] = hexCode;
+             acc[`tft19_reksai`] = hexCode;
              acc[`tft18_reksai`] = hexCode;
              acc[`tft17_reksai`] = hexCode;
           }
         }
         
-        // Mapeo extra limpiando el character_id (ej: DA_18_Sentry -> Sentry, DA_Gromp18_AP -> Gromp)
+        // Mapeo extra limpiando el character_id (ej: DA_18_Sentry -> Sentry, DA_Ahri19 -> Ahri)
         if (character_id && character_id.startsWith("DA_")) {
-          let cleanId = character_id.replace(/^DA_/i, '').replace(/18/g, '').replace(/_AP$/i, '').replace(/^_/, '');
+          let cleanId = character_id.replace(/^DA_/i, '').replace(/18|19/g, '').replace(/_AP$/i, '').replace(/^_/, '');
+          acc[`TFT19_${cleanId}`] = hexCode;
+          acc[`tft19_${cleanId.toLowerCase()}`] = hexCode;
           acc[`TFT18_${cleanId}`] = hexCode;
           acc[`tft18_${cleanId.toLowerCase()}`] = hexCode;
         }
@@ -484,6 +506,7 @@ export const EXCLUDED_API_NAMES = [
   "TFT15_ShenSword",
   "TFT18_Arbol",
   "TFT18_Vitalflor",
+  "tft19_aatrox",
 ];
 
 export const buildTeamPlannerCode = (championsArray) => {

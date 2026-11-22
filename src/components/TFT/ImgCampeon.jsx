@@ -1,4 +1,6 @@
 import React from "react";
+import { useStore } from "@nanostores/react";
+import { versionTFT, setNumberLatest, setNumberPBE } from "@stores/dataTFT";
 import { getLocalTftImage } from "@utils/images";
 import Tooltip from "@components/tooltips";
 import style from "./css/ImgCampeon.module.css";
@@ -10,6 +12,8 @@ const ImgCampeon = ({
 	className = "",
 	showBorderColor =true,
 }) => {
+	const currentVersion = useStore(versionTFT);
+	const versionNumber = championData?.tft_set || (currentVersion === "latest" ? setNumberLatest : setNumberPBE);
 	if (!championData) {
 		return (
 			<div className={`${style.campeonContainer}`}>
@@ -38,7 +42,7 @@ const ImgCampeon = ({
 	}
 
 	if (imageSrc) {
-		imageSrc = getLocalTftImage(imageSrc, category);
+		imageSrc = getLocalTftImage(imageSrc, category, versionNumber);
 	}
 
 	return (

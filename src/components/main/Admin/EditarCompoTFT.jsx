@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MetaComps from "./MetaComps.jsx";
 import TierListMetaComps from "@components/TFT/TierListMetaComps.jsx";
-import { versionTFT, swapVersionTFT, constantesJSON, metaCompsTFTAdmin, constantesPHP, addConstantesTFT, constantesTFT } from "src/stores/dataTFT.js";
+import { versionTFT, swapVersionTFT, constantesJSON, metaCompsTFTAdmin, constantesPHP, addConstantesTFT, constantesTFT, setNumberPBE, setNumberLatest } from "src/stores/dataTFT.js";
 import { useStore } from "@nanostores/react";
 import style from "./css/EditarCompoTFT.module.css"
 import SelectVersion from "@components/versionTFT/SelectVersion.jsx";
@@ -11,11 +11,20 @@ import CardsCompos from "@components/TFT/CardsCompos.jsx";
 import DragDropTierListEditor from "./DragDropTierListEditor.jsx";
 const EditarCompoTFT = () => {
   const currentVersion = useStore(versionTFT);
+  const targetSetNumber = currentVersion === "pbe" ? setNumberPBE : setNumberLatest;
   //const [constantes, setConstantes] = useState({});
   const admin = useStore($admin);
   const superAdmin = useStore($superAdmin);
   const constantes = useStore(constantesTFT)
   const metaComps = useStore(metaCompsTFTAdmin) || [];
+  // Filtrar estrictamente por set_number (18, 19, etc.) en vez de por version ("pbe"/"latest"),
+  // ya que al cambiar de set las compos viejas conservan su campo version antiguo en la BD.
+  const filteredComps = metaComps.filter((comp) => {
+    if (comp.set_number !== undefined && comp.set_number !== null && comp.set_number !== "") {
+      return String(comp.set_number) === String(targetSetNumber);
+    }
+    return comp.version === currentVersion || (currentVersion === "latest" && !comp.version);
+  });
   // useEffect(() => {
   //   // Obtener las constantes actuales
   //   const fetchConstantes = async () => {
@@ -112,9 +121,9 @@ const EditarCompoTFT = () => {
           <SelectVersion></SelectVersion>
         </label>
 
-        {metaComps && metaComps.length > 0 && (
+        {filteredComps.length > 0 && (
           <DragDropTierListEditor 
-            comps={metaComps.filter(comp => comp.version === currentVersion || (currentVersion === "latest" && !comp.version))} 
+            comps={filteredComps} 
           />
         )}
       {/* <TierListMetaComps /> */}
@@ -140,9 +149,7 @@ const EditarCompoTFT = () => {
       </label> */}
 
       {
-        metaComps.length > 0 && metaComps
-        .filter(comp => comp.version === currentVersion || (currentVersion === "latest" && !comp.version)) // Asumimos latest si no tiene version para retrocompatibilidad
-        .map((comp, index)=>{
+        filteredComps.length > 0 && filteredComps.map((comp, index)=>{
           return (
             <div key={comp.id || index} id={`comp-card-${comp.id}`} data-comp-id={comp.id} style={{ opacity: comp.ocultar ? 0.5 : 1 }}>
               <CardsCompos 

@@ -1,7 +1,7 @@
 import React, {useEffect, useState, } from "react";
 import Login from "./Login.jsx";
 import CrearCompoTFT from "./CrearCompoTFT.jsx";
-import { loadDataTFTFromAPI, constantesTFT, versionTFT } from "src/stores/dataTFT.js";
+import { loadDataTFTFromAPI, constantesTFT, versionTFT } from "@stores/dataTFT.js";
 import EditarCompoTFT from "./EditarCompoTFT.jsx";
 import CreateItemsTierList from "./CreateItemsTierList.jsx";
 import FormularioMetaLOL from "@components/leagueOfLegends/FormularioMetaLOL.jsx";

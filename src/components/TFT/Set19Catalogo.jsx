@@ -101,8 +101,12 @@ const ManaIcon = () => (
   </svg>
 );
 
-const getCostCardClass = (cost) => {
+const isOtherChampion = (champ) =>
+  Boolean(champ?.isOther || champ?.ability?.isOther) || Number(champ?.cost) === 0;
+
+const getCostCardClass = (cost, isOther = false) => {
   const num = Number(cost);
+  if (isOther || num === 0) return style.cardCostOther;
   if (num === 1) return style.cardCost1;
   if (num === 2) return style.cardCost2;
   if (num === 3) return style.cardCost3;
@@ -119,7 +123,7 @@ const getBreakpointStyleClass = (styleCode) => {
   return style.bpBronze;
 };
 
-const Set19Catalogo = ({ champions = [], traits = [], customTabs = [] }) => {
+const Set19Catalogo = ({ champions = [], traits = [], encounters = [], customTabs = [] }) => {
   const defaultTab = customTabs.length > 0 ? customTabs[0].id : "campeones";
   const [activeTab, setActiveTab] = useState(defaultTab);
   const [searchQuery, setSearchQuery] = useState("");
@@ -133,7 +137,7 @@ const Set19Catalogo = ({ champions = [], traits = [], customTabs = [] }) => {
     if (typeof window === "undefined") return;
     const hash = window.location.hash.replace(/^#/, "");
     if (!hash) return;
-    const validIds = new Set([...customTabs.map((t) => t.id), "campeones", "sinergias"]);
+    const validIds = new Set([...customTabs.map((t) => t.id), "campeones", "sinergias", "encuentros"]);
     if (validIds.has(hash)) {
       setActiveTab(hash);
     }
@@ -164,34 +168,65 @@ const Set19Catalogo = ({ champions = [], traits = [], customTabs = [] }) => {
     return map;
   }, [traits]);
 
-  // Lista de costes únicos ordenados
+  // Lista de costes únicos de tienda ordenados (> 0; los de coste 0 van a "Otros Campeones")
   const availableCosts = useMemo(() => {
-    const set = new Set(champions.map((c) => Number(c.cost)).filter(Boolean));
+    const set = new Set(
+      champions
+        .filter((c) => !isOtherChampion(c))
+        .map((c) => Number(c.cost))
+        .filter((n) => n > 0)
+    );
     return Array.from(set).sort((a, b) => a - b);
   }, [champions]);
 
-  // Campeones filtrados y ordenados (por coste descendente o ascendente + nombre)
+  const otherChampionsTotal = useMemo(
+    () => champions.filter((c) => isOtherChampion(c)).length,
+    [champions]
+  );
+
+  // Campeones filtrados y ordenados (por coste ascendente + nombre; Otros Campeones al final)
   const filteredChampions = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
     return champions
       .filter((champ) => {
-        if (selectedCost !== "all" && Number(champ.cost) !== Number(selectedCost)) return false;
+        const isOther = isOtherChampion(champ);
+        if (selectedCost === "other") {
+          if (!isOther) return false;
+        } else if (selectedCost !== "all") {
+          if (isOther || Number(champ.cost) !== Number(selectedCost)) return false;
+        }
         if (onlyUnlockable && !champ.unlock?.isUnlockable) return false;
-        if (selectedTrait !== "all" && !(champ.traits || []).includes(selectedTrait)) return false;
+        if (selectedTrait !== "all") {
+          const matchesTrait =
+            (champ.traits || []).includes(selectedTrait) ||
+            champ.linkedTrait === selectedTrait;
+          if (!matchesTrait) return false;
+        }
 
         if (q) {
-          const champTraitsNames = (champ.traits || [])
+          const traitIds = [
+            ...(champ.traits || []),
+            ...(champ.linkedTrait ? [champ.linkedTrait] : []),
+          ];
+          const champTraitsNames = traitIds
             .map((tId) => traitsMap[tId]?.name || tId)
             .join(" ")
             .toLowerCase();
+          const specialItemsText = (champ.specialItems || [])
+            .map((it) => `${it.name || ""} ${it.name_EN || ""} ${it.desc || ""}`)
+            .join(" ");
           const searchable = [
             champ.name,
+            champ.apiName,
+            champ.characterName,
+            champ.originNote,
             champ.ability?.name,
             champ.ability?.desc,
             champ.role,
             champ.role_legacy,
             champ.unlock?.description,
             champTraitsNames,
+            specialItemsText,
           ]
             .filter(Boolean)
             .join(" ")
@@ -200,8 +235,23 @@ const Set19Catalogo = ({ champions = [], traits = [], customTabs = [] }) => {
         }
         return true;
       })
-      .sort((a, b) => Number(a.cost) - Number(b.cost) || a.name.localeCompare(b.name));
+      .sort((a, b) => {
+        const aOther = isOtherChampion(a) ? 1 : 0;
+        const bOther = isOtherChampion(b) ? 1 : 0;
+        if (aOther !== bOther) return aOther - bOther;
+        return Number(a.cost) - Number(b.cost) || a.name.localeCompare(b.name);
+      });
   }, [champions, selectedCost, onlyUnlockable, selectedTrait, searchQuery, traitsMap]);
+
+  const regularChampions = useMemo(
+    () => filteredChampions.filter((c) => !isOtherChampion(c)),
+    [filteredChampions]
+  );
+
+  const otherChampions = useMemo(
+    () => filteredChampions.filter((c) => isOtherChampion(c)),
+    [filteredChampions]
+  );
 
   // Sinergias filtradas por búsqueda
   const filteredTraits = useMemo(() => {
@@ -212,6 +262,22 @@ const Set19Catalogo = ({ champions = [], traits = [], customTabs = [] }) => {
       return searchable.includes(q);
     });
   }, [traits, searchQuery]);
+
+  // Encuentros filtrados por búsqueda y ordenados por nombre del campeón anfitrión
+  const filteredEncounters = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+    return encounters
+      .filter((enc) => {
+        if (!q) return true;
+        const searchable = `${enc.name} ${enc.name_EN || ""} ${enc.championName || ""} ${enc.desc || ""}`.toLowerCase();
+        return searchable.includes(q);
+      })
+      .sort(
+        (a, b) =>
+          (a.championName || "").localeCompare(b.championName || "") ||
+          (a.name || "").localeCompare(b.name || "")
+      );
+  }, [encounters, searchQuery]);
 
   // Campeones agrupados por sinergia para mostrarlos dentro de cada tarjeta de sinergia
   const championsByTrait = useMemo(() => {
@@ -275,6 +341,20 @@ const Set19Catalogo = ({ champions = [], traits = [], customTabs = [] }) => {
             <span>Rasgos (Traits)</span>
             <span className={style.tabCount}>{traits.length}</span>
           </button>
+
+          {encounters.length > 0 && (
+            <button
+              type="button"
+              role="tab"
+              aria-selected={activeTab === "encuentros"}
+              aria-controls="panel-encuentros"
+              className={`${style.tabBtn} ${activeTab === "encuentros" ? style.tabBtnActive : ""}`}
+              onClick={() => handleSelectTab("encuentros")}
+            >
+              <span>Encuentros</span>
+              <span className={style.tabCount}>{encounters.length}</span>
+            </button>
+          )}
         </div>
       </nav>
 
@@ -323,8 +403,8 @@ const Set19Catalogo = ({ champions = [], traits = [], customTabs = [] }) => {
         );
       })}
 
-      {/* Panel de búsqueda y filtros (solo visible en Campeones y Rasgos, NO sticky) */}
-      {(activeTab === "campeones" || activeTab === "sinergias") && (
+      {/* Panel de búsqueda y filtros (solo visible en Campeones, Rasgos y Encuentros, NO sticky) */}
+      {(activeTab === "campeones" || activeTab === "sinergias" || activeTab === "encuentros") && (
         <div className={style.filtersPanel}>
           <div className={style.filtersRow}>
             <input
@@ -333,7 +413,9 @@ const Set19Catalogo = ({ champions = [], traits = [], customTabs = [] }) => {
               placeholder={
                 activeTab === "campeones"
                   ? "Buscar campeón, habilidad, sinergia, rol o requisito de desbloqueo..."
-                  : "Buscar sinergia o efecto..."
+                  : activeTab === "sinergias"
+                    ? "Buscar sinergia o efecto..."
+                    : "Buscar encuentro, campeón o efecto..."
               }
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -379,6 +461,17 @@ const Set19Catalogo = ({ champions = [], traits = [], customTabs = [] }) => {
                 </button>
               ))}
 
+              {otherChampionsTotal > 0 && (
+                <button
+                  type="button"
+                  className={`${style.filterPill} ${style.costFilterPill} ${style.cardCostOther} ${selectedCost === "other" ? style.filterPillActive : ""}`}
+                  onClick={() => setSelectedCost("other")}
+                >
+                  <span className={style.costFilterDot} />
+                  <span>Otros ({otherChampionsTotal})</span>
+                </button>
+              )}
+
               <button
                 type="button"
                 className={`${style.filterPill} ${onlyUnlockable ? style.unlockToggleActive : ""}`}
@@ -409,131 +502,304 @@ const Set19Catalogo = ({ champions = [], traits = [], customTabs = [] }) => {
               No se encontraron campeones con los filtros seleccionados.
             </div>
           ) : (
-            <div className={style.championsGrid}>
-              {filteredChampions.map((champ) => {
-                const champTraits = (champ.traits || []).map(
-                  (tId) => traitsMap[tId] || { apiName: tId, name: tId.replace(/^DA_|19$/g, ""), icon: "" }
-                );
-                const isUnlock = Boolean(champ.unlock?.isUnlockable);
-                const manaInitial = champ.stats?.initialMana ?? 0;
-                const manaMax = champ.stats?.mana ?? 0;
-                const attackRange = champ.stats?.range ?? 1;
+            <>
+              {regularChampions.length > 0 && (
+                <div className={style.championsGrid}>
+                  {regularChampions.map((champ) => {
+                    const champTraits = (champ.traits || []).map(
+                      (tId) => traitsMap[tId] || { apiName: tId, name: tId.replace(/^DA_|19$/g, ""), icon: "" }
+                    );
+                    const isUnlock = Boolean(champ.unlock?.isUnlockable);
+                    const manaInitial = champ.stats?.initialMana ?? 0;
+                    const manaMax = champ.stats?.mana ?? 0;
+                    const attackRange = champ.stats?.range ?? 1;
 
-                return (
-                  <article key={champ.apiName} className={`${style.championCard} ${getCostCardClass(champ.cost)}`}>
-                    {/* Cabecera: Nombre + Coste en oro */}
-                    <div className={style.champHeader}>
-                      <h2 className={style.champName}>{champ.name}</h2>
-                      <div className={style.champCost} title={`Coste ${champ.cost} de oro`}>
-                        <span>{champ.cost}</span>
-                        <span className={style.coinDot} />
-                      </div>
-                    </div>
-
-                    {/* Banner: Imagen del campeón (ruta icon) + Sinergias superpuestas */}
-                    <div className={style.champBanner}>
-                      <img
-                        src={`/tft/sets/19/champions/icon/${champ.icon}`}
-                        alt={champ.name}
-                        className={style.champSplashImg}
-                        loading="lazy"
-                      />
-                      <div className={style.champBannerGradient} />
-
-                      {isUnlock && (
-                        <div className={style.unlockCornerBadge} title="Campeón Desbloqueable">
-                          <UnlockIcon size={15} />
+                    return (
+                      <article key={champ.apiName} className={`${style.championCard} ${getCostCardClass(champ.cost)}`}>
+                        {/* Cabecera: Nombre + Coste en oro */}
+                        <div className={style.champHeader}>
+                          <h2 className={style.champName}>{champ.name}</h2>
+                          <div className={style.champCost} title={`Coste ${champ.cost} de oro`}>
+                            <span>{champ.cost}</span>
+                            <span className={style.coinDot} />
+                          </div>
                         </div>
-                      )}
 
-                      <div className={style.bannerTraitsOverlay}>
-                        {champTraits.map((tr) => (
-                          <div key={tr.apiName} className={style.bannerTraitItem}>
-                            {tr.icon && (
-                              <img
-                                src={`/tft/sets/19/traits/${tr.icon}`}
-                                alt={tr.name}
-                                className={style.bannerTraitIcon}
-                                loading="lazy"
-                              />
-                            )}
-                            <span>{tr.name}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
+                        {/* Banner: Imagen del campeón (ruta icon) + Sinergias superpuestas */}
+                        <div className={style.champBanner}>
+                          <img
+                            src={`/tft/sets/19/champions/icon/${champ.icon}`}
+                            alt={champ.name}
+                            className={style.champSplashImg}
+                            loading="lazy"
+                          />
+                          <div className={style.champBannerGradient} />
 
-                    {/* Cuerpo de la tarjeta */}
-                    <div className={style.champBody}>
-                      {/* Bloque de Desbloqueo si aplica */}
-                      {isUnlock && (
-                        <div className={style.unlockBox}>
-                          <div className={style.unlockTitle}>
-                            <UnlockIcon size={14} />
-                            <span>Desbloquear:</span>
-                          </div>
-                          <ul className={style.unlockList}>
-                            {(champ.unlock.conditions || []).map((cond, idx) => (
-                              <li key={`ucond-${idx}`}>{cond}</li>
+                          {isUnlock && (
+                            <div className={style.unlockCornerBadge} title="Campeón Desbloqueable">
+                              <UnlockIcon size={15} />
+                            </div>
+                          )}
+
+                          <div className={style.bannerTraitsOverlay}>
+                            {champTraits.map((tr) => (
+                              <div key={tr.apiName} className={style.bannerTraitItem}>
+                                {tr.icon && (
+                                  <img
+                                    src={`/tft/sets/19/traits/${tr.icon}`}
+                                    alt={tr.name}
+                                    className={style.bannerTraitIcon}
+                                    loading="lazy"
+                                  />
+                                )}
+                                <span>{tr.name}</span>
+                              </div>
                             ))}
-                            {champ.unlock.levelRequired && (
-                              <li>Nivel {champ.unlock.levelRequired}</li>
-                            )}
-                          </ul>
+                          </div>
                         </div>
-                      )}
 
-                      {/* Fila de Rol (español) y Rango de ataque */}
-                      <div className={style.roleRangeRow}>
-                        <div className={style.rolePillsGroup}>
-                          {champ.role && (
-                            <span className={style.rolePill} title={champ.role_desc || champ.role}>
-                              {champ.role}
-                            </span>
+                        {/* Cuerpo de la tarjeta */}
+                        <div className={style.champBody}>
+                          {/* Bloque de Desbloqueo si aplica */}
+                          {isUnlock && (
+                            <div className={style.unlockBox}>
+                              <div className={style.unlockTitle}>
+                                <UnlockIcon size={14} />
+                                <span>Desbloquear:</span>
+                              </div>
+                              <ul className={style.unlockList}>
+                                {(champ.unlock.conditions || []).map((cond, idx) => (
+                                  <li key={`ucond-${idx}`}>{cond}</li>
+                                ))}
+                                {champ.unlock.levelRequired && (
+                                  <li>Nivel {champ.unlock.levelRequired}</li>
+                                )}
+                              </ul>
+                            </div>
+                          )}
+
+                          {/* Fila de Rol (español) y Rango de ataque */}
+                          <div className={style.roleRangeRow}>
+                            <div className={style.rolePillsGroup}>
+                              {champ.role && (
+                                <span className={style.rolePill} title={champ.role_desc || champ.role}>
+                                  {champ.role}
+                                </span>
+                              )}
+                            </div>
+
+                            <div className={style.rangeBadge} title={`Rango de ataque: ${attackRange}`}>
+                              <RangeIcon />
+                              <span>{attackRange}</span>
+                            </div>
+                          </div>
+
+                          {/* Cabecera de la Habilidad (Imagen + Nombre + Maná) */}
+                          <div className={style.abilityHeader}>
+                            <div className={style.abilityTitleGroup}>
+                              {champ.ability?.icon && (
+                                <img
+                                  src={champ.ability.icon}
+                                  alt={champ.ability?.name || champ.name}
+                                  className={style.abilityIcon}
+                                  loading="lazy"
+                                />
+                              )}
+                              <span className={style.abilityName}>
+                                {champ.ability?.name || champ.ability_name || "Habilidad"}
+                              </span>
+                            </div>
+
+                            {manaMax > 0 && (
+                              <div className={style.manaBadge} title={`Maná inicial ${manaInitial} / Maná máximo ${manaMax}`}>
+                                <ManaIcon />
+                                <span>
+                                  {manaInitial}/{manaMax}
+                                </span>
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Descripción de la Habilidad */}
+                          <div className={style.abilityDesc}>
+                            {renderFormattedText(champ.ability?.desc || champ.ability_desc)}
+                          </div>
+
+                          {/* Ítems recomendados según el rol del campeón */}
+                          {Array.isArray(champ.recommendedItems) && champ.recommendedItems.length > 0 && (
+                            <div className={style.recommendedItemsBox}>
+                              {/* <span className={style.recommendedItemsLabel}>Ítems recomendados:</span> */}
+                              <div className={style.recommendedItemsIcons}>
+                                {champ.recommendedItems.map((item) => (
+                                  <img
+                                    key={`${champ.apiName}-${item.apiName}`}
+                                    src={`/tft/sets/19/items/${item.icon}`}
+                                    alt={item.name}
+                                    title={item.name}
+                                    className={style.recommendedItemIcon}
+                                    loading="lazy"
+                                  />
+                                ))}
+                              </div>
+                            </div>
                           )}
                         </div>
+                      </article>
+                    );
+                  })}
+                </div>
+              )}
 
-                        <div className={style.rangeBadge} title={`Rango de ataque: ${attackRange}`}>
-                          <RangeIcon />
-                          <span>{attackRange}</span>
-                        </div>
-                      </div>
+              {/* SECCIÓN DEDICADA: OTROS CAMPEONES (Invocaciones y mecánicas de rasgos como Aatrox y Cho'Gath) */}
+              {otherChampions.length > 0 && (
+                <div className={style.otherChampionsSection}>
+                  <div className={style.otherSectionHeader}>
+                    <div className={style.otherSectionTitleRow}>
+                      <h2 className={style.otherSectionTitle}>Otros Campeones</h2>
+                      <span className={style.otherSectionCount}>{otherChampions.length}</span>
+                    </div>
+                    <p className={style.otherSectionSubtitle}>
+                      Unidades invocadas o mecánicas de rasgos que no se compran ni venden en la tienda.
+                    </p>
+                  </div>
 
-                      {/* Cabecera de la Habilidad (Imagen + Nombre + Maná) */}
-                      <div className={style.abilityHeader}>
-                        <div className={style.abilityTitleGroup}>
-                          {champ.ability?.icon && (
+                  <div className={style.otherChampionsGrid}>
+                    {otherChampions.map((champ) => {
+                      const linkedTraitObj = champ.linkedTrait ? traitsMap[champ.linkedTrait] : null;
+                      const displayTraits =
+                        (champ.traits || []).length > 0
+                          ? champ.traits.map((tId) => traitsMap[tId] || { apiName: tId, name: tId, icon: "" })
+                          : linkedTraitObj
+                            ? [linkedTraitObj]
+                            : [];
+                      const manaInitial = champ.stats?.initialMana ?? 0;
+                      const manaMax = champ.stats?.mana ?? 0;
+                      const attackRange = champ.stats?.range ?? 1;
+                      const specialItems = champ.specialItems || champ.ability?.specialItems || [];
+
+                      return (
+                        <article key={champ.apiName} className={`${style.championCard} ${style.cardCostOther}`}>
+                          {/* Cabecera: Nombre + Etiqueta de origen (Gu Feng / Rock) */}
+                          <div className={style.champHeader}>
+                            <h3 className={style.champName}>{champ.name}</h3>
+                            <div className={style.otherBadge} title="Unidad especial de rasgo (no se compra en tienda)">
+                              {champ.originNote || "Otros"}
+                            </div>
+                          </div>
+
+                          {/* Banner: Imagen del campeón + Rasgo vinculado */}
+                          <div className={style.champBanner}>
                             <img
-                              src={champ.ability.icon}
-                              alt={champ.ability?.name || champ.name}
-                              className={style.abilityIcon}
+                              src={`/tft/sets/19/champions/icon/${champ.icon}`}
+                              alt={champ.name}
+                              className={style.champSplashImg}
                               loading="lazy"
                             />
-                          )}
-                          <span className={style.abilityName}>
-                            {champ.ability?.name || champ.ability_name || "Habilidad"}
-                          </span>
-                        </div>
+                            <div className={style.champBannerGradient} />
 
-                        {manaMax > 0 && (
-                          <div className={style.manaBadge} title={`Maná inicial ${manaInitial} / Maná máximo ${manaMax}`}>
-                            <ManaIcon />
-                            <span>
-                              {manaInitial}/{manaMax}
-                            </span>
+                            <div className={style.bannerTraitsOverlay}>
+                              {displayTraits.map((tr) => (
+                                <div key={tr.apiName} className={style.bannerTraitItem}>
+                                  {tr.icon && (
+                                    <img
+                                      src={`/tft/sets/19/traits/${tr.icon}`}
+                                      alt={tr.name}
+                                      className={style.bannerTraitIcon}
+                                      loading="lazy"
+                                    />
+                                  )}
+                                  <span>{tr.name}</span>
+                                </div>
+                              ))}
+                            </div>
                           </div>
-                        )}
-                      </div>
 
-                      {/* Descripción de la Habilidad */}
-                      <div className={style.abilityDesc}>
-                        {renderFormattedText(champ.ability?.desc || champ.ability_desc)}
-                      </div>
-                    </div>
-                  </article>
-                );
-              })}
-            </div>
+                          {/* Cuerpo de la tarjeta */}
+                          <div className={style.champBody}>
+                            <div className={style.roleRangeRow}>
+                              <div className={style.rolePillsGroup}>
+                                {champ.role && (
+                                  <span className={style.rolePill} title={champ.role_desc || champ.role}>
+                                    {champ.role}
+                                  </span>
+                                )}
+                              </div>
+
+                              <div className={style.rangeBadge} title={`Rango de ataque: ${attackRange}`}>
+                                <RangeIcon />
+                                <span>{attackRange}</span>
+                              </div>
+                            </div>
+
+                            {/* Cabecera de la Habilidad */}
+                            <div className={style.abilityHeader}>
+                              <div className={style.abilityTitleGroup}>
+                                {champ.ability?.icon && (
+                                  <img
+                                    src={champ.ability.icon}
+                                    alt={champ.ability?.name || champ.name}
+                                    className={style.abilityIcon}
+                                    loading="lazy"
+                                  />
+                                )}
+                                <span className={style.abilityName}>
+                                  {champ.ability?.name || champ.ability_name || "Habilidad"}
+                                </span>
+                              </div>
+
+                              {manaMax > 0 && (
+                                <div className={style.manaBadge} title={`Maná inicial ${manaInitial} / Maná máximo ${manaMax}`}>
+                                  <ManaIcon />
+                                  <span>
+                                    {manaInitial}/{manaMax}
+                                  </span>
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Descripción de la Habilidad */}
+                            <div className={style.abilityDesc}>
+                              {renderFormattedText(champ.ability?.desc || champ.ability_desc)}
+                            </div>
+
+                            {/* Opciones especiales (ej. 2 Pergaminos de Gu Feng 4 en Cho'Gath) */}
+                            {Array.isArray(specialItems) && specialItems.length > 0 && (
+                              <div className={style.specialItemsBox}>
+                                <span className={style.specialItemsTitle}>Opciones de {champ.originNote || "rasgo"}:</span>
+                                <div className={style.specialItemsList}>
+                                  {specialItems.map((item) => (
+                                    <div key={`${champ.apiName}-${item.apiName}`} className={style.specialItemCard}>
+                                      <img
+                                        src={`/tft/sets/19/items/${item.icon}`}
+                                        alt={item.name}
+                                        title={item.name}
+                                        className={style.specialItemIcon}
+                                        loading="lazy"
+                                      />
+                                      <div className={style.specialItemInfo}>
+                                        <div className={style.specialItemNameRow}>
+                                          <strong className={style.specialItemName}>{item.name}</strong>
+                                          {item.name_EN && item.name_EN !== item.name && (
+                                            <span className={style.specialItemNameEn}>({item.name_EN})</span>
+                                          )}
+                                        </div>
+                                        <div className={style.specialItemDesc}>
+                                          {renderFormattedText(item.desc)}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </article>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </>
           )}
       </section>
 
@@ -621,6 +887,64 @@ const Set19Catalogo = ({ champions = [], traits = [], customTabs = [] }) => {
             </div>
           )}
       </section>
+
+      {/* VISTA 3: ENCUENTROS (siempre en el HTML inicial para SEO; se alterna con CSS) */}
+      {encounters.length > 0 && (
+        <section
+          id="panel-encuentros"
+          role="tabpanel"
+          aria-label="Encuentros del Set 19"
+          className={activeTab !== "encuentros" ? style.tabPanelHidden : ""}
+          aria-hidden={activeTab !== "encuentros"}
+        >
+          <div className={style.resultsInfo}>
+            Mostrando <strong>{filteredEncounters.length}</strong> de {encounters.length} encuentros del Set 19
+          </div>
+
+          {filteredEncounters.length === 0 ? (
+            <div className={style.emptyState}>
+              No se encontraron encuentros con ese criterio de búsqueda.
+            </div>
+          ) : (
+            <div className={style.encountersGrid}>
+              {filteredEncounters.map((enc) => (
+                <article key={enc.apiName} className={style.encounterCard}>
+                  <div className={style.encounterBanner}>
+                    {enc.image ? (
+                      <img
+                        src={enc.image}
+                        alt={enc.championName || enc.name}
+                        className={style.encounterBannerImg}
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className={style.encounterBannerFallback}>
+                        <span>{enc.championName || "Set 19"}</span>
+                      </div>
+                    )}
+                    <div className={style.encounterBannerGradient} />
+                    {enc.championName && (
+                      <span className={style.encounterHostBadge}>{enc.championName}</span>
+                    )}
+                  </div>
+
+                  <div className={style.encounterBody}>
+                    <div className={style.encounterHeaderRow}>
+                      <h2 className={style.encounterTitle}>{enc.name}</h2>
+                      {enc.name_EN && enc.name_EN.toLowerCase() !== enc.name.toLowerCase() && (
+                        <span className={style.traitCardNameEn}>({enc.name_EN})</span>
+                      )}
+                    </div>
+                    <div className={style.encounterDesc}>
+                      {renderFormattedText(enc.desc)}
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
+        </section>
+      )}
     </div>
   );
 };

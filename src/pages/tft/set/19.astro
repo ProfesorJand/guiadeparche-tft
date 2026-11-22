@@ -16,6 +16,7 @@ const JSONSchema = JSON.stringify(baseSchema);
 
 const champions = set19Data.champions || [];
 const traits = set19Data.traits || [];
+const encounters = set19Data.encounters || [];
 
 // Pestañas con galería de imágenes horizontales (16:9) que aparecen antes de Campeones y Rasgos.
 // Para añadir otro botón nuevo en el futuro, solo agrega otro objeto a este arreglo.
@@ -79,6 +80,7 @@ const customTabs = [
   <Set19Catalogo
     champions={champions}
     traits={traits}
+    encounters={encounters}
     customTabs={customTabs}
     client:load
   />

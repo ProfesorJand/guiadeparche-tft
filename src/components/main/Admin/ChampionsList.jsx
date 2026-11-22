@@ -40,7 +40,14 @@ const Champions = ({ onSelectChampion })=>{
     useEffect(()=>{
         const activador = async ()=>{
             const championsList = [];
-            champio.forEach(({ability, apiName, name, cost, characterName, tileIcon, stats, traits, squareIcon})=>{
+            champio.forEach(({ability, apiName, name, cost, characterName, tileIcon, stats, traits, squareIcon, tft_set})=>{
+                // Mostrar únicamente los campeones del set activo cuando dataTFTChampions tiene múltiples sets cargados
+                const belongsToActiveSet =
+                    (tft_set && String(tft_set) === String(versionNumber)) ||
+                    (apiName && apiName.toLowerCase().startsWith(`tft${versionNumber}_`));
+                if (!belongsToActiveSet) return;
+                // Cho'Gath (La Bestia Devoracanciones) es una mecánica de Gu Feng (4) y no se coloca en el tablero de combate
+                if (apiName && apiName.toLowerCase() === "tft19_chogath") return;
                 if(traits.length > 0){
                     const traitsData = ()=>{
                         const resp = traits.map((trait)=>{
@@ -65,7 +72,7 @@ const Champions = ({ onSelectChampion })=>{
                     
                 }
                 else{
-                    const img = getLocalTftImage(squareIcon || tileIcon, 'champions/tileIcon', versionNumber);
+                    const img = getLocalTftImage(tileIcon || squareIcon, 'champions/tileIcon', versionNumber);
                     const data = {
                         apiName,
                         nombre:name,
@@ -96,6 +103,20 @@ const Champions = ({ onSelectChampion })=>{
                 }
             })
 
+            // Unidad invocada de la sinergia Rock (DemonVision) en Set 19: Aatrox (sin coste ni sinergias)
+            if (String(versionNumber) === "19" && !championsList.some((c) => c.apiName === "tft19_aatrox")) {
+                championsList.push({
+                    apiName: "tft19_aatrox",
+                    nombre: "Aatrox",
+                    characterName: "TFT19_InfernalIdol",
+                    coste: 0,
+                    sinergia: [],
+                    stats: {},
+                    img: getLocalTftImage("tft19_aatrox_square.png", "champions/tileIcon", "19"),
+                    ability: {},
+                });
+            }
+
              // Ordenamos por coste
             const sortedByName = championsList.sort((a,b)=>{
                 if(a.nombre < b.nombre) {return -1}
@@ -108,7 +129,7 @@ const Champions = ({ onSelectChampion })=>{
             setChampionsList(sorted);
         }
         activador();
-    },[champio])
+    },[champio, versionNumber])
 
     return(
         <>
@@ -138,159 +159,34 @@ const Champions = ({ onSelectChampion })=>{
                     )    
 
                 })}
-            {championsList && sortBy === "coste" && 
-                <div className={style.containerChampionsByCost}>
-                {championsList?.filter(({coste})=>coste===1)?.map((campeon, index)=>{
-                    return (
-                        <div className={style.containerChampion} key={`key${index}`} style={{"borderColor":`var(--color-hex-cost-${campeon.coste})`}}>
-                                <img
-                                    id={`campeon-${campeon.nombre}`}
-                                    src={campeon.img}
-                                    alt={campeon.nombre}
-                                    data-campeon={JSON.stringify(campeon)}
-                                    data-from={"championList"}
-                                    onDragStart={(e)=>{handleDragStart(e)}}
-                                    onClick={()=>{ onSelectChampion && onSelectChampion(campeon) }}
-                                    draggable="true"
-                                    />
-                                <span>{campeon.nombre}</span>
-                            </div>
-                        )    
-                        
-                    })}
-                </div>
-            }
             {championsList && sortBy === "coste" &&
-            <div className={style.containerChampionsByCost}>
-            {championsList?.filter(({coste})=>coste===2)?.map((campeon, index)=>{
-                return (
-                    <div className={style.containerChampion} key={`key${index}`} style={{"borderColor":`var(--color-hex-cost-${campeon.coste})`}}>
-                            <img
-                                id={`campeon-${campeon.nombre}`}
-                                src={campeon.img}
-                                alt={campeon.nombre}
-                                data-campeon={JSON.stringify(campeon)}
-                                data-from={"championList"}
-                                onDragStart={(e)=>{handleDragStart(e)}}
-                                onClick={()=>{ onSelectChampion && onSelectChampion(campeon) }}
-                                draggable="true"
-                                />
-                            <span>{campeon.nombre}</span>
+                [...new Set(championsList.map(({ coste }) => Number(coste)))]
+                    .sort((a, b) => (a === 0 ? 999 : a) - (b === 0 ? 999 : b))
+                    .map((costeGrupo) => (
+                        <div className={style.containerChampionsByCost} key={`coste-${costeGrupo}`}>
+                            {championsList
+                                .filter(({ coste }) => Number(coste) === costeGrupo)
+                                .map((campeon, index) => (
+                                    <div
+                                        className={style.containerChampion}
+                                        key={`${campeon.apiName || campeon.nombre}-${index}`}
+                                        style={{ borderColor: `var(--color-hex-cost-${campeon.coste}, var(--color-hex-cost-default))` }}
+                                    >
+                                        <img
+                                            id={`campeon-${campeon.nombre}`}
+                                            src={campeon.img}
+                                            alt={campeon.nombre}
+                                            data-campeon={JSON.stringify(campeon)}
+                                            data-from={"championList"}
+                                            onDragStart={(e) => { handleDragStart(e) }}
+                                            onClick={() => { onSelectChampion && onSelectChampion(campeon) }}
+                                            draggable="true"
+                                        />
+                                        <span>{campeon.nombre}</span>
+                                    </div>
+                                ))}
                         </div>
-                    )    
-                    
-                })}
-            </div>
-            }
-            {championsList && sortBy === "coste" &&
-            <div className={style.containerChampionsByCost}>
-            {championsList?.filter(({coste})=>coste===3)?.map((campeon, index)=>{
-                return (
-                    <div className={style.containerChampion} key={`key${index}`} style={{"borderColor":`var(--color-hex-cost-${campeon.coste})`}}>
-                            <img
-                                id={`campeon-${campeon.nombre}`}
-                                src={campeon.img}
-                                alt={campeon.nombre}
-                                data-campeon={JSON.stringify(campeon)}
-                                data-from={"championList"}
-                                onDragStart={(e)=>{handleDragStart(e)}}
-                                onClick={()=>{ onSelectChampion && onSelectChampion(campeon) }}
-                                draggable="true"
-                                />
-                            <span>{campeon.nombre}</span>
-                        </div>
-                    )    
-                    
-                })}
-            </div>
-            }
-            {championsList && sortBy === "coste" &&
-            <div className={style.containerChampionsByCost}>
-            {championsList?.filter(({coste})=>coste===4)?.map((campeon, index)=>{
-                return (
-                    <div className={style.containerChampion} key={`key${index}`} style={{"borderColor":`var(--color-hex-cost-${campeon.coste})`}}>
-                            <img
-                                id={`campeon-${campeon.nombre}`}
-                                src={campeon.img}
-                                alt={campeon.nombre}
-                                data-campeon={JSON.stringify(campeon)}
-                                data-from={"championList"}
-                                onDragStart={(e)=>{handleDragStart(e)}}
-                                onClick={()=>{ onSelectChampion && onSelectChampion(campeon) }}
-                                draggable="true"
-                                />
-                            <span>{campeon.nombre}</span>
-                        </div>
-                    )    
-                    
-                })}
-            </div>
-            }
-            {championsList && sortBy === "coste" && 
-            <div className={style.containerChampionsByCost}>
-            {championsList?.filter(({coste})=>coste===5)?.map((campeon, index)=>{
-                return (
-                    <div className={style.containerChampion} key={`key${index}`} style={{"borderColor":`var(--color-hex-cost-${campeon.coste})`}}>
-                            <img
-                                id={`campeon-${campeon.nombre}`}
-                                src={campeon.img}
-                                alt={campeon.nombre}
-                                data-campeon={JSON.stringify(campeon)}
-                                data-from={"championList"}
-                                onDragStart={(e)=>{handleDragStart(e)}}
-                                onClick={()=>{ onSelectChampion && onSelectChampion(campeon) }}
-                                draggable="true"
-                                />
-                            <span>{campeon.nombre}</span>
-                        </div>
-                    )    
-                    
-                })}
-            </div>
-            }
-            {championsList && sortBy === "coste" &&
-            <div className={style.containerChampionsByCost}>
-            {championsList?.filter(({coste})=>coste===6)?.map((campeon, index)=>{
-                return (
-                    <div className={style.containerChampion} key={`key${index}`} style={{"borderColor":`var(--color-hex-cost-${campeon.coste})`}}>
-                            <img
-                                id={`campeon-${campeon.nombre}`}
-                                src={campeon.img}
-                                alt={campeon.nombre}
-                                data-campeon={JSON.stringify(campeon)}
-                                data-from={"championList"}
-                                onDragStart={(e)=>{handleDragStart(e)}}
-                                onClick={()=>{ onSelectChampion && onSelectChampion(campeon) }}
-                                draggable="true"
-                                />
-                            <span>{campeon.nombre}</span>
-                        </div>
-                    )    
-                    
-                })}
-            </div>
-            }
-            {championsList && sortBy === "coste" &&
-            <div className={style.containerChampionsByCost}>
-            {championsList?.filter(({coste})=>coste===11)?.map((campeon, index)=>{
-                return (
-                    <div className={style.containerChampion} key={`key${index}`} style={{"borderColor":`var(--color-hex-cost-${campeon.coste})`}}>
-                            <img
-                                id={`campeon-${campeon.nombre}`}
-                                src={campeon.img}
-                                alt={campeon.nombre}
-                                data-campeon={JSON.stringify(campeon)}
-                                data-from={"championList"}
-                                onDragStart={(e)=>{handleDragStart(e)}}
-                                onClick={()=>{ onSelectChampion && onSelectChampion(campeon) }}
-                                draggable="true"
-                                />
-                            <span>{campeon.nombre}</span>
-                        </div>
-                    )    
-                    
-                })}
-            </div>
+                    ))
             }
 
             

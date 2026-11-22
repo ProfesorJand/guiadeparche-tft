@@ -20,8 +20,8 @@ const AdminCrearPaginaMetaTFT = () => {
 
   const getTableName = () => {
     if (activeTab === "campeones") return "campeones_tft";
-    if (activeTab === "sinergias") return "traits_TFT_set_18";
-    if (activeTab === "items") return "items_tft_set_18";
+    if (activeTab === "sinergias") return `traits_TFT_set_${targetSet}`;
+    if (activeTab === "items") return `items_tft_set_${targetSet}`;
     return "campeones_tft";
   };
 
@@ -70,7 +70,7 @@ const AdminCrearPaginaMetaTFT = () => {
       }
     };
     fetchEntities();
-  }, [activeTab]);
+  }, [activeTab, targetSet]);
 
   const filteredEntities = loadedEntities.filter(ent => 
     ent.name?.toLowerCase().includes(searchQuery.toLowerCase()) || 
