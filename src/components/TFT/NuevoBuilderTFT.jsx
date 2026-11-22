@@ -16,6 +16,11 @@ const championsColor = [
   "var(--color-hex-cost-4)",
   "var(--color-hex-cost-5)",
   "var(--color-hex-cost-6)",
+  "var(--color-hex-cost-7)",
+  "var(--color-hex-cost-7)",
+  "var(--color-hex-cost-7)",
+  "var(--color-hex-cost-7)",
+  "var(--color-hex-cost-11)",
 ];
 
 const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => {
@@ -42,7 +47,14 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
     const hexIndex = champ.fila * 10 + champ.col;
 
     const isEspinaNegra = champ.sinergiaExtraMissFortune === "Espina Negra";
-    const champData = safeGlobalChampions.find(c => c.apiName === champ?.apiNameCampeon);
+    const isSet19Aatrox = champ?.apiNameCampeon === "tft19_aatrox";
+    const champData = safeGlobalChampions.find(c => c.apiName === champ?.apiNameCampeon) || (isSet19Aatrox ? {
+      apiName: "tft19_aatrox",
+      name: "Aatrox",
+      tileIcon: "tft19_aatrox_square.png",
+      cost: 0,
+      traits: [],
+    } : null);
     
     if (!champData && !isEspinaNegra) return;
 
@@ -110,6 +122,7 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
       extraSynergy: champ.sinergiaExtraMissFortune || null,
       extraSynergyKhazix: champ.sinergiasExtraKhazix || [],
       isRiftbeast: champ.isRiftbeast || false,
+      heartsteelSelector: champ.heartsteelSelector || "",
       hexagono: hexIndex
     };
   });
@@ -173,7 +186,8 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
         estrella: champ.estrellas || 1,
         sinergiaExtraMissFortune: champ.extraSynergy || "",
         sinergiasExtraKhazix: champ.extraSynergyKhazix || [],
-        isRiftbeast: champ.isRiftbeast || false
+        isRiftbeast: champ.isRiftbeast || false,
+        heartsteelSelector: champ.heartsteelSelector || ""
       };
     });
 
@@ -255,7 +269,8 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
         hexagono: hexIndex,
         extraSynergy: targetChampion?.extraSynergy === "Espina Negra" ? "Espina Negra" : null,
         extraSynergyKhazix: [],
-        isRiftbeast: false
+        isRiftbeast: false,
+        heartsteelSelector: ""
       };
 
       if (isFromBoard) {
@@ -495,6 +510,31 @@ const NuevoBuilderTFT = ({ posicionIndex, customTablero, readOnly = false }) => 
                       >
                         <img className={`${style.backgroundSinergia} DA_Riftbeast18`} style={{width:"100%"}} src="/hexagonos/hex-prismatic.webp" alt="hex" />
                         <img className={style.sinergia} src="/tft/sets/18/traits/trait_icon_18_riftbeast.png" alt="Riftbeast" />
+                      </div>
+                    )}
+
+                    {champion.heartsteelSelector && (
+                      <div
+                        className={style.heartsteelBuffBadge}
+                        title={
+                          champion.heartsteelSelector === "selector1"
+                            ? "Heartsteel Bufo Naranja"
+                            : "Heartsteel Bufo Azul"
+                        }
+                      >
+                        <img
+                          className={style.heartsteelBuffImg}
+                          src={
+                            champion.heartsteelSelector === "selector1"
+                              ? "/tft/sets/19/traits/heartsteel_selector1.png"
+                              : "/tft/sets/19/traits/heartsteel_selector2.png"
+                          }
+                          alt={
+                            champion.heartsteelSelector === "selector1"
+                              ? "Heartsteel Naranja"
+                              : "Heartsteel Azul"
+                          }
+                        />
                       </div>
                     )}
 

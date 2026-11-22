@@ -3,17 +3,40 @@ import { useRef, useCallback, useState, useEffect } from "react";
 import { toPng } from 'html-to-image';
 import SliderButtom from "@components/inputs/SliderButtom";
 import SliderButtomLogoGuiadeparche from "@components/inputs/SliderButtomLogoGuiadeparche";
-import { metaCompsTFT, versionTFT } from "@stores/dataTFT";
+import { metaCompsTFT, versionTFT, setNumberPBE, setNumberLatest, dataTFTChampions, loadDataTFTFromAPI } from "@stores/dataTFT";
 import { useStore } from "@nanostores/react";
 import CampeonImgInTierList from "@components/TFT/meta/CampeonImgInTierList"
+import SelectVersion from "@components/versionTFT/SelectVersion.jsx";
+import style from "./css/InfografiaTFT.module.css";
 const InfografiaTFT = ()=>{
   const backgroundRef = useRef(null);
   const [tituloInfografiaTFT, setTituloInfografiaTFT] = useState("Top 4 TFT Meta Comps");
   const [logoMovilnet, setLogoMovilnet] = useState(true);
   const [logoGuiadeparche, setLogoGuiadeparche] = useState(false)
   const [compsSelected, setCompsSelected] = useState([])
-  const metaComps = useStore(metaCompsTFT);
+  const metaComps = useStore(metaCompsTFT) || [];
   const currentVersion = useStore(versionTFT);
+  const championsData = useStore(dataTFTChampions) || [];
+  const targetSetNumber = currentVersion === "pbe" ? setNumberPBE : setNumberLatest;
+
+  // Asegurar que los datos del set activo estén cargados al entrar directamente a Infografia Comps
+  useEffect(() => {
+    const hasSetChamps = championsData.some(
+      (c) => String(c.tft_set) === String(targetSetNumber) || c.apiName?.toLowerCase().startsWith(`tft${targetSetNumber}_`)
+    );
+    if (!hasSetChamps) {
+      loadDataTFTFromAPI({ version: currentVersion });
+    }
+    setCompsSelected([]);
+  }, [currentVersion, targetSetNumber]);
+
+  // Filtrar estrictamente por set_number para evitar colisiones entre sets (Set 17 / 18 / 19)
+  const filteredMetaComps = metaComps.filter((comp) => {
+    if (comp.set_number !== undefined && comp.set_number !== null && comp.set_number !== "") {
+      return String(comp.set_number) === String(targetSetNumber);
+    }
+    return (comp.version || "latest") === currentVersion;
+  });
   
   const toggleCompSelection = (comp) => {
     setCompsSelected(prev => {
@@ -97,35 +120,38 @@ const InfografiaTFT = ()=>{
 
 
   return (
-    <div style={{display:"flex", flexDirection:"column", width:"100%", height:"auto", margin:"0 auto", flexWrap:"wrap", gap:"1rem"}}>
+    <div className={style.wrapper}>
+      <SelectVersion />
       {/* Seleccionar las compos que van en la infografia */}
       {['S', 'A', 'B', 'C'].map(tierLetter => {
-        const tierComps = metaComps.filter(c => c.tier === tierLetter && (c.version || "latest") === currentVersion);
+        const tierComps = filteredMetaComps.filter(c => c.tier === tierLetter);
         if (tierComps.length === 0) return null;
         return (
-          <div key={tierLetter} style={{ marginBottom: "20px" }}>
-            <h2>Tier {tierLetter}</h2>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(10, 1fr)", gap: "10px", flexWrap: "wrap", alignItems: "center" }}>
+          <div key={tierLetter} className={style.tierBlock}>
+            <h2 className={style.tierHeading}>Tier {tierLetter}</h2>
+            <div className={style.tierCompsRow}>
               {tierComps.map(comp => (
-                <CampeonImgInTierList
-                  key={comp.id}
-                  id={comp.id}
-                  apiNameCampeon={comp?.campeonMeta?.apiNameCampeon}
-                  apiNameItems={comp?.campeonMeta?.apiNameItemsDelCampeon}
-                  estrellas={comp?.campeonMeta?.estrellas}
-                  aumento={comp?.campeonMeta?.aumento}
-                  emblema={comp?.campeonMeta?.emblema}
-                  compUrl={comp.urlSEO}
-                  isInfografia={true}
-                  isSelectedForInfografia={compsSelected.some(c => c.id === comp.id)}
-                  onSelectForInfografia={() => toggleCompSelection(comp)}
-                />
+                <div key={comp.id} className={style.tierCompSlot}>
+                  <CampeonImgInTierList
+                    comp={comp}
+                    id={comp.id}
+                    apiNameCampeon={comp?.campeonMeta?.apiNameCampeon}
+                    apiNameItems={comp?.campeonMeta?.apiNameItemsDelCampeon}
+                    estrellas={comp?.campeonMeta?.estrellas}
+                    aumento={comp?.campeonMeta?.aumento}
+                    emblema={comp?.campeonMeta?.emblema}
+                    compUrl={comp.urlSEO}
+                    isInfografia={true}
+                    isSelectedForInfografia={compsSelected.some(c => c.id === comp.id)}
+                    onSelectForInfografia={() => toggleCompSelection(comp)}
+                  />
+                </div>
               ))}
             </div>
           </div>
         )
       })}
-      <div>
+      <div className={style.controlsRow}>
         {/*Boton para capturar imagen de la InfografiaTFTComps */}
         <button onClick={()=>{
           onButtonClick()

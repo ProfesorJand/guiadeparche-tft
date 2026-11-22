@@ -3,13 +3,33 @@
   position: absolute;
   top:100%;
   left:0;
-  width: 200px;
+  width: 215px;
   background-color: var(--bg-primary);
   z-index: 3;
   cursor: pointer;
   height: fit-content;
 }
 
+.optionsMenu{
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
 .optionsMenu:hover{
   background-color: var(--bg-secondary);
+}
+
+.optionIcon{
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+@media only screen and (max-width: 900px){
+  .contextMenuBuilder{
+    width: 190px;
+  }
 }

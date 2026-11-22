@@ -36,3 +36,12 @@ Thumbs.db
 /apiGuiadeparche
 
 /TFT_SET_18_Data
+
+# Herramientas locales de extracción FModel / TFT (no subir al repo público)
+src/data/locres/
+scratch/
+scripts/parseFModelSet19.js
+scripts/extractLocresPBE.js
+scripts/recolorSet19Augments.js
+ritobin.md
+tft_data_mining_guide.md

@@ -28,6 +28,8 @@ const AdminBlog = () => {
   // Estado del formulario del blog post
   const [postId, setPostId] = useState(0);
   const [title, setTitle] = useState('');
+  const [seoTitle, setSeoTitle] = useState('');
+  const [keywords, setKeywords] = useState('');
   const [slug, setSlug] = useState('');
   const [excerpt, setExcerpt] = useState('');
   const [content, setContent] = useState('');
@@ -47,12 +49,37 @@ const AdminBlog = () => {
   const [newTagNameInput, setNewTagNameInput] = useState('');
   const [newTagSlugInput, setNewTagSlugInput] = useState('');
 
-  // Estados de Galería de Imágenes
+  // Estados para Edición y Eliminación de Etiquetas
+  const [tagModalOpen, setTagModalOpen] = useState(false);
+  const [editingTagId, setEditingTagId] = useState(0);
+  const [editingTagName, setEditingTagName] = useState('');
+  const [editingTagSlug, setEditingTagSlug] = useState('');
+  const [savingTag, setSavingTag] = useState(false);
+
+  // Estados de Galería de Imágenes y Carpetas
   const [galleryOpen, setGalleryOpen] = useState(false);
   const [galleryImages, setGalleryImages] = useState([]);
+  const [galleryFolders, setGalleryFolders] = useState([]);
+  const [currentFolder, setCurrentFolder] = useState('raiz');
+  const [newFolderInput, setNewFolderInput] = useState('');
+  const [showNewFolderInput, setShowNewFolderInput] = useState(false);
+  const [creatingFolder, setCreatingFolder] = useState(false);
+  const [gallerySearchQuery, setGallerySearchQuery] = useState('');
   const [loadingGallery, setLoadingGallery] = useState(false);
   const [uploadingImg, setUploadingImg] = useState(false);
   const fileInputRef = useRef(null);
+
+  // Estado para Tip y Calculadora de Tiempo de Lectura
+  const [showReadTimeTip, setShowReadTimeTip] = useState(false);
+
+  // Estados para Modal de Inserción de Imagen en el Editor HTML
+  const [editorImgModalOpen, setEditorImgModalOpen] = useState(false);
+  const [editorImgTab, setEditorImgTab] = useState('url'); // 'url' | 'upload' | 'gallery'
+  const [editorImgUrl, setEditorImgUrl] = useState('');
+  const [editorImgAlt, setEditorImgAlt] = useState('');
+  const [editorImgCaption, setEditorImgCaption] = useState('');
+  const [editorUploading, setEditorUploading] = useState(false);
+  const editorImgFileRef = useRef(null);
 
   // Estados para Gestor de Autores (Crear / Editar / Subir Avatar)
   const [authorModalOpen, setAuthorModalOpen] = useState(false);
@@ -94,7 +121,7 @@ const AdminBlog = () => {
       const res = await fetch('https://api.guiadeparche.com/blog/tags.php');
       const data = await res.json();
       if (data.success && data.tags && data.tags.length > 0) {
-        setAvailableTags(data.tags);
+        setAvailableTags(data.tags.map((t) => ({ ...t, id: Number(t.id) })));
       }
     } catch (e) {
       console.log('Usando tags locales por defecto');
@@ -204,21 +231,62 @@ const AdminBlog = () => {
     }, 0);
   };
 
-  // Manejo de selección de tags
-  const toggleTag = (tagId) => {
-    setSelectedTagIds((prev) =>
-      prev.includes(tagId) ? prev.filter((id) => id !== tagId) : [...prev, tagId]
-    );
+  // Helper para normalizar y extraer IDs numéricos únicos de tags
+  const extractTagIds = (tags, tagsList = availableTags) => {
+    if (!tags || !Array.isArray(tags)) return [];
+    const ids = tags
+      .map((t) => {
+        if (typeof t === 'number') return t;
+        if (typeof t === 'string') {
+          const num = Number(t);
+          if (!isNaN(num) && num > 0) return num;
+          const found = tagsList.find(
+            (at) => at.slug === t || at.nombre.toLowerCase() === t.toLowerCase()
+          );
+          return found ? Number(found.id) : null;
+        }
+        if (t && typeof t === 'object') {
+          if (t.id !== undefined && t.id !== null) {
+            const num = Number(t.id);
+            if (!isNaN(num) && num > 0) return num;
+          }
+          if (t.slug || t.nombre) {
+            const found = tagsList.find(
+              (at) => at.slug === t.slug || at.nombre.toLowerCase() === (t.nombre || '').toLowerCase()
+            );
+            return found ? Number(found.id) : null;
+          }
+        }
+        return null;
+      })
+      .filter((id) => id !== null && id > 0);
+
+    return [...new Set(ids)];
   };
 
-  // Cargar imágenes de la galería
-  const fetchGallery = async () => {
+  // Manejo de selección de tags (garantizando tipos numéricos y sin duplicados)
+  const toggleTag = (tagId) => {
+    const numId = Number(tagId);
+    if (!numId) return;
+    setSelectedTagIds((prev) => {
+      const prevNumbers = prev.map(Number);
+      return prevNumbers.includes(numId)
+        ? prevNumbers.filter((id) => id !== numId)
+        : [...new Set([...prevNumbers, numId])];
+    });
+  };
+
+  // Cargar imágenes y carpetas de la galería
+  const fetchGallery = async (folder = currentFolder) => {
     setLoadingGallery(true);
     try {
-      const res = await fetch('https://api.guiadeparche.com/blog/galeria.php');
+      const folderParam = folder === 'raiz' || !folder ? '' : folder;
+      const res = await fetch(`https://api.guiadeparche.com/blog/galeria.php?folder=${encodeURIComponent(folderParam)}&t=${Date.now()}`);
       const data = await res.json();
-      if (data.success && data.imagenes) {
-        setGalleryImages(data.imagenes);
+      if (data.success) {
+        if (data.imagenes) setGalleryImages(data.imagenes);
+        if (data.carpetas) setGalleryFolders(data.carpetas);
+        if (data.current_folder) setCurrentFolder(data.current_folder);
       }
     } catch (e) {
       console.log('Error al cargar galería');
@@ -227,7 +295,39 @@ const AdminBlog = () => {
     }
   };
 
-  // Subir imagen a la galería evitando sobreescritura
+  // Crear nueva carpeta en la galería
+  const handleCreateFolder = async (e) => {
+    if (e) e.preventDefault();
+    if (!newFolderInput.trim()) return;
+
+    setCreatingFolder(true);
+    try {
+      const res = await fetch('https://api.guiadeparche.com/blog/galeria.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'crear_carpeta',
+          folder_name: newFolderInput.trim()
+        })
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert(data.message || 'Carpeta creada.');
+        const targetFolder = data.folder || newFolderInput.trim();
+        setNewFolderInput('');
+        setShowNewFolderInput(false);
+        fetchGallery(targetFolder);
+      } else {
+        alert(data.message || 'Error al crear la carpeta');
+      }
+    } catch (err) {
+      alert('Error de conexión al crear la carpeta');
+    } finally {
+      setCreatingFolder(false);
+    }
+  };
+
+  // Subir imagen a la galería en la carpeta activa
   const handleFileUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -235,6 +335,7 @@ const AdminBlog = () => {
     setUploadingImg(true);
     const formData = new FormData();
     formData.append('imagen', file);
+    formData.append('folder', currentFolder === 'raiz' ? '' : currentFolder);
 
     try {
       const res = await fetch('https://api.guiadeparche.com/blog/subir_imagen.php', {
@@ -243,9 +344,13 @@ const AdminBlog = () => {
       });
       const data = await res.json();
       if (data.success && data.url) {
-        setImage(data.url);
+        if (galleryTarget === 'author') {
+          setAuthorAvatar(data.url);
+        } else {
+          setImage(data.url);
+        }
         alert('¡Imagen subida exitosamente!');
-        fetchGallery();
+        fetchGallery(currentFolder);
       } else {
         alert(data.message || 'Error al subir la imagen');
       }
@@ -254,6 +359,147 @@ const AdminBlog = () => {
     } finally {
       setUploadingImg(false);
       if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
+
+  // Subir imagen específicamente para el Editor HTML
+  const handleUploadImageForEditor = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setEditorUploading(true);
+    const formData = new FormData();
+    formData.append('imagen', file);
+    formData.append('folder', currentFolder === 'raiz' ? '' : currentFolder);
+
+    try {
+      const res = await fetch('https://api.guiadeparche.com/blog/subir_imagen.php', {
+        method: 'POST',
+        body: formData
+      });
+      const data = await res.json();
+      if (data.success && data.url) {
+        setEditorImgUrl(data.url);
+        alert('¡Imagen subida con éxito! Lista para insertar.');
+      } else {
+        alert(data.message || 'Error al subir la imagen');
+      }
+    } catch (err) {
+      alert('Error de conexión al subir la imagen');
+    } finally {
+      setEditorUploading(false);
+      if (editorImgFileRef.current) editorImgFileRef.current.value = '';
+    }
+  };
+
+  // Insertar la imagen en el editor HTML con su Alt text y opcional Caption
+  const handleInsertImageToEditor = () => {
+    if (!editorImgUrl.trim()) {
+      alert('Por favor especifica o sube una imagen antes de insertar.');
+      return;
+    }
+
+    const alt = editorImgAlt.trim() || title.trim() || 'Imagen del artículo';
+    const caption = editorImgCaption.trim();
+
+    const snippet = caption
+      ? `\n<figure class="blog-figure">\n  <img src="${editorImgUrl.trim()}" alt="${alt}" loading="lazy" />\n  <figcaption>${caption}</figcaption>\n</figure>\n`
+      : `\n<figure class="blog-figure">\n  <img src="${editorImgUrl.trim()}" alt="${alt}" loading="lazy" />\n</figure>\n`;
+
+    insertSnippet(snippet);
+    setEditorImgModalOpen(false);
+    setEditorImgUrl('');
+    setEditorImgAlt('');
+    setEditorImgCaption('');
+  };
+
+  // Helper para calcular palabras y tiempo de lectura estimado
+  const getWordAndReadingStats = () => {
+    const text = content.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+    const words = text ? text.split(/\s+/).length : 0;
+    const minutes = Math.max(1, Math.ceil(words / 200));
+    return { words, minutes };
+  };
+
+  // Abrir modal para editar etiqueta
+  const handleOpenEditTag = (tag, e) => {
+    if (e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+    setEditingTagId(tag.id);
+    setEditingTagName(tag.nombre);
+    setEditingTagSlug(tag.slug);
+    setTagModalOpen(true);
+  };
+
+  // Guardar cambios en etiqueta editada
+  const handleSaveEditTag = async (e) => {
+    if (e) e.preventDefault();
+    if (!editingTagName.trim()) {
+      alert('El nombre de la etiqueta no puede estar vacío.');
+      return;
+    }
+
+    setSavingTag(true);
+    try {
+      const res = await fetch('https://api.guiadeparche.com/blog/tags.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'edit',
+          id: editingTagId,
+          nombre: editingTagName.trim(),
+          slug: editingTagSlug.trim()
+        })
+      });
+      const data = await res.json();
+      if (data.success && data.tag) {
+        setAvailableTags((prev) =>
+          prev.map((t) => (t.id === editingTagId ? data.tag : t))
+        );
+        setTagModalOpen(false);
+        alert('¡Etiqueta actualizada correctamente! Los cambios se reflejarán en todas las publicaciones.');
+      } else {
+        alert(data.message || 'Error al actualizar la etiqueta');
+      }
+    } catch (err) {
+      alert('Error de conexión al actualizar la etiqueta');
+    } finally {
+      setSavingTag(false);
+    }
+  };
+
+  // Eliminar etiqueta y limpiar posts asociados
+  const handleDeleteTag = async (tag, e) => {
+    if (e) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+    const confirmed = window.confirm(
+      `¿Estás seguro de que deseas eliminar la etiqueta "${tag.nombre}"?\n\nEsta acción la eliminará de la base de datos y limpiará automáticamente todas las publicaciones que la tengan asociada.`
+    );
+    if (!confirmed) return;
+
+    try {
+      const res = await fetch('https://api.guiadeparche.com/blog/tags.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'delete',
+          id: tag.id
+        })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setAvailableTags((prev) => prev.filter((t) => t.id !== tag.id));
+        setSelectedTagIds((prev) => prev.filter((id) => id !== tag.id));
+        alert('Etiqueta eliminada y desvinculada de todas las publicaciones.');
+      } else {
+        alert(data.message || 'Error al eliminar la etiqueta');
+      }
+    } catch (err) {
+      alert('Error de conexión al eliminar la etiqueta');
     }
   };
 
@@ -406,6 +652,8 @@ const AdminBlog = () => {
     const payload = {
       id: postId,
       title: title.trim(),
+      seo_title: seoTitle.trim(),
+      keywords: keywords.trim(),
       slug: slug.trim(),
       excerpt: excerpt.trim(),
       content: content.trim(),
@@ -415,7 +663,7 @@ const AdminBlog = () => {
       featured: featured,
       read_time: readTime.trim(),
       status: status,
-      tag_ids: selectedTagIds
+      tag_ids: [...new Set(selectedTagIds.map(Number).filter((id) => id > 0))]
     };
 
     try {
@@ -454,6 +702,8 @@ const AdminBlog = () => {
   const handleResetForm = () => {
     setPostId(0);
     setTitle('');
+    setSeoTitle('');
+    setKeywords('');
     setSlug('');
     setExcerpt('');
     setContent('');
@@ -468,24 +718,44 @@ const AdminBlog = () => {
   };
 
   // Cargar post para editar
-  const handleEditPost = (post) => {
+  const handleEditPost = async (post) => {
     setPostId(post.id);
     setTitle(post.title || '');
+    setSeoTitle(post.seo_title || post.seoTitle || '');
+    setKeywords(post.keywords || '');
     setSlug(post.slug || '');
     setExcerpt(post.excerpt || '');
     setContent(post.content || '');
-    setAutorId(post.autor_id || 1);
+    setAutorId(post.autor_id ? Number(post.autor_id) : 1);
     setImage(post.image || '');
     setVideo(post.video || '');
     setFeatured(Boolean(post.featured));
-    setReadTime(post.read_time || '4 min');
+    setReadTime(post.read_time || '4 min de lectura');
     setStatus(post.status || 'published');
-    if (post.tags && Array.isArray(post.tags)) {
-      setSelectedTagIds(post.tags.map((t) => t.id));
-    }
+
+    // Parsear y activar inmediatamente los tags que ya vienen en post
+    const initialTags = extractTagIds(post.tags);
+    setSelectedTagIds(initialTags);
+
     setActiveTab('crear');
     // Pasar explícitamente post.id para que la comprobación no compare contra 0
     checkSlugAvailability(post.slug, post.id);
+
+    // Consultar el post completo por ID para asegurar contenido y tags 100% frescos de la BD
+    try {
+      const res = await fetch(`https://api.guiadeparche.com/blog/get_posts.php?id=${post.id}&t=${Date.now()}`);
+      const data = await res.json();
+      if (data.success && data.post) {
+        if (data.post.content) setContent(data.post.content);
+        if (data.post.seo_title !== undefined) setSeoTitle(data.post.seo_title || '');
+        if (data.post.keywords !== undefined) setKeywords(data.post.keywords || '');
+        if (data.post.tags && Array.isArray(data.post.tags)) {
+          setSelectedTagIds(extractTagIds(data.post.tags));
+        }
+      }
+    } catch (e) {
+      console.log('Error al consultar post completo por ID:', e);
+    }
   };
 
   return (
@@ -538,6 +808,52 @@ const AdminBlog = () => {
                 onChange={(e) => setTitle(e.target.value)}
                 required
               />
+            </div>
+
+            {/* Título SEO (Etiqueta <title> para Google) */}
+            <div className={`${styles.formGroup} ${styles.fullWidth}`}>
+              <label className={styles.label}>
+                <span>Título SEO (para Google y pestañas):</span>
+                <span
+                  className={`${styles.charCounter} ${
+                    (seoTitle || title).length <= 60
+                      ? styles.charCounterOk
+                      : (seoTitle || title).length <= 70
+                      ? styles.charCounterWarn
+                      : styles.charCounterOver
+                  }`}
+                >
+                  {(seoTitle || title).length} / 60 caracteres
+                </span>
+              </label>
+              <input
+                type="text"
+                className={styles.input}
+                placeholder={title ? `Por defecto: ${title}` : 'Ej: Guía de TFT Parche 14.21 | Mejores Composiciones'}
+                value={seoTitle}
+                onChange={(e) => setSeoTitle(e.target.value)}
+              />
+              <span style={{ fontSize: '0.78rem', color: '#94a3b8', marginTop: '0.2rem' }}>
+                Si se deja vacío, Google y el navegador usarán automáticamente el título del artículo.
+              </span>
+            </div>
+
+            {/* Palabras Clave SEO (Keywords) */}
+            <div className={`${styles.formGroup} ${styles.fullWidth}`}>
+              <label className={styles.label}>
+                <span>Palabras Clave SEO (Keywords para buscadores):</span>
+                <span style={{ color: '#94a3b8', fontSize: '0.8rem' }}>Separadas por comas</span>
+              </label>
+              <input
+                type="text"
+                className={styles.input}
+                placeholder="tft meta, composiciones tft, parche tft, guiadeparche..."
+                value={keywords}
+                onChange={(e) => setKeywords(e.target.value)}
+              />
+              <span style={{ fontSize: '0.78rem', color: '#94a3b8', marginTop: '0.2rem' }}>
+                Se inyectarán directamente en las metaetiquetas SEO del artículo.
+              </span>
             </div>
 
             {/* Slug con Validación */}
@@ -678,24 +994,60 @@ const AdminBlog = () => {
 
             {/* Tiempo de Lectura y Estado */}
             <div className={styles.formGroup}>
-              <label className={styles.label}>Tiempo de Lectura y Estado:</label>
-              <div style={{ display: 'flex', gap: '0.5rem' }}>
+              <div className={styles.label}>
+                <span>Tiempo de Lectura y Estado:</span>
+                <button
+                  type="button"
+                  className={styles.readTimeTipBtn}
+                  onClick={() => setShowReadTimeTip(!showReadTimeTip)}
+                  title="Aprende cómo calcular los minutos de lectura de tu artículo"
+                >
+                  💡 {showReadTimeTip ? 'Ocultar Tip' : '¿Cómo saber los minutos?'}
+                </button>
+              </div>
+              <div className={styles.readTimeControls}>
                 <input
                   type="text"
                   className={styles.input}
                   placeholder="4 min de lectura"
                   value={readTime}
                   onChange={(e) => setReadTime(e.target.value)}
+                  style={{ flex: 1 }}
                 />
+                <button
+                  type="button"
+                  className={styles.readTimeCalcBadge}
+                  onClick={() => {
+                    const stats = getWordAndReadingStats();
+                    setReadTime(`${stats.minutes} min de lectura`);
+                  }}
+                  title="Calcular minutos automáticamente en base al contenido escrito"
+                >
+                  ⚡ Auto-calcular ({getWordAndReadingStats().minutes} min)
+                </button>
                 <select
                   className={styles.select}
                   value={status}
                   onChange={(e) => setStatus(e.target.value)}
+                  style={{ width: '135px' }}
                 >
                   <option value="published">Publicado</option>
                   <option value="draft">Borrador</option>
                 </select>
               </div>
+
+              {showReadTimeTip && (
+                <div className={styles.readTimeTipCard}>
+                  <strong>💡 ¿Cómo estimar el tiempo de lectura de un artículo?</strong>
+                  <br />
+                  En promedio, un lector adulto lee entre <strong>200 y 250 palabras por minuto</strong>.
+                  <br />
+                  Fórmula rápida: cuenta las palabras del contenido y divídelas entre 200.
+                  <br />
+                  Tu contenido actual tiene <strong>~{getWordAndReadingStats().words} palabras</strong>, lo que equivale aproximadamente a <strong>{getWordAndReadingStats().minutes} {getWordAndReadingStats().minutes === 1 ? 'minuto' : 'minutos'} de lectura</strong>.
+                  ¡Haz clic en el botón <em>"⚡ Auto-calcular"</em> para asignarlo automáticamente!
+                </div>
+              )}
             </div>
 
             {/* Imagen de Portada con Subida y Galería */}
@@ -730,7 +1082,7 @@ const AdminBlog = () => {
                   className={styles.btnSmall}
                   onClick={() => fileInputRef.current?.click()}
                   disabled={uploadingImg}
-                  title="Subir imagen desde tu computadora a api.guiadeparche.com/blog/galeria"
+                  title="Subir imagen desde tu computadora a la galería del servidor"
                 >
                   {uploadingImg ? '⏳ Subiendo...' : '📤 Subir Imagen'}
                 </button>
@@ -740,7 +1092,7 @@ const AdminBlog = () => {
                   onClick={() => {
                     setGalleryTarget('post');
                     setGalleryOpen(true);
-                    fetchGallery();
+                    fetchGallery(currentFolder);
                   }}
                   title="Abrir galería de imágenes ya subidas al servidor"
                 >
@@ -776,24 +1128,45 @@ const AdminBlog = () => {
               </label>
             </div>
 
-            {/* Etiquetas (Tags) */}
+            {/* Etiquetas (Tags) con Edición y Eliminación */}
             <div className={`${styles.formGroup} ${styles.fullWidth}`}>
               <label className={styles.label}>
                 <span>Etiquetas (Tags asociadas):</span>
-                <span style={{ color: '#94a3b8', fontSize: '0.8rem' }}>Haz clic para activar/desactivar</span>
+                <span style={{ color: '#94a3b8', fontSize: '0.8rem' }}>Haz clic en el nombre para asociar | Usa ✏️ para editar y 🗑️ para eliminar</span>
               </label>
               <div className={styles.tagsContainer}>
                 {availableTags.map((t) => {
-                  const isSelected = selectedTagIds.includes(t.id);
+                  const isSelected = selectedTagIds.some((id) => Number(id) === Number(t.id));
                   return (
-                    <button
+                    <div
                       key={t.id}
-                      type="button"
-                      className={`${styles.tagPill} ${isSelected ? styles.tagPillActive : ''}`}
-                      onClick={() => toggleTag(t.id)}
+                      className={`${styles.tagItemWrapper} ${isSelected ? styles.tagItemWrapperActive : ''}`}
                     >
-                      {isSelected ? '✓ ' : '+ '}#{t.nombre}
-                    </button>
+                      <button
+                        type="button"
+                        className={styles.tagSelectBtn}
+                        onClick={() => toggleTag(t.id)}
+                        title={isSelected ? 'Desmarcar etiqueta para este post' : 'Marcar etiqueta para este post'}
+                      >
+                        {isSelected ? '✓ ' : '+ '}#{t.nombre}
+                      </button>
+                      <button
+                        type="button"
+                        className={styles.tagActionBtn}
+                        onClick={(e) => handleOpenEditTag(t, e)}
+                        title={`Editar nombre o slug de #${t.nombre}`}
+                      >
+                        ✏️
+                      </button>
+                      <button
+                        type="button"
+                        className={`${styles.tagActionBtn} ${styles.tagActionBtnDelete}`}
+                        onClick={(e) => handleDeleteTag(t, e)}
+                        title={`Eliminar #${t.nombre} y limpiar de todas las publicaciones`}
+                      >
+                        🗑️
+                      </button>
+                    </div>
                   );
                 })}
               </div>
@@ -922,10 +1295,25 @@ const AdminBlog = () => {
                   <button
                     type="button"
                     className={styles.toolBtn}
-                    onClick={() => insertSnippet('<img src="', '" alt="Descripción de la imagen" style="width:100%; border-radius:12px; margin:1rem 0;" />')}
-                    title="Insertar Imagen"
+                    onClick={() => {
+                      setEditorImgModalOpen(true);
+                      fetchGallery(currentFolder);
+                    }}
+                    title="Insertar Imagen con opciones (URL directa, Subir archivo o Elegir de Galería con Alt text)"
                   >
                     🖼️ Imagen
+                  </button>
+                  <button
+                    type="button"
+                    className={styles.toolBtn}
+                    onClick={() =>
+                      insertSnippet(
+                        '\n<div class="blog-two-columns">\n  <div class="blog-column">\n    <h3>Columna 1</h3>\n    <p>Escribe aquí el contenido de la primera columna...</p>\n  </div>\n  <div class="blog-column">\n    <h3>Columna 2</h3>\n    <p>Escribe aquí el contenido de la segunda columna...</p>\n  </div>\n</div>\n'
+                      )
+                    }
+                    title="Insertar diseño responsivo de 2 columnas"
+                  >
+                    📰 2 Columnas
                   </button>
                   <button
                     type="button"
@@ -1129,12 +1517,12 @@ const AdminBlog = () => {
         </div>
       )}
 
-      {/* Modal de Galería de Imágenes (Portal fijado al viewport/pantalla) */}
+      {/* Modal de Galería de Imágenes con Soporte para Carpetas */}
       {galleryOpen && typeof document !== 'undefined' && createPortal(
         <div className={styles.modalOverlay} onClick={() => setGalleryOpen(false)}>
-          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()} style={{ maxWidth: '900px' }}>
             <div className={styles.modalHeader}>
-              <h3>🖼️ Galería de Imágenes del Blog</h3>
+              <h3>🖼️ Galería de Imágenes y Carpetas</h3>
               <button
                 type="button"
                 className={styles.modalCloseBtn}
@@ -1144,54 +1532,159 @@ const AdminBlog = () => {
               </button>
             </div>
             <div className={styles.modalBody}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                <span style={{ fontSize: '0.9rem', color: '#94a3b8' }}>
-                  Haz clic en cualquier imagen para seleccionarla como portada del post:
+              {/* Barra de Carpetas */}
+              <div className={styles.folderBar}>
+                <span style={{ fontSize: '0.82rem', fontWeight: 600, color: '#94a3b8', marginRight: '0.25rem' }}>
+                  Carpetas:
                 </span>
                 <button
                   type="button"
-                  className={styles.btnSmall}
-                  onClick={() => fileInputRef.current?.click()}
-                  disabled={uploadingImg}
+                  className={`${styles.folderChip} ${currentFolder === 'raiz' ? styles.folderChipActive : ''}`}
+                  onClick={() => fetchGallery('raiz')}
                 >
-                  {uploadingImg ? 'Subiendo...' : '📤 Subir Nueva'}
+                  📁 Principal / Raíz
                 </button>
+                {galleryFolders.map((f) => (
+                  <button
+                    key={f}
+                    type="button"
+                    className={`${styles.folderChip} ${currentFolder === f ? styles.folderChipActive : ''}`}
+                    onClick={() => fetchGallery(f)}
+                  >
+                    📁 {f}
+                  </button>
+                ))}
+
+                {showNewFolderInput ? (
+                  <form onSubmit={handleCreateFolder} className={styles.newFolderInputRow}>
+                    <input
+                      type="text"
+                      className={styles.folderInput}
+                      placeholder="Nombre carpeta..."
+                      value={newFolderInput}
+                      onChange={(e) => setNewFolderInput(e.target.value)}
+                      autoFocus
+                    />
+                    <button
+                      type="submit"
+                      className={styles.btnSmall}
+                      disabled={creatingFolder}
+                      style={{ padding: '0.35rem 0.65rem' }}
+                    >
+                      {creatingFolder ? '...' : 'Crear'}
+                    </button>
+                    <button
+                      type="button"
+                      className={styles.btnSmall}
+                      onClick={() => setShowNewFolderInput(false)}
+                      style={{ padding: '0.35rem 0.65rem' }}
+                    >
+                      ✕
+                    </button>
+                  </form>
+                ) : (
+                  <button
+                    type="button"
+                    className={styles.folderChip}
+                    onClick={() => setShowNewFolderInput(true)}
+                    style={{ borderStyle: 'dashed', color: '#c084fc' }}
+                    title="Crear una nueva carpeta para organizar imágenes"
+                  >
+                    + Nueva Carpeta
+                  </button>
+                )}
+              </div>
+
+              {/* Acciones y Búsqueda en la Galería */}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.75rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1, minWidth: '220px' }}>
+                  <input
+                    type="text"
+                    className={styles.input}
+                    placeholder="🔍 Buscar en esta carpeta..."
+                    value={gallerySearchQuery}
+                    onChange={(e) => setGallerySearchQuery(e.target.value)}
+                    style={{ padding: '0.5rem 0.75rem', fontSize: '0.85rem' }}
+                  />
+                  {gallerySearchQuery && (
+                    <button
+                      type="button"
+                      className={styles.btnSmall}
+                      onClick={() => setGallerySearchQuery('')}
+                      style={{ padding: '0.5rem 0.65rem' }}
+                    >
+                      Limpiar
+                    </button>
+                  )}
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <span style={{ fontSize: '0.82rem', color: '#94a3b8' }}>
+                    Carpeta activa: <strong style={{ color: '#c084fc' }}>{currentFolder === 'raiz' ? 'Principal (Raíz)' : currentFolder}</strong>
+                  </span>
+                  <button
+                    type="button"
+                    className={styles.btnSmall}
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={uploadingImg}
+                  >
+                    {uploadingImg ? 'Subiendo...' : `📤 Subir a esta carpeta`}
+                  </button>
+                </div>
               </div>
 
               {loadingGallery ? (
-                <p style={{ color: '#94a3b8', textAlign: 'center', padding: '2rem' }}>Cargando galería...</p>
-              ) : galleryImages.length === 0 ? (
-                <div style={{ textAlign: 'center', padding: '3rem 1rem', color: '#94a3b8' }}>
-                  <p>Aún no hay imágenes subidas a la galería.</p>
-                  <p style={{ fontSize: '0.85rem' }}>Usa el botón "Subir Imagen" para agregar la primera.</p>
-                </div>
-              ) : (
-                <div className={styles.galleryGrid}>
-                  {galleryImages.map((img) => (
-                    <div
-                      key={img.filename}
-                      className={styles.galleryItem}
-                      onClick={() => {
-                        if (galleryTarget === 'author') {
-                          setAuthorAvatar(img.url);
-                        } else {
-                          setImage(img.url);
-                        }
-                        setGalleryOpen(false);
-                      }}
-                      title={`Seleccionar ${img.filename}`}
-                    >
-                      <img
-                        src={img.url}
-                        alt={img.filename}
-                        className={styles.galleryThumb}
-                        loading="lazy"
-                      />
-                      <span className={styles.galleryItemLabel}>{img.filename}</span>
+                <p style={{ color: '#94a3b8', textAlign: 'center', padding: '2rem' }}>Cargando imágenes de la carpeta...</p>
+              ) : (() => {
+                const filteredImages = galleryImages.filter((img) =>
+                  !gallerySearchQuery.trim() || img.filename.toLowerCase().includes(gallerySearchQuery.toLowerCase())
+                );
+
+                if (filteredImages.length === 0) {
+                  return (
+                    <div style={{ textAlign: 'center', padding: '3rem 1rem', color: '#94a3b8' }}>
+                      <p>
+                        {gallerySearchQuery
+                          ? `No se encontraron imágenes que coincidan con "${gallerySearchQuery}".`
+                          : `Aún no hay imágenes en la carpeta "${currentFolder === 'raiz' ? 'Principal' : currentFolder}".`}
+                      </p>
+                      <p style={{ fontSize: '0.85rem' }}>
+                        Usa el botón "Subir a esta carpeta" para agregar imágenes.
+                      </p>
                     </div>
-                  ))}
-                </div>
-              )}
+                  );
+                }
+
+                return (
+                  <div className={styles.galleryGrid}>
+                    {filteredImages.map((img) => (
+                      <div
+                        key={img.filename}
+                        className={styles.galleryItem}
+                        onClick={() => {
+                          if (galleryTarget === 'author') {
+                            setAuthorAvatar(img.url);
+                          } else if (galleryTarget === 'editor') {
+                            setEditorImgUrl(img.url);
+                          } else {
+                            setImage(img.url);
+                          }
+                          setGalleryOpen(false);
+                        }}
+                        title={`Seleccionar ${img.filename}`}
+                      >
+                        <img
+                          src={img.url}
+                          alt={img.filename}
+                          className={styles.galleryThumb}
+                          loading="lazy"
+                        />
+                        <span className={styles.galleryItemLabel}>{img.filename}</span>
+                      </div>
+                    ))}
+                  </div>
+                );
+              })()}
             </div>
           </div>
         </div>,
@@ -1363,6 +1856,292 @@ const AdminBlog = () => {
                   </div>
                 </div>
               )}
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
+      {/* Modal para Editar Etiqueta */}
+      {tagModalOpen && typeof document !== 'undefined' && createPortal(
+        <div className={styles.modalOverlay} onClick={() => setTagModalOpen(false)}>
+          <div className={styles.editorImgModalContent} onClick={(e) => e.stopPropagation()} style={{ maxWidth: '440px' }}>
+            <div className={styles.modalHeader}>
+              <h3>✏️ Editar Etiqueta</h3>
+              <button
+                type="button"
+                className={styles.modalCloseBtn}
+                onClick={() => setTagModalOpen(false)}
+              >
+                &times;
+              </button>
+            </div>
+            <div className={styles.modalBody}>
+              <form onSubmit={handleSaveEditTag} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>Nombre de la Etiqueta:</label>
+                  <input
+                    type="text"
+                    className={styles.input}
+                    placeholder="Ej: Venezuela Game Show"
+                    value={editingTagName}
+                    onChange={(e) => setEditingTagName(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>Slug URL (Opcional):</label>
+                  <input
+                    type="text"
+                    className={styles.input}
+                    placeholder="ej: venezuela-game-show"
+                    value={editingTagSlug}
+                    onChange={(e) => setEditingTagSlug(e.target.value)}
+                  />
+                </div>
+                <p style={{ fontSize: '0.8rem', color: '#94a3b8', margin: 0, lineHeight: 1.4 }}>
+                  ℹ️ Al actualizar esta etiqueta, el cambio se reflejará automáticamente en todos los artículos que la utilicen.
+                </p>
+                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '0.5rem' }}>
+                  <button
+                    type="button"
+                    className={styles.btnSecondary}
+                    onClick={() => setTagModalOpen(false)}
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    type="submit"
+                    className={styles.btnPrimary}
+                    disabled={savingTag}
+                  >
+                    {savingTag ? 'Guardando...' : '💾 Guardar Cambios'}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
+
+      {/* Modal para Insertar Imagen en el Editor HTML */}
+      {editorImgModalOpen && typeof document !== 'undefined' && createPortal(
+        <div className={styles.modalOverlay} onClick={() => setEditorImgModalOpen(false)}>
+          <div className={styles.editorImgModalContent} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.modalHeader}>
+              <h3>🖼️ Insertar Imagen en el Artículo</h3>
+              <button
+                type="button"
+                className={styles.modalCloseBtn}
+                onClick={() => setEditorImgModalOpen(false)}
+              >
+                &times;
+              </button>
+            </div>
+
+            <div className={styles.modalBody}>
+              {/* Pestañas de origen de imagen */}
+              <div className={styles.tabPillRow}>
+                <button
+                  type="button"
+                  className={`${styles.tabPill} ${editorImgTab === 'url' ? styles.tabPillActive : ''}`}
+                  onClick={() => setEditorImgTab('url')}
+                >
+                  🔗 Pegar URL Directa
+                </button>
+                <button
+                  type="button"
+                  className={`${styles.tabPill} ${editorImgTab === 'upload' ? styles.tabPillActive : ''}`}
+                  onClick={() => setEditorImgTab('upload')}
+                >
+                  📤 Subir desde Equipo
+                </button>
+                <button
+                  type="button"
+                  className={`${styles.tabPill} ${editorImgTab === 'gallery' ? styles.tabPillActive : ''}`}
+                  onClick={() => {
+                    setEditorImgTab('gallery');
+                    fetchGallery(currentFolder);
+                  }}
+                >
+                  📁 Elegir de Galería
+                </button>
+              </div>
+
+              {/* Contenido según pestaña activa */}
+              {editorImgTab === 'url' && (
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>URL de la Imagen:</label>
+                  <input
+                    type="text"
+                    className={styles.input}
+                    placeholder="https://... o /blog/..."
+                    value={editorImgUrl}
+                    onChange={(e) => setEditorImgUrl(e.target.value)}
+                  />
+                </div>
+              )}
+
+              {editorImgTab === 'upload' && (
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>
+                    <span>Seleccionar archivo para subir:</span>
+                    <span style={{ fontSize: '0.8rem', color: '#c084fc' }}>
+                      Carpeta destino: {currentFolder === 'raiz' ? 'Principal' : currentFolder}
+                    </span>
+                  </label>
+                  <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                    <input
+                      type="file"
+                      ref={editorImgFileRef}
+                      accept="image/*"
+                      onChange={handleUploadImageForEditor}
+                      style={{ display: 'none' }}
+                    />
+                    <button
+                      type="button"
+                      className={styles.btnSmall}
+                      onClick={() => editorImgFileRef.current?.click()}
+                      disabled={editorUploading}
+                    >
+                      {editorUploading ? '⏳ Subiendo...' : '📁 Elegir Archivo y Subir'}
+                    </button>
+                    {editorImgUrl && (
+                      <span style={{ fontSize: '0.8rem', color: '#4ade80' }}>
+                        ✓ Imagen cargada
+                      </span>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {editorImgTab === 'gallery' && (
+                <div className={styles.formGroup}>
+                  {/* Selector rápido de carpeta dentro del modal */}
+                  <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', marginBottom: '0.75rem' }}>
+                    <button
+                      type="button"
+                      className={`${styles.folderChip} ${currentFolder === 'raiz' ? styles.folderChipActive : ''}`}
+                      onClick={() => fetchGallery('raiz')}
+                      style={{ padding: '0.25rem 0.5rem', fontSize: '0.78rem' }}
+                    >
+                      📁 Raíz
+                    </button>
+                    {galleryFolders.map((f) => (
+                      <button
+                        key={f}
+                        type="button"
+                        className={`${styles.folderChip} ${currentFolder === f ? styles.folderChipActive : ''}`}
+                        onClick={() => fetchGallery(f)}
+                        style={{ padding: '0.25rem 0.5rem', fontSize: '0.78rem' }}
+                      >
+                        📁 {f}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Grid de imágenes de galería para seleccionar */}
+                  <div style={{ maxHeight: '180px', overflowY: 'auto', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '0.5rem' }}>
+                    {loadingGallery ? (
+                      <p style={{ textAlign: 'center', color: '#94a3b8', fontSize: '0.85rem' }}>Cargando galería...</p>
+                    ) : galleryImages.length === 0 ? (
+                      <p style={{ textAlign: 'center', color: '#94a3b8', fontSize: '0.85rem' }}>No hay imágenes en esta carpeta.</p>
+                    ) : (
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(70px, 1fr))', gap: '0.5rem' }}>
+                        {galleryImages.map((img) => (
+                          <div
+                            key={img.filename}
+                            onClick={() => setEditorImgUrl(img.url)}
+                            style={{
+                              cursor: 'pointer',
+                              border: editorImgUrl === img.url ? '2px solid #c084fc' : '1px solid rgba(255,255,255,0.1)',
+                              borderRadius: '6px',
+                              overflow: 'hidden',
+                              aspectRatio: '1',
+                              background: '#0a0d18'
+                            }}
+                            title={img.filename}
+                          >
+                            <img
+                              src={img.url}
+                              alt={img.filename}
+                              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Texto Alternativo (Alt) */}
+              <div className={styles.formGroup} style={{ marginTop: '0.75rem' }}>
+                <label className={styles.label}>
+                  <span>Texto Alternativo (Alt text):</span>
+                  <span style={{ fontSize: '0.78rem', color: '#c084fc' }}>Recomendado para Google & SEO</span>
+                </label>
+                <input
+                  type="text"
+                  className={styles.input}
+                  placeholder="Ej: Tablero de TFT en fase 4 con 6 Rebeldes"
+                  value={editorImgAlt}
+                  onChange={(e) => setEditorImgAlt(e.target.value)}
+                />
+              </div>
+
+              {/* Pie de foto / Leyenda opcional */}
+              <div className={styles.formGroup}>
+                <label className={styles.label}>
+                  <span>Pie de foto / Leyenda (Opcional):</span>
+                  <span style={{ fontSize: '0.78rem', color: '#94a3b8' }}>Aparece debajo de la imagen</span>
+                </label>
+                <input
+                  type="text"
+                  className={styles.input}
+                  placeholder="Ej: Posicionamiento óptimo recomendado para la ronda"
+                  value={editorImgCaption}
+                  onChange={(e) => setEditorImgCaption(e.target.value)}
+                />
+              </div>
+
+              {/* Previsualización en vivo */}
+              {editorImgUrl && (
+                <div className={styles.imgPreviewContainer}>
+                  <span style={{ fontSize: '0.78rem', color: '#94a3b8', display: 'block', marginBottom: '0.4rem' }}>
+                    Vista Previa:
+                  </span>
+                  <img
+                    src={editorImgUrl}
+                    alt={editorImgAlt || 'Preview'}
+                    className={styles.imgPreviewThumb}
+                    onError={(e) => { e.target.style.display = 'none'; }}
+                  />
+                  {editorImgCaption && (
+                    <span style={{ fontSize: '0.8rem', color: '#c084fc', fontStyle: 'italic', display: 'block', marginTop: '0.35rem' }}>
+                      {editorImgCaption}
+                    </span>
+                  )}
+                </div>
+              )}
+
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '1.25rem' }}>
+                <button
+                  type="button"
+                  className={styles.btnSecondary}
+                  onClick={() => setEditorImgModalOpen(false)}
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="button"
+                  className={styles.btnPrimary}
+                  onClick={handleInsertImageToEditor}
+                  disabled={!editorImgUrl.trim()}
+                >
+                  ✅ Insertar en el Editor
+                </button>
+              </div>
             </div>
           </div>
         </div>,

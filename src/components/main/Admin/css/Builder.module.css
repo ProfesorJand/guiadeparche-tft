@@ -19,6 +19,7 @@
     --color-hex-cost-4: purple;
     --color-hex-cost-5: gold;
     --color-hex-cost-6: rgb(219, 13, 13);
+    --color-hex-cost-7: rgb(219, 13, 13);
     --color-hex-cost-11: rgb(219, 13, 13);
     --text-shadow: 1px 0 #000, -1px 0 #000, 0 1px #000, 0 -1px #000, 1px 1px #000, -1px -1px #000, 1px -1px #000, -1px 1px #000;
 }
@@ -263,6 +264,32 @@
 
 .powerUp{
     filter: drop-shadow(0 0 5px rgba(212, 4, 240, 0.842));
+}
+
+.heartsteelBuffBadge{
+    position: absolute;
+    left: -12%;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
+    width: 36%;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1.5px solid rgba(255, 255, 255, 0.85);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.75);
+    background-color: #0b1322;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.heartsteelBuffImg{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
 }
 
 .containerItems{

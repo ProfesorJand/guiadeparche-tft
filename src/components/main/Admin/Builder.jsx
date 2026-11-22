@@ -18,10 +18,10 @@ const Builder = ({ boardInfo, setBoardInfo, id, showName }) => {
     "var(--color-hex-cost-4)",
     "var(--color-hex-cost-5)",
     "var(--color-hex-cost-6)",
-    ,
-    ,
-    ,
-    ,
+    "var(--color-hex-cost-7)",
+    "var(--color-hex-cost-7)",
+    "var(--color-hex-cost-7)",
+    "var(--color-hex-cost-7)",
     "var(--color-hex-cost-11)",
   ];
 

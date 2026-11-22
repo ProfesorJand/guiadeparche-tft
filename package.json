@@ -11,6 +11,10 @@
     "start": "astro dev",
     "db:set17": "node scripts/getCommunityDragonData.js",
     "db:set18": "node scripts/getCommunityDragonData.js --set18",
+    "db:set19": "node scripts/parseFModelSet19.js --skip-images --export-json",
+    "db:set19:full": "node scripts/parseFModelSet19.js --export-json && node scripts/recolorSet19Augments.js",
+    "db:set19:locres": "node scripts/extractLocresPBE.js --all",
+    "db:set19:preview": "node scripts/parseFModelSet19.js --skip-images --export-json --dry-run",
     "download:set17": "node scripts/downloadTFTImages.mjs",
     "download:set18": "node scripts/downloadTFTImagesSet18.mjs",
     "download:champs-cd": "node scripts/communityDragonDownloadChamps.js"
