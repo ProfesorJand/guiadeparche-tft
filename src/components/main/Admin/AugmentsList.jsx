@@ -5,6 +5,15 @@ import { useStore } from "@nanostores/react";
 import { getLocalTftImage } from "@utils/images";
 import ImgAugment from "@components/TFT/ImgAugment";
 
+const normalizeSearchText = (text = "") =>
+    String(text)
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .replace(/['’`]/g, "")
+        .replace(/[^a-z0-9+]+/g, " ")
+        .trim();
+
 const AugmentsList = ({ onSelectAugment, showName= false }) => {
     const [search, setSearch] = useState("");
     const allAugments = useStore(dataTFTAllAugments);
@@ -23,21 +32,34 @@ const AugmentsList = ({ onSelectAugment, showName= false }) => {
         allAugments?.filter(a => String(a.tft_set) === versionNumber) ||
         [];
 
+    const normalizedQuery = normalizeSearchText(search);
+    const rawQuery = search.trim().toLowerCase();
+
     const filteredAugments = baseAugments?.filter(aug => {
-        if (!aug || (!aug.name && !aug.name_EN)) return false;
-        const s = search.toLowerCase();
-        return (
-            (aug.name && aug.name.toLowerCase().includes(s)) || 
-            (aug.name_EN && aug.name_EN.toLowerCase().includes(s)) ||
-            (aug.apiName && aug.apiName.toLowerCase().includes(s))
-        );
+        if (!aug || (!aug.name && !aug.name_EN && !aug.name_en && !aug.apiName)) return false;
+        if (!normalizedQuery && !rawQuery) return true;
+
+        const candidates = [
+            aug.name,
+            aug.nombre,
+            aug.name_EN,
+            aug.name_en,
+            aug.apiName,
+        ].filter(Boolean);
+
+        return candidates.some((field) => {
+            const lower = String(field).toLowerCase();
+            if (rawQuery && lower.includes(rawQuery)) return true;
+            if (normalizedQuery && normalizeSearchText(field).includes(normalizedQuery)) return true;
+            return false;
+        });
     }) || [];
 
     return (
         <div className={style.containerAugmentsMain}>
             <input 
                 type="text" 
-                placeholder="Buscar Aumento..." 
+                placeholder="Buscar Aumento (ES / EN)..." 
                 value={search} 
                 onChange={(e) => setSearch(e.target.value)}
                 className={style.searchInput}
@@ -45,16 +67,18 @@ const AugmentsList = ({ onSelectAugment, showName= false }) => {
             <div className={style.containerAugmentsList}>
                 {filteredAugments.map((augment, index) => {
                     const imgUrl = augment.icon ? (augment.icon.includes("http") ? augment.icon.replace(".tex", ".png").toLowerCase() : getLocalTftImage(augment.icon, 'augments', versionNumber)) : "";
+                    const enName = augment.name_EN || augment.name_en || "";
+                    const tooltipTitle = enName && enName !== augment.name ? `${augment.name} (${enName})` : (augment.name || enName);
                     return (
                         <div 
-                            key={index} 
+                            key={augment.apiName || index} 
                             className={style.containerAugment}
                             draggable
                             onDragStart={(e) => handleDragStart(e, augment)}
-                            title={augment.name}
+                            title={tooltipTitle}
                             onClick={() => { if(onSelectAugment) onSelectAugment(augment); }}
                         >
-                            {imgUrl ? <ImgAugment  augment={augment}/> : <span>{augment.name}</span>}
+                            {imgUrl ? <ImgAugment augment={augment}/> : <span>{tooltipTitle}</span>}
                         </div>
                     );
                 })}

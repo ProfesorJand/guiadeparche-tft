@@ -486,7 +486,9 @@ const CampeonMeta = () => {
             <option value="">Selecciona el aumento</option>
             {allAugmentsTFT.map((option) => (
               <option key={option.apiName} value={option.apiName}>
-                {option.name}
+                {option.name_EN && option.name_EN !== option.name
+                  ? `${option.name} (${option.name_EN})`
+                  : option.name}
               </option>
             ))}
           </datalist>

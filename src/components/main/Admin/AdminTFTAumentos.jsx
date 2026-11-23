@@ -47,14 +47,24 @@ const AdminTFTAumentos = () => {
     augmentsBySet?.[activeSetNumber] ||
     rawAllAugments.filter((a) => String(a.tft_set) === activeSetNumber);
 
+  const normalizeSearch = (text = "") =>
+    String(text)
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/['’`]/g, "")
+      .replace(/[^a-z0-9+]+/g, " ")
+      .trim();
+
   const filteredAugments = baseAugments.filter(a => {
-    if (!searchTerm) return true;
-    const term = searchTerm.toLowerCase();
-    const name = a.name?.toLowerCase() || "";
-    const nameEN = a.name_EN?.toLowerCase() || "";
-    const desc = (a.desc || a.desc_item || "").toLowerCase();
-    const apiName = a.apiName?.toLowerCase() || "";
-    return name.includes(term) || nameEN.includes(term) || desc.includes(term) || apiName.includes(term);
+    if (!searchTerm.trim()) return true;
+    const rawTerm = searchTerm.trim().toLowerCase();
+    const normTerm = normalizeSearch(searchTerm);
+    const fields = [a.name, a.name_EN, a.name_en, a.desc, a.desc_item, a.apiName].filter(Boolean);
+    return fields.some((f) => {
+      const low = String(f).toLowerCase();
+      return low.includes(rawTerm) || (normTerm && normalizeSearch(f).includes(normTerm));
+    });
   });
 
   // Asegurar que los aumentos y categorías del set activo estén cargados al entrar o cambiar de set

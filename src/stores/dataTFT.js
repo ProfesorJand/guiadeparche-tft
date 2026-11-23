@@ -427,16 +427,20 @@ export const updateDataTFT = async (data, targetSetOverride = null) => {
   dataTFTItemsBySet.set(mergedItems);
   dataTFTSetData.set(payload.setData || []);
 
-  const allChampionsRaw = champions ? [...champions] : [];
+  const allChampionsRaw = (champions ? [...champions] : []).map((c) => ({
+    ...c,
+    tft_set: String(c.tft_set || activeSetNumber),
+  }));
   
   const existingChampions = dataTFTChampions.get() || [];
-  const newChampions = allChampionsRaw.filter(c => !existingChampions.some(ec => ec.apiName === c.apiName));
-  const mergedChampions = [...existingChampions, ...newChampions];
+  const incomingChampNames = new Set(allChampionsRaw.map((c) => c.apiName));
+  const preservedChampions = existingChampions.filter((ec) => !incomingChampNames.has(ec.apiName));
+  const mergedChampions = [...preservedChampions, ...allChampionsRaw];
 
   dataTFTChampions.set(mergedChampions.sort(
     (a, b) => {
-      const nameA = a.name.toUpperCase();
-      const nameB = b.name.toUpperCase();
+      const nameA = (a.name || "").toUpperCase();
+      const nameB = (b.name || "").toUpperCase();
 
       if (nameA < nameB) {
         return -1;
@@ -448,10 +452,51 @@ export const updateDataTFT = async (data, targetSetOverride = null) => {
     })
   );
   
+  const taggedTraits = (traits || []).map((t) => ({
+    ...t,
+    tft_set: String(t.tft_set || activeSetNumber),
+  }));
   const existingTraits = dataTFTTraits.get() || [];
-  const newTraits = (traits || []).filter(t => !existingTraits.some(et => et.apiName === t.apiName));
-  const mergedTraits = [...existingTraits, ...newTraits];
+  const incomingTraitNames = new Set(taggedTraits.map((t) => t.apiName));
+  const preservedTraits = existingTraits.filter((et) => !incomingTraitNames.has(et.apiName));
+  const mergedTraits = [...preservedTraits, ...taggedTraits];
   dataTFTTraits.set(mergedTraits);
+};
+
+// Carga bajo demanda de datos de un set específico sin alterar versionTFT global
+const pendingSetLoads = {};
+export const ensureSetDataLoaded = async (setNumber) => {
+  const targetSet = String(setNumber || "");
+  if (!targetSet) return;
+
+  // Si ya tenemos ítems y campeones etiquetados de este set en caché, no repetir fetch
+  const cachedItems = dataTFTItemsBySetMap.get()?.[targetSet];
+  const hasChampsForSet = (dataTFTChampions.get() || []).some(
+    (c) => String(c.tft_set) === targetSet
+  );
+  if (cachedItems && cachedItems.length > 0 && hasChampsForSet) {
+    return;
+  }
+
+  if (pendingSetLoads[targetSet]) {
+    return pendingSetLoads[targetSet];
+  }
+
+  pendingSetLoads[targetSet] = (async () => {
+    try {
+      const urlAPI = `https://api.guiadeparche.com/tft/getDataTFT.php?set=${targetSet}`;
+      const response = await fetch(urlAPI);
+      if (!response.ok) return;
+      const data = await response.json();
+      await updateDataTFT(data, targetSet);
+    } catch (err) {
+      console.warn(`No se pudo cargar data adicional para Set ${targetSet}:`, err);
+    } finally {
+      delete pendingSetLoads[targetSet];
+    }
+  })();
+
+  return pendingSetLoads[targetSet];
 };
 
 export const swapVersionTFT = (data) => {
