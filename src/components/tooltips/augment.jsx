@@ -9,8 +9,10 @@ const TooltipAugment = ({ augment }) => {
   const versionNumber = version === "latest" ? setNumberLatest : setNumberPBE;
 
   if (!augment) return null;
-  const { name, nombre, icon, desc, desc_item, effects } = augment;
+  const { name, nombre, name_EN, name_en, icon, desc, desc_item, effects } = augment;
 
+  const displayName = name || nombre || name_EN || name_en || "";
+  const englishName = name_EN || name_en || "";
   const description = desc || desc_item;
 
   return (
@@ -20,15 +22,20 @@ const TooltipAugment = ({ augment }) => {
           <img 
             className={style.tooltipImage} 
             src={getLocalTftImage(icon, 'augments/choiceui', versionNumber)} 
-            alt={name || nombre} 
+            alt={displayName} 
           />
         )}
       </div>
       
       <div className={style.tooltipDataContainer}>
         <div className={style.tooltipTitle}>
-          {name || nombre}
+          {displayName}
         </div>
+        {englishName && englishName.toLowerCase() !== displayName.toLowerCase() && (
+          <div className={style.tooltipSubtitle}>
+            {englishName}
+          </div>
+        )}
 
         {description && (
           <SanitizedComponent

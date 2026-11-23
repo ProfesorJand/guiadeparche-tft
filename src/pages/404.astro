@@ -1,0 +1,438 @@
+---
+import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
+
+const tftLinks = [
+  {
+    title: "TFT Meta Comps & Tier List",
+    desc: "Composiciones actualizadas, tableros, ítems y plan de juego para subir de rango.",
+    href: "/tft/meta-comps-tier-list-teamfight-tactics/",
+    tag: "Más popular",
+  },
+  {
+    title: "Catálogo TFT Set 19",
+    desc: "Campeones, sinergias, costos, habilidades e ítems recomendados de Prismatic Tour.",
+    href: "/tft/set/19",
+    tag: "Set 19",
+  },
+  {
+    title: "Master Plan TFT",
+    desc: "Herramienta interactiva para filtrar compos por objetos, aumentos y salidas early.",
+    href: "/tft/master-plan",
+    tag: "Herramienta",
+  },
+  {
+    title: "Ítems y Recetas de TFT",
+    desc: "Tabla completa de crafteos, emblemas, artefactos y objetos radiantes.",
+    href: "/tft/items",
+    tag: "Guía",
+  },
+  {
+    title: "Cómo Jugar TFT",
+    desc: "Economía, niveles, posicionamiento y fundamentos esenciales para mejorar.",
+    href: "/tft/como-jugar",
+    tag: "Aprende",
+  },
+  {
+    title: "Notas del Parche TFT",
+    desc: "Resumen de buffs, nerfs y cambios clave del parche actual.",
+    href: "/tft/patch",
+    tag: "Actualizado",
+  },
+];
+
+const otherSections = [
+  {
+    title: "League of Legends",
+    desc: "Tier list de los mejores campeones por línea para SoloQ.",
+    href: "/lol/best-champions-tier-list-league-of-legends/",
+  },
+  {
+    title: "Valorant",
+    desc: "Meta de agentes y composiciones recomendadas por mapa.",
+    href: "/valorant/meta-agents-maps/",
+  },
+  {
+    title: "Wild Rift",
+    desc: "Mejores campeones del parche actual para escalar en móvil.",
+    href: "/wildrift/best-champions-tier-list-wild-rift/",
+  },
+  {
+    title: "2XKO",
+    desc: "Tier list de campeones y mejores dúos del meta.",
+    href: "/2xko/best-team-duos-champions-meta-tier-list-2xko/",
+  },
+  {
+    title: "Riftbound",
+    desc: "Tier list actualizada de mazos y cartas destacadas.",
+    href: "/riftbound/tier-list/",
+  },
+  {
+    title: "Blog y Guías",
+    desc: "Artículos, novedades y consejos de la comunidad.",
+    href: "/blog/",
+  },
+];
+---
+
+<LayoutMaxWidth
+  title="Página no encontrada (404) | GuiaDeParche.com"
+  description="Esta ruta no existe o fue movida. Explora nuestras guías de TFT, Meta Comps, League of Legends, Valorant y más en GuiaDeParche.com."
+  hideBanner={true}
+>
+  <main class="not-found-page">
+    <section class="hero-card">
+      <div class="brand-strip">
+        <img
+          src="/web/guiadeparche-texto-blanco.png"
+          alt="GuiaDeParche.com"
+          class="brand-wordmark"
+        />
+      </div>
+
+      <div class="hero-grid">
+        <div class="hero-visual">
+          <div class="code-badge">ERROR 404</div>
+          <img
+            src="/web/jupeson-banner-404.png"
+            alt="Jupeson - GuiaDeParche"
+            class="jupeson-banner"
+          />
+        </div>
+
+        <div class="hero-copy">
+          <h1>¡Ups! Esta página se quedó sin oro en el carrusel</h1>
+          <p class="hero-text">
+            La dirección que buscas no existe, cambió de nombre o pertenece a una guía anterior.
+            No te preocupes: aquí tienes acceso directo a todas las secciones activas de{" "}
+            <strong>GuiaDeParche.com</strong>.
+          </p>
+
+          <div class="cta-row">
+            <a href="/" class="btn-primary">Ir al Inicio</a>
+            <a
+              href="/tft/meta-comps-tier-list-teamfight-tactics/"
+              class="btn-secondary"
+            >
+              Ver Meta Comps TFT
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="nav-section">
+      <div class="section-head">
+        <h2>Explora Teamfight Tactics</h2>
+        <span class="section-pill">Destacado</span>
+      </div>
+      <div class="cards-grid">
+        {tftLinks.map((item) => (
+          <a href={item.href} class="nav-card nav-card-featured">
+            <div class="card-top">
+              <h3>{item.title}</h3>
+              <span class="card-tag">{item.tag}</span>
+            </div>
+            <p>{item.desc}</p>
+            <span class="card-arrow">Entrar →</span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="nav-section">
+      <div class="section-head">
+        <h2>Otros juegos y secciones disponibles</h2>
+      </div>
+      <div class="cards-grid">
+        {otherSections.map((item) => (
+          <a href={item.href} class="nav-card">
+            <h3>{item.title}</h3>
+            <p>{item.desc}</p>
+            <span class="card-arrow">Visitar →</span>
+          </a>
+        ))}
+      </div>
+    </section>
+  </main>
+</LayoutMaxWidth>
+
+<style>
+  .not-found-page {
+    width: 100%;
+    max-width: 1040px;
+    margin: 20px auto 50px auto;
+    padding: 0 16px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 34px;
+  }
+
+  .hero-card {
+    background: linear-gradient(135deg, rgba(28, 21, 66, 0.94), rgba(14, 11, 38, 0.92));
+    border: 1px solid rgba(123, 97, 255, 0.5);
+    border-radius: 20px;
+    padding: 32px;
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.5), inset 0 0 30px rgba(0, 255, 196, 0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .brand-strip {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 18px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .brand-wordmark {
+    width: 100%;
+    max-width: 340px;
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 12px rgba(123, 97, 255, 0.4));
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.15fr;
+    gap: 28px;
+    align-items: center;
+  }
+
+  .hero-visual {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .code-badge {
+    display: inline-block;
+    padding: 6px 18px;
+    border-radius: 999px;
+    font-weight: 800;
+    font-size: 0.9rem;
+    letter-spacing: 0.14em;
+    color: #0b0920;
+    background: linear-gradient(135deg, #00ffc4, #63e6ff);
+    box-shadow: 0 4px 14px rgba(0, 255, 196, 0.35);
+  }
+
+  .jupeson-banner {
+    width: 100%;
+    max-width: 380px;
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 22px rgba(108, 43, 217, 0.45));
+  }
+
+  .hero-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .hero-copy h1 {
+    margin: 0;
+    font-size: 2rem;
+    line-height: 1.2;
+    color: #ffffff;
+  }
+
+  .hero-text {
+    margin: 0;
+    font-size: 1.02rem;
+    line-height: 1.6;
+    color: #cbd5e1;
+  }
+
+  .cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 6px;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 22px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.96rem;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #7b61ff, #9b4dff);
+    color: #ffffff;
+    box-shadow: 0 6px 18px rgba(123, 97, 255, 0.4);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(123, 97, 255, 0.55);
+  }
+
+  .btn-secondary {
+    background: rgba(0, 255, 196, 0.12);
+    border: 1px solid rgba(0, 255, 196, 0.55);
+    color: #00ffc4;
+  }
+
+  .btn-secondary:hover {
+    transform: translateY(-2px);
+    background: rgba(0, 255, 196, 0.22);
+  }
+
+  .nav-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .section-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .section-head h2 {
+    margin: 0;
+    font-size: 1.4rem;
+    color: #ffffff;
+  }
+
+  .section-pill {
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    background: rgba(123, 97, 255, 0.28);
+    border: 1px solid rgba(167, 139, 250, 0.45);
+    color: #d8b4fe;
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .nav-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 18px 20px;
+    border-radius: 14px;
+    background: rgba(25, 20, 58, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    text-decoration: none;
+    color: #ffffff;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .nav-card-featured {
+    border-color: rgba(123, 97, 255, 0.42);
+    background: linear-gradient(160deg, rgba(35, 26, 78, 0.92), rgba(20, 16, 48, 0.88));
+  }
+
+  .nav-card:hover {
+    transform: translateY(-3px);
+    border-color: #00ffc4;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.38);
+  }
+
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .nav-card h3 {
+    margin: 0;
+    font-size: 1.05rem;
+    color: #ffffff;
+  }
+
+  .card-tag {
+    flex-shrink: 0;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    background: rgba(0, 255, 196, 0.15);
+    color: #00ffc4;
+    border: 1px solid rgba(0, 255, 196, 0.35);
+  }
+
+  .nav-card p {
+    margin: 0;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: #cbd5e1;
+  }
+
+  .card-arrow {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #f5e020;
+  }
+
+  @media only screen and (max-width: 900px) {
+    .not-found-page {
+      margin: 12px auto 36px auto;
+      padding: 0 12px;
+      gap: 24px;
+    }
+
+    .hero-card {
+      padding: 20px 16px;
+      gap: 18px;
+    }
+
+    .brand-wordmark {
+      max-width: 240px;
+    }
+
+    .hero-grid {
+      grid-template-columns: 1fr;
+      text-align: center;
+      gap: 20px;
+    }
+
+    .jupeson-banner {
+      max-width: 280px;
+    }
+
+    .hero-copy h1 {
+      font-size: 1.45rem;
+    }
+
+    .hero-text {
+      font-size: 0.95rem;
+    }
+
+    .cta-row {
+      justify-content: center;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+      width: 100%;
+    }
+
+    .cards-grid {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+  }
+</style>

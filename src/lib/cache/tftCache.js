@@ -107,7 +107,12 @@ export async function getMetaEntidades(tableName) {
     if (!text) return [];
     
     const result = JSON.parse(text);
-    metaEntidadesCache[tableName] = result.data || result || [];
+    const parsedList = Array.isArray(result?.data)
+      ? result.data
+      : Array.isArray(result)
+        ? result
+        : [];
+    metaEntidadesCache[tableName] = parsedList;
     return metaEntidadesCache[tableName];
   } catch (err) {
     console.error(`Error fetching ${tableName} remotely:`, err);
@@ -306,5 +311,120 @@ export async function getTFTDataPBE() {
     console.error("Error fetching TFT PBE data remotely:", err);
     return null;
   }
+}
+
+const setDataBuildCache = {};
+/**
+ * Obtiene los campeones, sinergias e ítems de un set concreto durante SSR/Build,
+ * priorizando el backend PHP (getDataTFT.php) y usando el JSON local de respaldo si existe.
+ */
+export async function getSetDataForBuild(setNumber) {
+  const key = String(setNumber);
+  if (setDataBuildCache[key]) return setDataBuildCache[key];
+
+  let apiPayload = null;
+  try {
+    const response = await fetch(`https://api.guiadeparche.com/tft/getDataTFT.php?set=${key}`, {
+      headers: FETCH_HEADERS,
+      cache: "reload"
+    });
+    if (response.ok) {
+      const json = await response.json();
+      apiPayload = json?.data || json;
+    }
+  } catch (err) {
+    console.warn(`⚠️ No se pudo obtener getDataTFT.php?set=${key}:`, err.message);
+  }
+
+  let localPayload = null;
+  if (typeof window === 'undefined') {
+    const localCandidates = [
+      path.join(process.cwd(), `src/data/set${key}_es_MX.json`),
+      path.join(process.cwd(), `src/data/set${key}.json`),
+    ];
+    for (const candidate of localCandidates) {
+      try {
+        const raw = await fs.readFile(candidate, 'utf-8');
+        const parsed = JSON.parse(raw);
+        localPayload = parsed?.data || parsed;
+        break;
+      } catch {
+        // Probar siguiente candidato
+      }
+    }
+  }
+
+  const pickList = (field) => {
+    const fromApi = Array.isArray(apiPayload?.[field]) ? apiPayload[field] : [];
+    const fromLocal = Array.isArray(localPayload?.[field]) ? localPayload[field] : [];
+    // Si la API trae la lista poblada, la usamos; si no, caemos al JSON local del set
+    return fromApi.length > 0 ? fromApi : fromLocal;
+  };
+
+  const result = {
+    setNumber: key,
+    champions: pickList('champions').map((c) => ({ ...c, tft_set: String(c.tft_set || key) })),
+    traits: pickList('traits').map((t) => ({ ...t, tft_set: String(t.tft_set || key) })),
+    items: pickList('items').map((i) => ({ ...i, tft_set: String(i.tft_set || key) })),
+  };
+
+  setDataBuildCache[key] = result;
+  return result;
+}
+
+const DEFAULT_EXCLUDED_SEO_RULES = [
+  { pattern: '/admin', match_type: 'prefix' },
+  { pattern: '/perfil', match_type: 'prefix' },
+  { pattern: '/login', match_type: 'prefix' },
+];
+
+let excludedSeoRulesCache = null;
+
+/**
+ * Obtiene desde el backend las rutas marcadas como "No indexar" en el panel de Admin.
+ * Se cachea una sola vez por build para inyectar <meta name="robots" content="noindex, nofollow" />.
+ */
+export async function getExcludedSeoRules() {
+  if (excludedSeoRulesCache) return excludedSeoRulesCache;
+
+  try {
+    const controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    const timer = controller ? setTimeout(() => controller.abort(), 4000) : null;
+    const response = await fetch('https://api.guiadeparche.com/seo/manage_exclusions.php', {
+      headers: FETCH_HEADERS,
+      signal: controller ? controller.signal : undefined,
+    });
+    if (timer) clearTimeout(timer);
+
+    if (response.ok) {
+      const json = await response.json();
+      if (json && Array.isArray(json.rules) && json.rules.length > 0) {
+        excludedSeoRulesCache = json.rules;
+        return excludedSeoRulesCache;
+      }
+    }
+  } catch (err) {
+    console.warn('⚠️ No se pudieron cargar las reglas SEO de exclusión, usando defaults:', err.message);
+  }
+
+  excludedSeoRulesCache = DEFAULT_EXCLUDED_SEO_RULES;
+  return excludedSeoRulesCache;
+}
+
+export function isPathExcludedBySeoRules(pathname = '/', rules = []) {
+  if (!pathname || !Array.isArray(rules) || rules.length === 0) return false;
+  const cleanPath = String(pathname).toLowerCase().replace(/\/+$/, '') || '/';
+
+  return rules.some((rule) => {
+    const rawPattern = typeof rule === 'string' ? rule : rule?.pattern;
+    const matchType = typeof rule === 'object' ? (rule?.match_type || 'prefix') : 'prefix';
+    if (!rawPattern) return false;
+    const cleanPattern = String(rawPattern).toLowerCase().replace(/\/+$/, '') || '/';
+    if (cleanPattern === '/') return false;
+    if (matchType === 'exact') {
+      return cleanPath === cleanPattern;
+    }
+    return cleanPath === cleanPattern || cleanPath.startsWith(cleanPattern + '/');
+  });
 }
 

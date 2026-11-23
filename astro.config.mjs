@@ -29,6 +29,51 @@ import react from "@astrojs/react";
 //   integrations: [db(), react(), sitemap()]
 // });
 
+// Cargar reglas de exclusión configuradas desde el Panel Admin (SEO → Indexación Google)
+const defaultExcludedRules = [
+  { pattern: '/admin', match_type: 'prefix' },
+  { pattern: '/perfil', match_type: 'prefix' },
+  { pattern: '/login', match_type: 'prefix' },
+];
+
+let seoExcludedRules = defaultExcludedRules;
+try {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 4000);
+  const resp = await fetch('https://api.guiadeparche.com/seo/manage_exclusions.php', {
+    signal: controller.signal,
+  });
+  clearTimeout(timer);
+  if (resp.ok) {
+    const json = await resp.json();
+    if (json && Array.isArray(json.rules) && json.rules.length > 0) {
+      seoExcludedRules = json.rules;
+    }
+  }
+} catch {
+  // Si el build corre offline o el endpoint aún no está subido, usar las reglas por defecto
+}
+
+const isSitemapPageExcluded = (pageUrl) => {
+  let pathname = '/';
+  try {
+    pathname = new URL(pageUrl).pathname;
+  } catch {
+    pathname = String(pageUrl || '/');
+  }
+  const cleanPath = pathname.toLowerCase().replace(/\/+$/, '') || '/';
+
+  return seoExcludedRules.some((rule) => {
+    const rawPattern = typeof rule === 'string' ? rule : rule?.pattern;
+    const matchType = typeof rule === 'object' ? (rule?.match_type || 'prefix') : 'prefix';
+    if (!rawPattern) return false;
+    const cleanPattern = String(rawPattern).toLowerCase().replace(/\/+$/, '') || '/';
+    if (cleanPattern === '/') return false;
+    if (matchType === 'exact') return cleanPath === cleanPattern;
+    return cleanPath === cleanPattern || cleanPath.startsWith(cleanPattern + '/');
+  });
+};
+
 export default defineConfig({
   site: 'https://guiadeparche.com',
   base: '/', // muy importante que NO tenga subcarpetas
@@ -48,10 +93,7 @@ export default defineConfig({
   integrations: [
     react(),
     sitemap({
-      filter: (page) => 
-        !page.includes('/admin') && 
-        !page.includes('/perfil') && 
-        !page.includes('/login')
+      filter: (page) => !isSitemapPageExcluded(page)
     })
   ]
 });

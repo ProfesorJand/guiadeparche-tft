@@ -4,119 +4,484 @@ import {
   getComposFromDB,
   getConstantes,
   getLastUpdateDate,
-  getMetaEntidades
-} from "../../../lib/cache/tftCache.js";
-import { setNumberPBE, dataTFTChampions, loadDataTFTFromAPI, versionTFT, numberOfVersionTFT } from "@stores/dataTFT";
+  getMetaEntidades,
+  getSetDataForBuild,
+} from "@lib/cache/tftCache.js";
+import {
+  setNumberPBE,
+  setNumberLatest,
+  dataTFTChampions,
+  loadDataTFTFromAPI,
+  versionTFT,
+  EXCLUDED_API_NAMES,
+} from "@stores/dataTFT";
 import { getLocalTftImage } from "@utils/images";
+import {
+  slugifyTftEntity,
+  isPlayableTftItem,
+  safeJsonParse,
+} from "@utils/tftEntitySlug.js";
 
 import PaginaCampeon from "@components/TFT/meta/PaginaCampeon.astro";
 import PaginaSinergia from "@components/TFT/meta/PaginaSinergia.astro";
 import PaginaItem from "@components/TFT/meta/PaginaItem.astro";
 
 export async function getStaticPaths() {
-  const todasLasCompsPBE = await getComposFromDB();
-  
-  // Agrupar por urlSEO y quedarse con la que tenga el set_number mayor
+  // Orden ascendente de sets configurados: el último siempre es el set más nuevo y prevalece en URLs repetidas
+  const CONFIGURED_SETS = Array.from(
+    new Set([String(setNumberLatest), String(setNumberPBE)])
+  )
+    .filter((s) => s && !Number.isNaN(Number(s)))
+    .sort((a, b) => Number(a) - Number(b));
+
+  const excludedSet = new Set((EXCLUDED_API_NAMES || []).map((a) => String(a).toLowerCase()));
+
+  // 1. Cargar composiciones, catálogos por set y metadatos SEO de la BD en paralelo
+  const [todasLasComps, campeonesMetaDB, ...setBundles] = await Promise.all([
+    getComposFromDB(),
+    getMetaEntidades("campeones_tft"),
+    ...CONFIGURED_SETS.map(async (setNum) => {
+      const [setData, traitsMetaDB, itemsMetaDB] = await Promise.all([
+        getSetDataForBuild(setNum),
+        getMetaEntidades(`traits_TFT_set_${setNum}`),
+        getMetaEntidades(`items_tft_set_${setNum}`),
+      ]);
+      return { setNum, setData, traitsMetaDB, itemsMetaDB };
+    }),
+  ]);
+
+  const setDataBySet = {};
+  setBundles.forEach(({ setNum, setData }) => {
+    setDataBySet[setNum] = setData;
+  });
+
+  // Helper para indexar metadatos SEO de BD por apiName (en minúsculas) y por set
+  const safeCampeonesMetaDB = Array.isArray(campeonesMetaDB) ? campeonesMetaDB : [];
+  const champMetaByKey = new Map();
+  safeCampeonesMetaDB.forEach((row) => {
+    if (!row?.apiName) return;
+    const setKey = String(row.tft_set || row.set_number || "");
+    champMetaByKey.set(`${setKey}::${row.apiName.toLowerCase()}`, row);
+    if (!champMetaByKey.has(`any::${row.apiName.toLowerCase()}`)) {
+      champMetaByKey.set(`any::${row.apiName.toLowerCase()}`, row);
+    }
+  });
+
+  // Helper para fusionar un registro del catálogo del set con su fila SEO del MISMO set en BD
+  const mergeSameSetMeta = (baseEntity, metaRow, setNum) => {
+    if (!metaRow) {
+      return { ...baseEntity, tft_set: String(baseEntity.tft_set || setNum) };
+    }
+    return {
+      ...baseEntity,
+      ...metaRow,
+      // Preservar campos estructurales del set si en BD vinieran vacíos
+      name: metaRow.name || baseEntity.name,
+      apiName: baseEntity.apiName || metaRow.apiName,
+      icon: baseEntity.icon || metaRow.icon,
+      tileIcon: baseEntity.tileIcon || metaRow.tileIcon,
+      squareIcon: baseEntity.squareIcon || metaRow.squareIcon,
+      traits: baseEntity.traits?.length ? baseEntity.traits : metaRow.traits,
+      effects: baseEntity.effects?.length ? baseEntity.effects : metaRow.effects,
+      composition: baseEntity.composition?.length ? baseEntity.composition : metaRow.composition,
+      desc: baseEntity.desc || metaRow.desc,
+      ability: baseEntity.ability || metaRow.ability,
+      ability_variables: baseEntity.ability_variables || metaRow.ability_variables,
+      tft_set: String(setNum),
+    };
+  };
+
+  // =========================================================================
+  // 2. Construir mapas deduplicados por slug (siempre gana el set más nuevo)
+  // =========================================================================
+  const campeonesBySlug = new Map();
+  const sinergiasBySlug = new Map();
+  const itemsBySlug = new Map();
+
+  // Mapas por set para enlaces internos (campeón -> sinergias / ítems, ítem -> componentes)
+  const slugMapsBySet = {};
+
+  // Registrar apiNames históricos de campeones en BD (ej. Set 17) para historial de comps
+  const historicalChampApisBySlug = new Map();
+  safeCampeonesMetaDB.forEach((row) => {
+    const slug = (row.url_seo ? String(row.url_seo).trim().toLowerCase() : slugifyTftEntity(row.name));
+    if (!slug || !row.apiName) return;
+    if (!historicalChampApisBySlug.has(slug)) {
+      historicalChampApisBySlug.set(slug, new Set());
+    }
+    historicalChampApisBySlug.get(slug).add(row.apiName);
+  });
+
+  // Recorrer sets en orden ascendente (18 -> 19 -> ...) para que el set más nuevo sobreescriba `data`
+  for (const { setNum, setData, traitsMetaDB, itemsMetaDB } of setBundles) {
+    slugMapsBySet[setNum] = {
+      champByApi: {},
+      traitByApi: {},
+      itemByApi: {},
+    };
+
+    const safeTraitsMetaDB = Array.isArray(traitsMetaDB) ? traitsMetaDB : [];
+    const safeItemsMetaDB = Array.isArray(itemsMetaDB) ? itemsMetaDB : [];
+
+    const traitMetaMap = new Map();
+    safeTraitsMetaDB.forEach((t) => {
+      if (t?.apiName) traitMetaMap.set(t.apiName.toLowerCase(), t);
+    });
+
+    const itemMetaMap = new Map();
+    safeItemsMetaDB.forEach((i) => {
+      if (i?.apiName) itemMetaMap.set(i.apiName.toLowerCase(), i);
+    });
+
+    // --- A. CAMPEONES DEL SET ---
+    const validChamps = (setData.champions || []).filter((c) => {
+      if (!c || !c.apiName || !c.name) return false;
+      const apiLow = c.apiName.toLowerCase();
+      if (excludedSet.has(apiLow)) return false;
+      const parsedTraits = safeJsonParse(c.traits, c.traits) || [];
+      const hasTraits = Array.isArray(parsedTraits) && parsedTraits.length > 0;
+      const validCost = Number(c.cost) >= 1 && Number(c.cost) <= 7;
+      // Permitir campeones jugables (o especiales con coste 0 que tengan rasgos y habilidad, como Aatrox/Cho'Gath)
+      return hasTraits || (validCost && Boolean(c.tileIcon || c.squareIcon || c.icon));
+    });
+
+    validChamps.forEach((champ) => {
+      const apiLow = champ.apiName.toLowerCase();
+      const dbRow = champMetaByKey.get(`${setNum}::${apiLow}`) || null;
+      const merged = mergeSameSetMeta(champ, dbRow, setNum);
+      const slug = dbRow?.url_seo
+        ? String(dbRow.url_seo).trim().toLowerCase()
+        : slugifyTftEntity(merged.name);
+      if (!slug) return;
+
+      slugMapsBySet[setNum].champByApi[apiLow] = slug;
+
+      const existing = campeonesBySlug.get(slug);
+      const matchingApiNames = new Set(existing?.matchingApiNames || []);
+      matchingApiNames.add(merged.apiName);
+      // Incorporar apiNames históricos que compartan el mismo slug
+      const histApis = historicalChampApisBySlug.get(slug);
+      if (histApis) {
+        histApis.forEach((a) => matchingApiNames.add(a));
+      }
+
+      campeonesBySlug.set(slug, {
+        slug,
+        data: merged,
+        entitySetNumber: setNum,
+        matchingApiNames: Array.from(matchingApiNames),
+      });
+    });
+
+    // --- B. SINERGIAS (TRAITS) DEL SET ---
+    const validTraits = (setData.traits || []).filter((t) => {
+      if (!t || !t.apiName || !t.name) return false;
+      const dbRow = traitMetaMap.get(t.apiName.toLowerCase());
+      if (dbRow?.url_seo) return true;
+      const effects = safeJsonParse(t.effects, t.effects) || [];
+      return Boolean(t.icon) && Array.isArray(effects) && effects.length > 0;
+    });
+
+    validTraits.forEach((trait) => {
+      const apiLow = trait.apiName.toLowerCase();
+      const dbRow = traitMetaMap.get(apiLow) || null;
+      const merged = mergeSameSetMeta(trait, dbRow, setNum);
+      const slug = dbRow?.url_seo
+        ? String(dbRow.url_seo).trim().toLowerCase()
+        : slugifyTftEntity(merged.name);
+      if (!slug) return;
+
+      slugMapsBySet[setNum].traitByApi[apiLow] = slug;
+
+      const existing = sinergiasBySlug.get(slug);
+      const matchingApiNamesBySet = { ...(existing?.matchingApiNamesBySet || {}) };
+      const setList = new Set(matchingApiNamesBySet[setNum] || []);
+      setList.add(merged.apiName);
+      matchingApiNamesBySet[setNum] = Array.from(setList);
+
+      sinergiasBySlug.set(slug, {
+        slug,
+        data: merged,
+        entitySetNumber: setNum,
+        matchingApiNamesBySet,
+      });
+    });
+
+    // --- C. ÍTEMS DEL SET ---
+    // Puntuar cada ítem para elegir el registro más rico cuando conviven alias del mismo ítem (ej. DA_HandOfJustice y TFT_Item_UnstableConcoction)
+    const scoreItemRichness = (it) => {
+      let score = 0;
+      if (it.url_seo) score += 100;
+      if (it.desc_item && String(it.desc_item).trim().length > 0) score += 50;
+      if (it.desc && String(it.desc).trim().length > 0) score += 40;
+      const eff = safeJsonParse(it.effects, it.effects);
+      if (eff && typeof eff === "object") score += Math.min(Object.keys(eff).length * 3, 30);
+      if (Array.isArray(it.composition) && it.composition.length === 2) score += 10;
+      if (/^TFT\d*_Item_/i.test(it.apiName || "")) score += 5;
+      return score;
+    };
+
+    const validItems = (setData.items || [])
+      .map((item) => {
+        const dbRow = itemMetaMap.get((item?.apiName || "").toLowerCase()) || null;
+        return mergeSameSetMeta(item, dbRow, setNum);
+      })
+      .filter((item) => isPlayableTftItem(item));
+
+    // Agrupar alias dentro del mismo set por slug para conservar todos sus apiNames y elegir el registro más completo
+    const itemsGroupedThisSet = new Map();
+    validItems.forEach((item) => {
+      const apiLow = item.apiName.toLowerCase();
+      let slug = item.url_seo
+        ? String(item.url_seo).trim().toLowerCase()
+        : slugifyTftEntity(item.name);
+      if (!slug) return;
+
+      const isRadiant = /radiant/i.test(item.apiName);
+      if (isRadiant && !slug.includes("radiante") && !slug.includes("radiant")) {
+        // Evitar que un ítem radiante sin sufijo en el nombre pise al ítem normal
+        const currentGroup = itemsGroupedThisSet.get(slug);
+        if (currentGroup && !/radiant/i.test(currentGroup.bestItem.apiName)) {
+          slug = `${slug}-radiante`;
+        }
+      }
+
+      slugMapsBySet[setNum].itemByApi[apiLow] = slug;
+
+      const group = itemsGroupedThisSet.get(slug);
+      if (!group) {
+        itemsGroupedThisSet.set(slug, {
+          bestItem: item,
+          bestScore: scoreItemRichness(item),
+          apiNames: new Set([item.apiName]),
+        });
+      } else {
+        group.apiNames.add(item.apiName);
+        const candidateScore = scoreItemRichness(item);
+        if (candidateScore > group.bestScore) {
+          group.bestItem = item;
+          group.bestScore = candidateScore;
+        }
+      }
+    });
+
+    for (const [slug, group] of itemsGroupedThisSet.entries()) {
+      const existing = itemsBySlug.get(slug);
+      const matchingApiNames = new Set(existing?.matchingApiNames || []);
+      group.apiNames.forEach((api) => matchingApiNames.add(api));
+
+      // Preservar el ítem del set más reciente como `data`, heredando `desc_item`/`desc` solo si el set más nuevo viniera completamente vacío?
+      // No: siempre mostrar estrictamente la data oficial del set más reciente.
+      itemsBySlug.set(slug, {
+        slug,
+        data: group.bestItem,
+        entitySetNumber: setNum,
+        matchingApiNames: Array.from(matchingApiNames),
+      });
+    }
+  }
+
+  // =========================================================================
+  // 3. Evitar cualquier colisión de rutas entre Campeón, Sinergia, Ítem y Compo
+  //    Prioridad de URL limpia: Campeón > Sinergia > Ítem > Composición
+  // =========================================================================
+  const claimedSlugs = new Set();
+  const paths = [];
+
+  // Campeones
+  for (const entry of campeonesBySlug.values()) {
+    const finalSlug = entry.slug;
+    if (claimedSlugs.has(finalSlug)) continue;
+    claimedSlugs.add(finalSlug);
+
+    const setInfo = setDataBySet[entry.entitySetNumber] || { champions: [], traits: [], items: [] };
+    const setSlugs = slugMapsBySet[entry.entitySetNumber] || { traitByApi: {}, itemByApi: {} };
+
+    paths.push({
+      params: { id: finalSlug },
+      props: {
+        type: "campeon",
+        data: entry.data,
+        entitySetNumber: entry.entitySetNumber,
+        matchingApiNames: entry.matchingApiNames,
+        allComps: todasLasComps,
+        setTraits: setInfo.traits,
+        setItems: setInfo.items,
+        traitSlugByApi: setSlugs.traitByApi,
+        itemSlugByApi: setSlugs.itemByApi,
+      },
+    });
+  }
+
+  // Sinergias
+  for (const entry of sinergiasBySlug.values()) {
+    let finalSlug = entry.slug;
+    if (claimedSlugs.has(finalSlug)) {
+      finalSlug = `${entry.slug}-sinergia`;
+      // Actualizar mapa de enlaces del set para que los campeones apunten a la URL final
+      Object.values(slugMapsBySet).forEach((m) => {
+        Object.keys(m.traitByApi).forEach((k) => {
+          if (m.traitByApi[k] === entry.slug) m.traitByApi[k] = finalSlug;
+        });
+      });
+    }
+    if (claimedSlugs.has(finalSlug)) continue;
+    claimedSlugs.add(finalSlug);
+
+    const setInfo = setDataBySet[entry.entitySetNumber] || { champions: [], traits: [], items: [] };
+    const setSlugs = slugMapsBySet[entry.entitySetNumber] || { champByApi: {} };
+
+    paths.push({
+      params: { id: finalSlug },
+      props: {
+        type: "sinergia",
+        data: entry.data,
+        entitySetNumber: entry.entitySetNumber,
+        matchingApiNamesBySet: entry.matchingApiNamesBySet,
+        setDataBySet,
+        allComps: todasLasComps,
+        allChampions: setInfo.champions,
+        allTraits: setInfo.traits,
+        champSlugByApi: setSlugs.champByApi,
+      },
+    });
+  }
+
+  // Ítems
+  for (const entry of itemsBySlug.values()) {
+    let finalSlug = entry.slug;
+    if (claimedSlugs.has(finalSlug)) {
+      finalSlug = `${entry.slug}-item`;
+      Object.values(slugMapsBySet).forEach((m) => {
+        Object.keys(m.itemByApi).forEach((k) => {
+          if (m.itemByApi[k] === entry.slug) m.itemByApi[k] = finalSlug;
+        });
+      });
+    }
+    if (claimedSlugs.has(finalSlug)) continue;
+    claimedSlugs.add(finalSlug);
+
+    const setInfo = setDataBySet[entry.entitySetNumber] || { champions: [], traits: [], items: [] };
+    const setSlugs = slugMapsBySet[entry.entitySetNumber] || { itemByApi: {} };
+
+    paths.push({
+      params: { id: finalSlug },
+      props: {
+        type: "item",
+        data: entry.data,
+        entitySetNumber: entry.entitySetNumber,
+        matchingApiNames: entry.matchingApiNames,
+        allComps: todasLasComps,
+        setItems: setInfo.items,
+        itemSlugByApi: setSlugs.itemByApi,
+      },
+    });
+  }
+
+  // Composiciones (agrupadas por urlSEO, gana el set_number mayor, sin pisar entidades)
   const compsUnicasPorUrl = {};
-  
-  todasLasCompsPBE.forEach(comp => {
+  (todasLasComps || []).forEach((comp) => {
     if (comp.urlSEO && String(comp.urlSEO).trim() !== "") {
       const url = String(comp.urlSEO).trim().toLowerCase();
       const currentSet = Number(comp.set_number) || 0;
-      
-      if (!compsUnicasPorUrl[url]) {
+      if (!compsUnicasPorUrl[url] || currentSet > (Number(compsUnicasPorUrl[url].set_number) || 0)) {
         compsUnicasPorUrl[url] = comp;
-      } else {
-        const existingSet = Number(compsUnicasPorUrl[url].set_number) || 0;
-        if (currentSet > existingSet) {
-          compsUnicasPorUrl[url] = comp; // Reemplazar si el set actual es mayor
-        }
       }
     }
   });
 
-  const compsFinales = Object.values(compsUnicasPorUrl);
+  Object.values(compsUnicasPorUrl).forEach((comp) => {
+    const url = String(comp.urlSEO).trim().toLowerCase();
+    if (!url || claimedSlugs.has(url)) return;
+    claimedSlugs.add(url);
+    paths.push({
+      params: { id: url },
+      props: {
+        type: "compo",
+        data: comp,
+        entitySetNumber: String(comp.set_number || setNumberLatest),
+        allComps: todasLasComps,
+      },
+    });
+  });
 
-  const campeonesMeta = await getMetaEntidades("campeones_tft");
-  const sinergiasMeta = await getMetaEntidades("traits_TFT_set_18");
-  const itemsMeta = await getMetaEntidades("items_tft_set_18");
+  console.log(
+    `=== RUTAS TFT GENERADAS: ${paths.length} total (Sets: ${CONFIGURED_SETS.join(", ")}) ===`
+  );
 
-  const metaUrls = new Set([
-    ...campeonesMeta.map(c => c.url_seo?.toLowerCase()),
-    ...sinergiasMeta.map(s => s.url_seo?.toLowerCase()),
-    ...itemsMeta.map(i => i.url_seo?.toLowerCase())
-  ].filter(Boolean));
-
-  const compsPaths = compsFinales
-    .filter(comp => {
-      const url = String(comp.urlSEO).toLowerCase();
-      return !metaUrls.has(url);
-    })
-    .map(comp => ({
-      params: { id: String(comp.urlSEO).toLowerCase() },
-      props: { type: 'compo', data: comp, allComps: todasLasCompsPBE },
-    }));
-
-  const campeonesPaths = campeonesMeta
-    .filter(c => c.url_seo)
-    .map(c => ({ params: { id: String(c.url_seo).toLowerCase() }, props: { type: 'campeon', data: c, allComps: todasLasCompsPBE } }));
-
-  const sinergiasPaths = sinergiasMeta
-    .filter(s => s.url_seo)
-    .map(s => ({ params: { id: String(s.url_seo).toLowerCase() }, props: { type: 'sinergia', data: s, allComps: todasLasCompsPBE } }));
-
-  const itemsPaths = itemsMeta
-    .filter(i => i.url_seo)
-    .map(i => ({ params: { id: String(i.url_seo).toLowerCase() }, props: { type: 'item', data: i, allComps: todasLasCompsPBE } }));
-
-  console.log("=== RUTAS GENERADAS ===");
-  console.log("Composiciones:", compsPaths.map(p => `${p.params.id} (Set: ${p.props.data.set_number || p.props.data.tft_set || '?'})`));
-  console.log("Campeones:", campeonesPaths.map(p => `${p.params.id} (Set: ${p.props.data.set_number || p.props.data.tft_set || '?'})`));
-  console.log("Sinergias:", sinergiasPaths.map(p => `${p.params.id} (Set: ${p.props.data.set_number || p.props.data.tft_set || '?'})`));
-  console.log("Items:", itemsPaths.map(p => `${p.params.id} (Set: ${p.props.data.set_number || p.props.data.tft_set || '?'})`));
-  console.log("=======================");
-
-  return [...compsPaths, ...campeonesPaths, ...sinergiasPaths, ...itemsPaths];
+  return paths;
 }
 
 const { id } = Astro.params;
-const { type, data, allComps } = Astro.props;
+const {
+  type,
+  data,
+  entitySetNumber,
+  matchingApiNames = [],
+  matchingApiNamesBySet = {},
+  setDataBySet = {},
+  allComps = [],
+  allChampions = [],
+  allTraits = [],
+  setTraits = [],
+  setItems = [],
+  traitSlugByApi = {},
+  itemSlugByApi = {},
+  champSlugByApi = {},
+} = Astro.props;
 
-const comp = type === 'compo' ? data : null; // Para mantener retrocompatibilidad con el código actual de compo
+const comp = type === "compo" ? data : null;
 
 const [numberOfPatch, lastUpdateComps] = await Promise.all([
   getConstantes(),
-  getLastUpdateDate("composiciones_tft")
+  getLastUpdateDate("composiciones_tft"),
 ]);
 
-let entitySetNumber = comp?.set_number || data?.set_number || data?.tft_set;
-if (!entitySetNumber && type !== 'compo') {
-  entitySetNumber = "18"; // Metas by default are Set 18 if they don't have the column
-}
-const targetVersion = (String(entitySetNumber) === String(setNumberPBE)) ? "pbe" : "latest";
+const resolvedSetNumber = String(
+  entitySetNumber || comp?.set_number || data?.set_number || data?.tft_set || setNumberPBE
+);
+const targetVersion = resolvedSetNumber === String(setNumberPBE) ? "pbe" : "latest";
 
-// En SSR asegurarnos de que el store global tenga la versión correcta para esta página
-if (versionTFT.get() !== targetVersion) {
-  versionTFT.set(targetVersion);
-  await loadDataTFTFromAPI({ version: targetVersion });
-} else if (dataTFTChampions.get().length === 0) {
-  await loadDataTFTFromAPI({ version: targetVersion });
+// Para páginas de composición individual, asegurar que el store global esté alineado con su set
+if (type === "compo") {
+  if (versionTFT.get() !== targetVersion) {
+    versionTFT.set(targetVersion);
+    await loadDataTFTFromAPI({ version: targetVersion });
+  } else if (dataTFTChampions.get().length === 0) {
+    await loadDataTFTFromAPI({ version: targetVersion });
+  }
 }
 
-const championsPBE = dataTFTChampions.get();
+const championsStore = dataTFTChampions.get() || [];
 const targetApiName = comp?.campeonMeta?.apiNameCampeon || data?.apiName;
-const champInfo = championsPBE.find(c => c.apiName === targetApiName);
-const resolvedTileIcon = (champInfo?.tileIcon || data?.tileIcon) ? getLocalTftImage(champInfo?.tileIcon || data?.tileIcon, 'champions/tileIcon') : "";
+const champInfo =
+  type === "campeon"
+    ? data
+    : championsStore.find((c) => c.apiName === targetApiName);
 
+const resolvedTileIcon =
+  champInfo?.tileIcon || data?.tileIcon
+    ? getLocalTftImage(
+        champInfo?.tileIcon || data?.tileIcon,
+        "champions/tileIcon",
+        resolvedSetNumber
+      )
+    : "";
 ---
 
-{type === 'compo' && comp && (
+{type === "compo" && comp && (
   <MetaCompsLayout
-    titleMain={`${comp.urlSEO.toUpperCase().replace("-"," ")} TFT Comp & Items Build - Set ${comp.set_number || 17}`}
+    titleMain={`${comp.urlSEO.toUpperCase().replace(/-/g, " ")} TFT Comp & Items Build - Set ${comp.set_number || resolvedSetNumber}`}
     titleHighlight={``}
-    description={comp.tipSEO ||
-      `Guía completa paso a paso de la composición ${comp.titulo} para el parche actual de TFT.`}
-    lastUpdate={`${lastUpdateComps} Parche ${comp?.set_number === setNumberPBE ? numberOfPatch.MetaCompVersionPBE : numberOfPatch.MetaCompVersion}` }
+    description={
+      comp.tipSEO ||
+      `Guía completa paso a paso de la composición ${comp.titulo} para el parche actual de TFT.`
+    }
+    lastUpdate={`${lastUpdateComps} Parche ${
+      String(comp?.set_number) === String(setNumberPBE)
+        ? numberOfPatch.MetaCompVersionPBE
+        : numberOfPatch.MetaCompVersion
+    }`}
     allComps={allComps}
     comp={comp}
     activeId={id}
@@ -125,221 +490,46 @@ const resolvedTileIcon = (champInfo?.tileIcon || data?.tileIcon) ? getLocalTftIm
   />
 )}
 
-{type === 'campeon' && data && (
-  <PaginaCampeon data={data} allComps={allComps} resolvedTileIcon={resolvedTileIcon} lastUpdate={lastUpdateComps} version={numberOfPatch} />
+{type === "campeon" && data && (
+  <PaginaCampeon
+    data={data}
+    entitySetNumber={resolvedSetNumber}
+    matchingApiNames={matchingApiNames}
+    allComps={allComps}
+    setTraits={setTraits}
+    setItems={setItems}
+    traitSlugByApi={traitSlugByApi}
+    itemSlugByApi={itemSlugByApi}
+    resolvedTileIcon={resolvedTileIcon}
+    lastUpdate={lastUpdateComps}
+    version={numberOfPatch}
+  />
 )}
 
-{type === 'sinergia' && data && (
-  <PaginaSinergia data={data} allComps={allComps} lastUpdate={lastUpdateComps} version={numberOfPatch} allChampions={championsPBE} />
+{type === "sinergia" && data && (
+  <PaginaSinergia
+    data={data}
+    entitySetNumber={resolvedSetNumber}
+    matchingApiNamesBySet={matchingApiNamesBySet}
+    setDataBySet={setDataBySet}
+    allComps={allComps}
+    lastUpdate={lastUpdateComps}
+    version={numberOfPatch}
+    allChampions={allChampions}
+    allTraits={allTraits}
+    champSlugByApi={champSlugByApi}
+  />
 )}
 
-{type === 'item' && data && (
-  <PaginaItem data={data} allComps={allComps} lastUpdate={lastUpdateComps} version={numberOfPatch} />
+{type === "item" && data && (
+  <PaginaItem
+    data={data}
+    entitySetNumber={resolvedSetNumber}
+    matchingApiNames={matchingApiNames}
+    allComps={allComps}
+    setItems={setItems}
+    itemSlugByApi={itemSlugByApi}
+    lastUpdate={lastUpdateComps}
+    version={numberOfPatch}
+  />
 )}
-
-<style>
-  .compo-detail-card {
-    background: rgba(28, 22, 54, 0.85);
-    border: 2px solid #7b61ff;
-    border-radius: 12px;
-    padding: 24px;
-    margin-bottom: 24px;
-    backdrop-filter: blur(12px);
-    box-shadow: 0 0 24px rgba(123, 97, 255, 0.25);
-    animation: slideDown 0.3s ease-out;
-  }
-
-  .blockHeader {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-
-  .block {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    box-shadow: 0 0 24px rgba(123, 97, 255, 0.25);
-    backdrop-filter: blur(12px);
-    border-radius: 12px;
-    border: 2px solid rgba(123, 97, 255, 0.25);
-    padding: 12px;
-  }
-
-  .two-columns {
-    flex-direction: row;
-  }
-
-  .earlyChampionsContainer {
-    display: flex;
-    flex-direction: row;
-    gap: 5px;
-    width: 100%;
-  }
-  .championEarlyContainer {
-    display: flex;
-    flex-direction: column;
-    width: calc(100% / 5 - 5px);
-  }
-
-  .championImgItems {
-    display: flex;
-    position: relative;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .championImageWrapper {
-    display: flex;
-    border: 1px solid;
-    border-radius: 10px;
-  }
-
-  .champSquareCost1 {
-    border-color: #ffffff;
-  }
-  .champSquareCost2 {
-    border-color: #3e9e64;
-  }
-  .champSquareCost3 {
-    border-color: #1e69ee;
-  }
-  .champSquareCost4 {
-    border-color: #b534f5;
-  }
-  .champSquareCost5 {
-    border-color: #f58220;
-  }
-
-  .championImg {
-    width: 100%;
-    border-radius: 10px;
-  }
-
-  .itemsContainer {
-    display: flex;
-    flex-direction: row;
-    gap: 6px;
-  }
-
-  .championImageWrapper {
-    width: 100%;
-  }
-
-  .bigItemPrio {
-    width: calc(100% / 3 - 6px);
-  }
-
-  .littleItemPrio {
-    display: flex;
-    flex-direction: row;
-    gap: 12px;
-  }
-
-  .itemBestRadiant {
-    width: 50%;
-  }
-
-  .items-prio {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    width: calc(100% / 3 * 2);
-  }
-
-  .best-radiant {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    width: calc(100% / 3);
-  }
-
-  .margin-block-zero {
-    margin-block: 0px;
-  }
-
-  @keyframes slideDown {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .detail-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid rgba(123, 97, 255, 0.25);
-    padding-bottom: 12px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-
-  .detail-header h2 {
-    margin: 0;
-    font-size: 1.5rem;
-    color: #fff;
-    font-weight: 700;
-  }
-
-  .difficulty-badge {
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 700;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .difficulty-badge[data-diff="Easy"],
-  .difficulty-badge[data-diff="Fácil"] {
-    color: #10b981;
-    border-color: rgba(16, 185, 129, 0.3);
-    background: rgba(16, 185, 129, 0.1);
-  }
-
-  .difficulty-badge[data-diff="Medium"],
-  .difficulty-badge[data-diff="Media"] {
-    color: #f59e0b;
-    border-color: rgba(245, 158, 11, 0.3);
-    background: rgba(245, 158, 11, 0.1);
-  }
-
-  .difficulty-badge[data-diff="Hard"],
-  .difficulty-badge[data-diff="Difícil"] {
-    color: #ef4444;
-    border-color: rgba(239, 68, 68, 0.3);
-    background: rgba(239, 68, 68, 0.1);
-  }
-
-  .detail-section {
-    margin-bottom: 20px;
-  }
-
-  .detail-section h3 {
-    margin: 0 0 8px 0;
-    font-size: 1.1rem;
-    color: #ffc832;
-    font-weight: 600;
-  }
-
-  .detail-section p {
-    margin: 0;
-    font-size: 0.95rem;
-    line-height: 1.6;
-    color: #e5e7eb;
-  }
-
-  .no-details {
-    margin: 0;
-    color: #9ca3af;
-    font-style: italic;
-    font-size: 0.9rem;
-    text-align: center;
-  }
-</style>

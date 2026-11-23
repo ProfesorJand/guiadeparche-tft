@@ -1,231 +1,293 @@
 ---
 import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
-import CardsCompos from "@components/TFT/CardsCompos.jsx";
+import CompsPorSet from "@components/TFT/meta/CompsPorSet.jsx";
 import Youtube from "@components/youtube/Youtube.jsx";
-import { setNumberPBE, setNumberLatest, dataTFTTraits, dataTFTAllItems } from "@stores/dataTFT";
+import { setNumberPBE } from "@stores/dataTFT";
 import { getLocalTftImage } from "@utils/images";
 import { formatChampionDescription } from "@components/tooltips/functions.jsx";
+import {
+  compUsesChampion,
+  groupCompsBySet,
+  normalizeItemApiName,
+  safeJsonParse,
+  slugifyTftEntity,
+} from "@utils/tftEntitySlug.js";
 
-const { data, allComps, resolvedTileIcon, lastUpdate, version } = Astro.props;
+const {
+  data,
+  entitySetNumber,
+  matchingApiNames = [],
+  allComps = [],
+  setTraits = [],
+  setItems = [],
+  traitSlugByApi = {},
+  itemSlugByApi = {},
+  resolvedTileIcon,
+  lastUpdate,
+  version,
+} = Astro.props;
 
-// Stores
-const safeSinergiasData = dataTFTTraits.get() || [];
-const safeGlobalItems = dataTFTAllItems.get() || [];
+const activeSet = String(entitySetNumber || data.tft_set || setNumberPBE);
+const apiNamesToMatch = matchingApiNames.length > 0 ? matchingApiNames : [data.apiName];
 
-// Sinergias (Traits) - `traits` array of strings (e.g. "Rebel", "Sniper")
-let parsedTraits = [];
-if (data.traits) {
-  try {
-    parsedTraits = typeof data.traits === 'string' ? JSON.parse(data.traits) : data.traits;
-  } catch(e) {}
-}
-
-const traitsList = parsedTraits.map(traitName => {
-  const t = safeSinergiasData.find(st => st.name === traitName || st.apiName === traitName);
-  return t ? t : { name: traitName, icon: '' };
+// Sinergias del campeón en el set más reciente
+const parsedTraits = safeJsonParse(data.traits, data.traits) || [];
+const traitsList = (Array.isArray(parsedTraits) ? parsedTraits : []).map((traitKey) => {
+  const found = (setTraits || []).find(
+    (st) =>
+      st.name?.toLowerCase() === String(traitKey).toLowerCase() ||
+      st.apiName?.toLowerCase() === String(traitKey).toLowerCase()
+  );
+  if (found) {
+    const slug =
+      traitSlugByApi[(found.apiName || "").toLowerCase()] ||
+      (found.url_seo ? String(found.url_seo).toLowerCase() : slugifyTftEntity(found.name));
+    return { ...found, slug };
+  }
+  return { name: String(traitKey), icon: "", slug: slugifyTftEntity(traitKey) };
 });
 
-// Habilidad (Ability)
-let parsedAbility = { name: "", icon: "", desc: "" };
-if (data.ability) {
-  try {
-    parsedAbility = typeof data.ability === 'string' ? JSON.parse(data.ability) : data.ability;
-  } catch(e) {}
-}
+// Habilidad del campeón en el set más reciente
+const parsedAbility = safeJsonParse(data.ability, { name: "", icon: "", desc: "" }) || {
+  name: "",
+  icon: "",
+  desc: "",
+};
+const parsedAbilityVars =
+  safeJsonParse(data.ability_variables, parsedAbility.variables || []) || [];
+const abilityDescFormatted = formatChampionDescription(
+  parsedAbility.desc || "",
+  parsedAbilityVars
+);
 
-let parsedAbilityVars = [];
-if (data.ability_variables) {
-  try {
-    parsedAbilityVars = typeof data.ability_variables === 'string' ? JSON.parse(data.ability_variables) : data.ability_variables;
-  } catch (e) { }
-}
+// Composiciones relacionadas en TODOS los sets donde aparece este campeón
+const relatedComps = (allComps || []).filter((comp) =>
+  compUsesChampion(comp, apiNamesToMatch)
+);
+const compsBySet = groupCompsBySet(relatedComps, activeSet);
 
-const abilityDescFormatted = formatChampionDescription(parsedAbility.desc || "", parsedAbilityVars);
+// Objetos recomendados: priorizar las compos del set más reciente y luego recomendados del catálogo
+const parsedItemsSet = new Set();
+const currentSetComps = compsBySet.find((g) => g.setNumber === activeSet)?.comps || [];
+const sourceCompsForItems = currentSetComps.length > 0 ? currentSetComps : relatedComps;
 
-// Related Comps
-const relatedComps = allComps.filter(comp => {
-  if (!comp.posicionamiento) return false;
-  let pos = comp.posicionamiento;
-  if (typeof pos === 'string') {
-    try { pos = JSON.parse(pos); } catch(e) { return false; }
-  }
-  
-  if (Array.isArray(pos)) {
-    return pos.some(boardVariant => {
-      if (boardVariant && Array.isArray(boardVariant.tablero)) {
-        return boardVariant.tablero.some(cell => cell && (cell.apiNameCampeon === data.apiName || cell.campeon === data.apiName));
-      }
-      return false;
-    });
-  }
-  return false;
-});
-
-// Item Combinations (Obtenidos de las composiciones relacionadas)
-let parsedItemsSet = new Set();
-
-relatedComps.forEach(comp => {
-  let pos = comp.posicionamiento;
-  if (typeof pos === 'string') {
-    try { pos = JSON.parse(pos); } catch(e) { return; }
-  }
-  if (Array.isArray(pos)) {
-    pos.forEach(boardVariant => {
-      if (boardVariant && Array.isArray(boardVariant.tablero)) {
-        boardVariant.tablero.forEach(cell => {
-          if (cell && (cell.apiNameCampeon === data.apiName || cell.campeon === data.apiName)) {
-            if (Array.isArray(cell.apiNameItemsDelCampeon)) {
-              cell.apiNameItemsDelCampeon.forEach(itemApiName => {
-                if (itemApiName) {
-                  parsedItemsSet.add(itemApiName);
-                }
-              });
-            }
-          }
+const matchSetLower = new Set(apiNamesToMatch.map((a) => String(a).toLowerCase()));
+sourceCompsForItems.forEach((comp) => {
+  const pos = safeJsonParse(comp.posicionamiento, []);
+  if (!Array.isArray(pos)) return;
+  pos.forEach((boardVariant) => {
+    if (!boardVariant || !Array.isArray(boardVariant.tablero)) return;
+    boardVariant.tablero.forEach((cell) => {
+      if (!cell) return;
+      const cellApi = String(cell.apiNameCampeon || cell.campeon || "").toLowerCase();
+      if (matchSetLower.has(cellApi) && Array.isArray(cell.apiNameItemsDelCampeon)) {
+        cell.apiNameItemsDelCampeon.forEach((itemApiName) => {
+          if (itemApiName) parsedItemsSet.add(itemApiName);
         });
       }
     });
-  }
+  });
 });
+
+// Fallback a recommendedItems del catálogo del set (o dentro de ability) si aún no hay compos del set más reciente
+const fallbackRecommended = Array.isArray(data.recommendedItems)
+  ? data.recommendedItems
+  : Array.isArray(parsedAbility?.recommendedItems)
+    ? parsedAbility.recommendedItems
+    : [];
+if (parsedItemsSet.size === 0 && fallbackRecommended.length > 0) {
+  fallbackRecommended.slice(0, 8).forEach((itemEntry) => {
+    const api = typeof itemEntry === "object" ? itemEntry?.apiName : itemEntry;
+    if (api) parsedItemsSet.add(api);
+  });
+}
 
 const bestItems = [];
 const seenItemIds = new Set();
-Array.from(parsedItemsSet).forEach(itemName => {
-  const found = safeGlobalItems.find(i => i.name === itemName || i.apiName === itemName);
+Array.from(parsedItemsSet).forEach((itemRef) => {
+  const normRef = normalizeItemApiName(itemRef);
+  const found = (setItems || []).find(
+    (i) =>
+      normalizeItemApiName(i.apiName) === normRef ||
+      i.name?.toLowerCase() === String(itemRef).toLowerCase()
+  );
   if (found && !seenItemIds.has(found.apiName)) {
     seenItemIds.add(found.apiName);
-    bestItems.push(found);
+    const slug =
+      itemSlugByApi[(found.apiName || "").toLowerCase()] ||
+      slugifyTftEntity(found.name);
+    bestItems.push({ ...found, slug });
   }
 });
 
 // Secciones Dinámicas
-let parsedSecciones = [];
-if (data.secciones) {
-  try {
-    parsedSecciones = typeof data.secciones === 'string' ? JSON.parse(data.secciones) : data.secciones;
-  } catch(e) {}
-}
+const parsedSecciones = safeJsonParse(data.secciones, []) || [];
 
-const title = data.titulo_seo || `${data.name} TFT - Builds, Items & Comps`;
-const itemsText = bestItems.map(item => item.name).join(', ');
-const itemsSuffixText = itemsText ? `, y los mejores items son: ${itemsText}.` : '. Este campeón no tiene objetos recomendados.';
-const description = data.descripcion_seo || `${data.name} es un campeón de coste ${data.cost} de TFT Set ${data.tft_set} que combina los rasgos ${data.traits.replace(/[\\[\\]]/g, '')}. En esta página encontrarás los mejores objetos para ${data.name} TFT, las composiciones que lo utilizan y las recomendaciones para aprovecharlo en el meta actual${itemsSuffixText}`;
-const currentVersion = String(data.tft_set) === String(setNumberPBE) ? version.MetaCompVersionPBE : version.MetaCompVersion;
+const traitsNamesText = traitsList.map((t) => t.name).join(", ");
+const itemsText = bestItems.map((item) => item.name).join(", ");
+const itemsSuffixText = itemsText
+  ? `, y sus mejores ítems son: ${itemsText}.`
+  : ".";
 
-function getChampionCostBorder(cost) {
+const title =
+  data.titulo_seo || `${data.name} TFT Set ${activeSet} — Builds, Items y Comps`;
+const description =
+  data.descripcion_seo ||
+  `${data.name} es un campeón de coste ${data.cost} en TFT Set ${activeSet} con los rasgos ${traitsNamesText}. Descubre sus mejores objetos, habilidad y composiciones meta${itemsSuffixText}`;
+
+const currentVersion =
+  activeSet === String(setNumberPBE)
+    ? version?.MetaCompVersionPBE
+    : version?.MetaCompVersion;
+
+const getChampionCostBorder = (cost) => {
   switch (Number(cost)) {
-    case 1: return "#ffffff"; // Blanco/Gris
-    case 2: return "#3e9e64"; // Verde
-    case 3: return "#1e69ee"; // Azul
-    case 4: return "#b534f5"; // Morado
-    case 5: return "#f58220"; // Naranja/Dorado
-    default: return "#444";
+    case 0: return "#00ffc4";
+    case 1: return "#ffffff";
+    case 2: return "#3e9e64";
+    case 3: return "#1e69ee";
+    case 4: return "#b534f5";
+    case 5: return "#f58220";
+    case 7: return "#ff66c4";
+    default: return "#7b61ff";
   }
-}
+};
+
 const champColor = getChampionCostBorder(data.cost);
-console.log({video:data.video_url})
+const heroImgSrc = getLocalTftImage(
+  data.tileIcon || data.squareIcon || data.icon,
+  "champions/tileIcon",
+  activeSet
+);
+const fallbackImgSrc = getLocalTftImage(data.icon, "champions/icon", activeSet);
+const abilityIconSrc = parsedAbility?.icon
+  ? (parsedAbility.icon.startsWith("/tft/") || parsedAbility.icon.startsWith("http"))
+    ? parsedAbility.icon
+    : getLocalTftImage(parsedAbility.icon, "champions/habilidad", activeSet)
+  : "";
 ---
 
 <LayoutMaxWidth
   title={title}
   description={description}
-  snippetImgUrl={resolvedTileIcon || data.icon || data.squareIcon}
+  snippetImgUrl={resolvedTileIcon || heroImgSrc || data.icon}
 >
   <div class="header-section" style={`--champ-color: ${champColor};`}>
     <div class="hero-container">
-     
       <div class="hero-info">
-        <h1>{data.name} TFT - Builds, Items & Comps</h1>
+        <div class="badges-row">
+          <span class="set-badge">Set {activeSet}</span>
+          {currentVersion && (
+            <span class="patch-badge">Parche {currentVersion}</span>
+          )}
+          <span class="cost-pill">Coste {data.cost}</span>
+        </div>
+
+        <h1>{data.name} TFT — Builds, Items & Comps</h1>
+
         <div class="dataChamp">
-           <p class="seo-desc"><span class="colored-text">{data.name}</span> es un campeón de <span class="colored-text">coste {data.cost}</span> de TFT Set {data.tft_set} que combina los rasgos <span class="colored-text">{traitsList.map(t => t.name).join(', ')}</span>. En esta página encontrarás los mejores builds para <span class="colored-text">{data.name}</span>, las composiciones que lo utilizan y recomendaciones para aprovecharlo en el meta actual{bestItems.length > 0 ? <>. Sus mejores items son: <span class="colored-text">{bestItems.map(i => i.name).join(', ')}</span>.</> : '. Este campeón no tiene objetos recomendados.'}  
+          <p class="seo-desc">
+            <span class="colored-text">{data.name}</span> es un campeón de{" "}
+            <span class="colored-text">coste {data.cost}</span> de TFT Set{" "}
+            {activeSet}{traitsNamesText ? (
+              <>
+                {" "}que combina los rasgos{" "}
+                <span class="colored-text">{traitsNamesText}</span>
+              </>
+            ) : (
+              ""
+            )}. Aquí encontrarás sus mejores objetos, habilidad actualizada y las
+            composiciones que lo utilizan en el meta{bestItems.length > 0 ? (
+              <>
+                . Sus ítems destacados son:{" "}
+                <span class="colored-text">{itemsText}</span>.
+              </>
+            ) : (
+              "."
+            )}
           </p>
+
           {data.tip_jupeson && (
             <div class="tip-jupeson-container">
               <span class="tip-jupeson-title">💡 Tip Jupeson:</span>
               <span class="tip-jupeson-text">{data.tip_jupeson}</span>
             </div>
           )}
-          
+
           <div class="info-2-champ">
             <div class="hero-image-wrapper">
-              <img 
-                src={getLocalTftImage(data.tileIcon || data.squareIcon || data.icon, 'champions/tile/Icon', data.tft_set || "18")} 
-                alt={data.name}
-                class="champ-hero-img"
-                onerror={`this.onerror=null; this.src='${getLocalTftImage(data.icon, 'champions/icon', data.tft_set || "18")}';`}
-              />
-              <div class="cost-badge">{data.cost}</div>
+              <div class="champ-portrait-box">
+                <img
+                  src={heroImgSrc}
+                  alt={`${data.name} TFT Set ${activeSet}`}
+                  class="champ-hero-img"
+                  onerror={`this.onerror=null; this.src='${fallbackImgSrc}';`}
+                />
+                <div class="cost-badge">{data.cost}</div>
+              </div>
               <div class="containerTraits">
-                {traitsList.map(t => {
-                  const isLink = Boolean(t.url_seo);
-                  const content = (
-                    <>
-                      {t.icon && (
-                        <img 
-                        src={getLocalTftImage(t.icon, 'traits', data.tft_set || "18")} 
+                {traitsList.map((t) => (
+                  <a
+                    href={`/tft/meta-comps-tier-list-teamfight-tactics/${t.slug}`}
+                    class="trait-badge"
+                  >
+                    {t.icon && (
+                      <img
+                        src={getLocalTftImage(t.icon, "traits", activeSet)}
                         alt={t.name}
                         class="trait-icon"
-                        />
-                      )}
-                      <span>{t.name}</span>
-                    </>
-                  );
-
-                  return isLink ? (
-                    <a href={`/tft/meta-comps-tier-list-teamfight-tactics/${t.url_seo.toLowerCase()}`} class="trait-badge" style="text-decoration: none; color: inherit; cursor: pointer;">
-                      {content}
-                    </a>
-                  ) : (
-                    <div class="trait-badge">
-                      {content}
-                    </div>
-                  );
-                })}
+                      />
+                    )}
+                    <span>{t.name}</span>
+                  </a>
+                ))}
               </div>
             </div>
-            
-            <div class="containerInfoChamp">
-              <div class="containerTraits-mobile">
-                {traitsList.map(t => {
-                  const isLink = Boolean(t.url_seo);
-                  const content = (
-                    <>
-                      {t.icon && (
-                        <img 
-                        src={getLocalTftImage(t.icon, 'traits', data.tft_set || "18")} 
-                        alt={t.name}
-                        class="trait-icon"
-                        />
-                      )}
-                      <span>{t.name}</span>
-                    </>
-                  );
 
-                  return isLink ? (
-                    <a href={`/tft/meta-comps-tier-list-teamfight-tactics/${t.url_seo.toLowerCase()}`} class="trait-badge" style="text-decoration: none; color: inherit; cursor: pointer;">
-                      {content}
-                    </a>
-                  ) : (
-                    <div class="trait-badge">
-                      {content}
+            <div class="containerInfoChamp">
+              {/* Habilidad del campeón (Set más reciente) */}
+              {(parsedAbility?.name || abilityDescFormatted) && (
+                <div class="ability-card">
+                  <div class="ability-header">
+                    {abilityIconSrc && (
+                      <img
+                        src={abilityIconSrc}
+                        alt={parsedAbility.name || `Habilidad de ${data.name}`}
+                        class="ability-icon"
+                        onerror="this.style.display='none';"
+                      />
+                    )}
+                    <div>
+                      <span class="ability-tag">Habilidad · Set {activeSet}</span>
+                      <h3>{parsedAbility.name || "Habilidad"}</h3>
                     </div>
-                  );
-                })}
-              </div>
+                  </div>
+                  {abilityDescFormatted && (
+                    <div
+                      class="ability-desc"
+                      set:html={abilityDescFormatted}
+                    />
+                  )}
+                </div>
+              )}
+
               {/* Mejores Ítems en el Hero */}
               {bestItems.length > 0 && (
                 <div class="hero-items-container">
                   <h3 class="hero-items-title">Objetos Recomendados</h3>
                   <div class="hero-items-list">
-                    {bestItems.map(item => (
-                      <div class="hero-item-card">
-                        <img 
-                          src={getLocalTftImage(item.icon, 'items', data.tft_set || "18")} 
+                    {bestItems.map((item) => (
+                      <a
+                        href={`/tft/meta-comps-tier-list-teamfight-tactics/${item.slug}`}
+                        class="hero-item-card"
+                        title={item.name}
+                      >
+                        <img
+                          src={getLocalTftImage(item.icon, "items", activeSet)}
                           alt={item.name}
-                          title={item.name}
                         />
-                        {/* <span>{item.name}</span> */}
-                      </div>
+                        <span>{item.name}</span>
+                      </a>
                     ))}
                   </div>
                 </div>
@@ -233,8 +295,8 @@ console.log({video:data.video_url})
 
               {/* Video YouTube */}
               {data.video_url && (
-                <div class="section-block video-block glass-panel">
-                  <h2>Video Guía</h2>
+                <div class="video-block">
+                  <h3>Video Guía</h3>
                   <div class="container-video">
                     <Youtube src={data.video_url} client:load />
                   </div>
@@ -243,70 +305,43 @@ console.log({video:data.video_url})
             </div>
           </div>
         </div>
-
-        <!-- <p class="update-info">Última actualización: {lastUpdate} | Parche {currentVersion}</p> -->
       </div>
     </div>
-  
 
+    {/* Composiciones agrupadas por set: Set más reciente abierto y anteriores desplegables */}
+    <CompsPorSet
+      entityName={data.name}
+      entityType="campeon"
+      newestSetNumber={activeSet}
+      compsBySet={compsBySet}
+      client:load
+    />
 
-
-  {/* Compos Relacionadas a Ancho Completo */}
-  {relatedComps.length > 0 ? (
-    <div class="containerMejoresComps">
-      <h2>Mejores Comps de {data.name} TFT</h2>
-      <p class="text-centered">Estas son las mejores comps de TFT que utilizan a {data.name} en el meta actual. Explora cada composición para conocer sus campeones, objetos, builds y condiciones recomendadas para jugarla.</p>
-      <div class="comps-grid">
-        {relatedComps.map((comp, index) => (
-          <article class="comp-card" style="margin-bottom: 20px;">
-            <CardsCompos
-              comp={comp}
-              numeracion={index + 1}
-              expandInline={true}
-              client:load
-            />
-          </article>
+    {/* Secciones Dinámicas */}
+    {Array.isArray(parsedSecciones) && parsedSecciones.length > 0 && (
+      <div class="dynamic-sections">
+        {parsedSecciones.map((sec) => (
+          <div class="section-block">
+            <h2>{sec.titulo}</h2>
+            <div class="section-content" set:html={sec.descripcion} />
+          </div>
         ))}
       </div>
-      <div class="trait-main-card">
-        <p class="text-centered">¿Buscas más opciones? Explora todas las <a style="color:#f5e020ff; font-weight: bold;" href="/tft/meta-comps-tier-list-teamfight-tactics/">Meta Comps de TFT</a> actualizadas para encontrar qué jugar en el parche actual.</p>
-      </div>
-    </div>
-  ) : (
-  <div class="containerMejoresComps">
-    <p>En estos momentos no existen compos para el campeon {data.name}</p>
+    )}
   </div>
-  )}
-
-   <div class="side-column"> 
-      {/* Secciones Dinámicas */}
-      {parsedSecciones.length > 0 && (
-        <div class="dynamic-sections">
-          {parsedSecciones.map(sec => (
-            <div class="section-block glass-panel" style="margin-bottom: 20px;">
-              <h2>{sec.titulo}</h2>
-              <div class="section-content" set:html={sec.descripcion} />
-            </div>
-          ))}
-        </div>
-      )}
-      
-    </div>
-</div>
 </LayoutMaxWidth>
 
 <style>
-  /* Root Variables */
   .header-section {
     width: 100%;
-    margin-bottom: 30px;
+    margin: 0 auto 30px auto;
     max-width: 900px;
-    background: linear-gradient(135deg, rgba(18, 16, 52, 0.8), rgba(18, 16, 52, 0.4));
-    padding: 30px;
+    background: linear-gradient(135deg, rgba(18, 16, 52, 0.88), rgba(18, 16, 52, 0.55));
+    padding: 28px;
     border-radius: 16px;
     border: 1px solid var(--champ-color);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255, 255, 255, 0.04);
+    box-sizing: border-box;
     align-self: center;
   }
 
@@ -315,26 +350,65 @@ console.log({video:data.video_url})
     gap: 2rem;
     align-items: center;
   }
-  .containerInfoChamp{
-    display:flex;
-    flex-direction:column;
-    gap: 15px;
-    flex:4
-  }
-  .containerTraits{
+
+  .badges-row {
     display: flex;
-    position:absolute;
-    bottom:0;
-    left: 5px;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .set-badge {
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #00ffc4, #63e6ff);
+    color: #0b0920;
+  }
+
+  .patch-badge,
+  .cost-pill {
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    color: #e2e8f0;
+  }
+
+  .containerInfoChamp {
+    display: flex;
     flex-direction: column;
-    gap: 5px;
-    flex:1;
+    gap: 16px;
+    flex: 1;
+    min-width: 0;
   }
 
   .hero-image-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    flex: 0 0 144px;
+    width: 144px;
+    align-self: flex-start;
+  }
+
+  .champ-portrait-box {
     position: relative;
-    flex:2;
+    width: 132px;
+    height: 132px;
     flex-shrink: 0;
+  }
+
+  .containerTraits {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+    width: 100%;
   }
 
   .champ-hero-img {
@@ -342,266 +416,181 @@ console.log({video:data.video_url})
     height: 100%;
     border-radius: 12px;
     object-fit: cover;
+    display: block;
     border: 3px solid var(--champ-color);
-    box-shadow: 0 0 15px var(--champ-color);
+    box-shadow: 0 0 14px var(--champ-color);
   }
 
   .cost-badge {
     position: absolute;
-    bottom: -10px;
-    right: -10px;
+    bottom: -8px;
+    right: -8px;
     background: #121034;
     border: 2px solid var(--champ-color);
     color: #fff;
-    width: 30px;
-    height: 30px;
+    width: 28px;
+    height: 28px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: bold;
-    font-size: 1.2rem;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-    border: 2px solid #121034;
+    font-size: 0.95rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
   }
 
   .hero-info {
     flex-grow: 1;
-    gap: 15px;
+    gap: 14px;
     display: flex;
     flex-direction: column;
+    width: 100%;
   }
-  .colored-text{
-    color:#ff9fd8;
+
+  .colored-text {
+    color: #ff9fd8;
+    font-weight: 600;
   }
 
   .hero-info h1 {
-    font-size: 2.5rem;
-    margin: 0 0 10px 0;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    font-size: 2.15rem;
+    margin: 0;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
   }
 
   .dataChamp {
     display: flex;
-    gap: 15px;
-    margin-bottom: 15px;
-    flex-wrap: wrap;
-  }
-
-  .role-badge {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    font-weight: bold;
-    color: #00ffc4;
+    flex-direction: column;
+    gap: 16px;
   }
 
   .trait-badge {
-    display: flex;
+    display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 6px;
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 5px 12px;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    width: fit-content;
+    background: rgba(10, 9, 28, 0.82);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-size: 0.82rem;
+    color: #ffffff;
+    text-decoration: none;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+  }
+
+  .trait-badge:hover {
+    border-color: #00ffc4;
+    background: rgba(123, 97, 255, 0.35);
   }
 
   .trait-icon {
     width: 18px;
     height: 18px;
-    filter: drop-shadow(0 0 2px rgba(255,255,255,0.5));
+    filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.5));
   }
 
   .seo-desc {
-    font-size: 1.1rem;
+    font-size: 1.02rem;
+    line-height: 1.55;
     color: #cbd5e1;
-    margin-block-start: 0;
-    margin-block-end: 0;
+    margin: 0;
   }
 
   .tip-jupeson-container {
     padding: 15px;
-    background: rgba(123, 97, 255, 0.1);
-    border: 1px solid rgba(123, 97, 255, 0.3);
+    background: rgba(123, 97, 255, 0.12);
+    border: 1px solid rgba(123, 97, 255, 0.35);
     border-left: 4px solid #a78bfa;
     border-radius: 8px;
     color: #ffffff;
     font-size: 0.95rem;
     line-height: 1.5;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    display:flex;
+    display: flex;
     flex-direction: column;
-    width:100%
+    box-sizing: border-box;
+    width: 100%;
   }
 
   .tip-jupeson-title {
     color: #a78bfa;
     font-weight: bold;
-    margin-right: 5px;
+    margin-bottom: 4px;
   }
 
-  .tip-jupeson-text {
-    color: #ffffff;
-  }
-
-  .update-info {
-    font-size: 0.85rem;
-    color: #64748b;
-    margin: 0;
-  }
-
-  h2{
-    margin-block-start: 0;
-    margin-block-end: 0;
-  }
-
-  .containerMejoresComps{
-    display:flex;
-    flex-direction: column;
-    gap:15px;
-  }
-
-  .text-centered{
-    text-align:center;
-    margin-block-start: 0;
-    margin-block-end: 0;
-  }
-
-  .info-2-champ{
-    display:flex;
-    flex-direction:row;
-    width:100%;
-    gap: 20px;
-  }
-
-  /* Layout */
-  .two-columns {
+  .info-2-champ {
     display: flex;
-    gap: 2rem;
-    max-width: 900px;
-    margin-bottom: 30px;
+    flex-direction: row;
+    width: 100%;
+    gap: 22px;
   }
 
-  .main-column {
-    flex: 1;
+  /* Habilidad */
+  .ability-card {
+    background: rgba(10, 9, 28, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    padding: 14px 16px;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 10px;
   }
 
-  .side-column {
-    width: 350px;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-  }
-
-  /* Ability Block */
   .ability-header {
     display: flex;
     align-items: center;
-    gap: 15px;
-    margin-bottom: 15px;
-    background: rgba(0,0,0,0.3);
-    padding: 15px;
-    border-radius: 10px;
+    gap: 12px;
   }
 
   .ability-icon {
-    width: 50px;
-    height: 50px;
+    width: 44px;
+    height: 44px;
     border-radius: 8px;
-    border: 2px solid #cbd5e1;
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    object-fit: cover;
+  }
+
+  .ability-tag {
+    display: block;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #00ffc4;
+    font-weight: 700;
   }
 
   .ability-header h3 {
-    margin: 0;
-    font-size: 1.3rem;
-    color: #fff;
+    margin: 2px 0 0 0;
+    font-size: 1.1rem;
+    color: #ffffff;
   }
 
   .ability-desc {
-    font-size: 1.05rem;
-    line-height: 1.6;
+    font-size: 0.94rem;
+    line-height: 1.55;
     color: #e2e8f0;
   }
-  
+
   .ability-desc :global(img) {
-    width: 16px;
-    height: 16px;
+    width: 15px;
+    height: 15px;
     vertical-align: middle;
     margin: 0 2px;
   }
 
-  /* Items Grid */
-  .items-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-    gap: 15px;
-  }
-
-  .item-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 8px;
-  }
-
-  .item-card img {
-    width: 50px;
-    height: 50px;
-    border-radius: 8px;
-    border: 1px solid rgba(255,255,255,0.2);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  }
-
-  .item-card span {
-    font-size: 0.8rem;
-    color: #cbd5e1;
-    line-height: 1.2;
-  }
-
-  .container-video {
-    width: 100%;
-    aspect-ratio: 16/9;
-  }
-
-  .section-content {
-    color: #cbd5e1;
-    line-height: 1.6;
-  }
-  
-  .section-content :global(p) {
-    margin-top: 0;
-  }
-
-  .comps-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  .related-comps-section{
-    max-width: 900px;
-    align-self: center;
-  }
-
-  /* Hero Items (Objetos recomendados en cabecera) */
+  /* Hero Items */
   .hero-items-container {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
   }
 
   .hero-items-title {
     font-size: 1rem;
-    color: #fff;
+    color: #ffffff;
     margin: 0;
-    text-shadow: 0 1px 4px rgba(0,0,0,0.5);
   }
 
   .hero-items-list {
@@ -616,48 +605,105 @@ console.log({video:data.video_url})
     align-items: center;
     text-align: center;
     gap: 5px;
+    text-decoration: none;
+    width: 64px;
+    transition: transform 0.2s ease;
+  }
+
+  .hero-item-card:hover {
+    transform: translateY(-2px);
   }
 
   .hero-item-card img {
-    width: 35px;
-    height: 35px;
-    border-radius: 6px;
-    border: 1px solid rgba(255,255,255,0.2);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
   }
 
   .hero-item-card span {
-    font-size: 0.75rem;
+    font-size: 0.72rem;
     color: #cbd5e1;
-    max-width: 60px;
-    line-height: 1.1;
-  }
-  .containerTraits-mobile{
-    display:none;
+    line-height: 1.15;
   }
 
-  @media (max-width: 900px) {
-    .two-columns {
-      flex-direction: column;
+  .video-block h3 {
+    margin: 0 0 8px 0;
+    font-size: 1rem;
+    color: #ffc832;
+  }
+
+  .container-video {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+  }
+
+  .dynamic-sections {
+    margin-top: 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .section-block {
+    background: rgba(16, 13, 42, 0.7);
+    border: 1px solid rgba(123, 97, 255, 0.3);
+    border-radius: 12px;
+    padding: 20px;
+  }
+
+  .section-block h2 {
+    margin: 0 0 10px 0;
+    color: #ffc832;
+    font-size: 1.25rem;
+  }
+
+  .section-content {
+    color: #cbd5e1;
+    line-height: 1.6;
+  }
+
+  @media only screen and (max-width: 900px) {
+    .header-section {
+      padding: 18px;
     }
-    .side-column {
+
+    .hero-info h1 {
+      font-size: 1.55rem;
+    }
+
+    .info-2-champ {
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .hero-image-wrapper {
+      flex: none;
       width: 100%;
+      align-self: center;
     }
-    .hero-container {
-      flex-direction: column;
-      text-align: center;
+
+    .champ-portrait-box {
+      width: 128px;
+      height: 128px;
     }
-    .dataChamp{
+
+    .containerTraits {
+      flex-direction: row;
+      flex-wrap: wrap;
       justify-content: center;
+      gap: 8px;
     }
-    .containerTraits-mobile{
-      display:flex;
-      flex-direction:row;
-      flex-wrap: balance;
-      gap:10px;
+
+    .trait-badge {
+      width: fit-content;
+      padding: 5px 12px;
     }
-    .containerTraits{
-      display:none;
+
+    .containerInfoChamp {
+      width: 100%;
     }
   }
 </style>

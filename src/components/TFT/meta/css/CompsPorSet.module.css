@@ -1,0 +1,243 @@
+/* Estilos del listado de composiciones agrupadas por set (Set actual abierto, anteriores desplegables) */
+.wrapper {
+  width: 100%;
+  max-width: 900px;
+  margin: 24px auto 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.currentSetSection {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.sectionTitle {
+  margin: 0;
+  font-size: 1.45rem;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.setPillCurrent {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #0b0920;
+  background: linear-gradient(135deg, #00ffc4, #63e6ff);
+  letter-spacing: 0.02em;
+}
+
+.sectionSubtitle {
+  margin: 0;
+  color: #cbd5e1;
+  font-size: 0.96rem;
+  line-height: 1.5;
+}
+
+.compsList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.compArticle {
+  width: 100%;
+}
+
+.emptyState {
+  background: rgba(28, 22, 54, 0.72);
+  border: 1px dashed rgba(123, 97, 255, 0.45);
+  border-radius: 12px;
+  padding: 18px 20px;
+  color: #cbd5e1;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+/* Sección de sets anteriores (colapsados por defecto) */
+.previousSetsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 8px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.previousHeading {
+  margin: 0;
+  font-size: 1.15rem;
+  color: #e2e8f0;
+  font-weight: 700;
+}
+
+.previousDescription {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #94a3b8;
+}
+
+.accordionCard {
+  background: rgba(24, 19, 52, 0.85);
+  border: 1px solid rgba(123, 97, 255, 0.35);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.accordionCardOpen {
+  border-color: rgba(167, 139, 250, 0.75);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.accordionTrigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 15px 18px;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.2s ease;
+}
+
+.accordionTrigger:hover {
+  background: rgba(123, 97, 255, 0.14);
+}
+
+.triggerLeft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.setTagOld {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(123, 97, 255, 0.25);
+  border: 1px solid rgba(167, 139, 250, 0.45);
+  color: #d8b4fe;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.countBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #cbd5e1;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.triggerRight {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #a78bfa;
+  font-size: 0.86rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.chevron {
+  display: inline-block;
+  transition: transform 0.22s ease;
+  font-size: 0.85rem;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+.accordionBody {
+  padding: 6px 16px 18px 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.loadingNotice {
+  text-align: center;
+  color: #a78bfa;
+  font-size: 0.9rem;
+  padding: 10px 0;
+}
+
+.ctaBanner {
+  background: rgba(33, 28, 71, 0.85);
+  border: 1px solid rgba(123, 97, 255, 0.35);
+  border-radius: 12px;
+  padding: 18px 20px;
+  text-align: center;
+  color: #e2e8f0;
+  font-size: 0.96rem;
+  line-height: 1.5;
+}
+
+.ctaLink {
+  color: #f5e020;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.ctaLink:hover {
+  text-decoration: underline;
+}
+
+@media only screen and (max-width: 900px) {
+  .wrapper {
+    margin-top: 18px;
+    gap: 18px;
+  }
+
+  .sectionTitle {
+    font-size: 1.2rem;
+  }
+
+  .accordionTrigger {
+    padding: 13px 14px;
+    font-size: 0.93rem;
+  }
+
+  .triggerRight {
+    font-size: 0.8rem;
+  }
+
+  .accordionBody {
+    padding: 6px 10px 14px 10px;
+  }
+
+  .ctaBanner {
+    padding: 14px;
+    font-size: 0.9rem;
+  }
+}

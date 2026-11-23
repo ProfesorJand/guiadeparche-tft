@@ -11,6 +11,7 @@ import PageLoader from '@components/PageLoader';
 import Youtube from '@components/youtube/Youtube.jsx';
 import UserMenu from '@components/headers/UserMenu';
 import BannerDescuentoMP from "@components/TFT/master-plan/BannerDescuentoMP.jsx";
+import { getExcludedSeoRules, isPathExcludedBySeoRules } from "@lib/cache/tftCache.js";
 const admin = typeof window !== "undefined" ? window.localStorage.getItem("gp_admin") : false;
 interface Props {
   title: string;
@@ -22,8 +23,12 @@ interface Props {
   hide?:boolean;
   snippetImgUrl?: string;
   hideBanner?: boolean;
+  noindex?: boolean;
 }
-const { title, JSONSchema, description, keywords, image, canonical, hide=false, snippetImgUrl, hideBanner=false } = Astro.props;
+const { title, JSONSchema, description, keywords, image, canonical, hide=false, snippetImgUrl, hideBanner=false, noindex=false } = Astro.props;
+
+const excludedSeoRules = await getExcludedSeoRules();
+const shouldNoindex = Boolean(noindex) || isPathExcludedBySeoRules(Astro.url.pathname, excludedSeoRules);
 
 // Si no se define snippetImgUrl, usamos image o la ruta por defecto del logo en la carpeta public
 const resolvedSnippetImgUrl = snippetImgUrl || image || "/web/logoGP2026.png";
@@ -95,6 +100,7 @@ const absoluteSnippetImgUrl = new URL(resolvedSnippetImgUrl, Astro.site || "http
     <meta name="generator" content={Astro.generator} />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta name="author" content="Jupeson, Profesorjand"/>
+    {shouldNoindex && <meta name="robots" content="noindex, nofollow" />}
     {description && <meta name="description" content={Array.isArray(description) ? description[0] : description}/>} 
     {keywords && <meta name="keywords" content={keywords} />}
 
