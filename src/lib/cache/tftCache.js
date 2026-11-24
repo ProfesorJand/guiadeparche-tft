@@ -357,8 +357,29 @@ export async function getSetDataForBuild(setNumber) {
   const pickList = (field) => {
     const fromApi = Array.isArray(apiPayload?.[field]) ? apiPayload[field] : [];
     const fromLocal = Array.isArray(localPayload?.[field]) ? localPayload[field] : [];
-    // Si la API trae la lista poblada, la usamos; si no, caemos al JSON local del set
-    return fromApi.length > 0 ? fromApi : fromLocal;
+    if (fromApi.length === 0) return fromLocal;
+    if (fromLocal.length === 0) return fromApi;
+
+    // Enriquecer registros de la API con campos ricos del catálogo local (recommendedItems, stats, unlock, etc.)
+    const localByApi = new Map();
+    fromLocal.forEach((entry) => {
+      if (entry?.apiName) localByApi.set(String(entry.apiName).toLowerCase(), entry);
+    });
+
+    return fromApi.map((apiEntry) => {
+      const localMatch = apiEntry?.apiName
+        ? localByApi.get(String(apiEntry.apiName).toLowerCase())
+        : null;
+      if (!localMatch) return apiEntry;
+      return {
+        ...localMatch,
+        ...apiEntry,
+        recommendedItems: apiEntry.recommendedItems?.length ? apiEntry.recommendedItems : localMatch.recommendedItems,
+        specialItems: apiEntry.specialItems?.length ? apiEntry.specialItems : localMatch.specialItems,
+        stats: apiEntry.stats || localMatch.stats,
+        unlock: apiEntry.unlock || localMatch.unlock,
+      };
+    });
   };
 
   const result = {

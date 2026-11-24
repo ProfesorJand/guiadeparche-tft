@@ -17,6 +17,58 @@ const JSONSchema = JSON.stringify(baseSchema);
 const champions = set19Data.champions || [];
 const traits = set19Data.traits || [];
 const encounters = set19Data.encounters || [];
+const allSet19Items = set19Data.items || [];
+
+// Construir catálogo compacto de ítems usados en los campeones (con descripción, efectos y receta)
+const normalizeCompApi = (api = "") =>
+  String(api).replace(/^DA_Component_/i, "TFT_Item_").toLowerCase();
+
+const neededItemApis = new Set();
+champions.forEach((c) => {
+  (c.recommendedItems || []).forEach((it) => {
+    if (it?.apiName) neededItemApis.add(it.apiName.toLowerCase());
+  });
+  (c.specialItems || []).forEach((it) => {
+    if (it?.apiName) neededItemApis.add(it.apiName.toLowerCase());
+  });
+});
+
+const itemByApiLower = new Map();
+allSet19Items.forEach((it) => {
+  if (!it?.apiName) return;
+  const key = it.apiName.toLowerCase();
+  const prev = itemByApiLower.get(key);
+  if (!prev || (!prev.desc_item && it.desc_item)) {
+    itemByApiLower.set(key, it);
+  }
+});
+
+// Incluir también los componentes base de cada receta para mostrarlos en el tooltip al instante
+const itemsMapForCatalog = {};
+neededItemApis.forEach((apiLow) => {
+  const full = itemByApiLower.get(apiLow);
+  if (!full) return;
+  const compList = Array.isArray(full.composition) ? full.composition : [];
+  const compositionItems = compList.map((cApi) => {
+    const norm = normalizeCompApi(cApi);
+    const foundComp = allSet19Items.find((i) => normalizeCompApi(i.apiName) === norm);
+    return foundComp
+      ? { apiName: foundComp.apiName, name: foundComp.name, icon: foundComp.icon }
+      : null;
+  });
+  itemsMapForCatalog[apiLow] = {
+    apiName: full.apiName,
+    name: full.name,
+    name_EN: full.name_EN || "",
+    icon: full.icon,
+    desc_item: full.desc_item || full.desc || "",
+    desc_item_EN: full.desc_item_EN || "",
+    effects: full.effects || {},
+    composition: compList,
+    compositionItems,
+    tft_set: "19",
+  };
+});
 
 // Pestañas con galería de imágenes horizontales (16:9) que aparecen antes de Campeones y Rasgos.
 // Para añadir otro botón nuevo en el futuro, solo agrega otro objeto a este arreglo.
@@ -81,6 +133,7 @@ const customTabs = [
     champions={champions}
     traits={traits}
     encounters={encounters}
+    itemsMap={itemsMapForCatalog}
     customTabs={customTabs}
     client:load
   />

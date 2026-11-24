@@ -31,8 +31,8 @@ const apiNamesToMatch = matchingApiNames.length > 0 ? matchingApiNames : [data.a
 const relatedComps = (allComps || []).filter((comp) => compUsesItem(comp, apiNamesToMatch));
 const compsBySet = groupCompsBySet(relatedComps, activeSet);
 
-// Formatear la descripción oficial del ítem del set más reciente
-const rawDesc = data.desc_item || data.desc || "";
+// Formatear la descripción oficial del ítem del set más reciente (ES con fallback automático a EN)
+const rawDesc = data.desc_item || data.desc || data.desc_item_EN || "";
 const parsedEffects = safeJsonParse(data.effects, data.effects || {}) || {};
 const cleanFormattedDesc = replaceVariables(rawDesc, parsedEffects)
   ?.replace(/<\/?(tftitemrules|scaleLevel|TFTBonus|rules|i|b)[^>]*>/gi, (tag) => {
@@ -104,8 +104,13 @@ const resolvedItemIcon = data.icon
   ? getLocalTftImage(data.icon, "items", activeSet)
   : "";
 
+const isCraftable = recipeComponents.length === 2;
+
 const title =
-  data.titulo_seo || `${data.name} TFT Set ${activeSet} — Efecto, Receta y Mejores Comps`;
+  data.titulo_seo ||
+  (isCraftable
+    ? `${data.name} TFT - Receta, Mejores Campeones y Compos (Set ${activeSet})`
+    : `${data.name} TFT - Mejores Campeones y Compos (Set ${activeSet})`);
 const plainDescSnippet = (cleanFormattedDesc || "")
   .replace(/<[^>]*>/g, " ")
   .replace(/\s+/g, " ")
@@ -151,14 +156,29 @@ const parsedSecciones = safeJsonParse(data.secciones, []) || [];
                 )}
               </div>
               <h1>
-                {data.name} <span class="colored-text">Ítem TFT</span>
+                {isCraftable
+                  ? `${data.name} TFT - Receta, Mejores Campeones y Compos`
+                  : `${data.name} TFT - Mejores Campeones y Compos`}
               </h1>
             </div>
           </div>
 
+          <div class="item-intro-paragraphs">
+            {isCraftable && (
+              <p class="item-intro-p">
+                <span class="colored-text">{data.name}</span> se arma combinando{" "}
+                <span class="colored-text">{recipeComponents[0].name}</span> y{" "}
+                <span class="colored-text">{recipeComponents[1].name}</span>.
+              </p>
+            )}
+            <p class="item-intro-p">
+              A continuación la información del objeto y sus mejores composiciones.
+            </p>
+          </div>
+
           {(cleanFormattedDesc || statPills.length > 0) && (
             <div class="item-desc-card">
-              <h2 class="desc-label">Información del objeto (Set {activeSet})</h2>
+              <h2 class="desc-label">Información del Objeto (Set {activeSet})</h2>
               {statPills.length > 0 && (
                 <div class="stat-pills-row">
                   {statPills.map((s) => (
@@ -302,7 +322,7 @@ const parsedSecciones = safeJsonParse(data.secciones, []) || [];
     flex-shrink: 0;
     border-radius: 14px;
     padding: 4px;
-    background: linear-gradient(135deg, #7b61ff, #00ffc4);
+    background: linear-gradient(135deg, #7b61ff, var(--color-text-highlight));
     box-shadow: 0 6px 18px rgba(123, 97, 255, 0.35);
   }
 
@@ -332,7 +352,7 @@ const parsedSecciones = safeJsonParse(data.secciones, []) || [];
     border-radius: 999px;
     font-size: 0.78rem;
     font-weight: 700;
-    background: linear-gradient(135deg, #00ffc4, #63e6ff);
+    background: linear-gradient(135deg, var(--color-text-highlight), #63e6ff);
     color: #0b0920;
   }
 
@@ -355,6 +375,20 @@ const parsedSecciones = safeJsonParse(data.secciones, []) || [];
 
   .colored-text {
     color: #a78bfa;
+    font-weight: 600;
+  }
+
+  .item-intro-paragraphs {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .item-intro-p {
+    margin: 0;
+    color: #e5e7eb;
+    font-size: 1rem;
+    line-height: 1.55;
   }
 
   .item-desc-card {
@@ -369,7 +403,7 @@ const parsedSecciones = safeJsonParse(data.secciones, []) || [];
     font-size: 0.88rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: #00ffc4;
+    color: var(--color-text-highlight);
   }
 
   .item-desc-html {
@@ -398,7 +432,7 @@ const parsedSecciones = safeJsonParse(data.secciones, []) || [];
   }
 
   .stat-pill strong {
-    color: #00ffc4;
+    color: var(--color-text-highlight);
   }
 
   .item-desc-html :global(img) {

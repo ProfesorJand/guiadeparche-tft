@@ -1,0 +1,93 @@
+/* Tooltip de descripción de la sinergia al hacer hover sobre su icono */
+.iconTrigger {
+  position: relative;
+  width: 54px;
+  height: 54px;
+  border-radius: 12px;
+  background: rgba(10, 15, 34, 0.85);
+  border: 1.5px solid rgba(56, 182, 255, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: transform 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+}
+
+.iconTrigger:hover {
+  transform: scale(1.05);
+  border-color: var(--color-text-highlight, #38b6ff);
+  box-shadow: 0 0 14px rgba(var(--color-text-highlight-rgb, 56, 182, 255), 0.35);
+}
+
+.traitIconImg {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  display: block;
+}
+
+.hoverHint {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #102136;
+  border: 1px solid var(--color-text-highlight, #38b6ff);
+  color: var(--color-text-highlight, #38b6ff);
+  font-size: 0.68rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.tooltipCard {
+  position: fixed;
+  z-index: 99999;
+  width: 340px;
+  max-width: calc(100vw - 24px);
+  background: #102136;
+  border: 1.5px solid var(--color-text-highlight, #38b6ff);
+  border-radius: 12px;
+  padding: 14px 16px;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.65);
+  color: #e2e8f0;
+  pointer-events: none;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tooltipTitle {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #ffffff;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.tooltipDesc {
+  font-size: 0.84rem;
+  line-height: 1.5;
+  color: #d4e0ef;
+}
+
+.tooltipDesc :global(img) {
+  width: 14px;
+  height: 14px;
+  vertical-align: middle;
+  margin: 0 2px;
+}
+
+@media only screen and (max-width: 900px) {
+  .tooltipCard,
+  .hoverHint {
+    display: none;
+  }
+}

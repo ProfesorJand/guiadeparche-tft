@@ -26,6 +26,7 @@ const CompsPorSet = ({
   entityType = "item",
   newestSetNumber = setNumberPBE,
   compsBySet = [],
+  hideCta = false,
 }) => {
   // Asegurar reactividad cuando carguen los datos de cada set en Nanostores
   useStore(dataTFTItemsBySetMap);
@@ -82,9 +83,9 @@ const CompsPorSet = ({
 
   const titlePrefix =
     entityType === "campeon"
-      ? `Mejores Comps de ${entityName} TFT`
+      ? `Mejores Composiciones que usan ${entityName} en TFT`
       : entityType === "sinergia"
-        ? `Mejores Composiciones de ${entityName}`
+        ? `Mejores Composiciones con ${entityName}`
         : `Mejores Composiciones con ${entityName}`;
 
   const subtitleText =
@@ -92,7 +93,7 @@ const CompsPorSet = ({
       ? `Estas son las composiciones del Set ${targetNewestSet} que utilizan a ${entityName}. Haz clic en cualquiera para ver el tablero, ítems y plan de juego.`
       : entityType === "sinergia"
         ? `Composiciones del Set ${targetNewestSet} donde la sinergia ${entityName} está activa en el tablero final.`
-        : `Composiciones del Set ${targetNewestSet} que equipan ${entityName} en sus campeones principales o prioridad de objetos.`;
+        : `Composiciones del Set ${targetNewestSet} que utilizan ${entityName}.`;
 
   return (
     <section className={style.wrapper}>
@@ -100,12 +101,11 @@ const CompsPorSet = ({
       <div className={style.currentSetSection}>
         <div className={style.sectionHeader}>
           <h2 className={style.sectionTitle}>{titlePrefix}</h2>
-          <span className={style.setPillCurrent}>
-            {getSetFriendlyLabel(targetNewestSet)}
-          </span>
         </div>
 
-        <p className={style.sectionSubtitle}>{subtitleText}</p>
+        {currentSetComps.length > 0 && (
+          <p className={style.sectionSubtitle}>{subtitleText}</p>
+        )}
 
         {currentSetComps.length > 0 ? (
           <div className={style.compsList}>
@@ -217,16 +217,18 @@ const CompsPorSet = ({
       )}
 
       {/* Enlace a la Tier List completa */}
-      <div className={style.ctaBanner}>
-        ¿Buscas más opciones para subir de rango? Explora todas las{" "}
-        <a
-          className={style.ctaLink}
-          href="/tft/meta-comps-tier-list-teamfight-tactics/"
-        >
-          Meta Comps de TFT
-        </a>{" "}
-        actualizadas al parche actual.
-      </div>
+      {!hideCta && (
+        <div className={style.ctaBanner}>
+          ¿Buscas más opciones para subir de rango? Explora todas las{" "}
+          <a
+            className={style.ctaLink}
+            href="/tft/meta-comps-tier-list-teamfight-tactics/"
+          >
+            Meta Comps de TFT
+          </a>{" "}
+          actualizadas al parche actual.
+        </div>
+      )}
     </section>
   );
 };

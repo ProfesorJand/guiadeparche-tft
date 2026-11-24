@@ -38,7 +38,7 @@
   font-size: 0.82rem;
   font-weight: 700;
   color: #0b0920;
-  background: linear-gradient(135deg, #00ffc4, #63e6ff);
+  background: linear-gradient(135deg, var(--color-text-highlight), #63e6ff);
   letter-spacing: 0.02em;
 }
 

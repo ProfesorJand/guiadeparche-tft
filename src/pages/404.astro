@@ -21,10 +21,10 @@ const tftLinks = [
     tag: "Herramienta",
   },
   {
-    title: "Ítems y Recetas de TFT",
-    desc: "Tabla completa de crafteos, emblemas, artefactos y objetos radiantes.",
-    href: "/tft/items",
-    tag: "Guía",
+    title: "Blog y Guías",
+    desc: "Artículos, resúmenes de sets, novedades y consejos de la comunidad.",
+    href: "/blog/",
+    tag: "Guías",
   },
   {
     title: "Cómo Jugar TFT",
@@ -37,39 +37,6 @@ const tftLinks = [
     desc: "Resumen de buffs, nerfs y cambios clave del parche actual.",
     href: "/tft/patch",
     tag: "Actualizado",
-  },
-];
-
-const otherSections = [
-  {
-    title: "League of Legends",
-    desc: "Tier list de los mejores campeones por línea para SoloQ.",
-    href: "/lol/best-champions-tier-list-league-of-legends/",
-  },
-  {
-    title: "Valorant",
-    desc: "Meta de agentes y composiciones recomendadas por mapa.",
-    href: "/valorant/meta-agents-maps/",
-  },
-  {
-    title: "Wild Rift",
-    desc: "Mejores campeones del parche actual para escalar en móvil.",
-    href: "/wildrift/best-champions-tier-list-wild-rift/",
-  },
-  {
-    title: "2XKO",
-    desc: "Tier list de campeones y mejores dúos del meta.",
-    href: "/2xko/best-team-duos-champions-meta-tier-list-2xko/",
-  },
-  {
-    title: "Riftbound",
-    desc: "Tier list actualizada de mazos y cartas destacadas.",
-    href: "/riftbound/tier-list/",
-  },
-  {
-    title: "Blog y Guías",
-    desc: "Artículos, novedades y consejos de la comunidad.",
-    href: "/blog/",
   },
 ];
 ---
@@ -138,21 +105,6 @@ const otherSections = [
         ))}
       </div>
     </section>
-
-    <section class="nav-section">
-      <div class="section-head">
-        <h2>Otros juegos y secciones disponibles</h2>
-      </div>
-      <div class="cards-grid">
-        {otherSections.map((item) => (
-          <a href={item.href} class="nav-card">
-            <h3>{item.title}</h3>
-            <p>{item.desc}</p>
-            <span class="card-arrow">Visitar →</span>
-          </a>
-        ))}
-      </div>
-    </section>
   </main>
 </LayoutMaxWidth>
 
@@ -173,7 +125,7 @@ const otherSections = [
     border: 1px solid rgba(123, 97, 255, 0.5);
     border-radius: 20px;
     padding: 32px;
-    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.5), inset 0 0 30px rgba(0, 255, 196, 0.06);
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.5), inset 0 0 30px rgba(56, 182, 255, 0.06);
     display: flex;
     flex-direction: column;
     gap: 24px;
@@ -216,8 +168,8 @@ const otherSections = [
     font-size: 0.9rem;
     letter-spacing: 0.14em;
     color: #0b0920;
-    background: linear-gradient(135deg, #00ffc4, #63e6ff);
-    box-shadow: 0 4px 14px rgba(0, 255, 196, 0.35);
+    background: linear-gradient(135deg, var(--color-text-highlight), #63e6ff);
+    box-shadow: 0 4px 14px rgba(56, 182, 255, 0.35);
   }
 
   .jupeson-banner {
@@ -280,14 +232,14 @@ const otherSections = [
   }
 
   .btn-secondary {
-    background: rgba(0, 255, 196, 0.12);
-    border: 1px solid rgba(0, 255, 196, 0.55);
-    color: #00ffc4;
+    background: rgba(56, 182, 255, 0.12);
+    border: 1px solid rgba(56, 182, 255, 0.55);
+    color: var(--color-text-highlight);
   }
 
   .btn-secondary:hover {
     transform: translateY(-2px);
-    background: rgba(0, 255, 196, 0.22);
+    background: rgba(56, 182, 255, 0.22);
   }
 
   .nav-section {
@@ -346,7 +298,7 @@ const otherSections = [
 
   .nav-card:hover {
     transform: translateY(-3px);
-    border-color: #00ffc4;
+    border-color: var(--color-text-highlight);
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.38);
   }
 
@@ -369,9 +321,9 @@ const otherSections = [
     border-radius: 999px;
     font-size: 0.72rem;
     font-weight: 700;
-    background: rgba(0, 255, 196, 0.15);
-    color: #00ffc4;
-    border: 1px solid rgba(0, 255, 196, 0.35);
+    background: rgba(56, 182, 255, 0.15);
+    color: var(--color-text-highlight);
+    border: 1px solid rgba(56, 182, 255, 0.35);
   }
 
   .nav-card p {
