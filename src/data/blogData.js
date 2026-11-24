@@ -103,6 +103,8 @@ export const normalizePost = (post) => {
     id: post.id,
     slug: post.slug,
     title: post.title,
+    seo_title: post.seo_title || post.title || '',
+    keywords: post.keywords || '',
     excerpt: post.excerpt,
     content: post.content || '',
     image: post.image || '/blog/blog_tft_cover.jpg',
@@ -124,7 +126,7 @@ export const normalizePost = (post) => {
 // Función para obtener las publicaciones de la base de datos ordenadas por fecha
 export const getSortedBlogPosts = async () => {
   try {
-    const res = await fetch('https://api.guiadeparche.com/blog/get_posts.php');
+    const res = await fetch('https://api.guiadeparche.com/blog/get_posts.php?t=' + Date.now());
     const data = await res.json();
     if (data.success && Array.isArray(data.posts)) {
       return data.posts
@@ -140,7 +142,7 @@ export const getSortedBlogPosts = async () => {
 // Función para obtener un blog por su slug desde la base de datos
 export const getBlogPostBySlug = async (slug) => {
   try {
-    const res = await fetch(`https://api.guiadeparche.com/blog/get_posts.php?slug=${encodeURIComponent(slug)}`);
+    const res = await fetch(`https://api.guiadeparche.com/blog/get_posts.php?slug=${encodeURIComponent(slug)}&t=${Date.now()}`);
     const data = await res.json();
     if (data.success && data.post) {
       return normalizePost(data.post);

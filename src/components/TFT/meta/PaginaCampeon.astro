@@ -1,6 +1,7 @@
 ---
 import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
 import CompsPorSet from "@components/TFT/meta/CompsPorSet.jsx";
+import CampeonHeroTooltip from "@components/TFT/meta/CampeonHeroTooltip.jsx";
 import Youtube from "@components/youtube/Youtube.jsx";
 import { setNumberPBE } from "@stores/dataTFT";
 import { getLocalTftImage } from "@utils/images";
@@ -42,12 +43,16 @@ const traitsList = (Array.isArray(parsedTraits) ? parsedTraits : []).map((traitK
     const slug =
       traitSlugByApi[(found.apiName || "").toLowerCase()] ||
       (found.url_seo ? String(found.url_seo).toLowerCase() : slugifyTftEntity(found.name));
-    return { ...found, slug };
+    return {
+      ...found,
+      slug,
+      iconSrc: found.icon ? getLocalTftImage(found.icon, "traits", activeSet) : "",
+    };
   }
-  return { name: String(traitKey), icon: "", slug: slugifyTftEntity(traitKey) };
+  return { name: String(traitKey), icon: "", iconSrc: "", slug: slugifyTftEntity(traitKey) };
 });
 
-// Habilidad del campeón en el set más reciente
+// Habilidad del campeón en el set más reciente (para el tooltip al hacer hover sobre la imagen)
 const parsedAbility = safeJsonParse(data.ability, { name: "", icon: "", desc: "" }) || {
   name: "",
   icon: "",
@@ -56,7 +61,7 @@ const parsedAbility = safeJsonParse(data.ability, { name: "", icon: "", desc: ""
 const parsedAbilityVars =
   safeJsonParse(data.ability_variables, parsedAbility.variables || []) || [];
 const abilityDescFormatted = formatChampionDescription(
-  parsedAbility.desc || "",
+  parsedAbility.desc || data.ability_desc || "",
   parsedAbilityVars
 );
 
@@ -66,74 +71,86 @@ const relatedComps = (allComps || []).filter((comp) =>
 );
 const compsBySet = groupCompsBySet(relatedComps, activeSet);
 
-// Objetos recomendados: priorizar las compos del set más reciente y luego recomendados del catálogo
-const parsedItemsSet = new Set();
+// Primera composición estrictamente del set actual (`activeSet`); si no hay en este set, no se muestra el párrafo
 const currentSetComps = compsBySet.find((g) => g.setNumber === activeSet)?.comps || [];
-const sourceCompsForItems = currentSetComps.length > 0 ? currentSetComps : relatedComps;
+const firstComp = currentSetComps[0] || null;
+const rawTipSeo = firstComp?.tipSEO ? String(firstComp.tipSEO).trim() : "";
+const firstCompTipSeoLower = rawTipSeo
+  ? rawTipSeo.charAt(0).toLowerCase() + rawTipSeo.slice(1)
+  : "";
 
-const matchSetLower = new Set(apiNamesToMatch.map((a) => String(a).toLowerCase()));
-sourceCompsForItems.forEach((comp) => {
-  const pos = safeJsonParse(comp.posicionamiento, []);
-  if (!Array.isArray(pos)) return;
-  pos.forEach((boardVariant) => {
-    if (!boardVariant || !Array.isArray(boardVariant.tablero)) return;
-    boardVariant.tablero.forEach((cell) => {
-      if (!cell) return;
-      const cellApi = String(cell.apiNameCampeon || cell.campeon || "").toLowerCase();
-      if (matchSetLower.has(cellApi) && Array.isArray(cell.apiNameItemsDelCampeon)) {
-        cell.apiNameItemsDelCampeon.forEach((itemApiName) => {
-          if (itemApiName) parsedItemsSet.add(itemApiName);
-        });
-      }
-    });
-  });
-});
-
-// Fallback a recommendedItems del catálogo del set (o dentro de ability) si aún no hay compos del set más reciente
-const fallbackRecommended = Array.isArray(data.recommendedItems)
+// Objetos recomendados: priorizar los mismos del catálogo del campeón (/tft/set/19#campeones)
+const catalogRecommended = Array.isArray(data.recommendedItems) && data.recommendedItems.length > 0
   ? data.recommendedItems
-  : Array.isArray(parsedAbility?.recommendedItems)
+  : Array.isArray(parsedAbility?.recommendedItems) && parsedAbility.recommendedItems.length > 0
     ? parsedAbility.recommendedItems
     : [];
-if (parsedItemsSet.size === 0 && fallbackRecommended.length > 0) {
-  fallbackRecommended.slice(0, 8).forEach((itemEntry) => {
-    const api = typeof itemEntry === "object" ? itemEntry?.apiName : itemEntry;
-    if (api) parsedItemsSet.add(api);
-  });
-}
 
 const bestItems = [];
-const seenItemIds = new Set();
-Array.from(parsedItemsSet).forEach((itemRef) => {
+const seenItemSlugs = new Set();
+
+const pushResolvedItem = (itemEntry) => {
+  if (!itemEntry) return;
+  const itemRef = typeof itemEntry === "object" ? itemEntry.apiName || itemEntry.name : itemEntry;
+  if (!itemRef) return;
+
   const normRef = normalizeItemApiName(itemRef);
   const found = (setItems || []).find(
     (i) =>
       normalizeItemApiName(i.apiName) === normRef ||
       i.name?.toLowerCase() === String(itemRef).toLowerCase()
   );
-  if (found && !seenItemIds.has(found.apiName)) {
-    seenItemIds.add(found.apiName);
-    const slug =
-      itemSlugByApi[(found.apiName || "").toLowerCase()] ||
-      slugifyTftEntity(found.name);
-    bestItems.push({ ...found, slug });
-  }
-});
+
+  const resolvedObj = found || (typeof itemEntry === "object" ? itemEntry : null);
+  if (!resolvedObj || !resolvedObj.name) return;
+
+  const slug =
+    itemSlugByApi[(resolvedObj.apiName || "").toLowerCase()] ||
+    slugifyTftEntity(resolvedObj.name);
+  if (!slug || seenItemSlugs.has(slug)) return;
+  seenItemSlugs.add(slug);
+
+  bestItems.push({
+    ...resolvedObj,
+    slug,
+    iconSrc: getLocalTftImage(resolvedObj.icon, "items", activeSet),
+  });
+};
+
+if (catalogRecommended.length > 0) {
+  catalogRecommended.forEach(pushResolvedItem);
+} else {
+  // Fallback para campeones de sets anteriores sin recommendedItems en el catálogo: extraer de las compos
+  const matchSetLower = new Set(apiNamesToMatch.map((a) => String(a).toLowerCase()));
+  const sourceComps = currentSetComps.length > 0 ? currentSetComps : relatedComps;
+  sourceComps.forEach((comp) => {
+    const pos = safeJsonParse(comp.posicionamiento, []);
+    if (!Array.isArray(pos)) return;
+    pos.forEach((boardVariant) => {
+      if (!boardVariant || !Array.isArray(boardVariant.tablero)) return;
+      boardVariant.tablero.forEach((cell) => {
+        if (!cell) return;
+        const cellApi = String(cell.apiNameCampeon || cell.campeon || "").toLowerCase();
+        if (matchSetLower.has(cellApi) && Array.isArray(cell.apiNameItemsDelCampeon)) {
+          cell.apiNameItemsDelCampeon.forEach(pushResolvedItem);
+        }
+      });
+    });
+  });
+}
 
 // Secciones Dinámicas
 const parsedSecciones = safeJsonParse(data.secciones, []) || [];
 
 const traitsNamesText = traitsList.map((t) => t.name).join(", ");
 const itemsText = bestItems.map((item) => item.name).join(", ");
-const itemsSuffixText = itemsText
-  ? `, y sus mejores ítems son: ${itemsText}.`
-  : ".";
+const itemsSuffixText = itemsText ? ` Sus ítems destacados son: ${itemsText}.` : "";
 
 const title =
-  data.titulo_seo || `${data.name} TFT Set ${activeSet} — Builds, Items y Comps`;
+  data.titulo_seo || `${data.name} TFT - Mejores Comps & Builds (Set ${activeSet})`;
 const description =
   data.descripcion_seo ||
-  `${data.name} es un campeón de coste ${data.cost} en TFT Set ${activeSet} con los rasgos ${traitsNamesText}. Descubre sus mejores objetos, habilidad y composiciones meta${itemsSuffixText}`;
+  `${data.name} es un campeón de coste ${data.cost} de TFT ${activeSet} que combina los rasgos ${traitsNamesText}.${itemsSuffixText}`;
 
 const currentVersion =
   activeSet === String(setNumberPBE)
@@ -142,7 +159,7 @@ const currentVersion =
 
 const getChampionCostBorder = (cost) => {
   switch (Number(cost)) {
-    case 0: return "#00ffc4";
+    case 0: return "var(--color-text-highlight)";
     case 1: return "#ffffff";
     case 2: return "#3e9e64";
     case 3: return "#1e69ee";
@@ -165,6 +182,10 @@ const abilityIconSrc = parsedAbility?.icon
     ? parsedAbility.icon
     : getLocalTftImage(parsedAbility.icon, "champions/habilidad", activeSet)
   : "";
+
+const parsedStats = safeJsonParse(data.stats, data.stats) || {};
+const parsedUnlock = safeJsonParse(data.unlock, data.unlock) || parsedAbility?.unlock || null;
+const tooltipTraits = traitsList.map((t) => ({ name: t.name, iconSrc: t.iconSrc }));
 ---
 
 <LayoutMaxWidth
@@ -183,57 +204,40 @@ const abilityIconSrc = parsedAbility?.icon
           <span class="cost-pill">Coste {data.cost}</span>
         </div>
 
-        <h1>{data.name} TFT — Builds, Items & Comps</h1>
+        <h1>{data.name} TFT - Mejores Comps & Builds</h1>
 
         <div class="dataChamp">
-          <p class="seo-desc">
-            <span class="colored-text">{data.name}</span> es un campeón de{" "}
-            <span class="colored-text">coste {data.cost}</span> de TFT Set{" "}
-            {activeSet}{traitsNamesText ? (
-              <>
-                {" "}que combina los rasgos{" "}
-                <span class="colored-text">{traitsNamesText}</span>
-              </>
-            ) : (
-              ""
-            )}. Aquí encontrarás sus mejores objetos, habilidad actualizada y las
-            composiciones que lo utilizan en el meta{bestItems.length > 0 ? (
-              <>
-                . Sus ítems destacados son:{" "}
-                <span class="colored-text">{itemsText}</span>.
-              </>
-            ) : (
-              "."
-            )}
-          </p>
-
-          {data.tip_jupeson && (
-            <div class="tip-jupeson-container">
-              <span class="tip-jupeson-title">💡 Tip Jupeson:</span>
-              <span class="tip-jupeson-text">{data.tip_jupeson}</span>
-            </div>
-          )}
-
           <div class="info-2-champ">
+            {/* Columna izquierda: Imagen (con tooltip estilo card Set 19) + Sinergias + Objetos recomendados */}
             <div class="hero-image-wrapper">
-              <div class="champ-portrait-box">
-                <img
-                  src={heroImgSrc}
-                  alt={`${data.name} TFT Set ${activeSet}`}
-                  class="champ-hero-img"
-                  onerror={`this.onerror=null; this.src='${fallbackImgSrc}';`}
-                />
-                <div class="cost-badge">{data.cost}</div>
-              </div>
+              <CampeonHeroTooltip
+                name={data.name}
+                cost={data.cost}
+                champColor={champColor}
+                heroImgSrc={heroImgSrc}
+                fallbackImgSrc={fallbackImgSrc}
+                activeSet={activeSet}
+                traits={tooltipTraits}
+                role={data.role || ""}
+                range={parsedStats?.range ?? null}
+                manaInitial={parsedStats?.initialMana ?? 0}
+                manaMax={parsedStats?.mana ?? 0}
+                unlock={parsedUnlock}
+                abilityName={parsedAbility?.name || data.ability_name || ""}
+                abilityIconSrc={abilityIconSrc}
+                abilityDescHtml={abilityDescFormatted}
+                client:load
+              />
+
               <div class="containerTraits">
                 {traitsList.map((t) => (
                   <a
                     href={`/tft/meta-comps-tier-list-teamfight-tactics/${t.slug}`}
                     class="trait-badge"
                   >
-                    {t.icon && (
+                    {t.iconSrc && (
                       <img
-                        src={getLocalTftImage(t.icon, "traits", activeSet)}
+                        src={t.iconSrc}
                         alt={t.name}
                         class="trait-icon"
                       />
@@ -242,58 +246,60 @@ const abilityIconSrc = parsedAbility?.icon
                   </a>
                 ))}
               </div>
+
+              {bestItems.length > 0 && (
+                <div class="left-rec-items">
+                  {bestItems.map((item) => (
+                    <a
+                      href={`/tft/meta-comps-tier-list-teamfight-tactics/${item.slug}`}
+                      class="left-rec-item-link"
+                      title={item.name}
+                    >
+                      <img
+                        src={item.iconSrc}
+                        alt={item.name}
+                        loading="lazy"
+                      />
+                    </a>
+                  ))}
+                </div>
+              )}
             </div>
 
+            {/* Columna derecha: los 2 párrafos descriptivos + Tip Jupeson + Video */}
             <div class="containerInfoChamp">
-              {/* Habilidad del campeón (Set más reciente) */}
-              {(parsedAbility?.name || abilityDescFormatted) && (
-                <div class="ability-card">
-                  <div class="ability-header">
-                    {abilityIconSrc && (
-                      <img
-                        src={abilityIconSrc}
-                        alt={parsedAbility.name || `Habilidad de ${data.name}`}
-                        class="ability-icon"
-                        onerror="this.style.display='none';"
-                      />
-                    )}
-                    <div>
-                      <span class="ability-tag">Habilidad · Set {activeSet}</span>
-                      <h3>{parsedAbility.name || "Habilidad"}</h3>
-                    </div>
-                  </div>
-                  {abilityDescFormatted && (
-                    <div
-                      class="ability-desc"
-                      set:html={abilityDescFormatted}
-                    />
-                  )}
+              {firstCompTipSeoLower && (
+                <p class="seo-desc">
+                  La mejor composición para <span class="colored-text">{data.name}</span> es {firstCompTipSeoLower}
+                </p>
+              )}
+
+              <p class="seo-desc">
+                <span class="colored-text">{data.name}</span> es un campeón de{" "}
+                <span class="colored-text">coste {data.cost}</span> de TFT {activeSet}{traitsNamesText ? (
+                  <>
+                    {" "}que combina los rasgos{" "}
+                    <span class="colored-text">{traitsNamesText}</span>
+                  </>
+                ) : (
+                  ""
+                )}.{bestItems.length > 0 ? (
+                  <>
+                    {" "}Sus ítems destacados son:{" "}
+                    <span class="colored-text">{itemsText}</span>.
+                  </>
+                ) : (
+                  ""
+                )}
+              </p>
+
+              {data.tip_jupeson && (
+                <div class="tip-jupeson-container">
+                  <span class="tip-jupeson-title">💡 Tip Jupeson:</span>
+                  <span class="tip-jupeson-text">{data.tip_jupeson}</span>
                 </div>
               )}
 
-              {/* Mejores Ítems en el Hero */}
-              {bestItems.length > 0 && (
-                <div class="hero-items-container">
-                  <h3 class="hero-items-title">Objetos Recomendados</h3>
-                  <div class="hero-items-list">
-                    {bestItems.map((item) => (
-                      <a
-                        href={`/tft/meta-comps-tier-list-teamfight-tactics/${item.slug}`}
-                        class="hero-item-card"
-                        title={item.name}
-                      >
-                        <img
-                          src={getLocalTftImage(item.icon, "items", activeSet)}
-                          alt={item.name}
-                        />
-                        <span>{item.name}</span>
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Video YouTube */}
               {data.video_url && (
                 <div class="video-block">
                   <h3>Video Guía</h3>
@@ -308,14 +314,34 @@ const abilityIconSrc = parsedAbility?.icon
       </div>
     </div>
 
-    {/* Composiciones agrupadas por set: Set más reciente abierto y anteriores desplegables */}
+    {/* Composiciones agrupadas por set (sin el CTA aquí, porque el CTA va debajo del todo) */}
     <CompsPorSet
       entityName={data.name}
       entityType="campeon"
       newestSetNumber={activeSet}
       compsBySet={compsBySet}
+      hideCta={true}
       client:load
     />
+
+    {/* Mejores Objetos y Builds del campeón */}
+    {bestItems.length > 0 && (
+      <section class="builds-section">
+        <h2>Mejores Objetos y Builds para {data.name} en TFT</h2>
+        <div class="builds-items-grid">
+          {bestItems.map((item) => (
+            <a
+              href={`/tft/meta-comps-tier-list-teamfight-tactics/${item.slug}`}
+              class="build-item-card"
+              title={item.name}
+            >
+              <img src={item.iconSrc} alt={item.name} loading="lazy" />
+              <span>{item.name}</span>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
 
     {/* Secciones Dinámicas */}
     {Array.isArray(parsedSecciones) && parsedSecciones.length > 0 && (
@@ -328,6 +354,18 @@ const abilityIconSrc = parsedAbility?.icon
         ))}
       </div>
     )}
+
+    {/* CTA final debajo del todo */}
+    <div class="cta-banner">
+      ¿Buscas más opciones para subir de rango? Explora todas las{" "}
+      <a
+        class="cta-link"
+        href="/tft/meta-comps-tier-list-teamfight-tactics/"
+      >
+        Meta Comps de TFT
+      </a>{" "}
+      actualizadas al parche actual.
+    </div>
   </div>
 </LayoutMaxWidth>
 
@@ -363,7 +401,7 @@ const abilityIconSrc = parsedAbility?.icon
     border-radius: 999px;
     font-size: 0.78rem;
     font-weight: 700;
-    background: linear-gradient(135deg, #00ffc4, #63e6ff);
+    background: linear-gradient(135deg, var(--color-text-highlight), #63e6ff);
     color: #0b0920;
   }
 
@@ -378,78 +416,12 @@ const abilityIconSrc = parsedAbility?.icon
     color: #e2e8f0;
   }
 
-  .containerInfoChamp {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    flex: 1;
-    min-width: 0;
-  }
-
-  .hero-image-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    flex: 0 0 144px;
-    width: 144px;
-    align-self: flex-start;
-  }
-
-  .champ-portrait-box {
-    position: relative;
-    width: 132px;
-    height: 132px;
-    flex-shrink: 0;
-  }
-
-  .containerTraits {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 6px;
-    width: 100%;
-  }
-
-  .champ-hero-img {
-    width: 100%;
-    height: 100%;
-    border-radius: 12px;
-    object-fit: cover;
-    display: block;
-    border: 3px solid var(--champ-color);
-    box-shadow: 0 0 14px var(--champ-color);
-  }
-
-  .cost-badge {
-    position: absolute;
-    bottom: -8px;
-    right: -8px;
-    background: #121034;
-    border: 2px solid var(--champ-color);
-    color: #fff;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    font-size: 0.95rem;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
-  }
-
   .hero-info {
     flex-grow: 1;
     gap: 14px;
     display: flex;
     flex-direction: column;
     width: 100%;
-  }
-
-  .colored-text {
-    color: #ff9fd8;
-    font-weight: 600;
   }
 
   .hero-info h1 {
@@ -462,6 +434,32 @@ const abilityIconSrc = parsedAbility?.icon
     display: flex;
     flex-direction: column;
     gap: 16px;
+  }
+
+  .info-2-champ {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 24px;
+    align-items: flex-start;
+  }
+
+  .hero-image-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    flex: 0 0 156px;
+    width: 156px;
+    align-self: flex-start;
+  }
+
+  .containerTraits {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+    width: 100%;
   }
 
   .trait-badge {
@@ -482,7 +480,7 @@ const abilityIconSrc = parsedAbility?.icon
   }
 
   .trait-badge:hover {
-    border-color: #00ffc4;
+    border-color: var(--color-text-highlight);
     background: rgba(123, 97, 255, 0.35);
   }
 
@@ -492,9 +490,51 @@ const abilityIconSrc = parsedAbility?.icon
     filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.5));
   }
 
+  /* Objetos recomendados compactos debajo de las sinergias */
+  .left-rec-items {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
+    width: 100%;
+    padding-top: 4px;
+  }
+
+  .left-rec-item-link {
+    display: block;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    transition: transform 0.15s ease, border-color 0.15s ease;
+  }
+
+  .left-rec-item-link:hover {
+    transform: scale(1.08);
+    border-color: var(--color-text-highlight);
+  }
+
+  .left-rec-item-link img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    display: block;
+    object-fit: cover;
+  }
+
+  .containerInfoChamp {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .colored-text {
+    color: #ff9fd8;
+    font-weight: 600;
+  }
+
   .seo-desc {
     font-size: 1.02rem;
-    line-height: 1.55;
+    line-height: 1.6;
     color: #cbd5e1;
     margin: 0;
   }
@@ -520,114 +560,6 @@ const abilityIconSrc = parsedAbility?.icon
     margin-bottom: 4px;
   }
 
-  .info-2-champ {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    gap: 22px;
-  }
-
-  /* Habilidad */
-  .ability-card {
-    background: rgba(10, 9, 28, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 12px;
-    padding: 14px 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .ability-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .ability-icon {
-    width: 44px;
-    height: 44px;
-    border-radius: 8px;
-    border: 2px solid rgba(255, 255, 255, 0.25);
-    object-fit: cover;
-  }
-
-  .ability-tag {
-    display: block;
-    font-size: 0.72rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: #00ffc4;
-    font-weight: 700;
-  }
-
-  .ability-header h3 {
-    margin: 2px 0 0 0;
-    font-size: 1.1rem;
-    color: #ffffff;
-  }
-
-  .ability-desc {
-    font-size: 0.94rem;
-    line-height: 1.55;
-    color: #e2e8f0;
-  }
-
-  .ability-desc :global(img) {
-    width: 15px;
-    height: 15px;
-    vertical-align: middle;
-    margin: 0 2px;
-  }
-
-  /* Hero Items */
-  .hero-items-container {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .hero-items-title {
-    font-size: 1rem;
-    color: #ffffff;
-    margin: 0;
-  }
-
-  .hero-items-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-
-  .hero-item-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 5px;
-    text-decoration: none;
-    width: 64px;
-    transition: transform 0.2s ease;
-  }
-
-  .hero-item-card:hover {
-    transform: translateY(-2px);
-  }
-
-  .hero-item-card img {
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
-  }
-
-  .hero-item-card span {
-    font-size: 0.72rem;
-    color: #cbd5e1;
-    line-height: 1.15;
-  }
-
   .video-block h3 {
     margin: 0 0 8px 0;
     font-size: 1rem;
@@ -637,6 +569,64 @@ const abilityIconSrc = parsedAbility?.icon
   .container-video {
     width: 100%;
     aspect-ratio: 16 / 9;
+  }
+
+  /* Sección H2: Mejores Objetos y Builds */
+  .builds-section {
+    margin-top: 28px;
+    padding-top: 22px;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .builds-section h2 {
+    margin: 0;
+    font-size: 1.45rem;
+    color: #ffffff;
+    font-weight: 700;
+  }
+
+  .builds-items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 12px;
+  }
+
+  .build-item-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+    padding: 12px 10px;
+    border-radius: 12px;
+    background: rgba(12, 10, 34, 0.72);
+    border: 1px solid rgba(123, 97, 255, 0.3);
+    text-decoration: none;
+    color: #e2e8f0;
+    transition: transform 0.18s ease, border-color 0.18s ease, background-color 0.18s ease;
+  }
+
+  .build-item-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-text-highlight);
+    background: rgba(28, 22, 66, 0.88);
+  }
+
+  .build-item-card img {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
+  }
+
+  .build-item-card span {
+    font-size: 0.8rem;
+    line-height: 1.25;
+    font-weight: 600;
   }
 
   .dynamic-sections {
@@ -664,6 +654,28 @@ const abilityIconSrc = parsedAbility?.icon
     line-height: 1.6;
   }
 
+  .cta-banner {
+    margin-top: 26px;
+    background: rgba(33, 28, 71, 0.85);
+    border: 1px solid rgba(123, 97, 255, 0.35);
+    border-radius: 12px;
+    padding: 18px 20px;
+    text-align: center;
+    color: #e2e8f0;
+    font-size: 0.96rem;
+    line-height: 1.5;
+  }
+
+  .cta-link {
+    color: #f5e020;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .cta-link:hover {
+    text-decoration: underline;
+  }
+
   @media only screen and (max-width: 900px) {
     .header-section {
       padding: 18px;
@@ -685,11 +697,6 @@ const abilityIconSrc = parsedAbility?.icon
       align-self: center;
     }
 
-    .champ-portrait-box {
-      width: 128px;
-      height: 128px;
-    }
-
     .containerTraits {
       flex-direction: row;
       flex-wrap: wrap;
@@ -702,8 +709,26 @@ const abilityIconSrc = parsedAbility?.icon
       padding: 5px 12px;
     }
 
+    .left-rec-items {
+      max-width: 220px;
+    }
+
     .containerInfoChamp {
       width: 100%;
+    }
+
+    .builds-section h2 {
+      font-size: 1.2rem;
+    }
+
+    .builds-items-grid {
+      grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+      gap: 10px;
+    }
+
+    .cta-banner {
+      padding: 14px;
+      font-size: 0.9rem;
     }
   }
 </style>

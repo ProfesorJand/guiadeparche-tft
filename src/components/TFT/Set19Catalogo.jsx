@@ -1,5 +1,39 @@
 import React, { useState, useMemo, useRef, useEffect } from "react";
+import Tooltip from "@components/tooltips";
+import { slugifyTftEntity } from "@utils/tftEntitySlug.js";
 import style from "./css/Set19Catalogo.module.css";
+
+const BASE_META_URL = "/tft/meta-comps-tier-list-teamfight-tactics";
+
+const getChampionHref = (champ) => {
+  const slug = champ?.url_seo
+    ? String(champ.url_seo).trim().toLowerCase()
+    : slugifyTftEntity(champ?.name || "");
+  return slug ? `${BASE_META_URL}/${slug}` : BASE_META_URL;
+};
+
+const getTraitHref = (trait) => {
+  const slug = slugifyTftEntity(trait?.name || "");
+  return slug ? `${BASE_META_URL}/${slug}` : BASE_META_URL;
+};
+
+const getItemHref = (item) => {
+  const slug = slugifyTftEntity(item?.name || "");
+  return slug ? `${BASE_META_URL}/${slug}` : BASE_META_URL;
+};
+
+const handleCardNavigation = (e, href) => {
+  if (!href) return;
+  if (e.target.closest("a, button")) return;
+  if (typeof window !== "undefined") {
+    if (window.getSelection && window.getSelection().toString().length > 0) return;
+    if (e.ctrlKey || e.metaKey) {
+      window.open(href, "_blank", "noopener,noreferrer");
+    } else {
+      window.location.href = href;
+    }
+  }
+};
 
 // Iconos inline de estadísticas disponibles en public/riot/assets/
 const VALID_STAT_SVGS = new Set(["scaleAD", "scaleAP", "scaleAS", "scaleArmor", "scaleHealth"]);
@@ -123,7 +157,7 @@ const getBreakpointStyleClass = (styleCode) => {
   return style.bpBronze;
 };
 
-const Set19Catalogo = ({ champions = [], traits = [], encounters = [], customTabs = [] }) => {
+const Set19Catalogo = ({ champions = [], traits = [], encounters = [], itemsMap = {}, customTabs = [] }) => {
   const defaultTab = customTabs.length > 0 ? customTabs[0].id : "campeones";
   const [activeTab, setActiveTab] = useState(defaultTab);
   const [searchQuery, setSearchQuery] = useState("");
@@ -513,12 +547,21 @@ const Set19Catalogo = ({ champions = [], traits = [], encounters = [], customTab
                     const manaInitial = champ.stats?.initialMana ?? 0;
                     const manaMax = champ.stats?.mana ?? 0;
                     const attackRange = champ.stats?.range ?? 1;
+                    const champHref = getChampionHref(champ);
 
                     return (
-                      <article key={champ.apiName} className={`${style.championCard} ${getCostCardClass(champ.cost)}`}>
+                      <article
+                        key={champ.apiName}
+                        className={`${style.championCard} ${style.clickableCard} ${getCostCardClass(champ.cost)}`}
+                        onClick={(e) => handleCardNavigation(e, champHref)}
+                      >
                         {/* Cabecera: Nombre + Coste en oro */}
                         <div className={style.champHeader}>
-                          <h2 className={style.champName}>{champ.name}</h2>
+                          <h2 className={style.champName}>
+                            <a href={champHref} className={style.cardTitleLink}>
+                              {champ.name}
+                            </a>
+                          </h2>
                           <div className={style.champCost} title={`Coste ${champ.cost} de oro`}>
                             <span>{champ.cost}</span>
                             <span className={style.coinDot} />
@@ -543,7 +586,12 @@ const Set19Catalogo = ({ champions = [], traits = [], encounters = [], customTab
 
                           <div className={style.bannerTraitsOverlay}>
                             {champTraits.map((tr) => (
-                              <div key={tr.apiName} className={style.bannerTraitItem}>
+                              <a
+                                key={tr.apiName}
+                                href={getTraitHref(tr)}
+                                className={style.bannerTraitItem}
+                                onClick={(e) => e.stopPropagation()}
+                              >
                                 {tr.icon && (
                                   <img
                                     src={`/tft/sets/19/traits/${tr.icon}`}
@@ -553,7 +601,7 @@ const Set19Catalogo = ({ champions = [], traits = [], encounters = [], customTab
                                   />
                                 )}
                                 <span>{tr.name}</span>
-                              </div>
+                              </a>
                             ))}
                           </div>
                         </div>
@@ -630,16 +678,33 @@ const Set19Catalogo = ({ champions = [], traits = [], encounters = [], customTab
                             <div className={style.recommendedItemsBox}>
                               {/* <span className={style.recommendedItemsLabel}>Ítems recomendados:</span> */}
                               <div className={style.recommendedItemsIcons}>
-                                {champ.recommendedItems.map((item) => (
-                                  <img
-                                    key={`${champ.apiName}-${item.apiName}`}
-                                    src={`/tft/sets/19/items/${item.icon}`}
-                                    alt={item.name}
-                                    title={item.name}
-                                    className={style.recommendedItemIcon}
-                                    loading="lazy"
-                                  />
-                                ))}
+                                {champ.recommendedItems.map((item) => {
+                                  const richItem =
+                                    itemsMap[(item.apiName || "").toLowerCase()] || {
+                                      ...item,
+                                      tft_set: "19",
+                                    };
+                                  return (
+                                    <Tooltip
+                                      key={`${champ.apiName}-${item.apiName}`}
+                                      type="item"
+                                      item={richItem}
+                                    >
+                                      <a
+                                        href={getItemHref(richItem)}
+                                        className={style.recommendedItemLink}
+                                        onClick={(e) => e.stopPropagation()}
+                                      >
+                                        <img
+                                          src={`/tft/sets/19/items/${item.icon}`}
+                                          alt={item.name}
+                                          className={style.recommendedItemIcon}
+                                          loading="lazy"
+                                        />
+                                      </a>
+                                    </Tooltip>
+                                  );
+                                })}
                               </div>
                             </div>
                           )}
@@ -676,12 +741,21 @@ const Set19Catalogo = ({ champions = [], traits = [], encounters = [], customTab
                       const manaMax = champ.stats?.mana ?? 0;
                       const attackRange = champ.stats?.range ?? 1;
                       const specialItems = champ.specialItems || champ.ability?.specialItems || [];
+                      const champHref = getChampionHref(champ);
 
                       return (
-                        <article key={champ.apiName} className={`${style.championCard} ${style.cardCostOther}`}>
+                        <article
+                          key={champ.apiName}
+                          className={`${style.championCard} ${style.clickableCard} ${style.cardCostOther}`}
+                          onClick={(e) => handleCardNavigation(e, champHref)}
+                        >
                           {/* Cabecera: Nombre + Etiqueta de origen (Gu Feng / Rock) */}
                           <div className={style.champHeader}>
-                            <h3 className={style.champName}>{champ.name}</h3>
+                            <h3 className={style.champName}>
+                              <a href={champHref} className={style.cardTitleLink}>
+                                {champ.name}
+                              </a>
+                            </h3>
                             <div className={style.otherBadge} title="Unidad especial de rasgo (no se compra en tienda)">
                               {champ.originNote || "Otros"}
                             </div>
@@ -699,7 +773,12 @@ const Set19Catalogo = ({ champions = [], traits = [], encounters = [], customTab
 
                             <div className={style.bannerTraitsOverlay}>
                               {displayTraits.map((tr) => (
-                                <div key={tr.apiName} className={style.bannerTraitItem}>
+                                <a
+                                  key={tr.apiName}
+                                  href={getTraitHref(tr)}
+                                  className={style.bannerTraitItem}
+                                  onClick={(e) => e.stopPropagation()}
+                                >
                                   {tr.icon && (
                                     <img
                                       src={`/tft/sets/19/traits/${tr.icon}`}
@@ -709,7 +788,7 @@ const Set19Catalogo = ({ champions = [], traits = [], encounters = [], customTab
                                     />
                                   )}
                                   <span>{tr.name}</span>
-                                </div>
+                                </a>
                               ))}
                             </div>
                           </div>
@@ -767,28 +846,42 @@ const Set19Catalogo = ({ champions = [], traits = [], encounters = [], customTab
                               <div className={style.specialItemsBox}>
                                 <span className={style.specialItemsTitle}>Opciones de {champ.originNote || "rasgo"}:</span>
                                 <div className={style.specialItemsList}>
-                                  {specialItems.map((item) => (
-                                    <div key={`${champ.apiName}-${item.apiName}`} className={style.specialItemCard}>
-                                      <img
-                                        src={`/tft/sets/19/items/${item.icon}`}
-                                        alt={item.name}
-                                        title={item.name}
-                                        className={style.specialItemIcon}
-                                        loading="lazy"
-                                      />
-                                      <div className={style.specialItemInfo}>
-                                        <div className={style.specialItemNameRow}>
-                                          <strong className={style.specialItemName}>{item.name}</strong>
-                                          {item.name_EN && item.name_EN !== item.name && (
-                                            <span className={style.specialItemNameEn}>({item.name_EN})</span>
-                                          )}
+                                  {specialItems.map((item) => {
+                                    const richSpecial =
+                                      itemsMap[(item.apiName || "").toLowerCase()] || {
+                                        ...item,
+                                        desc_item: item.desc || item.desc_item || "",
+                                        tft_set: "19",
+                                      };
+                                    return (
+                                      <a
+                                        key={`${champ.apiName}-${item.apiName}`}
+                                        href={getItemHref(richSpecial)}
+                                        className={`${style.specialItemCard} ${style.specialItemCardLink}`}
+                                        onClick={(e) => e.stopPropagation()}
+                                      >
+                                        <Tooltip type="item" item={richSpecial}>
+                                          <img
+                                            src={`/tft/sets/19/items/${item.icon}`}
+                                            alt={item.name}
+                                            className={style.specialItemIcon}
+                                            loading="lazy"
+                                          />
+                                        </Tooltip>
+                                        <div className={style.specialItemInfo}>
+                                          <div className={style.specialItemNameRow}>
+                                            <strong className={style.specialItemName}>{item.name}</strong>
+                                            {item.name_EN && item.name_EN !== item.name && (
+                                              <span className={style.specialItemNameEn}>({item.name_EN})</span>
+                                            )}
+                                          </div>
+                                          <div className={style.specialItemDesc}>
+                                            {renderFormattedText(item.desc)}
+                                          </div>
                                         </div>
-                                        <div className={style.specialItemDesc}>
-                                          {renderFormattedText(item.desc)}
-                                        </div>
-                                      </div>
-                                    </div>
-                                  ))}
+                                      </a>
+                                    );
+                                  })}
                                 </div>
                               </div>
                             )}
@@ -823,9 +916,14 @@ const Set19Catalogo = ({ champions = [], traits = [], encounters = [], customTab
             <div className={style.traitsGrid}>
               {filteredTraits.map((trait) => {
                 const linkedChamps = championsByTrait[trait.apiName] || [];
+                const traitHref = getTraitHref(trait);
 
                 return (
-                  <article key={trait.apiName} className={style.traitCard}>
+                  <article
+                    key={trait.apiName}
+                    className={`${style.traitCard} ${style.clickableCard}`}
+                    onClick={(e) => handleCardNavigation(e, traitHref)}
+                  >
                     <div className={style.traitCardHeader}>
                       <div className={style.traitIconBox}>
                         {trait.icon && (
@@ -840,7 +938,11 @@ const Set19Catalogo = ({ champions = [], traits = [], encounters = [], customTab
 
                       <div className={style.traitCardTitleWrap}>
                         <div className={style.traitCardNameRow}>
-                          <h2 className={style.traitCardName}>{trait.name}</h2>
+                          <h2 className={style.traitCardName}>
+                            <a href={traitHref} className={style.cardTitleLink}>
+                              {trait.name}
+                            </a>
+                          </h2>
                           {trait.name_EN && trait.name_EN.toLowerCase() !== trait.name.toLowerCase() && (
                             <span className={style.traitCardNameEn}>({trait.name_EN})</span>
                           )}
@@ -869,7 +971,12 @@ const Set19Catalogo = ({ champions = [], traits = [], encounters = [], customTab
                     {linkedChamps.length > 0 && (
                       <div className={style.traitChampsList}>
                         {linkedChamps.map((c) => (
-                          <div key={`${trait.apiName}-${c.apiName}`} className={`${style.traitMiniChamp} ${getCostCardClass(c.cost)}`}>
+                          <a
+                            key={`${trait.apiName}-${c.apiName}`}
+                            href={getChampionHref(c)}
+                            className={`${style.traitMiniChamp} ${getCostCardClass(c.cost)}`}
+                            onClick={(e) => e.stopPropagation()}
+                          >
                             <img
                               src={`/tft/sets/19/champions/tileIcon/${c.tileIcon}`}
                               alt={c.name}
@@ -877,7 +984,7 @@ const Set19Catalogo = ({ champions = [], traits = [], encounters = [], customTab
                               loading="lazy"
                             />
                             <span className={style.traitMiniChampName}>{c.name}</span>
-                          </div>
+                          </a>
                         ))}
                       </div>
                     )}

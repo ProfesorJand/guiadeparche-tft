@@ -1,10 +1,11 @@
 ---
 import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
 import CompsPorSet from "@components/TFT/meta/CompsPorSet.jsx";
+import SinergiaIconTooltip from "@components/TFT/meta/SinergiaIconTooltip.jsx";
 import Youtube from "@components/youtube/Youtube.jsx";
 import { setNumberPBE } from "@stores/dataTFT";
 import { getLocalTftImage } from "@utils/images";
-import ImgTrait from "@components/TFT/ImgTrait.jsx";
+import { replaceIcons } from "@components/tooltips/functions.jsx";
 import {
   calculateBoardSynergies,
   groupCompsBySet,
@@ -76,12 +77,19 @@ const relatedComps = (allComps || []).filter((comp) => {
 
 const compsBySet = groupCompsBySet(relatedComps, activeSet);
 
+// Primera composición estrictamente del set actual (`activeSet`); si no hay en este set, no se muestra el párrafo
+const currentSetComps = compsBySet.find((g) => g.setNumber === activeSet)?.comps || [];
+const firstComp = currentSetComps[0] || null;
+const rawTipSeo = firstComp?.tipSEO ? String(firstComp.tipSEO).trim() : "";
+const firstCompTipSeoLower = rawTipSeo
+  ? rawTipSeo.charAt(0).toLowerCase() + rawTipSeo.slice(1)
+  : "";
+
 const displayName = data.name || data.titulo_seo || "Sinergia";
-const displayHeadline = data.titulo_seo || displayName;
 const title =
   data.titulo_seo
-    ? `TFT ${data.titulo_seo} Set ${activeSet} — Meta Comps y Campeones`
-    : `${displayName} TFT Set ${activeSet} — Sinergia, Campeones y Composiciones`;
+    ? `TFT ${data.titulo_seo} - Mejores Compos (Set ${activeSet})`
+    : `TFT ${displayName} - Mejores Compos (Set ${activeSet})`;
 const description =
   data.descripcion_seo ||
   `Descubre cómo funciona la sinergia ${displayName} en TFT Set ${activeSet}, sus campeones y las mejores composiciones meta.`;
@@ -105,9 +113,11 @@ const formatTraitRawDesc = (rawDesc = "") => {
     .trim();
 };
 
-const traitDescHtml = data.desc_trait
-  ? data.desc_trait.replace(/\n/g, "<br />")
-  : formatTraitRawDesc(currentTraitData.desc || "");
+const traitDescHtml = replaceIcons(
+  data.desc_trait
+    ? data.desc_trait.replace(/\n/g, "<br />")
+    : formatTraitRawDesc(currentTraitData.desc || "")
+);
 
 // Procesar Markdown básico en secciones editoriales
 const procesarTexto = (texto) => {
@@ -176,7 +186,7 @@ const checkColor = (hexColor) => {
 
 const getChampionCostBorder = (cost) => {
   switch (Number(cost)) {
-    case 0: return "#00ffc4";
+    case 0: return "var(--color-text-highlight)";
     case 1: return "#ffffff";
     case 2: return "#3e9e64";
     case 3: return "#1e69ee";
@@ -190,6 +200,16 @@ const getChampionCostBorder = (cost) => {
 const resolvedIcon = data.icon?.startsWith("http")
   ? data.icon
   : getLocalTftImage(data.icon, "traits", activeSet);
+
+// Formatear lista en español: "A, B y C" (sin coma antes de "y")
+const formatSpanishList = (names = []) => {
+  if (names.length === 0) return "";
+  if (names.length === 1) return names[0];
+  if (names.length === 2) return `${names[0]} y ${names[1]}`;
+  return `${names.slice(0, -1).join(", ")} y ${names[names.length - 1]}`;
+};
+
+const championsNamesFormatted = formatSpanishList(championsInTrait.map((c) => c.name));
 ---
 
 <LayoutMaxWidth
@@ -201,9 +221,6 @@ const resolvedIcon = data.icon?.startsWith("http")
     <div class="trait-main-card two-columns">
       <div class={`container-info-left ${!data.video_url ? "full-width" : ""}`}>
         <div class="trait-header">
-          <div class="trait-icon-bg">
-            <ImgTrait trait={data} version={activeSet} showName={false} />
-          </div>
           <div class="trait-title-wrap">
             <div class="badges-row">
               <span class="set-badge">Set {activeSet}</span>
@@ -212,14 +229,33 @@ const resolvedIcon = data.icon?.startsWith("http")
               )}
             </div>
             <h1>
-              TFT {displayHeadline} — Meta Comps & Builds (Set {activeSet})
+              TFT {displayName} - Mejores Compos (Set {activeSet})
             </h1>
           </div>
         </div>
 
-        {traitDescHtml && (
-          <div class="trait-desc" set:html={traitDescHtml} />
-        )}
+        <div class="trait-summary-row">
+          <SinergiaIconTooltip
+            iconSrc={resolvedIcon}
+            name={displayName}
+            descHtml={traitDescHtml}
+            client:load
+          />
+          <div class="trait-intro-paragraphs">
+            {firstCompTipSeoLower && (
+              <p class="trait-intro-p">
+                La mejor composición de <span class="colored-text">{displayName}</span> es {firstCompTipSeoLower}
+              </p>
+            )}
+
+            {championsNamesFormatted && (
+              <p class="trait-intro-p">
+                Los campeones de <span class="colored-text">{displayName}</span> son:{" "}
+                <span class="colored-text">{championsNamesFormatted}</span>.
+              </p>
+            )}
+          </div>
+        </div>
 
         {data.tip_jupeson && (
           <div class="tip-jupeson-container">
@@ -230,7 +266,6 @@ const resolvedIcon = data.icon?.startsWith("http")
 
         {championsInTrait.length > 0 && (
           <div class="champions-section-wrap">
-            <h2 class="sub-heading">Campeones de {displayName} (Set {activeSet})</h2>
             <div class="list-champions">
               {championsInTrait.map((c) => {
                 const tileIcon = c.tileIcon
@@ -295,60 +330,13 @@ const resolvedIcon = data.icon?.startsWith("http")
       )}
     </div>
 
-    {/* Niveles / Efectos de la sinergia */}
-    {Array.isArray(currentEffects) && currentEffects.length > 0 && (
-      <div class="trait-main-card">
-        <div class="trait-effects">
-          <h2>¿Qué hace el rasgo {displayName} en TFT Set {activeSet}?</h2>
-          {currentEffects.map((effect, idx) => {
-            const hexKey = styleMapping[effect.style] || "hex-bronze.webp";
-            const customText =
-              parsedCustomEffects[idx]?.description ||
-              parsedCustomEffects[idx]?.desc ||
-              (typeof parsedCustomEffects[idx] === "string"
-                ? parsedCustomEffects[idx]
-                : "");
-
-            // Si no hay descripción por nivel escrita a mano, mostrar los valores numéricos relevantes de variables
-            const fallbackVars =
-              !customText && effect?.variables
-                ? Object.entries(effect.variables)
-                    .filter(([, val]) => val !== null && val !== undefined && val !== 0)
-                    .slice(0, 4)
-                    .map(([k, v]) => `${k}: ${Math.round(Number(v) * 100) / 100}`)
-                    .join(" · ")
-                : "";
-
-            return (
-              <div class="effect-row">
-                <div
-                  class={`effect-badge ${
-                    hexKey === "hex-prismatic.webp" ? "prismatic-animated" : ""
-                  }`}
-                  style={
-                    hexKey !== "hex-prismatic.webp" ? checkColor(hexKey) : {}
-                  }
-                >
-                  {effect.minUnits}
-                </div>
-                <div class="effect-text">
-                  {customText ||
-                    fallbackVars ||
-                    `Activa el nivel de ${effect.minUnits} unidades de ${displayName}.`}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    )}
-
     {/* Composiciones agrupadas por set: Set más reciente abierto y anteriores desplegables */}
     <CompsPorSet
       entityName={displayName}
       entityType="sinergia"
       newestSetNumber={activeSet}
       compsBySet={compsBySet}
+      hideCta={true}
       client:load
     />
 
@@ -363,6 +351,25 @@ const resolvedIcon = data.icon?.startsWith("http")
           />
         </div>
       ))}
+
+    {/* CTA final con enlace a Meta Comps y a Rasgos del Set 19 */}
+    <div class="cta-banner">
+      <p>
+        ¿Buscas más opciones para subir de rango? Explora todas las{" "}
+        <a class="cta-link" href="/tft/meta-comps-tier-list-teamfight-tactics/">
+          Meta Comps de TFT
+        </a>{" "}
+        actualizadas al parche actual.
+      </p>
+    </div>
+    <div class="cta-banner">
+      <p>
+        ¿Buscas conocer todas las sinergias/rasgos de TFT? Explora todas en{" "}
+        <a class="cta-link" href="/tft/set/19#sinergias">
+          Rasgos del Set 19 de TFT
+        </a>.
+      </p>
+    </div>
   </div>
 </LayoutMaxWidth>
 
@@ -440,7 +447,7 @@ const resolvedIcon = data.icon?.startsWith("http")
     border-radius: 999px;
     font-size: 0.78rem;
     font-weight: 700;
-    background: linear-gradient(135deg, #00ffc4, #63e6ff);
+    background: linear-gradient(135deg, var(--color-text-highlight), #63e6ff);
     color: #0b0920;
   }
 
@@ -471,10 +478,61 @@ const resolvedIcon = data.icon?.startsWith("http")
     line-height: 1.25;
   }
 
-  .trait-desc {
+  .trait-summary-row {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 16px;
+    width: 100%;
+  }
+
+  .trait-intro-paragraphs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .trait-desc,
+  .trait-intro-p {
     color: #e5e7eb;
     font-size: 1rem;
     line-height: 1.6;
+    margin: 0;
+  }
+
+  .colored-text {
+    color: #ff9fd8;
+    font-weight: 600;
+  }
+
+  .cta-banner {
+    background: rgba(33, 28, 71, 0.85);
+    border: 1px solid rgba(123, 97, 255, 0.35);
+    border-radius: 12px;
+    padding: 18px 20px;
+    text-align: center;
+    color: #e2e8f0;
+    font-size: 0.96rem;
+    line-height: 1.55;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .cta-banner p {
+    margin: 0;
+  }
+
+  .cta-link {
+    color: #f5e020;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .cta-link:hover {
+    text-decoration: underline;
   }
 
   .tip-jupeson-container {
@@ -696,6 +754,12 @@ const resolvedIcon = data.icon?.startsWith("http")
       flex-direction: column;
       align-items: flex-start;
       gap: 10px;
+    }
+
+    .trait-summary-row {
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
     }
 
     .trait-header h1 {
