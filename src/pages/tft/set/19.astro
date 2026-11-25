@@ -3,10 +3,11 @@ import LayoutMaxWidth from "@layouts/LayoutMaxWidth.astro";
 import { crearJSONSchema } from "@json/schema/crearJSONSchema";
 import Set19Catalogo from "@components/TFT/Set19Catalogo.jsx";
 import set19Data from "@data/set19_es_MX.json";
+import YouTube from "@components/youtube/Youtube.jsx";
 
-const title = "TFT Set 19: Prismatic Tour – Todos los Campeones, Habilidades y Sinergias (es-MX)";
+const title = "TFT Set 19 Prismatic Tour: Campeones, Rasgos y Mécanicas";
 const description =
-  "Explora todos los campeones del Set 19 de Teamfight Tactics (Prismatic Tour) en español: habilidades completas, requisitos de desbloqueo (Unlock), rango de ataque, rol, coste en oro y todas las sinergias (Traits).";
+  "Explora todos los campeones del Set 19 de Teamfight Tactics (Prismatic Tour), sus habilidades, requisitos de desbloqueo (Unlock), y todos efectos de cada rasgo (Traits) en TFT.";
 const keywords =
   "TFT Set 19, Teamfight Tactics Set 19, campeones Set 19 TFT, sinergias Set 19 TFT, Prismatic Tour, unlocks TFT Set 19, habilidades TFT Set 19";
 
@@ -123,6 +124,8 @@ const customTabs = [
       <p>
         Prismatic Tour supone un nuevo paso en la evolución de TFT, aprovechando las posibilidades del motor gráfico de Unreal Engine para introducir nuevas formas de interactuar con el juego.
       </p>
+      
+      <YouTube src="https://www.youtube.com/watch?v=rx5wxT04Ms8" client:load />
       <p>
         Si quieres conocer una valoración más personal sobre estas novedades, puedes leer el <a href="https://guiadeparche.com/blog/set-19-tft-resumen-jupeson" target="_blank">resumen y las primeras impresiones de Jupeson sobre el Set 19 de TFT</a>, después de probarlo en el PBE.
       </p>
