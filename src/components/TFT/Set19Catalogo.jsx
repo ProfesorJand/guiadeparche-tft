@@ -158,38 +158,81 @@ const getBreakpointStyleClass = (styleCode) => {
 };
 
 const Set19Catalogo = ({ champions = [], traits = [], encounters = [], itemsMap = {}, customTabs = [] }) => {
-  const defaultTab = customTabs.length > 0 ? customTabs[0].id : "campeones";
+  const defaultTab = "sinergias";
   const [activeTab, setActiveTab] = useState(defaultTab);
   const [searchQuery, setSearchQuery] = useState("");
+  const [traitSearchQuery, setTraitSearchQuery] = useState("");
+  const [encounterSearchQuery, setEncounterSearchQuery] = useState("");
   const [selectedCost, setSelectedCost] = useState("all");
   const [selectedTrait, setSelectedTrait] = useState("all");
   const [onlyUnlockable, setOnlyUnlockable] = useState(false);
   const catalogTopRef = useRef(null);
+  const stickyNavRef = useRef(null);
 
-  // Sincronizar con el hash de la URL al cargar (sin navegar a otra página)
+  const sectionIds = useMemo(
+    () => [
+      "sinergias",
+      "campeones",
+      ...(encounters.length > 0 ? ["encuentros"] : []),
+      ...customTabs.map((t) => t.id),
+    ],
+    [customTabs, encounters.length]
+  );
+
+  // Calcula el desplazamiento superior sumando header fijo + barra sticky de secciones
+  const getScrollOffset = () => {
+    if (typeof window === "undefined") return 120;
+    const headerEl = document.querySelector(".bodyHeader");
+    const headerH = headerEl ? headerEl.getBoundingClientRect().height : Math.round(window.innerHeight * 0.08);
+    const navH = stickyNavRef.current ? stickyNavRef.current.getBoundingClientRect().height : 56;
+    return Math.round(headerH + navH + 14);
+  };
+
+  // Hacer scroll suave al inicio de una sección específica
+  const scrollToSection = (sectionId, behavior = "smooth") => {
+    if (typeof window === "undefined") return;
+    const el = document.getElementById(sectionId);
+    if (!el) return;
+    const targetY = window.scrollY + el.getBoundingClientRect().top - getScrollOffset();
+    window.scrollTo({ top: Math.max(0, targetY), behavior });
+  };
+
+  // Si la URL entra con #campeones, #sinergias, etc., desplazarse al inicio de ese tema
   useEffect(() => {
     if (typeof window === "undefined") return;
     const hash = window.location.hash.replace(/^#/, "");
-    if (!hash) return;
-    const validIds = new Set([...customTabs.map((t) => t.id), "campeones", "sinergias", "encuentros"]);
-    if (validIds.has(hash)) {
-      setActiveTab(hash);
-    }
-  }, [customTabs]);
+    if (!hash || !sectionIds.includes(hash)) return;
+    setActiveTab(hash);
+    const timer = setTimeout(() => scrollToSection(hash, "smooth"), 120);
+    return () => clearTimeout(timer);
+  }, [sectionIds]);
 
-  // Cambiar de pestaña manteniendo la misma página y volviendo arriba del catálogo si el usuario bajó
+  // Actualizar botón activo al desplazarse por la página (scroll spy)
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const handleScroll = () => {
+      const offset = getScrollOffset() + 24;
+      let current = sectionIds[0];
+      for (const id of sectionIds) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+        if (el.getBoundingClientRect().top <= offset) {
+          current = id;
+        }
+      }
+      setActiveTab(current);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [sectionIds]);
+
+  // Al hacer clic en un botón de la barra superior, navegar suavemente al inicio de esa sección
   const handleSelectTab = (tabId) => {
     setActiveTab(tabId);
     if (typeof window !== "undefined") {
       window.history.replaceState(null, "", `#${tabId}`);
-      if (catalogTopRef.current) {
-        const rect = catalogTopRef.current.getBoundingClientRect();
-        const headerOffset = Math.round(window.innerHeight * 0.08) + 8;
-        if (rect.top < headerOffset) {
-          const targetY = window.scrollY + rect.top - headerOffset;
-          window.scrollTo({ top: Math.max(0, targetY), behavior: "smooth" });
-        }
-      }
+      scrollToSection(tabId, "smooth");
     }
   };
 
@@ -287,19 +330,19 @@ const Set19Catalogo = ({ champions = [], traits = [], encounters = [], itemsMap 
     [filteredChampions]
   );
 
-  // Sinergias filtradas por búsqueda
+  // Sinergias filtradas por su propio buscador
   const filteredTraits = useMemo(() => {
-    const q = searchQuery.trim().toLowerCase();
+    const q = traitSearchQuery.trim().toLowerCase();
     return traits.filter((trait) => {
       if (!q) return true;
       const searchable = `${trait.name} ${trait.name_EN || ""} ${trait.desc_trait || ""}`.toLowerCase();
       return searchable.includes(q);
     });
-  }, [traits, searchQuery]);
+  }, [traits, traitSearchQuery]);
 
-  // Encuentros filtrados por búsqueda y ordenados por nombre del campeón anfitrión
+  // Encuentros filtrados por su propio buscador y ordenados por nombre del campeón anfitrión
   const filteredEncounters = useMemo(() => {
-    const q = searchQuery.trim().toLowerCase();
+    const q = encounterSearchQuery.trim().toLowerCase();
     return encounters
       .filter((enc) => {
         if (!q) return true;
@@ -311,7 +354,7 @@ const Set19Catalogo = ({ champions = [], traits = [], encounters = [], itemsMap 
           (a.championName || "").localeCompare(b.championName || "") ||
           (a.name || "").localeCompare(b.name || "")
       );
-  }, [encounters, searchQuery]);
+  }, [encounters, encounterSearchQuery]);
 
   // Campeones agrupados por sinergia para mostrarlos dentro de cada tarjeta de sinergia
   const championsByTrait = useMemo(() => {
@@ -335,40 +378,16 @@ const Set19Catalogo = ({ champions = [], traits = [], encounters = [], itemsMap 
 
   return (
     <div ref={catalogTopRef} className={style.catalogoWrapper}>
-      {/* Barra fija (sticky) de pestañas: permanece visible al bajar el scroll sin incluir filtros */}
-      <nav className={style.stickyTabsBar} aria-label="Secciones de TFT Set 19">
-        <div className={style.tabsBar} role="tablist" aria-label="Pestañas de TFT Set 19">
-          {customTabs.map((tab) => (
-            <button
-              key={tab.id}
-              type="button"
-              role="tab"
-              aria-selected={activeTab === tab.id}
-              aria-controls={`panel-${tab.id}`}
-              className={`${style.tabBtn} ${activeTab === tab.id ? style.tabBtnActive : ""}`}
-              onClick={() => handleSelectTab(tab.id)}
-            >
-              <span>{tab.label}</span>
-            </button>
-          ))}
-
+      {/* Barra fija (sticky) de navegación rápida por secciones */}
+      <nav
+        ref={stickyNavRef}
+        className={style.stickyTabsBar}
+        aria-label="Secciones de TFT Set 19"
+      >
+        <div className={style.tabsBar}>
           <button
             type="button"
-            role="tab"
-            aria-selected={activeTab === "campeones"}
-            aria-controls="panel-campeones"
-            className={`${style.tabBtn} ${activeTab === "campeones" ? style.tabBtnActive : ""}`}
-            onClick={() => handleSelectTab("campeones")}
-          >
-            <span>Campeones Set 19</span>
-            <span className={style.tabCount}>{champions.length}</span>
-          </button>
-
-          <button
-            type="button"
-            role="tab"
-            aria-selected={activeTab === "sinergias"}
-            aria-controls="panel-sinergias"
+            aria-current={activeTab === "sinergias" ? "true" : undefined}
             className={`${style.tabBtn} ${activeTab === "sinergias" ? style.tabBtnActive : ""}`}
             onClick={() => handleSelectTab("sinergias")}
           >
@@ -376,12 +395,20 @@ const Set19Catalogo = ({ champions = [], traits = [], encounters = [], itemsMap 
             <span className={style.tabCount}>{traits.length}</span>
           </button>
 
+          <button
+            type="button"
+            aria-current={activeTab === "campeones" ? "true" : undefined}
+            className={`${style.tabBtn} ${activeTab === "campeones" ? style.tabBtnActive : ""}`}
+            onClick={() => handleSelectTab("campeones")}
+          >
+            <span>Campeones</span>
+            <span className={style.tabCount}>{champions.length}</span>
+          </button>
+
           {encounters.length > 0 && (
             <button
               type="button"
-              role="tab"
-              aria-selected={activeTab === "encuentros"}
-              aria-controls="panel-encuentros"
+              aria-current={activeTab === "encuentros" ? "true" : undefined}
               className={`${style.tabBtn} ${activeTab === "encuentros" ? style.tabBtnActive : ""}`}
               onClick={() => handleSelectTab("encuentros")}
             >
@@ -389,144 +416,215 @@ const Set19Catalogo = ({ champions = [], traits = [], encounters = [], itemsMap 
               <span className={style.tabCount}>{encounters.length}</span>
             </button>
           )}
+
+          {customTabs.map((tab) => (
+            <button
+              key={tab.id}
+              type="button"
+              aria-current={activeTab === tab.id ? "true" : undefined}
+              className={`${style.tabBtn} ${activeTab === tab.id ? style.tabBtnActive : ""}`}
+              onClick={() => handleSelectTab(tab.id)}
+            >
+              <span>{tab.label}</span>
+            </button>
+          ))}
         </div>
       </nav>
 
-      {/* VISTAS PERSONALIZADAS DE GALERÍA DE IMÁGENES 16:9: se mantienen montadas para cambiar de pestaña al instante sin recargar imágenes */}
-      {customTabs.map((tab) => {
-        const isTabActive = activeTab === tab.id;
-        return (
-          <section
-            key={tab.id}
-            id={`panel-${tab.id}`}
-            role="tabpanel"
-            className={`${style.imageGallerySection} ${!isTabActive ? style.tabPanelHidden : ""}`}
-            aria-label={tab.label}
-            aria-hidden={!isTabActive}
-          >
-            {Array.isArray(tab.images) && tab.images.length > 0 ? (
-              <div className={style.imageGalleryList}>
-                {tab.images.map((item, idx) => {
-                  const imgSrc = typeof item === "string" ? item : item?.src;
-                  const imgAlt =
-                    typeof item === "string"
-                      ? `${tab.label} ${idx + 1}`
-                      : item?.alt || `${tab.label} ${idx + 1}`;
-                  if (!imgSrc) return null;
+      {/* SECCIÓN: SINERGIAS / RASGOS */}
+      <section
+        id="sinergias"
+        className={style.catalogSection}
+        aria-label="Rasgos del Set 19"
+      >
+        <div className={style.sectionHeadingBar}>
+          <h2 className={style.sectionHeadingTitle}>Rasgos (Traits) - Origenes y Clases</h2>
+          <span className={style.sectionHeadingCount}>{traits.length}</span>
+        </div>
 
-                  return (
-                    <figure key={`${tab.id}-img-${idx}`} className={style.galleryImageCard}>
-                      <img
-                        src={imgSrc}
-                        alt={imgAlt}
-                        className={style.galleryImage}
-                        loading="eager"
-                        decoding="async"
-                      />
-                    </figure>
-                  );
-                })}
-              </div>
-            ) : (
-              <div className={style.emptyState}>
-                Próximamente: agrega tus imágenes 16:9 en <strong>{tab.label}</strong> dentro de{" "}
-                <code>src/pages/tft/set/set-19.astro</code>.
-              </div>
-            )}
-          </section>
-        );
-      })}
-
-      {/* Panel de búsqueda y filtros (solo visible en Campeones, Rasgos y Encuentros, NO sticky) */}
-      {(activeTab === "campeones" || activeTab === "sinergias" || activeTab === "encuentros") && (
         <div className={style.filtersPanel}>
           <div className={style.filtersRow}>
             <input
               type="text"
               className={style.searchInput}
-              placeholder={
-                activeTab === "campeones"
-                  ? "Buscar campeón, habilidad, sinergia, rol o requisito de desbloqueo..."
-                  : activeTab === "sinergias"
-                    ? "Buscar sinergia o efecto..."
-                    : "Buscar encuentro, campeón o efecto..."
-              }
+              placeholder="Buscar sinergia o efecto..."
+              value={traitSearchQuery}
+              onChange={(e) => setTraitSearchQuery(e.target.value)}
+            />
+          </div>
+        </div>
+
+        <div className={style.resultsInfo}>
+          Mostrando <strong>{filteredTraits.length}</strong> de {traits.length} rasgos del Set 19
+        </div>
+
+        {filteredTraits.length === 0 ? (
+          <div className={style.emptyState}>
+            No se encontraron sinergias con ese criterio de búsqueda.
+          </div>
+        ) : (
+          <div className={style.traitsGrid}>
+            {filteredTraits.map((trait) => {
+              const linkedChamps = championsByTrait[trait.apiName] || [];
+              const traitHref = getTraitHref(trait);
+
+              return (
+                <article
+                  key={trait.apiName}
+                  className={`${style.traitCard} ${style.clickableCard}`}
+                  onClick={(e) => handleCardNavigation(e, traitHref)}
+                >
+                  <div className={style.traitCardHeader}>
+                    <div className={style.traitIconBox}>
+                      {trait.icon && (
+                        <img
+                          src={`/tft/sets/19/traits/${trait.icon}`}
+                          alt={trait.name}
+                          className={style.traitCardIcon}
+                          loading="lazy"
+                        />
+                      )}
+                    </div>
+
+                    <div className={style.traitCardTitleWrap}>
+                      <div className={style.traitCardNameRow}>
+                        <h2 className={style.traitCardName}>
+                          <a href={traitHref} className={style.cardTitleLink}>
+                            {trait.name}
+                          </a>
+                        </h2>
+                        {trait.name_EN && trait.name_EN.toLowerCase() !== trait.name.toLowerCase() && (
+                          <span className={style.traitCardNameEn}>({trait.name_EN})</span>
+                        )}
+                      </div>
+                      {Array.isArray(trait.effects) && trait.effects.length > 0 && (
+                        <div className={style.traitBreakpointsRow}>
+                          {trait.effects.map((eff, idx) => (
+                            <span
+                              key={`${trait.apiName}-bp-${idx}`}
+                              className={`${style.breakpointBadge} ${getBreakpointStyleClass(eff.style)}`}
+                            >
+                              {eff.minUnits}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Descripción de la sinergia con HTML parseado (sin etiquetas en texto plano) */}
+                  <div className={style.traitDesc}>
+                    {renderFormattedText(trait.desc_trait || trait.desc)}
+                  </div>
+
+                  {/* Campeones que tienen esta sinergia */}
+                  {linkedChamps.length > 0 && (
+                    <div className={style.traitChampsList}>
+                      {linkedChamps.map((c) => (
+                        <a
+                          key={`${trait.apiName}-${c.apiName}`}
+                          href={getChampionHref(c)}
+                          className={`${style.traitMiniChamp} ${getCostCardClass(c.cost)}`}
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <img
+                            src={`/tft/sets/19/champions/tileIcon/${c.tileIcon}`}
+                            alt={c.name}
+                            className={style.traitMiniChampImg}
+                            loading="lazy"
+                          />
+                          <span className={style.traitMiniChampName}>{c.name}</span>
+                        </a>
+                      ))}
+                    </div>
+                  )}
+                </article>
+              );
+            })}
+          </div>
+        )}
+      </section>
+
+      {/* SECCIÓN: CAMPEONES SET 19 */}
+      <section
+        id="campeones"
+        aria-label="Campeones Set 19"
+        className={style.catalogSection}
+      >
+        <div className={style.sectionHeadingBar}>
+          <h2 className={style.sectionHeadingTitle}>Campeones</h2>
+          <span className={style.sectionHeadingCount}>{champions.length}</span>
+        </div>
+
+        <div className={style.filtersPanel}>
+          <div className={style.filtersRow}>
+            <input
+              type="text"
+              className={style.searchInput}
+              placeholder="Buscar campeón, habilidad, sinergia, rol o requisito de desbloqueo..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
 
-            {activeTab === "campeones" && (
-              <select
-                className={style.traitSelect}
-                value={selectedTrait}
-                onChange={(e) => setSelectedTrait(e.target.value)}
-                aria-label="Filtrar por sinergia"
-              >
-                <option value="all">Todas las sinergias</option>
-                {traits.map((t) => (
-                  <option key={t.apiName} value={t.apiName}>
-                    {t.name}
-                  </option>
-                ))}
-              </select>
-            )}
+            <select
+              className={style.traitSelect}
+              value={selectedTrait}
+              onChange={(e) => setSelectedTrait(e.target.value)}
+              aria-label="Filtrar por sinergia"
+            >
+              <option value="all">Todas las sinergias</option>
+              {traits.map((t) => (
+                <option key={t.apiName} value={t.apiName}>
+                  {t.name}
+                </option>
+              ))}
+            </select>
           </div>
 
-          {activeTab === "campeones" && (
-            <div className={style.costFilterGroup}>
+          <div className={style.costFilterGroup}>
+            <button
+              type="button"
+              className={`${style.filterPill} ${selectedCost === "all" ? style.filterPillActive : ""}`}
+              onClick={() => setSelectedCost("all")}
+            >
+              Todos los costes
+            </button>
+
+            {availableCosts.map((cost) => (
+              <button
+                key={cost}
+                type="button"
+                className={`${style.filterPill} ${style.costFilterPill} ${getCostCardClass(cost)} ${Number(selectedCost) === cost ? style.filterPillActive : ""}`}
+                onClick={() => setSelectedCost(String(cost))}
+              >
+                <span className={style.costFilterDot} />
+                <span>{cost}</span>
+                <span className={style.coinDot} />
+              </button>
+            ))}
+
+            {otherChampionsTotal > 0 && (
               <button
                 type="button"
-                className={`${style.filterPill} ${selectedCost === "all" ? style.filterPillActive : ""}`}
-                onClick={() => setSelectedCost("all")}
+                className={`${style.filterPill} ${style.costFilterPill} ${style.cardCostOther} ${selectedCost === "other" ? style.filterPillActive : ""}`}
+                onClick={() => setSelectedCost("other")}
               >
-                Todos los costes
+                <span className={style.costFilterDot} />
+                <span>Otros ({otherChampionsTotal})</span>
               </button>
+            )}
 
-              {availableCosts.map((cost) => (
-                <button
-                  key={cost}
-                  type="button"
-                  className={`${style.filterPill} ${style.costFilterPill} ${getCostCardClass(cost)} ${Number(selectedCost) === cost ? style.filterPillActive : ""}`}
-                  onClick={() => setSelectedCost(String(cost))}
-                >
-                  <span className={style.costFilterDot} />
-                  <span>{cost}</span>
-                  <span className={style.coinDot} />
-                </button>
-              ))}
-
-              {otherChampionsTotal > 0 && (
-                <button
-                  type="button"
-                  className={`${style.filterPill} ${style.costFilterPill} ${style.cardCostOther} ${selectedCost === "other" ? style.filterPillActive : ""}`}
-                  onClick={() => setSelectedCost("other")}
-                >
-                  <span className={style.costFilterDot} />
-                  <span>Otros ({otherChampionsTotal})</span>
-                </button>
-              )}
-
-              <button
-                type="button"
-                className={`${style.filterPill} ${onlyUnlockable ? style.unlockToggleActive : ""}`}
-                onClick={() => setOnlyUnlockable((prev) => !prev)}
-              >
-                <UnlockIcon size={13} />
-                <span>Solo Desbloqueables ({unlockableTotal})</span>
-              </button>
-            </div>
-          )}
+            <button
+              type="button"
+              className={`${style.filterPill} ${onlyUnlockable ? style.unlockToggleActive : ""}`}
+              onClick={() => setOnlyUnlockable((prev) => !prev)}
+            >
+              <UnlockIcon size={13} />
+              <span>Solo Desbloqueables ({unlockableTotal})</span>
+            </button>
+          </div>
         </div>
-      )}
 
-      {/* VISTA 1: CAMPEONES (siempre en el HTML inicial para SEO; se alterna con CSS) */}
-      <section
-        id="panel-campeones"
-        role="tabpanel"
-        aria-label="Campeones Set 19"
-        className={activeTab !== "campeones" ? style.tabPanelHidden : ""}
-        aria-hidden={activeTab !== "campeones"}
-      >
         <div className={style.resultsInfo}>
           Mostrando <strong>{filteredChampions.length}</strong> de {champions.length} campeones del Set 19
         </div>
@@ -896,114 +994,30 @@ const Set19Catalogo = ({ champions = [], traits = [], encounters = [], itemsMap 
           )}
       </section>
 
-      {/* VISTA 2: SINERGIAS / RASGOS (siempre en el HTML inicial para SEO; se alterna con CSS) */}
-      <section
-        id="panel-sinergias"
-        role="tabpanel"
-        aria-label="Rasgos del Set 19"
-        className={activeTab !== "sinergias" ? style.tabPanelHidden : ""}
-        aria-hidden={activeTab !== "sinergias"}
-      >
-        <div className={style.resultsInfo}>
-          Mostrando <strong>{filteredTraits.length}</strong> de {traits.length} rasgos del Set 19
-        </div>
-
-          {filteredTraits.length === 0 ? (
-            <div className={style.emptyState}>
-              No se encontraron sinergias con ese criterio de búsqueda.
-            </div>
-          ) : (
-            <div className={style.traitsGrid}>
-              {filteredTraits.map((trait) => {
-                const linkedChamps = championsByTrait[trait.apiName] || [];
-                const traitHref = getTraitHref(trait);
-
-                return (
-                  <article
-                    key={trait.apiName}
-                    className={`${style.traitCard} ${style.clickableCard}`}
-                    onClick={(e) => handleCardNavigation(e, traitHref)}
-                  >
-                    <div className={style.traitCardHeader}>
-                      <div className={style.traitIconBox}>
-                        {trait.icon && (
-                          <img
-                            src={`/tft/sets/19/traits/${trait.icon}`}
-                            alt={trait.name}
-                            className={style.traitCardIcon}
-                            loading="lazy"
-                          />
-                        )}
-                      </div>
-
-                      <div className={style.traitCardTitleWrap}>
-                        <div className={style.traitCardNameRow}>
-                          <h2 className={style.traitCardName}>
-                            <a href={traitHref} className={style.cardTitleLink}>
-                              {trait.name}
-                            </a>
-                          </h2>
-                          {trait.name_EN && trait.name_EN.toLowerCase() !== trait.name.toLowerCase() && (
-                            <span className={style.traitCardNameEn}>({trait.name_EN})</span>
-                          )}
-                        </div>
-                        {Array.isArray(trait.effects) && trait.effects.length > 0 && (
-                          <div className={style.traitBreakpointsRow}>
-                            {trait.effects.map((eff, idx) => (
-                              <span
-                                key={`${trait.apiName}-bp-${idx}`}
-                                className={`${style.breakpointBadge} ${getBreakpointStyleClass(eff.style)}`}
-                              >
-                                {eff.minUnits}
-                              </span>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Descripción de la sinergia con HTML parseado (sin etiquetas en texto plano) */}
-                    <div className={style.traitDesc}>
-                      {renderFormattedText(trait.desc_trait || trait.desc)}
-                    </div>
-
-                    {/* Campeones que tienen esta sinergia */}
-                    {linkedChamps.length > 0 && (
-                      <div className={style.traitChampsList}>
-                        {linkedChamps.map((c) => (
-                          <a
-                            key={`${trait.apiName}-${c.apiName}`}
-                            href={getChampionHref(c)}
-                            className={`${style.traitMiniChamp} ${getCostCardClass(c.cost)}`}
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            <img
-                              src={`/tft/sets/19/champions/tileIcon/${c.tileIcon}`}
-                              alt={c.name}
-                              className={style.traitMiniChampImg}
-                              loading="lazy"
-                            />
-                            <span className={style.traitMiniChampName}>{c.name}</span>
-                          </a>
-                        ))}
-                      </div>
-                    )}
-                  </article>
-                );
-              })}
-            </div>
-          )}
-      </section>
-
-      {/* VISTA 3: ENCUENTROS (siempre en el HTML inicial para SEO; se alterna con CSS) */}
+      {/* SECCIÓN: ENCUENTROS */}
       {encounters.length > 0 && (
         <section
-          id="panel-encuentros"
-          role="tabpanel"
+          id="encuentros"
+          className={style.catalogSection}
           aria-label="Encuentros del Set 19"
-          className={activeTab !== "encuentros" ? style.tabPanelHidden : ""}
-          aria-hidden={activeTab !== "encuentros"}
         >
+          <div className={style.sectionHeadingBar}>
+            <h2 className={style.sectionHeadingTitle}>Encuentros</h2>
+            <span className={style.sectionHeadingCount}>{encounters.length}</span>
+          </div>
+
+          <div className={style.filtersPanel}>
+            <div className={style.filtersRow}>
+              <input
+                type="text"
+                className={style.searchInput}
+                placeholder="Buscar encuentro, campeón o efecto..."
+                value={encounterSearchQuery}
+                onChange={(e) => setEncounterSearchQuery(e.target.value)}
+              />
+            </div>
+          </div>
+
           <div className={style.resultsInfo}>
             Mostrando <strong>{filteredEncounters.length}</strong> de {encounters.length} encuentros del Set 19
           </div>
@@ -1052,6 +1066,50 @@ const Set19Catalogo = ({ champions = [], traits = [], encounters = [], itemsMap 
           )}
         </section>
       )}
+
+      {/* SECCIONES PERSONALIZADAS DE GALERÍA DE IMÁGENES 16:9 (Mecánicas, Cambios en Items, Aumentos) */}
+      {customTabs.map((tab) => (
+        <section
+          key={tab.id}
+          id={tab.id}
+          className={`${style.catalogSection} ${style.imageGallerySection}`}
+          aria-label={tab.label}
+        >
+          <div className={style.sectionHeadingBar}>
+            <h2 className={style.sectionHeadingTitle}>{tab.label}</h2>
+          </div>
+
+          {Array.isArray(tab.images) && tab.images.length > 0 ? (
+            <div className={style.imageGalleryList}>
+              {tab.images.map((item, idx) => {
+                const imgSrc = typeof item === "string" ? item : item?.src;
+                const imgAlt =
+                  typeof item === "string"
+                    ? `${tab.label} ${idx + 1}`
+                    : item?.alt || `${tab.label} ${idx + 1}`;
+                if (!imgSrc) return null;
+
+                return (
+                  <figure key={`${tab.id}-img-${idx}`} className={style.galleryImageCard}>
+                    <img
+                      src={imgSrc}
+                      alt={imgAlt}
+                      className={style.galleryImage}
+                      loading="eager"
+                      decoding="async"
+                    />
+                  </figure>
+                );
+              })}
+            </div>
+          ) : (
+            <div className={style.emptyState}>
+              Próximamente: agrega tus imágenes 16:9 en <strong>{tab.label}</strong> dentro de{" "}
+              <code>src/pages/tft/set/19.astro</code>.
+            </div>
+          )}
+        </section>
+      ))}
     </div>
   );
 };

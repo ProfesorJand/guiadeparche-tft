@@ -1012,6 +1012,41 @@
   border-color: var(--color-text-highlight);
 }
 
+.catalogSection {
+  margin-top: 32px;
+  padding-top: 12px;
+  scroll-margin-top: 140px;
+}
+
+.sectionHeadingBar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid rgba(var(--color-text-highlight-rgb, 56, 182, 255), 0.35);
+}
+
+.sectionHeadingTitle {
+  margin: 0;
+  font-size: 1.55rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.sectionHeadingCount {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: rgba(var(--color-text-highlight-rgb, 56, 182, 255), 0.16);
+  border: 1px solid rgba(var(--color-text-highlight-rgb, 56, 182, 255), 0.45);
+  color: var(--color-text-highlight, #38b6ff);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
 .traitMiniChampImg {
   width: 50px;
   height: 50px;
@@ -1075,6 +1110,21 @@
     justify-content: center;
     padding: 9px 14px;
     font-size: 0.88rem;
+  }
+
+  .catalogSection {
+    scroll-margin-top: 120px;
+    padding-bottom: 24px;
+    margin-bottom: 24px;
+  }
+
+  .sectionHeadingBar {
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+  }
+
+  .sectionHeadingTitle {
+    font-size: 1.25rem;
   }
 
   .imageGalleryList {
