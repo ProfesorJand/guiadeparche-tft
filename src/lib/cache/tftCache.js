@@ -197,10 +197,43 @@ export async function getConstantes() {
       }
     }
     
-    console.error("❌ Error fatal fetching constantes.json remotely después de 3 intentos:", lastError);
-    // Fallback seguro al caché en memoria si la petición falla
+    console.error("❌ Error fatal fetching constantes.php remotely después de 3 intentos:", lastError);
+
+    // Respaldo 1: intentar el archivo estático constantes.json en el servidor
+    try {
+      const staticRes = await fetch(`https://api.guiadeparche.com/tft/constantes.json`, {
+        headers: FETCH_HEADERS,
+        cache: "reload"
+      });
+      if (staticRes.ok) {
+        const staticData = await staticRes.json();
+        constantesCache = staticData;
+        constantesCacheTimestamp = Date.now();
+        console.warn("⚠️ Usando constantes.json remoto como respaldo.");
+        return constantesCache;
+      }
+    } catch (staticErr) {
+      console.warn("⚠️ Respaldo remoto constantes.json también falló:", staticErr.message);
+    }
+
+    // Respaldo 2: caché en memoria previo si existe
     if (constantesCache) return constantesCache;
-    throw lastError; // Solo falla el build si nunca se ha podido obtener datos
+
+    // Respaldo 3: archivo local src/data/constantes.json para no romper el build ante un 403 temporal del WAF
+    if (typeof window === 'undefined') {
+      try {
+        const filePath = path.join(process.cwd(), 'src/data/constantes.json');
+        const fileContent = await fs.readFile(filePath, 'utf-8');
+        constantesCache = JSON.parse(fileContent);
+        constantesCacheTimestamp = Date.now();
+        console.warn("⚠️ Usando src/data/constantes.json local como respaldo en build.");
+        return constantesCache;
+      } catch (localErr) {
+        console.warn("⚠️ No se pudo leer src/data/constantes.json local:", localErr.message);
+      }
+    }
+
+    throw lastError; // Solo falla el build si no hay ninguna fuente disponible
   })().finally(() => {
     fetchingConstantesPromise = null;
   });
@@ -236,7 +269,7 @@ export async function getValorantConstantes() {
 export async function getLastUpdateDate(tableName = 'composiciones_tft') {
   try {
     const url = `https://api.guiadeparche.com/tft/getLastUpdate.php?table=${tableName}`;
-    const response = await fetch(url, { cache: 'reload' });
+    const response = await fetch(url, { headers: FETCH_HEADERS, cache: 'reload' });
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
     
     const data = await response.json();
@@ -256,7 +289,9 @@ export async function getMetadata() {
 
   if (typeof window === 'undefined') {
     try {
-      const fileContent = await fetch('https://api.guiadeparche.com/tft/composMetaPBETest.json');
+      const fileContent = await fetch('https://api.guiadeparche.com/tft/composMetaPBETest.json', {
+        headers: FETCH_HEADERS,
+      });
       const data = await fileContent.json();
       metadataCache = data;
       return metadataCache;

@@ -1,15 +1,11 @@
 ---
 import NewsBar from '@components/navigation/NewsBar.jsx';
-import { getInitialNewsConfig } from '@stores/news';
 
 const pathname = Astro.url.pathname;
 const segments = pathname.split('/').filter(Boolean);
 
 // No mostrar migas de pan si estamos en la página de inicio (/)
 const showBreadcrumbs = segments.length > 0;
-
-// Cargar configuración inicial de la barra de noticias (cacheada durante build)
-const initialNews = await getInitialNewsConfig();
 
 const CUSTOM_LABELS: Record<string, string> = {
   'tft': 'TFT',
@@ -102,11 +98,11 @@ const breadcrumbs = segments.map((segment, index) => {
         </ol>
       </nav>
 
-      <NewsBar client:load initialConfig={initialNews} variant="inline" />
+      <NewsBar client:load variant="inline" />
     </div>
   </div>
 ) : (
-  <NewsBar client:load initialConfig={initialNews} variant="standalone" />
+  <NewsBar client:load variant="standalone" />
 )}
 
 <style>
