@@ -1,11 +1,48 @@
 import fs from 'fs/promises';
 import path from 'path';
 
-const FETCH_HEADERS = {
-  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+export const FETCH_HEADERS = {
+  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
   'Accept': 'application/json, text/plain, */*',
-  'Referer': 'https://guiadeparche.com/'
+  'Accept-Language': 'es-ES,es;q=0.9,en;q=0.8',
+  'Origin': 'https://guiadeparche.com',
+  'Referer': 'https://guiadeparche.com/',
+  ...(typeof process !== 'undefined' && (process.env?.BUILD_API_SECRET || process.env?.API_KEY)
+    ? { 'X-Build-Secret': process.env.BUILD_API_SECRET || process.env.API_KEY }
+    : {}),
 };
+
+async function fetchJsonWithRetry(url, { headers = FETCH_HEADERS, retries = 3, delayMs = 2000, label = url } = {}) {
+  let lastError;
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      const response = await fetch(url, {
+        headers,
+        cache: "reload",
+      });
+      if (!response.ok) {
+        const server = response.headers.get('server') || 'desconocido';
+        const cfRay = response.headers.get('cf-ray') || '';
+        let snippet = '';
+        try {
+          snippet = (await response.text()).replace(/\s+/g, ' ').trim().slice(0, 180);
+        } catch {
+          // ignorar
+        }
+        const detail = `HTTP ${response.status} [server=${server}${cfRay ? `, cf-ray=${cfRay}` : ''}]${snippet ? ` -> ${snippet}` : ''}`;
+        throw new Error(detail);
+      }
+      return await response.json();
+    } catch (err) {
+      lastError = err;
+      console.warn(`⚠️ Intento ${attempt}/${retries} falló al obtener ${label}:`, err.message);
+      if (attempt < retries) {
+        await new Promise((resolve) => setTimeout(resolve, delayMs * attempt));
+      }
+    }
+  }
+  throw lastError;
+}
 
 let composMetaPBECache = null;
 let composMetaCache = null;
@@ -62,12 +99,12 @@ export async function getComposFromDB() {
   if (composDBPBECache) return composDBPBECache;
 
   try {
-    const response = await fetch('https://api.guiadeparche.com/tft/composicionesBD.php', {
+    const result = await fetchJsonWithRetry('https://api.guiadeparche.com/tft/composicionesBD.php', {
       headers: FETCH_HEADERS,
-      cache: "reload"
+      retries: 3,
+      delayMs: 2500,
+      label: 'composicionesBD.php',
     });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const result = await response.json();
     
     const allComposArray = result.data || [];
     
@@ -169,32 +206,24 @@ export async function getConstantes() {
 
   fetchingConstantesPromise = (async () => {
     let lastError;
-    for (let attempt = 1; attempt <= 3; attempt++) {
-      try {
-        // Añadimos cache-busting (?_t=...) y cabeceras para que proxys intermedios entreguen el valor fresco
-        const url = `https://api.guiadeparche.com/tft/constantes.php?_t=${Date.now()}`;
-        const response = await fetch(url, {
-          headers: {
-            ...FETCH_HEADERS,
-            'Cache-Control': 'no-cache, no-store, must-revalidate',
-            'Pragma': 'no-cache',
-            'Expires': '0'
-          },
-          cache: "reload"
-        });
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        const data = await response.json();
-        constantesCache = data;
-        constantesCacheTimestamp = Date.now();
-        return constantesCache;
-      } catch (err) {
-        lastError = err;
-        console.warn(`⚠️ Intento ${attempt} falló al obtener constantes.json:`, err.message);
-        if (attempt < 3) {
-          // Esperar 2 segundos antes de reintentar
-          await new Promise(resolve => setTimeout(resolve, 2000));
-        }
-      }
+    try {
+      const url = `https://api.guiadeparche.com/tft/constantes.php?_t=${Date.now()}`;
+      const data = await fetchJsonWithRetry(url, {
+        headers: {
+          ...FETCH_HEADERS,
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        },
+        retries: 3,
+        delayMs: 2000,
+        label: 'constantes.php',
+      });
+      constantesCache = data;
+      constantesCacheTimestamp = Date.now();
+      return constantesCache;
+    } catch (err) {
+      lastError = err;
     }
     
     console.error("❌ Error fatal fetching constantes.php remotely después de 3 intentos:", lastError);
@@ -359,14 +388,13 @@ export async function getSetDataForBuild(setNumber) {
 
   let apiPayload = null;
   try {
-    const response = await fetch(`https://api.guiadeparche.com/tft/getDataTFT.php?set=${key}`, {
+    const json = await fetchJsonWithRetry(`https://api.guiadeparche.com/tft/getDataTFT.php?set=${key}`, {
       headers: FETCH_HEADERS,
-      cache: "reload"
+      retries: 2,
+      delayMs: 1500,
+      label: `getDataTFT.php?set=${key}`,
     });
-    if (response.ok) {
-      const json = await response.json();
-      apiPayload = json?.data || json;
-    }
+    apiPayload = json?.data || json;
   } catch (err) {
     console.warn(`⚠️ No se pudo obtener getDataTFT.php?set=${key}:`, err.message);
   }
