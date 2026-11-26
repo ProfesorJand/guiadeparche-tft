@@ -1,9 +1,15 @@
 ---
+import NewsBar from '@components/navigation/NewsBar.jsx';
+import { getInitialNewsConfig } from '@stores/news';
+
 const pathname = Astro.url.pathname;
 const segments = pathname.split('/').filter(Boolean);
 
 // No mostrar migas de pan si estamos en la página de inicio (/)
 const showBreadcrumbs = segments.length > 0;
+
+// Cargar configuración inicial de la barra de noticias (cacheada durante build)
+const initialNews = await getInitialNewsConfig();
 
 const CUSTOM_LABELS: Record<string, string> = {
   'tft': 'TFT',
@@ -51,50 +57,56 @@ const breadcrumbs = segments.map((segment, index) => {
 });
 ---
 
-{showBreadcrumbs && (
-  <nav aria-label="Migas de pan" class="breadcrumbsBar">
+{showBreadcrumbs ? (
+  <div class="breadcrumbsBar">
     <div class="breadcrumbsContent">
-      <ol class="breadcrumbsList" itemscope itemtype="https://schema.org/BreadcrumbList">
-        {breadcrumbs.map((item, index) => (
-          <li
-            class="breadcrumbItem"
-            itemprop="itemListElement"
-            itemscope
-            itemtype="https://schema.org/ListItem"
-          >
-            {!item.isLast ? (
-              <a href={item.url} itemprop="item" class="breadcrumbLink">
-                <span itemprop="name">{item.label}</span>
-              </a>
-            ) : (
-              <span class="breadcrumbCurrent" itemprop="name" aria-current="page">
-                {item.label}
-              </span>
-            )}
-            <meta itemprop="position" content={String(item.position)} />
+      <nav aria-label="Migas de pan" class="breadcrumbsNav">
+        <ol class="breadcrumbsList" itemscope itemtype="https://schema.org/BreadcrumbList">
+          {breadcrumbs.map((item) => (
+            <li
+              class="breadcrumbItem"
+              itemprop="itemListElement"
+              itemscope
+              itemtype="https://schema.org/ListItem"
+            >
+              {!item.isLast ? (
+                <a href={item.url} itemprop="item" class="breadcrumbLink">
+                  <span itemprop="name">{item.label}</span>
+                </a>
+              ) : (
+                <span class="breadcrumbCurrent" itemprop="name" aria-current="page">
+                  {item.label}
+                </span>
+              )}
+              <meta itemprop="position" content={String(item.position)} />
 
-            {!item.isLast && (
-              <span class="breadcrumbSeparator" aria-hidden="true">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <polyline points="9 18 15 12 9 6"></polyline>
-                </svg>
-              </span>
-            )}
-          </li>
-        ))}
-      </ol>
+              {!item.isLast && (
+                <span class="breadcrumbSeparator" aria-hidden="true">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
+                </span>
+              )}
+            </li>
+          ))}
+        </ol>
+      </nav>
+
+      <NewsBar client:load initialConfig={initialNews} variant="inline" />
     </div>
-  </nav>
+  </div>
+) : (
+  <NewsBar client:load initialConfig={initialNews} variant="standalone" />
 )}
 
 <style>
@@ -107,7 +119,8 @@ const breadcrumbs = segments.map((segment, index) => {
     background-image: radial-gradient(circle, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
     background-size: 8px 8px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-    padding: 0.55rem 1.5rem;
+    padding: 0.45rem 1.5rem;
+    position: -webkit-sticky;
     position: sticky;
     top: var(--height-header, 8vh);
     z-index: 8;
@@ -118,6 +131,16 @@ const breadcrumbs = segments.map((segment, index) => {
     margin: 0 auto !important;
     display: flex;
     align-items: center;
+    gap: 1rem;
+  }
+
+  .breadcrumbsNav {
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+
+  .breadcrumbsContent :global(astro-island) {
+    display: contents;
   }
 
   ol.breadcrumbsList,
@@ -186,6 +209,7 @@ const breadcrumbs = segments.map((segment, index) => {
     align-items: center;
     color: rgba(255, 255, 255, 0.25);
     user-select: none;
+    -webkit-user-select: none;
   }
 
   .breadcrumbSeparator svg {
@@ -194,9 +218,19 @@ const breadcrumbs = segments.map((segment, index) => {
     height: 13px;
   }
 
-  @media (max-width: 768px) {
+  @media only screen and (max-width: 900px) {
     .breadcrumbsBar {
-      padding: 0.45rem 1rem;
+      padding: 0.4rem 0.75rem;
+    }
+
+    .breadcrumbsContent {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.45rem;
+    }
+
+    .breadcrumbsNav {
+      max-width: 100%;
     }
 
     .breadcrumbItem {
@@ -206,7 +240,7 @@ const breadcrumbs = segments.map((segment, index) => {
 
     .breadcrumbLink,
     .breadcrumbCurrent {
-      padding: 0.15rem 0.3rem;
+      padding: 0.15rem 0.35rem;
     }
   }
 </style>
