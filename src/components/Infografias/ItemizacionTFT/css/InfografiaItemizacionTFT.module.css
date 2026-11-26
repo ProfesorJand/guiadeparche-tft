@@ -1,0 +1,606 @@
+/* Estilos del generador de Infografía de Itemización de Campeones TFT - Guiadeparche */
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Panel de controles (fuera de la captura PNG) */
+.controlsPanel {
+  background: rgba(12, 16, 36, 0.85);
+  border: 1px solid rgba(123, 97, 255, 0.35);
+  border-radius: 14px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.controlsRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.controlGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.controlLabel {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.pillGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pillBtn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #cbd5e1;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.pillBtn:hover {
+  border-color: rgba(56, 182, 255, 0.55);
+  color: #ffffff;
+}
+
+.pillBtnActive {
+  background: rgba(56, 182, 255, 0.2);
+  border-color: #38b6ff;
+  color: #38b6ff;
+  box-shadow: 0 0 10px rgba(56, 182, 255, 0.25);
+}
+
+.textInput {
+  background: #0d1224;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+  padding: 7px 11px;
+  border-radius: 8px;
+  font-size: 0.86rem;
+  font-family: inherit;
+  min-width: 210px;
+  outline: none;
+}
+
+.textInput:focus {
+  border-color: #38b6ff;
+}
+
+.textInputSmall {
+  min-width: 110px;
+  max-width: 140px;
+}
+
+.checkboxLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  color: #e2e8f0;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 5px 10px;
+  border-radius: 8px;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.checkboxLabel input {
+  accent-color: #38b6ff;
+  cursor: pointer;
+}
+
+.downloadBtn {
+  margin-left: auto;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 800;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35);
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.downloadBtn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+}
+
+.downloadBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.champFilterBox {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.champChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.champChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.04);
+  color: #94a3b8;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.champChipActive {
+  border-color: rgba(56, 182, 255, 0.55);
+  background: rgba(56, 182, 255, 0.16);
+  color: #f8fafc;
+}
+
+/* Marco de vista previa con scroll horizontal seguro en pantallas pequeñas */
+.previewStage {
+  width: 100%;
+  overflow-x: auto;
+  display: flex;
+  justify-content: center;
+  padding: 10px 0 18px;
+}
+
+/* ==========================================================================
+   LIENZO CAPTURABLE DE LA INFOGRAFÍA (IDENTIDAD VISUAL GUIADEPARCHE)
+   ========================================================================== */
+.canvas {
+  width: 1080px;
+  min-width: 1080px;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 24px 26px 18px;
+  gap: 14px;
+  background: radial-gradient(circle at 12% 0%, var(--cost-glow, rgba(123, 97, 255, 0.28)) 0%, transparent 45%),
+              radial-gradient(circle at 90% 100%, rgba(56, 182, 255, 0.18) 0%, transparent 42%),
+              linear-gradient(165deg, #090d1e 0%, #10152b 52%, #090c1a 100%);
+  color: #f8fafc;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.ratio45 {
+  min-height: 1350px;
+}
+
+.ratio11 {
+  min-height: 1080px;
+}
+
+.ratio916 {
+  min-height: 1920px;
+}
+
+.ratioAuto {
+  min-height: auto;
+}
+
+/* Header de la Infografía */
+.canvasHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 22px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(25, 31, 60, 0.92) 0%, rgba(16, 20, 42, 0.88) 100%);
+  border: 1px solid var(--cost-border, rgba(168, 85, 247, 0.45));
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.headerLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.headerMeta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #7dd3fc;
+}
+
+.costTag {
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: var(--cost-badge-bg, rgba(168, 85, 247, 0.25));
+  border: 1px solid var(--cost-border, rgba(168, 85, 247, 0.6));
+  color: #ffffff;
+  font-size: 12px;
+}
+
+.canvasTitle {
+  margin: 0;
+  font-family: 'ObvioslyWideBold', 'Inter', sans-serif;
+  font-size: 32px;
+  line-height: 1.08;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #ffffff;
+  text-shadow: 0 3px 12px rgba(0, 0, 0, 0.65);
+  text-align: left;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.brandPill {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.brandDomain {
+  font-family: 'ObvioslyWideBold', 'Inter', sans-serif;
+  font-size: 15px;
+  color: #38b6ff;
+  letter-spacing: 0.04em;
+}
+
+.brandSub {
+  font-size: 11px;
+  color: #cbd5e1;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.headerIcon {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 8px rgba(56, 182, 255, 0.35));
+}
+
+/* Cuerpo de la tabla */
+.tableContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.tableHeaderRow,
+.champRow {
+  display: grid;
+  grid-template-columns: 230px 150px 262px 104px 146px 104px;
+  align-items: center;
+  gap: 6px;
+}
+
+.tableHeaderRowNoRole,
+.champRowNoRole {
+  grid-template-columns: 190px 156px 282px 110px 152px 106px;
+}
+
+.tableHeaderRow {
+  padding: 6px 10px 8px;
+}
+
+.colHead {
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  text-align: center;
+  padding-bottom: 6px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  color: #e2e8f0;
+}
+
+.colHeadChamp {
+  text-align: left;
+  border-bottom-color: #7b61ff;
+}
+
+.colHeadBis {
+  border-bottom-color: #22c55e;
+  color: #86efac;
+}
+
+.colHeadAlt {
+  border-bottom-color: #38b6ff;
+  color: #7dd3fc;
+}
+
+.colHeadRad {
+  border-bottom-color: #facc15;
+  color: #fde047;
+}
+
+.colHeadArt {
+  border-bottom-color: #fb923c;
+  color: #fdba74;
+}
+
+.colHeadEmb {
+  border-bottom-color: #c084fc;
+  color: #e9d5ff;
+}
+
+/* Filas de campeones */
+.champRow {
+  background: rgba(15, 22, 46, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 6px 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
+}
+
+.champRowAlt {
+  background: rgba(21, 29, 58, 0.82);
+}
+
+.champCell {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+
+.champAvatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 2px solid var(--cost-border, #a855f7);
+  background: #0b1020;
+}
+
+.champIdentity {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.champName {
+  font-size: 14px;
+  font-weight: 800;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.roleBadge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 5px;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.roleTank {
+  background: rgba(34, 197, 94, 0.22);
+  border: 1px solid rgba(34, 197, 94, 0.5);
+  color: #86efac;
+}
+
+.roleFighter {
+  background: rgba(239, 68, 68, 0.22);
+  border: 1px solid rgba(239, 68, 68, 0.5);
+  color: #fca5a5;
+}
+
+.roleAssassin {
+  background: rgba(99, 102, 241, 0.25);
+  border: 1px solid rgba(129, 140, 248, 0.55);
+  color: #c7d2fe;
+}
+
+.roleCaster {
+  background: rgba(168, 85, 247, 0.22);
+  border: 1px solid rgba(192, 132, 252, 0.5);
+  color: #e9d5ff;
+}
+
+.roleMarksman {
+  background: rgba(245, 158, 11, 0.22);
+  border: 1px solid rgba(251, 191, 36, 0.5);
+  color: #fde68a;
+}
+
+.roleSpecialist {
+  background: rgba(56, 189, 248, 0.22);
+  border: 1px solid rgba(56, 189, 248, 0.5);
+  color: #bae6fd;
+}
+
+.roleDefault {
+  background: rgba(148, 163, 184, 0.2);
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  color: #e2e8f0;
+}
+
+/* Celdas de ítems */
+.itemsGroup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 3px 4px;
+  border-radius: 7px;
+  background: rgba(5, 8, 20, 0.45);
+  min-height: 44px;
+}
+
+.itemsGroupBis {
+  background: rgba(34, 197, 94, 0.08);
+  border: 1px solid rgba(34, 197, 94, 0.24);
+}
+
+.itemIconBox {
+  width: 38px;
+  height: 38px;
+  border-radius: 6px;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: #0a0f1f;
+}
+
+.itemIconBoxBis {
+  width: 42px;
+  height: 42px;
+  border-color: rgba(74, 222, 128, 0.55);
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.22);
+}
+
+.itemIconBoxRad {
+  width: 34px;
+  height: 34px;
+  border-color: rgba(250, 204, 21, 0.7);
+  box-shadow: 0 0 8px rgba(250, 204, 21, 0.3);
+}
+
+.itemIconBoxArt {
+  width: 34px;
+  height: 34px;
+  border-color: rgba(251, 146, 60, 0.65);
+}
+
+.itemIconBoxEmb {
+  width: 34px;
+  height: 34px;
+  border-color: rgba(192, 132, 252, 0.65);
+}
+
+.itemIconImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.emptySlotDash {
+  font-size: 12px;
+  color: rgba(148, 163, 184, 0.35);
+  font-weight: 700;
+}
+
+/* Estado vacío */
+.emptyCanvasNotice {
+  padding: 60px 24px;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  border: 1px dashed rgba(255, 255, 255, 0.16);
+}
+
+/* Footer de logos Guiadeparche */
+.canvasFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 20px;
+  height: 76px;
+  padding: 8px 18px;
+  border-radius: 12px;
+  background: rgba(6, 9, 22, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-sizing: border-box;
+}
+
+.footerLogoSlot {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.footerLogoImg {
+  max-height: 56px;
+  max-width: 190px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.6));
+}
+
+@media only screen and (max-width: 900px) {
+  .controlsPanel {
+    padding: 12px;
+  }
+
+  .textInput {
+    font-size: 16px;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .downloadBtn {
+    width: 100%;
+    margin-left: 0;
+    justify-content: center;
+  }
+
+  .previewStage {
+    justify-content: flex-start;
+  }
+}

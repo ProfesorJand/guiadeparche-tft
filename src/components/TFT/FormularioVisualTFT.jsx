@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import style from "./master-plan/css/InfografiaMPTFT.module.css";
 import styleForm from "./css/FormularioCrearCompoTFT.module.css";
-import { dataTFTAllAugments, dataTFTAllItems, dataTFTChampions, dataTFTTraits, versionTFT, swapVersionTFT, setNumberLatest, setNumberPBE } from "@stores/dataTFT";
+import { dataTFTAllAugments, dataTFTAllItems, dataTFTChampions, dataTFTTraits, versionTFT, swapVersionTFT, setNumberLatest, setNumberPBE, AllCraftableItems } from "@stores/dataTFT";
+import { $itemizacionPorSet, loadItemizacionBySet, syncItemizacionFromComp } from "@stores/tft/itemizacionCampeones";
+import { buildCraftableApiSet, deriveMejoresItemsFromBestBuild, filterDeletedCombosFromBestBuild, findChampionItemizacion, normalizeTriplet } from "@utils/tftItemClassifier";
 import { useStore } from "@nanostores/react";
 import ImgItem from "./ImgItem";
 import CampeonesNivel from "./elementosInfografia/CampeonesNivel";
@@ -1613,12 +1615,30 @@ const PosicionamientoVisual = () => {
 
 const BestBuildYMejoresItemsVisual = () => {
   const comp = useStore(datosCompos);
+  const currentVersion = useStore(versionTFT);
   const allChampionsTFT = useStore(dataTFTChampions);
   const allItemsTFT = useStore(dataTFTAllItems);
+  const itemizacionPorSet = useStore($itemizacionPorSet);
+  const targetSet = String(currentVersion === "pbe" ? setNumberPBE : setNumberLatest);
+  const setItemizacionMap = itemizacionPorSet?.[targetSet] || {};
   const bestBuild = comp.bestBuild || [];
 
-  // En lugar de usar mejoresItems del store para Artefactos etc, los guardaremos en la DB, pero necesitamos el estado para el formulario
-  // El store actual tiene mejoresItems { Artefactos: [], Radiantes: [], Emblemas: [], Especiales: [] }
+  const craftableApiSet = buildCraftableApiSet(allItemsTFT || [], AllCraftableItems(allItemsTFT || []));
+
+  // Recalcula `mejoresItems` (Artefactos, Radiantes, Emblemas, Especiales) estrictamente a partir
+  // de las combinaciones activas en `bestBuild` para esta composición (evita indicadores fantasma al quitar filas)
+  const commitBestBuild = (newBestBuild) => {
+    const derivedMejoresItems = deriveMejoresItemsFromBestBuild(
+      newBestBuild,
+      allItemsTFT || [],
+      craftableApiSet
+    );
+    actualizarComposicionTFT({
+      bestBuild: newBestBuild,
+      mejoresItems: derivedMejoresItems
+    });
+  };
+
   const mejoresItems = comp.mejoresItems || {
     Artefactos: [],
     Radiantes: [],
@@ -1637,16 +1657,12 @@ const BestBuildYMejoresItemsVisual = () => {
       apiNameItemsBisDelCampeon: [["", "", ""]],
       apiNameItemsSpecialBisDelCampeon: [["", "", ""]]
     });
-    actualizarComposicionTFT({
-      bestBuild: newBestBuild
-    });
+    commitBestBuild(newBestBuild);
   };
   const removeBestBuildRow = index => {
     const newBestBuild = [...bestBuild];
     newBestBuild.splice(index, 1);
-    actualizarComposicionTFT({
-      bestBuild: newBestBuild
-    });
+    commitBestBuild(newBestBuild);
   };
   const moveBestBuildRow = (index, direction) => {
     const newBestBuild = [...bestBuild];
@@ -1658,69 +1674,74 @@ const BestBuildYMejoresItemsVisual = () => {
   };
   const moveItemsRowInBestBuild = (rowIndex, type, listIdx, direction) => {
     const newBestBuild = [...bestBuild];
-    const itemsList = newBestBuild[rowIndex][type];
+    const itemsList = [...(newBestBuild[rowIndex][type] || [])];
     if (listIdx + direction < 0 || listIdx + direction >= itemsList.length) return;
     const temp = itemsList[listIdx];
     itemsList[listIdx] = itemsList[listIdx + direction];
     itemsList[listIdx + direction] = temp;
+    newBestBuild[rowIndex] = { ...newBestBuild[rowIndex], [type]: itemsList };
     actualizarComposicionTFT({ bestBuild: newBestBuild });
   };
   const updateBestBuildChamp = (index, apiName) => {
     const newBestBuild = [...bestBuild];
-    newBestBuild[index].apiNameCampeon = apiName;
-    actualizarComposicionTFT({
-      bestBuild: newBestBuild
-    });
+    const dbRecord = apiName ? findChampionItemizacion(setItemizacionMap, apiName) : null;
 
-    // Si queremos sincronizar automáticamente el campeón a mejoresItems:
-    if (apiName) {
-      const newMejoresItems = {
-        ...mejoresItems
-      };
-      ["Artefactos", "Radiantes", "Emblemas", "Especiales"].forEach(cat => {
-        // Asegurar que exista el array
-        if (!newMejoresItems[cat]) newMejoresItems[cat] = [];
-        // Ver si ya existe este campeón en esta categoría
-        if (!newMejoresItems[cat].find(c => c.apiNameCampeon === apiName)) {
-          newMejoresItems[cat].push({
-            apiNameCampeon: apiName,
-            apiNameItemsDelCampeon: []
-          });
-        }
-      });
-      handleMejoresItemsUpdate(newMejoresItems);
-    }
+    const autoBis =
+      dbRecord && Array.isArray(dbRecord.bis) && dbRecord.bis.length > 0
+        ? dbRecord.bis.map((r) => normalizeTriplet(r))
+        : [["", "", ""]];
+    const autoSpecial =
+      dbRecord && Array.isArray(dbRecord.special_bis) && dbRecord.special_bis.length > 0
+        ? dbRecord.special_bis.map((r) => normalizeTriplet(r))
+        : [["", "", ""]];
+
+    newBestBuild[index] = {
+      ...newBestBuild[index],
+      apiNameCampeon: apiName,
+      apiNameItemsBisDelCampeon: apiName ? autoBis : [["", "", ""]],
+      apiNameItemsSpecialBisDelCampeon: apiName ? autoSpecial : [["", "", ""]]
+    };
+
+    commitBestBuild(newBestBuild);
+  };
+  const restoreBestBuildFromDb = (index) => {
+    const champApi = bestBuild[index]?.apiNameCampeon;
+    if (!champApi) return;
+    updateBestBuildChamp(index, champApi);
   };
   const updateBestBuildItem = (rowIndex, type, listIdx, itemIndex, itemApiName) => {
     const newBestBuild = [...bestBuild];
-    if (!newBestBuild[rowIndex][type]) newBestBuild[rowIndex][type] = [["", "", ""]];
-    const newItemsList = [...newBestBuild[rowIndex][type]];
-    const newItems = [...newItemsList[listIdx]];
-    newItems[itemIndex] = itemApiName;
-    if (itemApiName === "") newItems.splice(itemIndex, 1, "");
-    newItemsList[listIdx] = newItems;
-    newBestBuild[rowIndex][type] = newItemsList;
-    actualizarComposicionTFT({
-      bestBuild: newBestBuild
-    });
+    const currentRows = newBestBuild[rowIndex][type] || [["", "", ""]];
+    const newItemsList = currentRows.map((r) => [...r]);
+    if (!newItemsList[listIdx]) newItemsList[listIdx] = ["", "", ""];
+    newItemsList[listIdx][itemIndex] = itemApiName || "";
+    newBestBuild[rowIndex] = {
+      ...newBestBuild[rowIndex],
+      [type]: newItemsList
+    };
+    commitBestBuild(newBestBuild);
   };
   const addItemsRowToBestBuild = (rowIndex, type) => {
     const newBestBuild = [...bestBuild];
-    if (!newBestBuild[rowIndex][type]) newBestBuild[rowIndex][type] = [["", "", ""]];
-    newBestBuild[rowIndex][type].push(["", "", ""]);
+    const currentRows = newBestBuild[rowIndex][type] || [["", "", ""]];
+    newBestBuild[rowIndex] = {
+      ...newBestBuild[rowIndex],
+      [type]: [...currentRows, ["", "", ""]]
+    };
     actualizarComposicionTFT({
       bestBuild: newBestBuild
     });
   };
   const removeItemsRowFromBestBuild = (rowIndex, type, listIdx) => {
     const newBestBuild = [...bestBuild];
-    newBestBuild[rowIndex][type].splice(listIdx, 1);
-    if (newBestBuild[rowIndex][type].length === 0) {
-      newBestBuild[rowIndex][type].push(["", "", ""]);
-    }
-    actualizarComposicionTFT({
-      bestBuild: newBestBuild
-    });
+    const nextRows = [...(newBestBuild[rowIndex][type] || [])];
+    nextRows.splice(listIdx, 1);
+    newBestBuild[rowIndex] = {
+      ...newBestBuild[rowIndex],
+      [type]: nextRows.length > 0 ? nextRows : [["", "", ""]]
+    };
+    // Solo se remueve en esta composición (NO borra de la BD global) y recalcula Extra Items / indicadores
+    commitBestBuild(newBestBuild);
   };
   const updateMejoresItems = (cat, champApiName, itemsArr) => {
     const newMejoresItems = {
@@ -1843,14 +1864,24 @@ const BestBuildYMejoresItemsVisual = () => {
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', justifyContent: 'center' }}>
                   <button onClick={() => moveBestBuildRow(rowIndex, -1)} style={{ background: '#333', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', padding: '2px 8px' }}>↑</button>
+                  {build.apiNameCampeon && (
+                    <button
+                      type="button"
+                      onClick={() => restoreBestBuildFromDb(rowIndex)}
+                      title="Recargar todas las combinaciones BIS y Especiales de este campeón desde la BD"
+                      style={{ background: '#0e7490', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', padding: '2px 6px', fontSize: '11px' }}
+                    >
+                      🔄
+                    </button>
+                  )}
                   <button onClick={() => removeBestBuildRow(rowIndex)} className={localStyle.styleBox66} style={{ margin: 0 }}>X</button>
                   <button onClick={() => moveBestBuildRow(rowIndex, 1)} style={{ background: '#333', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', padding: '2px 8px' }}>↓</button>
                 </div>
               </div>
 
-              {/* Extras (Artefactos, Radiantes, Emblemas, Especiales) para este campeón */}
+              {/* Extras (Artefactos, Radiantes, Emblemas, Especiales) auto-detectados desde Mejores Builds */}
               {build.apiNameCampeon && <div className={localStyle.styleBox67}>
-                  <p className={localStyle.styleBox68}>Extra Items (se guardarán en BD independiente)</p>
+                  <p className={localStyle.styleBox68}>Extra Items (auto-completados desde BIS Especiales — solo los activos en esta composición)</p>
                   <div className={localStyle.styleBox69}>
                     {["Artefactos", "Radiantes", "Emblemas", "Especiales"].map(cat => {
                 const catData = mejoresItems[cat]?.find(c => c.apiNameCampeon === build.apiNameCampeon);
@@ -1943,7 +1974,27 @@ export default function FormularioVisualTFT({
 
   useEffect(() => {
     fetchGruposSalidasEarly();
-  }, [targetSet]);
+    loadItemizacionBySet(targetSet, true).then((freshMap) => {
+      if (!compo?.id || !freshMap) return;
+      const currentComp = datosCompos.get();
+      if (!Array.isArray(currentComp?.bestBuild) || currentComp.bestBuild.length === 0) return;
+
+      const filtered = filterDeletedCombosFromBestBuild(currentComp.bestBuild, freshMap).map((b) => ({
+        ...b,
+        apiNameItemsBisDelCampeon: b.apiNameItemsBisDelCampeon?.length ? b.apiNameItemsBisDelCampeon : [["", "", ""]],
+        apiNameItemsSpecialBisDelCampeon: b.apiNameItemsSpecialBisDelCampeon?.length ? b.apiNameItemsSpecialBisDelCampeon : [["", "", ""]],
+      }));
+
+      if (JSON.stringify(filtered) !== JSON.stringify(currentComp.bestBuild)) {
+        const allItemsNow = dataTFTAllItems.get() || [];
+        const craftableSet = buildCraftableApiSet(allItemsNow, AllCraftableItems(allItemsNow));
+        actualizarComposicionTFT({
+          bestBuild: filtered,
+          mejoresItems: deriveMejoresItemsFromBestBuild(filtered, allItemsNow, craftableSet),
+        });
+      }
+    });
+  }, [targetSet, compo?.id]);
 
   useEffect(() => {
     if (Object.keys(compo).length) {
@@ -2003,11 +2054,20 @@ export default function FormularioVisualTFT({
           };
         }) : []),
         dioses: compo.dioses || [],
-        bestBuild: compo.bestBuild?.map(b => ({
-          apiNameCampeon: b.apiNameCampeon,
-          apiNameItemsBisDelCampeon: b.apiNameItemsBisDelCampeon || (b.apiNameItemsDelCampeon ? [b.apiNameItemsDelCampeon.slice(0, 3)] : [["", "", ""]]),
-          apiNameItemsSpecialBisDelCampeon: b.apiNameItemsSpecialBisDelCampeon || [["", "", ""]]
-        })) || [],
+        bestBuild: (() => {
+          const compSetKey = String(compo.set_number || targetSet);
+          const setMap = ($itemizacionPorSet.get() || {})[compSetKey] || {};
+          const rawBest = compo.bestBuild?.map(b => ({
+            apiNameCampeon: b.apiNameCampeon,
+            apiNameItemsBisDelCampeon: b.apiNameItemsBisDelCampeon || (b.apiNameItemsDelCampeon ? [b.apiNameItemsDelCampeon.slice(0, 3)] : [["", "", ""]]),
+            apiNameItemsSpecialBisDelCampeon: b.apiNameItemsSpecialBisDelCampeon || [["", "", ""]]
+          })) || [];
+          return filterDeletedCombosFromBestBuild(rawBest, setMap).map(b => ({
+            ...b,
+            apiNameItemsBisDelCampeon: b.apiNameItemsBisDelCampeon?.length ? b.apiNameItemsBisDelCampeon : [["", "", ""]],
+            apiNameItemsSpecialBisDelCampeon: b.apiNameItemsSpecialBisDelCampeon?.length ? b.apiNameItemsSpecialBisDelCampeon : [["", "", ""]]
+          }));
+        })(),
         condiciones: compo.condiciones || compo.condicion || [],
         condicion: compo.condicion || [],
         aumentos: compo.aumentos?.every(item => typeof item === 'object') ? compo.aumentos.map(aument => {
@@ -2098,6 +2158,14 @@ export default function FormularioVisualTFT({
         body: JSON.stringify(payload)
       });
       const result = await response.json();
+
+      // Sincronizar nuevas combinaciones de 3 ítems hacia la BD de Itemización de Campeones (solo upsert, nunca borra)
+      try {
+        await syncItemizacionFromComp(targetSet, payload.bestBuild || []);
+      } catch (syncErr) {
+        console.warn("No se pudo sincronizar itemización de campeones desde la composición:", syncErr);
+      }
+
       alert("Composición guardada exitosamente: " + (result.message || ""));
     } catch (error) {
       alert("Error al guardar la composición: " + error.message);

@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect, useMemo } from "react";
 import style from "./css/InfografiaMPTFT.module.css";
-import { dataTFTAllAugments, dataTFTAllItems, dataTFTChampions,dataTFTTraits,teamPlannerCode,setMutatorPBE,setMutatorLatest,versionTFT, buildTeamPlannerCode } from "@stores/dataTFT";
+import { dataTFTAllAugments, dataTFTAllItems, dataTFTChampions, dataTFTTraits, teamPlannerCode, setMutatorPBE, setMutatorLatest, versionTFT, buildTeamPlannerCode, setNumberPBE, setNumberLatest, AllCraftableItems } from "@stores/dataTFT";
+import { $itemizacionPorSet, loadItemizacionBySet } from "@stores/tft/itemizacionCampeones";
+import { buildCraftableApiSet, deriveMejoresItemsFromBestBuild, filterDeletedCombosFromBestBuild } from "@utils/tftItemClassifier";
 import { useStore } from "@nanostores/react";
 import Sinergias from "@components/main/Admin/Sinergias";
 import ImgItem from "@components/TFT/ImgItem";
@@ -20,8 +22,40 @@ const InfografiaMPTFT = ({comp = {}, gruposSalidasEarly = []}) => {
   const AllAugments = useStore(dataTFTAllAugments);
   const AllTraits = useStore(dataTFTTraits);
   const codeOfChampions = useStore(teamPlannerCode);
-  const currentVersion = useStore(versionTFT)
+  const currentVersion = useStore(versionTFT);
+  const itemizacionPorSet = useStore($itemizacionPorSet);
   const [hoveredItemApiName, setHoveredItemApiName] = useState(null);
+
+  const compSetNumber = String(
+    comp?.set_number ||
+    (comp?.version === "pbe" ? setNumberPBE : comp?.version === "latest" ? setNumberLatest : currentVersion === "pbe" ? setNumberPBE : setNumberLatest)
+  );
+
+  useEffect(() => {
+    if (compSetNumber) {
+      loadItemizacionBySet(compSetNumber);
+    }
+  }, [compSetNumber]);
+
+  const setItemizacionMap = itemizacionPorSet?.[compSetNumber] || {};
+
+  // Filtrar en vivo cualquier combinación de 3 ítems eliminada desde "Itemizacion Campeones"
+  const filteredBestBuild = useMemo(() => {
+    return filterDeletedCombosFromBestBuild(comp?.bestBuild || [], setItemizacionMap);
+  }, [comp?.bestBuild, setItemizacionMap]);
+
+  // Recalcular "Mejores Objetos de la Composición" estrictamente desde las combinaciones activas en esta composición
+  const effectiveMejoresItems = useMemo(() => {
+    const craftableSet = buildCraftableApiSet(AllItems || [], AllCraftableItems(AllItems || []));
+    const derived = deriveMejoresItemsFromBestBuild(filteredBestBuild, AllItems || [], craftableSet);
+    const hasDerived = Object.values(derived).some((arr) => arr.length > 0);
+    const hasFilteredChanges = JSON.stringify(filteredBestBuild) !== JSON.stringify(comp?.bestBuild || []);
+
+    if (hasDerived || hasFilteredChanges) {
+      return derived;
+    }
+    return comp?.mejoresItems || {};
+  }, [filteredBestBuild, comp?.bestBuild, comp?.mejoresItems, AllItems]);
 
   const handleBestItemHelper = (apiName, action) => {
     if (action === "show") {
@@ -356,13 +390,18 @@ const InfografiaMPTFT = ({comp = {}, gruposSalidasEarly = []}) => {
     )
   }
   const MejoresItems = ()=>{
+    const categories = Object.keys(effectiveMejoresItems || {}).filter((key) =>
+      (effectiveMejoresItems?.[key] || []).some((d) => (d?.apiNameItemsDelCampeon || []).length > 0)
+    );
+    if (categories.length === 0) return null;
+
     return (
       <div className={`${style.cBoxTitleInfo} ${style.cBestItemComp}`}>
         <span className={style.tBox}>Mejores Objetos de la Composición</span>
         <div className={style.cBestItemCompInfo}>
           {
-            Object.keys(comp?.mejoresItems || {}).map((key, index)=>{
-              const allItemApiNames = (comp?.mejoresItems?.[key] || [])
+            categories.map((key, index)=>{
+              const allItemApiNames = (effectiveMejoresItems?.[key] || [])
                 .flatMap(data => data?.apiNameItemsDelCampeon || []);
               const uniqueItems = [...new Set(allItemApiNames)];
 
@@ -395,32 +434,31 @@ const InfografiaMPTFT = ({comp = {}, gruposSalidasEarly = []}) => {
       <div className={`${style.cBoxTitleInfo} ${style.cBestItems}`}>
         <span className={style.tBox}>Mejores Builds</span>
         <div className={style.cBestItemsInfo}>
-          {(comp?.bestBuild || []).map((info, index) => {
-              const itemsData = (info?.apiNameItemsBisDelCampeon || []).map((itemsName) => {
-                
-                const infoItems = (itemsName || []).map((itemName)=>AllItems.find(i => i.apiName === itemName))
-                return infoItems
-              });
-              const itemsDataSpecial = (info?.apiNameItemsSpecialBisDelCampeon || []).map((itemsName) => {
-                const infoItems = (itemsName || []).map((itemName)=>AllItems.find(i => i.apiName === itemName))
-                return infoItems
-              });
+          {filteredBestBuild.map((info, index) => {
+              const itemsData = (info?.apiNameItemsBisDelCampeon || [])
+                .map((itemsName) => (itemsName || []).map((itemName)=>AllItems.find(i => i.apiName === itemName)).filter(Boolean))
+                .filter((arr) => arr.length > 0);
+              const itemsDataSpecial = (info?.apiNameItemsSpecialBisDelCampeon || [])
+                .map((itemsName) => (itemsName || []).map((itemName)=>AllItems.find(i => i.apiName === itemName)).filter(Boolean))
+                .filter((arr) => arr.length > 0);
               const campeonData = AllChampions.find((campeon) => campeon.apiName === info.apiNameCampeon);
+              if (itemsData.length === 0 && itemsDataSpecial.length === 0) return null;
               return (
                 <div key={index} className={`${style.cardCampeonBIS}`} style={{ borderColor: `var(--color-hex-cost-${campeonData?.cost}, var(--border-purple-color))`,backgroundColor: `rgba(0, 0, 0, 0.5)` }}>
                   
                   {/* {campeonData?.name} */}
                   <ImgCampeon championData={campeonData} imgType="icon" showName={true} borderColor={false} className={style.imgCampeonRectangular}/>
+                  {itemsData.length > 0 && (
                   <div className={style.cardCampeonBISItems}>
                     <span className={style.lineWithText}>BIS</span>
                     {
-                      itemsData.map((itemsData, index) => {
+                      itemsData.map((itemsRow, rowIdx) => {
 
                         return (
-                          <div key={index} className={style.cItems}>
+                          <div key={rowIdx} className={style.cItems}>
                             
-                            <div className={`${style.cItemsInfo} ${hoveredItemApiName && itemsData.some(item => item?.apiName === hoveredItemApiName) ? style.highlightedItem : ''}`}>
-                            {itemsData.filter(Boolean).map((itemData, idx) => {
+                            <div className={`${style.cItemsInfo} ${hoveredItemApiName && itemsRow.some(item => item?.apiName === hoveredItemApiName) ? style.highlightedItem : ''}`}>
+                            {itemsRow.map((itemData, idx) => {
                               return (
                                 <div key={idx} className={style.cItem}>
                                   <ImgItem item={itemData} />
@@ -433,17 +471,18 @@ const InfografiaMPTFT = ({comp = {}, gruposSalidasEarly = []}) => {
                       })
                     }
                   </div>
+                  )}
                   {
-                    itemsDataSpecial.some(itemsArray => itemsArray.some(item => item)) && (
+                    itemsDataSpecial.length > 0 && (
                   <div className={style.cardCampeonBISItems}>
                     <span className={style.lineWithText}>BIS ESPECIALES</span>
                     {
-                      itemsDataSpecial.map((itemsData, index) => {
+                      itemsDataSpecial.map((itemsRow, rowIdx) => {
                         return (
-                          <div key={index} className={style.cItems}>
+                          <div key={rowIdx} className={style.cItems}>
                             {/* <span>Especial Bis</span> */}
-                            <div className={`${style.cItemsInfo} ${hoveredItemApiName && itemsData.some(item => item?.apiName === hoveredItemApiName) ? style.highlightedItem : ''}`}>
-                            {itemsData.filter(Boolean).map((itemData, idx) => {
+                            <div className={`${style.cItemsInfo} ${hoveredItemApiName && itemsRow.some(item => item?.apiName === hoveredItemApiName) ? style.highlightedItem : ''}`}>
+                            {itemsRow.map((itemData, idx) => {
                               return (
                                 <div key={idx} className={style.cItem}>
                                   <ImgItem item={itemData} />
@@ -506,8 +545,8 @@ const InfografiaMPTFT = ({comp = {}, gruposSalidasEarly = []}) => {
         {Posicionamiento()}
       </div>
       <div className={style.cBoxRow}>
-        {comp?.mejoresItems && Object.keys(comp.mejoresItems).length > 0 && MejoresItems()}
-        {(comp?.bestBuild || []).length > 0 && MejoresBuilds()}
+        {effectiveMejoresItems && Object.keys(effectiveMejoresItems).length > 0 && MejoresItems()}
+        {filteredBestBuild.length > 0 && MejoresBuilds()}
       </div>
       
       {comp?.videosYoutube && comp.videosYoutube.filter(v => v.trim() !== "").length > 0 && (
