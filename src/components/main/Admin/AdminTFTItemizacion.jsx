@@ -21,6 +21,7 @@ import {
 } from '@stores/tft/itemizacionCampeones';
 import { getLocalTftImage } from '@utils/images';
 import {
+  ORDERED_COMBAT_COMPONENTS,
   buildCraftableApiSet,
   classifyTftItem,
   isCraftableWithoutEmblems,
@@ -30,6 +31,241 @@ import {
   getChampionRoleMeta,
 } from '@utils/tftItemClassifier';
 import InfografiaItemizacionTFT from '@components/Infografias/ItemizacionTFT/InfografiaItemizacionTFT.jsx';
+
+// Orden canónico de los 36 Radiantes únicos (ordenados por componente base, sin duplicados)
+const CANONICAL_RADIANTS = [
+  'TFT5_Item_DeathbladeRadiant',
+  'TFT5_Item_GiantSlayerRadiant',
+  'TFT5_Item_HextechGunbladeRadiant',
+  'TFT5_Item_SpearOfShojinRadiant',
+  'TFT5_Item_GuardianAngelRadiant',
+  'TFT5_Item_BloodthirsterRadiant',
+  'TFT5_Item_SteraksGageRadiant',
+  'TFT5_Item_InfinityEdgeRadiant',
+  'TFT5_Item_RapidFirecannonRadiant',
+  'TFT5_Item_GuinsoosRagebladeRadiant',
+  'TFT5_Item_StatikkShivRadiant',
+  'TFT5_Item_TitansResolveRadiant',
+  'TFT5_Item_RunaansHurricaneRadiant',
+  'TFT5_Item_LeviathanRadiant',
+  'TFT5_Item_LastWhisperRadiant',
+  'TFT5_Item_RabadonsDeathcapRadiant',
+  'TFT5_Item_ArchangelsStaffRadiant',
+  'TFT5_Item_CrownguardRadiant',
+  'TFT5_Item_IonicSparkRadiant',
+  'TFT5_Item_MorellonomiconRadiant',
+  'TFT5_Item_JeweledGauntletRadiant',
+  'TFT5_Item_BlueBuffRadiant',
+  'TFT5_Item_FrozenHeartRadiant',
+  'TFT5_Item_AdaptiveHelmRadiant',
+  'TFT5_Item_RedemptionRadiant',
+  'TFT5_Item_HandOfJusticeRadiant',
+  'TFT5_Item_BrambleVestRadiant',
+  'TFT5_Item_GargoyleStoneplateRadiant',
+  'TFT5_Item_SunfireCapeRadiant',
+  'TFT5_Item_NightHarvesterRadiant',
+  'TFT5_Item_DragonsClawRadiant',
+  'TFT5_Item_SpectralGauntletRadiant',
+  'TFT5_Item_QuicksilverRadiant',
+  'TFT5_Item_WarmogsArmorRadiant',
+  'TFT5_Item_TrapClawRadiant',
+  'TFT5_Item_ThiefsGlovesRadiant',
+];
+
+// Lista canónica de Artefactos activos (evita duplicados por versiones antiguas de Ornn/Set)
+const CANONICAL_ARTIFACTS = [
+  'TFT_Item_Artifact_AegisOfDawn',
+  'TFT_Item_Artifact_AegisOfDusk',
+  'TFT_Item_Artifact_HellfireHatchet',
+  'TFT_Item_Artifact_CappaJuice',
+  'TFT_Item_Artifact_Dawncore',
+  'TFT_Item_Artifact_EternalPact',
+  'TFT_Item_Artifact_VoidGauntlet',
+  'TFT_Item_Artifact_TheIndomitable',
+  'TFT_Item_Artifact_NavoriFlickerblades',
+  'TFT_Item_Artifact_StatikkShiv',
+  'TFT_Item_Artifact_TitanicHydra',
+  'TFT_Item_Artifact_BlightingJewel',
+  'TFT4_Item_OrnnDeathsDefiance',
+  'TFT_Item_Artifact_Fishbones',
+  'TFT_Item_Artifact_ForbiddenIdol',
+  'TFT7_Item_ShimmerscaleGamblersBlade',
+  'TFT4_Item_OrnnTheCollector',
+  'DA_Artifact_HorizonFocus',
+  'TFT9_Item_OrnnHorizonFocus',
+  'TFT9_Item_OrnnHullbreaker',
+  'TFT4_Item_OrnnInfinityForce',
+  'TFT_Item_Artifact_LichBane',
+  'TFT_Item_Artifact_LightshieldCrest',
+  'TFT_Item_Artifact_LudensTempest',
+  'TFT4_Item_OrnnMuramana',
+  'TFT_Item_Artifact_Mittens',
+  'TFT7_Item_ShimmerscaleMogulsMail',
+  'TFT_Item_Artifact_RapidFirecannon',
+  'TFT_Item_Artifact_SeekersArmguard',
+  'TFT_Item_Artifact_SilvermereDawn',
+  'TFT_Item_Artifact_TalismanOfAscension',
+  'TFT_Item_Artifact_WitsEnd',
+  'TFT4_Item_OrnnZhonyasParadox',
+];
+
+// Ítems crafteables recomendados agrupados por Rol de campeón para agilizar el armado de builds
+const ROLE_RECOMMENDED_ITEMS = {
+  tank: {
+    label: 'Tanque',
+    items: [
+      'TFT_Item_GargoyleStoneplate',
+      'TFT_Item_WarmogsArmor',
+      'TFT_Item_Redemption',
+      'TFT_Item_NightHarvester',
+      'TFT_Item_FrozenHeart',
+      'TFT_Item_AdaptiveHelm',
+      'TFT_Item_Crownguard',
+      'TFT_Item_RedBuff',
+      'TFT_Item_BrambleVest',
+      'TFT_Item_DragonsClaw',
+      'TFT_Item_IonicSpark',
+      'TFT_Item_SpectralGauntlet',
+    ],
+  },
+  attack_fighter: {
+    label: 'Peleador AD',
+    items: [
+      'TFT_Item_Bloodthirster',
+      'TFT_Item_SteraksGage',
+      'TFT_Item_TitansResolve',
+      'TFT_Item_GuardianAngel',
+      'TFT_Item_Quicksilver',
+      'TFT_Item_UnstableConcoction',
+      'TFT_Item_InfinityEdge',
+      'TFT_Item_RunaansHurricane',
+      'TFT_Item_PowerGauntlet',
+      'TFT_Item_Deathblade',
+      'TFT_Item_MadredsBloodrazor',
+      'TFT_Item_LastWhisper',
+    ],
+  },
+  magic_fighter: {
+    label: 'Peleador AP',
+    items: [
+      'TFT_Item_Bloodthirster',
+      'TFT_Item_UnstableConcoction',
+      'TFT_Item_TitansResolve',
+      'TFT_Item_JeweledGauntlet',
+      'TFT_Item_Crownguard',
+      'TFT_Item_GuardianAngel',
+      'TFT_Item_IonicSpark',
+      'TFT_Item_ArchangelsStaff',
+      'TFT_Item_RabadonsDeathcap',
+      'TFT_Item_HextechGunblade',
+      'TFT_Item_PowerGauntlet',
+      'TFT_Item_Quicksilver',
+    ],
+  },
+  attack_marksman: {
+    label: 'Tirador AD',
+    items: [
+      'TFT_Item_GuinsoosRageblade',
+      'TFT_Item_RunaansHurricane',
+      'TFT_Item_InfinityEdge',
+      'TFT_Item_LastWhisper',
+      'TFT_Item_MadredsBloodrazor',
+      'TFT_Item_Deathblade',
+      'TFT_Item_RapidFireCannon',
+      'TFT_Item_SpearOfShojin',
+      'TFT_Item_PowerGauntlet',
+      'TFT_Item_Quicksilver',
+      'TFT_Item_UnstableConcoction',
+      'TFT_Item_HextechGunblade',
+    ],
+  },
+  magic_caster: {
+    label: 'Lanzador AP',
+    items: [
+      'TFT_Item_SpearOfShojin',
+      'TFT_Item_BlueBuff',
+      'TFT_Item_JeweledGauntlet',
+      'TFT_Item_StatikkShiv',
+      'TFT_Item_RabadonsDeathcap',
+      'TFT_Item_ArchangelsStaff',
+      'TFT_Item_Leviathan',
+      'TFT_Item_Morellonomicon',
+      'TFT_Item_HextechGunblade',
+      'TFT_Item_GuinsoosRageblade',
+      'TFT_Item_MadredsBloodrazor',
+      'TFT_Item_PowerGauntlet',
+      'TFT_Item_AdaptiveHelm',
+      'TFT_Item_RapidFireCannon',
+    ],
+  },
+  attack_assassin: {
+    label: 'Asesino AD',
+    items: [
+      'TFT_Item_InfinityEdge',
+      'TFT_Item_GuardianAngel',
+      'TFT_Item_UnstableConcoction',
+      'TFT_Item_Bloodthirster',
+      'TFT_Item_SteraksGage',
+      'TFT_Item_PowerGauntlet',
+      'TFT_Item_MadredsBloodrazor',
+      'TFT_Item_LastWhisper',
+      'TFT_Item_Deathblade',
+      'TFT_Item_Quicksilver',
+      'TFT_Item_TitansResolve',
+    ],
+  },
+  utility: {
+    label: 'Utilidad / Debuff',
+    items: [
+      'TFT_Item_RedBuff',
+      'TFT_Item_Morellonomicon',
+      'TFT_Item_RapidFireCannon',
+      'TFT_Item_LastWhisper',
+      'TFT_Item_SpectralGauntlet',
+      'TFT_Item_StatikkShiv',
+      'TFT_Item_IonicSpark',
+      'TFT_Item_HextechGunblade',
+      'TFT_Item_ThiefsGloves',
+    ],
+  },
+};
+
+// Mapea el rol de un campeón a la sub-pestaña correspondiente de "Por Rol"
+const detectRoleSubTabForChamp = (champ = {}) => {
+  const lower = `${champ.role || ''} ${champ.role_en || ''} ${champ.role_id || ''}`.toLowerCase();
+  if (lower.includes('tank') || lower.includes('tanque')) return 'tank';
+  if (lower.includes('assassin') || lower.includes('asesino')) {
+    return lower.includes('magic') || lower.includes('mágic') || lower.includes('magi')
+      ? 'magic_fighter'
+      : 'attack_assassin';
+  }
+  if (lower.includes('fighter') || lower.includes('peleador') || lower.includes('luchador')) {
+    return lower.includes('magic') || lower.includes('mágic') || lower.includes('magia')
+      ? 'magic_fighter'
+      : 'attack_fighter';
+  }
+  if (lower.includes('marksman') || lower.includes('tirador')) {
+    return lower.includes('magic') || lower.includes('magia') ? 'magic_caster' : 'attack_marksman';
+  }
+  if (lower.includes('caster') || lower.includes('lanzador') || lower.includes('hechicero')) {
+    return lower.includes('attack') || lower.includes('ataque') ? 'attack_marksman' : 'magic_caster';
+  }
+  if (lower.includes('attack') || lower.includes('ataque')) return 'attack_marksman';
+  if (lower.includes('magic') || lower.includes('magia')) return 'magic_caster';
+  return 'utility';
+};
+
+const normalizeDedupName = (name = '') =>
+  String(name || '')
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]/g, '');
+
+const normalizeIconFilename = (icon = '') => {
+  const clean = String(icon || '').toLowerCase().split('/').pop() || '';
+  return clean.replace(/\.(tex|png|webp|jpg)$/i, '').replace(/\.tft_set\d+$/i, '');
+};
 
 const COST_COLORS = {
   1: '#94a3b8',
@@ -42,6 +278,7 @@ const COST_COLORS = {
 const createEmptyDraft = () => ({
   bis: [['', '', '']],
   special_bis: [['', '', '']],
+  thief_gloves: false,
   extras: {
     radiantes: [],
     artefactos: [],
@@ -62,6 +299,7 @@ const cloneChampRecordToDraft = (record) => {
   return {
     bis,
     special_bis: specialBis,
+    thief_gloves: Boolean(record.thief_gloves),
     extras: {
       radiantes: [...(record.extras?.radiantes || [])],
       artefactos: [...(record.extras?.artefactos || [])],
@@ -96,7 +334,8 @@ const AdminTFTItemizacion = () => {
   const [showSummons, setShowSummons] = useState(false);
 
   // Paleta de ítems
-  const [paletteTab, setPaletteTab] = useState('craftable'); // 'craftable' | 'radiant' | 'artifact' | 'emblem' | 'other'
+  const [paletteTab, setPaletteTab] = useState('craftable'); // 'craftable' | 'byRole' | 'radiant' | 'artifact' | 'emblem' | 'other'
+  const [roleSubTab, setRoleSubTab] = useState('tank');
   const [itemSearch, setItemSearch] = useState('');
 
   // Estado local editable por campeón y control de cambios pendientes
@@ -191,6 +430,7 @@ const AdminTFTItemizacion = () => {
         const configured =
           d.bis.some(hasAnyItemInRow) ||
           d.special_bis.some(hasAnyItemInRow) ||
+          Boolean(d.thief_gloves) ||
           d.extras.radiantes.length > 0 ||
           d.extras.artefactos.length > 0 ||
           d.extras.emblemas.length > 0;
@@ -222,75 +462,199 @@ const AdminTFTItemizacion = () => {
         ? itemsBySetMap[targetSetNumber]
         : allItems.filter((i) => !i.tft_set || String(i.tft_set) === targetSetNumber);
 
-    const groups = {
-      craftable: [],
-      radiant: [],
-      artifact: [],
-      emblem: [],
-      other: [],
-    };
-    const seen = new Set();
-
-    // Para crafteables normales, usar el orden conocido de AllCraftableItems primero
-    const craftablesOrdered = AllCraftableItems(allItems);
-    craftablesOrdered.forEach((item) => {
-      if (!item?.apiName || seen.has(item.apiName)) return;
-      if (isCraftableWithoutEmblems(item, allItems, craftableApiSet)) {
-        seen.add(item.apiName);
-        groups.craftable.push(item);
-      }
-    });
-
-    // Emblemas del set activo
-    activeSetItems.forEach((item) => {
-      if (!item?.apiName || seen.has(item.apiName)) return;
-      const cat = classifyTftItem(item, allItems, craftableApiSet);
-      if (cat === 'emblem') {
-        seen.add(item.apiName);
-        groups.emblem.push(item);
-      }
-    });
-
-    // Resto del catálogo global (Radiantes, Artefactos, Otros y crafteables faltantes)
-    allItems.forEach((item) => {
-      if (!item?.apiName || seen.has(item.apiName) || !item.icon) return;
-      const cat = classifyTftItem(item, allItems, craftableApiSet);
-      if (cat === 'emblem') return; // Los emblemas solo del set activo para evitar emblemas de sets viejos
-      if (cat === 'craftable') {
-        seen.add(item.apiName);
-        groups.craftable.push(item);
-      } else if (cat === 'radiant') {
-        // Excluir radiantes obsoletos o duplicados sin nombre
-        if (!item.name) return;
-        seen.add(item.apiName);
-        groups.radiant.push(item);
-      } else if (cat === 'artifact') {
-        if (!item.name) return;
-        seen.add(item.apiName);
-        groups.artifact.push(item);
+    // 1. Matriz 8x8 de Crafteables (Espadón, Arco, Vara, Lágrima, Cota, Capa, Cinturón, Guantes — sin Espátula ni Sartén)
+    const compLookup = new Map();
+    const registerCraftableCandidate = (item) => {
+      if (!item?.apiName || !Array.isArray(item.composition) || item.composition.length !== 2) return;
+      if (!isCraftableWithoutEmblems(item, allItems, craftableApiSet)) return;
+      const norm = item.composition
+        .map((c) => String(c || '').replace('DA_Component_', 'TFT_Item_'))
+        .sort();
+      const pairKey = norm.join('+');
+      const existing = compLookup.get(pairKey);
+      // Preferir apiName estándar TFT_Item_* o del set activo
+      if (!existing) {
+        compLookup.set(pairKey, item);
       } else if (
+        !existing.apiName.startsWith('TFT_Item_') &&
+        item.apiName.startsWith('TFT_Item_')
+      ) {
+        compLookup.set(pairKey, item);
+      }
+    };
+
+    activeSetItems.forEach(registerCraftableCandidate);
+    AllCraftableItems(allItems).forEach(registerCraftableCandidate);
+    allItems.forEach(registerCraftableCandidate);
+
+    const baseComponents = ORDERED_COMBAT_COMPONENTS.map((compApi) => {
+      return (
+        activeSetItems.find((i) => i.apiName === compApi || i.apiName === compApi.replace('TFT_Item_', 'DA_Component_')) ||
+        allItems.find((i) => i.apiName === compApi || i.apiName === compApi.replace('TFT_Item_', 'DA_Component_')) || {
+          apiName: compApi,
+          name: compApi,
+        }
+      );
+    });
+
+    const craftableMatrix = ORDERED_COMBAT_COMPONENTS.map((rowComp) =>
+      ORDERED_COMBAT_COMPONENTS.map((colComp) => {
+        const pairKey = [rowComp, colComp].sort().join('+');
+        return compLookup.get(pairKey) || null;
+      })
+    );
+
+    const uniqueCraftables = [];
+    const seenCraftApi = new Set();
+    craftableMatrix.flat().forEach((item) => {
+      if (!item?.apiName || seenCraftApi.has(item.apiName)) return;
+      seenCraftApi.add(item.apiName);
+      uniqueCraftables.push(item);
+    });
+
+    // 2. Radiantes deduplicados (estrictamente 1 por objeto, siguiendo el orden canónico)
+    const radiants = [];
+    const seenRadApi = new Set();
+    const seenRadName = new Set();
+    const seenRadIcon = new Set();
+
+    const tryAddRadiant = (item) => {
+      if (!item?.apiName || !item.icon || !item.name) return;
+      const normName = normalizeDedupName(item.name);
+      const normIcon = normalizeIconFilename(item.icon);
+      if (
+        seenRadApi.has(item.apiName) ||
+        (normName && seenRadName.has(normName)) ||
+        (normIcon && seenRadIcon.has(normIcon))
+      ) {
+        return;
+      }
+      seenRadApi.add(item.apiName);
+      if (normName) seenRadName.add(normName);
+      if (normIcon) seenRadIcon.add(normIcon);
+      radiants.push(item);
+    };
+
+    CANONICAL_RADIANTS.forEach((apiName) => {
+      const found = itemsByApiName.get(apiName);
+      if (found) tryAddRadiant(found);
+    });
+    // Agregar cualquier radiante nuevo del set activo que no estuviera en la lista canónica
+    activeSetItems.forEach((item) => {
+      if (classifyTftItem(item, allItems, craftableApiSet) === 'radiant') {
+        tryAddRadiant(item);
+      }
+    });
+
+    // 3. Artefactos deduplicados (estrictamente 1 por nombre/ícono usando lista canónica primero)
+    const artifacts = [];
+    const seenArtApi = new Set();
+    const seenArtName = new Set();
+    const seenArtIcon = new Set();
+
+    const tryAddArtifact = (item) => {
+      if (!item?.apiName || !item.icon || !item.name) return;
+      const normName = normalizeDedupName(item.name);
+      const normIcon = normalizeIconFilename(item.icon);
+      if (
+        seenArtApi.has(item.apiName) ||
+        (normName && seenArtName.has(normName)) ||
+        (normIcon && seenArtIcon.has(normIcon))
+      ) {
+        return;
+      }
+      seenArtApi.add(item.apiName);
+      if (normName) seenArtName.add(normName);
+      if (normIcon) seenArtIcon.add(normIcon);
+      artifacts.push(item);
+    };
+
+    CANONICAL_ARTIFACTS.forEach((apiName) => {
+      const found = itemsByApiName.get(apiName);
+      if (found) tryAddArtifact(found);
+    });
+    activeSetItems.forEach((item) => {
+      if (classifyTftItem(item, allItems, craftableApiSet) === 'artifact') {
+        tryAddArtifact(item);
+      }
+    });
+    artifacts.sort((a, b) => String(a.name || a.apiName).localeCompare(String(b.name || b.apiName)));
+
+    // 4. Emblemas del set activo (deduplicados por apiName y nombre)
+    const emblems = [];
+    const seenEmbApi = new Set();
+    const seenEmbName = new Set();
+    activeSetItems.forEach((item) => {
+      if (!item?.apiName || !item.icon) return;
+      if (classifyTftItem(item, allItems, craftableApiSet) !== 'emblem') return;
+      const normName = normalizeDedupName(item.name || item.apiName);
+      if (seenEmbApi.has(item.apiName) || (normName && seenEmbName.has(normName))) return;
+      seenEmbApi.add(item.apiName);
+      if (normName) seenEmbName.add(normName);
+      emblems.push(item);
+    });
+    emblems.sort((a, b) => String(a.name || a.apiName).localeCompare(String(b.name || b.apiName)));
+
+    // 5. Otros ítems especiales / soporte del set activo (deduplicados)
+    const others = [];
+    const seenOtherApi = new Set();
+    const seenOtherName = new Set();
+    allItems.forEach((item) => {
+      if (!item?.apiName || !item.icon || !item.name) return;
+      const cat = classifyTftItem(item, allItems, craftableApiSet);
+      if (cat !== 'other') return;
+      const isRelevant =
         item.apiName.includes(`TFT${targetSetNumber}_`) ||
         item.apiName.includes('Support') ||
         item.apiName.includes('LocketOfTheIronSolari') ||
         item.apiName.includes('ZekesHerald') ||
-        item.apiName.includes('Zephyr')
-      ) {
-        seen.add(item.apiName);
-        groups.other.push(item);
-      }
+        item.apiName.includes('Zephyr');
+      if (!isRelevant) return;
+      const normName = normalizeDedupName(item.name);
+      if (seenOtherApi.has(item.apiName) || (normName && seenOtherName.has(normName))) return;
+      seenOtherApi.add(item.apiName);
+      if (normName) seenOtherName.add(normName);
+      others.push(item);
     });
+    others.sort((a, b) => String(a.name || a.apiName).localeCompare(String(b.name || b.apiName)));
 
-    Object.keys(groups).forEach((k) => {
-      if (k !== 'craftable') {
-        groups[k].sort((a, b) => String(a.name || a.apiName).localeCompare(String(b.name || b.apiName)));
-      }
-    });
-
-    return groups;
-  }, [allItems, itemsBySetMap, targetSetNumber, craftableApiSet]);
+    return {
+      baseComponents,
+      craftableMatrix,
+      craftable: uniqueCraftables,
+      radiant: radiants,
+      artifact: artifacts,
+      emblem: emblems,
+      other: others,
+    };
+  }, [allItems, itemsBySetMap, targetSetNumber, craftableApiSet, itemsByApiName]);
 
   const currentPaletteItems = useMemo(() => {
-    const list = categorizedPalette[paletteTab] || [];
+    let list = [];
+    if (paletteTab === 'byRole') {
+      const roleDef = ROLE_RECOMMENDED_ITEMS[roleSubTab] || ROLE_RECOMMENDED_ITEMS.tank;
+      const seenRole = new Set();
+      list = (roleDef.items || [])
+        .map((apiName) => {
+          const direct = itemsByApiName.get(apiName);
+          if (direct) return direct;
+          // Fallback por nombre corto si el set usa prefijo DA_
+          const shortKey = apiName.replace(/^TFT_Item_/, '');
+          return (
+            categorizedPalette.craftable.find(
+              (c) => c.apiName === `DA_${shortKey}` || c.apiName.endsWith(shortKey)
+            ) || null
+          );
+        })
+        .filter((item) => {
+          if (!item?.apiName || seenRole.has(item.apiName)) return false;
+          seenRole.add(item.apiName);
+          return true;
+        });
+    } else {
+      list = categorizedPalette[paletteTab] || [];
+    }
+
     const q = itemSearch.trim().toLowerCase();
     if (!q) return list;
     return list.filter(
@@ -298,7 +662,7 @@ const AdminTFTItemizacion = () => {
         String(i.name || '').toLowerCase().includes(q) ||
         String(i.apiName || '').toLowerCase().includes(q)
     );
-  }, [categorizedPalette, paletteTab, itemSearch]);
+  }, [categorizedPalette, paletteTab, roleSubTab, itemSearch, itemsByApiName]);
 
   const resolveItemIcon = (itemOrApiName) => {
     const item =
@@ -455,7 +819,8 @@ const AdminTFTItemizacion = () => {
         champApi,
         cleanBis,
         cleanSpecial,
-        draft.extras
+        draft.extras,
+        draft.thief_gloves
       );
       setDirtyChamps((prev) => {
         const copy = { ...prev };
@@ -493,6 +858,7 @@ const AdminTFTItemizacion = () => {
           bis: d.bis.filter(hasAnyItemInRow),
           special_bis: d.special_bis.filter(hasAnyItemInRow),
           extras: d.extras,
+          thief_gloves: Boolean(d.thief_gloves),
         };
       });
 
@@ -522,10 +888,13 @@ const AdminTFTItemizacion = () => {
         bis: d.bis.filter(hasAnyItemInRow),
         special_bis: d.special_bis.filter(hasAnyItemInRow),
         extras: d.extras,
+        thief_gloves: Boolean(d.thief_gloves),
       };
     });
     return merged;
   }, [drafts, setDbMap]);
+
+  const thiefGlovesIconUrl = resolveItemIcon('TFT_Item_ThiefsGloves');
 
   const activeChampName = activeTarget
     ? championsOfSet.find((c) => c.apiName === activeTarget.champApi)?.name || activeTarget.champApi
@@ -730,6 +1099,33 @@ const AdminTFTItemizacion = () => {
                             </div>
                           </div>
 
+                          {/* Checkbox de Thief's Gloves */}
+                          <label
+                            className={`${style.thiefGlovesLabel} ${
+                              draft.thief_gloves ? style.thiefGlovesLabelActive : ''
+                            }`}
+                            title="Marcar si este campeón es bueno con Guantes de Ladrón (Thief's Gloves)"
+                          >
+                            <input
+                              type="checkbox"
+                              checked={Boolean(draft.thief_gloves)}
+                              onChange={(e) =>
+                                updateChampDraft(champ.apiName, (d) => ({
+                                  ...d,
+                                  thief_gloves: e.target.checked,
+                                }))
+                              }
+                            />
+                            {thiefGlovesIconUrl && (
+                              <img
+                                src={thiefGlovesIconUrl}
+                                alt="Thief's Gloves"
+                                className={style.thiefGlovesIcon}
+                              />
+                            )}
+                            <span>Thief&apos;s Gloves</span>
+                          </label>
+
                           <div className={style.champCardButtons}>
                             <button
                               type="button"
@@ -807,7 +1203,11 @@ const AdminTFTItemizacion = () => {
                                             rowIdx,
                                             slotIdx,
                                           });
-                                          setPaletteTab('craftable');
+                                          if (paletteTab === 'byRole') {
+                                            setRoleSubTab(detectRoleSubTabForChamp(champ));
+                                          } else if (paletteTab !== 'craftable') {
+                                            setPaletteTab('craftable');
+                                          }
                                         }}
                                         onDoubleClick={() =>
                                           assignItemToComboSlot(champ.apiName, 'bis', rowIdx, slotIdx, '')
@@ -925,6 +1325,9 @@ const AdminTFTItemizacion = () => {
                                             rowIdx,
                                             slotIdx,
                                           });
+                                          if (paletteTab === 'byRole') {
+                                            setRoleSubTab(detectRoleSubTabForChamp(champ));
+                                          }
                                         }}
                                         onDoubleClick={() =>
                                           assignItemToComboSlot(
@@ -1133,6 +1536,7 @@ const AdminTFTItemizacion = () => {
               <div className={style.paletteTabs}>
                 {[
                   { id: 'craftable', label: 'Craftables' },
+                  { id: 'byRole', label: 'Por Rol' },
                   { id: 'radiant', label: 'Radiantes' },
                   { id: 'artifact', label: 'Artefactos' },
                   { id: 'emblem', label: 'Emblemas' },
@@ -1144,39 +1548,134 @@ const AdminTFTItemizacion = () => {
                     className={`${style.paletteTabBtn} ${
                       paletteTab === tab.id ? style.paletteTabBtnActive : ''
                     }`}
-                    onClick={() => setPaletteTab(tab.id)}
+                    onClick={() => {
+                      setPaletteTab(tab.id);
+                      if (tab.id === 'byRole' && activeTarget?.champApi) {
+                        const targetChamp = championsOfSet.find(
+                          (c) => c.apiName === activeTarget.champApi
+                        );
+                        if (targetChamp) {
+                          setRoleSubTab(detectRoleSubTabForChamp(targetChamp));
+                        }
+                      }
+                    }}
                   >
                     {tab.label}
                   </button>
                 ))}
               </div>
 
-              <div className={style.paletteGrid}>
-                {currentPaletteItems.map((item) => {
-                  const iconUrl = resolveItemIcon(item);
-                  if (!iconUrl) return null;
-                  return (
+              {paletteTab === 'byRole' && (
+                <div className={style.paletteSubTabs}>
+                  {Object.entries(ROLE_RECOMMENDED_ITEMS).map(([roleKey, roleDef]) => (
                     <button
-                      key={item.apiName}
+                      key={roleKey}
                       type="button"
-                      className={style.paletteItemBtn}
-                      title={item.name || item.apiName}
-                      draggable
-                      onDragStart={(e) => {
-                        e.dataTransfer.setData('tft_item_api', item.apiName);
-                      }}
-                      onClick={() => handlePaletteItemClick(item)}
+                      className={`${style.paletteSubTabBtn} ${
+                        roleSubTab === roleKey ? style.paletteSubTabBtnActive : ''
+                      }`}
+                      onClick={() => setRoleSubTab(roleKey)}
                     >
-                      <img
-                        src={iconUrl}
-                        alt={item.name || item.apiName}
-                        className={style.paletteItemImg}
-                        loading="lazy"
-                      />
+                      {roleDef.label}
                     </button>
-                  );
-                })}
-              </div>
+                  ))}
+                </div>
+              )}
+
+              {paletteTab === 'craftable' && !itemSearch.trim() ? (
+                <div className={style.paletteMatrixWrapper}>
+                  {/* Encabezado de los 8 componentes básicos de combate (sin Espátula ni Sartén) */}
+                  <div className={style.paletteMatrixHeaderRow}>
+                    <span />
+                    {categorizedPalette.baseComponents.map((comp) => {
+                      const compIcon = resolveItemIcon(comp);
+                      return (
+                        <div key={`head-${comp.apiName}`} title={comp.name || comp.apiName}>
+                          {compIcon && (
+                            <img
+                              src={compIcon}
+                              alt={comp.name || comp.apiName}
+                              className={style.paletteBaseIcon}
+                            />
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Filas 8x8: Fila 1 = Espadón, Fila 2 = Arco, Fila 3 = Vara, ..., Fila 8 = Guantes */}
+                  {categorizedPalette.craftableMatrix.map((rowItems, rowIdx) => {
+                    const rowComp = categorizedPalette.baseComponents[rowIdx];
+                    const rowCompIcon = resolveItemIcon(rowComp);
+                    return (
+                      <div key={`row-${rowComp?.apiName || rowIdx}`} className={style.paletteMatrixRow}>
+                        <div title={rowComp?.name || ''}>
+                          {rowCompIcon && (
+                            <img
+                              src={rowCompIcon}
+                              alt={rowComp?.name || ''}
+                              className={style.paletteBaseIcon}
+                            />
+                          )}
+                        </div>
+                        {rowItems.map((item, colIdx) => {
+                          const iconUrl = item ? resolveItemIcon(item) : null;
+                          if (!item || !iconUrl) {
+                            return <div key={`empty-${rowIdx}-${colIdx}`} className={style.paletteEmptyCell} />;
+                          }
+                          return (
+                            <button
+                              key={`${rowIdx}-${colIdx}-${item.apiName}`}
+                              type="button"
+                              className={style.paletteItemBtn}
+                              title={item.name || item.apiName}
+                              draggable
+                              onDragStart={(e) => {
+                                e.dataTransfer.setData('tft_item_api', item.apiName);
+                              }}
+                              onClick={() => handlePaletteItemClick(item)}
+                            >
+                              <img
+                                src={iconUrl}
+                                alt={item.name || item.apiName}
+                                className={style.paletteItemImg}
+                                loading="lazy"
+                              />
+                            </button>
+                          );
+                        })}
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className={style.paletteGrid}>
+                  {currentPaletteItems.map((item) => {
+                    const iconUrl = resolveItemIcon(item);
+                    if (!iconUrl) return null;
+                    return (
+                      <button
+                        key={item.apiName}
+                        type="button"
+                        className={style.paletteItemBtn}
+                        title={item.name || item.apiName}
+                        draggable
+                        onDragStart={(e) => {
+                          e.dataTransfer.setData('tft_item_api', item.apiName);
+                        }}
+                        onClick={() => handlePaletteItemClick(item)}
+                      >
+                        <img
+                          src={iconUrl}
+                          alt={item.name || item.apiName}
+                          className={style.paletteItemImg}
+                          loading="lazy"
+                        />
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
 
               <div className={style.paletteHint}>
                 💡 <strong>Atajos:</strong> Haz clic en un slot y luego en 3 objetos seguidos (el foco avanza solo). Doble clic en un slot para limpiarlo.

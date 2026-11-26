@@ -61,8 +61,9 @@ const InfografiaItemizacionTFT = ({ setNumber: propSetNumber = null, draftMap = 
   const [selectedCost, setSelectedCost] = useState(4);
   const [aspectRatio, setAspectRatio] = useState('4:5'); // '4:5' | '1:1' | '9:16' | 'auto'
   const [maxAlternativos, setMaxAlternativos] = useState(6); // 5 o 6
-  const [sortBy, setSortBy] = useState('role'); // 'role' | 'name'
+  const [sortBy, setSortBy] = useState('name'); // 'name' (por defecto) | 'role'
   const [showRole, setShowRole] = useState(true);
+  const [showThiefGloves, setShowThiefGloves] = useState(true);
   const [onlyConfigured, setOnlyConfigured] = useState(false);
   const [customTitle, setCustomTitle] = useState('');
   const [customPatch, setCustomPatch] = useState('');
@@ -216,15 +217,84 @@ const InfografiaItemizacionTFT = ({ setNumber: propSetNumber = null, draftMap = 
   const costTheme = COST_THEMES[selectedCost] || COST_THEMES[4];
   const displayTitle = customTitle.trim() || `ITEMIZACIÓN COSTE ${selectedCost}`;
   const displayPatch = customPatch.trim() || patchLabel;
+  const thiefGlovesIcon = resolveItemIcon('TFT_Item_ThiefsGloves');
 
-  const ratioClass =
-    aspectRatio === '4:5'
-      ? style.ratio45
-      : aspectRatio === '1:1'
-        ? style.ratio11
-        : aspectRatio === '9:16'
-          ? style.ratio916
-          : style.ratioAuto;
+  const gridVariantHeaderClass = showRole
+    ? showThiefGloves
+      ? ''
+      : style.tableHeaderRowNoTg
+    : showThiefGloves
+      ? style.tableHeaderRowNoRole
+      : style.tableHeaderRowNoRoleNoTg;
+
+  const gridVariantRowClass = showRole
+    ? showThiefGloves
+      ? ''
+      : style.champRowNoTg
+    : showThiefGloves
+      ? style.champRowNoRole
+      : style.champRowNoRoleNoTg;
+
+  // Cálculo dinámico de altura de filas e íconos para respetar EXACTAMENTE el aspect ratio elegido
+  // incluso con costes grandes (ej. 22 campeones en Coste 4)
+  const layoutMetrics = useMemo(() => {
+    const count = Math.max(rowsData.length, 1);
+    const hasFooter = Boolean(logos.jupeson || logos.movilnet || logos.setLogo || logos.guiadeparche);
+
+    // Dimensiones exactas para ancho lógico de 1200px
+    const targetHeights = {
+      '4:5': 1500,
+      '1:1': 1200,
+      '9:16': 2133,
+    };
+
+    const fixedCanvasHeight = targetHeights[aspectRatio] || null;
+    const isDense = count >= 18 || (aspectRatio === '1:1' && count >= 14);
+    const headerHeight = isDense ? 74 : 88;
+    const footerHeight = hasFooter ? (isDense ? 54 : 68) : 0;
+    const padV = isDense ? 14 : 20;
+    const padB = isDense ? 12 : 16;
+    const canvasGap = isDense ? 8 : 12;
+    const rowGap = count >= 20 ? 3 : count >= 14 ? 4 : 6;
+    const tableHeadH = 30;
+
+    let rowHeight = 54;
+    if (fixedCanvasHeight) {
+      const sectionGaps = hasFooter ? canvasGap * 2 : canvasGap;
+      const availableForRows =
+        fixedCanvasHeight - padV - padB - headerHeight - footerHeight - sectionGaps - tableHeadH;
+      const rawRow = Math.floor((availableForRows - (count - 1) * rowGap) / count);
+      rowHeight = Math.max(32, Math.min(62, rawRow));
+    }
+
+    const avatarSize = Math.max(26, Math.min(44, rowHeight - 8));
+    const bisIconSize = Math.max(25, Math.min(40, rowHeight - 10));
+    const altIconSize = Math.max(24, Math.min(36, rowHeight - 12));
+    const specialIconSize = Math.max(23, Math.min(34, rowHeight - 12));
+    const champFontSize = rowHeight <= 38 ? 12 : rowHeight <= 46 ? 13 : 14;
+    const roleFontSize = rowHeight <= 38 ? 9 : 10;
+    const tgFontSize = rowHeight <= 38 ? 16 : 19;
+    const titleFontSize = isDense ? 27 : 31;
+
+    return {
+      canvasHeight: fixedCanvasHeight ? `${fixedCanvasHeight}px` : 'auto',
+      headerHeight: `${headerHeight}px`,
+      footerHeight: `${footerHeight}px`,
+      padV: `${padV}px`,
+      padB: `${padB}px`,
+      canvasGap: `${canvasGap}px`,
+      rowGap: `${rowGap}px`,
+      rowHeight: `${rowHeight}px`,
+      avatarSize: `${avatarSize}px`,
+      bisIconSize: `${bisIconSize}px`,
+      altIconSize: `${altIconSize}px`,
+      specialIconSize: `${specialIconSize}px`,
+      champFontSize: `${champFontSize}px`,
+      roleFontSize: `${roleFontSize}px`,
+      tgFontSize: `${tgFontSize}px`,
+      titleFontSize: `${titleFontSize}px`,
+    };
+  }, [rowsData.length, aspectRatio, logos]);
 
   return (
     <div className={style.wrapper}>
@@ -333,17 +403,17 @@ const InfografiaItemizacionTFT = ({ setNumber: propSetNumber = null, draftMap = 
             <div className={style.pillGroup}>
               <button
                 type="button"
+                className={`${style.pillBtn} ${sortBy === 'name' ? style.pillBtnActive : ''}`}
+                onClick={() => setSortBy('name')}
+              >
+                A–Z (Nombre)
+              </button>
+              <button
+                type="button"
                 className={`${style.pillBtn} ${sortBy === 'role' ? style.pillBtnActive : ''}`}
                 onClick={() => setSortBy('role')}
               >
                 Por Rol
-              </button>
-              <button
-                type="button"
-                className={`${style.pillBtn} ${sortBy === 'name' ? style.pillBtnActive : ''}`}
-                onClick={() => setSortBy('name')}
-              >
-                A–Z
               </button>
             </div>
           </div>
@@ -358,6 +428,14 @@ const InfografiaItemizacionTFT = ({ setNumber: propSetNumber = null, draftMap = 
                   onChange={(e) => setShowRole(e.target.checked)}
                 />
                 <span>Mostrar Rol</span>
+              </label>
+              <label className={style.checkboxLabel}>
+                <input
+                  type="checkbox"
+                  checked={showThiefGloves}
+                  onChange={(e) => setShowThiefGloves(e.target.checked)}
+                />
+                <span>Thief&apos;s Gloves</span>
               </label>
               <label className={style.checkboxLabel}>
                 <input
@@ -426,11 +504,27 @@ const InfografiaItemizacionTFT = ({ setNumber: propSetNumber = null, draftMap = 
       <div className={style.previewStage}>
         <div
           ref={canvasRef}
-          className={`${style.canvas} ${ratioClass}`}
+          className={style.canvas}
           style={{
             '--cost-border': costTheme.border,
             '--cost-glow': costTheme.glow,
             '--cost-badge-bg': costTheme.badgeBg,
+            '--canvas-height': layoutMetrics.canvasHeight,
+            '--header-height': layoutMetrics.headerHeight,
+            '--footer-height': layoutMetrics.footerHeight,
+            '--canvas-pad-v': layoutMetrics.padV,
+            '--canvas-pad-b': layoutMetrics.padB,
+            '--canvas-gap': layoutMetrics.canvasGap,
+            '--row-gap': layoutMetrics.rowGap,
+            '--row-height': layoutMetrics.rowHeight,
+            '--avatar-size': layoutMetrics.avatarSize,
+            '--bis-icon-size': layoutMetrics.bisIconSize,
+            '--alt-icon-size': layoutMetrics.altIconSize,
+            '--special-icon-size': layoutMetrics.specialIconSize,
+            '--champ-font-size': layoutMetrics.champFontSize,
+            '--role-font-size': layoutMetrics.roleFontSize,
+            '--tg-font-size': layoutMetrics.tgFontSize,
+            '--title-font-size': layoutMetrics.titleFontSize,
           }}
         >
           {/* HEADER GUIADEPARCHE */}
@@ -459,14 +553,26 @@ const InfografiaItemizacionTFT = ({ setNumber: propSetNumber = null, draftMap = 
 
           {/* TABLA DE ITEMIZACIÓN */}
           <div className={style.tableContainer}>
-            <div
-              className={`${style.tableHeaderRow} ${!showRole ? style.tableHeaderRowNoRole : ''}`}
-            >
+            <div className={`${style.tableHeaderRow} ${gridVariantHeaderClass}`}>
               <div className={`${style.colHead} ${style.colHeadChamp}`}>Campeón</div>
               <div className={`${style.colHead} ${style.colHeadBis}`}>BIS</div>
               <div className={`${style.colHead} ${style.colHeadAlt}`}>
                 Alternativos ({maxAlternativos})
               </div>
+              {showThiefGloves && (
+                <div className={`${style.colHead} ${style.colHeadTg}`} title="Bueno con Thief's Gloves">
+                  {thiefGlovesIcon ? (
+                    <img
+                      src={thiefGlovesIcon}
+                      alt="Thief's Gloves"
+                      className={style.colHeadTgIcon}
+                      crossOrigin="anonymous"
+                    />
+                  ) : (
+                    <span>TG</span>
+                  )}
+                </div>
+              )}
               <div className={`${style.colHead} ${style.colHeadRad}`}>Radiantes</div>
               <div className={`${style.colHead} ${style.colHeadArt}`}>Artefactos</div>
               <div className={`${style.colHead} ${style.colHeadEmb}`}>Emblemas</div>
@@ -485,7 +591,7 @@ const InfografiaItemizacionTFT = ({ setNumber: propSetNumber = null, draftMap = 
                 return (
                   <div
                     key={row.champ.apiName}
-                    className={`${style.champRow} ${!showRole ? style.champRowNoRole : ''} ${
+                    className={`${style.champRow} ${gridVariantRowClass} ${
                       idx % 2 === 1 ? style.champRowAlt : ''
                     }`}
                   >
@@ -555,6 +661,17 @@ const InfografiaItemizacionTFT = ({ setNumber: propSetNumber = null, draftMap = 
                         <span className={style.emptySlotDash}>—</span>
                       )}
                     </div>
+
+                    {/* 3.5 Thief's Gloves */}
+                    {showThiefGloves && (
+                      <div className={style.tgCell}>
+                        {row.thiefGloves ? (
+                          <span className={style.tgCheckMark}>✓</span>
+                        ) : (
+                          <span className={style.emptySlotDash}>—</span>
+                        )}
+                      </div>
+                    )}
 
                     {/* 4. Radiantes */}
                     <div className={style.itemsGroup}>
