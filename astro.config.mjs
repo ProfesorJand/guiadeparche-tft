@@ -41,6 +41,16 @@ try {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 4000);
   const resp = await fetch('https://api.guiadeparche.com/seo/manage_exclusions.php', {
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36',
+      'Accept': 'application/json, text/plain, */*',
+      'Accept-Language': 'es-ES,es;q=0.9,en;q=0.8',
+      'Origin': 'https://guiadeparche.com',
+      'Referer': 'https://guiadeparche.com/',
+      ...(process.env?.BUILD_API_SECRET || process.env?.API_KEY
+        ? { 'X-Build-Secret': process.env.BUILD_API_SECRET || process.env.API_KEY }
+        : {}),
+    },
     signal: controller.signal,
   });
   clearTimeout(timer);
