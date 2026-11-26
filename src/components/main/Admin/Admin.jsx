@@ -31,6 +31,7 @@ import AdminSorteoDiscord from "./AdminSorteoDiscord.jsx";
 import AdminBlog from "./AdminBlog.jsx";
 import AdminSEOIndexacion from "./AdminSEOIndexacion.jsx";
 import AdminNoticias from "./AdminNoticias.jsx";
+import AdminTFTItemizacion from "./AdminTFTItemizacion.jsx";
 
 const AdminPanel = ()=>{
     const admin = useStore($admin);
@@ -51,6 +52,7 @@ const AdminPanel = ()=>{
           { nombre: "Tier List Augments", admin: false, superAdmin: true },
           { nombre: "Aumentos", admin: true, superAdmin: true },
           { nombre: "Campeones Early", admin: true, superAdmin: true },
+          { nombre: "Itemizacion Campeones", admin: true, superAdmin: true },
           { nombre: "Deploy", admin: false, superAdmin: true },
         ],
         admin: true,
@@ -289,6 +291,7 @@ const AdminPanel = ()=>{
                 {action === "TFT-Tier List Augments" && <CreateAugmentsTierList admin={admin || superAdmin}/>}
                 {action === "TFT-Aumentos" && <AdminTFTAumentos />}
                 {action === "TFT-Campeones Early" && <AdminTFTCampeonesEarly />}
+                {action === "TFT-Itemizacion Campeones" && <AdminTFTItemizacion />}
                 {action === "TFT-Páginas Meta TFT" && <AdminCrearPaginaMetaTFT />}
                 {action === "TFT-Deploy" && (() => {
                   const versionLabel = currentVersion === "pbe" ? (constantes?.MetaCompVersionPBE || "") : (constantes?.MetaCompVersion || "");

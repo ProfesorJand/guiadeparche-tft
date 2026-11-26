@@ -1,4 +1,6 @@
 import { urlComposiciones, dataTFTChampions, dataTFTAllItems, dataTFTAllAugments, dataTFTTraits, versionTFT, setNumberPBE, setNumberLatest } from "@stores/dataTFT";
+import { $itemizacionPorSet, loadItemizacionBySet } from "@stores/tft/itemizacionCampeones";
+import { filterDeletedCombosFromBestBuild } from "@utils/tftItemClassifier";
 import { getLocalTftImage } from "@utils/images";
 import style from "./css/GuiaFreeTFTMeta.module.css";
 import Sinergias from "@components/main/Admin/Sinergias";
@@ -633,27 +635,41 @@ const FooterTooltip = ({augment, tooltipRef, edit=false, isInfografia=false})=>{
 const FooterBuild = ({comp})=>{
   const allChampionsTFT = useStore(dataTFTChampions);
   const allItemsTFT = useStore(dataTFTAllItems);
+  const activeVersion = useStore(versionTFT);
+  const itemizacionPorSet = useStore($itemizacionPorSet);
   const [isMounted, setIsMounted] = useState(false);
+
+  const compSetNumber = String(
+    comp?.set_number ||
+    (comp?.version === "pbe" ? setNumberPBE : comp?.version === "latest" ? setNumberLatest : activeVersion === "pbe" ? setNumberPBE : setNumberLatest)
+  );
 
   useEffect(() => {
     setIsMounted(true);
-  }, []);
+    if (compSetNumber) {
+      loadItemizacionBySet(compSetNumber);
+    }
+  }, [compSetNumber]);
 
   const safeChampionsTFT = isMounted ? allChampionsTFT : [];
   const safeItemsTFT = isMounted ? allItemsTFT : [];
+  const setItemizacionMap = isMounted ? (itemizacionPorSet?.[compSetNumber] || {}) : {};
+  const visibleBestBuild = filterDeletedCombosFromBestBuild(comp?.bestBuild || [], setItemizacionMap);
 
   return (
     <div className={`${style.containerFooterBuild} ${style.borderBlock} ${style.blockColumn}`}>
       <h4>Mejores Builds/Objetos para Carry y Tanque</h4>
       <div className={style.containerBuilders}>
       {
-        comp?.bestBuild?.length > 0 &&
-        comp?.bestBuild.map((data,index)=>{
+        visibleBestBuild.length > 0 &&
+        visibleBestBuild.map((data,index)=>{
           const buildChampionData = safeChampionsTFT.find(c => c.apiName === data?.apiNameCampeon);
           
-          // Flatten first arrays of BIS and Special BIS to render in the Footer
-          const bisItemsData = (data.apiNameItemsBisDelCampeon?.[0] || []).slice(0, 3).map(itemName => safeItemsTFT.find(i => i.apiName === itemName)).filter(Boolean);
-          const specialBisItemsData = (data.apiNameItemsSpecialBisDelCampeon?.[0] || []).slice(0, 3).map(itemName => safeItemsTFT.find(i => i.apiName === itemName)).filter(Boolean);
+          // Tomar la primera fila activa (no vacía) de BIS y Special BIS para mostrar en el Footer
+          const firstBisRow = (data.apiNameItemsBisDelCampeon || []).find((row) => Array.isArray(row) && row.some(Boolean)) || [];
+          const firstSpecialRow = (data.apiNameItemsSpecialBisDelCampeon || []).find((row) => Array.isArray(row) && row.some(Boolean)) || [];
+          const bisItemsData = firstBisRow.slice(0, 3).map(itemName => safeItemsTFT.find(i => i.apiName === itemName)).filter(Boolean);
+          const specialBisItemsData = firstSpecialRow.slice(0, 3).map(itemName => safeItemsTFT.find(i => i.apiName === itemName)).filter(Boolean);
 
           return (
             <div 
