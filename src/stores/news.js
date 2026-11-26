@@ -13,8 +13,7 @@ export const defaultEmptyConfig = {
   items: [],
 };
 
-// Caché en memoria durante compilación (SSR/SSG) para evitar múltiples llamadas en build
-let buildTimeNewsPromise = null;
+// Caché en vuelo para evitar llamadas duplicadas en cliente
 let clientFetchInFlight = null;
 
 /**
@@ -167,21 +166,16 @@ const fetchNewsFromApi = async (timeoutMs = 6000) => {
 };
 
 /**
- * Obtiene la configuración inicial en tiempo de compilación (SSR/SSG) con caché compartida.
- * Evita hacer cientos de peticiones duplicadas durante `astro build`.
+ * Devuelve la configuración inicial sin golpear la API remota durante `astro build`
+ * (evita bloqueos WAF/403 en GitHub Actions y evita HTML estático desactualizado).
+ * En el navegador, `NewsBar` hidrata desde localStorage y consulta MySQL en vivo.
  */
 export const getInitialNewsConfig = async () => {
   if (typeof window !== 'undefined') {
     return loadNewsConfig();
   }
 
-  if (!buildTimeNewsPromise) {
-    buildTimeNewsPromise = fetchNewsFromApi(3000)
-      .then((fresh) => fresh || defaultEmptyConfig)
-      .catch(() => defaultEmptyConfig);
-  }
-
-  return buildTimeNewsPromise;
+  return defaultEmptyConfig;
 };
 
 /**
