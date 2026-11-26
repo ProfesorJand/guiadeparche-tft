@@ -3,16 +3,23 @@
  * independientes del orden y derivación de datos para Master Plan e Infografías.
  */
 
-const BASE_COMBAT_COMPONENTS = new Set([
-  'TFT_Item_BFSword',
-  'TFT_Item_RecurveBow',
-  'TFT_Item_NeedlesslyLargeRod',
-  'TFT_Item_TearOfTheGoddess',
-  'TFT_Item_ChainVest',
-  'TFT_Item_NegatronCloak',
-  'TFT_Item_GiantsBelt',
-  'TFT_Item_SparringGloves',
-]);
+const normalizeComponentApi = (c = '') => String(c || '').replace('DA_Component_', 'TFT_Item_');
+
+/**
+ * Orden canónico de los 8 componentes básicos de combate (sin Espátula ni Sartén)
+ */
+export const ORDERED_COMBAT_COMPONENTS = [
+  'TFT_Item_BFSword',            // 0 - Espadón
+  'TFT_Item_RecurveBow',         // 1 - Arco
+  'TFT_Item_NeedlesslyLargeRod', // 2 - Vara
+  'TFT_Item_TearOfTheGoddess',   // 3 - Lágrima
+  'TFT_Item_ChainVest',          // 4 - Cota de Malla
+  'TFT_Item_NegatronCloak',      // 5 - Capa de Negatrón
+  'TFT_Item_GiantsBelt',         // 6 - Cinturón de Gigante
+  'TFT_Item_SparringGloves',     // 7 - Guantes
+];
+
+const BASE_COMBAT_COMPONENTS = new Set(ORDERED_COMBAT_COMPONENTS);
 
 const SUPPORT_ORNN_API_NAMES = new Set([
   'TFT4_Item_OrnnObsidianCleaver',
@@ -92,7 +99,9 @@ export const classifyTftItem = (itemOrApiName, allItems = [], craftableApiSet = 
     return 'craftable';
   }
 
-  const comp = Array.isArray(itemObj.composition) ? itemObj.composition : [];
+  const comp = Array.isArray(itemObj.composition)
+    ? itemObj.composition.map(normalizeComponentApi)
+    : [];
   if (
     comp.length === 2 &&
     BASE_COMBAT_COMPONENTS.has(comp[0]) &&
@@ -124,7 +133,9 @@ export const buildCraftableApiSet = (allItems = [], knownCraftables = []) => {
     if (lower.includes('emblem') || nameLower.includes('emblem') || nameLower.includes('emblema')) {
       return;
     }
-    const comp = Array.isArray(item?.composition) ? item.composition : [];
+    const comp = Array.isArray(item?.composition)
+      ? item.composition.map(normalizeComponentApi)
+      : [];
     if (
       comp.length === 2 &&
       (!BASE_COMBAT_COMPONENTS.has(comp[0]) || !BASE_COMBAT_COMPONENTS.has(comp[1]))
@@ -136,7 +147,9 @@ export const buildCraftableApiSet = (allItems = [], knownCraftables = []) => {
 
   (allItems || []).forEach((item) => {
     if (!item?.apiName) return;
-    const comp = Array.isArray(item.composition) ? item.composition : [];
+    const comp = Array.isArray(item.composition)
+      ? item.composition.map(normalizeComponentApi)
+      : [];
     if (
       comp.length === 2 &&
       BASE_COMBAT_COMPONENTS.has(comp[0]) &&
@@ -385,12 +398,14 @@ export const deriveInfographicRow = (
     champ,
     bisPrincipal,
     alternativos,
+    thiefGloves: Boolean(champRecord?.thief_gloves),
     radiantes,
     artefactos,
     emblemas,
     hasAnyData:
       bisPrincipal.length > 0 ||
       alternativos.length > 0 ||
+      Boolean(champRecord?.thief_gloves) ||
       radiantes.length > 0 ||
       artefactos.length > 0 ||
       emblemas.length > 0,

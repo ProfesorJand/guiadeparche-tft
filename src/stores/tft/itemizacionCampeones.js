@@ -129,7 +129,8 @@ export const saveChampionItemizacion = async (
   campeonApiName,
   bisRows = [],
   specialBisRows = [],
-  extras = null
+  extras = null,
+  thiefGloves = false
 ) => {
   const setKey = String(setNumber || '').trim();
   const adminEmail = getAdminEmail();
@@ -148,6 +149,7 @@ export const saveChampionItemizacion = async (
       bis: bisRows,
       special_bis: specialBisRows,
       extras,
+      thief_gloves: Boolean(thiefGloves),
     }),
   });
 
