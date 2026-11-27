@@ -1623,6 +1623,17 @@ const BestBuildYMejoresItemsVisual = () => {
   const setItemizacionMap = itemizacionPorSet?.[targetSet] || {};
   const bestBuild = comp.bestBuild || [];
 
+  // Filtrar campeones únicamente del set activo (evita mezclar Set 18 y Set 19 en el selector)
+  const activeSetChampions = (allChampionsTFT || [])
+    .filter((c) => {
+      const apiLower = String(c?.apiName || "").toLowerCase();
+      return (
+        (c?.tft_set && String(c.tft_set) === targetSet) ||
+        apiLower.startsWith(`tft${targetSet}_`)
+      );
+    })
+    .sort((a, b) => (a.name || "").localeCompare(b.name || ""));
+
   const craftableApiSet = buildCraftableApiSet(allItemsTFT || [], AllCraftableItems(allItemsTFT || []));
 
   // Recalcula `mejoresItems` (Artefactos, Radiantes, Emblemas, Especiales) estrictamente a partir
@@ -1792,7 +1803,7 @@ const BestBuildYMejoresItemsVisual = () => {
                         style={{ background: '#111', color: '#fff', border: '1px solid #333', padding: '2px', fontSize: '10px', maxWidth: '80px' }}
                       >
                         <option value="">Seleccionar...</option>
-                        {allChampionsTFT?.sort((a,b) => a.name.localeCompare(b.name)).map(c => <option key={c.apiName} value={c.apiName}>{c.name}</option>)}
+                        {activeSetChampions.map(c => <option key={c.apiName} value={c.apiName}>{c.name}</option>)}
                       </select>
                     </div>
                   }

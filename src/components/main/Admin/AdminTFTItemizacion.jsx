@@ -15,6 +15,8 @@ import {
 import {
   $itemizacionPorSet,
   $itemizacionLoading,
+  $unsavedItemizacionChamps,
+  confirmLeaveUnsavedItemizacion,
   loadItemizacionBySet,
   saveChampionItemizacion,
   saveBulkItemizacion,
@@ -847,6 +849,74 @@ const AdminTFTItemizacion = () => {
   // Guardar todos los campeones modificados en bloque
   const dirtyKeys = Object.keys(dirtyChamps).filter((k) => dirtyChamps[k]);
 
+  // Lista enriquecida de campeones con cambios sin guardar (nombre + coste)
+  const unsavedChampionsList = useMemo(() => {
+    if (dirtyKeys.length === 0) return [];
+    return dirtyKeys
+      .map((apiName) => {
+        const found =
+          championsOfSet.find((c) => c.apiName === apiName) ||
+          allChampions.find((c) => c.apiName === apiName);
+        return {
+          apiName,
+          name: found?.name || apiName,
+          cost: Number(found?.cost || 0),
+        };
+      })
+      .sort((a, b) => a.cost - b.cost || String(a.name).localeCompare(String(b.name)));
+  }, [dirtyKeys.join('|'), championsOfSet, allChampions]);
+
+  // Sincronizar con el store global para que Admin.jsx también bloquee cambios de pestaña sin guardar
+  useEffect(() => {
+    $unsavedItemizacionChamps.set(unsavedChampionsList);
+  }, [unsavedChampionsList]);
+
+  // Limpiar aviso al desmontar el componente
+  useEffect(() => {
+    return () => {
+      $unsavedItemizacionChamps.set([]);
+    };
+  }, []);
+
+  // Proteger contra recarga/cierre de pestaña y clics en enlaces externos (ej. navbar del sitio)
+  useEffect(() => {
+    if (typeof window === 'undefined' || unsavedChampionsList.length === 0) return;
+
+    const handleBeforeUnload = (e) => {
+      e.preventDefault();
+      e.returnValue = '';
+    };
+
+    const handleDocumentLinkClick = (e) => {
+      const anchor = e.target?.closest?.('a[href]');
+      if (!anchor) return;
+      const href = anchor.getAttribute('href') || '';
+      if (!href || href.startsWith('#') || anchor.target === '_blank') return;
+      if (!confirmLeaveUnsavedItemizacion()) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    document.addEventListener('click', handleDocumentLinkClick, true);
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      document.removeEventListener('click', handleDocumentLinkClick, true);
+    };
+  }, [unsavedChampionsList]);
+
+  const handleSwitchVersion = (nextVersion) => {
+    if (nextVersion === currentVersion) return;
+    if (!confirmLeaveUnsavedItemizacion()) return;
+    swapVersionTFT(nextVersion);
+  };
+
+  const handleReloadDb = () => {
+    if (!confirmLeaveUnsavedItemizacion()) return;
+    loadItemizacionBySet(targetSetNumber, true);
+  };
+
   const handleSaveAllDirty = async () => {
     if (dirtyKeys.length === 0) return;
     setIsSavingAll(true);
@@ -917,14 +987,14 @@ const AdminTFTItemizacion = () => {
             <button
               type="button"
               className={`${style.segBtn} ${currentVersion === 'latest' ? style.segBtnLatestActive : ''}`}
-              onClick={() => swapVersionTFT('latest')}
+              onClick={() => handleSwitchVersion('latest')}
             >
               Set {setNumberLatest} (Latest)
             </button>
             <button
               type="button"
               className={`${style.segBtn} ${currentVersion === 'pbe' ? style.segBtnPbeActive : ''}`}
-              onClick={() => swapVersionTFT('pbe')}
+              onClick={() => handleSwitchVersion('pbe')}
             >
               Set {setNumberPBE} (PBE)
             </button>
@@ -951,7 +1021,7 @@ const AdminTFTItemizacion = () => {
           <button
             type="button"
             className={style.refreshBtn}
-            onClick={() => loadItemizacionBySet(targetSetNumber, true)}
+            onClick={handleReloadDb}
             disabled={isLoadingStore}
           >
             <span>🔄</span>
@@ -977,6 +1047,43 @@ const AdminTFTItemizacion = () => {
           )}
         </div>
       </div>
+
+      {/* AVISO PERSISTENTE DE CAMBIOS SIN GUARDAR */}
+      {unsavedChampionsList.length > 0 && (
+        <div className={style.unsavedBanner} role="alert">
+          <div className={style.unsavedBannerInfo}>
+            <strong>
+              ⚠️ Tienes cambios sin guardar en {unsavedChampionsList.length} campeón(es):
+            </strong>
+            <div className={style.unsavedChips}>
+              {unsavedChampionsList.map((c) => (
+                <button
+                  key={`unsaved-${c.apiName}`}
+                  type="button"
+                  className={style.unsavedChip}
+                  onClick={() => {
+                    setViewMode('editor');
+                    setCostFilter(c.cost > 0 ? c.cost : 'all');
+                    setChampSearch(c.name);
+                  }}
+                  title="Haz clic para ir a este campeón"
+                >
+                  {c.name} ({c.cost > 0 ? `Coste ${c.cost}` : 'Otros'})
+                </button>
+              ))}
+            </div>
+          </div>
+          <button
+            type="button"
+            className={style.saveAllBtn}
+            onClick={handleSaveAllDirty}
+            disabled={isSavingAll}
+          >
+            <span>💾</span>
+            <span>{isSavingAll ? 'Guardando...' : `Guardar Todo (${unsavedChampionsList.length})`}</span>
+          </button>
+        </div>
+      )}
 
       {/* BANNER DE ESTADO */}
       {feedback.text && (

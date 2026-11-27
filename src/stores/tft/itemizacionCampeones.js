@@ -7,6 +7,30 @@ export const urlItemizacionCampeones = 'https://api.guiadeparche.com/tft/itemiza
 export const $itemizacionPorSet = atom({});
 export const $itemizacionLoading = atom(false);
 
+// Lista de campeones con cambios sin guardar en AdminTFTItemizacion: [{ apiName, name, cost }]
+export const $unsavedItemizacionChamps = atom([]);
+
+export const formatUnsavedItemizacionMessage = (list = $unsavedItemizacionChamps.get()) => {
+  if (!Array.isArray(list) || list.length === 0) return '';
+  const lines = list.map((c) => {
+    const costLabel = Number(c.cost) > 0 ? `Coste ${c.cost}` : 'Otros';
+    return `• ${c.name || c.apiName} (${costLabel})`;
+  });
+  return (
+    `⚠️ Tienes cambios sin guardar en Itemización de Campeones TFT:\n\n` +
+    `${lines.join('\n')}\n\n` +
+    `¿Deseas salir de todas formas y perder estos cambios?\n` +
+    `(Presiona "Cancelar" para quedarte aquí y guardarlos)`
+  );
+};
+
+export const confirmLeaveUnsavedItemizacion = () => {
+  const list = $unsavedItemizacionChamps.get();
+  if (!Array.isArray(list) || list.length === 0) return true;
+  if (typeof window === 'undefined') return true;
+  return window.confirm(formatUnsavedItemizacionMessage(list));
+};
+
 const inFlightBySet = new Map();
 
 /**
