@@ -648,6 +648,80 @@
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.75));
 }
 
+/* ==================== BLOQUE CTA EN ESPACIOS SOBRANTES ==================== */
+.ctaSlotCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 10px;
+  padding: 20px 26px;
+  border-radius: 0;
+  border: 2px solid rgba(56, 182, 255, 0.55);
+  background:
+    radial-gradient(circle at 15% 20%, rgba(56, 182, 255, 0.22) 0%, transparent 55%),
+    radial-gradient(circle at 85% 80%, rgba(168, 85, 247, 0.22) 0%, transparent 55%),
+    linear-gradient(135deg, rgba(16, 24, 52, 0.94) 0%, rgba(10, 15, 34, 0.96) 100%);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  box-sizing: border-box;
+  min-height: 0;
+}
+
+.ctaLine1 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+  color: #e2e8f0;
+  line-height: 1.3;
+}
+
+.ctaLine2 {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.25;
+  color: #ffffff;
+}
+
+.ctaDomainHighlight {
+  color: var(--color-text-highlight, #38b6ff);
+}
+
+.ctaBioTag {
+  font-weight: 600;
+  color: #cbd5e1;
+  font-size: 0.85em;
+}
+
+/* Ajuste cuando solo sobra 1 columna */
+.ctaSlotCompact {
+  padding: 14px 12px;
+  gap: 8px;
+}
+
+.ctaSlotCompact .ctaLine1 {
+  font-size: 16px;
+}
+
+.ctaSlotCompact .ctaLine2 {
+  font-size: 18px;
+}
+
+/* Ajuste cuando sobran 3 o más columnas */
+.ctaSlotWide {
+  padding: 24px 36px;
+  gap: 12px;
+}
+
+.ctaSlotWide .ctaLine1 {
+  font-size: 26px;
+}
+
+.ctaSlotWide .ctaLine2 {
+  font-size: 32px;
+}
+
 /* ==================== FOOTER DE LOGOS GUIADEPARCHE ==================== */
 .canvasFooter {
   display: flex;

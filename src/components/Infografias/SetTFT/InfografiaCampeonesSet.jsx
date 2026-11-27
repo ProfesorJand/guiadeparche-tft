@@ -72,6 +72,7 @@ const InfografiaCampeonesSet = () => {
   const [includeOthers, setIncludeOthers] = useState(false);
   const [traitsAlign, setTraitsAlign] = useState('left'); // 'left' | 'right'
   const [customTitle, setCustomTitle] = useState('');
+  const [showCtaOnEmpty, setShowCtaOnEmpty] = useState(true);
   const [exportingIndex, setExportingIndex] = useState(null);
   const [exportAllProgress, setExportAllProgress] = useState(null);
 
@@ -259,7 +260,8 @@ const InfografiaCampeonesSet = () => {
     setExportAllProgress(null);
   }, [pages.length, downloadSinglePage]);
 
-  const displayTitle = customTitle.trim() || `CAMPEONES TFT SET ${selectedSet}`;
+  const displayTitle = customTitle.trim() || `Set ${selectedSet} TFT: Prismatic Tour`;
+  const displayCtaTop = `Descubre todo sobre el Set ${selectedSet} de TFT en:`;
   const hasFooter = Boolean(logos.jupeson || logos.movilnet || logos.setLogo || logos.guiadeparche);
 
   const getPageCostRangeLabel = (chunk) => {
@@ -474,6 +476,14 @@ const InfografiaCampeonesSet = () => {
               <label className={style.checkboxLabel}>
                 <input
                   type="checkbox"
+                  checked={showCtaOnEmpty}
+                  onChange={(e) => setShowCtaOnEmpty(e.target.checked)}
+                />
+                <span>CTA en espacios vacíos</span>
+              </label>
+              <label className={style.checkboxLabel}>
+                <input
+                  type="checkbox"
                   checked={onlyUnlockable}
                   onChange={(e) => setOnlyUnlockable(e.target.checked)}
                 />
@@ -556,6 +566,17 @@ const InfografiaCampeonesSet = () => {
           {pages.map((chunk, pageIdx) => {
             const costRange = getPageCostRangeLabel(chunk);
             const isExportingThis = exportingIndex === pageIdx;
+            const emptySlots = Math.max(0, perPage - chunk.length);
+            const rem = chunk.length % safeCols;
+            const trailingCols = rem === 0 ? 0 : safeCols - rem;
+            const extraFullRows = Math.floor((emptySlots - trailingCols) / safeCols);
+            const shouldRenderCta = showCtaOnEmpty && emptySlots > 0;
+            const ctaGridStyle = shouldRenderCta
+              ? extraFullRows > 0
+                ? { gridColumn: '1 / -1', gridRow: `span ${extraFullRows}` }
+                : { gridColumn: `span ${trailingCols}` }
+              : null;
+            const ctaSpanCols = extraFullRows > 0 ? safeCols : trailingCols;
 
             return (
               <div key={`infografia-page-${pageIdx}`} className={style.pageBlock}>
@@ -593,8 +614,8 @@ const InfografiaCampeonesSet = () => {
 
                       <div className={style.headerRight}>
                         <div className={style.brandPill}>
-                          <span className={style.brandDomain}>GUIADEPARCHE.COM</span>
-                          <span className={style.brandSub}>GUÍA DE CAMPEONES</span>
+                          <span className={style.brandDomain}>GUIADEPARCHE.COM/TFT/SET/19</span>
+                          <span className={style.brandSub}>Listado de Campeones</span>
                         </div>
                         <img
                           src="/tft/assets/t-logo.png"
@@ -698,6 +719,26 @@ const InfografiaCampeonesSet = () => {
                           </article>
                         );
                       })}
+
+                      {/* Bloque CTA automático que une los espacios sobrantes al final de la cuadrícula */}
+                      {shouldRenderCta && ctaGridStyle && (
+                        <div
+                          className={`${style.ctaSlotCard} ${
+                            ctaSpanCols === 1
+                              ? style.ctaSlotCompact
+                              : ctaSpanCols >= 3
+                                ? style.ctaSlotWide
+                                : ''
+                          }`}
+                          style={ctaGridStyle}
+                        >
+                          <p className={style.ctaLine1}>{displayCtaTop}</p>
+                          <p className={style.ctaLine2}>
+                            <span className={style.ctaDomainHighlight}>guiadeparche.com</span>{' '}
+                            <span className={style.ctaBioTag}>(link en bio)</span>
+                          </p>
+                        </div>
+                      )}
                     </div>
 
                     {/* FOOTER */}
