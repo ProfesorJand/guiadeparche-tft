@@ -837,6 +837,51 @@
   border: 1px dashed rgba(255, 255, 255, 0.15);
 }
 
+/* Banner de cambios sin guardar */
+.unsavedBanner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: rgba(245, 158, 11, 0.14);
+  border: 1px solid rgba(245, 158, 11, 0.55);
+  color: #fef3c7;
+}
+
+.unsavedBannerInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  min-width: 240px;
+}
+
+.unsavedChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.unsavedChip {
+  background: rgba(15, 23, 42, 0.78);
+  border: 1px solid rgba(251, 191, 36, 0.6);
+  color: #fde68a;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.unsavedChip:hover {
+  background: rgba(245, 158, 11, 0.3);
+  color: #ffffff;
+}
+
 @media only screen and (max-width: 900px) {
   .container {
     margin: 10px auto;

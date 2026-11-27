@@ -1,0 +1,712 @@
+/* Estilos de la Infografía de Campeones del Set TFT - Guiadeparche */
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* ==================== PANEL DE CONTROLES (FUERA DEL PNG) ==================== */
+.controlsPanel {
+  background: rgba(12, 16, 36, 0.88);
+  border: 1px solid rgba(56, 182, 255, 0.3);
+  border-radius: 14px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.controlsRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 14px;
+}
+
+.controlGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.controlLabel {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.pillGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pillBtn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #cbd5e1;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.16s ease;
+}
+
+.pillBtn:hover {
+  border-color: rgba(56, 182, 255, 0.6);
+  color: #ffffff;
+}
+
+.pillBtnActive {
+  background: rgba(56, 182, 255, 0.2);
+  border-color: var(--color-text-highlight, #38b6ff);
+  color: var(--color-text-highlight, #38b6ff);
+  box-shadow: 0 0 10px rgba(56, 182, 255, 0.25);
+}
+
+.gridPickerWrap {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.visualGridPicker {
+  display: grid;
+  grid-template-columns: repeat(6, 18px);
+  grid-template-rows: repeat(6, 18px);
+  gap: 3px;
+  padding: 6px;
+  border-radius: 10px;
+  background: #0d1224;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.visualGridCell {
+  width: 18px;
+  height: 18px;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.1s ease, border-color 0.1s ease;
+}
+
+.visualGridCellActive {
+  background: rgba(56, 182, 255, 0.45);
+  border-color: var(--color-text-highlight, #38b6ff);
+}
+
+.visualGridCellHover {
+  background: rgba(56, 182, 255, 0.78);
+  border-color: #ffffff;
+}
+
+.gridAxisControls {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.gridAxisRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.gridAxisLabel {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #94a3b8;
+  min-width: 66px;
+}
+
+.gridSizeBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--color-text-highlight, #38b6ff);
+}
+
+.textInput {
+  background: #0d1224;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+  padding: 7px 11px;
+  border-radius: 8px;
+  font-size: 0.86rem;
+  font-family: inherit;
+  min-width: 210px;
+  outline: none;
+}
+
+.textInput:focus {
+  border-color: var(--color-text-highlight, #38b6ff);
+}
+
+.textInputSmall {
+  min-width: 120px;
+  max-width: 150px;
+}
+
+.checkboxLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  color: #e2e8f0;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 6px 10px;
+  border-radius: 8px;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.checkboxLabel input {
+  accent-color: #38b6ff;
+  cursor: pointer;
+}
+
+.summaryBar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.summaryText {
+  font-size: 0.88rem;
+  color: #cbd5e1;
+}
+
+.summaryText strong {
+  color: var(--color-text-highlight, #38b6ff);
+}
+
+.downloadAllBtn {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: 800;
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35);
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.downloadAllBtn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+}
+
+.downloadAllBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ==================== CONTENEDOR DE CADA PÁGINA ==================== */
+.pagesStack {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  width: 100%;
+}
+
+.pageBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.pageToolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.pageToolbarTitle {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #e2e8f0;
+}
+
+.pageToolbarMeta {
+  color: #94a3b8;
+  font-weight: 500;
+  margin-left: 8px;
+  font-size: 0.82rem;
+}
+
+.downloadOneBtn {
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color: #ffffff;
+  border: none;
+  padding: 7px 14px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: filter 0.15s ease;
+}
+
+.downloadOneBtn:hover:not(:disabled) {
+  filter: brightness(1.12);
+}
+
+.downloadOneBtn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.previewStage {
+  width: 100%;
+  overflow-x: auto;
+  display: flex;
+  justify-content: center;
+  padding: 4px 0 8px;
+}
+
+/* ==================== LIENZO EXPORTABLE PNG (ASPECT RATIO 3:4) ==================== */
+.canvas {
+  width: 1200px;
+  min-width: 1200px;
+  height: 1600px;
+  aspect-ratio: 3 / 4;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px 24px 18px;
+  gap: 16px;
+  background:
+    radial-gradient(circle at 10% 0%, rgba(56, 182, 255, 0.22) 0%, transparent 44%),
+    radial-gradient(circle at 90% 100%, rgba(168, 85, 247, 0.2) 0%, transparent 45%),
+    linear-gradient(165deg, #090d1e 0%, #10162d 52%, #080c19 100%);
+  color: #f8fafc;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* Header */
+.canvasHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 84px;
+  padding: 12px 22px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(24, 33, 64, 0.94) 0%, rgba(15, 21, 44, 0.9) 100%);
+  border: 1px solid rgba(56, 182, 255, 0.42);
+  box-shadow: 0 8px 26px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.headerLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.headerMeta {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: #7dd3fc;
+}
+
+.pageBadge {
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: rgba(56, 182, 255, 0.2);
+  border: 1px solid rgba(56, 182, 255, 0.55);
+  color: #ffffff;
+  font-size: 11px;
+}
+
+.canvasTitle {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  color: #ffffff;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.brandPill {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.brandDomain {
+  font-size: 15px;
+  font-weight: 900;
+  color: #38b6ff;
+  letter-spacing: 0.06em;
+}
+
+.brandSub {
+  font-size: 10px;
+  font-weight: 700;
+  color: #cbd5e1;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.headerIcon {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 8px rgba(56, 182, 255, 0.35));
+}
+
+/* ==================== CUADRÍCULA DE CAMPEONES ==================== */
+.championsGrid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-cols, 4), minmax(0, 1fr));
+  grid-template-rows: repeat(var(--grid-rows, 4), minmax(0, 1fr));
+  gap: 14px;
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Card individual de campeón */
+.champCard {
+  --cost-border: #94a3b8;
+  --cost-bar-bg: linear-gradient(135deg, #273449 0%, #1c2536 100%);
+  --cost-pill-bg: rgba(15, 23, 42, 0.72);
+  border-radius: 0;
+  overflow: hidden;
+  border: 2px solid var(--cost-border);
+  background: #0d1626;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+}
+
+/* Temas de coste TFT */
+.cost1 {
+  --cost-border: #8e9cb2;
+  --cost-bar-bg: linear-gradient(135deg, #2c384b 0%, #1e2736 100%);
+}
+
+.cost2 {
+  --cost-border: #22c55e;
+  --cost-bar-bg: linear-gradient(135deg, #15452a 0%, #0e2e1c 100%);
+}
+
+.cost3 {
+  --cost-border: #38bdf8;
+  --cost-bar-bg: linear-gradient(135deg, #103b59 0%, #0b263b 100%);
+}
+
+.cost4 {
+  --cost-border: #c026d3;
+  --cost-bar-bg: linear-gradient(135deg, #471854 0%, #2d1036 100%);
+}
+
+.cost5 {
+  --cost-border: #facc15;
+  --cost-bar-bg: linear-gradient(135deg, #574410 0%, #382a09 100%);
+}
+
+.cost7 {
+  --cost-border: #e879f9;
+  --cost-bar-bg: linear-gradient(115deg, #000000 0%, #5658cd 32%, #7335ab 66%, #beca7e 100%);
+  --cost-pill-bg: rgba(18, 12, 38, 0.76);
+  border: none;
+  padding: 2px;
+  background: linear-gradient(135deg, #67e8f9 0%, #c084fc 35%, #f472b6 70%, #fde047 100%);
+}
+
+.cost7 .champBottomBar {
+  border-top: none;
+  padding-top: 10px;
+  background:
+    linear-gradient(90deg, #67e8f9 0%, #c084fc 35%, #f472b6 70%, #fde047 100%) top / 100% 2px no-repeat,
+    linear-gradient(115deg, #000000 0%, #5658cd 32%, #7335ab 66%, #beca7e 100%);
+}
+
+.cost7 .costPill {
+  border-color: #f0abfc;
+  box-shadow: 0 0 10px rgba(232, 121, 249, 0.45);
+}
+
+.costOther {
+  --cost-border: #2dd4bf;
+  --cost-bar-bg: linear-gradient(135deg, #134446 0%, #0c2b2d 100%);
+}
+
+/* Parte superior: Imagen horizontal + desbloqueable arriba + rasgos adentro */
+.champImageWrap {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  background: #070d18;
+  overflow: hidden;
+}
+
+.champSplashImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+  display: block;
+}
+
+/* Gradiente oscuro para legibilidad de rasgos a la derecha */
+.champGradientRight {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(6, 11, 22, 0.08) 25%, rgba(6, 11, 22, 0.82) 100%),
+    linear-gradient(180deg, rgba(6, 11, 22, 0.1) 45%, rgba(6, 11, 22, 0.72) 100%);
+  pointer-events: none;
+}
+
+/* Gradiente oscuro para legibilidad de rasgos a la izquierda (opcional) */
+.champGradientLeft {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(270deg, rgba(6, 11, 22, 0.08) 25%, rgba(6, 11, 22, 0.82) 100%),
+    linear-gradient(180deg, rgba(6, 11, 22, 0.1) 45%, rgba(6, 11, 22, 0.72) 100%);
+  pointer-events: none;
+}
+
+/* Insignia circular morada de Desbloqueable arriba */
+.unlockBadge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(30, 16, 56, 0.86);
+  border: 1.5px solid #a855f7;
+  color: #e9d5ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+  z-index: 3;
+}
+
+.unlockBadgeRight {
+  left: auto;
+  right: 8px;
+}
+
+/* Rasgos dentro de la imagen (derecha por defecto) */
+.traitsOverlayRight {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  z-index: 3;
+  max-width: 72%;
+}
+
+.traitsOverlayLeft {
+  position: absolute;
+  left: 8px;
+  bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  z-index: 3;
+  max-width: 72%;
+}
+
+.traitRow {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 7px 2px 5px;
+  border-radius: 6px;
+  background: rgba(8, 13, 26, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.traitIcon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  flex-shrink: 0;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.85));
+}
+
+.traitName {
+  font-size: 16px;
+  font-weight: 400;
+  color: #ffffff;
+  line-height: 1.15;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.95);
+  white-space: nowrap;
+}
+
+/* Parte inferior: Barra con color de fondo del coste, nombre y coste con moneda dorada */
+.champBottomBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 11px;
+  background: var(--cost-bar-bg);
+  border-top: 2px solid var(--cost-border);
+  box-sizing: border-box;
+  min-height: 46px;
+  flex-shrink: 0;
+}
+
+.champName {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 400;
+  color: #ffffff;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+.costPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 7px;
+  background: var(--cost-pill-bg);
+  border: 1.5px solid var(--cost-border);
+  flex-shrink: 0;
+}
+
+.costNumber {
+  font-size: 14px;
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 1;
+}
+
+.goldCoinIcon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.75));
+}
+
+/* ==================== FOOTER DE LOGOS GUIADEPARCHE ==================== */
+.canvasFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  gap: 20px;
+  height: 100px;
+  padding: 10px 20px;
+  border-radius: 12px;
+  background: rgba(6, 9, 22, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.footerLogoSlot {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.footerLogoImg {
+  max-height: 76px;
+  max-width: 240px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.6));
+}
+
+.emptyNotice {
+  padding: 40px 20px;
+  text-align: center;
+  color: #94a3b8;
+  border: 1px dashed rgba(255, 255, 255, 0.16);
+  border-radius: 12px;
+  background: rgba(15, 23, 42, 0.5);
+}
+
+/* ==================== RESPONSIVO MÓVILES ==================== */
+@media only screen and (max-width: 900px) {
+  .controlsPanel {
+    padding: 12px;
+  }
+
+  .textInput {
+    font-size: 16px;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .downloadAllBtn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .previewStage {
+    justify-content: flex-start;
+  }
+}

@@ -32,6 +32,8 @@ import AdminBlog from "./AdminBlog.jsx";
 import AdminSEOIndexacion from "./AdminSEOIndexacion.jsx";
 import AdminNoticias from "./AdminNoticias.jsx";
 import AdminTFTItemizacion from "./AdminTFTItemizacion.jsx";
+import AdminTFTInfografiasSet from "./AdminTFTInfografiasSet.jsx";
+import { confirmLeaveUnsavedItemizacion } from "@stores/tft/itemizacionCampeones";
 
 const AdminPanel = ()=>{
     const admin = useStore($admin);
@@ -48,6 +50,7 @@ const AdminPanel = ()=>{
           { nombre: "Editar", admin: true, superAdmin: true },
           { nombre: "Páginas Meta TFT", admin: true, superAdmin: true },
           { nombre: "Infografia Comps", admin: false, superAdmin: true },
+          { nombre: "Infografias Set", admin: true, superAdmin: true },
           { nombre: "Tier List Items", admin: false, superAdmin: true },
           { nombre: "Tier List Augments", admin: false, superAdmin: true },
           { nombre: "Aumentos", admin: true, superAdmin: true },
@@ -200,6 +203,9 @@ const AdminPanel = ()=>{
     }, [user?.email, admin, superAdmin]);
 
     function cerrarSesion(){
+        if (action === "TFT-Itemizacion Campeones" && !confirmLeaveUnsavedItemizacion()) {
+          return;
+        }
         logOut()
     }
 
@@ -230,6 +236,13 @@ const AdminPanel = ()=>{
                           type="button"
                           value={primario}
                           onClick={()=>{
+                            if (
+                              action === "TFT-Itemizacion Campeones" &&
+                              primario !== "TFT" &&
+                              !confirmLeaveUnsavedItemizacion()
+                            ) {
+                              return;
+                            }
                             if(primario !== "Infografia Zero" && primario !== "Riftbound"){
                               setPestana(primario)
                             }
@@ -266,7 +279,15 @@ const AdminPanel = ()=>{
                               key={j} 
                                 className={pestana === primario.concat(value) ? style.btnActive: ""} 
                                 onClick={()=>{
-                                  setAction(`${primario}-${value}`);
+                                  const nextAction = `${primario}-${value}`;
+                                  if (
+                                    action === "TFT-Itemizacion Campeones" &&
+                                    nextAction !== action &&
+                                    !confirmLeaveUnsavedItemizacion()
+                                  ) {
+                                    return;
+                                  }
+                                  setAction(nextAction);
                                   setPestana(primario.concat(value))
                                 }}
                                 style={{padding:"4px 8px", maxWidth: "100px"}}
@@ -286,6 +307,7 @@ const AdminPanel = ()=>{
                 {action === "TFT-Crear" && <FormularioVisualTFT />}
                 {action === "TFT-Editar" && <EditarCompoTFT />}
                 {action === "TFT-Infografia Comps" && <InfografiaTFT/>}
+                {action === "TFT-Infografias Set" && <AdminTFTInfografiasSet />}
                 {/* {action === "InfografiaTFTCompo" && <InfografiaTFTComps/>} */}
                 {action === "TFT-Tier List Items" && <CreateItemsTierList />}
                 {action === "TFT-Tier List Augments" && <CreateAugmentsTierList admin={admin || superAdmin}/>}
